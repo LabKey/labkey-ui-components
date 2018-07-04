@@ -1,0 +1,11 @@
+{
+  "name": "glass-components",
+  "private": true,
+  "devDependencies": {
+    "lerna": "2.9.0"
+  },
+  "workspaces": [
+    "packages/grid",
+    "packages/omnibox"
+  ]
+}

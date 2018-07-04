@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "lib": ["es2015", "es2017", "dom"],
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "target": "es5",
+    "types": [] // don't implicitly include any @types, only those included via import
+  },
+  "files": [
+    "src/Grid.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

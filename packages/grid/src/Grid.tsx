@@ -4,7 +4,7 @@
  */
 import * as React from 'react'
 import classNames from 'classnames'
-import { List, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
 interface ColumnProps {
     align?: string
@@ -111,10 +111,22 @@ function processColumns(columns: List<any>): List<Column> {
                 index: c.index || c.fieldKey,
                 raw: c,
                 tableCell: c.tableCell,
-                title: c.caption,
+                title: c.title || c.caption,
                 width: c.width
             });
         }).toList();
+}
+
+function processData(data: GridData): List<Map<string, any>> {
+    if (List.isList(data)) {
+        return data as List<Map<string, any>>;
+    }
+
+    if (Array.isArray(data)) {
+        return fromJS(data);
+    }
+
+    return List();
 }
 
 function resolveColumns(data: List<Map<string, any>>): List<Column> {
@@ -253,13 +265,15 @@ class GridBody extends React.Component<GridBodyProps, any> {
     }
 }
 
+export type GridData = Array<Object> | List<Map<string, any>>;
+
 export interface GridProps {
     bordered?: boolean
     calcWidths?: boolean
     cellular?: boolean
     condensed?: boolean
     columns?: List<any>
-    data?: List<Map<string, any>>
+    data?: GridData
     emptyText?: string
     gridId?: string
     headerCell?: any
@@ -316,7 +330,8 @@ export class Grid extends React.Component<GridProps, any> {
             transpose
         } = this.props;
 
-        const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(data);
+        const gridData = processData(data);
+        const gridColumns = columns !== undefined ? processColumns(columns) : resolveColumns(gridData);
 
         const headerProps: GridHeaderProps = {
             calcWidths,
@@ -328,7 +343,7 @@ export class Grid extends React.Component<GridProps, any> {
 
         const bodyProps: GridBodyProps = {
             columns: gridColumns,
-            data,
+            data: gridData,
             emptyText,
             isLoading,
             loadingText,

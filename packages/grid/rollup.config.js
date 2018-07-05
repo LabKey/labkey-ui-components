@@ -10,7 +10,7 @@ const globals = {
 const external = Object.keys(globals);
 
 const namedExports = {
-    'immutable': [ 'List', 'Map' ]
+    'immutable': [ 'fromJS', 'List', 'Map' ]
 };
 
 export default [

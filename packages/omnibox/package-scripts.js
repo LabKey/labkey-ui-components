@@ -1,5 +1,5 @@
 const npsUtils = require('nps-utils');
-const { ncp, rimraf, series } = npsUtils;
+const { rimraf, series } = npsUtils;
 
 module.exports = {
     scripts: {
@@ -9,6 +9,16 @@ module.exports = {
                     'rollup -c'
             ),
             description: 'Clean dist directory and run all builds'
+        },
+        clean: {
+            default: rimraf('dist')
+        },
+        cleanAll: {
+            default: series(
+                rimraf('.rpt2_cache'),
+                rimraf('node_modules'),
+                rimraf('dist')
+            )
         }
     }
 };

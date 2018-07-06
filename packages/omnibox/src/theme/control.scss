@@ -1,0 +1,95 @@
+//
+// Control
+// ------------------------------
+
+.OmniBox {
+  position: relative;
+
+  // handle disabled state
+  &.is-disabled > .OmniBox-control {
+    background-color: $omnibox-input-bg-disabled;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  &.is-disabled .OmniBox-arrow-zone {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+
+// base
+
+.OmniBox-control {
+  background-color: $omnibox-input-bg;
+  border-color: lighten($omnibox-input-border-color, 5%) $omnibox-input-border-color darken($omnibox-input-border-color, 10%);
+  border-radius: $omnibox-input-border-radius;
+  border: $omnibox-input-border-width solid $omnibox-input-border-color;
+  color: $omnibox-text-color;
+  cursor: default;
+  display: table;
+  border-spacing: 0;
+  border-collapse: separate;
+  height: $omnibox-input-height;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  &:hover {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  }
+}
+
+// placeholder
+
+.OmniBox-placeholder {
+  bottom: 0;
+  color: $omnibox-input-placeholder;
+  left: 0;
+  line-height: $omnibox-input-internal-height;
+  padding-left: $omnibox-padding-horizontal;
+  padding-right: $omnibox-padding-horizontal;
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  // crop text
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+// the <input> element users type in
+
+.OmniBox-input {
+  // inherits `display: inline-block` from "react-input-autosize"
+  height: $omnibox-input-internal-height;
+  padding-left: $omnibox-padding-horizontal;
+  padding-right: $omnibox-padding-horizontal;
+  vertical-align: middle;
+
+  > input {
+    background: none transparent;
+    border: 0 none;
+    box-shadow: none;
+    cursor: default;
+    display: inline-block;
+    font-family: inherit;
+    font-size: inherit;
+    // height: $omnibox-input-internal-height;
+    margin: 0;
+    outline: none;
+    // padding: 0;
+    line-height: 14px;  /* For IE 8 compatibility */
+    padding: (($omnibox-input-internal-height - 14) / 2 - 2) 0 (($omnibox-input-internal-height - 14) / 2 + 2);  /* For IE 8 compatibility */
+    -webkit-appearance: none;
+
+    .is-focused & {
+      cursor: text;
+    }
+  }
+
+}

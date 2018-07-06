@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-
 import { mount, shallow } from 'enzyme'
 
 import { OmniBox } from './OmniBox'

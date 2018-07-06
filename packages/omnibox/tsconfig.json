@@ -1,19 +1,7 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    // "declaration": true,
-    "jsx": "react",
-    "lib": ["es2015", "es2017", "dom"],
-    "moduleResolution": "node",
-    "sourceMap": false,
-    "target": "es5",
-    "types": [] // don't implicitly include any @types, only those included via import
-  },
+  "extends": "../../tsconfig.base.json",
   "files": [
     "src/typings/main.d.ts",
     "src/OmniBox.tsx"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

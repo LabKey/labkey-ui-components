@@ -11,6 +11,8 @@ import { Action, ActionOption, ActionValue, ActionValueCollection } from './acti
 import { Option } from './Option'
 import { Value, valueClassName } from './Value'
 
+import './theme/index.scss'
+
 interface OmniBoxProps {
     actions: Array<Action>
     backspaceRemoves?: boolean

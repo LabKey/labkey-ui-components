@@ -1,5 +1,6 @@
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
+import sass from 'rollup-plugin-sass';
 import typescript from 'rollup-plugin-typescript2';
 
 const globals = {
@@ -11,27 +12,34 @@ const globals = {
 };
 const external = Object.keys(globals);
 
+const input = 'src/OmniBox.tsx';
+
+const cjsOptions = {
+    namedExports: {
+        'jquery': [ '$' ]
+    }
+};
+
 export default [
     {
-        external: external,
-        input: 'src/OmniBox.tsx',
+        external,
+        input,
         output: {
             file: 'dist/omnibox.cjs.js',
             format: 'cjs'
         },
         plugins: [
             resolve(),
-            commonjs({
-                namedExports: {
-                    'jquery': [ '$' ]
-                }
-            }),
-            typescript()
+            commonjs(cjsOptions),
+            typescript(),
+            sass({
+                output: 'dist/omnibox.css'
+            })
         ]
     },
     {
-        external: external,
-        input: 'src/OmniBox.tsx',
+        external,
+        input,
         output: {
             file: 'dist/omnibox.es.js',
             format: 'es',
@@ -39,31 +47,25 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({
-                namedExports: {
-                    'jquery': [ '$' ]
-                }
-            }),
-            typescript()
+            commonjs(cjsOptions),
+            typescript(),
+            sass()
         ]
     },
     {
-        external: external,
-        input: 'src/OmniBox.tsx',
+        external,
+        input,
         output: {
             file: 'dist/omnibox.umd.js',
             format: 'umd',
             name: 'omnibox',
-            globals: globals
+            globals
         },
         plugins: [
             resolve(),
-            commonjs({
-                namedExports: {
-                    'jquery': [ '$' ]
-                }
-            }),
-            typescript()
+            commonjs(cjsOptions),
+            typescript(),
+            sass()
         ]
     }
 ]

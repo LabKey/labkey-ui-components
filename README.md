@@ -89,3 +89,21 @@ This will install all dependencies for the component packages. Once this is comp
 lerna run build
 ```
 
+#### Storybook
+
+A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". These stories are composed by developers to show features of a component and let other members of the team interact with a component. If you're doing active development you can start up Storybook via:
+
+```sh
+cd packages/storybook
+yarn run storybook
+
+# The storybook instance is now available at http://localhost:9001
+```
+
+## Publishing
+
+To publish, increment the version number in accordance with [SemVer](https://semver.org/), update the Readme.md, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
+
+```sh
+npm publish
+```

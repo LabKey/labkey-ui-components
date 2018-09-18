@@ -5,6 +5,9 @@
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",
   "style": "dist/omnibox.css",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "nps build",
     "clean": "nps clean",

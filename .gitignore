@@ -1,4 +1,5 @@
 .DS_Store
+/.idea
 /node_modules
 /packages/*/.rpt2_cache
 /packages/*/dist

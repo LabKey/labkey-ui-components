@@ -4,6 +4,10 @@
   "description": "The Glass Grid",
   "main": "dist/grid.cjs.js",
   "module": "dist/grid.es.js",
+  "types": "dist/.rpt2_cache/placeholder/Grid.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "build": "nps build",
     "clean": "nps clean",
@@ -24,10 +28,10 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "classnames": "2.2.6",
-    "immutable": "3.8.2"
+    "classnames": "2.2.6"
   },
   "peerDependencies": {
+    "immutable": "^3.8.2",
     "react": "^16.0",
     "react-dom": "^16.0"
   },

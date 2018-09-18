@@ -201,7 +201,7 @@ interface GridBodyProps {
     columns: List<Column>
     emptyText: string
     isLoading: boolean
-    loadingText: string
+    loadingText: React.ReactNode
     rowKey: any
     transpose: boolean
 }
@@ -278,7 +278,7 @@ export interface GridProps {
     gridId?: string
     headerCell?: any
     isLoading?: boolean
-    loadingText?: string
+    loadingText?: React.ReactNode
     responsive?: boolean
 
     /**

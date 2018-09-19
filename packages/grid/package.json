@@ -1,6 +1,6 @@
 {
   "name": "@glass/grid",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "The Glass Grid",
   "main": "dist/grid.cjs.js",
   "module": "dist/grid.es.js",

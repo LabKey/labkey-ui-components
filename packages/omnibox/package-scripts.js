@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2018 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
 const npsUtils = require('nps-utils');
 const { rimraf, series } = npsUtils;
 

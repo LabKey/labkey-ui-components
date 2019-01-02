@@ -89,6 +89,18 @@ This will install all dependencies for the component packages. Once this is comp
 lerna run build
 ```
 
+#### Creating a Ne Package
+To create a new package:
+
+* Create a new directory in the `packages` directory.
+* Edit the root-level `package.json` and add the new directory to the `workspaces` array.
+* Copy the `package-scripts.js` file from an existing package to the new directory.
+* Copy and modify (or create) the `package.json`, `rollup.config.js`, and `tsconfig.json` files in your new package directory.
+* Place source code in a `src` subdirectory.
+* Place typing files in a `src/typings` subdirectory.
+* Add documentation a-plenty.
+* Run `yarn build`
+
 #### Storybook
 
 A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". These stories are composed by developers to show features of a component and let other members of the team interact with a component. If you're doing active development you can start up Storybook via:
@@ -102,7 +114,10 @@ yarn run storybook
 
 ## Publishing
 
-To publish, increment the version number in accordance with [SemVer](https://semver.org/), update the Readme.md, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
+In order to publish, you will need to set up your npm credentials.  Follow the 'Set Me Up' instructions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local). (Link is in the upper right corner.)
+If you do not have permissions to publish to this repository, contact a local Artifactory administrator who can grant you those permissions.
+
+To publish, increment the version number in accordance with [SemVer](https://semver.org/), update this Readme.md, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
 
 ```sh
 npm publish

@@ -89,7 +89,7 @@ This will install all dependencies for the component packages. Once this is comp
 lerna run build
 ```
 
-#### Creating a Ne Package
+#### Creating a New Package
 To create a new package:
 
 * Create a new directory in the `packages` directory.

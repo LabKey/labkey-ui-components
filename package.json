@@ -31,9 +31,13 @@
     "tslint": "5.10.0",
     "typescript": "3.0.3"
   },
+  "resolutions": {
+    "**/event-stream": "^4.0.1"
+  },
   "workspaces": [
     "packages/grid",
     "packages/omnibox",
+    "packages/querygrid",
     "packages/storybook"
   ]
 }

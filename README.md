@@ -101,6 +101,30 @@ To create a new package:
 * Add documentation a-plenty.
 * Run `yarn build`
 
+#### Local Development
+
+In order to use and test the components you are developing or modifying in this repository within another application, 
+you can use [npm link](https://docs.npmjs.com/cli/link.html) 
+(also see [this discussion](https://medium.com/@the1mills/how-to-test-your-npm-module-without-publishing-it-every-5-minutes-1c4cb4b369be))
+to create symbolic links to your local versions of the packages.  Once modifications have been made and published, you can use [npm uninstall](https://docs.npmjs.com/cli/uninstall.html)
+(also see [this discussion](https://medium.com/@alexishevia/the-magic-behind-npm-link-d94dcb3a81af)) to remove the symbolic
+link (or, you can remove it yourself manually).  Please note that you will likey want to use the ``--no-save`` option 
+when uninstalling to prevent your ``package.json`` file from being updated.
+
+For example, if making changes to the grid package, you can do the following:
+* ``cd packages/grid``
+* ``npm link``  (this creates a link to this directory in the ``lib/node_modules`` directory of the node version currently on your path)
+* ``cd my_application``
+* ``npm link @glass/grid`` (note that the scope is required here)
+
+Then, when you no longer wish to reference the local installation, you can do
+* ``npm uninstall --no-save @glass/grid``
+
+This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
+need to use ``npm install``.
+ 
+
+
 #### Storybook
 
 A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". These stories are composed by developers to show features of a component and let other members of the team interact with a component. If you're doing active development you can start up Storybook via:
@@ -114,7 +138,7 @@ yarn run storybook
 
 ## Publishing
 
-In order to publish, you will need to set up your npm credentials.  Follow the 'Set Me Up' instructions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local). (Link is in the upper right corner.)
+In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://internal.labkey.com/wiki/Handbook/Dev/page.view?name=npmrc) to create your .npmrc file.
 If you do not have permissions to publish to this repository, contact a local Artifactory administrator who can grant you those permissions.
 
 To publish, increment the version number in accordance with [SemVer](https://semver.org/), update this Readme.md, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:

@@ -28,12 +28,17 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    
+    "@glass/grid": "0.0.2",
+    "@labkey/api": "0.0.9",
+    "history": "3.2.1",
+    "normalizr": "3.3.0",
+    "react-bootstrap": "0.32.4"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",
     "react": "^16.0",
-    "react-dom": "^16.0"
+    "react-dom": "^16.0",
+    "reactn": "0.1.9"
   },
   "jest": {
     "moduleFileExtensions": [

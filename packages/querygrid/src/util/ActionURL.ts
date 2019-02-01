@@ -1,0 +1,139 @@
+/*
+ * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
+ * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ */
+import { OrderedMap } from 'immutable'
+import { ActionURL, Utils } from '@labkey/api'
+
+import { AppURL } from './URL'
+
+function applyURL(prop: string, options?: BuildURLOptions): string {
+    if (options) {
+        if (typeof(options[prop]) === 'string') {
+            return options[prop];
+        }
+        else if (options[prop] instanceof AppURL) {
+            return window.location.pathname + options[prop].toHref();
+        }
+    }
+}
+
+interface BuildURLOptions {
+    cancelURL?: string | AppURL
+    container?: string
+    returnURL?: boolean | string | AppURL // defaults to true when action does not end in '.api'
+    successURL?: string | AppURL
+}
+
+export function buildURL(controller: string, action: string, params?: any, options?: BuildURLOptions): string {
+
+    let constructedParams = {
+        // server expects camel-case URL (e.g. Url)
+        cancelUrl: undefined,
+        returnUrl: undefined,
+        successUrl: undefined
+    };
+
+    const applyReturnURL = !options || (options && options.returnURL !== false);
+
+    if (applyReturnURL) {
+        if (options && (typeof(options.returnURL) === 'string' || options.returnURL instanceof AppURL)) {
+            constructedParams.returnUrl = applyURL('returnURL', options);
+        }
+        else if (action.toLowerCase().indexOf('.api') === -1 && action.toLowerCase().indexOf('.post') === -1) {
+            // use the current URL
+            constructedParams.returnUrl = window.location.pathname + (window.location.hash ? window.location.hash : '');
+        }
+    }
+
+    constructedParams.cancelUrl = applyURL('cancelURL', options);
+    constructedParams.successUrl = applyURL('successURL', options);
+
+    Object.keys(constructedParams).forEach((key) => {
+        if (!constructedParams[key]) {
+            // remove any param keys that do not have values
+            delete constructedParams[key]
+        }
+    });
+
+    const parameters = Object.assign(params ? params : {}, constructedParams);
+
+    return ActionURL.buildURL(
+        controller,
+        action,
+        options && options.container ? options.container : undefined,
+        parameters
+    );
+}
+
+// This is similar to LABKEY.Filter.getSortFromUrl, however, it does not assume the urlPrefix.
+export function getSortFromUrl(queryString: string, urlPrefix?: string): string {
+    const params = ActionURL.getParameters(queryString);
+    let param = 'sort';
+    if (urlPrefix) {
+        param = [urlPrefix, param].join('.');
+    }
+    return params[param];
+}
+
+export function hasParameter(parameterName: string): boolean {
+    return ActionURL.getParameter(parameterName) !== undefined;
+}
+
+export function setParameter(parameterName: string, value: any): void {
+    let { search } = window.location;
+    const EQ = '=', SEP = '&';
+
+    let keyValues = search.substr(1).split(SEP).reduce((map, part) => {
+        const [ key, value ] = part.split(EQ).map(p => decodeURIComponent(p));
+
+        if (!key) {
+            return map;
+        }
+
+        if (map.has(key)) {
+            if (!Utils.isArray(map.get(key))) {
+                map.set(key, [map.get(key)]);
+            }
+
+            let arrValue = map.get(key);
+            arrValue.push(value);
+
+            return map.set(key, arrValue);
+        }
+
+        return map.set(key, value);
+    }, OrderedMap<string, any>().asMutable());
+
+    if (value !== undefined) {
+        keyValues.set(parameterName, value);
+    }
+    else {
+        keyValues.remove(parameterName);
+    }
+
+    let result = '';
+
+    if (keyValues.size) {
+        let sep = '';
+        result = keyValues.reduce((search, value, key) => {
+            if (!Utils.isArray(value)) {
+                value = [value];
+            }
+
+            const eKey = encodeURIComponent(key);
+            value.forEach((v) => {
+                search += sep + eKey + EQ + encodeURIComponent(v);
+                sep = SEP;
+            });
+
+            return search;
+        }, '?');
+    }
+
+    window.location.search = result;
+}
+
+export function toggleParameter(parameterName: string, value: any): void {
+    setParameter(parameterName, hasParameter(parameterName) ? undefined : value);
+}

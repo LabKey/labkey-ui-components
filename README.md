@@ -11,6 +11,7 @@ Defines all of the components available in the @glass scope. These React compone
 | --- | --- |
 | @glass/grid | 0.0.2 |
 | @glass/omnibox | 0.0.1 |
+| @glass/querygrid | 0.0.2 |
 
 ## Using Components
 

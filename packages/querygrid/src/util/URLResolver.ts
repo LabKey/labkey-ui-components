@@ -243,10 +243,9 @@ export class URLResolver {
             return '#' + _url.toString();
         }
 
-        // TODO how to get LABKEY object here in this glass-component?
-        // if (_url !== false && LABKEY.devMode) {
-        //     console.warn('Unable to map URL:', mapper.url);
-        // }
+        if (_url !== false && LABKEY.devMode) {
+            console.warn('Unable to map URL:', mapper.url);
+        }
 
         return mapper.url;
     }

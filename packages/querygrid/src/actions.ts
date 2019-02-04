@@ -2,14 +2,15 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map } from 'immutable'
+import { List, Map, Set } from 'immutable'
 import { Location } from 'history'
 import { Ajax, Filter, Utils } from '@labkey/api'
 
 import { getQueryDetails } from './query/api'
-import { isEqual } from './query/filter'
-import { QueryColumn, QueryInfo } from './query/model'
 import { CHECKBOX_OPTIONS } from './query/constants'
+import { isEqual } from './query/filter'
+import { QueryColumn, QueryInfo, SchemaQuery } from './query/model'
+import { resolveSchemaQuery } from "./query/utils";
 import { buildURL, getSortFromUrl } from './util/ActionURL'
 import { QueryGridModel } from './model'
 import { bindColumnRenderers } from './renderers'
@@ -83,6 +84,7 @@ export function sort(state: QueryGrid, model: QueryGridModel, columnIndex: strin
     // }
 }
 
+// Handle single row select/deselect from the QueryGrid checkbox column
 export function toggleGridRowSelection(state: QueryGrid, model: QueryGridModel, row: Map<string, any>, checked: boolean) {
     let pkValue;
     let pkCols: List<QueryColumn> = model.queryInfo.getPkCols();
@@ -139,6 +141,118 @@ export function toggleGridSelected(state: QueryGrid, model: QueryGridModel, chec
     else {
         setGridUnselected(state, model);
     }
+}
+
+export function clearError(state: QueryGrid, model: QueryGridModel) {
+    if (model.isError) {
+        updateGlobalQueryGridModel(state, model, {
+            isError: false,
+            message: undefined
+        });
+    }
+}
+
+export function destroy(state: QueryGrid, model: QueryGridModel) {
+    state.setGlobal({
+        QueryGrid: {
+            models: state.global.QueryGrid.models.delete(model.getId())
+        }
+    });
+}
+
+export function schemaInvalidate(state: QueryGrid, schemaName: string) {
+    state.global.QueryGrid.models
+        .filter(gridModel => gridModel.schema.toLowerCase() === schemaName.toLowerCase())
+        .map((model) => invalidate(state, model));
+}
+
+export function queryInvalidate(state: QueryGrid, schemaQuery: SchemaQuery) {
+    const modelName = resolveSchemaQuery(schemaQuery);
+    state.global.QueryGrid.models
+        .filter(gridModel => gridModel.getModelName() === modelName)
+        .map((model) => invalidate(state, model));
+}
+
+export function invalidate(state: QueryGrid, model: QueryGridModel): QueryGridModel {
+    return updateGlobalQueryGridModel(state, model, {
+        data: Map<any, List<any>>(),
+        dataIds: List<any>(),
+        isError: false,
+        isLoaded: false,
+        isLoading: false,
+        message: undefined
+    });
+}
+
+export function loadPage(state: QueryGrid, model: QueryGridModel, pageNumber: number, location: Location, metadata?: any) {
+    if (pageNumber !== model.pageNumber) {
+        // TODO how to handle this routing case from within the shared component?
+        // if (model.bindURL) {
+        //     dispatch(replaceParameters(getLocation(getState), Map<string, any>({
+        //         [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined
+        //     })));
+        // }
+        // else {
+            let newModel = updateGlobalQueryGridModel(state, model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
+            load(state, newModel, metadata, location);
+        // }
+    }
+}
+
+export function refresh(state: QueryGrid, model: QueryGridModel, location: Location, metadata?: any) {
+    let newModel = invalidate(state, model);
+
+    if (model.allowSelection) {
+        setGridUnselected(state, newModel);
+    }
+
+    load(state, newModel, metadata, location);
+}
+
+// Takes a List<Filter.Filter> and remove each filter from the grid model
+// Alternately, the 'all' flag can be set to true to remove all filters. This
+// setting takes precedence over the filters list.
+export function removeFilters(state: QueryGrid, model: QueryGridModel, location: Location, metadata?: any, filters?: List<any>, all: boolean = false) {
+    // TODO how to handle this routing case from within the shared component?
+    // if (model.bindURL) {
+    //     dispatch(replaceParameters(getLocation(getState), getFilterParameters(filters, true)));
+    // }
+    // else {
+        let newModel = model;
+        if (model.filterArray.count()) {
+            if (all) {
+                newModel = updateGlobalQueryGridModel(state, newModel, {filterArray: List<any>()});
+            }
+            else if (filters && filters.count()) {
+                let urls = filters.reduce((urls, filter: any) => {
+                    return urls.add(filter.getURLParameterName() + filter.getURLParameterValue());
+                }, Set());
+
+                let filtered = model.filterArray.filter((f: any) => {
+                    return !urls.has(f.getURLParameterName() + f.getURLParameterValue());
+                });
+
+                if (filtered.count() < model.filterArray.count()) {
+                    newModel = updateGlobalQueryGridModel(state, newModel, {filterArray: filtered});
+                }
+            }
+        }
+
+        load(state, newModel, metadata, location);
+    // }
+}
+
+export function addFilters(state: QueryGrid, model: QueryGridModel, filters: List<Filter.Filter>, location: Location, metadata?: any) {
+    // TODO how to handle this routing case from within the shared component?
+    // if (model.bindURL) {
+    //     dispatch(replaceParameters(getLocation(getState), getFilterParameters(filters)));
+    // }
+    // else {
+        if (filters.count()) {
+            let newModel = updateGlobalQueryGridModel(state, model, {filterArray: model.filterArray.merge(filters)});
+            load(state, newModel, metadata, location);
+        }
+    // }
 }
 
 function load(state: QueryGrid, model: QueryGridModel, metadata: any, location: Location) {
@@ -426,6 +540,22 @@ function setGridUnselected(state: QueryGrid, model: QueryGridModel) {
         const error = err ? err : {message: 'Something went wrong'};
         handleQueryErrorAction(state, model, error);
     })
+}
+
+function getFilterParameters(filters: List<any>, remove: boolean = false): Map<string, string> {
+
+    const params = {};
+
+    filters.map((filter) => {
+        if (remove) {
+            params[filter.getURLParameterName()] = undefined;
+        }
+        else {
+            params[filter.getURLParameterName()] = filter.getURLParameterValue();
+        }
+    });
+
+    return Map<string, string>(params);
 }
 
 function setError(state: QueryGrid, model: QueryGridModel, message: string) {

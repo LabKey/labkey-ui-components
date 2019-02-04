@@ -145,38 +145,32 @@ export class QueryGridModel extends Record({
     constructor(values?: QueryGridModelProps) {
         super(values);
 
-        // TODO how to get LABKEY object here in this glass-component?
-        // if (LABKEY.devMode) {
-        //     // ensure that requiredColumns and omittedColumns do not intersect
-        //     let i = intersect(this.requiredColumns, this.omittedColumns);
-        //     if (i.size > 0) {
-        //         console.log('Intersection', i.toJS());
-        //         throw new Error('Required and omitted columns cannot intersect. Model id: "' + this.id + '". See console for colliding columns.');
-        //     }
-        // }
+        if (LABKEY.devMode) {
+            // ensure that requiredColumns and omittedColumns do not intersect
+            let i = intersect(this.requiredColumns, this.omittedColumns);
+            if (i.size > 0) {
+                console.log('Intersection', i.toJS());
+                throw new Error('Required and omitted columns cannot intersect. Model id: "' + this.id + '". See console for colliding columns.');
+            }
+        }
+    }
+
+    doExport(type: EXPORT_TYPES) {
+        console.error('TODO: doExport');
+        //return actions.doExport(this, type);
+    }
+
+    selectView(view: ViewInfo) {
+        console.error('TODO: selectView');
+        // return actions.selectView(this, view);
     }
 
     canImport() {
         return this.showImportDataButton().get('canImport');
     }
 
-    clearErrors() {
-        console.error('TODO: clearErrors');
-        // return actions.clearError(this.getId());
-    }
-
     createParam(param: string, useDefault?: string): string {
         return this.urlPrefix ? [this.urlPrefix, param].join('.') : (useDefault ? [useDefault, param].join('.') : param);
-    }
-
-    destroy() {
-        console.error('TODO: destroy');
-        //return actions.destroy(this);
-    }
-
-    doExport(type: EXPORT_TYPES) {
-        console.error('TODO: doExport');
-        //return actions.doExport(this, type);
     }
 
     getColumn(fieldKey: string): QueryColumn {
@@ -351,59 +345,6 @@ export class QueryGridModel extends Record({
 
         // assumes QueryColumn fieldKey casing is same as data fieldKey casing
         return this.data.getIn([dataId, col.fieldKey, part ? part : 'value']);
-    }
-
-    invalidate() {
-        console.error('TODO: invalidate');
-        //return actions.invalidate(this);
-    }
-
-    load(): any {
-        console.error('TODO: load');
-        //return actions.load(this);
-    }
-
-    loadPage(pageNumber: number): any {
-        console.error('TODO: loadPage');
-        //return actions.loadPage(this, pageNumber);
-    }
-
-    onSelectChange(row: Map<string, any>, selected: boolean) {
-        console.error('TODO: onSelectionChange');
-        //return actions.toggleGridRowSelection(this, row, selected);
-    }
-
-    onSelectHeaderChange(selected: boolean) {
-        console.error('TODO: onSelectHeaderChange');
-        //return actions.toggleGridSelected(this, selected);
-    }
-
-    refresh(): any {
-        console.error('TODO: refresh');
-        // return actions.refresh(this);
-    }
-
-    // Takes a List<Filter.Filter> and remove each filter from the grid model
-    // Alternately, the 'all' flag can be set to true to remove all filters. This
-    // setting takes precedence over the filters list.
-    removeFilters(filters?: List<Filter.Filter>, all?: boolean) {
-        console.error('TODO: removeFilters');
-        // return actions.removeFilters(this, filters, all);
-    }
-
-    selectAll() {
-        console.error('TODO: selectAll');
-        // return actions.gridSelectAll(this);
-    }
-
-    selectView(view: ViewInfo) {
-        console.error('TODO: selectView');
-        // return actions.selectView(this, view);
-    }
-
-    showError(error: any) {
-        console.error('TODO: showError');
-        // return actions.handleQueryErrorAction(this.getId(), error);
     }
 
     showImportDataButton(): Map<any, any> {
@@ -598,8 +539,7 @@ export interface IGridSelectionResponse {
 }
 
 
-/* Utility function */
-// TODO should these be moved to a more central / shared location
+/* Utility function */ // TODO should these be moved to a more central / shared location
 
 // Returns a case-insensitive intersection of two List<string>.
 function intersect(a: List<string>, b: List<string>): List<string> {

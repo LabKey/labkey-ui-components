@@ -1,7 +1,7 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.0.1",
-  "description": "Query Grid for ...",
+  "version": "0.0.2",
+  "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
   "types": "dist/.rpt2_cache/placeholder/QueryGrid.d.ts",
@@ -38,7 +38,7 @@
     "immutable": "^3.8.2",
     "react": "^16.0",
     "react-dom": "^16.0",
-    "reactn": "0.1.9"
+    "reactn": "0.2.0"
   },
   "jest": {
     "moduleFileExtensions": [

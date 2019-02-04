@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [
+    "src/typings/main.d.ts",
     "src/QueryGrid.tsx"
   ]
 }

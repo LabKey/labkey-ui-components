@@ -20,7 +20,7 @@
     "nps-utils": "1.7.0",
     "react": "16.4.2",
     "react-dom": "16.4.2",
-    "reactn": "0.1.9",
+    "reactn": "0.2.0",
     "rollup": "0.66.0",
     "rollup-plugin-babel": "3.0.7",
     "rollup-plugin-commonjs": "9.1.8",

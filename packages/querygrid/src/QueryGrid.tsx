@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
+import React from 'reactn';
 import { List, Map } from 'immutable'
 import { Location } from 'history'
 import { Grid, GridColumn, GridProps } from '@glass/grid'
@@ -26,21 +26,21 @@ import { SchemaQuery, SchemaDetails, QueryInfo, QueryColumn, QueryInfoStatus, Qu
 import { GRID_SELECTION_INDEX, QUERY_GRID_PREFIX } from './constants'
 import { QueryGridModel, getStateModel, getStateModelId } from './model'
 import { headerCell, headerSelectionCell } from './renderers'
-import * as actions from "./actions";
+import { init, toggleGridRowSelection, toggleGridSelected, sort } from "./actions";
 
 // Export for type declarations (.d.ts)
 export {
-    SchemaQuery,
     SchemaDetails,
+    SchemaQuery,
+    QueryGridModel,
+    QueryInfoStatus,
     QueryInfo,
     QueryColumn,
-    QueryInfoStatus,
     QueryLookup,
-    QuerySort,
-    QueryGridModel
+    QuerySort
 }
 
-type QueryGridProps = {
+interface QueryGridProps {
     location?: Location
     model?: QueryGridModel
     schemaQuery?: SchemaQuery
@@ -157,7 +157,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const modelMetadata = metadata || Map();
 
         if (!model) {
-            actions.init(this, getStateModel(modelId, schemaQuery), modelMetadata, location);
+            init(this, getStateModel(modelId, schemaQuery), modelMetadata, location);
         }
     }
 
@@ -166,7 +166,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
         if (model) {
             const selected = evt.currentTarget.checked === true && model.selectedState !== CHECKBOX_OPTIONS.SOME;
-            actions.toggleGridSelected(this, model, selected);
+            toggleGridSelected(this, model, selected);
         }
     }
 
@@ -174,7 +174,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const model = this.getModel(this.props);
 
         if (model) {
-            actions.toggleGridRowSelection(this, model, row, evt.currentTarget.checked === true);
+            toggleGridRowSelection(this, model, row, evt.currentTarget.checked === true);
         }
     }
 
@@ -183,7 +183,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const model = this.getModel(this.props);
 
         if (model) {
-            actions.sort(this, model, gridColumn.index, dir, location, metadata);
+            sort(this, model, gridColumn.index, dir, location, metadata);
         }
     }
 

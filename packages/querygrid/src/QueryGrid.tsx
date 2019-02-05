@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'reactn'
 import { List, Map } from 'immutable'
 import { Location } from 'history'
 import { Grid, GridColumn, GridProps } from '@glass/grid'
@@ -22,29 +22,18 @@ import { LoadingSpinner } from './components/LoadingSpinner'
 import { Alert } from './components/Alert'
 import { CHECKBOX_OPTIONS } from './query/constants'
 import { generateId } from './query/utils'
-import { SchemaQuery, SchemaDetails, QueryInfo, QueryColumn, QueryInfoStatus, QueryLookup, QuerySort } from './query/model'
+import { SchemaQuery } from './query/model'
 import { GRID_SELECTION_INDEX, QUERY_GRID_PREFIX } from './constants'
-import { QueryGridModel, getStateModel, getStateModelId } from './model'
+import { init, toggleGridRowSelection, toggleGridSelected, sort } from './actions'
+import { QueryGridModel, getStateQueryGridModel, getStateModelId } from './model'
 import { headerCell, headerSelectionCell } from './renderers'
-import { init, toggleGridRowSelection, toggleGridSelected, sort } from "./actions";
-
-// Export for type declarations (.d.ts)
-export {
-    SchemaDetails,
-    SchemaQuery,
-    QueryGridModel,
-    QueryInfoStatus,
-    QueryInfo,
-    QueryColumn,
-    QueryLookup,
-    QuerySort
-}
+import { initQueryGridState, getQueryGridModel } from './reducers'
 
 interface QueryGridProps {
-    location?: Location
     model?: QueryGridModel
     schemaQuery?: SchemaQuery
-    metadata?: Map<string, any>
+    location?: Location
+    metadata?: Map<string, any> // TODO move this to global state
     modelId?: string
 }
 
@@ -85,12 +74,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             modelId: _modelId
         };
 
-        // define the global state for this package
-        this.setGlobal({
-            QueryGrid: {
-                models: Map<string, QueryGridModel>()
-            }
-        });
+        initQueryGridState(this);
     }
 
     componentDidMount() {
@@ -99,6 +83,21 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
     componentWillReceiveProps(nextProps: QueryGridProps) {
         this.initModel(nextProps);
+    }
+
+    initModel(props: QueryGridProps) {
+        const { model, schemaQuery, metadata, location } = props;
+        const { modelId } = this.state;
+
+        // TODO this will be removed when we put the metadata in global state
+        const modelMetadata = metadata || Map();
+
+        if (model && !model.isLoaded) {
+            init(this, model, modelMetadata, location);
+        }
+        else if (!this.getModel(props)) {
+            init(this, getStateQueryGridModel(this, modelId, schemaQuery), modelMetadata, location);
+        }
     }
 
     headerCell(column: GridColumn, i: number) {
@@ -139,26 +138,13 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
     getModel(props: QueryGridProps): QueryGridModel {
         const { model, schemaQuery } = props;
+        const { modelId } = this.state;
 
-        // if a model is explicitly defined, always use it
-        if (model) {
-            return model;
-        }
+        // if a model is explicitly defined, use the id from it
+        const stateModelId = model ? model.getId() : getStateModelId(modelId, schemaQuery);
 
         // get the query model out of the global state, if not already set it will be added during initModel
-        const stateModelId = getStateModelId(this.state.modelId, schemaQuery);
-        return this.global.QueryGrid.models.get(stateModelId);
-    }
-
-    initModel(props: QueryGridProps) {
-        const { schemaQuery, metadata, location } = props;
-        const { modelId } = this.state;
-        const model = this.getModel(props);
-        const modelMetadata = metadata || Map();
-
-        if (!model) {
-            init(this, getStateModel(modelId, schemaQuery), modelMetadata, location);
-        }
+        return getQueryGridModel(this, stateModelId, false);
     }
 
     selectAll(evt) {

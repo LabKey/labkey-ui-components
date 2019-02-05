@@ -6,7 +6,9 @@ import { List, Record, Map, OrderedSet, Set } from 'immutable'
 import { Location } from 'history'
 import { Filter } from '@labkey/api'
 
+import * as actions from './actions'
 import { GRID_SELECTION_INDEX } from './constants'
+import { getQueryGridModel } from './reducers'
 import { resolveKey, resolveSchemaQuery } from './query/utils'
 import { CHECKBOX_OPTIONS, EXPORT_TYPES } from './query/constants'
 import { QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from './query/model'
@@ -153,6 +155,14 @@ export class QueryGridModel extends Record({
                 throw new Error('Required and omitted columns cannot intersect. Model id: "' + this.id + '". See console for colliding columns.');
             }
         }
+    }
+
+    init(state: any, location?: Location) {
+        actions.init(state, this, Map(), location);
+    }
+
+    load(state: any, location?: Location) {
+        actions.load(state, this, Map(), location);
     }
 
     doExport(type: EXPORT_TYPES) {
@@ -411,6 +421,7 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
 
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
+ * @param state Component which has the global state object access
  * @param gridId
  * @param schemaQuery
  * @param [initProps] can be either a props object or a function that returns a props object. The advantage of using
@@ -419,13 +430,20 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
  * @param [keyValue]
  * @returns {QueryGridModel}
  */
-export function getStateModel(
+export function getStateQueryGridModel(
+    state: any,
     gridId: string,
     schemaQuery: SchemaQuery,
     initProps?: IStateModelProps | Function, // () => IStateModelProps
     keyValue?: any
 ): QueryGridModel {
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);
+
+    // if the model already exists in the global state, return it
+    const model = getQueryGridModel(state, modelId, false);
+    if (model) {
+        return model;
+    }
 
     let modelProps: Partial<QueryGridModelProps> = {
         allowSelection: true,

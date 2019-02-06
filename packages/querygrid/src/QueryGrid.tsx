@@ -84,7 +84,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const { model, schemaQuery, location } = props;
         const { modelId } = this.state;
 
-        if (model && !model.isLoaded) {
+        if (model && !model.isLoaded && !model.isLoading) {
             init(model, location);
         }
         else if (!this.getModel(props)) {
@@ -135,8 +135,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         // if a model is explicitly defined, use the id from it
         const stateModelId = model ? model.getId() : getStateModelId(modelId, schemaQuery);
 
-        // get the query model out of the global state, if not already set it will be added during initModel
-        // return getQueryGridModel(stateModelId, false);
+        // need to access this.global directly to connect this component to the re-render cycle
         return this.global.QueryGrid.models.get(stateModelId);
     }
 

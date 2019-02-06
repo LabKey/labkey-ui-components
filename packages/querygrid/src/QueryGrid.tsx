@@ -27,14 +27,11 @@ import { GRID_SELECTION_INDEX, QUERY_GRID_PREFIX } from './constants'
 import { init, toggleGridRowSelection, toggleGridSelected, sort } from './actions'
 import { QueryGridModel, getStateQueryGridModel, getStateModelId } from './model'
 import { headerCell, headerSelectionCell } from './renderers'
-import { initQueryGridState, getQueryGridModel } from './reducers'
 
 interface QueryGridProps {
     model?: QueryGridModel
     schemaQuery?: SchemaQuery
     location?: Location
-    metadata?: Map<string, any> // TODO move this to global state
-    modelId?: string
 }
 
 interface QueryGridState {
@@ -55,7 +52,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         this.selectAll = this.selectAll.bind(this);
         this.sort = this.sort.bind(this);
 
-        const { model, modelId, schemaQuery } = this.props;
+        const { model, schemaQuery } = this.props;
         let _modelId;
 
         if (model) {
@@ -66,15 +63,13 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
                 throw new Error('QueryGrid: If a model is not provided, a SchemaQuery is required.');
             }
 
-            _modelId = modelId || generateId(QUERY_GRID_PREFIX);
+            _modelId = generateId(QUERY_GRID_PREFIX);
         }
 
         // set local state for this component
         this.state = {
             modelId: _modelId
         };
-
-        initQueryGridState(this);
     }
 
     componentDidMount() {
@@ -86,17 +81,14 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     }
 
     initModel(props: QueryGridProps) {
-        const { model, schemaQuery, metadata, location } = props;
+        const { model, schemaQuery, location } = props;
         const { modelId } = this.state;
 
-        // TODO this will be removed when we put the metadata in global state
-        const modelMetadata = metadata || Map();
-
         if (model && !model.isLoaded) {
-            init(this, model, modelMetadata, location);
+            init(model, location);
         }
         else if (!this.getModel(props)) {
-            init(this, getStateQueryGridModel(this, modelId, schemaQuery), modelMetadata, location);
+            init(getStateQueryGridModel(modelId, schemaQuery), location);
         }
     }
 
@@ -144,7 +136,8 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const stateModelId = model ? model.getId() : getStateModelId(modelId, schemaQuery);
 
         // get the query model out of the global state, if not already set it will be added during initModel
-        return getQueryGridModel(this, stateModelId, false);
+        // return getQueryGridModel(stateModelId, false);
+        return this.global.QueryGrid.models.get(stateModelId);
     }
 
     selectAll(evt) {
@@ -152,7 +145,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
         if (model) {
             const selected = evt.currentTarget.checked === true && model.selectedState !== CHECKBOX_OPTIONS.SOME;
-            toggleGridSelected(this, model, selected);
+            toggleGridSelected(model, selected);
         }
     }
 
@@ -160,16 +153,16 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const model = this.getModel(this.props);
 
         if (model) {
-            toggleGridRowSelection(this, model, row, evt.currentTarget.checked === true);
+            toggleGridRowSelection(model, row, evt.currentTarget.checked === true);
         }
     }
 
     sort(gridColumn, dir) {
-        const { metadata, location } = this.props;
+        const { location } = this.props;
         const model = this.getModel(this.props);
 
         if (model) {
-            sort(this, model, gridColumn.index, dir, location, metadata);
+            sort(model, gridColumn.index, dir, location);
         }
     }
 

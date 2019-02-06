@@ -7635,7 +7635,7 @@ reactcss@^1.2.0:
   dependencies:
     lodash "^4.0.1"
 
-reactn@0.2.0, reactn@^0.2.0:
+reactn@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/reactn/-/reactn-0.2.0.tgz#9885bd3fc6337b0ce59dc68736cbc11aaaa49043"
   integrity sha512-Lr9CRjt860amtUAiXg3wD+rrss5om3dTQA0OrWhdoAFWW2t18K/YnTCC38Ej7ke38LLZF3GpVZW5tS/gk5GvqA==

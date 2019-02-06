@@ -5,7 +5,7 @@
 
 import { SchemaQuery } from './query/model'
 import { QueryGridModel, getStateQueryGridModel } from './model'
-import { initQueryGridState } from './reducers'
+import { initQueryGridState, setQueryMetadata } from './reducers'
 import { QueryGrid } from './QueryGrid'
 import { QueryGridPanel } from './QueryGridPanel'
 
@@ -13,6 +13,7 @@ export {
     // functions
     initQueryGridState,
     getStateQueryGridModel,
+    setQueryMetadata,
 
     // models
     SchemaQuery,

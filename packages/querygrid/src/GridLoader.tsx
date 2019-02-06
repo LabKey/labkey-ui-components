@@ -22,7 +22,7 @@ import { getSelected } from './actions'
 
 class GridLoader implements IGridLoader {
 
-    fetch(model: QueryGridModel, metadata: any, location: Location): Promise<IGridResponse> {
+    fetch(model: QueryGridModel, location: Location): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             return selectRows({
                 schemaName: model.schema,
@@ -33,7 +33,7 @@ class GridLoader implements IGridLoader {
                 columns: model.getRequestColumnsString(),
                 offset: model.getOffset(),
                 maxRows: model.getMaxRows()
-            }, metadata).then(response => {
+            }).then(response => {
                 const { models, orderedModels, totalRows } = response;
 
                 resolve({

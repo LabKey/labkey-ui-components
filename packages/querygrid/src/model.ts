@@ -157,12 +157,12 @@ export class QueryGridModel extends Record({
         }
     }
 
-    init(state: any, location?: Location) {
-        actions.init(state, this, Map(), location);
+    init(location?: Location) {
+        actions.init(this, location);
     }
 
-    load(state: any, location?: Location) {
-        actions.load(state, this, Map(), location);
+    load(location?: Location) {
+        actions.load(this, location);
     }
 
     doExport(type: EXPORT_TYPES) {
@@ -421,7 +421,6 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
 
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
- * @param state Component which has the global state object access
  * @param gridId
  * @param schemaQuery
  * @param [initProps] can be either a props object or a function that returns a props object. The advantage of using
@@ -431,7 +430,6 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
  * @returns {QueryGridModel}
  */
 export function getStateQueryGridModel(
-    state: any,
     gridId: string,
     schemaQuery: SchemaQuery,
     initProps?: IStateModelProps | Function, // () => IStateModelProps
@@ -440,7 +438,7 @@ export function getStateQueryGridModel(
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);
 
     // if the model already exists in the global state, return it
-    const model = getQueryGridModel(state, modelId, false);
+    const model = getQueryGridModel(modelId, false);
     if (model) {
         return model;
     }
@@ -542,7 +540,7 @@ export function getStateQueryGridModel(
 }
 
 export interface IGridLoader {
-    fetch: (model: QueryGridModel, metadata: any, location: Location) => Promise<IGridResponse>
+    fetch: (model: QueryGridModel, location: Location) => Promise<IGridResponse>
     fetchSelection?: (model: QueryGridModel) => Promise<IGridSelectionResponse>
 }
 

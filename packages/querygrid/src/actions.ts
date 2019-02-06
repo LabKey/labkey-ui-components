@@ -15,22 +15,22 @@ import { QueryGridModel } from './model'
 import { bindColumnRenderers } from './renderers'
 import { getQueryGridModelsForSchema, getQueryGridModelsForSchemaQuery, updateQueryGridModel } from './reducers'
 
-export function init(state: any, model: QueryGridModel, metadata: Map<string, any>, location?: Location) {
-    let newModel = updateQueryGridModel(state, model, {}, false);
+export function init(model: QueryGridModel, location?: Location) {
+    let newModel = updateQueryGridModel(model, {}, false);
 
     if (!newModel.isLoaded) {
         if (newModel.bindURL) {
-            newModel = updateQueryGridModel(state, newModel, {
+            newModel = updateQueryGridModel(newModel, {
                 isLoading: true,
                 ...bindURLProps(newModel, location)
             });
         }
         else {
-            newModel = updateQueryGridModel(state, newModel, {isLoading: true});
+            newModel = updateQueryGridModel(newModel, {isLoading: true});
         }
 
-        fetchQueryInfo(newModel, metadata).then(queryInfo => {
-            newModel = updateQueryGridModel(state, newModel, {
+        fetchQueryInfo(newModel).then(queryInfo => {
+            newModel = updateQueryGridModel(newModel, {
                 queryInfo: bindQueryInfo(queryInfo)
             });
 
@@ -39,16 +39,16 @@ export function init(state: any, model: QueryGridModel, metadata: Map<string, an
             //     initEditorModel(newModel);
             // }
 
-            load(state, newModel, metadata, location);
+            load(newModel, location);
         });
     }
     else if (hasURLChange(newModel, location) && newModel.bindURL) {
-        newModel = updateQueryGridModel(state, newModel, bindURLProps(newModel, location));
-        load(state, newModel, metadata, location);
+        newModel = updateQueryGridModel(newModel, bindURLProps(newModel, location));
+        load(newModel, location);
     }
 }
 
-export function sort(state: any, model: QueryGridModel, columnIndex: string, dir: string, location: Location, metadata?: any) {
+export function sort(model: QueryGridModel, columnIndex: string, dir: string, location: Location) {
     // TODO how to handle this routing case from within the shared component?
     // if (model.bindURL) {
     //     const urlDir = dir == '+' ? '' : '-';
@@ -57,16 +57,16 @@ export function sort(state: any, model: QueryGridModel, columnIndex: string, dir
     //     }));
     // }
     // else {
-        let newModel = updateQueryGridModel(state, model, {
+        let newModel = updateQueryGridModel(model, {
             sorts: dir + columnIndex // TODO: Support multiple sorts
         });
 
-        load(state, newModel, metadata, location)
+        load(newModel, location)
     // }
 }
 
 // Handle single row select/deselect from the QueryGrid checkbox column
-export function toggleGridRowSelection(state: any, model: QueryGridModel, row: Map<string, any>, checked: boolean) {
+export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, any>, checked: boolean) {
     let pkValue;
     let pkCols: List<QueryColumn> = model.queryInfo.getPkCols();
 
@@ -103,7 +103,7 @@ export function toggleGridRowSelection(state: any, model: QueryGridModel, row: M
 
             const selectedIds = checked ? selected.push(stringKey) : selected.delete(selected.findIndex(item => item === stringKey));
 
-            updateQueryGridModel(state, model, {
+            updateQueryGridModel(model, {
                 selectedState: selectedState,
                 selectedQuantity: response.count,
                 selectedIds: selectedIds
@@ -115,34 +115,34 @@ export function toggleGridRowSelection(state: any, model: QueryGridModel, row: M
     }
 }
 
-export function toggleGridSelected(state: any, model: QueryGridModel, checked: boolean) {
+export function toggleGridSelected(model: QueryGridModel, checked: boolean) {
     if (checked) {
-        setGridSelected(state, model, checked);
+        setGridSelected(model, checked);
     }
     else {
-        setGridUnselected(state, model);
+        setGridUnselected(model);
     }
 }
 
-export function clearError(state: any, model: QueryGridModel) {
+export function clearError(model: QueryGridModel) {
     if (model.isError) {
-        updateQueryGridModel(state, model, {
+        updateQueryGridModel(model, {
             isError: false,
             message: undefined
         });
     }
 }
 
-export function schemaInvalidate(state: any, schemaName: string) {
-    getQueryGridModelsForSchema(state, schemaName).map((model) => invalidate(state, model));
+export function schemaInvalidate(schemaName: string) {
+    getQueryGridModelsForSchema(schemaName).map((model) => invalidate(model));
 }
 
-export function queryInvalidate(state: any, schemaQuery: SchemaQuery) {
-    getQueryGridModelsForSchemaQuery(state, schemaQuery).map((model) => invalidate(state, model));
+export function queryInvalidate(schemaQuery: SchemaQuery) {
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => invalidate(model));
 }
 
-export function invalidate(state: any, model: QueryGridModel): QueryGridModel {
-    return updateQueryGridModel(state, model, {
+export function invalidate(model: QueryGridModel): QueryGridModel {
+    return updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
         isError: false,
@@ -152,7 +152,7 @@ export function invalidate(state: any, model: QueryGridModel): QueryGridModel {
     });
 }
 
-export function loadPage(state: any, model: QueryGridModel, pageNumber: number, location: Location, metadata?: any) {
+export function loadPage(model: QueryGridModel, pageNumber: number, location: Location) {
     if (pageNumber !== model.pageNumber) {
         // TODO how to handle this routing case from within the shared component?
         // if (model.bindURL) {
@@ -161,26 +161,26 @@ export function loadPage(state: any, model: QueryGridModel, pageNumber: number, 
         //     })));
         // }
         // else {
-            let newModel = updateQueryGridModel(state, model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
-            load(state, newModel, metadata, location);
+            let newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
+            load(newModel, location);
         // }
     }
 }
 
-export function refresh(state: any, model: QueryGridModel, location: Location, metadata?: any) {
-    let newModel = invalidate(state, model);
+export function refresh(model: QueryGridModel, location: Location) {
+    let newModel = invalidate(model);
 
     if (model.allowSelection) {
-        setGridUnselected(state, newModel);
+        setGridUnselected(newModel);
     }
 
-    load(state, newModel, metadata, location);
+    load(newModel, location);
 }
 
 // Takes a List<Filter.Filter> and remove each filter from the grid model
 // Alternately, the 'all' flag can be set to true to remove all filters. This
 // setting takes precedence over the filters list.
-export function removeFilters(state: any, model: QueryGridModel, location: Location, metadata?: any, filters?: List<any>, all: boolean = false) {
+export function removeFilters(model: QueryGridModel, location: Location, filters?: List<any>, all: boolean = false) {
     // TODO how to handle this routing case from within the shared component?
     // if (model.bindURL) {
     //     dispatch(replaceParameters(getLocation(getState), getFilterParameters(filters, true)));
@@ -189,7 +189,7 @@ export function removeFilters(state: any, model: QueryGridModel, location: Locat
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
-                newModel = updateQueryGridModel(state, newModel, {filterArray: List<any>()});
+                newModel = updateQueryGridModel(newModel, {filterArray: List<any>()});
             }
             else if (filters && filters.count()) {
                 let urls = filters.reduce((urls, filter: any) => {
@@ -201,38 +201,38 @@ export function removeFilters(state: any, model: QueryGridModel, location: Locat
                 });
 
                 if (filtered.count() < model.filterArray.count()) {
-                    newModel = updateQueryGridModel(state, newModel, {filterArray: filtered});
+                    newModel = updateQueryGridModel(newModel, {filterArray: filtered});
                 }
             }
         }
 
-        load(state, newModel, metadata, location);
+        load(newModel, location);
     // }
 }
 
-export function addFilters(state: any, model: QueryGridModel, filters: List<Filter.Filter>, location: Location, metadata?: any) {
+export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>, location: Location) {
     // TODO how to handle this routing case from within the shared component?
     // if (model.bindURL) {
     //     dispatch(replaceParameters(getLocation(getState), getFilterParameters(filters)));
     // }
     // else {
         if (filters.count()) {
-            let newModel = updateQueryGridModel(state, model, {filterArray: model.filterArray.merge(filters)});
-            load(state, newModel, metadata, location);
+            let newModel = updateQueryGridModel(model, {filterArray: model.filterArray.merge(filters)});
+            load(newModel, location);
         }
     // }
 }
 
-export function load(state: any, model: QueryGridModel, metadata: any, location: Location) {
+export function load(model: QueryGridModel, location: Location) {
     // validate view exists prior to initiating request
     if (model.view && model.queryInfo && !model.queryInfo.getView(model.view)) {
-        setError(state, model, `Unable to find view "${model.view}".`);
+        setError(model, `Unable to find view "${model.view}".`);
         return;
     }
 
-    let newModel = updateQueryGridModel(state, model, {isLoading: true});
+    let newModel = updateQueryGridModel(model, {isLoading: true});
 
-    newModel.loader.fetch(newModel, metadata, location).then(response => {
+    newModel.loader.fetch(newModel, location).then(response => {
         // TODO not yet ready to handle the editable case for the shared component
         // load data into editor
         // if (newModel.editable) {
@@ -244,7 +244,7 @@ export function load(state: any, model: QueryGridModel, metadata: any, location:
         // }
 
         const { data, dataIds, totalRows } = response;
-        newModel = updateQueryGridModel(state, newModel, {
+        newModel = updateQueryGridModel(newModel, {
             isError: false,
             isLoading: false,
             isLoaded: true,
@@ -256,10 +256,10 @@ export function load(state: any, model: QueryGridModel, metadata: any, location:
         });
 
         if (newModel.allowSelection) {
-            fetchSelectedIfNeeded(state, newModel);
+            fetchSelectedIfNeeded(newModel);
         }
     }, payload => {
-        handleQueryErrorAction(state, payload.model, payload.error);
+        handleQueryErrorAction(payload.model, payload.error);
     });
 }
 
@@ -343,7 +343,7 @@ function hasURLChange(model: QueryGridModel, location: Location): boolean {
     return mismatchIndex >= 0;
 }
 
-function fetchQueryInfo(model: QueryGridModel, metadata: Map<string, any>): Promise<QueryInfo> {
+function fetchQueryInfo(model: QueryGridModel): Promise<QueryInfo> {
     if (model.queryInfo) {
         return Promise.resolve(model.queryInfo);
     }
@@ -351,7 +351,7 @@ function fetchQueryInfo(model: QueryGridModel, metadata: Map<string, any>): Prom
     return getQueryDetails({
         schemaName: model.schema,
         queryName: model.query
-    }, metadata)
+    })
 }
 
 function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
@@ -384,7 +384,7 @@ function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows
     return CHECKBOX_OPTIONS.NONE;
 }
 
-function fetchSelectedIfNeeded(state: any, model: QueryGridModel) {
+function fetchSelectedIfNeeded(model: QueryGridModel) {
     const { allowSelection, isLoaded, loader, selectedLoaded } = model;
 
     if (allowSelection && isLoaded && !selectedLoaded && loader.fetchSelection) {
@@ -395,7 +395,7 @@ function fetchSelectedIfNeeded(state: any, model: QueryGridModel) {
                 const { dataIds, maxRows, totalRows } = model;
                 const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
 
-                updateQueryGridModel(state, model, {
+                updateQueryGridModel(model, {
                     selectedLoaded: true,
                     selectedQuantity: selectedIds.size,
                     selectedIds,
@@ -403,12 +403,12 @@ function fetchSelectedIfNeeded(state: any, model: QueryGridModel) {
                 });
             }
             else {
-                updateQueryGridModel(state, model, {
+                updateQueryGridModel(model, {
                     selectedLoaded: true
                 });
             }
         }, payload => {
-            handleQueryErrorAction(state, payload.model, payload.error);
+            handleQueryErrorAction(payload.model, payload.error);
         });
     }
 }
@@ -475,7 +475,7 @@ function setSelected(key: string, checked: boolean, ids: Array<string> | string)
     })
 }
 
-function setGridSelected(state: any, model: QueryGridModel, checked: boolean) {
+function setGridSelected(model: QueryGridModel, checked: boolean) {
     const { dataIds } = model;
     const modelId = model.getId();
 
@@ -488,7 +488,7 @@ function setGridSelected(state: any, model: QueryGridModel, checked: boolean) {
         const dataIds = model.dataIds;
         const currentSelected = model.selectedIds;
 
-        updateQueryGridModel(state, model, {
+        updateQueryGridModel(model, {
             selectedIds: checked ? currentSelected.merge(dataIds) : List<string>(),
             selectedQuantity: response.count,
             selectedState: checked ? CHECKBOX_OPTIONS.ALL : CHECKBOX_OPTIONS.NONE
@@ -496,16 +496,16 @@ function setGridSelected(state: any, model: QueryGridModel, checked: boolean) {
     });
 }
 
-function setGridUnselected(state: any, model: QueryGridModel) {
+function setGridUnselected(model: QueryGridModel) {
     clearSelected(model.getId()).then(() => {
-        updateQueryGridModel(state, model, {
+        updateQueryGridModel(model, {
             selectedIds: List<string>(),
             selectedQuantity: 0,
             selectedState: CHECKBOX_OPTIONS.NONE
         });
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong'};
-        handleQueryErrorAction(state, model, error);
+        handleQueryErrorAction(model, error);
     })
 }
 
@@ -525,8 +525,8 @@ function getFilterParameters(filters: List<any>, remove: boolean = false): Map<s
     return Map<string, string>(params);
 }
 
-function setError(state: any, model: QueryGridModel, message: string) {
-    updateQueryGridModel(state, model, {
+function setError(model: QueryGridModel, message: string) {
+    updateQueryGridModel(model, {
         isLoading: false,
         isLoaded: true,
         isError: true,
@@ -534,6 +534,6 @@ function setError(state: any, model: QueryGridModel, message: string) {
     })
 }
 
-function handleQueryErrorAction(state: any, model: QueryGridModel, error: any) {
-    setError(state, model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error');
+function handleQueryErrorAction(model: QueryGridModel, error: any) {
+    setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error');
 }

@@ -9,6 +9,7 @@ import { Query } from '@labkey/api'
 import { URLResolver } from '../util/URLResolver'
 import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo } from './model'
 import { resolveKeyFromJson, resolveSchemaQuery } from './utils'
+import { getQueryMetadata } from '../reducers'
 
 let queryDetailsCache: {[key: string]: Promise<QueryInfo>} = {};
 
@@ -21,7 +22,7 @@ interface GetQueryDetailsOptions {
     queryName: string
 }
 
-export function getQueryDetails(options: GetQueryDetailsOptions, metadata: Map<string, any>): Promise<QueryInfo> {
+export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
     const schemaQuery = SchemaQuery.create(options.schemaName, options.queryName);
     const key = resolveSchemaQuery(schemaQuery);
 
@@ -45,7 +46,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions, metadata: Map<s
                         });
                     }
                     else {
-                        resolve(applyQueryMetadata(queryDetails, metadata));
+                        resolve(applyQueryMetadata(queryDetails));
                     }
                 },
                 failure: (error, request) => {
@@ -64,8 +65,9 @@ export function getQueryDetails(options: GetQueryDetailsOptions, metadata: Map<s
     return queryDetailsCache[key];
 }
 
-function applyQueryMetadata(rawQueryInfo: any, metadata: Map<string, any>): QueryInfo {
+function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
     let queryInfo;
+    const metadata = getQueryMetadata();
 
     if (rawQueryInfo && rawQueryInfo.schemaName && rawQueryInfo.name) {
 
@@ -73,7 +75,7 @@ function applyQueryMetadata(rawQueryInfo: any, metadata: Map<string, any>): Quer
 
         let columns = OrderedMap<string, QueryColumn>().asMutable();
         rawQueryInfo.columns.forEach((rawColumn) => {
-            columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn, metadata))
+            columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn))
         });
         columns = columns.asImmutable();
 
@@ -119,7 +121,7 @@ function applyQueryMetadata(rawQueryInfo: any, metadata: Map<string, any>): Quer
                     }) as ViewInfo;
                 }
 
-                columns = applyViewColumns(columns, schemaQuery, rawViewInfo, metadata);
+                columns = applyViewColumns(columns, schemaQuery, rawViewInfo);
 
                 views.set(viewInfo.name.toLowerCase(), viewInfo);
             });
@@ -151,8 +153,9 @@ function applyQueryMetadata(rawQueryInfo: any, metadata: Map<string, any>): Quer
     return QueryInfo.create(queryInfo);
 }
 
-function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any, metadata: Map<string, any>): QueryColumn {
+function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any): QueryColumn {
     let columnMetadata;
+    const metadata = getQueryMetadata();
 
     // lookup to see if metadata needs to be applied
     if (rawColumn && rawColumn.fieldKey) {
@@ -198,12 +201,12 @@ function applyColumnMetadata(schemaQuery: SchemaQuery, rawColumn: any, metadata:
 
 // As of r57235 some column info's are only found on the views "fields" property that were previously
 // available in the query info's "columns" property.
-function applyViewColumns(columns: OrderedMap<string, QueryColumn>, schemaQuery: SchemaQuery, rawViewInfo: any, metadata: Map<string, any>): OrderedMap<string, QueryColumn> {
+function applyViewColumns(columns: OrderedMap<string, QueryColumn>, schemaQuery: SchemaQuery, rawViewInfo: any): OrderedMap<string, QueryColumn> {
     if (rawViewInfo && rawViewInfo.fields) {
         rawViewInfo.fields.forEach((rawColumn) => {
             const fk = rawColumn.fieldKey.toLowerCase();
             if (!columns.has(fk)) {
-                columns = columns.set(fk, applyColumnMetadata(schemaQuery, rawColumn, metadata));
+                columns = columns.set(fk, applyColumnMetadata(schemaQuery, rawColumn));
             }
         });
     }
@@ -287,7 +290,7 @@ export interface ISelectRowsResult {
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-export function selectRows(userConfig, metadata, caller?): Promise<ISelectRowsResult> {
+export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
     return new Promise((resolve, reject) => {
         let schemaQuery, key;
         if (userConfig.queryName) {
@@ -328,7 +331,7 @@ export function selectRows(userConfig, metadata, caller?): Promise<ISelectRowsRe
                         result = r;
                         hasResults = true;
 
-                        getQueryDetails(schemaQuery, metadata).then((d) => {
+                        getQueryDetails(schemaQuery).then((d) => {
                             hasDetails = true;
                             details = d;
                             doResolve();
@@ -368,7 +371,7 @@ export function selectRows(userConfig, metadata, caller?): Promise<ISelectRowsRe
                 }
             }));
 
-            getQueryDetails(userConfig, metadata).then((d) => {
+            getQueryDetails(userConfig).then((d) => {
                 hasDetails = true;
                 details = d;
                 doResolve();

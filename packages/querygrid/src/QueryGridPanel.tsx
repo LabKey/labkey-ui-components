@@ -4,11 +4,10 @@
  */
 import React from 'reactn'
 import { Location } from 'history'
-import { List, Map } from 'immutable'
+import { List } from 'immutable'
 
 import { Alert } from './components/Alert'
 import { QueryGridModel } from './model'
-import { initQueryGridState } from './reducers'
 import { QueryGrid } from './QueryGrid'
 // import { QueryGridBar, QueryGridBarButtons } from './GridBar'
 
@@ -38,8 +37,6 @@ export class QueryGridPanel extends React.Component<Props, State> {
         this.state = {
             activeTab: 0
         };
-
-        initQueryGridState(this);
     }
 
     getModel(): QueryGridModel {

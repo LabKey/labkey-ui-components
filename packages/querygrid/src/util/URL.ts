@@ -3,98 +3,110 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable'
+import createHistory from 'history/createBrowserHistory'
 import { Filter } from '@labkey/api'
 
-// export type Location = {
-//     pathname?: string
-//     search?: string
-//     query?: any // {[key:string]: string}
-//     state?: any // {[key:string]: string}
-// }
-//
-// function build(pathname: string, params: Map<string, string | number>): string {
-//     var q = '', sep = '';
-//
-//     params.forEach((v, k) => {
-//         q += sep + k + '=' + v;
-//         sep = '&';
-//     });
-//
-//     return pathname + (q.length > 0 ? '?' + q : '');
-// }
-//
-// function setParameter(location: Location, key: string, value: string | number, asReplace: boolean = false) {
-//     const { query } = location;
-//
-//     let newParams;
-//     let queryMap = Map<string, string | number>(query);
-//
-//     // this allows for removing blank parameters
-//     if (value === undefined || value === '') {
-//         newParams = queryMap.delete(key);
-//     }
-//     else {
-//         newParams = queryMap.set(key, value);
-//     }
-//
-//     if (asReplace) {
-//         replace(build(location.pathname, newParams));
-//     }
-//     else {
-//         push(build(location.pathname, newParams));
-//     }
-// }
-//
-// function setParameters(location: Location, params: Map<string, string | number>, asReplace: boolean = false) {
-//     const { query } = location;
-//
-//     let newParams = Map<string, string | number>(query).asMutable();
-//
-//     params.forEach((value, key) => {
-//         if (value === undefined || value === '') {
-//             newParams.delete(key);
-//         }
-//         else {
-//             newParams.set(key, value);
-//         }
-//     });
-//
-//     if (asReplace) {
-//         replace(build(location.pathname, newParams.asImmutable()));
-//     }
-//     else {
-//         push(build(location.pathname, newParams.asImmutable()))
-//     }
-// }
-//
-// export function changeLocation(path: string | AppURL) {
-//     if (typeof path === 'string') {
-//         if (path.indexOf('#/') === 0) {
-//             path = path.replace('#/', '');
-//         }
-//     }
-//     push(path.toString());
-// }
-//
-// export function pushParameter(location: Location, key: string, value: string | number) {
-//     return setParameter(location, key, value);
-// }
-//
-// export function pushParameters(location: Location, params: Map<string, string | number>) {
-//     return setParameters(location, params);
-// }
-//
-// export function replaceLocation(path: string | AppURL) {
-//     replace(path.toString())
-// }
-//
-// export function replaceParameter(location: Location, key: string, value: string | number) {
-//     return setParameter(location, key, value, true);
-// }
-//
-// export function replaceParameters(location: Location, params: Map<string, string | number>) {
-//     return setParameters(location, params, true);
-// }
+export type Location = {
+    pathname?: string
+    search?: string
+    query?: any // {[key:string]: string}
+    state?: any // {[key:string]: string}
+}
+
+export function getLocation() : Location
+{
+    return window.location;
+}
+
+function build(pathname: string, params: Map<string, string | number>): string {
+    var q = '', sep = '';
+
+    params.forEach((v, k) => {
+        q += sep + k + '=' + v;
+        sep = '&';
+    });
+
+    return pathname + (q.length > 0 ? '?' + q : '');
+}
+
+function setParameter(location: Location, key: string, value: string | number, asReplace: boolean = false) {
+    const { query } = location;
+
+    let newParams;
+    let queryMap = Map<string, string | number>(query);
+
+    // this allows for removing blank parameters
+    if (value === undefined || value === '') {
+        newParams = queryMap.delete(key);
+    }
+    else {
+        newParams = queryMap.set(key, value);
+    }
+
+    const history = createHistory();
+    // will this version of replace and push from history interfere with the react router versions?
+    if (asReplace) {
+        history.replace(build(location.pathname, newParams));
+    }
+    else {
+        history.push(build(location.pathname, newParams));
+    }
+}
+
+function setParameters(location: Location, params: Map<string, string | number>, asReplace: boolean = false) {
+    const { query } = location;
+
+    let newParams = Map<string, string | number>(query).asMutable();
+
+
+    params.forEach((value, key) => {
+        if (value === undefined || value === '') {
+            newParams.delete(key);
+        }
+        else {
+            newParams.set(key, value);
+        }
+    });
+
+    const history = createHistory();
+    if (asReplace) {
+        history.replace(build(location.pathname, newParams.asImmutable()));
+    }
+    else {
+        history.push(build(location.pathname, newParams.asImmutable()))
+    }
+}
+
+export function changeLocation(path: string | AppURL) {
+    if (typeof path === 'string') {
+        if (path.indexOf('#/') === 0) {
+            path = path.replace('#/', '');
+        }
+    }
+    const history = createHistory();
+    history.push(path.toString());
+}
+
+export function pushParameter(location: Location, key: string, value: string | number) {
+    return setParameter(location, key, value);
+}
+
+export function pushParameters(location: Location, params: Map<string, string | number>) {
+    return setParameters(location, params);
+}
+
+export function replaceLocation(path: string | AppURL) {
+    const history = createHistory();
+    history.replace(path.toString())
+}
+
+export function replaceParameter(location: Location, key: string, value: string | number) {
+    return setParameter(location, key, value, true);
+}
+
+export function replaceParameters(location: Location, params: Map<string, string | number>) {
+    return setParameters(location, params, true);
+}
 
 export class AppURL extends Record({
     _baseUrl: undefined,

@@ -170,8 +170,7 @@ export class QueryGridModel extends Record({
     }
 
     selectView(view: ViewInfo) {
-        console.error('TODO: selectView');
-        // return actions.selectView(this, view);
+        return actions.selectView(this, view);
     }
 
     canImport() {

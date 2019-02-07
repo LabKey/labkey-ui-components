@@ -10,12 +10,13 @@ import $ from 'jquery'
 import { getQueryDetails } from './query/api'
 import { CHECKBOX_OPTIONS, EXPORT_TYPES } from './query/constants'
 import { isEqual } from './query/filter'
-import { QueryColumn, QueryInfo, SchemaQuery } from './query/model'
+import { QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from './query/model'
 import { buildURL, getSortFromUrl } from './util/ActionURL'
 import { QueryGridModel } from './model'
 import { bindColumnRenderers } from './renderers'
 import { getQueryGridModelsForSchema, getQueryGridModelsForSchemaQuery, updateQueryGridModel } from './reducers'
 import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER } from "./constants";
+import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
 
 export function init(model: QueryGridModel, location?: Location) {
     let newModel = updateQueryGridModel(model, {}, false);
@@ -157,15 +158,15 @@ export function invalidate(model: QueryGridModel): QueryGridModel {
 export function loadPage(model: QueryGridModel, pageNumber: number, location: Location) {
     if (pageNumber !== model.pageNumber) {
         // TODO how to handle this routing case from within the shared component?
-        // if (model.bindURL) {
-        //     dispatch(replaceParameters(getLocation(getState), Map<string, any>({
-        //         [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined
-        //     })));
-        // }
-        // else {
+        if (model.bindURL) {
+            replaceParameters(getLocation(), Map<string, any>({
+                [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined
+            }));
+        }
+        else {
             let newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
             load(newModel, location);
-        // }
+        }
     }
 }
 
@@ -419,6 +420,10 @@ export function doExport(model: QueryGridModel, type: EXPORT_TYPES) {
     });
 }
 
+export function selectView(model: QueryGridModel, view: ViewInfo) {
+    const viewName = view.isDefault ? undefined : view.name;
+    replaceParameter(getLocation(), model.createParam('view'), viewName);
+}
 
 function hasURLChange(model: QueryGridModel, location: Location): boolean {
     if (!model || !model.bindURL || !location) {

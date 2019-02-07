@@ -5,15 +5,17 @@
 import { List, Map, Set } from 'immutable'
 import { Location } from 'history'
 import { Ajax, Filter, Utils } from '@labkey/api'
+import $ from 'jquery'
 
 import { getQueryDetails } from './query/api'
-import { CHECKBOX_OPTIONS } from './query/constants'
+import { CHECKBOX_OPTIONS, EXPORT_TYPES } from './query/constants'
 import { isEqual } from './query/filter'
 import { QueryColumn, QueryInfo, SchemaQuery } from './query/model'
 import { buildURL, getSortFromUrl } from './util/ActionURL'
 import { QueryGridModel } from './model'
 import { bindColumnRenderers } from './renderers'
 import { getQueryGridModelsForSchema, getQueryGridModelsForSchemaQuery, updateQueryGridModel } from './reducers'
+import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER } from "./constants";
 
 export function init(model: QueryGridModel, location?: Location) {
     let newModel = updateQueryGridModel(model, {}, false);
@@ -320,6 +322,103 @@ function bindSearch(searchTerm: string): List<Filter.Filter> {
 
     return searchFilters.asImmutable();
 }
+
+interface IExportOptions {
+    columns?: string
+    filters?: List<Filter.Filter>
+    sorts?: string
+    showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED'
+    selectionKey?: string
+}
+
+export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: IExportOptions): void {
+
+    let params: any = {
+        schemaName: schemaQuery.schemaName,
+        ['query.queryName']: schemaQuery.queryName,
+        ['query.showRows']: options.showRows ? [options.showRows] : ['ALL'],
+        ['query.selectionKey']: options.selectionKey ? options.selectionKey : undefined
+    };
+
+    if (schemaQuery.viewName) {
+        params['query.viewName'] = schemaQuery.viewName;
+    }
+
+    // 32052: Apply default headers (CRSF, etc)
+    for (let i in LABKEY.defaultHeaders) {
+        if (LABKEY.defaultHeaders.hasOwnProperty(i)) {
+            params[i] = LABKEY.defaultHeaders[i];
+        }
+    }
+
+    if (type === EXPORT_TYPES.CSV) {
+        params['delim'] = 'COMMA';
+    }
+
+    if (options) {
+        if (options.columns) {
+            params['query.columns'] = options.columns;
+        }
+
+        if (options.filters) {
+            options.filters.forEach((f) => {
+                if (f) {
+                    params[f.getURLParameterName()] = [f.getURLParameterValue()];
+                }
+            })
+        }
+
+        if (options.sorts) {
+            params['query.sort'] = options.sorts;
+        }
+    }
+
+    let controller, action;
+    if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
+        controller = 'query';
+        action = 'exportRowsTsv.post';
+    }
+    else if (type === EXPORT_TYPES.EXCEL) {
+        controller = 'query';
+        action = 'exportRowsXLSX.post';
+    }
+    else if (type === EXPORT_TYPES.FASTA) {
+        controller = FASTA_EXPORT_CONTROLLER;
+        action = 'export.post';
+        params['format'] = 'FASTA';
+    }
+    else if (type === EXPORT_TYPES.GENBANK) {
+        controller = GENBANK_EXPORT_CONTROLLER;
+        action = 'export.post';
+        params['format'] = 'GENBANK';
+    }
+    else {
+        throw new Error("Unknown export type: " + type);
+    }
+    const url = buildURL(controller, action, undefined, { returnURL: false });
+
+    // POST a form
+    var form = $(`<form method="POST" action="${url}">`);
+    $.each(params, function(k, v) {
+        form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
+    });
+    $('body').append(form);
+    form.trigger( "submit" );
+}
+
+export function doExport(model: QueryGridModel, type: EXPORT_TYPES) {
+    const { allowSelection, selectedState } = model;
+    const showRows = allowSelection && selectedState !== CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
+
+    exportRows(type, SchemaQuery.create(model.schema, model.query, model.view), {
+        filters: model.getFilters(),
+        columns: model.getExportColumnsString(),
+        sorts: model.getSorts(),
+        showRows,
+        selectionKey: model.getId()
+    });
+}
+
 
 function hasURLChange(model: QueryGridModel, location: Location): boolean {
     if (!model || !model.bindURL || !location) {

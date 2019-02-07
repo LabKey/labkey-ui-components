@@ -5,3 +5,5 @@
 
 export const GRID_SELECTION_INDEX = '__selection__';
 export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
+export const FASTA_EXPORT_CONTROLLER = 'biologics';
+export const GENBANK_EXPORT_CONTROLLER = 'biologics';

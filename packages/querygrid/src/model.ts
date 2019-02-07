@@ -166,8 +166,7 @@ export class QueryGridModel extends Record({
     }
 
     doExport(type: EXPORT_TYPES) {
-        console.error('TODO: doExport');
-        //return actions.doExport(this, type);
+        return actions.doExport(this, type);
     }
 
     selectView(view: ViewInfo) {

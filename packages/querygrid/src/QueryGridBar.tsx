@@ -6,7 +6,7 @@ import React from 'reactn'
 
 // import { URLBox } from '../Input/URLBox'
 
-// import { QueryPaging } from './Paging'
+import { QueryPaging } from './QueryPaging'
 import { QueryGridModel } from './model'
 // import { GridSelectionBanner } from './GridSelectionBanner'
 import { Export } from './Export'
@@ -37,6 +37,7 @@ export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
 
 interface QueryGridBarProps {
     buttons?: QueryGridBarButtons
+    location?: Location
     model: QueryGridModel
 }
 
@@ -53,7 +54,7 @@ interface QueryGridBarProps {
 export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
 
     render() {
-        const { buttons, model } = this.props;
+        const { buttons, location, model } = this.props;
 
         // const box = model && model.showSearchBox ? (
         //     <URLBox
@@ -62,17 +63,14 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
         // ) : null;
 
         const box = null;
-        //
-        // const paging = model && model.isPaged ? (
-        //     <QueryPaging model={model}/>
-        // ) : null;
-        //
-        const paging = null;
+
+        const paging = model && model.isPaged ? (
+            <QueryPaging model={model} location={location}/>
+        ) : null;
 
         const exportBtn = model ? (
             <Export model={model}/>
         ) : null;
-        // const exportBtn = null;
 
         //
         // const chart = model && model.showChartSelector ? (

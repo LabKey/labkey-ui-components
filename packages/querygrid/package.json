@@ -29,7 +29,7 @@
   "dependencies": {
     "@glass/grid": "0.0.2",
     "@labkey/api": "0.0.9",
-    "history": "3.2.1",
+    "history": "4.7.2",
     "normalizr": "3.3.0",
     "react-bootstrap": "0.32.4"
   },

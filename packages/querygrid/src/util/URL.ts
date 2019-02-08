@@ -13,11 +13,8 @@ export type Location = {
     state?: any // {[key:string]: string}
 }
 
-export const history = createHistory(
-    // {
-    // forceRefresh: true
-    // }
-);
+// TODO put this in the global state?
+export const history = createHistory();
 
 history.listen((location, action) => {
     // location is an object like window.location
@@ -33,7 +30,7 @@ export function getLocation() : Location
         let params = location.search.substring(1).split("&");
         params.forEach( (p) => {
             let keyVal = p.split("=");
-            query.set(decodeURI(keyVal[0].trim().toLowerCase()), decodeURI(keyVal[1].trim().toLowerCase()));
+            query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
         });
     }
     location.query = query.asImmutable();

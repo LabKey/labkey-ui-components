@@ -24,9 +24,10 @@ import { CHECKBOX_OPTIONS } from './query/constants'
 import { generateId } from './query/utils'
 import { SchemaQuery } from './query/model'
 import { GRID_SELECTION_INDEX, QUERY_GRID_PREFIX } from './constants'
-import { init, toggleGridRowSelection, toggleGridSelected, sort } from './actions'
+import { init, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from './actions'
 import { QueryGridModel, getStateQueryGridModel, getStateModelId } from './model'
 import { headerCell, headerSelectionCell } from './renderers'
+import { history } from "./util/URL";
 
 interface QueryGridProps {
     model?: QueryGridModel
@@ -73,6 +74,14 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     }
 
     componentDidMount() {
+        history.listen((location, action) => {
+            // location is an object like window.location
+            console.log("QueryGrid listening here", action, location.pathname, location.search, location.state)
+            if (this.props.model && this.props.model.bindURL) {
+                console.log("reloading model now");
+                reloadQueryGridModel(this.props.model);
+            }
+        });
         this.initModel(this.props);
     }
 
@@ -85,10 +94,10 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const { modelId } = this.state;
 
         if (model && !model.isLoaded && !model.isLoading) {
-            init(model, location);
+            init(model);
         }
         else if (!this.getModel(props)) {
-            init(getStateQueryGridModel(modelId, schemaQuery), location);
+            init(getStateQueryGridModel(modelId, schemaQuery));
         }
     }
 

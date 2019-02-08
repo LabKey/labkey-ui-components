@@ -9,13 +9,35 @@ import { Filter } from '@labkey/api'
 export type Location = {
     pathname?: string
     search?: string
-    query?: any // {[key:string]: string}
+    query?: Map<string, string>
     state?: any // {[key:string]: string}
 }
 
+export const history = createHistory(
+    // {
+    // forceRefresh: true
+    // }
+);
+
+history.listen((location, action) => {
+    // location is an object like window.location
+    console.log("History change", action, location.pathname, location.search, location.state)
+});
+
 export function getLocation() : Location
 {
-    return window.location;
+    let location : Location = window.location;
+    let query =  Map<string, string>().asMutable();
+    if (location.search.length > 0)
+    {
+        let params = location.search.substring(1).split("&");
+        params.forEach( (p) => {
+            let keyVal = p.split("=");
+            query.set(decodeURI(keyVal[0].trim().toLowerCase()), decodeURI(keyVal[1].trim().toLowerCase()));
+        });
+    }
+    location.query = query.asImmutable();
+    return location;
 }
 
 function build(pathname: string, params: Map<string, string | number>): string {
@@ -43,7 +65,6 @@ function setParameter(location: Location, key: string, value: string | number, a
         newParams = queryMap.set(key, value);
     }
 
-    const history = createHistory();
     // will this version of replace and push from history interfere with the react router versions?
     if (asReplace) {
         history.replace(build(location.pathname, newParams));
@@ -68,7 +89,6 @@ function setParameters(location: Location, params: Map<string, string | number>,
         }
     });
 
-    const history = createHistory();
     if (asReplace) {
         history.replace(build(location.pathname, newParams.asImmutable()));
     }
@@ -83,7 +103,7 @@ export function changeLocation(path: string | AppURL) {
             path = path.replace('#/', '');
         }
     }
-    const history = createHistory();
+
     history.push(path.toString());
 }
 
@@ -96,7 +116,6 @@ export function pushParameters(location: Location, params: Map<string, string | 
 }
 
 export function replaceLocation(path: string | AppURL) {
-    const history = createHistory();
     history.replace(path.toString())
 }
 

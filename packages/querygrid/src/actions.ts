@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Set } from 'immutable'
-import { Location } from 'history'
 import { Ajax, Filter, Utils } from '@labkey/api'
 import $ from 'jquery'
 
@@ -18,14 +17,14 @@ import { getQueryGridModelsForSchema, getQueryGridModelsForSchemaQuery, updateQu
 import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER } from "./constants";
 import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
 
-export function init(model: QueryGridModel, location?: Location) {
+export function init(model: QueryGridModel) {
     let newModel = updateQueryGridModel(model, {}, false);
 
     if (!newModel.isLoaded) {
         if (newModel.bindURL) {
             newModel = updateQueryGridModel(newModel, {
                 isLoading: true,
-                ...bindURLProps(newModel, location)
+                ...bindURLProps(newModel)
             });
         }
         else {
@@ -42,30 +41,29 @@ export function init(model: QueryGridModel, location?: Location) {
             //     initEditorModel(newModel);
             // }
 
-            load(newModel, location);
+            load(newModel);
         });
     }
-    else if (hasURLChange(newModel, location) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, bindURLProps(newModel, location));
-        load(newModel, location);
+    else if (hasURLChange(newModel) && newModel.bindURL) {
+        newModel = updateQueryGridModel(newModel, bindURLProps(newModel));
+        load(newModel);
     }
 }
 
 export function sort(model: QueryGridModel, columnIndex: string, dir: string, location: Location) {
-    // TODO how to handle this routing case from within the shared component?
-    // if (model.bindURL) {
-    //     const urlDir = dir == '+' ? '' : '-';
-    //     replaceParameters(location, Map<string, any>({
-    //         [model.createParam('sort')]: `${urlDir}${columnIndex}`
-    //     }));
-    // }
-    // else {
+    if (model.bindURL) {
+        const urlDir = dir == '+' ? '' : '-';
+        replaceParameters(location, Map<string, any>({
+            [model.createParam('sort')]: `${urlDir}${columnIndex}`
+        }));
+    }
+    else {
         let newModel = updateQueryGridModel(model, {
             sorts: dir + columnIndex // TODO: Support multiple sorts
         });
 
-        load(newModel, location)
-    // }
+        load(newModel)
+    }
 }
 
 // Handle single row select/deselect from the QueryGrid checkbox column
@@ -157,7 +155,6 @@ export function invalidate(model: QueryGridModel): QueryGridModel {
 
 export function loadPage(model: QueryGridModel, pageNumber: number, location: Location) {
     if (pageNumber !== model.pageNumber) {
-        // TODO how to handle this routing case from within the shared component?
         if (model.bindURL) {
             replaceParameters(getLocation(), Map<string, any>({
                 [model.createParam('p')]: pageNumber > 1 ? pageNumber : undefined
@@ -165,30 +162,37 @@ export function loadPage(model: QueryGridModel, pageNumber: number, location: Lo
         }
         else {
             let newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
-            load(newModel, location);
+            load(newModel);
         }
     }
 }
 
-export function refresh(model: QueryGridModel, location: Location) {
+export function refresh(model: QueryGridModel) {
     let newModel = invalidate(model);
 
     if (model.allowSelection) {
         setGridUnselected(newModel);
     }
 
-    load(newModel, location);
+    load(newModel);
+}
+
+export function reloadQueryGridModel(model: QueryGridModel) {
+    const newModel = updateQueryGridModel(model, {
+        isLoading: true,
+        ...bindURLProps(model)
+    });
+    load(newModel);
 }
 
 // Takes a List<Filter.Filter> and remove each filter from the grid model
 // Alternately, the 'all' flag can be set to true to remove all filters. This
 // setting takes precedence over the filters list.
-export function removeFilters(model: QueryGridModel, location: Location, filters?: List<any>, all: boolean = false) {
-    // TODO how to handle this routing case from within the shared component?
-    // if (model.bindURL) {
-    //     dispatch(replaceParameters(getLocation(getState), getFilterParameters(filters, true)));
-    // }
-    // else {
+export function removeFilters(model: QueryGridModel, filters?: List<any>, all: boolean = false) {
+    if (model.bindURL) {
+        replaceParameters(getLocation(), getFilterParameters(filters, true));
+    }
+    else {
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
@@ -209,24 +213,23 @@ export function removeFilters(model: QueryGridModel, location: Location, filters
             }
         }
 
-        load(newModel, location);
-    // }
+        load(newModel);
+    }
 }
 
 export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>, location: Location) {
-    // TODO how to handle this routing case from within the shared component?
-    // if (model.bindURL) {
-    //     dispatch(replaceParameters(getLocation(getState), getFilterParameters(filters)));
-    // }
-    // else {
+    if (model.bindURL) {
+        replaceParameters(getLocation(), getFilterParameters(filters));
+    }
+    else {
         if (filters.count()) {
             let newModel = updateQueryGridModel(model, {filterArray: model.filterArray.merge(filters)});
-            load(newModel, location);
+            load(newModel);
         }
-    // }
+    }
 }
 
-export function load(model: QueryGridModel, location: Location) {
+export function load(model: QueryGridModel) {
     // validate view exists prior to initiating request
     if (model.view && model.queryInfo && !model.queryInfo.getView(model.view)) {
         setError(model, `Unable to find view "${model.view}".`);
@@ -235,7 +238,7 @@ export function load(model: QueryGridModel, location: Location) {
 
     let newModel = updateQueryGridModel(model, {isLoading: true});
 
-    newModel.loader.fetch(newModel, location).then(response => {
+    newModel.loader.fetch(newModel, getLocation()).then(response => {
         // TODO not yet ready to handle the editable case for the shared component
         // load data into editor
         // if (newModel.editable) {
@@ -266,7 +269,7 @@ export function load(model: QueryGridModel, location: Location) {
     });
 }
 
-function bindURLProps(model: QueryGridModel, location: Location): Partial<QueryGridModel> {
+function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     let props = {
         filterArray: List<Filter.Filter>(),
         pageNumber: 1,
@@ -275,37 +278,37 @@ function bindURLProps(model: QueryGridModel, location: Location): Partial<QueryG
         view: undefined
     };
 
-    if (location) {
-        const queryString = location.search;
-        const p = location.query[model.createParam('p')];
-        const q = location.query[model.createParam('q')];
-        const view = location.query[model.createParam('view')];
+    const location = getLocation();
+    const queryString = location.search;
+    const p = location.query.get(model.createParam('p'));
+    const q = location.query.get(model.createParam('q'));
+    const view = location.query.get(model.createParam('view'));
 
-        props.filterArray = List<Filter.Filter>(Filter.getFiltersFromUrl(queryString, model.urlPrefix))
-            .concat(bindSearch(q))
-            .toList();
-        props.sorts = getSortFromUrl(queryString, model.urlPrefix);
-        props.view = view;
+    props.filterArray = List<Filter.Filter>(Filter.getFiltersFromUrl(queryString, model.urlPrefix))
+        .concat(bindSearch(q))
+        .toList();
+    props.sorts = getSortFromUrl(queryString, model.urlPrefix);
+    props.view = view;
 
-        if (model.isPaged) {
-            let pageNumber = parseInt(p);
-            if (!isNaN(pageNumber)) {
-                props.pageNumber = pageNumber;
-            }
+    if (model.isPaged) {
+        let pageNumber = parseInt(p);
+        if (!isNaN(pageNumber)) {
+            props.pageNumber = pageNumber;
         }
-
-        // pick up other parameters as indicated by the model
-        if (model.urlParams) {
-            model.urlParams.forEach((paramName) => {
-                const value = location.query[model.createParam(paramName)];
-                if (value !== undefined) {
-                    props.urlParamValues.set(paramName, value);
-                }
-            });
-        }
-
-        props.urlParamValues = props.urlParamValues.asImmutable();
     }
+
+    // pick up other parameters as indicated by the model
+    if (model.urlParams) {
+        model.urlParams.forEach((paramName) => {
+            const value = location.query.get(model.createParam(paramName));
+            if (value !== undefined) {
+                props.urlParamValues.set(paramName, value);
+            }
+        });
+    }
+
+    props.urlParamValues = props.urlParamValues.asImmutable();
+
 
     return props;
 }
@@ -399,7 +402,7 @@ export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options
     const url = buildURL(controller, action, undefined, { returnURL: false });
 
     // POST a form
-    var form = $(`<form method="POST" action="${url}">`);
+    let form = $(`<form method="POST" action="${url}">`);
     $.each(params, function(k, v) {
         form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
     });
@@ -425,12 +428,12 @@ export function selectView(model: QueryGridModel, view: ViewInfo) {
     replaceParameter(getLocation(), model.createParam('view'), viewName);
 }
 
-function hasURLChange(model: QueryGridModel, location: Location): boolean {
-    if (!model || !model.bindURL || !location) {
+function hasURLChange(model: QueryGridModel): boolean {
+    if (!model || !model.bindURL) {
         return false;
     }
 
-    const nextProps = bindURLProps(model, location);
+    const nextProps = bindURLProps(model);
 
     // filterArray and sorts are set specially so we check those specially.
     if (!isEqual(nextProps.filterArray, model.filterArray))

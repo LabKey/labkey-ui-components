@@ -3,8 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable'
-import createHistory from 'history/createBrowserHistory'
 import { Filter } from '@labkey/api'
+import { getBrowserHistory } from "./global";
 
 export type Location = {
     pathname?: string
@@ -12,14 +12,6 @@ export type Location = {
     query?: Map<string, string>
     state?: any // {[key:string]: string}
 }
-
-// TODO put this in the global state?
-export const history = createHistory();
-
-history.listen((location, action) => {
-    // location is an object like window.location
-    console.log("History change", action, location.pathname, location.search, location.state)
-});
 
 export function getLocation() : Location
 {
@@ -64,10 +56,10 @@ function setParameter(location: Location, key: string, value: string | number, a
 
     // will this version of replace and push from history interfere with the react router versions?
     if (asReplace) {
-        history.replace(build(location.pathname, newParams));
+        getBrowserHistory().replace(build(location.pathname, newParams));
     }
     else {
-        history.push(build(location.pathname, newParams));
+        getBrowserHistory().push(build(location.pathname, newParams));
     }
 }
 
@@ -87,10 +79,10 @@ function setParameters(location: Location, params: Map<string, string | number>,
     });
 
     if (asReplace) {
-        history.replace(build(location.pathname, newParams.asImmutable()));
+        getBrowserHistory().replace(build(location.pathname, newParams.asImmutable()));
     }
     else {
-        history.push(build(location.pathname, newParams.asImmutable()))
+        getBrowserHistory().push(build(location.pathname, newParams.asImmutable()))
     }
 }
 
@@ -101,7 +93,7 @@ export function changeLocation(path: string | AppURL) {
         }
     }
 
-    history.push(path.toString());
+    getBrowserHistory().push(path.toString());
 }
 
 export function pushParameter(location: Location, key: string, value: string | number) {
@@ -113,7 +105,7 @@ export function pushParameters(location: Location, params: Map<string, string | 
 }
 
 export function replaceLocation(path: string | AppURL) {
-    history.replace(path.toString())
+    getBrowserHistory().replace(path.toString())
 }
 
 export function replaceParameter(location: Location, key: string, value: string | number) {

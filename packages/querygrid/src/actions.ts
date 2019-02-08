@@ -50,10 +50,10 @@ export function init(model: QueryGridModel) {
     }
 }
 
-export function sort(model: QueryGridModel, columnIndex: string, dir: string, location: Location) {
+export function sort(model: QueryGridModel, columnIndex: string, dir: string) {
     if (model.bindURL) {
         const urlDir = dir == '+' ? '' : '-';
-        replaceParameters(location, Map<string, any>({
+        replaceParameters(getLocation(), Map<string, any>({
             [model.createParam('sort')]: `${urlDir}${columnIndex}`
         }));
     }
@@ -153,7 +153,7 @@ export function invalidate(model: QueryGridModel): QueryGridModel {
     });
 }
 
-export function loadPage(model: QueryGridModel, pageNumber: number, location: Location) {
+export function loadPage(model: QueryGridModel, pageNumber: number) {
     if (pageNumber !== model.pageNumber) {
         if (model.bindURL) {
             replaceParameters(getLocation(), Map<string, any>({
@@ -217,7 +217,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<any>, all: b
     }
 }
 
-export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>, location: Location) {
+export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters));
     }

@@ -15,7 +15,6 @@
  */
 import React from 'reactn'
 import { List, Map } from 'immutable'
-import { Location } from 'history'
 import { Grid, GridColumn, GridProps } from '@glass/grid'
 
 import { LoadingSpinner } from './components/LoadingSpinner'
@@ -27,12 +26,11 @@ import { GRID_SELECTION_INDEX, QUERY_GRID_PREFIX } from './constants'
 import { init, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from './actions'
 import { QueryGridModel, getStateQueryGridModel, getStateModelId } from './model'
 import { headerCell, headerSelectionCell } from './renderers'
-import { history } from "./util/URL";
+import { getBrowserHistory } from "./util/global";
 
 interface QueryGridProps {
     model?: QueryGridModel
     schemaQuery?: SchemaQuery
-    location?: Location
 }
 
 interface QueryGridState {
@@ -67,7 +65,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             _modelId = generateId(QUERY_GRID_PREFIX);
         }
 
-        history.listen((location: Location, action: string) => {
+        getBrowserHistory().listen((location, action) => {
             if (this.props.model && this.props.model.bindURL) {
                 reloadQueryGridModel(this.props.model);
             }
@@ -88,7 +86,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     }
 
     initModel(props: QueryGridProps) {
-        const { model, schemaQuery, location } = props;
+        const { model, schemaQuery } = props;
         const { modelId } = this.state;
 
         if (model && !model.isLoaded && !model.isLoading) {
@@ -164,11 +162,10 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     }
 
     sort(gridColumn, dir) {
-        const { location } = this.props;
         const model = this.getModel(this.props);
 
         if (model) {
-            sort(model, gridColumn.index, dir, location);
+            sort(model, gridColumn.index, dir);
         }
     }
 

@@ -8,6 +8,7 @@ import { List, Map } from 'immutable'
 import { SchemaQuery } from './query/model'
 import { resolveSchemaQuery } from './query/utils'
 import { QueryGridModel } from './model'
+import { initBrowserHistoryState } from "./util/global";
 
 /**
  * Initialize the global state object for this package.
@@ -21,6 +22,7 @@ export function initQueryGridState() {
             }
         });
     }
+    initBrowserHistoryState();
 }
 
 /**

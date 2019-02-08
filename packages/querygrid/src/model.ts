@@ -157,12 +157,12 @@ export class QueryGridModel extends Record({
         }
     }
 
-    init(location?: Location) {
-        actions.init(this, location);
+    init() {
+        actions.init(this);
     }
 
-    load(location?: Location) {
-        actions.load(this, location);
+    load() {
+        actions.load(this);
     }
 
     doExport(type: EXPORT_TYPES) {

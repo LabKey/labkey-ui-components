@@ -67,6 +67,12 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             _modelId = generateId(QUERY_GRID_PREFIX);
         }
 
+        history.listen((location: Location, action: string) => {
+            if (this.props.model && this.props.model.bindURL) {
+                reloadQueryGridModel(this.props.model);
+            }
+        });
+
         // set local state for this component
         this.state = {
             modelId: _modelId
@@ -74,14 +80,6 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
     }
 
     componentDidMount() {
-        history.listen((location, action) => {
-            // location is an object like window.location
-            console.log("QueryGrid listening here", action, location.pathname, location.search, location.state)
-            if (this.props.model && this.props.model.bindURL) {
-                console.log("reloading model now");
-                reloadQueryGridModel(this.props.model);
-            }
-        });
         this.initModel(this.props);
     }
 

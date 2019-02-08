@@ -6,7 +6,7 @@ import React from 'reactn'
 
 // import { URLBox } from '../Input/URLBox'
 
-import { QueryPaging } from './QueryPaging'
+import { QueryGridPaging } from './QueryGridPaging'
 import { QueryGridModel } from './model'
 // import { GridSelectionBanner } from './GridSelectionBanner'
 import { Export } from './Export'
@@ -65,7 +65,7 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
         const box = null;
 
         const paging = model && model.isPaged ? (
-            <QueryPaging model={model} location={location}/>
+            <QueryGridPaging model={model} location={location}/>
         ) : null;
 
         const exportBtn = model ? (

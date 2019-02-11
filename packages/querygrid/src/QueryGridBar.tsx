@@ -4,15 +4,13 @@
  */
 import React from 'reactn'
 
-// import { URLBox } from '../Input/URLBox'
-
-import { QueryGridPaging } from './QueryGridPaging'
 import { QueryGridModel } from './model'
-// import { GridSelectionBanner } from './GridSelectionBanner'
+import { ChartSelector } from './ChartSelector'
 import { Export } from './Export'
+import { QueryGridPaging } from './QueryGridPaging'
 import { ViewSelector } from "./ViewSelector";
+// import { URLBox } from '../Input/URLBox'
 import { GridSelectionBanner } from "./GridSelectionBanner";
-// import { ChartSelector } from '../Charts/ChartSelector'
 
 const layouts = {
     NO_BUTTONS: {
@@ -73,12 +71,9 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
             <Export model={model}/>
         ) : null;
 
-        //
-        // const chart = model && model.showChartSelector ? (
-        //     <ChartSelector model={model}/>
-        // ) : null;
-        const chart = null;
-
+        const chart = model && model.showChartSelector ? (
+            <ChartSelector model={model}/>
+        ) : null;
 
         const view = model && model.showViewSelector ? (
             <ViewSelector model={model}/>

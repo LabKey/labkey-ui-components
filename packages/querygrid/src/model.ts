@@ -411,7 +411,7 @@ interface IStateModelProps {
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     let parts = [gridId, resolveSchemaQuery(schemaQuery)];
 
-    if (schemaQuery.viewName) {
+    if (schemaQuery && schemaQuery.viewName) {
         parts.push(schemaQuery.viewName);
     }
     if (keyValue !== undefined) {
@@ -556,6 +556,179 @@ export interface IGridSelectionResponse {
     selectedIds: List<any>
 }
 
+// commented out attributes are not used in app
+export class DataViewInfo extends Record({
+    name: undefined,
+    type: undefined,
+    reportId: undefined,
+    schemaName: undefined,
+    queryName: undefined,
+    shared: false,
+    iconCls: undefined,
+    description: undefined,
+    // container: undefined,
+    // access: undefined,
+    // detailsUrl: undefined,
+    // icon: undefined,
+    // runUrl: undefined,
+    // defaultThumbnailUrl: undefined,
+    // defaultIconCls: undefined,
+    // modified: undefined,
+    // modifiedBy: undefined,
+    // id: undefined,
+    // cratedByuserId: undefined,
+    // showInDashboard: undefined,
+    // thumbnail: undefined,
+    // visible: undefined,
+    // contentModified: undefined,
+    // author: undefined,
+    // created: undefined,
+    // dataType: undefined,
+    // readOnly: undefined,
+    // createdBy: undefined,
+    // allowCustomThumbnail: undefined,
+    // category: undefined,
+
+    // our stuff
+    isLoading: false,
+    isLoaded: false,
+    error: undefined
+}) {
+    name: string;
+    type: string;
+    reportId: string;
+    schemaName: string;
+    queryName: string;
+    shared: boolean;
+    iconCls: string;
+    description: string;
+    // container: string;
+    // access: any;
+    // detailsUrl: string;
+    // icon: string;
+    // runUrl: string;
+    // defaultThumbnailUrl: string;
+    // defaultIconCls: string;
+    // modified: date;
+    // modifiedBy: number;
+    // id: string;
+    // cratedByuserId: number;
+    // showInDashboard: boolean;
+    // thumbnail: string;
+    // visible: boolean;
+    // contentModified: date;
+    // author: string;
+    // created: date;
+    // dataType: string;
+    // readOnly: boolean;
+    // createdBy: number;
+    // allowCustomThumbnail: boolean;
+    // category: any;
+    isLoading: boolean;
+    isLoaded: boolean;
+    error: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    getLabel() {
+        return this.name;
+    }
+
+    isShared() {
+        return this.shared;
+    }
+
+    getIconCls() {
+        return this.iconCls;
+    }
+
+    isVisChartType() {
+        return this.type === "Bar Chart"
+            || this.type === "Box and Whisker Plot"
+            || this.type === "Pie Chart"
+            || this.type === "XY Scatter Plot"
+            || this.type === "XY Series Line Plot";
+    }
+}
+
+export class VisualizationConfigModel extends Record({
+    queryConfig: undefined,
+    chartConfig: undefined
+}) {
+    queryConfig: QueryConfigModel;
+    chartConfig: ChartConfigModel;
+
+    static create(raw: any): VisualizationConfigModel {
+        return new VisualizationConfigModel(Object.assign({}, raw, {
+            chartConfig: new ChartConfigModel(raw.chartConfig),
+            queryConfig: new QueryConfigModel(raw.queryConfig)
+        }))
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+export class ChartConfigModel extends Record({
+    geomOptions: undefined,
+    height: undefined,
+    labels: undefined,
+    measures: undefined,
+    pointType: undefined,
+    renderType: undefined,
+    scales: undefined,
+    width: undefined
+}) {
+    geomOptions: any;
+    height: number;
+    labels: any;
+    measures: any;
+    pointType: string;
+    renderType: string;
+    scales: any;
+    width: number;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+export class QueryConfigModel extends Record({
+    columns: undefined,
+    containerPath: undefined,
+    // dataRegionName: undefined,
+    filterArray: undefined,
+    maxRows: undefined,
+    method: undefined,
+    parameters: undefined,
+    // queryLabel: undefined,
+    queryName: undefined,
+    requiredVersion: undefined,
+    schemaName: undefined,
+    // sort: undefined,
+    viewName: undefined
+}) {
+    columns: List<string>;
+    containerPath: string;
+    // dataRegionName: string;
+    filterArray: List<any>;
+    maxRows: number;
+    method: string;
+    parameters: any;
+    // queryLabel: string;
+    queryName: string;
+    requiredVersion: string;
+    schemaName: string;
+    // sort: string;
+    viewName: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
 
 /* Utility function */ // TODO should these be moved to a more central / shared location
 

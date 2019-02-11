@@ -355,6 +355,10 @@ export class QueryGridModel extends Record({
         return this.data.getIn([dataId, col.fieldKey, part ? part : 'value']);
     }
 
+    selectAll() {
+        return actions.gridSelectAll(this);
+    }
+
     showImportDataButton(): Map<any, any> {
         const query = this.queryInfo;
 

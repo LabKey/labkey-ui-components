@@ -39,6 +39,7 @@ export class Export extends React.Component<Props, any> {
         const { model, supportedTypes } = this.props;
 
         return (
+            model &&
             <Tip caption="Export">
                 <DropdownButton
                     id={`export-drop-${model.getId()}`}

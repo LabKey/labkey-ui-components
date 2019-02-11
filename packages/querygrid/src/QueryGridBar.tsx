@@ -11,6 +11,7 @@ import { QueryGridModel } from './model'
 // import { GridSelectionBanner } from './GridSelectionBanner'
 import { Export } from './Export'
 import { ViewSelector } from "./ViewSelector";
+import { GridSelectionBanner } from "./GridSelectionBanner";
 // import { ChartSelector } from '../Charts/ChartSelector'
 
 const layouts = {
@@ -102,8 +103,7 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
         const layout = buttons || chart ? layouts.STANDARD : layouts.NO_BUTTONS;
         const buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
-        // const selectionDetails = <GridSelectionBanner containerCls="bottom-spacing" model={model}/>;
-        const selectionDetails = undefined;
+        const selectionDetails = <GridSelectionBanner containerCls="bottom-spacing" model={model}/>;
 
         return (
             <div>

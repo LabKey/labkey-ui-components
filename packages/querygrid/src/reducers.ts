@@ -9,6 +9,7 @@ import { SchemaQuery } from './query/model'
 import { resolveSchemaQuery } from './query/utils'
 import { QueryGridModel } from './model'
 import { initBrowserHistoryState } from "./util/global";
+import { CHECKBOX_OPTIONS } from "./query/constants";
 
 /**
  * Initialize the global state object for this package.
@@ -102,6 +103,68 @@ export function setQueryMetadata(metadata: Map<string, any>) {
             metadata
         }
     });
+}
+
+function getSelectedState(
+    dataIds: List<string>,
+    selected: List<string>,
+    maxRows: number,
+    totalRows: number
+): CHECKBOX_OPTIONS {
+
+    const selectedOnPage: number = dataIds.filter((id) => selected.indexOf(id) !== -1).size,
+        totalSelected: number = selected.size;
+
+    if (
+        maxRows === selectedOnPage ||
+        totalRows === totalSelected && totalRows !== 0 ||
+        selectedOnPage === dataIds.size && selectedOnPage > 0
+    ) {
+        return CHECKBOX_OPTIONS.ALL;
+    }
+    else if (totalSelected > 0) {
+        // if model has any selected show checkbox as indeterminate
+        return CHECKBOX_OPTIONS.SOME;
+    }
+
+    return CHECKBOX_OPTIONS.NONE;
+}
+
+export interface IGridSelectionResponse {
+    selectedIds: List<any>
+}
+
+// Update model data with select changes
+export function updateSelections (model: QueryGridModel, response: IGridSelectionResponse)  {
+    const selectedIds = response.selectedIds;
+    const id = model.getId(),
+        selectedLoaded: any = true;
+
+    if (selectedIds !== undefined && selectedIds.size) {
+        const { dataIds, maxRows, totalRows } = model;
+        const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
+        const updatedState = {
+            selectedIds,
+            selectedLoaded,
+            selectedQuantity: selectedIds.size,
+            selectedState
+        } as any;
+
+        setGlobal({
+            QueryGrid: {
+                ...getGlobalState(),
+                models: getGlobalState().models.set(model.getId(), model.merge(updatedState))
+            }
+        });
+    }
+    else {
+        setGlobal({
+            QueryGrid: {
+                ...getGlobalState(),
+                models: getGlobalState().models.set(id, model.merge({selectedLoaded}))
+            }
+        });
+    }
 }
 
 function getGlobalState() {

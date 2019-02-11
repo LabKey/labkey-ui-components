@@ -13,7 +13,12 @@ import { QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from './query/model'
 import { buildURL, getSortFromUrl } from './util/ActionURL'
 import { QueryGridModel } from './model'
 import { bindColumnRenderers } from './renderers'
-import { getQueryGridModelsForSchema, getQueryGridModelsForSchemaQuery, updateQueryGridModel } from './reducers'
+import {
+    getQueryGridModelsForSchema,
+    getQueryGridModelsForSchemaQuery,
+    updateQueryGridModel,
+    updateSelections
+} from './reducers'
 import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER } from "./constants";
 import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
 
@@ -48,6 +53,53 @@ export function init(model: QueryGridModel) {
         newModel = updateQueryGridModel(newModel, bindURLProps(newModel));
         load(newModel);
     }
+}
+
+export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.Filter>): Promise<ISelectResponse> {
+
+    const filters = filterList.reduce((prev, next)=> {
+        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
+    }, {});
+
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('query', 'selectAll.api'),
+            method: 'POST',
+            params: Object.assign({
+                schemaName,
+                queryName,
+                'query.selectionKey': key,
+            }, filters),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+
+export function gridSelectAll(model: QueryGridModel) {
+
+    const id = model.getId();
+
+    return selectAll(id, model.schema, model.query, model.getFilters()).then(data => {
+
+        if (data && data.count > 0) {
+            return getSelected(id).then(response => {
+                updateSelections(model, {
+                    selectedIds: List(response.selected)
+                })
+
+            }).catch(err => {
+                const error = err ? err : {message: 'Something went wrong in selecting all items for this grid (name: ' + model.getModelName() + ', id:' + id + ')'};
+                handleQueryErrorAction(model, error);
+            });
+        }
+    })
+
 }
 
 export function sort(model: QueryGridModel, columnIndex: string, dir: string) {

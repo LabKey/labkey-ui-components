@@ -97,11 +97,11 @@ export function changeLocation(path: string | AppURL) {
 }
 
 export function pushParameter(location: Location, key: string, value: string | number) {
-    return setParameter(location, key, value);
+    setParameter(location, key, value);
 }
 
 export function pushParameters(location: Location, params: Map<string, string | number>) {
-    return setParameters(location, params);
+    setParameters(location, params);
 }
 
 export function replaceLocation(path: string | AppURL) {
@@ -109,11 +109,11 @@ export function replaceLocation(path: string | AppURL) {
 }
 
 export function replaceParameter(location: Location, key: string, value: string | number) {
-    return setParameter(location, key, value, true);
+    setParameter(location, key, value, true);
 }
 
 export function replaceParameters(location: Location, params: Map<string, string | number>) {
-    return setParameters(location, params, true);
+    setParameters(location, params, true);
 }
 
 export class AppURL extends Record({

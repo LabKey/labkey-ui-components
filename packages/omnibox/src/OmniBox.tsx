@@ -154,11 +154,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     }
 
     refs: {
-        control: any
         input: any
-        menu: any
-        menuContainer: any
-        wrapper: any
     };
 
     _blurTimeout: number = undefined;
@@ -801,11 +797,11 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         const inputProps = Object.assign({}, this.props.inputProps, {
             className: classNames('OmniBox-input', this.props.inputProps.className),
+            // ref: 'input', // TODO this is giving a JS error, figure out why and if it is happening in Biologics
             minWidth: '5px',
             onBlur: this.handleInputBlur,
             onChange: this.handleInputChange,
             onFocus: this.handleInputFocus,
-            ref: 'input',
             value: this.renderInputValue()
         });
 
@@ -833,8 +829,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     renderMenu() {
 
         return (
-            <div ref="menuContainer">
-                <ul ref="menu" className="OmniBox-autocomplete">
+            <div>
+                <ul className="OmniBox-autocomplete">
                     {this.state.options.map(this.renderMenuOption)}
                 </ul>
             </div>
@@ -889,12 +885,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         });
 
         return (
-            <div ref="wrapper"
-                 className={className}>
-                <div ref="control"
-                     className="OmniBox-control"
-                     onKeyDown={this.handleKeyDown}
-                     onMouseDown={this.handleMouseDown}>
+            <div className={className}>
+                <div className="OmniBox-control" onKeyDown={this.handleKeyDown} onMouseDown={this.handleMouseDown}>
                     <span className="OmniBox-multi-value-wrapper">
                         {this.renderValue()}
                         {this.renderInput()}

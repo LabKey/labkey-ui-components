@@ -9,7 +9,7 @@ import { ChartSelector } from './ChartSelector'
 import { Export } from './Export'
 import { QueryGridPaging } from './QueryGridPaging'
 import { ViewSelector } from "./ViewSelector";
-// import { URLBox } from '../Input/URLBox'
+import { URLBox } from './URLBox'
 import { GridSelectionBanner } from "./GridSelectionBanner";
 
 const layouts = {
@@ -55,13 +55,11 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
     render() {
         const { buttons, location, model } = this.props;
 
-        // const box = model && model.showSearchBox ? (
-        //     <URLBox
-        //         key={model.getId()}
-        //         queryModel={model}/>
-        // ) : null;
-
-        const box = null;
+        const box = model && model.showSearchBox ? (
+            <URLBox
+                key={model.getId()}
+                queryModel={model}/>
+        ) : null;
 
         const paging = model && model.isPaged ? (
             <QueryGridPaging model={model} location={location}/>

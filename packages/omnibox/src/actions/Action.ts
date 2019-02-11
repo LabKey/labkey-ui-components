@@ -70,7 +70,7 @@ export interface Action {
      * to the set of Value's for Action's of this type.
      * @param action
      */
-    isEqual: (action: Action) => boolean
+    isEqual?: (action: Action) => boolean
 
     /**
      * Allows Actions to convert a set of ActionValue's into a set of paramKey/paramValue pairs for URL
@@ -94,6 +94,8 @@ export interface Action {
      * @param paramValue
      */
     parseParam: (paramKey: string, paramValue: any) => Array<string> | Array<Value>
+
+    singleton?: boolean
 }
 
 export interface Value {
@@ -128,3 +130,9 @@ export interface ActionOption {
     nextLabel?: string
     selectable?: boolean
 }
+
+// These exports allow for more straightforward import of the actions (one stop shop)
+export { FilterAction } from './Filter'
+export { SearchAction } from './Search'
+export { SortAction } from './Sort'
+export { ViewAction } from './View'

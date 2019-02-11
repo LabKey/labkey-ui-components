@@ -295,6 +295,13 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             action.completeAction(tokenize(newInputValue)).then((result) => {
 
                 if (result.isValid !== false) {
+
+                    // determine if previous actionValues need to be replaced
+                    if (action.singleton === true) {
+                        const isEqual = action.isEqual ? action.isEqual : (other: Action) => action.keyword === other.keyword;
+                        newActionValues = newActionValues.filter((actionValue) => !isEqual(actionValue.action));
+                    }
+
                     newActionValues.push({
                         action,
                         displayValue: result.displayValue,
@@ -341,7 +348,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 activeAction.fetchOptions(tokenize(OmniBox.stripKeyword(inputValue, activeAction)))
                     .then((options) => {
 
-                        let _options = [];
+                        let _options: Array<ActionOption> = [];
                         for (let i=0; i < options.length; i++) {
                             _options.push(Object.assign({
                                 action: activeAction
@@ -349,8 +356,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                         }
 
                         this.setState({
-                            // auto-focus first option iff one option available
-                            focusedIndex: _options.length === 1 ? 0 : -1,
+                            // auto-focus first option iff one selectable option available
+                            focusedIndex: _options.length === 1 && _options[0].selectable !== false ? 0 : -1,
                             options: _options
                         });
                     });
@@ -611,7 +618,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
                 if (this.state.inputValue || this.state.activeAction) {
                     this.cancelEvent(event);
-                    this.selectFocusedOption(false /* canComplete */);
+                    this.selectFocusedOption(false);
                 }
                 break;
             case 13: // enter key
@@ -681,9 +688,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
     }
 
-    handleOptionFocus(option: ActionOption, index: number) {
+    handleOptionFocus(option: ActionOption, focusedIndex: number) {
         this.setState({
-            focusedIndex: index
+            focusedIndex
         })
     }
 
@@ -692,17 +699,35 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         for (let a=0; a < actionValues.length; a++) {
             let found = false;
+            const actionValue = actionValues[a];
+
             for (let i=0; i < newActionValueCollection.length; i++) {
-                if (newActionValueCollection[i].action.isEqual(actionValues[a].action)) {
-                    newActionValueCollection[i].values.push(actionValues[a]);
+                const action = newActionValueCollection[i].action;
+                let isEqual = false;
+
+                if (action.isEqual) {
+                    isEqual = action.isEqual(actionValue.action);
+                }
+                else {
+                    isEqual = action.keyword === actionValue.action.keyword;
+                }
+
+                if (isEqual) {
                     found = true;
+
+                    if (action.singleton === true) {
+                        newActionValueCollection[i].values = [actionValue];
+                    }
+                    else {
+                        newActionValueCollection[i].values.push(actionValue);
+                    }
                 }
             }
 
             if (!found) {
                 newActionValueCollection.push({
-                    action: actionValues[a].action,
-                    values: [actionValues[a]]
+                    action: actionValue.action,
+                    values: [actionValue]
                 });
             }
         }
@@ -842,7 +867,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         if (actionValues.length > 0) {
-            return actionValues.map((actionValue: ActionValue, i): any => (
+            return actionValues.map((actionValue, i) => (
                 <Value
                     key={`value-${i}`}
                     index={i}

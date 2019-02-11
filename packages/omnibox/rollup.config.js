@@ -10,6 +10,7 @@ import typescript from 'rollup-plugin-typescript2';
 
 const globals = {
     'classnames': 'classNames',
+    'immutable': 'immutable',
     'jquery': 'jQuery',
     'react': 'React',
     'react-dom': 'ReactDOM',
@@ -17,7 +18,7 @@ const globals = {
 };
 const external = Object.keys(globals);
 
-const input = 'src/OmniBox.tsx';
+const input = 'src/index.ts';
 
 const cjsOptions = {
     namedExports: {

@@ -2,6 +2,6 @@
   "extends": "../../tsconfig.base.json",
   "files": [
     "src/typings/main.d.ts",
-    "src/OmniBox.tsx"
+    "src/index.ts"
   ]
 }

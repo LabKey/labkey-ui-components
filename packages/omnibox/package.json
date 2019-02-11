@@ -1,7 +1,7 @@
 {
   "name": "@glass/omnibox",
-  "version": "0.0.1",
-  "description": "The one and only OmniBox",
+  "version": "0.0.2",
+  "description": "A LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.",
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",
   "style": "dist/omnibox.css",
@@ -29,10 +29,12 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
+    "@glass/querygrid": "0.0.4",
     "classnames": "2.2.6",
     "react-input-autosize": "2.0.1"
   },
   "peerDependencies": {
+    "immutable": "^3.8.2",
     "jquery": "^2.0 || ^3.0",
     "react": "^16.0",
     "react-dom": "^16.0"

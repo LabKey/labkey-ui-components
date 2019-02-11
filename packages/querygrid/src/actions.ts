@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Set } from 'immutable'
-import { Ajax, Filter, Utils } from '@labkey/api'
+import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
 
 import { getQueryDetails } from './query/api'
@@ -11,7 +11,7 @@ import { CHECKBOX_OPTIONS, EXPORT_TYPES } from './query/constants'
 import { isEqual } from './query/filter'
 import { QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from './query/model'
 import { buildURL, getSortFromUrl } from './util/ActionURL'
-import { QueryGridModel } from './model'
+import { DataViewInfo, QueryGridModel, VisualizationConfigModel } from './model'
 import { bindColumnRenderers } from './renderers'
 import { getQueryGridModelsForSchema, getQueryGridModelsForSchemaQuery, updateQueryGridModel } from './reducers'
 import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER } from "./constants";
@@ -630,6 +630,46 @@ function getFilterParameters(filters: List<any>, remove: boolean = false): Map<s
     });
 
     return Map<string, string>(params);
+}
+
+export function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
+    return new Promise((resolve, reject) => {
+        Query.Visualization.get({
+            reportId,
+            name: undefined,
+            schemaName: undefined,
+            queryName: undefined,
+            success: (response) => {
+                resolve(VisualizationConfigModel.create(response.visualizationConfig));
+            },
+            failure: reject
+        });
+    });
+}
+
+export function fetchCharts(schemaQuery: SchemaQuery): Promise<List<DataViewInfo>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('study-reports', 'getReportInfos.api', {
+                schemaName: schemaQuery.getSchema(),
+                queryName: schemaQuery.getQuery()
+            }),
+            success: Utils.getCallbackWrapper((response: any) => {
+                if (response && response.success) {
+                    let result = response.reports.reduce((list, rawDataViewInfo) => list.push(new DataViewInfo(rawDataViewInfo)), List<DataViewInfo>());
+                    resolve(result);
+                }
+                else {
+                    reject({
+                        error: 'study-report-getReportInfos.api responded to success without success'
+                    });
+                }
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            }),
+        })
+    });
 }
 
 function setError(model: QueryGridModel, message: string) {

@@ -35,16 +35,10 @@ export function resolveKeyFromJson(json: {schemaName: Array<string>, queryName: 
 }
 
 export function resolveSchemaQuery(schemaQuery: SchemaQuery): string {
-    return resolveKey(schemaQuery.getSchema(), schemaQuery.getQuery());
+    return schemaQuery ? resolveKey(schemaQuery.getSchema(), schemaQuery.getQuery()) : null;
 }
 
 export function getSchemaQuery(encodedKey: string): SchemaQuery {
     const [ encodedSchema, encodedQuery ] = encodedKey.split('/');
     return SchemaQuery.create(decodePart(encodedSchema), decodePart(encodedQuery));
-}
-
-let DOM_COUNT = 0;
-const DOM_PREFIX = 'labkey-app-';
-export function generateId(prefix?: string): string {
-    return (prefix ? prefix : DOM_PREFIX) + DOM_COUNT++;
 }

@@ -7,7 +7,7 @@ import { List, Map } from 'immutable'
 
 import { SchemaQuery } from './query/model'
 import { resolveSchemaQuery } from './query/utils'
-import { QueryGridModel } from './model'
+import { DataViewInfo, QueryGridModel } from './model'
 import { initBrowserHistoryState } from "./util/global";
 
 /**
@@ -17,6 +17,7 @@ export function initQueryGridState() {
     if (!getGlobal().QueryGrid) {
         setGlobal({
             QueryGrid: {
+                charts: Map<string, List<DataViewInfo>>(),
                 metadata: Map<string, any>(),
                 models: Map<string, QueryGridModel>()
             }
@@ -100,6 +101,28 @@ export function setQueryMetadata(metadata: Map<string, any>) {
         QueryGrid: {
             ...getGlobalState(),
             metadata
+        }
+    });
+}
+
+/**
+ * Get the list of DataViewInfos from the global state for a given schemaQuery key
+ * @param schemaQueryKey Key for the charts map based on a schemaQuery
+ */
+export function getCharts(schemaQueryKey: string) {
+    return getGlobalState().charts.get(schemaQueryKey);
+}
+
+/**
+ * Sets the global state list of chart DataViewInfos for a given schemaQuery key
+ * @param schemaQueryKey Key for the charts map based on a schemaQuery
+ * @param dataViewInfos List of DataViewInfo objects defining the charts for the given key
+ */
+export function updateCharts(schemaQueryKey: string, dataViewInfos: List<DataViewInfo>) {
+    setGlobal({
+        QueryGrid: {
+            ...getGlobalState(),
+            charts: getGlobalState().charts.set(schemaQueryKey, dataViewInfos)
         }
     });
 }

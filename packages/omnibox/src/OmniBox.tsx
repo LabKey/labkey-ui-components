@@ -153,12 +153,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         return inputValue;
     }
 
-    refs: {
-        input: any
-    };
-
     _blurTimeout: number = undefined;
     _instancePrefix: string = undefined;
+    _omniboxInput: React.RefObject<any>;
 
     constructor(props: OmniBoxProps) {
         super(props);
@@ -174,6 +171,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.handleOptionFocus = this.handleOptionFocus.bind(this);
         this.removeActionValue = this.removeActionValue.bind(this);
         this.renderMenuOption = this.renderMenuOption.bind(this);
+
+        this._omniboxInput = React.createRef();
 
         this.state = {
             actionValues: props.values ? props.values : [],
@@ -426,8 +425,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     }
 
     focus() {
-        if (!this.refs.input) return;
-        this.refs.input.focus();
+        if (!this._omniboxInput.current) {
+            return;
+        }
+        this._omniboxInput.current.focus();
 
         if (this.props.openAfterFocus) {
             this.setState({
@@ -797,7 +798,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         const inputProps = Object.assign({}, this.props.inputProps, {
             className: classNames('OmniBox-input', this.props.inputProps.className),
-            // ref: 'input', // TODO this is giving a JS error, figure out why and if it is happening in Biologics
+            ref: this._omniboxInput,
             minWidth: '5px',
             onBlur: this.handleInputBlur,
             onChange: this.handleInputChange,
@@ -805,7 +806,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             value: this.renderInputValue()
         });
 
-        return <AutosizeInput {...inputProps} />;
+        return <AutosizeInput {...inputProps}/>;
     }
 
     renderInputValue(): string {

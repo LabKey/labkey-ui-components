@@ -36,7 +36,6 @@ export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
 
 interface QueryGridBarProps {
     buttons?: QueryGridBarButtons
-    location?: Location
     model: QueryGridModel
 }
 
@@ -53,7 +52,7 @@ interface QueryGridBarProps {
 export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
 
     render() {
-        const { buttons, location, model } = this.props;
+        const { buttons, model } = this.props;
 
         const box = model && model.showSearchBox ? (
             <URLBox
@@ -62,7 +61,7 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
         ) : null;
 
         const paging = model && model.isPaged ? (
-            <QueryGridPaging model={model} location={location}/>
+            <QueryGridPaging model={model}/>
         ) : null;
 
         const exportBtn = model ? (
@@ -96,13 +95,13 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
         const layout = buttons || chart ? layouts.STANDARD : layouts.NO_BUTTONS;
         const buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
-        const selectionDetails = <GridSelectionBanner containerCls="bottom-spacing" model={model}/>;
+        const selectionDetails = <GridSelectionBanner containerCls="QueryGrid-bottom-spacing" model={model}/>;
 
         return (
             <div>
                 {/* On most layouts, render side-by-side */}
                 <div className="hidden-md hidden-xs hidden-sm">
-                    <div className="row bottom-spacing">
+                    <div className="row QueryGrid-bottom-spacing">
                         {layout.LEFT && (
                             <div className={layout.LEFT + ''}>
                                 <div className="btn-group">
@@ -131,7 +130,7 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
 
                 {/* On medium and x-small layout, render two rows */}
                 <div className="visible-md visible-xs visible-sm">
-                    <div className="row bottom-spacing">
+                    <div className="row QueryGrid-bottom-spacing">
                         {layout.MED_SM_LEFT && (
                             <div className={layout.MED_SM_LEFT + ''}>
                                 <div className="btn-group">
@@ -148,7 +147,7 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
                             {rightContent}
                         </div>
                     </div>
-                    <div className="row bottom-spacing">
+                    <div className="row QueryGrid-bottom-spacing">
                         <div className={layout.MED_SM_CENTER}>
                             {box}
                         </div>

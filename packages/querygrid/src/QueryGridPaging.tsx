@@ -11,7 +11,6 @@ import { loadPage } from './actions'
 
 
 interface Props {
-    location?: Location
     model: QueryGridModel
     showCounts?: boolean
 }
@@ -43,13 +42,13 @@ export class QueryGridPaging extends React.Component<Props, any> {
     }
 
     nextPage() {
-        const { location, model } = this.props;
-        loadPage(model, model.pageNumber + 1, location);
+        const { model } = this.props;
+        loadPage(model, model.pageNumber + 1);
     }
 
     prevPage() {
-        const { location, model } = this.props;
-        loadPage(model, model.pageNumber - 1, location);
+        const { model } = this.props;
+        loadPage(model, model.pageNumber - 1);
     }
 
     render() {

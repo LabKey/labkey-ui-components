@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Record, Map, OrderedSet, Set } from 'immutable'
-import { Location } from 'history'
 import { Filter } from '@labkey/api'
 
 import * as actions from './actions'
@@ -542,7 +541,7 @@ export function getStateQueryGridModel(
 }
 
 export interface IGridLoader {
-    fetch: (model: QueryGridModel, location: Location) => Promise<IGridResponse>
+    fetch: (model: QueryGridModel) => Promise<IGridResponse>
     fetchSelection?: (model: QueryGridModel) => Promise<IGridSelectionResponse>
 }
 

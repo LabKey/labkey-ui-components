@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'reactn'
-import { Location } from 'history'
 import { List } from 'immutable'
 
 import { Alert } from './components/Alert'
@@ -13,9 +12,10 @@ import { QueryGrid } from './QueryGrid'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { QueryGridBar, QueryGridBarButtons } from './QueryGridBar'
 
+import './theme/index.scss'
+
 interface Props {
     model: QueryGridModel | List<QueryGridModel>
-    location?: Location,
     buttons?: QueryGridBarButtons
     header?: React.ReactNode
     message?: any

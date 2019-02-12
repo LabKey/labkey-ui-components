@@ -5,6 +5,7 @@
  */
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
+import sass from "rollup-plugin-sass";
 import typescript from 'rollup-plugin-typescript2';
 
 const input = 'src/index.ts';
@@ -33,7 +34,10 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript()
+            typescript(),
+            sass({
+                output: 'dist/querygrid.css'
+            })
         ]
     },
     {
@@ -47,7 +51,8 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript()
+            typescript(),
+            sass()
         ]
     },
     {
@@ -62,7 +67,8 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript()
+            typescript(),
+            sass()
         ]
     }
 ]

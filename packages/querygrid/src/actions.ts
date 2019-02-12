@@ -290,7 +290,7 @@ export function load(model: QueryGridModel) {
 
     let newModel = updateQueryGridModel(model, {isLoading: true});
 
-    newModel.loader.fetch(newModel, getLocation()).then(response => {
+    newModel.loader.fetch(newModel).then(response => {
         // TODO not yet ready to handle the editable case for the shared component
         // load data into editor
         // if (newModel.editable) {

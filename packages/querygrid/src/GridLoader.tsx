@@ -22,7 +22,7 @@ import { getSelected } from './actions'
 
 class GridLoader implements IGridLoader {
 
-    fetch(model: QueryGridModel, location: Location): Promise<IGridResponse> {
+    fetch(model: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             return selectRows({
                 schemaName: model.schema,

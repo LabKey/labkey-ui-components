@@ -10,8 +10,8 @@ module.exports = {
     scripts: {
         build: {
             default: series(
-                    rimraf('dist'),
-                    'rollup -c'
+                rimraf('dist'),
+                'rollup -c'
             ),
             description: 'Clean dist directory and run all builds'
         },

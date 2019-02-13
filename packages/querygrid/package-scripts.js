@@ -20,9 +20,9 @@ module.exports = {
         },
         cleanAll: {
             default: series(
-                    rimraf('.rpt2_cache'),
-                    rimraf('node_modules'),
-                    rimraf('dist')
+                rimraf('.rpt2_cache'),
+                rimraf('node_modules'),
+                rimraf('dist')
             )
         }
     }

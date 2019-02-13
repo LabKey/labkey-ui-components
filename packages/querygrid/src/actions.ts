@@ -47,6 +47,8 @@ export function init(model: QueryGridModel) {
             // }
 
             load(newModel);
+        }).catch(reason => {
+            setError(newModel, reason.message);
         });
     }
     else if (hasURLChange(newModel) && newModel.bindURL) {

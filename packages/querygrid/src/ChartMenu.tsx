@@ -126,8 +126,9 @@ export class ChartMenu extends React.PureComponent<Props, State> {
     }
 
     getChartButtonTitle() {
-        const { charts } = this.props;
-        return charts && charts != null ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
+        const { charts, model } = this.props;
+        const chartsLoaded = charts && charts != null;
+        return chartsLoaded || model.isError ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
     }
 
     render() {

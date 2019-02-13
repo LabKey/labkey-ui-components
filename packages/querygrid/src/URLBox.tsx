@@ -73,7 +73,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
     onOmniBoxChange(actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) {
         const { queryModel} = this.props;
-        const { location } = this.state;
+        const location = getLocation();
 
         let params = Map<string, string>().asMutable();
 
@@ -87,10 +87,10 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         }
 
         if (location && location.query) {
-            Object.keys(location.query).forEach(q => {
+            location.query.map((value, key) => {
                 for (let i=0; i < boxActions.length; i++) {
-                    if (!params.has(q) && boxActions[i].matchParam(q, location.query[q])) {
-                        params.set(q, undefined);
+                    if (!params.has(key) && boxActions[i].matchParam(key, value)) {
+                        params.set(key, undefined);
                     }
                 }
             });
@@ -117,7 +117,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
     mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
         const { queryModel } = this.props;
-        const { location } = this.state;
+        const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
 
         let actions: Array<Action> = [];
@@ -134,22 +134,22 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
         // match each parameter against an action
         if (location && location.query) {
-            Object.keys(location.query).forEach((q) => {
+            location.query.map((value: any, key) => {
                 let paramValues: Array<string>;
 
-                if (location.query[q] instanceof Array) {
-                    paramValues = location.query[q];
+                if (value instanceof Array) {
+                    paramValues = value;
                 }
                 else {
-                    paramValues = [location.query[q]];
+                    paramValues = [value];
                 }
 
                 for (let a=0; a < actions.length; a++) {
                     for (let p=0; p < paramValues.length; p++) {
-                        if (actions[a].matchParam(q, paramValues[p])) {
+                        if (actions[a].matchParam(key, paramValues[p])) {
 
                             // location returns decoded parameters
-                            let values = actions[a].parseParam(q, paramValues[p]);
+                            let values = actions[a].parseParam(key, paramValues[p]);
 
                             for (let v=0; v < values.length; v++) {
 
@@ -186,12 +186,16 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     render() {
+        const { queryModel } = this.props;
         const { actions, values } = this.mapParamsToActionValues();
 
         return (
-            <OmniBox actions={actions}
-                     onChange={this.onOmniBoxChange}
-                     values={values} />
+            <OmniBox
+                actions={actions}
+                onChange={this.onOmniBoxChange}
+                values={values}
+                disabled={queryModel.isError}
+            />
         )
     }
 }

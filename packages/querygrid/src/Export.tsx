@@ -45,7 +45,9 @@ export class Export extends React.Component<Props, any> {
                     id={`export-drop-${model.getId()}`}
                     noCaret
                     pullRight
-                    title={<span className="fa fa-download"/>}>
+                    title={<span className="fa fa-download"/>}
+                    disabled={model.isError}
+                >
                     <MenuItem header>
                         Export {model.selectedQuantity > 0 ? "Selected" : ""}
                     </MenuItem>

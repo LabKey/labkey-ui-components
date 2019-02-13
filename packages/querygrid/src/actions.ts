@@ -86,7 +86,7 @@ export function gridSelectAll(model: QueryGridModel) {
 
     const id = model.getId();
 
-    return selectAll(id, model.schema, model.query, model.getFilters()).then(data => {
+    selectAll(id, model.schema, model.query, model.getFilters()).then(data => {
 
         if (data && data.count > 0) {
             return getSelected(id).then(response => {

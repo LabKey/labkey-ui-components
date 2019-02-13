@@ -6,6 +6,8 @@ import React from 'reactn'
 import { Button } from 'react-bootstrap'
 import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/models'
 
+import { gridSelectAll } from '../actions'
+
 interface Props {
     containerCls?: string
     model: QueryGridModel
@@ -21,7 +23,7 @@ export class GridSelectionBanner extends React.Component<Props, any> {
 
     selectAll()
     {
-        this.props.model.selectAll();
+        gridSelectAll(this.props.model);
     }
 
     render() {

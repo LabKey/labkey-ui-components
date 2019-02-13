@@ -3,12 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'reactn'
-import { Map, List } from 'immutable'
+import { List } from 'immutable'
+import { QueryGridModel, resolveSchemaQuery } from '@glass/models'
 
-import { resolveSchemaQuery } from './query/utils'
-import { fetchCharts } from './actions'
-import { DataViewInfo, QueryGridModel } from './model'
-import { getCharts, updateCharts } from './reducers'
+import { fetchCharts } from '../actions'
+import { DataViewInfo } from '../model'
+import { getCharts, updateCharts } from '../global'
 import { ChartMenu } from './ChartMenu'
 
 interface Props {

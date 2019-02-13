@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -29,7 +29,9 @@
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
     "@glass/grid": "0.0.2",
-    "@glass/omnibox": "0.0.2",
+    "@glass/models": "0.0.1",
+    "@glass/omnibox": "0.0.3",
+    "@glass/utils": "0.0.1",
     "@labkey/api": "0.0.9",
     "history": "4.7.2",
     "normalizr": "3.3.0",

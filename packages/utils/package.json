@@ -1,0 +1,38 @@
+{
+  "name": "@glass/utils",
+  "version": "0.0.1",
+  "description": "Utility functions and components for LabKey views",
+  "main": "dist/utils.cjs.js",
+  "module": "dist/utils.es.js",
+  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "nps build",
+    "clean": "nps clean",
+    "cleanAll": "nps cleanAll",
+    "test": "cross-env NODE_ENV=test jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LabKey/glass-components.git"
+  },
+  "author": "Cory Nathe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LabKey/glass-components/issues"
+  },
+  "publishConfig": {
+    "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+  },
+  "homepage": "https://github.com/LabKey/glass-components#readme",
+  "dependencies": {
+    "react-bootstrap": "0.32.4"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.2",
+    "react": "^16.0",
+    "react-dom": "^16.0"
+  }
+}

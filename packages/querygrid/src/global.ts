@@ -4,12 +4,10 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
+import { GRID_CHECKBOX_OPTIONS, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/models'
 
-import { SchemaQuery } from './query/model'
-import { resolveSchemaQuery } from './query/utils'
-import { DataViewInfo, QueryGridModel } from './model'
 import { initBrowserHistoryState } from "./util/global";
-import { CHECKBOX_OPTIONS } from "./query/constants";
+import { DataViewInfo } from './model'
 
 /**
  * Initialize the global state object for this package.
@@ -133,7 +131,7 @@ function getSelectedState(
     selected: List<string>,
     maxRows: number,
     totalRows: number
-): CHECKBOX_OPTIONS {
+): GRID_CHECKBOX_OPTIONS {
 
     const selectedOnPage: number = dataIds.filter((id) => selected.indexOf(id) !== -1).size,
         totalSelected: number = selected.size;
@@ -143,14 +141,14 @@ function getSelectedState(
         totalRows === totalSelected && totalRows !== 0 ||
         selectedOnPage === dataIds.size && selectedOnPage > 0
     ) {
-        return CHECKBOX_OPTIONS.ALL;
+        return GRID_CHECKBOX_OPTIONS.ALL;
     }
     else if (totalSelected > 0) {
         // if model has any selected show checkbox as indeterminate
-        return CHECKBOX_OPTIONS.SOME;
+        return GRID_CHECKBOX_OPTIONS.SOME;
     }
 
-    return CHECKBOX_OPTIONS.NONE;
+    return GRID_CHECKBOX_OPTIONS.NONE;
 }
 
 export interface IGridSelectionResponse {

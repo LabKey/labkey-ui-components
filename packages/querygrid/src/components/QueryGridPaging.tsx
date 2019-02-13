@@ -4,10 +4,10 @@
  */
 import React from 'reactn'
 import { Button } from 'react-bootstrap'
+import { QueryGridModel } from '@glass/models'
+import { Tip } from '@glass/utils'
 
-import { Tip } from './components/Tip'
-import { QueryGridModel } from './model'
-import { loadPage } from './actions'
+import { loadPage } from '../actions'
 
 
 interface Props {

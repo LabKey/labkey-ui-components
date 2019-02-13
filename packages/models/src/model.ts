@@ -2,8 +2,19 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, Record } from 'immutable'
+import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
 import { Filter } from '@labkey/api'
+import { intersect, toLowerSafe } from '@glass/utils'
+
+import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './constants'
+import { resolveKey } from "./utils";
+
+const emptyList = List<string>();
+const emptyColumns = List<QueryColumn>();
+const emptyRow = Map<string, any>();
+
+export enum QueryInfoStatus { ok, notFound, unknown }
+enum MessageLevel { info, warning, error }
 
 export class SchemaQuery extends Record({
     schemaName: undefined,
@@ -218,16 +229,398 @@ export class QueryColumn extends Record({
     }
 }
 
-export enum QueryInfoStatus { ok, notFound, unknown }
+export class QueryLookup extends Record({
+    // server defaults
+    displayColumn: undefined,
+    isPublic: false,
+    keyColumn: undefined,
+    junctionLookup: undefined,
+    multiValued: undefined,
+    queryName: undefined,
+    schemaName: undefined,
+    table: undefined
+}) {
+    displayColumn: string;
+    isPublic: boolean;
+    junctionLookup: string; // name of the column on the junction table that is also a lookup
+    keyColumn: string;
+    multiValued: string; // can be "junction", "value" or undefined. Server only support "junction" at this time
+    //public: boolean; -- NOT ALLOWING DUE TO KEYWORD -- USE isPublic
+    queryName: string;
+    //schema: string; -- NOT ALLOWING -- USE schemaName
+    schemaName: string;
+    //table: string; -- NOT ALLOWING -- USE queryName
 
-export function insertColumnFilter(col: QueryColumn): boolean {
-    return (
-        col &&
-        col.removeFromViews !== true &&
-        col.shownInInsertView === true &&
-        col.userEditable === true &&
-        col.fieldKeyArray.length === 1
-    );
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+export interface IQueryGridModel {
+    id?: string
+    schema?: string
+    query?: string
+
+    allowSelection?: boolean
+    baseFilters?: List<Filter.Filter>
+    bindURL?: boolean
+    data?: Map<any, Map<string, any>>
+    dataIds?: List<any>
+    displayColumns?: List<string>
+    editable?: boolean
+    editing?: boolean
+    filterArray?: List<Filter.Filter>
+    isError?: boolean
+    isLoaded?: boolean
+    isLoading?: boolean
+    isPaged?: boolean
+    keyValue?: any
+    loader?: IGridLoader
+    maxRows?: number
+    message?: string
+    offset?: number
+    omittedColumns?: List<string>
+    pageNumber?: number
+    queryInfo?: QueryInfo
+    requiredColumns?: List<string>
+    showSearchBox?: boolean
+    sortable?: boolean
+    sorts?: string
+    selectedIds?: List<string>
+    selectedLoaded?: boolean
+    selectedState?: GRID_CHECKBOX_OPTIONS
+    selectedQuantity?: number
+    title?: string
+    totalRows?: number
+    urlParams?: List<string>
+    urlPrefix?: string
+    view?: string
+}
+
+export interface IGridLoader {
+    fetch: (model: QueryGridModel) => Promise<IGridResponse>
+    fetchSelection?: (model: QueryGridModel) => Promise<IGridSelectionResponse>
+}
+
+export interface IGridResponse {
+    data: Map<any, any>,
+    dataIds: List<any>,
+    totalRows?: number
+}
+
+export interface IGridSelectionResponse {
+    selectedIds: List<any>
+}
+
+export class QueryGridModel extends Record({
+    id: undefined,
+    schema: undefined,
+    query: undefined,
+
+    allowSelection: true,
+    baseFilters: List<Filter.Filter>(),
+    bindURL: true,
+    data: Map<any, Map<string, any>>(),
+    dataIds: List<any>(),
+    displayColumns: undefined,
+    editable: false,
+    editing: false,
+    filterArray: List<Filter.Filter>(),
+    isError: false,
+    isLoaded: false,
+    isLoading: false,
+    isPaged: false,
+    keyValue: undefined,
+    loader: undefined,
+    maxRows: 20,
+    message: undefined,
+    offset: 0,
+    omittedColumns: emptyList,
+    pageNumber: 1,
+    queryInfo: undefined,
+    requiredColumns: emptyList,
+    selectedIds: emptyList,
+    selectedLoaded: false,
+    selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+    selectedQuantity: 0,
+    showSearchBox: true,
+    showViewSelector: true,
+    showChartSelector: true,
+    sortable: true,
+    sorts: undefined,
+    title: undefined,
+    totalRows: 0,
+    urlParams: List<string>(['p']), // page number parameter
+    urlParamValues: Map<string, any>(),
+    urlPrefix: undefined,
+    view: undefined,
+}) implements IQueryGridModel {
+    id: string;
+    schema: string;
+    query: string;
+
+    allowSelection: boolean;
+    baseFilters: List<Filter.Filter>;
+    bindURL: boolean;
+    data: Map<any, Map<string, any>>;
+    dataIds: List<any>;
+    displayColumns: List<string>;
+    editable: boolean;
+    editing: boolean;
+    filterArray: List<Filter.Filter>;
+    isError: boolean;
+    isLoaded: boolean;
+    isLoading: boolean;
+    isPaged: boolean;
+    keyValue: any;
+    maxRows: number;
+    message: string;
+    offset: number;
+    omittedColumns: List<string>;
+    pageNumber: number;
+    queryInfo: QueryInfo;
+    requiredColumns: List<string>;
+    showSearchBox: boolean;
+    showViewSelector: boolean;
+    showChartSelector: boolean;
+    sortable: boolean;
+    sorts: string;
+    selectedIds: List<string>;
+    selectedLoaded: boolean;
+    selectedState: GRID_CHECKBOX_OPTIONS;
+    selectedQuantity: number;
+    title: string;
+    totalRows: number;
+    urlParams: List<string>;
+    urlParamValues: Map<string, any>;
+    urlPrefix: string;
+    view: string;
+
+    constructor(values?: IQueryGridModel) {
+        super(values);
+
+        if (LABKEY.devMode) {
+            // ensure that requiredColumns and omittedColumns do not intersect
+            let i = intersect(this.requiredColumns, this.omittedColumns);
+            if (i.size > 0) {
+                console.log('Intersection', i.toJS());
+                throw new Error('Required and omitted columns cannot intersect. Model id: "' + this.id + '". See console for colliding columns.');
+            }
+        }
+    }
+
+    canImport() {
+        return this.showImportDataButton().get('canImport');
+    }
+
+    createParam(param: string, useDefault?: string): string {
+        return this.urlPrefix ? [this.urlPrefix, param].join('.') : (useDefault ? [useDefault, param].join('.') : param);
+    }
+
+    getColumn(fieldKey: string): QueryColumn {
+        if (this.queryInfo) {
+            return this.queryInfo.getColumn(fieldKey);
+        }
+        return undefined;
+    }
+
+    /**
+     * Returns the set of display columns for this QueryGridModel based on its configuration.
+     * @returns {List<QueryColumn>}
+     */
+    getColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            let cols = this.queryInfo.getDisplayColumns(this.view);
+
+            if (this.omittedColumns.size > 0) {
+                const lowerOmit = toLowerSafe(this.omittedColumns);
+                return cols.filter(c => c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase())).toList();
+            }
+
+            return cols;
+        }
+
+        return emptyColumns;
+    }
+
+    getData(): List<any> {
+        return this.dataIds.map((i) => {
+            if (this.allowSelection) {
+                const isChecked = this.selectedIds.indexOf(i) !== -1;
+                if (isChecked) {
+                    // only set if row is currently checked, otherwise defaults to false
+                    return this.data.get(i).merge({
+                        [GRID_SELECTION_INDEX]: isChecked
+                    });
+                }
+            }
+
+            return this.data.get(i);
+
+        }).toList();
+    }
+
+    getExportColumnsString(): string {
+        // does not include required columns -- app only
+        return this.getColumns().map(c => c.fieldKey).join(',');
+    }
+
+    getFilters(): List<Filter.Filter> {
+        if (this.queryInfo) {
+            if (this.keyValue !== undefined) {
+                if (this.queryInfo.pkCols.size === 1) {
+                    return List([
+                        Filter.create(this.queryInfo.pkCols.first(), this.keyValue)
+                    ]);
+                }
+                console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
+            }
+
+            return this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray).toList();
+        }
+
+        return this.baseFilters.concat(this.filterArray).toList();
+    }
+
+    getId(): string {
+        return this.id;
+    }
+
+    getInsertColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            return this.queryInfo.getInsertColumns();
+        }
+        return emptyColumns;
+    }
+
+    getKeyColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            return this.queryInfo.getPkCols();
+        }
+        return emptyColumns;
+    }
+
+    getMaxRowIndex() {
+        let max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
+
+        if (max > this.totalRows) {
+            return this.totalRows;
+        }
+
+        return max;
+    }
+
+    getMaxRows() {
+        return this.isPaged ? this.maxRows : undefined;
+    }
+
+    getMinRowIndex() {
+        return this.getOffset() + 1;
+    }
+
+    getModelName() {
+        return resolveKey(this.schema, this.query);
+    }
+
+    getOffset() {
+        return this.pageNumber > 1 ? (this.pageNumber - 1) * this.maxRows : 0;
+    }
+
+    getRequestColumnsString(): string {
+        let fieldKeys = this.requiredColumns
+            .concat(this.getKeyColumns().map(c => c.fieldKey))
+            .concat(this.getColumns().map(c => c.fieldKey));
+
+        if (this.omittedColumns.size > 0) {
+            const lowerOmit = toLowerSafe(this.omittedColumns);
+            fieldKeys = fieldKeys.filter(fieldKey => fieldKey && !lowerOmit.includes(fieldKey.toLowerCase()));
+        }
+
+        return fieldKeys.join(',');
+    }
+
+    getRow(index?: number): Map<string, any> {
+        if (index === undefined) {
+            index = 0;
+        }
+
+        if (this.dataIds.size > index) {
+            return this.data.get(this.dataIds.get(index));
+        }
+
+        return emptyRow;
+    }
+
+    getSorts(): string {
+        if (this.view && this.queryInfo) {
+            let sorts = this.queryInfo.getSorts(this.view);
+
+            if (sorts.size > 0) {
+                // user sorts are respected over built-in view sorts
+                let allSorts = OrderedSet<string>(this.sorts ? this.sorts.split(',') : []).asMutable();
+                sorts.forEach(sort => {
+                    allSorts.add(sort.dir === '-' ? '-' + sort.fieldKey : sort.fieldKey);
+                });
+                return allSorts.toArray().join(',');
+            }
+        }
+
+        return this.sorts;
+    }
+
+    getTitle(): string {
+        if (this.queryInfo) {
+            return this.queryInfo.queryLabel;
+        }
+
+        return this.title;
+    }
+
+    /**
+     * Retrieves the value for a given dataId/column. Defaults to retrieving the "value" from the row, however,
+     * it can return any part that is desired (e.g. "displayValue" or "formattedValue") by specifying the "part" argument.
+     */
+    getValue(column: QueryColumn | string, dataId: string, part?: string): any {
+        if (!column || (dataId === null || dataId === undefined)) {
+            return undefined;
+        }
+
+        const col: QueryColumn = (typeof column === 'string') ? this.getColumn(column) : column;
+
+        // assumes QueryColumn fieldKey casing is same as data fieldKey casing
+        return this.data.getIn([dataId, col.fieldKey, part ? part : 'value']);
+    }
+
+    showImportDataButton(): Map<any, any> {
+        const query = this.queryInfo;
+
+        if (query) {
+            return Map({
+                canImport: query.showInsertNewButton && query.importUrl && !query.importUrlDisabled,
+                importUrl: query.importUrl
+            });
+        }
+
+        return Map({
+            canImport: false,
+            importUrl: undefined
+        });
+    }
+
+    showInsertNewButton(): Map<any, any> {
+        const query = this.queryInfo;
+
+        if (query) {
+            return Map({
+                canInsert: query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled,
+                insertUrl: query.insertUrl
+            });
+        }
+        return Map({
+            canInsert: false,
+            insertUrl: false
+        });
+    }
 }
 
 // commented out attributes are not used in app
@@ -433,33 +826,6 @@ export class QueryInfo extends Record({
     }
 }
 
-export class QueryLookup extends Record({
-    // server defaults
-    displayColumn: undefined,
-    isPublic: false,
-    keyColumn: undefined,
-    junctionLookup: undefined,
-    multiValued: undefined,
-    queryName: undefined,
-    schemaName: undefined,
-    table: undefined
-}) {
-    displayColumn: string;
-    isPublic: boolean;
-    junctionLookup: string; // name of the column on the junction table that is also a lookup
-    keyColumn: string;
-    multiValued: string; // can be "junction", "value" or undefined. Server only support "junction" at this time
-    //public: boolean; -- NOT ALLOWING DUE TO KEYWORD -- USE isPublic
-    queryName: string;
-    //schema: string; -- NOT ALLOWING -- USE schemaName
-    schemaName: string;
-    //table: string; -- NOT ALLOWING -- USE queryName
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-}
-
 export class QuerySort extends Record({
     dir: '',
     fieldKey: undefined
@@ -590,6 +956,22 @@ export class ViewInfo extends Record({
     }
 }
 
+class LastActionStatus extends Record({
+    type: undefined,
+    date: undefined,
+    level: MessageLevel.info,
+    message: undefined
+}) {
+    type: string;
+    date: Date;
+    level: MessageLevel;
+    message: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
 function getFiltersFromView(rawViewInfo): List<Filter.Filter> {
     let filters = List<Filter.Filter>().asMutable();
 
@@ -623,20 +1005,12 @@ function getSortsFromView(rawViewInfo): List<QuerySort> {
     return List<QuerySort>();
 }
 
-export enum MessageLevel { info, warning, error }
-
-export class LastActionStatus extends Record({
-    type: undefined,
-    date: undefined,
-    level: MessageLevel.info,
-    message: undefined
-}) {
-    type: string;
-    date: Date;
-    level: MessageLevel;
-    message: string;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
+function insertColumnFilter(col: QueryColumn): boolean {
+    return (
+        col &&
+        col.removeFromViews !== true &&
+        col.shownInInsertView === true &&
+        col.userEditable === true &&
+        col.fieldKeyArray.length === 1
+    );
 }

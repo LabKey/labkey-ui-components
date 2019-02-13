@@ -4,10 +4,7 @@
  */
 import React from 'reactn'
 import { Button } from 'react-bootstrap'
-
-import { QueryGridModel } from './model'
-import { CHECKBOX_OPTIONS } from './query/constants'
-
+import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/models'
 
 interface Props {
     containerCls?: string
@@ -33,7 +30,7 @@ export class GridSelectionBanner extends React.Component<Props, any> {
             const {maxRows, selectedQuantity, selectedState, totalRows} = model;
 
             const allOnModel = selectedQuantity === totalRows && totalRows > 0,
-                allOnPage = selectedState === CHECKBOX_OPTIONS.ALL,
+                allOnPage = selectedState === GRID_CHECKBOX_OPTIONS.ALL,
                 hasMessage = (allOnModel || allOnPage) && totalRows > maxRows;
 
             let message;

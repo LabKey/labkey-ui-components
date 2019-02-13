@@ -5,7 +5,7 @@
 import { SchemaQuery } from './model'
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
-export function decodePart(s: string): string {
+function decodePart(s: string): string {
     return s.replace(/\$P/ig, '.')
         .replace(/\$C/ig, ',')
         .replace(/\$T/ig, '~')
@@ -16,7 +16,7 @@ export function decodePart(s: string): string {
 }
 
 // 36009: Case-insensitive variant of QueryKey.encodePart
-export function encodePart(s: string): string {
+function encodePart(s: string): string {
     return s.replace(/\$/ig, '$D')
         .replace(/\//ig, '$S')
         .replace(/\&/ig, '$A')

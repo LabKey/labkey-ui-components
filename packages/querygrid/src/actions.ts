@@ -5,24 +5,23 @@
 import { List, Map, Set } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
 
 import { getQueryDetails } from './query/api'
-import { CHECKBOX_OPTIONS, EXPORT_TYPES } from './query/constants'
 import { isEqual } from './query/filter'
-import { QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from './query/model'
 import { buildURL, getSortFromUrl } from './util/ActionURL'
-import { DataViewInfo, QueryGridModel, VisualizationConfigModel } from './model'
+import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
+import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES } from "./constants";
+import { DataViewInfo, VisualizationConfigModel } from './model'
 import { bindColumnRenderers } from './renderers'
 import {
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
     updateQueryGridModel,
     updateSelections
-} from './reducers'
-import { FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER } from "./constants";
-import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
+} from './global'
 
-export function init(model: QueryGridModel) {
+export function gridInit(model: QueryGridModel) {
     let newModel = updateQueryGridModel(model, {}, false);
 
     if (!newModel.isLoaded) {
@@ -46,14 +45,14 @@ export function init(model: QueryGridModel) {
             //     initEditorModel(newModel);
             // }
 
-            load(newModel);
+            gridLoad(newModel);
         }).catch(reason => {
             setError(newModel, reason.message);
         });
     }
     else if (hasURLChange(newModel) && newModel.bindURL) {
         newModel = updateQueryGridModel(newModel, bindURLProps(newModel));
-        load(newModel);
+        gridLoad(newModel);
     }
 }
 
@@ -116,7 +115,7 @@ export function sort(model: QueryGridModel, columnIndex: string, dir: string) {
             sorts: dir + columnIndex // TODO: Support multiple sorts
         });
 
-        load(newModel)
+        gridLoad(newModel)
     }
 }
 
@@ -132,7 +131,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
         setSelected(model.getId(), checked, pkValue).then(response => {
             const stringKey = pkValue !== undefined ? pkValue.toString(): pkValue;
             const selected: List<string> = model.selectedIds;
-            let selectedState: CHECKBOX_OPTIONS;
+            let selectedState: GRID_CHECKBOX_OPTIONS;
 
             if (checked) {
                 // if one is checked, value cannot be 'NONE'
@@ -143,7 +142,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                     return keyVal === stringKey || selected.indexOf(keyVal) !== -1;
                 });
 
-                selectedState = allSelected ? CHECKBOX_OPTIONS.ALL : CHECKBOX_OPTIONS.SOME;
+                selectedState = allSelected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.SOME;
             }
             else {
                 // if unchecking, value cannot be 'ALL'
@@ -153,7 +152,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                     return keyVal !== stringKey && selected.indexOf(keyVal) !== -1;
                 });
 
-                selectedState = someSelected ? CHECKBOX_OPTIONS.SOME : CHECKBOX_OPTIONS.NONE;
+                selectedState = someSelected ? GRID_CHECKBOX_OPTIONS.SOME : GRID_CHECKBOX_OPTIONS.NONE;
             }
 
             const selectedIds = checked ? selected.push(stringKey) : selected.delete(selected.findIndex(item => item === stringKey));
@@ -216,7 +215,7 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
         }
         else {
             let newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
-            load(newModel);
+            gridLoad(newModel);
         }
     }
 }
@@ -228,7 +227,7 @@ export function refresh(model: QueryGridModel) {
         setGridUnselected(newModel);
     }
 
-    load(newModel);
+    gridLoad(newModel);
 }
 
 export function reloadQueryGridModel(model: QueryGridModel) {
@@ -236,7 +235,7 @@ export function reloadQueryGridModel(model: QueryGridModel) {
         isLoading: true,
         ...bindURLProps(model)
     });
-    load(newModel);
+    gridLoad(newModel);
 }
 
 // Takes a List<Filter.Filter> and remove each filter from the grid model
@@ -267,7 +266,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<any>, all: b
             }
         }
 
-        load(newModel);
+        gridLoad(newModel);
     }
 }
 
@@ -278,12 +277,12 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>) 
     else {
         if (filters.count()) {
             let newModel = updateQueryGridModel(model, {filterArray: model.filterArray.merge(filters)});
-            load(newModel);
+            gridLoad(newModel);
         }
     }
 }
 
-export function load(model: QueryGridModel) {
+export function gridLoad(model: QueryGridModel) {
     // validate view exists prior to initiating request
     if (model.view && model.queryInfo && !model.queryInfo.getView(model.view)) {
         setError(model, `Unable to find view "${model.view}".`);
@@ -464,9 +463,9 @@ export function exportRows(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options
     form.trigger( "submit" );
 }
 
-export function doExport(model: QueryGridModel, type: EXPORT_TYPES) {
+export function gridExport(model: QueryGridModel, type: EXPORT_TYPES) {
     const { allowSelection, selectedState } = model;
-    const showRows = allowSelection && selectedState !== CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
+    const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
 
     exportRows(type, SchemaQuery.create(model.schema, model.query, model.view), {
         filters: model.getFilters(),
@@ -477,7 +476,7 @@ export function doExport(model: QueryGridModel, type: EXPORT_TYPES) {
     });
 }
 
-export function selectView(model: QueryGridModel, view: ViewInfo) {
+export function gridSelectView(model: QueryGridModel, view: ViewInfo) {
     const viewName = view.isDefault ? undefined : view.name;
     replaceParameter(getLocation(), model.createParam('view'), viewName);
 }
@@ -525,7 +524,7 @@ function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
     return queryInfo;
 }
 
-function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows: number, totalRows: number): CHECKBOX_OPTIONS {
+function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows: number, totalRows: number): GRID_CHECKBOX_OPTIONS {
 
     const selectedOnPage: number = dataIds.filter((id) => selected.indexOf(id) !== -1).size,
         totalSelected: number = selected.size;
@@ -535,14 +534,14 @@ function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows
         totalRows === totalSelected && totalRows !== 0 ||
         selectedOnPage === dataIds.size && selectedOnPage > 0
     ) {
-        return CHECKBOX_OPTIONS.ALL;
+        return GRID_CHECKBOX_OPTIONS.ALL;
     }
     else if (totalSelected > 0) {
         // if model has any selected show checkbox as indeterminate
-        return CHECKBOX_OPTIONS.SOME;
+        return GRID_CHECKBOX_OPTIONS.SOME;
     }
 
-    return CHECKBOX_OPTIONS.NONE;
+    return GRID_CHECKBOX_OPTIONS.NONE;
 }
 
 function fetchSelectedIfNeeded(model: QueryGridModel) {
@@ -652,7 +651,7 @@ function setGridSelected(model: QueryGridModel, checked: boolean) {
         updateQueryGridModel(model, {
             selectedIds: checked ? currentSelected.merge(dataIds) : List<string>(),
             selectedQuantity: response.count,
-            selectedState: checked ? CHECKBOX_OPTIONS.ALL : CHECKBOX_OPTIONS.NONE
+            selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
         });
     });
 }
@@ -662,7 +661,7 @@ function setGridUnselected(model: QueryGridModel) {
         updateQueryGridModel(model, {
             selectedIds: List<string>(),
             selectedQuantity: 0,
-            selectedState: CHECKBOX_OPTIONS.NONE
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE
         });
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong'};

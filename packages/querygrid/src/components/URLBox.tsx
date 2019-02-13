@@ -5,11 +5,10 @@
 import * as React from 'react'
 import { List, Map } from 'immutable'
 import { Location } from 'history'
+import { QueryColumn, QueryGridModel } from '@glass/models'
 import { OmniBox, Action, ActionValue, ActionValueCollection, FilterAction, SearchAction, SortAction, ViewAction } from '@glass/omnibox'
 
-import { QueryColumn } from './query/model'
-import { getLocation, replaceParameters } from "./util/URL";
-import { QueryGridModel } from './model'
+import { getLocation, replaceParameters } from "../util/URL";
 
 const emptyList = List<QueryColumn>();
 

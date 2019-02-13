@@ -4,15 +4,15 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
+import { QueryGridModel } from '@glass/models'
+import { Alert, LoadingSpinner } from '@glass/utils'
 
-import { Alert } from './components/Alert'
-import { QueryGridModel } from './model'
-import { getQueryGridModel } from './reducers'
+import { gridInit } from '../actions'
+import { getQueryGridModel } from '../global'
 import { QueryGrid } from './QueryGrid'
-import { LoadingSpinner } from './components/LoadingSpinner'
 import { QueryGridBar, QueryGridBarButtons } from './QueryGridBar'
 
-import './theme/index.scss'
+import '../theme/index.scss'
 
 interface Props {
     model: QueryGridModel | List<QueryGridModel>
@@ -54,7 +54,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
         // make sure each QueryGridModel is initialized
         this.getModelsAsList(props).forEach((model, index) => {
             if (model && !model.isLoaded && !model.isLoading) {
-                model.init();
+                gridInit(model);
             }
         });
     }

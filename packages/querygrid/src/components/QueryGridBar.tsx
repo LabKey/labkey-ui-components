@@ -3,8 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'reactn'
+import { QueryGridModel } from '@glass/models'
 
-import { QueryGridModel } from './model'
 import { ChartSelector } from './ChartSelector'
 import { Export } from './Export'
 import { QueryGridPaging } from './QueryGridPaging'

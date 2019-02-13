@@ -3,12 +3,11 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
-import { QueryColumn, SchemaQuery } from './query/model'
-import { naturalSort } from './util/util'
-import { QueryGridModel, getStateQueryGridModel } from './model'
-import { initQueryGridState, setQueryMetadata } from './reducers'
-import { QueryGrid } from './QueryGrid'
-import { QueryGridPanel } from './QueryGridPanel'
+import { gridInit, gridLoad, gridExport, gridSelectView, gridSelectAll } from './actions'
+import { getStateQueryGridModel } from './model'
+import { initQueryGridState, setQueryMetadata } from './global'
+import { QueryGrid } from './components/QueryGrid'
+import { QueryGridPanel } from './components/QueryGridPanel'
 
 export {
     // functions
@@ -16,13 +15,12 @@ export {
     getStateQueryGridModel,
     setQueryMetadata,
 
-    // util functions
-    naturalSort,
-
-    // models
-    SchemaQuery,
-    QueryColumn,
-    QueryGridModel,
+    // grid/model actions
+    gridInit,
+    gridLoad,
+    gridExport,
+    gridSelectView,
+    gridSelectAll,
 
     // components
     QueryGrid,

@@ -5,11 +5,11 @@
 import React from 'reactn'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { List } from 'immutable'
+import { QueryGridModel, ViewInfo } from '@glass/models'
+import { naturalSort } from '@glass/utils'
 
-import { ViewInfo } from './query/model'
-import { generateId, naturalSort } from './util/util'
-
-import { QueryGridModel } from './model'
+import { gridSelectView } from '../actions'
+import { generateId } from '../util/util'
 
 const emptyList = List<React.ReactNode>();
 
@@ -94,7 +94,7 @@ export class ViewSelector extends React.Component<Props, any> {
     }
 
     onSelectView(view: ViewInfo) {
-        this.props.model.selectView(view);
+        gridSelectView(this.props.model, view);
     }
 
     render() {

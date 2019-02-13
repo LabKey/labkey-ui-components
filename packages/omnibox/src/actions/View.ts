@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List } from 'immutable'
-import { QueryGridModel, QueryColumn } from '@glass/querygrid'
+import { QueryGridModel, QueryColumn } from '@glass/models'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
 

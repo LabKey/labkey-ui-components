@@ -5,11 +5,11 @@
 import * as React from 'react'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { Set } from 'immutable'
+import { QueryGridModel } from '@glass/models'
+import { Tip } from '@glass/utils'
 
-import { Tip } from './components/Tip'
-
-import { QueryGridModel } from './model'
-import { EXPORT_TYPES } from "./query/constants";
+import { gridExport } from "../actions";
+import { EXPORT_TYPES } from "../constants";
 
 
 /**
@@ -32,7 +32,7 @@ export class Export extends React.Component<Props, any> {
     doExport(type: EXPORT_TYPES) {
         const { model } = this.props;
 
-        return model.doExport(type);
+        return gridExport(model, type);
     }
 
     render() {

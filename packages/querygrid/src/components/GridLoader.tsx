@@ -15,10 +15,10 @@
  */
 import * as React from 'react'
 import { fromJS, List } from 'immutable'
+import { QueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse } from '@glass/models'
 
-import { IGridLoader, IGridResponse, IGridSelectionResponse, QueryGridModel } from './model'
-import { selectRows } from './query/api'
-import { getSelected } from './actions'
+import { selectRows } from '../query/api'
+import { getSelected } from '../actions'
 
 class GridLoader implements IGridLoader {
 

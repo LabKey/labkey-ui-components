@@ -7,11 +7,8 @@ import classNames from 'classnames'
 import { OrderedMap } from 'immutable'
 import { Dropdown, MenuItem, Modal } from 'react-bootstrap'
 import { GridColumn } from '@glass/grid'
-
-import { CustomToggle } from './components/CustomToggle'
-import { CHECKBOX_OPTIONS } from './query/constants'
-import { QueryColumn } from './query/model'
-import { QueryGridModel } from './model'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel } from '@glass/models'
+import { CustomToggle } from '@glass/utils'
 
 import { AliasRenderer } from './renderers/AliasRenderer'
 import { AppendUnits } from './renderers/AppendUnits'
@@ -59,8 +56,8 @@ export function headerCell(handleSort: any, column: GridColumn, i: number, selec
 export function headerSelectionCell(handleSelection: any, model: QueryGridModel) {
     const { selectedState, isLoaded } = model;
 
-    const isChecked = selectedState === CHECKBOX_OPTIONS.ALL,
-        isIndeterminate = selectedState === CHECKBOX_OPTIONS.SOME,
+    const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL,
+        isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME,
         disabled = !(isLoaded && model.totalRows !== 0);
     // Ref below is required as indeterminate is not an actual HTML attribute
     // See: https://github.com/facebook/react/issues/1798

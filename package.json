@@ -37,6 +37,8 @@
     "**/event-stream": "^4.0.1"
   },
   "workspaces": [
+    "packages/utils",
+    "packages/models",
     "packages/grid",
     "packages/omnibox",
     "packages/querygrid",

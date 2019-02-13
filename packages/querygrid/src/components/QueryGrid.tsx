@@ -16,17 +16,15 @@
 import React from 'reactn'
 import { List, Map } from 'immutable'
 import { Grid, GridColumn, GridProps } from '@glass/grid'
+import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX, QueryGridModel, SchemaQuery } from '@glass/models'
+import { Alert, LoadingSpinner } from '@glass/utils'
 
-import { LoadingSpinner } from './components/LoadingSpinner'
-import { Alert } from './components/Alert'
-import { CHECKBOX_OPTIONS } from './query/constants'
-import { generateId } from './util/util'
-import { SchemaQuery } from './query/model'
-import { GRID_SELECTION_INDEX, QUERY_GRID_PREFIX } from './constants'
-import { init, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from './actions'
-import { QueryGridModel, getStateQueryGridModel, getStateModelId } from './model'
-import { headerCell, headerSelectionCell } from './renderers'
-import { getBrowserHistory } from "./util/global";
+import { generateId } from '../util/util'
+import { QUERY_GRID_PREFIX } from '../constants'
+import { gridInit, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from '../actions'
+import { getStateQueryGridModel, getStateModelId } from '../model'
+import { headerCell, headerSelectionCell } from '../renderers'
+import { getBrowserHistory } from "../util/global";
 
 interface QueryGridProps {
     model?: QueryGridModel
@@ -90,10 +88,10 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const { modelId } = this.state;
 
         if (model && !model.isLoaded && !model.isLoading) {
-            init(model);
+            gridInit(model);
         }
         else if (!this.getModel(props)) {
-            init(getStateQueryGridModel(modelId, schemaQuery));
+            gridInit(getStateQueryGridModel(modelId, schemaQuery));
         }
     }
 
@@ -148,7 +146,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const model = this.getModel(this.props);
 
         if (model) {
-            const selected = evt.currentTarget.checked === true && model.selectedState !== CHECKBOX_OPTIONS.SOME;
+            const selected = evt.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
             toggleGridSelected(model, selected);
         }
     }

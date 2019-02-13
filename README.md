@@ -1,8 +1,6 @@
 # LabKey Glass (@glass) components
 
-Defines all of the components available in the @glass scope. These React components are comprise the LabKey Glass UI framework.
-
-:construction: **Warning** :construction: LabKey Glass is under development so these components should be considered unstable. Once they're ready we'll officially push the components as version 1.0.
+Defines all of the components available in the @glass scope. These React components, utility functions, and models comprise the LabKey Glass UI framework.
 
 ## Components
 
@@ -10,8 +8,10 @@ Defines all of the components available in the @glass scope. These React compone
 | Package | Current Verison |
 | --- | --- |
 | @glass/grid | 0.0.2 |
-| @glass/omnibox | 0.0.1 |
-| @glass/querygrid | 0.0.2 |
+| @glass/models | 0.0.1 |
+| @glass/omnibox | 0.0.3 |
+| @glass/querygrid | 0.0.5 |
+| @glass/utils | 0.0.1|
 
 ## Using Components
 

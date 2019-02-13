@@ -4,7 +4,8 @@
  */
 import { List, Map, Set } from 'immutable'
 import { Filter, Utils } from '@labkey/api'
-import { QueryGridModel, QueryColumn, naturalSort } from '@glass/querygrid'
+import { QueryGridModel, QueryColumn } from '@glass/models'
+import { naturalSort } from '@glass/utils'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
 

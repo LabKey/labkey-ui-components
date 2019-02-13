@@ -5,11 +5,13 @@
 import { fromJS, List, Map, OrderedMap } from 'immutable'
 import { normalize, schema } from 'normalizr'
 import { Query } from '@labkey/api'
+import {
+    QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo,
+    resolveKeyFromJson, resolveSchemaQuery
+} from '@glass/models'
 
 import { URLResolver } from '../util/URLResolver'
-import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo } from './model'
-import { resolveKeyFromJson, resolveSchemaQuery } from './utils'
-import { getQueryMetadata } from '../reducers'
+import { getQueryMetadata } from '../global'
 
 let queryDetailsCache: {[key: string]: Promise<QueryInfo>} = {};
 

@@ -6,9 +6,9 @@ import React from 'reactn'
 import { List } from 'immutable'
 import { QueryGridModel, resolveSchemaQuery } from '@glass/models'
 
-import { fetchCharts } from '../actions'
-import { DataViewInfo } from '../model'
-import { getCharts, updateCharts } from '../global'
+import { fetchCharts } from '../../actions'
+import { DataViewInfo } from '../../model'
+import { getCharts, updateCharts } from '../../global'
 import { ChartMenu } from './ChartMenu'
 
 interface Props {

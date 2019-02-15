@@ -8,7 +8,7 @@ import { Location } from 'history'
 import { QueryColumn, QueryGridModel } from '@glass/models'
 import { OmniBox, Action, ActionValue, ActionValueCollection, FilterAction, SearchAction, SortAction, ViewAction } from '@glass/omnibox'
 
-import { getLocation, replaceParameters } from "../util/URL";
+import { getLocation, replaceParameters } from "../../util/URL";
 
 const emptyList = List<QueryColumn>();
 

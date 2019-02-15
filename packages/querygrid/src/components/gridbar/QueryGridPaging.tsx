@@ -7,7 +7,7 @@ import { Button } from 'react-bootstrap'
 import { QueryGridModel } from '@glass/models'
 import { Tip } from '@glass/utils'
 
-import { loadPage } from '../actions'
+import { loadPage } from '../../actions'
 
 
 interface Props {

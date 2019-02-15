@@ -1,6 +1,6 @@
 {
   "name": "@glass/models",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared models for LabKey components",
   "main": "dist/models.cjs.js",
   "module": "dist/models.es.js",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/utils": "0.0.1"
+    "@glass/utils": "0.0.2"
   },
   "peerDependencies": {
     "immutable": "^3.8.2"

@@ -7,9 +7,9 @@ import $ from 'jquery'
 import { QueryGridModel } from '@glass/models'
 import { LoadingSpinner } from '@glass/utils'
 
-import { DataViewInfo, VisualizationConfigModel } from '../model'
-import { getVisualizationConfig } from '../actions'
-import { generateId, debounce } from '../util/util'
+import { DataViewInfo, VisualizationConfigModel } from '../../model'
+import { getVisualizationConfig } from '../../actions'
+import { generateId, debounce } from '../../util/util'
 
 interface Props {
     chart: DataViewInfo

@@ -4,7 +4,8 @@
  */
 import { GRID_SELECTION_INDEX, GRID_CHECKBOX_OPTIONS } from './constants'
 import {
-    QueryColumn, QueryGridModel, QueryInfo, QuerySort, QueryLookup, QueryInfoStatus, SchemaQuery, ViewInfo,
+    QueryColumn, QueryGridModel, QueryInfo, QuerySort, QueryLookup, QueryInfoStatus,
+    Container, User, SchemaQuery, ViewInfo,
     IQueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse
 } from './model'
 import { resolveKey, resolveKeyFromJson, resolveSchemaQuery, getSchemaQuery } from './utils'
@@ -21,6 +22,8 @@ export {
     IGridSelectionResponse,
 
     //models
+    Container,
+    User,
     QueryColumn,
     QueryGridModel,
     QueryInfo,

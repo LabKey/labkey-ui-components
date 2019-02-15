@@ -4,7 +4,7 @@
  */
 import { fromJS, List, Map, OrderedMap } from 'immutable'
 import { normalize, schema } from 'normalizr'
-import { Query } from '@labkey/api'
+import { Query, Filter } from '@labkey/api'
 import {
     QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo,
     resolveKeyFromJson, resolveSchemaQuery
@@ -452,5 +452,72 @@ function handle132Response(json): Promise<any> {
                     rowCount
                 });
             });
+    });
+}
+
+export function searchRows(selectRowsConfig, token: any, exactColumn?: string): Promise<ISelectRowsResult> {
+    return new Promise((resolve) => {
+        let exactFilters, qFilters;
+        const baseFilters = selectRowsConfig.filterArray ? selectRowsConfig.filterArray : [];
+        const maxRows = selectRowsConfig.maxRows !== undefined ? selectRowsConfig.maxRows : 100000;
+
+        if (token) {
+            if (exactColumn) {
+                exactFilters = [Filter.create(exactColumn, token)].concat(baseFilters);
+            }
+
+            qFilters = [Filter.create('*', token, Filter.Types.Q)].concat(baseFilters);
+        }
+        else {
+            qFilters = baseFilters;
+        }
+
+
+        let selects = [
+            selectRows(Object.assign({}, selectRowsConfig, {
+                filterArray: qFilters
+            }))
+        ];
+
+        if (exactFilters) {
+            selects.push(selectRows(Object.assign({}, selectRowsConfig, {
+                filterArray: exactFilters
+            })));
+        }
+
+        return Promise.all(selects).then((allResults) => {
+            const [ queryResults, exactResults ] = allResults;
+
+            let finalResults;
+            if (exactResults && exactResults.totalRows > 0) {
+                finalResults = exactResults;
+
+                // TODO: This can cause the "totalRows" to be incorrect. Ideally, keep track of changes to give accurate count
+                if (finalResults.totalRows < maxRows) {
+                    const { key } = finalResults;
+                    let finalKeySet = finalResults.orderedModels[key].toOrderedSet().asMutable();
+
+                    queryResults.orderedModels[key].forEach((key) => {
+                        finalKeySet.add(key);
+
+                        if (finalKeySet.size >= maxRows) {
+                            return false;
+                        }
+                    });
+
+                    finalKeySet.forEach((rowKey) => {
+                        if (!finalResults.models[key].hasOwnProperty(rowKey)) {
+                            finalResults.orderedModels[key] = finalResults.orderedModels[key].push(rowKey);
+                            finalResults.models[key][rowKey] = queryResults.models[key][rowKey];
+                        }
+                    });
+                }
+            }
+            else {
+                finalResults = queryResults;
+            }
+
+            resolve(finalResults);
+        });
     });
 }

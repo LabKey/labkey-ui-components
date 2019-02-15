@@ -119,27 +119,6 @@
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.1.tgz#f3a81587ad8d0ef33cdad6f3b4310774fcc1053e"
 
-"@glass/omnibox@0.0.2":
-  version "0.0.2"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/omnibox/-/@glass/omnibox-0.0.2.tgz#c9586a0bf149ea58bad25af9a30be9eadea29bea"
-  integrity sha1-yVhqC/FJ6li60lr5owvp6t6im+o=
-  dependencies:
-    "@glass/querygrid" "0.0.4"
-    classnames "2.2.6"
-    react-input-autosize "2.2.1"
-
-"@glass/querygrid@0.0.4":
-  version "0.0.4"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/querygrid/-/@glass/querygrid-0.0.4.tgz#b8cb9df3288f867f76c5fc4c86922c4a6fca3207"
-  integrity sha1-uMud8yiPhn92xfxMhpIsSm/KMgc=
-  dependencies:
-    "@glass/grid" "0.0.2"
-    "@glass/omnibox" "0.0.2"
-    "@labkey/api" "0.0.9"
-    history "4.7.2"
-    normalizr "3.3.0"
-    react-bootstrap "0.32.4"
-
 "@labkey/api@0.0.9":
   version "0.0.9"
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.9.tgz#c721e230bad869941f6d1b3fe538b479bb15a9aa"
@@ -1973,6 +1952,11 @@ body-parser@1.18.2:
 boolbase@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
+
+bootstrap-sass@3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.0.tgz#b1c330a56782347f626d31d497fa4aea16b3f99b"
+  integrity sha512-qdUyw4KmNNPSIdBadn+eyuuQFH0LsZlRCs6tor1zN8sQas7mnY5JNfemauraOdNPiFQd2gFeeo3gZjZZCuohZg==
 
 bootstrap@3.3.7:
   version "3.3.7"

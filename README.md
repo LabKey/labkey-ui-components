@@ -8,9 +8,9 @@ Defines all of the components available in the @glass scope. These React compone
 | Package | Current Verison |
 | --- | --- |
 | @glass/grid | 0.0.2 |
-| @glass/models | 0.0.1 |
+| @glass/models | 0.0.2 |
 | @glass/omnibox | 0.0.3 |
-| @glass/querygrid | 0.0.5 |
+| @glass/querygrid | 0.0.6 |
 | @glass/utils | 0.0.1|
 
 ## Using Components

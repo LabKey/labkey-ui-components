@@ -10,7 +10,7 @@ import { Alert, LoadingSpinner } from '@glass/utils'
 import { gridInit } from '../actions'
 import { getQueryGridModel } from '../global'
 import { QueryGrid } from './QueryGrid'
-import { QueryGridBar, QueryGridBarButtons } from './QueryGridBar'
+import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar'
 
 import '../theme/index.scss'
 

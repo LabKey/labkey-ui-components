@@ -8,8 +8,8 @@ import { Set } from 'immutable'
 import { QueryGridModel } from '@glass/models'
 import { Tip } from '@glass/utils'
 
-import { gridExport } from "../actions";
-import { EXPORT_TYPES } from "../constants";
+import { gridExport } from "../../actions";
+import { EXPORT_TYPES } from "../../constants";
 
 
 /**

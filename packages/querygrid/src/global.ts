@@ -4,10 +4,10 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/models'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/models'
 
-import { initBrowserHistoryState } from "./util/global";
-import { DataViewInfo } from './model'
+import { initBrowserHistoryState } from './util/global'
+import { DataViewInfo, EditorModel, LookupStore } from './model'
 
 /**
  * Initialize the global state object for this package.
@@ -17,12 +17,22 @@ export function initQueryGridState() {
         setGlobal({
             QueryGrid: {
                 charts: Map<string, List<DataViewInfo>>(),
+                editors: Map<string, EditorModel>(),
+                lookups: Map<string, LookupStore>(),
                 metadata: Map<string, any>(),
                 models: Map<string, QueryGridModel>()
             }
         });
     }
     initBrowserHistoryState();
+}
+
+function getGlobalState() {
+    if (!getGlobal().QueryGrid) {
+        throw new Error('Must call initQueryGridState before you can access anything from the global.QueryGrid object.');
+    }
+
+    return getGlobal().QueryGrid;
 }
 
 /**
@@ -151,12 +161,16 @@ function getSelectedState(
     return GRID_CHECKBOX_OPTIONS.NONE;
 }
 
-export interface IGridSelectionResponse {
+interface IGridSelectionResponse {
     selectedIds: List<any>
 }
 
-// Update model data with select changes
-export function updateSelections (model: QueryGridModel, response: IGridSelectionResponse)  {
+/**
+ * Update model data with select changes
+ * @param model
+ * @param response
+ */
+export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse)  {
     const selectedIds = response.selectedIds;
     const id = model.getId(),
         selectedLoaded: any = true;
@@ -188,10 +202,77 @@ export function updateSelections (model: QueryGridModel, response: IGridSelectio
     }
 }
 
-function getGlobalState() {
-    if (!getGlobal().QueryGrid) {
-        throw new Error('Must call initQueryGridState before you can access anything from the global.QueryGrid object.');
+/**
+ * Get the latest EditorModel object from the global state for a given modelId.
+ * @param modelId QueryGridModel id to fetch
+ * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
+ */
+export function getEditorModel(modelId: string, failIfNotFound: boolean = false): EditorModel {
+    const model = getGlobalState().editors.get(modelId);
+    if (failIfNotFound && !model) {
+        throw new Error('Unable to find QueryGridModel for modelId: ' + modelId);
     }
 
-    return getGlobal().QueryGrid;
+    return model;
+}
+
+/**
+ * Helper function for all callers/actions that would like to update information for an EditorModel in the global state.
+ * @param model EditorModel in the global state to be updated, or to be added to global state if it does not already exist by Id
+ * @param updates JS Object with the key/value pairs for updates to make to the model
+ * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
+ */
+export function updateEditorModel(model: EditorModel, updates: any, failIfNotFound: boolean = true): EditorModel {
+    if (failIfNotFound && !getGlobalState().editors.has(model.id)) {
+        throw new Error('Unable to find EditorModel for modelId: ' + model.id);
+    }
+
+    const updatedModel = model.merge(updates) as EditorModel;
+
+    setGlobal({
+        QueryGrid: {
+            ...getGlobalState(),
+            editors: getGlobalState().editors.set(model.id, updatedModel)
+        }
+    });
+
+    return updatedModel;
+}
+
+/**
+ * Get the latest LookupStore object from the global state for a given QueryColumn.
+ * @param col QueryColumn to fetch
+ * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
+ */
+export function getLookupStore(col: QueryColumn, failIfNotFound: boolean = false): LookupStore {
+    const key = LookupStore.key(col);
+    const store = getGlobalState().lookups.get(key);
+    if (failIfNotFound && !store) {
+        throw new Error('Unable to find LookupStore for col: ' + key);
+    }
+
+    return store;
+}
+
+/**
+ * Helper function for all callers/actions that would like to update information for a LookupStore in the global state.
+ * @param store LookupStore in the global state to be updated, or to be added to global state if it does not already exist by col key
+ * @param updates JS Object with the key/value pairs for updates to make to the store
+ * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
+ */
+export function updateLookupStore(store: LookupStore, updates: any, failIfNotFound: boolean = true): LookupStore {
+    if (failIfNotFound && !getGlobalState().lookups.has(store.key)) {
+        throw new Error('Unable to find LookupStore for col: ' + store.key);
+    }
+
+    const updatedStore = store.merge(updates) as LookupStore;
+
+    setGlobal({
+        QueryGrid: {
+            ...getGlobalState(),
+            lookups: getGlobalState().lookups.set(store.key, updatedStore)
+        }
+    });
+
+    return updatedStore;
 }

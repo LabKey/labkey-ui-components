@@ -2,10 +2,14 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Record } from 'immutable'
+import { List, Map, OrderedMap, Record, Set } from 'immutable'
 import { Filter } from '@labkey/api'
-import { QueryInfo, QueryGridModel, SchemaQuery, ViewInfo, IQueryGridModel, IGridLoader, resolveKey, resolveSchemaQuery } from '@glass/models'
+import {
+    QueryColumn, QueryInfo, QueryGridModel, SchemaQuery, ViewInfo,
+    IQueryGridModel, IGridLoader, resolveKey, resolveSchemaQuery
+} from '@glass/models'
 
+import { genCellKey } from './actions'
 import { getQueryGridModel } from './global'
 import { DefaultGridLoader } from './components/GridLoader'
 
@@ -332,5 +336,223 @@ export class QueryConfigModel extends Record({
 
     constructor(values?: {[key:string]: any}) {
         super(values);
+    }
+}
+
+export interface ValueDescriptor {
+    display: any
+    raw: any
+}
+
+export interface CellMessage {
+    message: string
+}
+
+export type CellMessages = Map<string, CellMessage>;
+export type CellValues = Map<string, List<ValueDescriptor>>;
+
+export interface EditorModelProps {
+    cellMessages: CellMessages
+    cellValues: CellValues
+    colCount: number
+    id: string
+    isPasting: boolean
+    focusColIdx: number
+    focusRowIdx: number
+    focusValue: List<ValueDescriptor>
+    numPastedRows: number
+    rowCount: number
+    selectedColIdx: number
+    selectedRowIdx: number
+    selectionCells: Set<string>
+}
+
+export class EditorModel extends Record({
+    cellMessages: Map<string, CellMessage>(),
+    cellValues: Map<string, List<ValueDescriptor>>(),
+    colCount: 0,
+    id: undefined,
+    isPasting: false,
+    focusColIdx: -1,
+    focusRowIdx: -1,
+    focusValue: undefined,
+    numPastedRows: 0,
+    rowCount: 0,
+    selectedColIdx: -1,
+    selectedRowIdx: -1,
+    selectionCells: Set<string>()
+}) implements EditorModelProps {
+    cellMessages: CellMessages;
+    cellValues: CellValues;
+    colCount: number;
+    id: string;
+    isPasting: boolean;
+    focusColIdx: number;
+    focusRowIdx: number;
+    focusValue: List<ValueDescriptor>;
+    numPastedRows: number;
+    rowCount: number;
+    selectedColIdx: number;
+    selectedRowIdx: number;
+    selectionCells: Set<string>;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    findNextCell(startCol: number, startRow: number,
+                 predicate: (value: List<ValueDescriptor>, colIdx: number, rowIdx: number) => boolean,
+                 advance: (colIdx: number, rowIdx: number) => {colIdx: number, rowIdx: number})
+    {
+        let colIdx = startCol,
+            rowIdx = startRow;
+
+        while (true) {
+            ({colIdx, rowIdx} = advance(colIdx, rowIdx));
+            if (!this.isInBounds(colIdx, rowIdx))
+                break;
+
+            let value = this.getValue(colIdx, rowIdx);
+            if (predicate(value, colIdx, rowIdx)) {
+                return {
+                    value,
+                    colIdx,
+                    rowIdx
+                };
+            }
+        }
+
+        // not found
+        return null;
+    }
+
+    getMessage(colIdx: number, rowIdx: number): CellMessage {
+        return this.cellMessages.get(genCellKey(colIdx, rowIdx));
+    }
+
+    getRawData(model: QueryGridModel): List<Map<string, any>> {
+        let data = List<Map<string, any>>().asMutable();
+        const columns = model.getInsertColumns();
+
+        for (let rn = 0; rn < model.data.size; rn++) {
+            let row = Map<string, any>().asMutable();
+            columns.forEach((col, cn) => {
+                const values = this.getValue(cn, rn);
+
+                if (col.isLookup()) {
+                    if (col.isExpInput()) {
+                        let sep = '';
+                        row.set(col.name, values.reduce((str, vd) => {
+                            if (vd.display !== undefined && vd.display !== null) {
+                                str += sep + vd.display;
+                                sep = ', ';
+                            }
+                            return str;
+                        }, ''));
+                        return;
+                    }
+                    else if (col.isJunctionLookup()) {
+                        row.set(col.name, values.reduce((arr, vd) => {
+                            if (vd.raw !== undefined && vd.raw !== null) {
+                                arr.push(vd.raw);
+                            }
+                            return arr;
+                        }, []));
+                        return;
+                    }
+                }
+
+                row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+            });
+
+            data.push(row.asImmutable());
+        }
+
+        return data.asImmutable();
+    }
+
+    getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
+        const cellKey = genCellKey(colIdx, rowIdx);
+        if (this.cellValues.has(cellKey)) {
+            return this.cellValues.get(cellKey);
+        }
+
+        return List<ValueDescriptor>();
+    }
+
+    hasFocus(): boolean {
+        return this.focusColIdx > -1 && this.focusRowIdx > -1;
+    }
+
+    hasMultipleSelection(): boolean {
+        return this.selectionCells.size > 1;
+    }
+
+    hasSelection(): boolean {
+        return this.selectedColIdx > -1 && this.selectedRowIdx > -1;
+    }
+
+    isInBounds(colIdx: number, rowIdx: number): boolean {
+        return (colIdx >= 0 && colIdx < this.colCount && rowIdx >= 0 && rowIdx < this.rowCount);
+    }
+
+    inSelection(colIdx: number, rowIdx: number): boolean {
+        return (
+            colIdx > -1 && rowIdx > -1 &&
+            this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined
+        )
+    }
+
+    isFocused(colIdx: number, rowIdx: number): boolean {
+        return (
+            colIdx > -1 && rowIdx > -1 &&
+            this.focusColIdx === colIdx &&
+            this.focusRowIdx === rowIdx
+        );
+    }
+
+    isSelected(colIdx: number, rowIdx: number): boolean {
+        return (
+            colIdx > -1 && rowIdx > -1 &&
+            this.selectedColIdx === colIdx &&
+            this.selectedRowIdx === rowIdx
+        );
+    }
+}
+
+export class LookupStore extends Record({
+    key: undefined,
+    descriptors: OrderedMap<any, ValueDescriptor>(),
+    isLoaded: false,
+    isLoading: false,
+    lastToken: '~~INITIAL_TOKEN~~',
+    loadCount: 0,
+    matchCount: 0
+}) {
+    key: string;
+    descriptors: OrderedMap<any, ValueDescriptor>;
+    isLoaded: boolean;
+    isLoading: boolean;
+    lastToken: string;
+    loadCount: number;
+    matchCount: number;
+
+    static key(col: QueryColumn): string {
+        return [
+            col.lookup.schemaName,
+            col.lookup.queryName,
+            col.fieldKey
+        ].join('|');
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    containsAll(values: List<string>): boolean {
+        let displayValues = this.descriptors
+            .reduce((valueSet, descriptor) => valueSet.add(descriptor.display), Set<String>());
+
+        return values.find((value) => !displayValues.contains(value)) == undefined;
     }
 }

@@ -75,3 +75,9 @@ function toLowerReducer(s: Set<string>, v: string) {
     }
     return s;
 }
+
+export function not(predicate: (...args: any[]) => boolean): (...args: any[]) => boolean {
+    return function () {
+        return !predicate.apply(this, arguments);
+    };
+}

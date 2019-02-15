@@ -6,7 +6,7 @@ import React from 'reactn'
 import { Button } from 'react-bootstrap'
 import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/models'
 
-import { gridSelectAll } from '../actions'
+import { gridSelectAll } from '../../actions'
 
 interface Props {
     containerCls?: string

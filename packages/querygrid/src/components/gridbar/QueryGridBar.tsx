@@ -5,7 +5,7 @@
 import React from 'reactn'
 import { QueryGridModel } from '@glass/models'
 
-import { ChartSelector } from './ChartSelector'
+import { ChartSelector } from '../chart/ChartSelector'
 import { Export } from './Export'
 import { QueryGridPaging } from './QueryGridPaging'
 import { ViewSelector } from "./ViewSelector";

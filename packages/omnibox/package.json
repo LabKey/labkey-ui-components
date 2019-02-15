@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/models": "0.0.1",
-    "@glass/utils": "0.0.1",
+    "@glass/models": "0.0.2",
+    "@glass/utils": "0.0.2",
     "classnames": "2.2.6",
     "react-input-autosize": "2.2.1"
   },

@@ -8,8 +8,8 @@ import { List } from 'immutable'
 import { QueryGridModel } from '@glass/models'
 import { naturalSort } from '@glass/utils'
 
-import { generateId } from '../util/util'
-import { DataViewInfo } from '../model'
+import { generateId } from '../../util/util'
+import { DataViewInfo } from '../../model'
 import { Chart } from './Chart'
 
 const emptyList = List<React.ReactNode>();

@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
-import { Filter } from '@labkey/api'
+import { ActionURL, Filter } from '@labkey/api'
 import { intersect, toLowerSafe } from '@glass/utils'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './constants'
@@ -15,6 +15,120 @@ const emptyRow = Map<string, any>();
 
 export enum QueryInfoStatus { ok, notFound, unknown }
 enum MessageLevel { info, warning, error }
+
+/**
+ * Model for org.labkey.api.data.Container as returned by Container.toJSON()
+ */
+export class Container extends Record({
+    activeModules: List<string>(),
+    folderType: '',
+    hasRestrictedActiveModule: false,
+    id: '',
+    isContainerTab: false,
+    isWorkbook: false,
+    name: '',
+    parentId: '',
+    parentPath: '',
+    path: '',
+    sortOrder: 0,
+    title: '',
+    type: ''
+}) {
+    activeModules: List<string>;
+    folderType: string;
+    hasRestrictedActiveModule: boolean;
+    id: string;
+    isContainerTab: boolean;
+    isWorkbook: boolean;
+    name: string;
+    parentId: string;
+    parentPath: string;
+    path: string;
+    sortOrder: number;
+    title: string;
+    type: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+interface IUserProps {
+    id: number
+
+    canDelete: boolean
+    canDeleteOwn: boolean
+    canInsert: boolean
+    canUpdate: boolean
+    canUpdateOwn: boolean
+
+    displayName: string
+    email: string
+    phone: string
+    avatar: string
+
+    isAdmin: boolean
+    isGuest: boolean
+    isSignedIn: boolean
+    isSystemAdmin: boolean
+
+    permissionsList: List<string>
+}
+
+const defaultUser: IUserProps = {
+    id: 0,
+
+    canDelete: false,
+    canDeleteOwn: false,
+    canInsert: false,
+    canUpdate: false,
+    canUpdateOwn: false,
+
+    displayName: 'guest',
+    email: 'guest',
+    phone: null,
+    avatar: ActionURL.getContextPath() + '/_images/defaultavatar.png',
+
+    isAdmin: false,
+    isGuest: true,
+    isSignedIn: false,
+    isSystemAdmin: false,
+
+    permissionsList: List()
+};
+
+/**
+ * Model for org.labkey.api.security.User as returned by User.getUserProps()
+ */
+export class User extends Record(defaultUser) implements IUserProps {
+    id: number;
+
+    canDelete: boolean;
+    canDeleteOwn: boolean;
+    canInsert: boolean;
+    canUpdate: boolean;
+    canUpdateOwn: boolean;
+
+    displayName: string;
+    email: string;
+    phone: string;
+    avatar: string;
+
+    isAdmin: boolean;
+    isGuest: boolean;
+    isSignedIn: boolean;
+    isSystemAdmin: boolean;
+
+    permissionsList: List<string>;
+
+    static getDefaultUser(): User {
+        return new User(defaultUser);
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
 
 export class SchemaQuery extends Record({
     schemaName: undefined,
@@ -352,7 +466,7 @@ export class QueryGridModel extends Record({
     totalRows: 0,
     urlParams: List<string>(['p']), // page number parameter
     urlParamValues: Map<string, any>(),
-    urlPrefix: undefined,
+    urlPrefix: undefined, // TODO we should give each new model a default prefix?
     view: undefined,
 }) implements IQueryGridModel {
     id: string;

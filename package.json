@@ -1,6 +1,11 @@
 {
   "name": "glass-components",
   "private": true,
+  "scripts": {
+    "build:docs": "npm run clean:docs && typedoc --options theme/typedoc.js ./packages && touch docs/.nojekyll && npm run build:docs-theme",
+    "build:docs-theme": "rimraf docs/assets/css && webpack --config theme/webpack.config.js",
+    "clean:docs": "rimraf docs"
+  },
   "devDependencies": {
     "@types/enzyme": "3.1.14",
     "@types/jest": "23.3.13",
@@ -17,10 +22,14 @@
     "jquery": "3.3.1",
     "jsdom": "13.2.0",
     "lerna": "2.11.0",
+    "node-sass": "4.9.4",
     "nps": "5.9.3",
     "nps-utils": "1.7.0",
     "react": "16.7.0",
     "react-dom": "16.7.0",
+    "mini-css-extract-plugin": "0.5.0",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
     "reactn": "0.2.0",
     "rollup": "1.1.2",
     "rollup-plugin-babel": "4.3.2",
@@ -28,10 +37,14 @@
     "rollup-plugin-node-resolve": "4.0.0",
     "rollup-plugin-sass": "1.1.0",
     "rollup-plugin-typescript2": "0.19.2",
+    "sass-loader": "7.1.0",
     "ts-jest": "23.1.4",
     "ts-loader": "5.3.3",
+    "typedoc": "0.14.2",
     "tslint": "5.10.0",
-    "typescript": "3.1.6"
+    "typescript": "3.0.3",
+    "webpack": "4.29.2",
+    "webpack-cli": "3.2.3"
   },
   "resolutions": {
     "**/event-stream": "^4.0.1"

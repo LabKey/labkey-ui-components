@@ -124,7 +124,13 @@ Then, when you no longer wish to reference the local installation, you can do
 This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
 need to use ``npm install``.
  
+### Documentation
+We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  
+All exported components, methods, interfaces, etc. should include documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/)
+to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.
 
+You can generate the docs locally by running
+* ``yarn run build:docs``
 
 #### Storybook
 

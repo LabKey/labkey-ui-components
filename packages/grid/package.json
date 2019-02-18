@@ -19,7 +19,7 @@
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
   "author": "Nick Kerr",
-  "license": "ISC",
+  "license": "LabKey",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
   },

@@ -2,7 +2,7 @@ import React from 'reactn';
 import renderer from 'react-test-renderer';
 import { Alert } from "./Alert";
 
-describe('Alert', () => {
+describe('<Alert />', () => {
     test('Renders with children', () => {
         const tree = renderer.create(<Alert>My alert message</Alert>).toJSON();
         expect(tree).toMatchSnapshot();

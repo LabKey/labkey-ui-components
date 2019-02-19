@@ -8,8 +8,8 @@ const emptyList = List<string>();
 
 /**
  * Compares two string objects for doing alphanumeric (natural) sorting.
- * Returns 1 if the first string comes after the second in a natural sort; 0 if they are equal
- * and -1 if the second comes after the first.
+ * Returns a positive number if the first string comes after the second in a natural sort; 0 if they are equal
+ * and a negative number if the second comes after the first.
  * @param aso
  * @param bso
  */

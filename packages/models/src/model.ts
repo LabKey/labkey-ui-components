@@ -1039,6 +1039,8 @@ export class ViewInfo extends Record({
 
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';
+    // TODO seems like this should not be in the generic model, but we'll need a good way
+    //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';
 
     static create(rawViewInfo): ViewInfo {

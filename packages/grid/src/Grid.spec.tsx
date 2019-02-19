@@ -77,6 +77,13 @@ describe('Grid component', () => {
     });
 
     test('rendering with no data and columns', () => {
+        const wrapper = shallow(<Grid data={[]}
+                                      columns={gridColumns}
+                                      emptyText={"my empty text"}
+                                      gridId={"someId"}
+        />);
+        expect(wrapper.find({emptyText: "my empty text"})).toHaveLength(1);
+        expect(wrapper.find({"data-gridid": "someId"})).toHaveLength(1);
         const tree = renderer.create(
             <Grid data={[]}
                   columns={gridColumns}
@@ -86,7 +93,13 @@ describe('Grid component', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('loading render', () => {
+    test('loading text and action', () => {
+        const wrapper = shallow(<Grid data={[]}
+                                      columns={gridColumns}
+                                      isLoading={true}
+                                      loadingText={"Your data is loading...."}/>);
+        expect(wrapper.find({loadingText: "Your data is loading...."})).toHaveLength(1);
+        expect(wrapper.find({isLoading: true})).toHaveLength(1);
         const tree = renderer.create(
             <Grid data={[]}
                   columns={gridColumns}

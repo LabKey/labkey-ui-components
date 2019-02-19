@@ -1,0 +1,531 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Grid component loading render 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table table-striped table-bordered"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Player Name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Position
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="grid-loading"
+      >
+        <td
+          colSpan={3}
+        >
+          You data is loading....
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Grid component render with non-default properties 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table-cellular table-striped table-condensed"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": "118px",
+            }
+          }
+        >
+          Player Name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": "78px",
+            }
+          }
+        >
+          Number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": "94px",
+            }
+          }
+        >
+          Position
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Dee Gordon
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          9
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          2B
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Mike Zunino
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          C
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Kyle Seager
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          15
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3B
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Grid component rendering with data 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table table-striped table-bordered"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          position
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Dee Gordon
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          9
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          4
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Mike Zunino
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          2
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Kyle Seager
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          15
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          5
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Grid component rendering with data and columns 1`] = `
+<div
+  className="table-responsive"
+>
+  <table
+    className="table table-striped table-bordered"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Player Name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Position
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Dee Gordon
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          9
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          2B
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Mike Zunino
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          C
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Kyle Seager
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          15
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3B
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Grid component rendering with no data and columns 1`] = `
+<div
+  className="table-responsive"
+  data-gridid="someId"
+>
+  <table
+    className="table table-striped table-bordered"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Player Name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          Position
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="grid-empty"
+      >
+        <td
+          colSpan={3}
+        >
+          my empty text
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

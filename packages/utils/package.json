@@ -44,7 +44,9 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/../../test/jest.setup.ts",
+    "setupFilesAfterEnv": [
+      "<rootDir>/../../test/jest.setup.ts"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

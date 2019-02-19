@@ -13,7 +13,7 @@
     "enzyme": "3.8.0",
     "enzyme-adapter-react-16": "1.9.0",
     "immutable": "3.8.2",
-    "jest": "23.6.0",
+    "jest": "24.1",
     "jquery": "3.3.1",
     "jsdom": "13.2.0",
     "lerna": "2.11.0",

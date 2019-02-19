@@ -23,6 +23,6 @@ describe('Grid component', () => {
     test('handles empty props', () => {
         const component = shallow(<Grid/>);
 
-        expect(component.exists()).toBe(false);
+        expect(component.exists()).toBe(true);
     });
 });

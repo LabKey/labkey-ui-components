@@ -14,7 +14,7 @@ import { DataViewInfo, EditorModel, LookupStore } from './model'
  */
 export function initQueryGridState() {
     if (!getGlobal().QueryGrid) {
-        emptyQueryGridState()
+        resetQueryGridState()
     }
     initBrowserHistoryState();
 }
@@ -22,7 +22,7 @@ export function initQueryGridState() {
 /**
  * Clear out all of the global state object for this package
  */
-export function emptyQueryGridState() {
+export function resetQueryGridState() {
     setGlobal({
         QueryGrid: {
             charts: Map<string, List<DataViewInfo>>(),

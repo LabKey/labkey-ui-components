@@ -1,6 +1,6 @@
 
 import {
-    emptyQueryGridState, getCharts, getEditorModel, getLookupStore,
+    resetQueryGridState, getCharts, getEditorModel, getLookupStore,
     getQueryGridModel, getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
     removeQueryGridModel, updateCharts, updateEditorModel, updateLookupStore,
@@ -13,7 +13,7 @@ import { DataViewInfo, EditorModel, LookupStore } from "./model";
 import { GRID_CHECKBOX_OPTIONS, QueryColumn } from "@glass/models/src";
 
 beforeEach(() => {
-    emptyQueryGridState();
+    resetQueryGridState();
 });
 
 describe("model updates", () => {

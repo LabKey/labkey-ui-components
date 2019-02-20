@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
+ * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import {AppURL} from './URL'
-import {Filter} from '@labkey/api';
+import { Filter } from '@labkey/api';
+import { AppURL } from './ActionURL'
 
 describe('AppURL', () => {
 

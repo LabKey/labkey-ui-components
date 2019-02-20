@@ -1,6 +1,6 @@
 {
   "name": "@glass/utils",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Utility functions and components for LabKey views",
   "main": "dist/utils.cjs.js",
   "module": "dist/utils.es.js",
@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
+    "@labkey/api": "0.0.9",
     "react-bootstrap": "0.32.4"
   },
   "peerDependencies": {
@@ -36,6 +37,9 @@
     "react-dom": "^16.0"
   },
   "jest": {
+    "globals": {
+      "LABKEY": {}
+    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -44,9 +48,7 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupFilesAfterEnv": [
-      "<rootDir>/../../test/jest.setup.ts"
-    ],
+    "setupFilesAfterEnv": ["<rootDir>/../../test/jest.setup.ts"],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

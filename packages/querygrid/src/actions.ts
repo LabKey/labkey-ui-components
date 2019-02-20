@@ -6,11 +6,10 @@ import { List, Map, OrderedMap, Set, fromJS } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
 import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
-import { naturalSort, not } from '@glass/utils'
+import { buildURL, getSortFromUrl, naturalSort, not } from '@glass/utils'
 
 import { getQueryDetails, searchRows } from './query/api'
 import { isEqual } from './query/filter'
-import { buildURL, getSortFromUrl } from './util/ActionURL'
 import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
 import {
     FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES, KEYS,

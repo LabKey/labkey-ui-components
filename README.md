@@ -7,11 +7,12 @@ Defines all of the components available in the @glass scope. These React compone
 <!--- keep these alphabetical --->
 | Package | Current Verison |
 | --- | --- |
+| @glass/domainproperties | 0.0.1 |
 | @glass/grid | 0.0.2 |
 | @glass/models | 0.0.2 |
 | @glass/omnibox | 0.0.3 |
-| @glass/querygrid | 0.0.6 |
-| @glass/utils | 0.0.1|
+| @glass/querygrid | 0.0.7 |
+| @glass/utils | 0.0.3|
 
 ## Using Components
 

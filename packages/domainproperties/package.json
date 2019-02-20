@@ -1,9 +1,9 @@
 {
-  "name": "@glass/querygrid",
-  "version": "0.0.7",
-  "description": "Query Grid for LabKey schema/query data views",
-  "main": "dist/querygrid.cjs.js",
-  "module": "dist/querygrid.es.js",
+  "name": "@glass/domainproperties",
+  "version": "0.0.1",
+  "description": "Domain property related components for LabKey domains.",
+  "main": "dist/domainproperties.cjs.js",
+  "module": "dist/domainproperties.es.js",
   "types": "dist/.rpt2_cache/placeholder/index.d.ts",
   "files": [
     "dist/"
@@ -30,21 +30,12 @@
   "dependencies": {
     "@glass/grid": "0.0.2",
     "@glass/models": "0.0.2",
-    "@glass/omnibox": "0.0.3",
-    "@glass/utils": "0.0.3",
-    "@labkey/api": "0.0.9",
-    "bootstrap-sass": "3.4.0",
-    "classnames": "2.2.6",
-    "history": "4.7.2",
-    "normalizr": "3.3.0",
-    "react-bootstrap": "0.32.4"
+    "@glass/utils": "0.0.3"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",
-    "jquery": "^3.0",
     "react": "^16.0",
-    "react-dom": "^16.0",
-    "reactn": "0.2.0"
+    "react-dom": "^16.0"
   },
   "jest": {
     "globals": {

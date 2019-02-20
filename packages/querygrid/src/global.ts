@@ -14,17 +14,24 @@ import { DataViewInfo, EditorModel, LookupStore } from './model'
  */
 export function initQueryGridState() {
     if (!getGlobal().QueryGrid) {
-        setGlobal({
-            QueryGrid: {
-                charts: Map<string, List<DataViewInfo>>(),
-                editors: Map<string, EditorModel>(),
-                lookups: Map<string, LookupStore>(),
-                metadata: Map<string, any>(),
-                models: Map<string, QueryGridModel>()
-            }
-        });
+        emptyQueryGridState()
     }
     initBrowserHistoryState();
+}
+
+/**
+ * Clear out all of the global state object for this package
+ */
+export function emptyQueryGridState() {
+    setGlobal({
+        QueryGrid: {
+            charts: Map<string, List<DataViewInfo>>(),
+            editors: Map<string, EditorModel>(),
+            lookups: Map<string, LookupStore>(),
+            metadata: Map<string, any>(),
+            models: Map<string, QueryGridModel>()
+        }
+    });
 }
 
 function getGlobalState() {
@@ -38,24 +45,18 @@ function getGlobalState() {
 /**
  * Get the latest QueryGridModel object from the global state for a given modelId.
  * @param modelId QueryGridModel id to fetch
- * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function getQueryGridModel(modelId: string, failIfNotFound: boolean = false): QueryGridModel {
-    const model = getGlobalState().models.get(modelId);
-    if (failIfNotFound && !model) {
-        throw new Error('Unable to find QueryGridModel for modelId: ' + modelId);
-    }
-
-    return model;
+export function getQueryGridModel(modelId: string): QueryGridModel {
+    return getGlobalState().models.get(modelId);
 }
 
 export function getQueryGridModelsForSchema(schemaName: string): List<QueryGridModel> {
-    return getGlobalState().models.filter(model => model.schema.toLowerCase() === schemaName.toLowerCase());
+    return getGlobalState().models.filter(model => model.schema.toLowerCase() === schemaName.toLowerCase()).toList();
 }
 
 export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List<QueryGridModel> {
     const modelName = resolveSchemaQuery(schemaQuery);
-    return getGlobalState().models.filter(model => model.getModelName() === modelName);
+    return getGlobalState().models.filter(model => model.getModelName() === modelName).toList();
 }
 
 /**
@@ -118,7 +119,7 @@ export function setQueryMetadata(metadata: Map<string, any>) {
  * Get the list of DataViewInfos from the global state for a given schemaQuery key
  * @param schemaQueryKey Key for the charts map based on a schemaQuery
  */
-export function getCharts(schemaQueryKey: string) {
+export function getCharts(schemaQueryKey: string) : List<DataViewInfo> {
     return getGlobalState().charts.get(schemaQueryKey);
 }
 
@@ -205,15 +206,9 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
 /**
  * Get the latest EditorModel object from the global state for a given modelId.
  * @param modelId QueryGridModel id to fetch
- * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function getEditorModel(modelId: string, failIfNotFound: boolean = false): EditorModel {
-    const model = getGlobalState().editors.get(modelId);
-    if (failIfNotFound && !model) {
-        throw new Error('Unable to find QueryGridModel for modelId: ' + modelId);
-    }
-
-    return model;
+export function getEditorModel(modelId: string): EditorModel {
+    return getGlobalState().editors.get(modelId);
 }
 
 /**
@@ -242,16 +237,10 @@ export function updateEditorModel(model: EditorModel, updates: any, failIfNotFou
 /**
  * Get the latest LookupStore object from the global state for a given QueryColumn.
  * @param col QueryColumn to fetch
- * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
  */
-export function getLookupStore(col: QueryColumn, failIfNotFound: boolean = false): LookupStore {
+export function getLookupStore(col: QueryColumn): LookupStore {
     const key = LookupStore.key(col);
-    const store = getGlobalState().lookups.get(key);
-    if (failIfNotFound && !store) {
-        throw new Error('Unable to find LookupStore for col: ' + key);
-    }
-
-    return store;
+    return getGlobalState().lookups.get(key);
 }
 
 /**

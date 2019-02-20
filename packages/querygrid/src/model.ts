@@ -64,7 +64,7 @@ export function getStateQueryGridModel(
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);
 
     // if the model already exists in the global state, return it
-    const model = getQueryGridModel(modelId, false);
+    const model = getQueryGridModel(modelId);
     if (model) {
         return model;
     }

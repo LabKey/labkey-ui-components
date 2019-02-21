@@ -169,8 +169,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
     render() {
         const model = this.getModel(this.props);
-
-        if (!model || !model.isLoaded || model.isLoading) {
+        if (!model) {
             return (
                 <div>
                     <LoadingSpinner/>

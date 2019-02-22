@@ -4,16 +4,39 @@
  */
 
 import * as React from "react";
-import {shallow} from "enzyme";
+import renderer from 'react-test-renderer'
 
 import {DomainFieldsDisplay} from "./DomainFieldsDisplay";
 import {DomainDesign} from "../models";
 
+const testDomain = new DomainDesign({name: 'test domain name'});
+
 describe('DomainFieldsDisplay', () => {
 
-    test('handles empty domain design', () => {
-        const component = shallow(<DomainFieldsDisplay domain={new DomainDesign()}/>);
+    test('with empty domain design', () => {
+        const domain = new DomainDesign();
+        const tree  = renderer.create(<DomainFieldsDisplay
+            domain={domain}
+        />).toJSON();
 
-        expect(component.exists()).toBe(true);
+        expect(tree).toMatchSnapshot();
     });
+
+    test('without title', () => {
+        const tree  = renderer.create(<DomainFieldsDisplay
+            domain={testDomain}
+        />).toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('with title', () => {
+        const tree  = renderer.create(<DomainFieldsDisplay
+            domain={testDomain}
+            title={'test domain title'}
+        />).toJSON();
+
+        expect(tree).toMatchSnapshot();
+    });
+
 });

@@ -71,7 +71,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
         }
 
         // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid.models.get(activeModel.getId());
+        return activeModel ? this.global.QueryGrid.models.get(activeModel.getId()) : undefined;
     }
 
     getModelsFromGlobalState(): List<QueryGridModel> {

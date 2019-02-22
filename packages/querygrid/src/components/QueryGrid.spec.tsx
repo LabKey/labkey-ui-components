@@ -12,7 +12,7 @@ beforeAll(() => {
 // Mock all the actions to test just the rendering parts for QueryGrid itself
 jest.mock('../actions');
 
-describe("render", () => {
+describe("QueryGrid render", () => {
     test("loading", () => {
 
         const schemaQuery = new SchemaQuery({

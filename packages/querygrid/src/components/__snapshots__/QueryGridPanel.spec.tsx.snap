@@ -1,0 +1,2371 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QueryGridPanel render loading 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div>
+      <div
+        className="hidden-md hidden-xs hidden-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-sm-8 col-md-8"
+          />
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            />
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+      </div>
+      <div
+        className="visible-md visible-xs visible-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-xs-12"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            />
+          </div>
+        </div>
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <span
+          className=""
+        >
+          <i
+            aria-hidden="true"
+            className="fa fa-spinner fa-spin"
+          />
+           
+          Loading...
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`QueryGridPanel render no model 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="alert alert-danger"
+      role="alert"
+    >
+      No QueryGridModels defined for this QueryGridPanel.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`QueryGridPanel render query grid error 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div>
+      <div
+        className="hidden-md hidden-xs hidden-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-0"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  Charts
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-0"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="OmniBox OmniBox--multi is-disabled"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="export-drop-queryGridError"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridError"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-1"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-1"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+      </div>
+      <div
+        className="visible-md visible-xs visible-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-7 col-sm-6 col-xs-12"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-2"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  Charts
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-2"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-md-5 col-sm-6 col-xs-12"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="export-drop-queryGridError"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridError"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-3"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-3"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          >
+            <div
+              className="OmniBox OmniBox--multi is-disabled"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <div
+          className="alert alert-danger"
+          role="alert"
+        >
+          My QueryGridModel error message.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`QueryGridPanel render with header and message props 1`] = `
+<div
+  className=""
+>
+  <div
+    className=""
+  >
+    <h4>
+      look at this h4 header
+    </h4>
+  </div>
+  <div
+    className=""
+  >
+    <div>
+      <div
+        className="hidden-md hidden-xs hidden-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-4"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-spinner fa-spin"
+                  />
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-4"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="OmniBox OmniBox--multi"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="export-drop-queryGridLoaded"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridLoaded"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-5"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-5"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+      </div>
+      <div
+        className="visible-md visible-xs visible-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-7 col-sm-6 col-xs-12"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-6"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-spinner fa-spin"
+                  />
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-6"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-md-5 col-sm-6 col-xs-12"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="export-drop-queryGridLoaded"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridLoaded"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-7"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-7"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          >
+            <div
+              className="OmniBox OmniBox--multi"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          />
+        </div>
+      </div>
+    </div>
+    <p>
+      look at this paragraph message
+    </p>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <div
+          className="table-responsive"
+          data-gridid="queryGridLoaded"
+        >
+          <table
+            className="table table-striped table-bordered table-condensed"
+          >
+            <thead>
+              <tr>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": undefined,
+                    }
+                  }
+                >
+                  <input
+                    checked={false}
+                    disabled={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="grid-empty"
+              >
+                <td
+                  colSpan={1}
+                >
+                  No data available.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never show tabs for single model) 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div>
+      <div
+        className="hidden-md hidden-xs hidden-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-8"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-spinner fa-spin"
+                  />
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-8"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="OmniBox OmniBox--multi"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="export-drop-queryGridLoaded"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridLoaded"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-9"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-9"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+      </div>
+      <div
+        className="visible-md visible-xs visible-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-7 col-sm-6 col-xs-12"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-10"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-spinner fa-spin"
+                  />
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-10"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-md-5 col-sm-6 col-xs-12"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="export-drop-queryGridLoaded"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridLoaded"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-11"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-11"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          >
+            <div
+              className="OmniBox OmniBox--multi"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <div
+          className="table-responsive"
+          data-gridid="queryGridLoaded"
+        >
+          <table
+            className="table table-striped table-bordered table-condensed"
+          >
+            <thead>
+              <tr>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": undefined,
+                    }
+                  }
+                >
+                  <input
+                    checked={false}
+                    disabled={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="grid-empty"
+              >
+                <td
+                  colSpan={1}
+                >
+                  No data available.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both should show) 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div>
+      <div
+        className="hidden-md hidden-xs hidden-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-12"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-spinner fa-spin"
+                  />
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-12"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="OmniBox OmniBox--multi"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className="col-sm-4 col-md-4"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="export-drop-queryGridLoaded"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridLoaded"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-13"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-13"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
+        </div>
+      </div>
+      <div
+        className="visible-md visible-xs visible-sm"
+      >
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-7 col-sm-6 col-xs-12"
+          >
+            <div
+              className="btn-group"
+            />
+            <span
+              style={Object {}}
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="chartselector-14"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-spinner fa-spin"
+                  />
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="chartselector-14"
+                  className="dropdown-menu"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
+          <div
+            className="col-md-5 col-sm-6 col-xs-12"
+          >
+            <div
+              className="paging pull-right text-nowrap"
+            >
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={false}
+                    id="export-drop-queryGridLoaded"
+                    onBlur={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    onMouseOut={[Function]}
+                    onMouseOver={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-download"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="export-drop-queryGridLoaded"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  >
+                    <li
+                      className="dropdown-header"
+                      onKeyDown={[Function]}
+                      role="heading"
+                    >
+                      Export 
+                      
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-o"
+                        />
+                          CSV
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-excel-o"
+                        />
+                          Excel
+                      </a>
+                    </li>
+                    <li
+                      className=""
+                      role="presentation"
+                    >
+                      <a
+                        href="#"
+                        onClick={[Function]}
+                        onKeyDown={[Function]}
+                        role="menuitem"
+                        tabIndex="-1"
+                      >
+                        <span
+                          className="fa fa-file-text-o"
+                        />
+                          TSV
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </span>
+              <span
+                style={
+                  Object {
+                    "paddingLeft": "10px",
+                  }
+                }
+              >
+                <div
+                  className="dropdown disabled btn-group"
+                >
+                  <button
+                    aria-expanded={false}
+                    aria-haspopup={true}
+                    className="dropdown-toggle btn btn-default"
+                    disabled={true}
+                    id="viewselector-15"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="button"
+                    type="button"
+                  >
+                    Grid Views
+                     
+                    <span
+                      className="caret"
+                    />
+                  </button>
+                  <ul
+                    aria-labelledby="viewselector-15"
+                    className="dropdown-menu dropdown-menu-right"
+                    role="menu"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row QueryGrid-bottom-spacing"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          >
+            <div
+              className="OmniBox OmniBox--multi"
+            >
+              <div
+                className="OmniBox-control"
+                onKeyDown={[Function]}
+                onMouseDown={[Function]}
+              >
+                <span
+                  className="OmniBox-multi-value-wrapper"
+                >
+                  <div
+                    className="OmniBox-placeholder"
+                  >
+                    Select...
+                  </div>
+                  <div
+                    className="OmniBox-input"
+                    style={
+                      Object {
+                        "display": "inline-block",
+                      }
+                    }
+                  >
+                    <input
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      style={
+                        Object {
+                          "boxSizing": "content-box",
+                          "width": "5pxpx",
+                        }
+                      }
+                      value=""
+                    />
+                    <div
+                      style={
+                        Object {
+                          "height": 0,
+                          "left": 0,
+                          "overflow": "scroll",
+                          "position": "absolute",
+                          "top": 0,
+                          "visibility": "hidden",
+                          "whiteSpace": "pre",
+                        }
+                      }
+                    >
+                      
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-md-12 col-xs-12"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <ul
+          className="nav nav-tabs"
+        >
+          <li
+            className="active"
+          >
+            <a
+              onClick={[Function]}
+            >
+              First Query Grid
+               (
+              0
+              )
+            </a>
+          </li>
+          <li
+            className=""
+          >
+            <a
+              onClick={[Function]}
+            >
+              Second Query Grid
+               (
+              0
+              )
+            </a>
+          </li>
+        </ul>
+        <div
+          className="table-responsive"
+          data-gridid="queryGridLoaded"
+        >
+          <table
+            className="table table-striped table-bordered table-condensed"
+          >
+            <thead>
+              <tr>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": undefined,
+                    }
+                  }
+                >
+                  <input
+                    checked={false}
+                    disabled={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="grid-empty"
+              >
+                <td
+                  colSpan={1}
+                >
+                  No data available.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

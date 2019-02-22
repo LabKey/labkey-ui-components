@@ -3,14 +3,14 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Filter } from '@labkey/api';
-import { AppURL } from './ActionURL'
+import { AppURL, buildURL } from './ActionURL'
 
 describe('AppURL', () => {
 
     test('Empty values', () => {
         expect(AppURL.create().toHref()).toEqual('#');
-        //expect(AppURL.create('').toHref()).toBe("#");    //todo: figure out a way to handle expected throws here
-        //expect(AppURL.create('path',undefined)).toThrow();
+        expect(() => AppURL.create('')).toThrow('AppURL: Unable to create URL with empty parts. Parts are [].');
+        expect(() => AppURL.create('path',undefined)).toThrow('AppURL: Unable to create URL with empty parts. Parts are [path, undefined].');
     });
 
     test('Expected paths', () => {
@@ -54,5 +54,16 @@ describe('AppURL', () => {
             .addParam("booze", "gin")
             .addParam("mix", "tonic").toHref())
             .toBe(expected);
+    });
+
+    test('buildURL', () => {
+        let expected = 'undefined/controller/action.view?returnUrl=%2F';
+        expect(buildURL('controller', 'action')).toBe(expected);
+
+        expected = 'undefined/controller/action.view?p1=test1&returnUrl=%2F';
+        expect(buildURL('controller', 'action', {p1: 'test1'})).toBe(expected);
+
+        expected = 'undefined/controller/action.view?returnUrl=somewhere';
+        expect(buildURL('controller', 'action', {}, {returnURL: 'somewhere'})).toBe(expected);
     });
 });

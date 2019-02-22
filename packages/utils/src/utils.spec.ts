@@ -1,5 +1,7 @@
 import { List } from 'immutable'
-import { intersect, naturalSort } from "./utils";
+import { intersect, naturalSort, toLowerSafe } from "./utils";
+
+const emptyList = List<string>();
 
 describe("naturalSort", () => {
    test("alphabetic", () => {
@@ -26,14 +28,40 @@ describe("naturalSort", () => {
 });
 
 describe("intersect", () => {
-    expect(intersect(List<string>(["a", "b", "abc"]), List<string>(["A", "Z", "aBC"]))).toEqual(
-        List<string>(['a', 'abc'])
-    );
-    const emptyList = List<string>();
-    expect(intersect(List<string>(["one", "two"]), List(["sun", "moon"]))).toEqual(
-        emptyList
-    );
-    expect(intersect(emptyList, List(["fun", "times"]))).toEqual(emptyList);
-    expect(intersect(List(["fun", "times"]), emptyList)).toEqual(emptyList);
-    expect(intersect(List(["fun", "times"]), List(["funny", "times"]))).toEqual(List(['times']));
+    test("with matches", () => {
+        expect(intersect(List<string>(["a", "b", "abc"]), List<string>(["A", "Z", "aBC"])))
+            .toEqual(List<string>(['a', 'abc']));
+        expect(intersect(List(["fun", "times"]), List(["funny", "times"])))
+            .toEqual(List(['times']));
+    });
+
+    test("without matches", () => {
+        expect(intersect(List<string>(["one", "two"]), List(["sun", "moon"])))
+            .toEqual(emptyList);
+        expect(intersect(emptyList, List(["fun", "times"])))
+            .toEqual(emptyList);
+        expect(intersect(List(["fun", "times"]), emptyList))
+            .toEqual(emptyList);
+    });
+});
+
+describe("toLowerSafe", () => {
+    test("strings", () => {
+        expect(toLowerSafe(List<string>(['TEST ', ' Test', 'TeSt', 'test'])))
+            .toEqual(List<string>(['test ', ' test', 'test', 'test']));
+    });
+
+    test("numbers", () => {
+        expect(toLowerSafe(List<string>([1,2,3])))
+            .toEqual(emptyList);
+        expect(toLowerSafe(List<string>([1.0])))
+            .toEqual(emptyList);
+        expect(toLowerSafe(List<string>([1.0, 2])))
+            .toEqual(emptyList);
+    });
+
+    test("strings and numbers", () => {
+        expect(toLowerSafe(List<string>([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test'])))
+            .toEqual(List<string>(['test ', ' test', 'test', 'test']));
+    });
 });

@@ -4,7 +4,7 @@
   "description": "Shared models for LabKey components",
   "main": "dist/models.cjs.js",
   "module": "dist/models.es.js",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],

@@ -4,7 +4,7 @@
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],

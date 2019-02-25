@@ -6,7 +6,7 @@ import { List, Map, OrderedMap, Record, Set } from 'immutable'
 import { Filter } from '@labkey/api'
 import {
     QueryColumn, QueryInfo, QueryGridModel, SchemaQuery, ViewInfo,
-    IQueryGridModel, IGridLoader, resolveKey, resolveSchemaQuery
+    IQueryGridModel, IGridLoader, resolveSchemaQuery
 } from '@glass/models'
 
 import { genCellKey } from './actions'

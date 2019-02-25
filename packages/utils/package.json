@@ -4,7 +4,7 @@
   "description": "Utility functions and components for LabKey views",
   "main": "dist/utils.cjs.js",
   "module": "dist/utils.es.js",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],

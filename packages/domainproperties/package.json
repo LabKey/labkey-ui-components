@@ -4,7 +4,7 @@
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],

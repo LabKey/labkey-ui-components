@@ -5,7 +5,7 @@
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",
   "style": "dist/omnibox.css",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],

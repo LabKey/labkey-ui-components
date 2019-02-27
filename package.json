@@ -23,7 +23,7 @@
     "react": "16.7.0",
     "react-dom": "16.7.0",
     "react-test-renderer": "16.8.2",
-    "reactn": "0.2.0",
+    "reactn": "1.0.0",
     "rollup": "1.1.2",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-commonjs": "9.2.0",
@@ -39,6 +39,12 @@
     "**/event-stream": "^4.0.1"
   },
   "workspaces": [
-    "packages/*"
+    "packages/utils",
+    "packages/models",
+    "packages/grid",
+    "packages/omnibox",
+    "packages/querygrid",
+    "packages/domainproperties",
+    "packages/storybook"
   ]
 }

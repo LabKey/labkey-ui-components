@@ -1,6 +1,6 @@
 {
   "name": "@glass/grid",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple grid display for LabKey data views",
   "main": "dist/grid.cjs.js",
   "module": "dist/grid.es.js",

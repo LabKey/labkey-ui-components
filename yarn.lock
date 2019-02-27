@@ -229,13 +229,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@glass/utils@0.0.2":
-  version "0.0.2"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/utils/-/@glass/utils-0.0.2.tgz#3cdd8bb64403af49a9e4baf04c2a945d2e50b1e4"
-  integrity sha1-PN2LtkQDr0mp5LrwTCqUXS5QseQ=
-  dependencies:
-    react-bootstrap "0.32.4"
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
@@ -8623,10 +8616,10 @@ reactcss@^1.2.0:
   dependencies:
     lodash "^4.0.1"
 
-reactn@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/reactn/-/reactn-0.2.0.tgz#9885bd3fc6337b0ce59dc68736cbc11aaaa49043"
-  integrity sha512-Lr9CRjt860amtUAiXg3wD+rrss5om3dTQA0OrWhdoAFWW2t18K/YnTCC38Ej7ke38LLZF3GpVZW5tS/gk5GvqA==
+reactn@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/reactn/-/reactn-1.0.0.tgz#e521d9bab4cd0de75777cabbe2b327a994783243"
+  integrity sha512-6i0KHxHZsIz3XNOHZe9LErrYMXMrADfAGzgNS3+Hd+BFTocJJb4f8myIZOvXCkrDGW0ALpqPnLjrFFwBUdmimA==
   dependencies:
     use-force-update "^1.0.0"
 

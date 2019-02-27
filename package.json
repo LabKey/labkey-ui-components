@@ -2,8 +2,7 @@
   "name": "glass-components",
   "private": true,
   "scripts": {
-    "build:docs": "npm run clean:docs && typedoc --tsconfig tsconfig.base.json --options theme/typedoc.js ./packages && touch docs/.nojekyll && npm run build:docs-theme",
-    "build:docs-theme": "rimraf docs/assets/css && webpack --config theme/webpack.config.js",
+    "build:docs": "npm run clean:docs && typedoc --tsconfig tsconfig.base.json --options typedoc.js ./packages && touch docs/.nojekyll",
     "clean:docs": "rimraf docs",
     "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
   },
@@ -45,9 +44,7 @@
     "ts-loader": "5.3.3",
     "tslint": "5.10.0",
     "typedoc": "0.14.2",
-    "typescript": "3.1.6",
-    "webpack": "4.29.2",
-    "webpack-cli": "3.2.3"
+    "typescript": "3.1.6"
   },
   "resolutions": {
     "**/event-stream": "^4.0.1"

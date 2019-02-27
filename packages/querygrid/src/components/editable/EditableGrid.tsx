@@ -13,7 +13,7 @@ import { Alert, LoadingSpinner } from '@glass/utils'
 
 import {
     beginDrag, endDrag, inDrag, select, removeRow, addRows,
-    clearSelection, copyEvent, pasteEvent, gridInit, getDataEdit
+    clearSelection, copyEvent, pasteEvent, getDataEdit
 } from '../../actions'
 import { GRID_EDIT_INDEX } from '../../constants'
 import { Cell } from './Cell'
@@ -106,7 +106,6 @@ export class EditableGrid extends React.Component<Props, any> {
         document.addEventListener('click', this.onDocumentClick);
         document.addEventListener('copy', this.onCopy);
         document.addEventListener('paste', this.onPaste);
-        this.initModel(this.props);
     }
 
     componentWillUnmount() {
@@ -115,21 +114,9 @@ export class EditableGrid extends React.Component<Props, any> {
         document.removeEventListener('paste', this.onPaste);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        this.initModel(nextProps);
-    }
-
-    initModel(props: Props) {
-        const { model, loadData } = props;
-
-        if (model && !model.isLoaded && !model.isLoading) {
-            gridInit(model, loadData);
-        }
-    }
-
     generateColumns(): List<GridColumn> {
         const { allowRemove } = this.props;
-        const model = this.getModel(this.props);
+        const { model } = this.props;
 
         let gridColumns = List<GridColumn>([
             allowRemove ? new GridColumn({
@@ -166,7 +153,7 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     headerCell(col: GridColumn) {
-        const model = this.getModel(this.props);
+        const { model } = this.props;
 
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
@@ -180,7 +167,7 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     onDocumentClick(event: any) {
-        const model = this.getModel(this.props);
+        const { model } = this.props;
 
         if (this.table && this.table.current &&
             (!$.contains(this.table.current, event.target) && !$(event.target).parent('.cell-lookup')) &&
@@ -221,26 +208,19 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     onAddRows(count: number) {
-        const model = this.getModel(this.props);
+        const { model } = this.props;
         addRows(model, count);
     }
 
     renderError() {
-        const model = this.getModel(this.props);
-
+        const { model } = this.props;
         if (model.isError) {
             return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>
         }
     }
 
-    getModel(props: Props): QueryGridModel {
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid.models.get(props.model.getId());
-    }
-
     render() {
-        const { addControlProps, allowAdd, isSubmitting } = this.props;
-        const model = this.getModel(this.props);
+        const { addControlProps, allowAdd, isSubmitting, model } = this.props;
 
         if (!model || !model.isLoaded) {
             return <LoadingSpinner/>;

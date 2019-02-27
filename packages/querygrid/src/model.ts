@@ -6,7 +6,7 @@ import { List, Map, OrderedMap, Record, Set } from 'immutable'
 import { Filter } from '@labkey/api'
 import {
     QueryColumn, QueryInfo, QueryGridModel, SchemaQuery, ViewInfo,
-    IQueryGridModel, IGridLoader, resolveKey, resolveSchemaQuery
+    IQueryGridModel, IGridLoader, resolveSchemaQuery
 } from '@glass/models'
 
 import { genCellKey } from './actions'
@@ -64,7 +64,7 @@ export function getStateQueryGridModel(
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);
 
     // if the model already exists in the global state, return it
-    const model = getQueryGridModel(modelId, false);
+    const model = getQueryGridModel(modelId);
     if (model) {
         return model;
     }

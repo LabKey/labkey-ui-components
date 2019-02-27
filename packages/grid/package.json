@@ -1,10 +1,10 @@
 {
   "name": "@glass/grid",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple grid display for LabKey data views",
   "main": "dist/grid.cjs.js",
   "module": "dist/grid.es.js",
-  "types": "dist/.rpt2_cache/placeholder/Grid.d.ts",
+  "types": "dist/Grid.d.ts",
   "files": [
     "dist/"
   ],
@@ -19,7 +19,7 @@
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
   "author": "Nick Kerr",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
   },
@@ -44,7 +44,7 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/../../test/jest.setup.ts",
+    "setupFilesAfterEnv": ["<rootDir>/../../test/jest.setup.ts"],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

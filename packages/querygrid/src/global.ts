@@ -13,49 +13,48 @@ import { DataViewInfo, EditorModel, LookupStore } from './model'
  * Initialize the global state object for this package.
  */
 export function initQueryGridState() {
-    if (!getGlobal().QueryGrid) {
-        setGlobal({
-            QueryGrid: {
-                charts: Map<string, List<DataViewInfo>>(),
-                editors: Map<string, EditorModel>(),
-                lookups: Map<string, LookupStore>(),
-                metadata: Map<string, any>(),
-                models: Map<string, QueryGridModel>()
-            }
-        });
+    if (!getGlobal().QueryGrid_models) {
+        resetQueryGridState()
     }
     initBrowserHistoryState();
 }
 
-function getGlobalState() {
-    if (!getGlobal().QueryGrid) {
-        throw new Error('Must call initQueryGridState before you can access anything from the global.QueryGrid object.');
+/**
+ * Clear out all of the global state object for this package
+ */
+export function resetQueryGridState() {
+    setGlobal({
+        QueryGrid_charts: Map<string, List<DataViewInfo>>(),
+        QueryGrid_editors: Map<string, EditorModel>(),
+        QueryGrid_lookups: Map<string, LookupStore>(),
+        QueryGrid_metadata: Map<string, any>(),
+        QueryGrid_models: Map<string, QueryGridModel>()
+    });
+}
+
+function getGlobalState(property: string) {
+    if (!getGlobal()['QueryGrid_' + property]) {
+        throw new Error('Must call initQueryGridState before you can access anything from the global.QueryGrid_' + property + ' objects.');
     }
 
-    return getGlobal().QueryGrid;
+    return getGlobal()['QueryGrid_' + property];
 }
 
 /**
  * Get the latest QueryGridModel object from the global state for a given modelId.
  * @param modelId QueryGridModel id to fetch
- * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function getQueryGridModel(modelId: string, failIfNotFound: boolean = false): QueryGridModel {
-    const model = getGlobalState().models.get(modelId);
-    if (failIfNotFound && !model) {
-        throw new Error('Unable to find QueryGridModel for modelId: ' + modelId);
-    }
-
-    return model;
+export function getQueryGridModel(modelId: string): QueryGridModel {
+    return getGlobalState('models').get(modelId);
 }
 
 export function getQueryGridModelsForSchema(schemaName: string): List<QueryGridModel> {
-    return getGlobalState().models.filter(model => model.schema.toLowerCase() === schemaName.toLowerCase());
+    return getGlobalState('models').filter(model => model.schema.toLowerCase() === schemaName.toLowerCase()).toList();
 }
 
 export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List<QueryGridModel> {
     const modelName = resolveSchemaQuery(schemaQuery);
-    return getGlobalState().models.filter(model => model.getModelName() === modelName);
+    return getGlobalState('models').filter(model => model.getModelName() === modelName).toList();
 }
 
 /**
@@ -65,17 +64,14 @@ export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List
  * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
 export function updateQueryGridModel(model: QueryGridModel, updates: any, failIfNotFound: boolean = true): QueryGridModel {
-    if (failIfNotFound && !getGlobalState().models.has(model.getId())) {
+    if (failIfNotFound && !getGlobalState('models').has(model.getId())) {
         throw new Error('Unable to find QueryGridModel for modelId: ' + model.getId());
     }
 
     const updatedModel = model.merge(updates) as QueryGridModel;
 
     setGlobal({
-        QueryGrid: {
-            ...getGlobalState(),
-            models: getGlobalState().models.set(model.getId(), updatedModel)
-        }
+        QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel)
     });
 
     return updatedModel;
@@ -87,10 +83,7 @@ export function updateQueryGridModel(model: QueryGridModel, updates: any, failIf
  */
 export function removeQueryGridModel(model: QueryGridModel) {
     setGlobal({
-        QueryGrid: {
-            ...getGlobalState(),
-            models: getGlobalState().models.delete(model.getId())
-        }
+        QueryGrid_models: getGlobalState('models').delete(model.getId())
     });
 }
 
@@ -98,7 +91,7 @@ export function removeQueryGridModel(model: QueryGridModel) {
  * Get the query metadata object from the global QueryGrid state
  */
 export function getQueryMetadata() {
-    return getGlobalState().metadata;
+    return getGlobalState('metadata');
 }
 
 /**
@@ -107,10 +100,7 @@ export function getQueryMetadata() {
  */
 export function setQueryMetadata(metadata: Map<string, any>) {
     setGlobal({
-        QueryGrid: {
-            ...getGlobalState(),
-            metadata
-        }
+        QueryGrid_metadata: metadata
     });
 }
 
@@ -118,8 +108,8 @@ export function setQueryMetadata(metadata: Map<string, any>) {
  * Get the list of DataViewInfos from the global state for a given schemaQuery key
  * @param schemaQueryKey Key for the charts map based on a schemaQuery
  */
-export function getCharts(schemaQueryKey: string) {
-    return getGlobalState().charts.get(schemaQueryKey);
+export function getCharts(schemaQueryKey: string) : List<DataViewInfo> {
+    return getGlobalState('charts').get(schemaQueryKey);
 }
 
 /**
@@ -129,10 +119,7 @@ export function getCharts(schemaQueryKey: string) {
  */
 export function updateCharts(schemaQueryKey: string, dataViewInfos: List<DataViewInfo>) {
     setGlobal({
-        QueryGrid: {
-            ...getGlobalState(),
-            charts: getGlobalState().charts.set(schemaQueryKey, dataViewInfos)
-        }
+        QueryGrid_charts: getGlobalState('charts').set(schemaQueryKey, dataViewInfos)
     });
 }
 
@@ -186,18 +173,12 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
         } as any;
 
         setGlobal({
-            QueryGrid: {
-                ...getGlobalState(),
-                models: getGlobalState().models.set(model.getId(), model.merge(updatedState))
-            }
+            QueryGrid_models: getGlobalState('models').set(model.getId(), model.merge(updatedState))
         });
     }
     else {
         setGlobal({
-            QueryGrid: {
-                ...getGlobalState(),
-                models: getGlobalState().models.set(id, model.merge({selectedLoaded}))
-            }
+            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded}))
         });
     }
 }
@@ -205,15 +186,9 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
 /**
  * Get the latest EditorModel object from the global state for a given modelId.
  * @param modelId QueryGridModel id to fetch
- * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function getEditorModel(modelId: string, failIfNotFound: boolean = false): EditorModel {
-    const model = getGlobalState().editors.get(modelId);
-    if (failIfNotFound && !model) {
-        throw new Error('Unable to find QueryGridModel for modelId: ' + modelId);
-    }
-
-    return model;
+export function getEditorModel(modelId: string): EditorModel {
+    return getGlobalState('editors').get(modelId);
 }
 
 /**
@@ -223,17 +198,14 @@ export function getEditorModel(modelId: string, failIfNotFound: boolean = false)
  * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
 export function updateEditorModel(model: EditorModel, updates: any, failIfNotFound: boolean = true): EditorModel {
-    if (failIfNotFound && !getGlobalState().editors.has(model.id)) {
+    if (failIfNotFound && !getGlobalState('editors').has(model.id)) {
         throw new Error('Unable to find EditorModel for modelId: ' + model.id);
     }
 
     const updatedModel = model.merge(updates) as EditorModel;
 
     setGlobal({
-        QueryGrid: {
-            ...getGlobalState(),
-            editors: getGlobalState().editors.set(model.id, updatedModel)
-        }
+        QueryGrid_editors: getGlobalState('editors').set(model.id, updatedModel)
     });
 
     return updatedModel;
@@ -242,16 +214,10 @@ export function updateEditorModel(model: EditorModel, updates: any, failIfNotFou
 /**
  * Get the latest LookupStore object from the global state for a given QueryColumn.
  * @param col QueryColumn to fetch
- * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
  */
-export function getLookupStore(col: QueryColumn, failIfNotFound: boolean = false): LookupStore {
+export function getLookupStore(col: QueryColumn): LookupStore {
     const key = LookupStore.key(col);
-    const store = getGlobalState().lookups.get(key);
-    if (failIfNotFound && !store) {
-        throw new Error('Unable to find LookupStore for col: ' + key);
-    }
-
-    return store;
+    return getGlobalState('lookups').get(key);
 }
 
 /**
@@ -261,17 +227,14 @@ export function getLookupStore(col: QueryColumn, failIfNotFound: boolean = false
  * @param failIfNotFound Boolean indicating if an error should be thrown if the store is not found in global state
  */
 export function updateLookupStore(store: LookupStore, updates: any, failIfNotFound: boolean = true): LookupStore {
-    if (failIfNotFound && !getGlobalState().lookups.has(store.key)) {
+    if (failIfNotFound && !getGlobalState('lookups').has(store.key)) {
         throw new Error('Unable to find LookupStore for col: ' + store.key);
     }
 
     const updatedStore = store.merge(updates) as LookupStore;
 
     setGlobal({
-        QueryGrid: {
-            ...getGlobalState(),
-            lookups: getGlobalState().lookups.set(store.key, updatedStore)
-        }
+        QueryGrid_lookups: getGlobalState('lookups').set(store.key, updatedStore)
     });
 
     return updatedStore;

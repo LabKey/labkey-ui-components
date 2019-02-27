@@ -1,11 +1,11 @@
 {
   "name": "@glass/omnibox",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.",
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",
   "style": "dist/omnibox.css",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],
@@ -20,7 +20,7 @@
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
   "author": "Nick Kerr",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
   },
@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/models": "0.0.2",
-    "@glass/utils": "0.0.2",
+    "@glass/models": "0.0.3",
+    "@glass/utils": "0.0.4",
     "classnames": "2.2.6",
     "react-input-autosize": "2.2.1"
   },
@@ -49,7 +49,9 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/../../test/jest.setup.ts",
+    "setupFilesAfterEnv": [
+      "<rootDir>/../../test/jest.setup.ts"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

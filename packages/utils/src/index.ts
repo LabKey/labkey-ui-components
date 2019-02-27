@@ -7,6 +7,7 @@ import { Alert } from './components/Alert'
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { Tip } from './components/Tip'
+import { AppURL, buildURL, getSortFromUrl, hasParameter, setParameter, toggleParameter } from './url/ActionURL'
 
 export {
     // components
@@ -15,7 +16,17 @@ export {
     LoadingSpinner,
     Tip,
 
-    // functions
+    // models
+    AppURL,
+
+    // url functions
+    buildURL,
+    getSortFromUrl,
+    hasParameter,
+    setParameter,
+    toggleParameter,
+
+    // util functions
     intersect,
     naturalSort,
     not,

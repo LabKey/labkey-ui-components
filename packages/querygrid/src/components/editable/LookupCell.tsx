@@ -229,7 +229,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
         const { col } = this.props;
 
         // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid.lookups.get(LookupStore.key(col));
+        return this.global.QueryGrid_lookups.get(LookupStore.key(col));
     }
 
     getOptions(props: LookupCellProps): List<ValueDescriptor> {

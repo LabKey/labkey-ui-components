@@ -5,13 +5,14 @@ Defines all of the components available in the @glass scope. These React compone
 ## Components
 
 <!--- keep these alphabetical --->
-| Package | Current Verison |
-| --- | --- |
-| @glass/grid | 0.0.2 |
-| @glass/models | 0.0.2 |
-| @glass/omnibox | 0.0.3 |
-| @glass/querygrid | 0.0.6 |
-| @glass/utils | 0.0.1|
+| Package | Description | Current Verison |
+| --- | --- | --- |
+| @glass/domainproperties | Domain property related components for LabKey domains | 0.0.2 |
+| @glass/grid | Simple grid display for LabKey data views | 0.0.3 |
+| @glass/models | Shared models for LabKey components | 0.0.3 |
+| @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.4 |
+| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.8 |
+| @glass/utils | Utility functions and components for LabKey views | 0.0.4|
 
 ## Using Components
 
@@ -21,12 +22,12 @@ The easiest way to use `@glass` components is to install them from npm and bundl
 
 This package is currently availble on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
 ```
-npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```
 or via a `.npmrc` file
 ```
 # .npmrc
-@glass:registry=https://artifactory.labkey.com/artifactory/api/npm/libs-client
+@glass:registry=https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```
 
 #### Installing
@@ -93,7 +94,7 @@ lerna run build
 #### Creating a New Package
 To create a new package:
 
-* Create a new directory in the `packages` directory.
+* Create a new directory in the `glass-components/packages` directory.
 * Edit the root-level `package.json` and add the new directory to the `workspaces` array.
 * Copy the `package-scripts.js` file from an existing package to the new directory.
 * Copy and modify (or create) the `package.json`, `rollup.config.js`, and `tsconfig.json` files in your new package directory.

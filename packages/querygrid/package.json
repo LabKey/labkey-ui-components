@@ -1,10 +1,10 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
-  "types": "dist/.rpt2_cache/placeholder/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],
@@ -19,7 +19,7 @@
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
   "author": "Cory Nathe",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
   },
@@ -28,10 +28,10 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/grid": "0.0.2",
-    "@glass/models": "0.0.2",
-    "@glass/omnibox": "0.0.3",
-    "@glass/utils": "0.0.2",
+    "@glass/grid": "0.0.3",
+    "@glass/models": "0.0.3",
+    "@glass/omnibox": "0.0.4",
+    "@glass/utils": "0.0.4",
     "@labkey/api": "0.0.9",
     "bootstrap-sass": "3.4.0",
     "classnames": "2.2.6",
@@ -47,6 +47,9 @@
     "reactn": "0.2.0"
   },
   "jest": {
+    "globals": {
+      "LABKEY": {}
+    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -55,7 +58,9 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/../../test/jest.setup.ts",
+    "setupFilesAfterEnv": [
+      "<rootDir>/../../test/jest.setup.ts"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

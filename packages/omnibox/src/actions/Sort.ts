@@ -9,9 +9,9 @@ import { Action, ActionOption, ActionValue, Value } from './Action'
 import { parseColumns } from './Filter'
 
 export class SortAction implements Action {
-    keyword = 'sort';
     iconCls = 'sort';
     param = 'sort';
+    keyword = 'sort';
     optionalLabel = 'columns';
     separator = ',';
     resolveColumns: () => Promise<List<QueryColumn>> = undefined;

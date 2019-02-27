@@ -54,7 +54,7 @@ export class ChartSelector extends React.Component<Props, any> {
         const key = this.getSchemaQueryKey(this.props);
 
         // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid.charts.get(key);
+        return this.global.QueryGrid_charts.get(key);
     }
 
     render() {

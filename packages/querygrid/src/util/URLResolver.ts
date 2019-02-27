@@ -4,8 +4,7 @@
  */
 import { fromJS, List, Map } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
-
-import { AppURL } from './URL'
+import { AppURL } from '@glass/utils'
 
 interface MapURLOptions {
     column: any

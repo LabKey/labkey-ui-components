@@ -374,7 +374,6 @@ export interface IQueryGridModel {
     id?: string
     schema?: string
     query?: string
-
     allowSelection?: boolean
     baseFilters?: List<Filter.Filter>
     bindURL?: boolean
@@ -398,6 +397,8 @@ export interface IQueryGridModel {
     queryInfo?: QueryInfo
     requiredColumns?: List<string>
     showSearchBox?: boolean
+    showViewSelector?: boolean
+    showChartSelector?: boolean
     sortable?: boolean
     sorts?: string
     selectedIds?: List<string>
@@ -407,6 +408,7 @@ export interface IQueryGridModel {
     title?: string
     totalRows?: number
     urlParams?: List<string>
+    urlParamValues?: Map<string, any>
     urlPrefix?: string
     view?: string
 }
@@ -472,7 +474,6 @@ export class QueryGridModel extends Record({
     id: string;
     schema: string;
     query: string;
-
     allowSelection: boolean;
     baseFilters: List<Filter.Filter>;
     bindURL: boolean;
@@ -487,6 +488,7 @@ export class QueryGridModel extends Record({
     isLoading: boolean;
     isPaged: boolean;
     keyValue: any;
+    loader?: IGridLoader;
     maxRows: number;
     message: string;
     offset: number;
@@ -1039,6 +1041,8 @@ export class ViewInfo extends Record({
 
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';
+    // TODO seems like this should not be in the generic model, but we'll need a good way
+    //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';
 
     static create(rawViewInfo): ViewInfo {

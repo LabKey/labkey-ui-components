@@ -132,15 +132,16 @@ so there should be no references to secrets or clients left in the documentation
 All exported components, methods, interfaces, etc. should include 
 documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/) to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.
 
-You can generate the docs locally by running
+You can generate the docs locally by running the following command in the ```glass-components``` directory.
 * ``yarn run build:docs``
  
 **N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such. 
 Try to eliminate as many of these as possible before deploying the docs.
 
-To publish the documentation to [GitHub pages](https://labkey.github.io/glass-components/) use the following command:
+To publish the documentation to [GitHub pages](https://labkey.github.io/glass-components/) use the following command in the ```glass-components``` directory:
 * ``yarn run deploy:docs``
-This deployment of docs should be done after each pull request is merged into master. 
+
+This deployment of docs should be done after each pull request is merged into ```master```. 
 
 #### Storybook
 

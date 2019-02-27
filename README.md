@@ -134,9 +134,12 @@ documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/gui
 
 You can generate the docs locally by running
 * ``yarn run build:docs``
+ 
+**N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such. 
+Try to eliminate as many of these as possible before deploying the docs.
 
 To publish the documentation to [GitHub pages](https://labkey.github.io/glass-components/) use the following command:
-* ``yarn run deploy``
+* ``yarn run deploy:docs``
 This deployment of docs should be done after each pull request is merged into master. 
 
 #### Storybook

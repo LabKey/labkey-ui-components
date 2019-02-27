@@ -2,11 +2,10 @@
   "name": "glass-components",
   "private": true,
   "scripts": {
-    "build:docs": "npm run clean:docs && typedoc --options theme/typedoc.js ./packages && touch docs/.nojekyll && npm run build:docs-theme",
+    "build:docs": "npm run clean:docs && typedoc --tsconfig tsconfig.base.json --options theme/typedoc.js ./packages && touch docs/.nojekyll && npm run build:docs-theme",
     "build:docs-theme": "rimraf docs/assets/css && webpack --config theme/webpack.config.js",
     "clean:docs": "rimraf docs",
-    "predeploy": "npm run build:docs",
-    "deploy": "gh-pages -t -d docs"
+    "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
   },
   "devDependencies": {
     "@types/enzyme": "3.1.14",
@@ -34,6 +33,7 @@
     "react-dom": "16.7.0",
     "react-test-renderer": "16.8.2",
     "reactn": "1.0.0",
+    "rimraf": "2.6.2",
     "rollup": "1.1.2",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-commonjs": "9.2.0",
@@ -43,8 +43,8 @@
     "sass-loader": "7.1.0",
     "ts-jest": "23.1.4",
     "ts-loader": "5.3.3",
-    "typedoc": "0.14.2",
     "tslint": "5.10.0",
+    "typedoc": "0.14.2",
     "typescript": "3.1.6",
     "webpack": "4.29.2",
     "webpack-cli": "3.2.3"

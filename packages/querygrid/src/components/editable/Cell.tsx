@@ -175,7 +175,7 @@ export class Cell extends React.Component<Props, any> {
         const { modelId } = this.props;
 
         // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid.editors.get(modelId);
+        return this.global.QueryGrid_editors.get(modelId);
     }
 
     focused(): boolean {

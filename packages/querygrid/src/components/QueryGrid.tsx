@@ -139,7 +139,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const stateModelId = model ? model.getId() : getStateModelId(modelId, schemaQuery);
 
         // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid.models.get(stateModelId);
+        return this.global.QueryGrid_models.get(stateModelId);
     }
 
     selectAll(evt) {

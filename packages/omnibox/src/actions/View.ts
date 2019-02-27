@@ -9,10 +9,10 @@ import { Action, ActionOption, ActionValue, Value } from './Action'
 
 export class ViewAction implements Action {
     iconCls = 'table';
+    param = 'view';
     keyword = 'view';
     oneWordLabel = 'view';
     optionalLabel = 'name';
-    param = 'view';
     resolveColumns: () => Promise<List<QueryColumn>>;
     resolveModel: () => Promise<QueryGridModel>;
     singleton = true;

@@ -158,8 +158,8 @@ function resolveSymbol(filterType: FilterType): string {
 }
 
 export class FilterAction implements Action {
-    keyword = 'filter';
     iconCls = 'filter';
+    keyword = 'filter';
     optionalLabel = 'columns';
     resolveColumns: () => Promise<List<QueryColumn>> = undefined;
     resolveModel: () => Promise<QueryGridModel>;

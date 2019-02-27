@@ -5,11 +5,11 @@
 import { Action, ActionOption, ActionValue, Value } from './Action'
 
 export class SearchAction implements Action {
-    keyword = '';
     iconCls = 'search';
     param = 'q';
+    keyword = 'search';
     oneWordLabel = 'search';
-    optionalLabel = 'keyword search';
+    optionalLabel = 'keywords';
 
     constructor(resolveColumns, urlPrefix: string) {
         if (urlPrefix !== undefined) {

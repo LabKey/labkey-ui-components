@@ -8,9 +8,7 @@ import { getGlobal, setGlobal } from "reactn";
 export function initBrowserHistoryState() {
     if (!getGlobal().utils) {
         setGlobal( {
-            utils: {
-                browserHistory: createHistory()
-            }
+            QueryGrid_browserHistory: createHistory()
         });
     }
 }
@@ -19,9 +17,9 @@ export function initBrowserHistoryState() {
  * Access method for better browser history object from global state
  */
 export function getBrowserHistory() {
-    if (!getGlobal().utils || !getGlobal().utils.browserHistory) {
-        throw new Error('Must call initBrowserHistoryState before you can access the global.utils.browserHistory object.');
+    if (!getGlobal().QueryGrid_browserHistory) {
+        throw new Error('Must call initBrowserHistoryState before you can access the global.QueryGrid_browserHistory object.');
     }
 
-    return getGlobal().utils.browserHistory;
+    return getGlobal().QueryGrid_browserHistory;
 }

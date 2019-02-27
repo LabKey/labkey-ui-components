@@ -1,16 +1,18 @@
 # LabKey Glass (@glass) components
 
-Defines all of the components available in the @glass scope. These React components are comprise the LabKey Glass UI framework.
-
-:construction: **Warning** :construction: LabKey Glass is under development so these components should be considered unstable. Once they're ready we'll officially push the components as version 1.0.
+Defines all of the components available in the @glass scope. These React components, utility functions, and models comprise the LabKey Glass UI framework.
 
 ## Components
 
 <!--- keep these alphabetical --->
-| Package | Current Verison |
-| --- | --- |
-| @glass/grid | 0.0.2 |
-| @glass/omnibox | 0.0.1 |
+| Package | Description | Current Verison |
+| --- | --- | --- |
+| @glass/domainproperties | Domain property related components for LabKey domains | 0.0.2 |
+| @glass/grid | Simple grid display for LabKey data views | 0.0.3 |
+| @glass/models | Shared models for LabKey components | 0.0.3 |
+| @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.4 |
+| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.8 |
+| @glass/utils | Utility functions and components for LabKey views | 0.0.4|
 
 ## Using Components
 
@@ -20,12 +22,12 @@ The easiest way to use `@glass` components is to install them from npm and bundl
 
 This package is currently availble on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
 ```
-npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```
 or via a `.npmrc` file
 ```
 # .npmrc
-@glass:registry=https://artifactory.labkey.com/artifactory/api/npm/libs-client
+@glass:registry=https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```
 
 #### Installing
@@ -92,7 +94,7 @@ lerna run build
 #### Creating a New Package
 To create a new package:
 
-* Create a new directory in the `packages` directory.
+* Create a new directory in the `glass-components/packages` directory.
 * Edit the root-level `package.json` and add the new directory to the `workspaces` array.
 * Copy the `package-scripts.js` file from an existing package to the new directory.
 * Copy and modify (or create) the `package.json`, `rollup.config.js`, and `tsconfig.json` files in your new package directory.
@@ -100,6 +102,30 @@ To create a new package:
 * Place typing files in a `src/typings` subdirectory.
 * Add documentation a-plenty.
 * Run `yarn build`
+
+#### Local Development
+
+In order to use and test the components you are developing or modifying in this repository within another application, 
+you can use [npm link](https://docs.npmjs.com/cli/link.html) 
+(also see [this discussion](https://medium.com/@the1mills/how-to-test-your-npm-module-without-publishing-it-every-5-minutes-1c4cb4b369be))
+to create symbolic links to your local versions of the packages.  Once modifications have been made and published, you can use [npm uninstall](https://docs.npmjs.com/cli/uninstall.html)
+(also see [this discussion](https://medium.com/@alexishevia/the-magic-behind-npm-link-d94dcb3a81af)) to remove the symbolic
+link (or, you can remove it yourself manually).  Please note that you will likey want to use the ``--no-save`` option 
+when uninstalling to prevent your ``package.json`` file from being updated.
+
+For example, if making changes to the grid package, you can do the following:
+* ``cd packages/grid``
+* ``npm link``  (this creates a link to this directory in the ``lib/node_modules`` directory of the node version currently on your path)
+* ``cd my_application``
+* ``npm link @glass/grid`` (note that the scope is required here)
+
+Then, when you no longer wish to reference the local installation, you can do
+* ``npm uninstall --no-save @glass/grid``
+
+This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
+need to use ``npm install``.
+ 
+
 
 #### Storybook
 
@@ -114,7 +140,7 @@ yarn run storybook
 
 ## Publishing
 
-In order to publish, you will need to set up your npm credentials.  Follow the 'Set Me Up' instructions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local). (Link is in the upper right corner.)
+In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://internal.labkey.com/wiki/Handbook/Dev/page.view?name=npmrc) to create your .npmrc file.
 If you do not have permissions to publish to this repository, contact a local Artifactory administrator who can grant you those permissions.
 
 To publish, increment the version number in accordance with [SemVer](https://semver.org/), update this Readme.md, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:

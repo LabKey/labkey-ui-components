@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react'
+
 import { mount, shallow } from 'enzyme'
 
 import { OmniBox } from './OmniBox'
@@ -39,10 +40,6 @@ export class HelloWorldAction implements Action {
         };
 
         return Promise.resolve([option]);
-    };
-
-    isEqual(action: Action): boolean {
-        return this.keyword === action.keyword;
     };
 
     buildParams(actionValues: Array<ActionValue>): Array<{paramKey: string; paramValue: string}> {

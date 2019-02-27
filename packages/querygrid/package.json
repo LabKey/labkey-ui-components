@@ -1,0 +1,72 @@
+{
+  "name": "@glass/querygrid",
+  "version": "0.0.8",
+  "description": "Query Grid for LabKey schema/query data views",
+  "main": "dist/querygrid.cjs.js",
+  "module": "dist/querygrid.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "nps build",
+    "clean": "nps clean",
+    "cleanAll": "nps cleanAll",
+    "test": "cross-env NODE_ENV=test jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LabKey/glass-components.git"
+  },
+  "author": "Cory Nathe",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/LabKey/glass-components/issues"
+  },
+  "publishConfig": {
+    "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+  },
+  "homepage": "https://github.com/LabKey/glass-components#readme",
+  "dependencies": {
+    "@glass/grid": "0.0.3",
+    "@glass/models": "0.0.3",
+    "@glass/omnibox": "0.0.4",
+    "@glass/utils": "0.0.4",
+    "@labkey/api": "0.0.9",
+    "bootstrap-sass": "3.4.0",
+    "classnames": "2.2.6",
+    "history": "4.7.2",
+    "normalizr": "3.3.0",
+    "react-bootstrap": "0.32.4"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.2",
+    "jquery": "^3.0",
+    "react": "^16.0",
+    "react-dom": "^16.0",
+    "reactn": "0.2.0"
+  },
+  "jest": {
+    "globals": {
+      "LABKEY": {}
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "moduleNameMapper": {
+      "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/../../test/jest.setup.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testRegex": "(\\.(test|spec))\\.(ts|tsx)$",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  }
+}

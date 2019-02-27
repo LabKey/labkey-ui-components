@@ -153,16 +153,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         return inputValue;
     }
 
-    refs: {
-        control: any
-        input: any
-        menu: any
-        menuContainer: any
-        wrapper: any
-    };
-
     _blurTimeout: number = undefined;
     _instancePrefix: string = undefined;
+    _omniboxInput: React.RefObject<any>;
 
     constructor(props: OmniBoxProps) {
         super(props);
@@ -178,6 +171,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.handleOptionFocus = this.handleOptionFocus.bind(this);
         this.removeActionValue = this.removeActionValue.bind(this);
         this.renderMenuOption = this.renderMenuOption.bind(this);
+
+        this._omniboxInput = React.createRef();
 
         this.state = {
             actionValues: props.values ? props.values : [],
@@ -295,6 +290,13 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             action.completeAction(tokenize(newInputValue)).then((result) => {
 
                 if (result.isValid !== false) {
+
+                    // determine if previous actionValues need to be replaced
+                    if (action.singleton === true) {
+                        const isEqual = action.isEqual ? action.isEqual : (other: Action) => action.keyword === other.keyword;
+                        newActionValues = newActionValues.filter((actionValue) => !isEqual(actionValue.action));
+                    }
+
                     newActionValues.push({
                         action,
                         displayValue: result.displayValue,
@@ -341,7 +343,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 activeAction.fetchOptions(tokenize(OmniBox.stripKeyword(inputValue, activeAction)))
                     .then((options) => {
 
-                        let _options = [];
+                        let _options: Array<ActionOption> = [];
                         for (let i=0; i < options.length; i++) {
                             _options.push(Object.assign({
                                 action: activeAction
@@ -349,8 +351,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                         }
 
                         this.setState({
-                            // auto-focus first option iff one option available
-                            focusedIndex: _options.length === 1 ? 0 : -1,
+                            // auto-focus first option iff one selectable option available
+                            focusedIndex: _options.length === 1 && _options[0].selectable !== false ? 0 : -1,
                             options: _options
                         });
                     });
@@ -423,8 +425,10 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     }
 
     focus() {
-        if (!this.refs.input) return;
-        this.refs.input.focus();
+        if (!this._omniboxInput.current) {
+            return;
+        }
+        this._omniboxInput.current.focus();
 
         if (this.props.openAfterFocus) {
             this.setState({
@@ -611,7 +615,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
                 if (this.state.inputValue || this.state.activeAction) {
                     this.cancelEvent(event);
-                    this.selectFocusedOption(false /* canComplete */);
+                    this.selectFocusedOption(false);
                 }
                 break;
             case 13: // enter key
@@ -681,9 +685,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
     }
 
-    handleOptionFocus(option: ActionOption, index: number) {
+    handleOptionFocus(option: ActionOption, focusedIndex: number) {
         this.setState({
-            focusedIndex: index
+            focusedIndex
         })
     }
 
@@ -692,17 +696,35 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         for (let a=0; a < actionValues.length; a++) {
             let found = false;
+            const actionValue = actionValues[a];
+
             for (let i=0; i < newActionValueCollection.length; i++) {
-                if (newActionValueCollection[i].action.isEqual(actionValues[a].action)) {
-                    newActionValueCollection[i].values.push(actionValues[a]);
+                const action = newActionValueCollection[i].action;
+                let isEqual = false;
+
+                if (action.isEqual) {
+                    isEqual = action.isEqual(actionValue.action);
+                }
+                else {
+                    isEqual = action.keyword === actionValue.action.keyword;
+                }
+
+                if (isEqual) {
                     found = true;
+
+                    if (action.singleton === true) {
+                        newActionValueCollection[i].values = [actionValue];
+                    }
+                    else {
+                        newActionValueCollection[i].values.push(actionValue);
+                    }
                 }
             }
 
             if (!found) {
                 newActionValueCollection.push({
-                    action: actionValues[a].action,
-                    values: [actionValues[a]]
+                    action: actionValue.action,
+                    values: [actionValue]
                 });
             }
         }
@@ -776,15 +798,15 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         const inputProps = Object.assign({}, this.props.inputProps, {
             className: classNames('OmniBox-input', this.props.inputProps.className),
+            ref: this._omniboxInput,
             minWidth: '5px',
             onBlur: this.handleInputBlur,
             onChange: this.handleInputChange,
             onFocus: this.handleInputFocus,
-            ref: 'input',
             value: this.renderInputValue()
         });
 
-        return <AutosizeInput {...inputProps} />;
+        return <AutosizeInput {...inputProps}/>;
     }
 
     renderInputValue(): string {
@@ -808,8 +830,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     renderMenu() {
 
         return (
-            <div ref="menuContainer">
-                <ul ref="menu" className="OmniBox-autocomplete">
+            <div>
+                <ul className="OmniBox-autocomplete">
                     {this.state.options.map(this.renderMenuOption)}
                 </ul>
             </div>
@@ -842,7 +864,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         }
 
         if (actionValues.length > 0) {
-            return actionValues.map((actionValue: ActionValue, i): any => (
+            return actionValues.map((actionValue, i) => (
                 <Value
                     key={`value-${i}`}
                     index={i}
@@ -864,12 +886,8 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         });
 
         return (
-            <div ref="wrapper"
-                 className={className}>
-                <div ref="control"
-                     className="OmniBox-control"
-                     onKeyDown={this.handleKeyDown}
-                     onMouseDown={this.handleMouseDown}>
+            <div className={className}>
+                <div className="OmniBox-control" onKeyDown={this.handleKeyDown} onMouseDown={this.handleMouseDown}>
                     <span className="OmniBox-multi-value-wrapper">
                         {this.renderValue()}
                         {this.renderInput()}

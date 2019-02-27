@@ -4,7 +4,9 @@
   "scripts": {
     "build:docs": "npm run clean:docs && typedoc --options theme/typedoc.js ./packages && touch docs/.nojekyll && npm run build:docs-theme",
     "build:docs-theme": "rimraf docs/assets/css && webpack --config theme/webpack.config.js",
-    "clean:docs": "rimraf docs"
+    "clean:docs": "rimraf docs",
+    "predeploy": "npm run build:docs",
+    "deploy": "gh-pages -t -d docs"
   },
   "devDependencies": {
     "@types/enzyme": "3.1.14",
@@ -17,6 +19,7 @@
     "cross-env": "5.2.0",
     "enzyme": "3.8.0",
     "enzyme-adapter-react-16": "1.9.0",
+    "gh-pages": "2.0.1",
     "immutable": "3.8.2",
     "jest": "24.1",
     "jest-cli": "24.1.0",

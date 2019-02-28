@@ -239,6 +239,22 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.9.tgz#c721e230bad869941f6d1b3fe538b479bb15a9aa"
   integrity sha1-xyHiMLrYaZQfbRs/5Ti0ebsVqao=
 
+"@labkey/dependencies@0.0.1":
+  version "0.0.1"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.1.tgz#64a3eec7d0e87ade8dbb9c5631cb11d5dac2e6f3"
+  integrity sha1-ZKPux9Doet6Nu5xWMcsR1drC5vM=
+  dependencies:
+    "@labkey/api" "0.0.9"
+    "@types/react" "16.4.18"
+    "@types/react-dom" "16.0.9"
+    font-awesome "4.7.0"
+    immutable "3.8.2"
+    jquery "3.3.1"
+    react "16.7.0"
+    react-bootstrap "0.32.4"
+    react-dom "16.7.0"
+    reactn "1.0.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -544,10 +560,6 @@
   version "23.3.13"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.13.tgz#c81484b6f4ca007bb09887ed15ecb3286d58f928"
   integrity sha512-ePl4l+7dLLmCucIwgQHAgjiepY++qcI6nb8eAwGNkB6OxmTe3Z9rQU3rSpomqu42PCCnlThZbOoxsf+qylJsLA==
-
-"@types/jquery@3.3.8":
-  version "3.3.8"
-  resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.3.8.tgz#0d1849fd6708921fe75553942fe11a7743b54c9b"
 
 "@types/jsdom@12.2.0":
   version "12.2.0"
@@ -4504,6 +4516,11 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
+
+font-awesome@4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha1-j6jPBBGhoxr9B7BtKQK7n8gVoTM=
 
 for-in@^1.0.1, for-in@^1.0.2:
   version "1.0.2"

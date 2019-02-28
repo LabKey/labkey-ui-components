@@ -27,14 +27,7 @@
     "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
-  "dependencies": {
-    "classnames": "2.2.6"
-  },
-  "peerDependencies": {
-    "immutable": "^3.8.2",
-    "react": "^16.0",
-    "react-dom": "^16.0"
-  },
+  "dependencies": {},
   "jest": {
     "moduleFileExtensions": [
       "ts",

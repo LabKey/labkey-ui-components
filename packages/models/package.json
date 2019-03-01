@@ -30,6 +30,9 @@
   "dependencies": {
     "@glass/utils": "0.0.4"
   },
+  "peerDependencies": {
+    "immutable": "^3.8.2"
+  },
   "jest": {
     "globals": {
       "LABKEY": {}

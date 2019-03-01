@@ -30,6 +30,11 @@
   "dependencies": {
     "react-bootstrap": "0.32.4"
   },
+  "peerDependencies": {
+    "immutable": "^3.8.2",
+    "react": "^16.0",
+    "react-dom": "^16.0"
+  },
   "jest": {
     "globals": {
       "LABKEY": {}

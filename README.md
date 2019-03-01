@@ -125,7 +125,23 @@ Then, when you no longer wish to reference the local installation, you can do
 This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
 need to use ``npm install``.
  
+### Documentation
+We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/glass-components/), which is **publicly available on the internet**, 
+so there should be no references to secrets or clients left in the documentation.  
 
+All exported components, methods, interfaces, etc. should include 
+documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/) to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.
+
+You can generate the docs locally by running the following command in the ```glass-components``` directory.
+* ``yarn run build:docs``
+ 
+**N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such. 
+Try to eliminate as many of these as possible before deploying the docs.
+
+To publish the documentation to [GitHub pages](https://labkey.github.io/glass-components/) use the following command in the ```glass-components``` directory:
+* ``yarn run deploy:docs``
+
+This deployment of docs should be done after each pull request is merged into ```master```. 
 
 #### Storybook
 

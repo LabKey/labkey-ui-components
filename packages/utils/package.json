@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@labkey/api": "0.0.9",
     "react-bootstrap": "0.32.4"
   },
   "peerDependencies": {

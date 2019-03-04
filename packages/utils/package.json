@@ -12,7 +12,8 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
   },
   "repository": {
     "type": "git",

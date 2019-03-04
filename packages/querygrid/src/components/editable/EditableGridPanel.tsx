@@ -56,7 +56,7 @@ export class EditableGridPanel extends React.Component<Props, any> {
         return (
             <Panel>
                 <Panel.Heading>{title}</Panel.Heading>
-                <Panel.Body className={"table-responsive"}>
+                <Panel.Body className={'table-responsive'}>
                     <EditableGrid model={model}/>
                 </Panel.Body>
             </Panel>

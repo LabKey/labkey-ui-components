@@ -7,7 +7,7 @@ import { Alert } from './components/Alert'
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { Tip } from './components/Tip'
-import { AppURL, buildURL, getSortFromUrl, hasParameter, setParameter, toggleParameter } from './url/ActionURL'
+import { AppURL, buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 
 export {
     // components
@@ -23,6 +23,7 @@ export {
     buildURL,
     getSortFromUrl,
     hasParameter,
+    imageURL,
     setParameter,
     toggleParameter,
 

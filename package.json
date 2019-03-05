@@ -20,6 +20,7 @@
     "enzyme-adapter-react-16": "1.9.0",
     "gh-pages": "2.0.1",
     "jest": "24.1",
+    "jest-teamcity-reporter": "0.9.0",
     "jest-cli": "24.1.0",
     "jsdom": "13.2.0",
     "lerna": "2.11.0",

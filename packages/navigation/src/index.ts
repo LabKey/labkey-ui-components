@@ -4,7 +4,16 @@
  */
 
 import { NavigationBar } from './components/NavigationBar'
+import { ProductMenu } from './components/ProductMenu'
+import { SearchBox } from './components/SearchBox'
+import { UserMenu } from './components/UserMenu'
 
 export {
-    NavigationBar
+    // actions
+
+    // components
+    NavigationBar,
+    ProductMenu,
+    SearchBox,
+    UserMenu
 }

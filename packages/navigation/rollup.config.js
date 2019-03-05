@@ -5,39 +5,47 @@
  */
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
+import sass from 'rollup-plugin-sass';
 import typescript from 'rollup-plugin-typescript2';
 
-const input = 'src/index.ts';
-
 const globals = {
+    'classnames': 'classNames',
     'immutable': 'immutable',
+    'jquery': 'jQuery',
     'react': 'React',
-    'react-dom': 'ReactDOM'
+    'react-dom': 'ReactDOM',
+    'react-input-autosize': 'AutosizeInput'
 };
 const external = Object.keys(globals);
 
-const namedExports = {
-    // Could be utilized for named exports
-    // 'immutable': [ 'fromJS', 'List', 'Map' ]
+const input = 'src/index.ts';
+
+const cjsOptions = {
+    namedExports: {
+        'jquery': [ '$' ]
+    }
 };
 
 export default [
     {
-        external: external,
-        input: input,
+        external,
+        input,
         output: {
             file: 'dist/navigation.cjs.js',
             format: 'cjs'
         },
         plugins: [
             resolve(),
-            commonjs({namedExports}),
-            typescript()
+            commonjs(cjsOptions),
+            typescript(),
+            sass({
+                output: 'dist/navigation.css'
+            })
         ]
     },
     {
-        external: external,
-        input: input,
+        external,
+        input,
         output: {
             file: 'dist/navigation.es.js',
             format: 'es',
@@ -45,23 +53,25 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports}),
-            typescript()
+            commonjs(cjsOptions),
+            typescript(),
+            sass()
         ]
     },
     {
-        external: external,
-        input: input,
+        external,
+        input,
         output: {
             file: 'dist/navigation.umd.js',
             format: 'umd',
             name: 'navigation',
-            globals: globals
+            globals
         },
         plugins: [
             resolve(),
-            commonjs({namedExports}),
-            typescript()
+            commonjs(cjsOptions),
+            typescript(),
+            sass()
         ]
     }
 ]

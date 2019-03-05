@@ -132,6 +132,15 @@ export function setParameter(parameterName: string, value: any): void {
     window.location.search = result;
 }
 
+export function imageURL(application: string, src: string): string {
+    return [
+        ActionURL.getContextPath(),
+        application, // TODO get this from global state somewhere?
+        'images',
+        src
+    ].join('/');
+}
+
 export function toggleParameter(parameterName: string, value: any): void {
     setParameter(parameterName, hasParameter(parameterName) ? undefined : value);
 }

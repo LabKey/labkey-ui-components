@@ -37,6 +37,13 @@
     "history": "4.7.2",
     "normalizr": "3.3.0"
   },
+  "peerDependencies": {
+    "immutable": "^3.8.2",
+    "jquery": "^3.0",
+    "react": "^16.0",
+    "react-dom": "^16.0",
+    "reactn": "^1.0.0"
+  },
   "jest": {
     "globals": {
       "LABKEY": {}

@@ -12,9 +12,6 @@
   "author": "Nick Kerr",
   "private": true,
   "dependencies": {
-    "bootstrap": "3.3.7",
-    "immutable": "^3.8.2",
-    "react": "^16.0",
-    "react-dom": "^16.0"
+    "bootstrap": "3.3.7"
   }
 }

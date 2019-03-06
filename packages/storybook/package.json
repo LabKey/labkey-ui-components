@@ -12,15 +12,6 @@
   "author": "Nick Kerr",
   "private": true,
   "dependencies": {
-    "bootstrap": "3.3.7",
-    "immutable": "^3.8.2",
-    "react": "^16.0",
-    "react-dom": "^16.0"
-  },
-  "devDependencies": {
-    "@storybook/addon-knobs": "4.0.0-alpha.12",
-    "@storybook/addon-notes": "4.0.0-alpha.12",
-    "@storybook/react": "4.0.0-alpha.12",
-    "babel-core": "6.26.3"
+    "bootstrap": "3.3.7"
   }
 }

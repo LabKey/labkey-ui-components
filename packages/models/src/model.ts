@@ -6,7 +6,7 @@ import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 import { intersect, toLowerSafe } from '@glass/utils'
 
-import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './constants'
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
 import { resolveKey } from "./utils";
 
 const emptyList = List<string>();
@@ -736,6 +736,20 @@ export class QueryGridModel extends Record({
             canInsert: false,
             insertUrl: false
         });
+    }
+
+    getDataEdit(): List<Map<string, any>> {
+        return this.dataIds.map(i => {
+            if (this.data.has(i)) {
+                return this.data.get(i).merge({
+                    [GRID_EDIT_INDEX]: i
+                });
+            }
+
+            return Map<string, any>({
+                [GRID_EDIT_INDEX]: i
+            })
+        }).toList();
     }
 }
 

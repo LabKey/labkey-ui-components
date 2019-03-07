@@ -2,16 +2,17 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { GRID_SELECTION_INDEX, GRID_CHECKBOX_OPTIONS } from './constants'
+import { GRID_EDIT_INDEX, GRID_SELECTION_INDEX, GRID_CHECKBOX_OPTIONS } from './constants'
 import {
     QueryColumn, QueryGridModel, QueryInfo, QuerySort, QueryLookup, QueryInfoStatus,
-    Container, User, SchemaQuery, ViewInfo,
+    Container, User, SchemaQuery, ViewInfo, SchemaDetails,
     IQueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse
 } from './model'
-import { resolveKey, resolveKeyFromJson, resolveSchemaQuery, getSchemaQuery } from './utils'
+import { resolveKey, resolveKeyFromJson, resolveSchemaQuery, getSchemaQuery, decodePart, encodePart } from './utils'
 
 export {
     // constants
+    GRID_EDIT_INDEX,
     GRID_SELECTION_INDEX,
     GRID_CHECKBOX_OPTIONS,
 
@@ -30,10 +31,13 @@ export {
     QuerySort,
     QueryLookup,
     QueryInfoStatus,
+    SchemaDetails,
     SchemaQuery,
     ViewInfo,
 
     // functions
+    decodePart,
+    encodePart,
     getSchemaQuery,
     resolveKey,
     resolveKeyFromJson,

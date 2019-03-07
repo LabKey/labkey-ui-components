@@ -28,7 +28,8 @@ export function resetQueryGridState() {
         QueryGrid_editors: Map<string, EditorModel>(),
         QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
-        QueryGrid_models: Map<string, QueryGridModel>()
+        QueryGrid_models: Map<string, QueryGridModel>(),
+        QueryGrid_columnrenderers: Map<string, any>()
     });
 }
 
@@ -101,6 +102,23 @@ export function getQueryMetadata() {
 export function setQueryMetadata(metadata: Map<string, any>) {
     setGlobal({
         QueryGrid_metadata: metadata
+    });
+}
+
+/**
+ * Get the query grid column renderers map from the global QueryGrid state
+ */
+export function getQueryColumnRenderers() {
+    return getGlobalState('columnrenderers');
+}
+
+/**
+ * Sets the valid column renderers for this application in the global QueryGrid state
+ * @param renderers Map of query grid column renderers to be bound to the queryInfo columns
+ */
+export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
+    setGlobal({
+        QueryGrid_columnrenderers: columnrenderers
     });
 }
 

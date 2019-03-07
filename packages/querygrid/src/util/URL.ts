@@ -3,14 +3,14 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Map } from 'immutable'
-import { getBrowserHistory } from "./global";
-
 import { AppURL } from "@glass/utils"
+
+import { getBrowserHistory } from "./global";
 
 export type Location = {
     pathname?: string
     search?: string
-    query?: Map<string, string>
+    query?: Map<string, any>
     state?: any // {[key:string]: string}
 }
 

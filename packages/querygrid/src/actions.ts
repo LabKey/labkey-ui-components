@@ -5,7 +5,7 @@
 import { List, Map, OrderedMap, Set, fromJS } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
 import { buildURL, getSortFromUrl, naturalSort, not } from '@glass/utils'
 
 import { getQueryDetails, searchRows } from './query/api'
@@ -13,7 +13,7 @@ import { isEqual } from './query/filter'
 import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
 import {
     FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES, KEYS,
-    SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE, GRID_EDIT_INDEX
+    SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE
 } from "./constants";
 import { cancelEvent, setCopyValue, getPasteValue } from './events'
 import {
@@ -124,7 +124,7 @@ export function gridSelectAll(model: QueryGridModel) {
 
             }).catch(err => {
                 const error = err ? err : {message: 'Something went wrong in selecting all items for this grid (name: ' + model.getModelName() + ', id:' + id + ')'};
-                handleQueryErrorAction(model, error);
+                gridShowError(model, error);
             });
         }
     })
@@ -216,14 +216,14 @@ export function clearError(model: QueryGridModel) {
 }
 
 export function schemaInvalidate(schemaName: string) {
-    getQueryGridModelsForSchema(schemaName).map((model) => invalidate(model));
+    getQueryGridModelsForSchema(schemaName).map((model) => gridInvalidate(model));
 }
 
 export function queryInvalidate(schemaQuery: SchemaQuery) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => invalidate(model));
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
 }
 
-export function invalidate(model: QueryGridModel): QueryGridModel {
+export function gridInvalidate(model: QueryGridModel): QueryGridModel {
     return updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
@@ -248,8 +248,8 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
     }
 }
 
-export function refresh(model: QueryGridModel) {
-    let newModel = invalidate(model);
+export function gridRefresh(model: QueryGridModel) {
+    let newModel = gridInvalidate(model);
 
     if (model.allowSelection) {
         setGridUnselected(newModel);
@@ -377,7 +377,7 @@ export function gridLoad(model: QueryGridModel) {
             fetchSelectedIfNeeded(newModel);
         }
     }, payload => {
-        handleQueryErrorAction(payload.model, payload.error);
+        gridShowError(payload.model, payload.error);
     });
 }
 
@@ -540,6 +540,7 @@ export function gridSelectView(model: QueryGridModel, view: ViewInfo) {
     replaceParameter(getLocation(), model.createParam('view'), viewName);
 }
 
+// Complex comparator to determine if the location matches the models location-sensitive properties
 function hasURLChange(model: QueryGridModel): boolean {
     if (!model || !model.bindURL) {
         return false;
@@ -627,7 +628,7 @@ function fetchSelectedIfNeeded(model: QueryGridModel) {
                 });
             }
         }, payload => {
-            handleQueryErrorAction(payload.model, payload.error);
+            gridShowError(payload.model, payload.error);
         });
     }
 }
@@ -724,7 +725,7 @@ function setGridUnselected(model: QueryGridModel) {
         });
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong'};
-        handleQueryErrorAction(model, error);
+        gridShowError(model, error);
     })
 }
 
@@ -793,7 +794,7 @@ function setError(model: QueryGridModel, message: string) {
     })
 }
 
-function handleQueryErrorAction(model: QueryGridModel, error: any) {
+export function gridShowError(model: QueryGridModel, error: any) {
     setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error');
 }
 
@@ -1712,18 +1713,4 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
             dataIds: model.dataIds.remove(idIndex)
         });
     }
-}
-
-export function getDataEdit(model: QueryGridModel): List<Map<string, any>> {
-    return model.dataIds.map(i => {
-        if (model.data.has(i)) {
-            return model.data.get(i).merge({
-                [GRID_EDIT_INDEX]: i
-            });
-        }
-
-        return Map<string, any>({
-            [GRID_EDIT_INDEX]: i
-        })
-    }).toList();
 }

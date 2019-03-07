@@ -8,7 +8,7 @@ import {
 } from "./global";
 import { QueryGridModel } from "@glass/models";
 import { SchemaQuery } from "@glass/models";
-import { List, Map } from "immutable";
+import { List } from "immutable";
 import { DataViewInfo, EditorModel, LookupStore } from "./model";
 import { GRID_CHECKBOX_OPTIONS, QueryColumn } from "@glass/models/src";
 

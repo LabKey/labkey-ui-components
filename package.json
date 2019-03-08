@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@labkey/dependencies": "0.0.1",
-    "classnames": "2.2.6"
+    "classnames": "2.2.6",
+    "watch": "1.0.2"
   },
   "devDependencies": {
     "@types/enzyme": "3.1.14",

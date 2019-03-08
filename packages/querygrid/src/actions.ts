@@ -10,7 +10,7 @@ import { buildURL, getSortFromUrl, naturalSort, not } from '@glass/utils'
 
 import { getQueryDetails, searchRows } from './query/api'
 import { isEqual } from './query/filter'
-import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
+import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
 import {
     FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES, KEYS,
     SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE
@@ -391,7 +391,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     };
 
     const location = getLocation();
-    const queryString = location.search;
+    const queryString = buildQueryString(location.query);
     const p = location.query.get(model.createParam('p'));
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));
@@ -420,7 +420,6 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     }
 
     props.urlParamValues = props.urlParamValues.asImmutable();
-
 
     return props;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -13,7 +13,8 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
+    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
+    "watch": "watch 'yarn build' ./src"
   },
   "repository": {
     "type": "git",

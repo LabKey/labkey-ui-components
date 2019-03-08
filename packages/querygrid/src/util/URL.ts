@@ -9,6 +9,7 @@ import { getBrowserHistory } from "./global";
 
 export type Location = {
     pathname?: string
+    hash?: string
     search?: string
     query?: Map<string, any>
     state?: any // {[key:string]: string}
@@ -16,60 +17,59 @@ export type Location = {
 
 export function getLocation() : Location
 {
-    let location : Location = window.location;
-    let query =  Map<string, string>().asMutable();
-    if (location.search.length > 0)
+    let location : Location = getBrowserHistory().location;
+    let query =  Map<string, string>(location.query).asMutable();
+
+    // check for query params that are before the hash
+    if (location.search && location.search.length > 0)
     {
-        let params = location.search.substring(1).split("&");
+        const params = location.search.substring(1).split('&');
         params.forEach( (p) => {
-            let keyVal = p.split("=");
+            const keyVal = p.split('=');
             query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
         });
     }
+
+    // and check for query params after the hash
+    if (location.hash && location.hash.indexOf('?') > -1) {
+        const index = location.hash.indexOf('?');
+
+        const params = location.hash.substring(index + 1).split('&');
+        params.forEach( (p) => {
+            const keyVal = p.split('=');
+            query.set(decodeURI(keyVal[0].trim()), decodeURI(keyVal[1].trim()));
+        });
+
+        location.hash = location.hash.substring(0, index);
+    }
+
     location.query = query.asImmutable();
     return location;
 }
 
-function build(pathname: string, params: Map<string, string | number>): string {
-    var q = '', sep = '';
-
+export function buildQueryString(params: Map<string, string | number>): string {
+    let q = '', sep = '';
     params.forEach((v, k) => {
         q += sep + k + '=' + v;
         sep = '&';
     });
 
-    return pathname + (q.length > 0 ? '?' + q : '');
+    return q.length > 0 ? '?' + q : '';
+}
+
+function build(location: Location, params: Map<string, string | number>): string {
+    return location.pathname + (location.hash || '') + buildQueryString(params);
 }
 
 function setParameter(location: Location, key: string, value: string | number, asReplace: boolean = false) {
-    const { query } = location;
-
-    let newParams;
-    let queryMap = Map<string, string | number>(query);
-
-    // this allows for removing blank parameters
-    if (value === undefined || value === '') {
-        newParams = queryMap.delete(key);
-    }
-    else {
-        newParams = queryMap.set(key, value);
-    }
-
-    // will this version of replace and push from history interfere with the react router versions?
-    if (asReplace) {
-        getBrowserHistory().replace(build(location.pathname, newParams));
-    }
-    else {
-        getBrowserHistory().push(build(location.pathname, newParams));
-    }
+    const params = Map<string, string | number>();
+    setParameters(location, params.set(key, value), asReplace);
 }
 
 function setParameters(location: Location, params: Map<string, string | number>, asReplace: boolean = false) {
     const { query } = location;
 
     let newParams = Map<string, string | number>(query).asMutable();
-
-
     params.forEach((value, key) => {
         if (value === undefined || value === '') {
             newParams.delete(key);
@@ -80,10 +80,10 @@ function setParameters(location: Location, params: Map<string, string | number>,
     });
 
     if (asReplace) {
-        getBrowserHistory().replace(build(location.pathname, newParams.asImmutable()));
+        getBrowserHistory().replace(build(location, newParams.asImmutable()));
     }
     else {
-        getBrowserHistory().push(build(location.pathname, newParams.asImmutable()))
+        getBrowserHistory().push(build(location, newParams.asImmutable()))
     }
 }
 

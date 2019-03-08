@@ -551,7 +551,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
     handleInputBlur() {
         if (this.state.inputValue.length) {
-            this._blurTimeout = setTimeout(this._handleInputBlur, 200);
+            this._blurTimeout = window.setTimeout(this._handleInputBlur, 200);
         }
         else {
             this._handleInputBlur();

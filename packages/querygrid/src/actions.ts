@@ -249,13 +249,11 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
 }
 
 export function gridRefresh(model: QueryGridModel) {
-    let newModel = gridInvalidate(model);
-
     if (model.allowSelection) {
-        setGridUnselected(newModel);
+        setGridUnselected(model);
     }
 
-    gridLoad(newModel);
+    gridLoad(model);
 }
 
 export function reloadQueryGridModel(model: QueryGridModel) {

@@ -433,7 +433,9 @@ export class FilterAction implements Action {
     }
 
     private getFilterParameters(paramKey: string, paramValue: any): {param: string, filters: Array<Filter.Filter>} {
-        const param = [paramKey, paramValue].join('=');
+        // Need to re-encode paramValue because it has already been decoded, and getFiltersFromUrl assumes that the
+        // strings passed in are URL encoded. See Issue #34630 for more details.
+        const param = `${paramKey}=${encodeURIComponent(paramValue)}`;
 
         return {
             filters: Filter.getFiltersFromUrl(param, this.urlPrefix),

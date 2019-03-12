@@ -127,6 +127,7 @@ export class ViewAction implements Action {
 
         if (paramValue) {
             results.push({
+                param: `${paramKey}=${paramValue}`,
                 value: paramValue
             });
         }

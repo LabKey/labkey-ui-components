@@ -7,11 +7,11 @@ Defines all of the components available in the @glass scope. These React compone
 <!--- keep these alphabetical --->
 | Package | Description | Current Verison |
 | --- | --- | --- |
-| @glass/domainproperties | Domain property related components for LabKey domains | 0.0.2 |
+| @glass/domainproperties | Domain property related components for LabKey domains | 0.0.3 |
 | @glass/grid | Simple grid display for LabKey data views | 0.0.3 |
-| @glass/models | Shared models for LabKey components | 0.0.3 |
-| @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.4 |
-| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.9 |
+| @glass/models | Shared models for LabKey components | 0.0.4 |
+| @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.5 |
+| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.10 |
 | @glass/utils | Utility functions and components for LabKey views | 0.0.5|
 
 ## Using Components

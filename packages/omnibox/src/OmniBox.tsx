@@ -160,7 +160,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
     constructor(props: OmniBoxProps) {
         super(props);
 
-        this._handleInputBlur = this._handleInputBlur.bind(this);
         this.handleClickValue = this.handleClickValue.bind(this);
         this.handleInputBlur = this.handleInputBlur.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -273,24 +272,18 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
     completeAction(lastInputValue?: string, optionAction?: Action): boolean {
 
-        let action = optionAction ? optionAction : this.state.activeAction,
-            completed = false,
-            value = lastInputValue || this.state.inputValue;
+        const action = optionAction ? optionAction : this.state.activeAction;
+        const value = lastInputValue || this.state.inputValue;
+        let completed = false;
 
         if (value && action) {
-
             let newActionValues = this.state.actionValues;
-            let newInputValue = OmniBox.stripKeyword(value, action);
-
-            newInputValue = newInputValue.trim();
-
-            let tokenize = this.resolveTokenizer(action);
+            const newInputValue = OmniBox.stripKeyword(value, action).trim();
+            const tokenize = this.resolveTokenizer(action);
 
             completed = true;
             action.completeAction(tokenize(newInputValue)).then((result) => {
-
                 if (result.isValid !== false) {
-
                     // determine if previous actionValues need to be replaced
                     if (action.singleton === true) {
                         const isEqual = action.isEqual ? action.isEqual : (other: Action) => action.keyword === other.keyword;
@@ -535,7 +528,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         this.focus();
     }
 
-    _handleInputBlur() {
+    handleInputBlur() {
         // completeAction will handle resets, however, it may not be able to complete an invalid
         // action. Therefore, set the state according to blur.
         if (!this.completeAction()) {
@@ -546,15 +539,6 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 isOpen: false,
                 options: []
             });
-        }
-    }
-
-    handleInputBlur() {
-        if (this.state.inputValue.length) {
-            this._blurTimeout = window.setTimeout(this._handleInputBlur, 200);
-        }
-        else {
-            this._handleInputBlur();
         }
     }
 

@@ -125,10 +125,10 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
                 }
             });
 
-            return List([selColumn]).concat(model.getColumns()).toList();
+            return List([selColumn]).concat(model.getDisplayColumns()).toList();
         }
 
-        return model.getColumns();
+        return model.getDisplayColumns();
     }
 
     getModel(props: QueryGridProps): QueryGridModel {

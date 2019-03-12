@@ -62,12 +62,16 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         return !nextState.changeLock && !isLocationEqual(this.state.location, nextState.location);
     }
 
-    private getColumns(): List<QueryColumn> {
-        if (this.props.queryModel) {
-            return this.props.queryModel.getColumns();
+    private getColumns(allColumns?: boolean): List<QueryColumn> {
+        if (!this.props.queryModel) {
+            return emptyList;
         }
 
-        return emptyList;
+        if (allColumns) {
+            return this.props.queryModel.getAllColumns();
+        }
+
+        return this.props.queryModel.getDisplayColumns();
     }
 
     onOmniBoxChange(actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) {
@@ -101,7 +105,10 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         }
 
         // TODO: This is a overly simplified mechanism for suppressing unwanted updates. Figure out a better model
-        // for piping URL updates
+        //  for piping URL updates
+        // TODO: Also this doesn't do what you think it does. setState is not atomic unless you use the callback
+        //  version of it. It is entirely plausible that changeLock is still false, by the time we call updateURL, and
+        //  even by the time we set changeLock to false again.
         this.setState({
             changeLock: true
         });
@@ -176,8 +183,8 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         }
     }
 
-    requestColumns(): Promise<List<QueryColumn>> {
-        return Promise.resolve(this.getColumns());
+    requestColumns(allColumns?: boolean): Promise<List<QueryColumn>> {
+        return Promise.resolve(this.getColumns(allColumns));
     }
 
     requestModel(): Promise<QueryGridModel> {

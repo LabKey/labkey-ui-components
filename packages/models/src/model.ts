@@ -544,7 +544,7 @@ export class QueryGridModel extends Record({
      * Returns the set of display columns for this QueryGridModel based on its configuration.
      * @returns {List<QueryColumn>}
      */
-    getColumns(): List<QueryColumn> {
+    getDisplayColumns(): List<QueryColumn> {
         if (this.queryInfo) {
             let cols = this.queryInfo.getDisplayColumns(this.view);
 
@@ -554,6 +554,14 @@ export class QueryGridModel extends Record({
             }
 
             return cols;
+        }
+
+        return emptyColumns;
+    }
+
+    getAllColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            return List<QueryColumn>(this.queryInfo.columns.values());
         }
 
         return emptyColumns;
@@ -578,7 +586,7 @@ export class QueryGridModel extends Record({
 
     getExportColumnsString(): string {
         // does not include required columns -- app only
-        return this.getColumns().map(c => c.fieldKey).join(',');
+        return this.getDisplayColumns().map(c => c.fieldKey).join(',');
     }
 
     getFilters(): List<Filter.Filter> {
@@ -645,7 +653,7 @@ export class QueryGridModel extends Record({
     getRequestColumnsString(): string {
         let fieldKeys = this.requiredColumns
             .concat(this.getKeyColumns().map(c => c.fieldKey))
-            .concat(this.getColumns().map(c => c.fieldKey));
+            .concat(this.getDisplayColumns().map(c => c.fieldKey));
 
         if (this.omittedColumns.size > 0) {
             const lowerOmit = toLowerSafe(this.omittedColumns);

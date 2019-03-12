@@ -161,7 +161,7 @@ export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
     optionalLabel = 'columns';
-    resolveColumns: () => Promise<List<QueryColumn>> = undefined;
+    resolveColumns: (allColumns?: boolean) => Promise<List<QueryColumn>> = undefined;
     resolveModel: () => Promise<QueryGridModel>;
     urlPrefix: string;
 
@@ -193,7 +193,6 @@ export class FilterAction implements Action {
             // see if the column is in our current domain
             const column = parseColumns(columns, options.columnName).first();
             if (column) {
-
                 options.column = column;
                 options.filterTypes = Filter.getFilterTypesForType(column.get('jsonType')); // TODO: Need to filter this set
 
@@ -213,15 +212,11 @@ export class FilterAction implements Action {
     }
 
     completeAction(tokens: Array<string>): Promise<Value> {
-
         return new Promise((resolve) => {
-
-            return this.resolveColumns().then((columns: List<QueryColumn>) => {
-
+            return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
                 const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns);
 
                 if (column && activeFilterType && rawValue !== undefined) {
-
                     const operator = resolveSymbol(activeFilterType);
                     const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
                     const display = this.getDisplayValue(column.shortCaption, operator, rawValue);
@@ -243,9 +238,7 @@ export class FilterAction implements Action {
     }
 
     fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
-
         return new Promise((resolve) => {
-
             return this.resolveColumns().then((columns) => {
 
                 let results: Array<ActionOption> = [];

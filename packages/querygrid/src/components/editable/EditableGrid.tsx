@@ -56,6 +56,7 @@ export interface EditableGridProps {
     allowAdd?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
+    disabled?: boolean
     model: QueryGridModel
     isSubmitting?: boolean
     loadData?: boolean
@@ -66,6 +67,7 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
     static defaultProps = {
         allowAdd: true,
         allowRemove: true,
+        disabled: false,
         isSubmitting: false,
         loadData: false
     };
@@ -163,9 +165,9 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
     }
 
     onDocumentClick(event: any) {
-        const { model } = this.props;
+        const { model, disabled } = this.props;
 
-        if (this.table && this.table.current &&
+        if (!disabled && this.table && this.table.current &&
             (!$.contains(this.table.current, event.target) && !$(event.target).parent('.cell-lookup')) &&
             !inDrag(model.getId())) {
             clearSelection(model.getId());
@@ -173,23 +175,28 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
     }
 
     onCopy(event: any) {
-        copyEvent(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            copyEvent(this.props.model.getId(), event);
     }
 
     onKeyDown(event: any) {
-        select(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            select(this.props.model.getId(), event);
     }
 
     onMouseDown(event: any) {
-        beginDrag(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            beginDrag(this.props.model.getId(), event);
     }
 
     onMouseUp(event: any) {
-        endDrag(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            endDrag(this.props.model.getId(), event);
     }
 
     onPaste(event: any) {
-        pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask);
+        if (!this.props.disabled)
+            pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask);
     }
 
     showMask() {

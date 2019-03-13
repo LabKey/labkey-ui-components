@@ -5,25 +5,6 @@
   transform: translateY(0) translateZ(0);
   width: 100%;
   z-index: $zindex-navbar;
-
-  &.scrolled {
-    position: fixed;
-    transform: translateY(44px);
-    transition: transform .15s ease-in-out;
-    top: -44px;
-
-    & > .sub-nav {
-      visibility: hidden;
-    }
-
-    &.show-sub-nav {
-
-      & > .sub-nav {
-        box-shadow: 0 2px 4px darkgrey;
-        visibility: visible;
-      }
-    }
-  }
 }
 
 .app-content-wrapper {

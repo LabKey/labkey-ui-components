@@ -1,12 +1,9 @@
-//-- Z-index master list
-//
-// Warning: Avoid customizing these values. They're used for a bird's eye view
-// of components dependent on the z-axis and are designed to all work together.
-//
-// Note: These variables are not generated into the Customizer.
-
 $footer-height: 40px;
 $header-height: 40px;
 $header-spacing-no-scroll: 104px;
 
+//-- Z-index master list
 $zindex-navbar:            1000 !default;
+
+$brand-primary: #2980b9;
+$brand-secondary: #236fa0;

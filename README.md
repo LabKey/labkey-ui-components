@@ -97,12 +97,14 @@ To create a new package:
 
 * Create a new directory in the `glass-components/packages` directory.
 * Edit the root-level `package.json` and add the new directory to the `workspaces` array.
-* Copy the `package-scripts.js` file from an existing package to the new directory.
-* Copy and modify (or create) the `package.json`, `rollup.config.js`, and `tsconfig.json` files in your new package directory.
+* Follow the instructions in the `packages/template` `README.md` file to put necessary files in place
+* Run `yarn build`
+
+Generally, when doing development, you should:
+
 * Place source code in a `src` subdirectory.
 * Place typing files in a `src/typings` subdirectory.
 * Add documentation a-plenty.
-* Run `yarn build`
 
 #### Local Development
 

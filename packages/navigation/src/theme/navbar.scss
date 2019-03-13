@@ -1,0 +1,127 @@
+.app-header-wrapper {
+  left: 0;
+  position: absolute;
+  top: 0;
+  transform: translateY(0) translateZ(0);
+  width: 100%;
+  z-index: $zindex-navbar;
+
+  &.scrolled {
+    position: fixed;
+    transform: translateY(44px);
+    transition: transform .15s ease-in-out;
+    top: -44px;
+
+    & > .sub-nav {
+      visibility: hidden;
+    }
+
+    &.show-sub-nav {
+
+      & > .sub-nav {
+        box-shadow: 0 2px 4px darkgrey;
+        visibility: visible;
+      }
+    }
+  }
+}
+
+.app-content-wrapper {
+  padding-top: $header-height;
+
+  &.with-sub-nav {
+    padding-top: $header-spacing-no-scroll;
+
+    & > .content-wrapper {
+      min-height: calc( 100vh - ( #{$header-spacing-no-scroll} + #{$footer-height} ) );
+    }
+  }
+}
+
+.sub-nav {
+  border-radius: 0;
+}
+
+.navbar-inverse {
+  min-height: 15px;
+
+  & > .container {
+    display: flex;
+    position: relative;
+  }
+
+  .parent-nav {
+
+    li {
+      a {
+        color: #222;
+        font-size: small;
+        padding: 8px 10px 8px 0;
+        white-space: nowrap;
+      }
+
+      i.fa {
+        font-size: smaller;
+      }
+
+      &:after {
+        border-left: 1px solid #cbccce;
+        content: '';
+        height: 34px;
+        margin-top: -16px;
+        position: absolute;
+        right: 0;
+        top: 50%;
+      }
+    }
+  }
+
+  .tab-scroll-ct {
+    display: inline-block;
+    overflow-x: hidden;
+    white-space: nowrap;
+
+    .navbar-nav {
+      margin: 0;
+
+      & > li {
+        display: inline-block;
+        float: initial !important;
+
+        & > a {
+          border-bottom: 3px solid transparent;
+          font-size: small;
+          padding: 8px 10px;
+
+          &:hover {
+            border-bottom: 3px solid lighten($brand-secondary, 15%);
+          }
+        }
+
+        &.active > a {
+          border-bottom: 3px solid $brand-secondary;
+        }
+      }
+    }
+  }
+
+  .scroll-btn-group {
+    display: inline-flex;
+
+    &:before {
+      border-left: 1px solid #cbccce;
+      content: '';
+      height: 34px;
+      margin-top: -18px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      z-index: 1;
+    }
+
+    & > .btn {
+      border: none;
+      font-size: smaller;
+    }
+  }
+}

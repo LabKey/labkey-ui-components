@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
+import { HeaderWrapper } from './components/HeaderWrapper'
 import { SubNav } from './components/SubNav'
 import { NavItem } from './components/NavItem'
 
@@ -13,6 +14,7 @@ export {
     // actions
 
     // components
+    HeaderWrapper,
     SubNav,
-    NavItem
+    NavItem,
 }

@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Map } from 'immutable'
-import { AppURL } from "@glass/utils"
 
 import { getBrowserHistory } from "./global";
 
@@ -57,8 +56,8 @@ export function buildQueryString(params: Map<string, string | number>): string {
     return q.length > 0 ? '?' + q : '';
 }
 
-function build(location: Location, params: Map<string, string | number>): string {
-    return location.pathname + (location.hash || '') + buildQueryString(params);
+function build(pathname: string, hash?: string, params?: Map<string, string | number>): string {
+    return pathname + (hash || '') + (params ? buildQueryString(params) : '');
 }
 
 function setParameter(location: Location, key: string, value: string | number, asReplace: boolean = false) {
@@ -80,21 +79,11 @@ function setParameters(location: Location, params: Map<string, string | number>,
     });
 
     if (asReplace) {
-        getBrowserHistory().replace(build(location, newParams.asImmutable()));
+        getBrowserHistory().replace(build(location.pathname, location.hash, newParams.asImmutable()));
     }
     else {
-        getBrowserHistory().push(build(location, newParams.asImmutable()))
+        getBrowserHistory().push(build(location.pathname, location.hash, newParams.asImmutable()))
     }
-}
-
-export function changeLocation(path: string | AppURL) {
-    if (typeof path === 'string') {
-        if (path.indexOf('#/') === 0) {
-            path = path.replace('#/', '');
-        }
-    }
-
-    getBrowserHistory().push(path.toString());
 }
 
 export function pushParameter(location: Location, key: string, value: string | number) {
@@ -103,10 +92,6 @@ export function pushParameter(location: Location, key: string, value: string | n
 
 export function pushParameters(location: Location, params: Map<string, string | number>) {
     setParameters(location, params);
-}
-
-export function replaceLocation(path: string | AppURL) {
-    getBrowserHistory().replace(path.toString())
 }
 
 export function replaceParameter(location: Location, key: string, value: string | number) {

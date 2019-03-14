@@ -11,12 +11,22 @@ import { DataViewInfo, EditorModel, LookupStore } from './model'
 
 /**
  * Initialize the global state object for this package.
+ * @param metadata Optional Map to set the query metadata for this application
+ * @param columnRenderers Optional Map to set the column renderers for this application
  */
-export function initQueryGridState() {
+export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>) {
     if (!getGlobal().QueryGrid_models) {
         resetQueryGridState()
     }
+
     initBrowserHistoryState();
+
+    if (metadata) {
+        setQueryMetadata(metadata);
+    }
+    if (columnRenderers) {
+        setQueryColumnRenderers(columnRenderers);
+    }
 }
 
 /**
@@ -62,9 +72,10 @@ export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List
  * Helper function for all callers/actions that would like to update information for a QueryGridModel in the global state.
  * @param model QueryGridModel in the global state to be updated, or to be added to global state if it does not already exist by Id
  * @param updates JS Object with the key/value pairs for updates to make to the model
+ * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
  * @param failIfNotFound Boolean indicating if an error should be thrown if the model is not found in global state
  */
-export function updateQueryGridModel(model: QueryGridModel, updates: any, failIfNotFound: boolean = true): QueryGridModel {
+export function updateQueryGridModel(model: QueryGridModel, updates: any, connectedComponent?: React.Component, failIfNotFound: boolean = true): QueryGridModel {
     if (failIfNotFound && !getGlobalState('models').has(model.getId())) {
         throw new Error('Unable to find QueryGridModel for modelId: ' + model.getId());
     }
@@ -73,6 +84,12 @@ export function updateQueryGridModel(model: QueryGridModel, updates: any, failIf
 
     setGlobal({
         QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel)
+    },
+
+    (global) => {
+        if (connectedComponent) {
+            connectedComponent.forceUpdate();
+        }
     });
 
     return updatedModel;
@@ -81,10 +98,17 @@ export function updateQueryGridModel(model: QueryGridModel, updates: any, failIf
 /**
  * Remove a QueryGridModel from the global state
  * @param model QueryGridModel to be removed
+ * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
  */
-export function removeQueryGridModel(model: QueryGridModel) {
+export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component) {
     setGlobal({
         QueryGrid_models: getGlobalState('models').delete(model.getId())
+    },
+
+    (global) => {
+        if (connectedComponent) {
+            connectedComponent.forceUpdate();
+        }
     });
 }
 

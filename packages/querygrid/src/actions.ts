@@ -36,31 +36,31 @@ import {
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
-export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true) {
-    let newModel = updateQueryGridModel(model, {}, false);
+export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
+    let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
 
     if (!newModel.isLoaded) {
         if (newModel.bindURL) {
             newModel = updateQueryGridModel(newModel, {
                 isLoading: true,
                 ...bindURLProps(newModel)
-            });
+            }, connectedComponent);
         }
         else {
-            newModel = updateQueryGridModel(newModel, {isLoading: true});
+            newModel = updateQueryGridModel(newModel, {isLoading: true}, connectedComponent);
         }
 
         fetchQueryInfo(newModel).then(queryInfo => {
             newModel = updateQueryGridModel(newModel, {
                 queryInfo: bindQueryInfo(queryInfo)
-            });
+            }, connectedComponent);
 
             if (newModel.editable) {
                 initEditorModel(newModel);
             }
 
             if (shouldLoadData) {
-                gridLoad(newModel);
+                gridLoad(newModel, connectedComponent);
             }
             else {
                 newModel = updateQueryGridModel(newModel, {
@@ -68,19 +68,19 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true) 
                     isLoading: false,
                     isLoaded: true,
                     message: undefined
-                });
+                }, connectedComponent);
 
                 if (newModel.editable) {
                     loadDataForEditor(newModel);
                 }
             }
         }).catch(reason => {
-            setError(newModel, reason.message);
+            setError(newModel, reason.message, connectedComponent);
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, bindURLProps(newModel));
-        gridLoad(newModel);
+        newModel = updateQueryGridModel(newModel, bindURLProps(newModel), connectedComponent);
+        gridLoad(newModel, connectedComponent);
     }
 }
 
@@ -223,7 +223,7 @@ export function queryInvalidate(schemaQuery: SchemaQuery) {
     getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
 }
 
-export function gridInvalidate(model: QueryGridModel): QueryGridModel {
+export function gridInvalidate(model: QueryGridModel, connectedComponent?: React.Component): QueryGridModel {
     return updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
@@ -231,7 +231,7 @@ export function gridInvalidate(model: QueryGridModel): QueryGridModel {
         isLoaded: false,
         isLoading: false,
         message: undefined
-    });
+    }, connectedComponent);
 }
 
 export function loadPage(model: QueryGridModel, pageNumber: number) {
@@ -248,12 +248,12 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
     }
 }
 
-export function gridRefresh(model: QueryGridModel) {
+export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Component) {
     if (model.allowSelection) {
         setGridUnselected(model);
     }
 
-    gridLoad(model);
+    gridLoad(model, connectedComponent);
 }
 
 export function reloadQueryGridModel(model: QueryGridModel) {
@@ -345,14 +345,14 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     });
 }
 
-export function gridLoad(model: QueryGridModel) {
+export function gridLoad(model: QueryGridModel, connectedComponent?: React.Component) {
     // validate view exists prior to initiating request
     if (model.view && model.queryInfo && !model.queryInfo.getView(model.view)) {
         setError(model, `Unable to find view "${model.view}".`);
         return;
     }
 
-    let newModel = updateQueryGridModel(model, {isLoading: true});
+    let newModel = updateQueryGridModel(model, {isLoading: true}, connectedComponent);
 
     newModel.loader.fetch(newModel).then(response => {
         if (newModel.editable) {
@@ -369,13 +369,13 @@ export function gridLoad(model: QueryGridModel) {
             totalRows,
             data,
             dataIds
-        });
+        }, connectedComponent);
 
         if (newModel.allowSelection) {
             fetchSelectedIfNeeded(newModel);
         }
     }, payload => {
-        gridShowError(payload.model, payload.error);
+        gridShowError(payload.model, payload.error, connectedComponent);
     });
 }
 
@@ -782,17 +782,17 @@ export function fetchCharts(schemaQuery: SchemaQuery): Promise<List<DataViewInfo
     });
 }
 
-function setError(model: QueryGridModel, message: string) {
+function setError(model: QueryGridModel, message: string, connectedComponent?: React.Component) {
     updateQueryGridModel(model, {
         isLoading: false,
         isLoaded: true,
         isError: true,
         message
-    })
+    }, connectedComponent)
 }
 
-export function gridShowError(model: QueryGridModel, error: any) {
-    setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error');
+export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component) {
+    setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error', connectedComponent);
 }
 
 export function genCellKey(colIdx: number, rowIdx: number): string {

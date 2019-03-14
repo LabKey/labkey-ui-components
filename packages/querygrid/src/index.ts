@@ -6,7 +6,7 @@ import { gridInit, gridInvalidate, gridRefresh, gridShowError } from './actions'
 import { getStateQueryGridModel } from './model'
 import { initQueryGridState, removeQueryGridModel, setQueryMetadata, setQueryColumnRenderers, getEditorModel, getQueryGridModel } from './global'
 import { selectRows, searchRows, getQueryDetails, invalidateQueryDetailsCacheKey, ISelectRowsResult } from './query/api'
-import { changeLocation, getLocation, replaceParameters, replaceLocation, pushParameter, pushParameters, Location } from './util/URL'
+import { getLocation, replaceParameters, pushParameter, pushParameters, Location } from './util/URL'
 import { generateId, debounce } from './util/util'
 import { URLResolver } from './util/URLResolver'
 import { QueryGrid } from './components/QueryGrid'
@@ -46,9 +46,7 @@ export {
     // location related items
     Location,
     URLResolver,
-    changeLocation,
     getLocation,
-    replaceLocation,
     pushParameter,
     pushParameters,
     replaceParameters,

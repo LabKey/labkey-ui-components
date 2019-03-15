@@ -229,14 +229,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
-"@glass/utils@0.0.4":
-  version "0.0.4"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/utils/-/@glass/utils-0.0.4.tgz#9b5ef694dac4057a97a42d20290eff6dbbdc21e4"
-  integrity sha1-m172lNrEBXqXpC0gKQ7/bbvcIeQ=
-  dependencies:
-    "@labkey/api" "0.0.9"
-    react-bootstrap "0.32.4"
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"

@@ -1,8 +1,12 @@
-# LabKey Glass (@glass) components
+# LabKey Glass Components (@glass)
 
-Defines all of the components available in the @glass scope. These React components, utility functions, and models comprise the LabKey Glass UI framework.
+This repository defines all of the components available in the @glass scope. These React components, utility functions, and models comprise the LabKey Glass UI framework.
 
-## Components
+:warning: **Private** :warning: LabKey Glass components are intended for internal use only.  
+
+:construction: **Warning** :construction: LabKey Glass is under development so these components should be considered unstable. Once they're ready we'll officially push the components as version 1.0.0.
+
+## Package listing
 
 <!--- keep these alphabetical --->
 | Package | Description | Current Verison |
@@ -14,7 +18,7 @@ Defines all of the components available in the @glass scope. These React compone
 | @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.11 |
 | @glass/utils | Utility functions and components for LabKey views | 0.0.5|
 
-## Using Components
+## Using @glass npm packages
 
 The easiest way to use `@glass` components is to install them from npm and bundle them with your app. Before you run install you'll want to make sure you set the appropriate registry for the `@glass` scope.
 
@@ -94,7 +98,7 @@ lerna run build
 #### Creating a New Package
 To create a new package:
 
-* Create a new directory in the `glass-components/packages` directory.
+* Create a new directory in the `glass-components/packages` directory. Package naming convention: all lowercase names with no spaces in them, trying to keep the names to one or two words if possible.
 * Edit the root-level `package.json` and add the new directory to the `workspaces` array.
 * Copy the `package-scripts.js` file from an existing package to the new directory.
 * Copy and modify (or create) the `package.json`, `rollup.config.js`, and `tsconfig.json` files in your new package directory.

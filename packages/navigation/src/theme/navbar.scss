@@ -9,7 +9,6 @@
   &.scrolled {
     position: fixed;
     transform: translateY(44px);
-    transition: transform .15s ease-in-out;
     top: -44px;
 
     & > .sub-nav {

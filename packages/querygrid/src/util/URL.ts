@@ -7,10 +7,15 @@ import { getBrowserHistory } from "./global";
 
 import { AppURL } from "@glass/utils"
 
+// This type is roughly equivalent to the Location object from this history package
+// but here we have all fields optional to make it also compatible with the window.location object
 export type Location = {
+    action?: string
+    hash?: string
+    key?: string
     pathname?: string
-    search?: string
     query?: Map<string, string>
+    search?: string
     state?: any // {[key:string]: string}
 }
 

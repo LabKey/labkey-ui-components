@@ -16,6 +16,14 @@ interface Props extends EditableGridProps {
 
 export class EditableGridPanel extends React.Component<Props, any> {
 
+    constructor(props: EditableGridProps) {
+        super(props);
+
+        if (!props.model) {
+            throw new Error('EditableGridPanel: a model must be provided.');
+        }
+    }
+
     componentDidMount() {
         this.initModel(this.props);
     }

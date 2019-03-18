@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react'
+import React from 'reactn'
 import { List, Map } from 'immutable'
 import { QueryColumn, QueryGridModel } from '@glass/models'
 import { OmniBox, Action, ActionValue, ActionValueCollection, FilterAction, SearchAction, SortAction, ViewAction } from '@glass/omnibox'
@@ -62,19 +62,20 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     private getColumns(allColumns?: boolean): List<QueryColumn> {
-        if (!this.props.queryModel) {
+        const queryModel = this.getQueryModel();
+        if (!queryModel) {
             return emptyList;
         }
 
         if (allColumns) {
-            return this.props.queryModel.getAllColumns();
+            return queryModel.getAllColumns();
         }
 
-        return this.props.queryModel.getDisplayColumns();
+        return queryModel.getDisplayColumns();
     }
 
     onOmniBoxChange(actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) {
-        const { queryModel} = this.props;
+        const queryModel = this.getQueryModel();
         const location = getLocation();
 
         let params = Map<string, string>().asMutable();
@@ -121,7 +122,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
-        const { queryModel } = this.props;
+        const queryModel = this.getQueryModel();
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
 
@@ -151,10 +152,11 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
                 for (let a=0; a < actions.length; a++) {
                     for (let p=0; p < paramValues.length; p++) {
-                        if (actions[a].matchParam(key, paramValues[p])) {
+                        const decodedParamVals = decodeURIComponent(paramValues[p]);
+                        if (actions[a].matchParam(key, decodedParamVals)) {
 
                             // location returns decoded parameters
-                            let values = actions[a].parseParam(key, paramValues[p]);
+                            let values = actions[a].parseParam(key, decodedParamVals);
 
                             for (let v=0; v < values.length; v++) {
 
@@ -187,11 +189,18 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     requestModel(): Promise<QueryGridModel> {
-        return Promise.resolve(this.props.queryModel);
+        return Promise.resolve(this.getQueryModel());
+    }
+
+    getQueryModel(): QueryGridModel {
+        const { queryModel } = this.props;
+
+        // need to access this.global directly to connect this component to the re-render cycle
+        return queryModel ? this.global.QueryGrid_models.get(queryModel.getId()) : undefined;
     }
 
     render() {
-        const { queryModel } = this.props;
+        const queryModel = this.getQueryModel();
         const { actions, values } = this.mapParamsToActionValues();
 
         return (

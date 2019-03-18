@@ -223,8 +223,8 @@ export function queryInvalidate(schemaQuery: SchemaQuery) {
     getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
 }
 
-export function gridInvalidate(model: QueryGridModel, connectedComponent?: React.Component): QueryGridModel {
-    return updateQueryGridModel(model, {
+export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
+    const newModel = updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
         isError: false,
@@ -232,6 +232,12 @@ export function gridInvalidate(model: QueryGridModel, connectedComponent?: React
         isLoading: false,
         message: undefined
     }, connectedComponent);
+
+    if (shouldInit) {
+        gridInit(newModel, true, connectedComponent);
+    }
+
+    return newModel;
 }
 
 export function loadPage(model: QueryGridModel, pageNumber: number) {

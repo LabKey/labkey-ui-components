@@ -39,7 +39,7 @@ export class NavItem extends React.Component<NavItemProps, any> {
 
     componentWillReceiveProps(nextProps: NavItemProps) {
         if (nextProps.onActive && this.isActive(nextProps)) {
-            nextProps.onActive(this.refs.item);
+            nextProps.onActive(this.item.current);
         }
     }
 

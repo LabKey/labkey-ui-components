@@ -9,6 +9,11 @@ export function initBrowserHistoryState() {
     if (!getGlobal().utils) {
         setGlobal( {
             QueryGrid_browserHistory: createHistory()
+        },
+
+        (global) => {
+            // add a no-op listener just to connect this global state history to the url changes
+            getBrowserHistory().listen((location, action) => {});
         });
     }
 }

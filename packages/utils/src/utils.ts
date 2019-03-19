@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Set } from 'immutable'
+import { hasParameter, toggleParameter } from "./url/ActionURL";
 
 const emptyList = List<string>();
 
@@ -80,4 +81,25 @@ export function not(predicate: (...args: any[]) => boolean): (...args: any[]) =>
     return function () {
         return !predicate.apply(this, arguments);
     };
+}
+
+const DEV_TOOLS_URL_PARAMETER = 'devTools';
+
+export function applyDevTools() {
+    if (devToolsActive() && window['devToolsExtension']) {
+        return window['devToolsExtension']();
+    }
+
+    return f => f;
+}
+
+
+export function devToolsActive(): boolean {
+    return LABKEY.devMode === true && hasParameter(DEV_TOOLS_URL_PARAMETER);
+}
+
+export function toggleDevTools() {
+    if (LABKEY.devMode) {
+        toggleParameter(DEV_TOOLS_URL_PARAMETER, 1);
+    }
 }

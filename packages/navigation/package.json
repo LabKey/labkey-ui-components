@@ -32,7 +32,7 @@
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
     "@glass/models": "0.0.3",
-    "@glass/utils": "0.0.5",
+    "@glass/utils": "0.0.6",
     "@types/prop-types": "15.5.5",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
@@ -58,6 +58,9 @@
     },
     "setupFilesAfterEnv": [
       "<rootDir>/../../test/jest.setup.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"

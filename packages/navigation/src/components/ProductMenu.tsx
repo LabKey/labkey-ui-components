@@ -16,9 +16,14 @@ export class MenuSectionConfig extends Record({
 interface ProductMenuProps {
     productId: string
     sectionConfigs?: Map<string, MenuSectionConfig>
+    maxColumns?: number
 }
 
 export class ProductMenu extends React.Component<ProductMenuProps, any> {
+
+    static defaultProps = {
+        maxColumns: 5
+    };
 
     constructor(props: ProductMenuProps) {
         super(props);
@@ -41,21 +46,22 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         return this.global.Navigation_menu;
     }
 
-    getWidthClass(menuModel: ProductMenuModel)
+    getWidth(menuModel: ProductMenuModel)
     {
+        const { maxColumns } = this.props;
+
         let minColumnCount = menuModel.sections
             .reduce((count, section) => {
                     const config = this.getSectionConfig(section.key);
-                    let maxColumns = Math.floor(section.items.size / config.maxItemsPerColumn);
+                    let maxSectionColumns = Math.floor(section.items.size / config.maxItemsPerColumn);
                     if (section.items.size % config.maxItemsPerColumn > 0)
-                        maxColumns++;
-                    return count + Math.min(config.maxColumns, maxColumns);
+                        maxSectionColumns++;
+                    return count + Math.min(config.maxColumns, maxSectionColumns);
                 },
                 0);
-        let widthClass = 'col-' + minColumnCount;
-        if (minColumnCount >= 5)
-            widthClass = 'col-max';
-        return widthClass;
+        // want at least 3 columns, but no more than the maximum total number
+        minColumnCount = Math.min(Math.max(minColumnCount, 3), maxColumns);
+        return "col-" + minColumnCount;
     }
 
     toggleMenu() {
@@ -79,7 +85,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         const { productId } = this.props;
 
         const menuModel = this.getModel();
-        let containerCls = 'product-menu-content ' + this.getWidthClass(menuModel);
+        let containerCls = 'product-menu-content ' + this.getWidth(menuModel);
         let inside = <LoadingSpinner/>;
 
         if (menuModel && menuModel.isLoaded) {

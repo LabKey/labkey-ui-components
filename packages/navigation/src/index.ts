@@ -11,7 +11,7 @@ import { MenuSectionConfig, ProductMenu, ProductMenuSection } from './components
 import { SearchBox } from './components/SearchBox'
 import { SubNav } from './components/SubNav'
 import { UserMenu } from './components/UserMenu'
-import { initNavigationState } from './global'
+import { getSection, initNavigationState } from './global'
 import { menuInit } from './actions'
 
 // Import the scss file so it will be processed in the rollup scripts
@@ -19,6 +19,7 @@ import './theme/index.scss'
 
 export {
     // actions
+    getSection,
     initNavigationState,
     menuInit,
 

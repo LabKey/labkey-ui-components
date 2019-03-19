@@ -7,9 +7,9 @@ import React from 'reactn'
 import { Dropdown, MenuItem, Image } from 'react-bootstrap'
 
 import { User } from '@glass/models';
-import { devToolsActive, toggleDevTools, menuInit } from '../actions';
+import {  menuInit } from '../actions';
 import { MenuSectionModel } from '../model';
-import { buildURL } from '@glass/utils';
+import { devToolsActive, toggleDevTools, buildURL } from '@glass/utils';
 
 interface UserMenuProps {
     productId: string

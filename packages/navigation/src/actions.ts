@@ -8,26 +8,7 @@ import { IMenuSectionsResponse, MenuSectionModel } from './model'
 import { hasParameter, toggleParameter, buildURL } from '@glass/utils'
 import { ensureProductMenuModel, updateProductMenuModel } from './global';
 
-const DEV_TOOLS_URL_PARAMETER = 'devTools';
 
-function applyDevTools() {
-    if (devToolsActive() && window['devToolsExtension']) {
-        return window['devToolsExtension']();
-    }
-
-    return f => f;
-}
-
-
-export function devToolsActive(): boolean {
-    return LABKEY.devMode === true && hasParameter(DEV_TOOLS_URL_PARAMETER);
-}
-
-export function toggleDevTools() {
-    if (LABKEY.devMode) {
-        toggleParameter(DEV_TOOLS_URL_PARAMETER, 1);
-    }
-}
 
 function getMenuSections(productId: string): Promise<IMenuSectionsResponse> {
     return new Promise((resolve, reject) =>  {

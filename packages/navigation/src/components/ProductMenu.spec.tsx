@@ -1,10 +1,10 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer';
 import { mount, shallow } from 'enzyme'
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
-import { ProductMenu } from './ProductMenu';
-;import { initNavigationState, updateProductMenuModel } from '../global';
+import { MenuSectionConfig, ProductMenu } from './ProductMenu';
+import { initNavigationState, updateProductMenuModel } from '../global';
 import { MenuSectionModel } from '../model';
 
 beforeAll(() => {
@@ -141,8 +141,13 @@ describe("ProductMenu render", () => {
             },
             false
         );
+        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
+        sectionConfigs.set("assays", new MenuSectionConfig({
+            maxColumns: 2,
+            maxItemsPerColumn: 2
+        }));
 
-        const menuButton = mount(<ProductMenu productId={productId} maxItemsPerColumn={2}/>);
+        const menuButton = mount(<ProductMenu productId={productId} sectionConfigs={sectionConfigs.asImmutable()}/>);
 
         expect(menuButton.find('div.col-4').length).toBe(1);
         expect(menuButton).toMatchSnapshot();
@@ -174,8 +179,18 @@ describe("ProductMenu render", () => {
             false
         );
 
-        const menuButton = mount(<ProductMenu productId={productId} maxItemsPerColumn={2}/>);
-        expect(menuButton.find('div.col-max').length).toBe(1);
+        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
+        sectionConfigs.set("assays", new MenuSectionConfig({
+            maxColumns: 2,
+            maxItemsPerColumn: 2
+        }));
+        sectionConfigs.set("samples", new MenuSectionConfig({
+            maxColumns: 2,
+            maxItemsPerColumn: 2
+        }));
+
+        const menuButton = mount(<ProductMenu productId={productId} sectionConfigs={sectionConfigs}/>);
+        expect(menuButton.find('div.col-5').length).toBe(1);
         expect(menuButton).toMatchSnapshot();
         menuButton.unmount();
     });
@@ -206,9 +221,18 @@ describe("ProductMenu render", () => {
             },
             false
         );
+        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
+        sectionConfigs.set("assays", new MenuSectionConfig({
+            maxColumns: 2,
+            maxItemsPerColumn: 2
+        }));
+        sectionConfigs.set("samples", new MenuSectionConfig({
+            maxColumns: 2,
+            maxItemsPerColumn: 2
+        }));
 
-        const menuButton = mount(<ProductMenu productId={productId} maxItemsPerColumn={2}/>);
-        expect(menuButton.find('div.col-max').length).toBe(1);
+        const menuButton = mount(<ProductMenu productId={productId} sectionConfigs={sectionConfigs}/>);
+        expect(menuButton.find('div.col-5').length).toBe(1);
         expect(menuButton).toMatchSnapshot();
         menuButton.unmount();
     })

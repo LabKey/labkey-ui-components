@@ -50,7 +50,6 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
             let menuItems = [];
             menuSection.items.forEach((item) => {
                 if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
-                    console.log("item", item.toJS());
                     profileLink = menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
                 }
             });
@@ -60,6 +59,7 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                 </MenuItem>
             );
 
+            // commenting this out for now because we have not implemented login/logout functionality
             // if (user.isSignedIn) {
             //     logoutLink = <MenuItem onClick={this.logout}>Logout</MenuItem>;
             //     logoutDivider = <MenuItem divider/>;

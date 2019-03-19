@@ -23,6 +23,9 @@ const input = 'src/index.ts';
 const namedExportOptions = {
     namedExports: {
         'jquery': [ '$' ],
+        // Named exports for packages
+        // (when you get an error like: Error: 'getGlobal' is not exported by ../../node_modules/reactn/index.js)
+        'reactn': ['getGlobal', 'setGlobal'],
         // this is required to avoid errors such as this:  Error: 'arrayOf' is not exported by ../../node_modules/react-router/node_modules/prop-types/index.js
         'react-router/node_modules/prop-types/index.js': ['array', 'arrayOf', 'bool', 'element', 'func', 'object', 'shape', 'string', 'oneOfType'],
         'node_modules/prop-types/index.js': ['array', 'arrayOf', 'bool', 'element', 'func', 'object', 'shape', 'string', 'oneOfType']

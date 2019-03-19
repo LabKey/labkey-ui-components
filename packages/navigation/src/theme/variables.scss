@@ -1,9 +1,14 @@
+$light-gray: #d3d3d3;
+
 $footer-height: 40px;
 $header-height: 40px;
 $header-spacing-no-scroll: 104px;
 
+$font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
 //-- Z-index master list
 $zindex-navbar:            1000 !default;
 
+$brand-danger:          #d9534f;
 $brand-primary: #2980b9;
 $brand-secondary: #236fa0;

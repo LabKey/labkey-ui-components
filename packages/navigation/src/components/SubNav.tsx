@@ -10,7 +10,6 @@ import $ from 'jquery'
 
 import { AppURL } from '@glass/utils'
 import { NavItem, ParentNavItem } from './NavItem'
-import { ReactNode } from "react";
 
 interface ISubNavProps {
     params?: any

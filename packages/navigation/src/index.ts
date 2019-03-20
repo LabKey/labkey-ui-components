@@ -7,32 +7,27 @@ import { HeaderWrapper } from './components/HeaderWrapper'
 
 import { NavigationBar } from './components/NavigationBar'
 import { NavItem } from './components/NavItem'
-import { MenuSectionConfig, ProductMenu, ProductMenuSection } from './components/ProductMenu'
-import { SearchBox } from './components/SearchBox'
-import { SubNav } from './components/SubNav'
-import { UserMenu } from './components/UserMenu'
-import { getSection, initNavigationState } from './global'
+import { MenuSectionConfig } from './components/ProductMenuSection'
+import { ITab, SubNav } from './components/SubNav'
+import { initNavigationState } from './global'
 import { menuInit } from './actions'
-
+import { ProductMenuModel } from './model'
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
 export {
     // actions
-    getSection,
     initNavigationState,
     menuInit,
 
     // types
     MenuSectionConfig,
+    ProductMenuModel,
 
     // components
     HeaderWrapper,
+    ITab,
     NavItem,
     NavigationBar,
-    ProductMenu,
-    ProductMenuSection,
-    SearchBox,
-    SubNav,
-    UserMenu,
+    SubNav
 }

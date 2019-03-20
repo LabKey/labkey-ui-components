@@ -5,9 +5,8 @@
 import { List } from 'immutable'
 import { Ajax, Utils } from '@labkey/api'
 import { IMenuSectionsResponse, MenuSectionModel } from './model'
-import { hasParameter, toggleParameter, buildURL } from '@glass/utils'
+import { buildURL } from '@glass/utils'
 import { ensureProductMenuModel, updateProductMenuModel } from './global';
-
 
 
 function getMenuSections(productId: string): Promise<IMenuSectionsResponse> {

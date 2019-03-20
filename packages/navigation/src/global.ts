@@ -14,9 +14,9 @@ export function initNavigationState() {
 }
 
 export function resetNavigationState() {
-    setGlobal( {
-        Navigation_menu: new ProductMenuModel()
-    })
+    setProductMenuModel(
+       new ProductMenuModel()
+    )
 }
 
 function getGlobalState(property: string) {
@@ -47,21 +47,12 @@ export function ensureProductMenuModel(productId: string) : ProductMenuModel
     return menu;
 }
 
-export function getSection(menu: ProductMenuModel, key: string)
-{
-    if (menu && menu.sections.size > 0) {
-        const sections = menu.sections;
-        return sections
-            .filter((section) => section.key === key)
-            .first();
-    }
-}
 
-export function removeProductMenuModel(productId)
+export function removeProductMenuModel()
 {
-    setGlobal( {
-        Navigation_menu: new ProductMenuModel()
-    });
+    setProductMenuModel(
+        new ProductMenuModel()
+    )
 }
 
 export function updateProductMenuModel(productId: string, updates: any, failIfNotFound: boolean = true) : ProductMenuModel

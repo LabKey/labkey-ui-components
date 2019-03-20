@@ -7,7 +7,7 @@ import React from 'reactn'
 import { Dropdown, MenuItem, Image } from 'react-bootstrap'
 
 import { User } from '@glass/models';
-import {  menuInit } from '../actions';
+import { menuInit } from '../actions';
 import { MenuSectionModel } from '../model';
 import { devToolsActive, toggleDevTools, buildURL } from '@glass/utils';
 
@@ -29,8 +29,7 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
     }
 
     getSection() : MenuSectionModel {
-        let productMenuModel =  this.global.Navigation_menu;
-        return productMenuModel && productMenuModel.sections.find((section) => section.key === "user");
+        return this.global.Navigation_menu.getSection("user");
     }
 
     logout() {

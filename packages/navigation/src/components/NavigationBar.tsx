@@ -1,12 +1,14 @@
 import React from 'reactn'
+import { ReactNode } from "react";
 import { Map } from 'immutable'
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
 
-import { MenuSectionConfig, ProductMenu } from "./ProductMenu";
+import { ProductMenu } from "./ProductMenu";
 import { SearchBox } from "./SearchBox";
 import { UserMenu } from "./UserMenu";
-import { ReactNode } from "react";
+
 import { User } from '@glass/models';
+import { MenuSectionConfig } from "./ProductMenuSection";
 
 
 interface NavigationBarProps {

@@ -93,4 +93,13 @@ export class ProductMenuModel extends Record( {
     constructor(values?: {[key: string]: any}) {
         super(values);
     }
+
+    getSection(key: string)
+    {
+        if (this.sections.size > 0) {
+            return this.sections
+                .filter((section) => section.key.toLowerCase() === key.toLowerCase())
+                .first();
+        }
+    }
 }

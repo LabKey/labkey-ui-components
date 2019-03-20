@@ -42,6 +42,12 @@
   margin-bottom: 0;
 }
 
+.navbar {
+  & a:hover {
+    text-decoration: none;
+  }
+}
+
 .navbar-left {
   padding-left: 40px;
   margin-top: 10px;
@@ -226,4 +232,9 @@
       font-size: smaller;
     }
   }
+}
+
+.menu-section-icon {
+  font-size: 24px;
+  vertical-align: middle;
 }

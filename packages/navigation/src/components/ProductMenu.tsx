@@ -40,24 +40,6 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         return this.global.Navigation_menu;
     }
 
-    getWidth(menuModel: ProductMenuModel)
-    {
-        const { maxColumns } = this.props;
-
-        let minColumnCount = menuModel.sections
-            .reduce((count, section) => {
-                    const config = this.getSectionConfig(section.key);
-                    let maxSectionColumns = Math.floor(section.items.size / config.maxItemsPerColumn);
-                    if (section.items.size % config.maxItemsPerColumn > 0)
-                        maxSectionColumns++;
-                    return count + Math.min(config.maxColumns, maxSectionColumns);
-                },
-                0);
-        // want at least 3 columns, but no more than the maximum total number
-        minColumnCount = Math.min(Math.max(minColumnCount, 3), maxColumns);
-        return "col-" + minColumnCount;
-    }
-
     toggleMenu() {
         this.setState( {
             menuOpen: !this.state.menuOpen
@@ -78,7 +60,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         const { productId } = this.props;
 
         const menuModel = this.getModel();
-        let containerCls = 'product-menu-content ' + this.getWidth(menuModel);
+        let containerCls = 'product-menu-content ';
         let inside = <LoadingSpinner/>;
 
         if (menuModel && menuModel.isLoaded) {

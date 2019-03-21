@@ -5,9 +5,11 @@ import { MenuSectionModel } from '../model';
 import { AppURL, imageURL } from '@glass/utils';
 
 export class MenuSectionConfig extends Record({
+    emptyText: undefined,
     maxItemsPerColumn: 12,
     maxColumns: 1
 }){
+    emptyText: string;
     maxItemsPerColumn: number;
     maxColumns: number;
 }
@@ -28,17 +30,20 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
 
     renderMenuItemsList(items, columnNumber: number = 1, withOverflow: boolean = false)
     {
-        const { section } = this.props;
+        const { config, section } = this.props;
 
         return (
             <ul key={section.key + 'col-' + columnNumber}>
-                {items.map(item => {
+                {items.isEmpty() ?
+                    config.emptyText && <li key="empty" className="empty-section">{config.emptyText}</li>
+                    : items.map(item => {
                     if (item.url) {
                         let url = item.url instanceof AppURL ? item.url.toHref() : item.url;
                         return <li key={item.label}><a href={url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</a></li>;
                     }
                     return <li key={item.label}>{item.label}</li>
-                })}
+                    })
+                }
                 {withOverflow &&  <li className="overflow-link" key="overflow"><a href={AppURL.create(section.key).toHref()}>See all {section.totalCount}</a></li>}
             </ul>
         )

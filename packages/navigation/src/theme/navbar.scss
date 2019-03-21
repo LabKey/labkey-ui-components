@@ -80,29 +80,27 @@
 }
 
 .product-menu-content {
-  margin-left: 15px;
-  margin-top: 12px;
-  margin-bottom: 15px;
-
-  &.col-3 {
-    width: 425px;
-  }
-
-  &.col-4 {
-    width: 525px;
-  }
-
-  &.col-5, &.col-max {
-    width: 625px
-  }
+  padding: 12px 15px 12px 0;
+  width: 740px;
 
   &.error {
     color: $brand-danger
   }
 
+  &.col-3 .menu-section {
+    width: 33%;
+  }
+
+  &.col-4 .menu-section {
+    width: 25%;
+  }
+
+  &.col-5 .menu-section {
+    width: 20%;
+  }
+
   .menu-section {
-    margin-left: 15px;
-    margin-right: 15px;
+    padding-left: 15px;
     vertical-align: top;
     display: inline-block;
 
@@ -119,8 +117,7 @@
     ul {
       display: inline-block;
       vertical-align: top;
-      margin-left: 5px;
-      max-width: 100px;
+      margin: 0 5px;
       padding: 0;
       list-style-type: none;
       li {

@@ -13,6 +13,7 @@ import { ProductMenuModel } from "../model";
 
 interface NavigationBarProps {
     brand?: ReactNode
+    projectName?: string
     menuSectionConfigs?: Map<string, MenuSectionConfig>
     model: ProductMenuModel
     showSearchBox?: boolean
@@ -25,7 +26,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
     };
 
     render() {
-        const { brand, menuSectionConfigs, model, showSearchBox, user } = this.props;
+        const { brand, menuSectionConfigs, model, projectName, showSearchBox, user } = this.props;
 
         const productMenu = model ? <ProductMenu model={model} sectionConfigs={menuSectionConfigs}/> : null;
 
@@ -41,6 +42,11 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
                     <span className="navbar-item">
                         {productMenu}
                     </span>
+                    {projectName && (
+                        <span className="navbar-item">
+                            <span className="project-name"><i className="fa fa-folder-open-o"/> {projectName} </span>
+                        </span>
+                    )}
                 </span>
                 <span className="navbar-right pull-right">
                     <span className="navbar-item">

@@ -9,20 +9,18 @@ import { NavigationBar } from './components/NavigationBar'
 import { NavItem } from './components/NavItem'
 import { MenuSectionConfig } from './components/ProductMenuSection'
 import { ITab, SubNav } from './components/SubNav'
-import { initNavigationState } from './global'
-import { menuInit } from './actions'
-import { ProductMenuModel } from './model'
+import { MenuSectionModel, ProductMenuModel } from './model'
+
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
 export {
     // actions
-    initNavigationState,
-    menuInit,
 
     // types
     MenuSectionConfig,
     ProductMenuModel,
+    MenuSectionModel,
 
     // components
     HeaderWrapper,

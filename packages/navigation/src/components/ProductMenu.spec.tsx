@@ -1,16 +1,10 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer';
-import { mount, shallow } from 'enzyme'
-import { List, Map } from 'immutable';
+import { mount } from 'enzyme'
+import { List } from 'immutable';
 
-import { MenuSectionConfig, ProductMenu } from './ProductMenu';
-import { initNavigationState, updateProductMenuModel } from '../global';
-import { MenuSectionModel } from '../model';
-
-beforeAll(() => {
-    initNavigationState()
-});
-
+import { ProductMenu } from './ProductMenu';
+import { MenuSectionModel, ProductMenuModel } from '../model';
 
 describe("ProductMenu render", () => {
 
@@ -70,20 +64,43 @@ describe("ProductMenu render", () => {
     });
 
     test("loading", () => {
-        const tree = renderer.create(<ProductMenu productId={"testProduct"}/>).toJSON();
+        const model = new ProductMenuModel({
+            productId: "testProduct"
+        });
+        const tree = renderer.create(<ProductMenu model={model}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test("error display", () => {
-        updateProductMenuModel(
-            "testProduct",
-            {isLoaded: true, isLoading: false, isError: true, message: "Test error message"},
-            false);
-        const tree = renderer.create(<ProductMenu productId={"testProduct"}/>).toJSON();
+        const model = new ProductMenuModel({
+            productId: "testProduct",
+            isLoaded: true,
+            isLoading: false,
+            isError: true,
+            message: "Test error message"
+        });
+
+        const tree = renderer.create(<ProductMenu model={model}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
-    test("one column per section", () => {
+    test("no sections", () => {
+        const productId = "testNoSections";
+
+        const model = new ProductMenuModel(
+            {
+                productId: productId,
+                isLoaded: true,
+                isLoading: false,
+                sections: List<MenuSectionModel>()
+            }
+        );
+        const menuButton = mount(<ProductMenu model={model} />);
+        expect(menuButton.find(".menu-section").length).toBe(0);
+        menuButton.unmount();
+    });
+
+    test("multiple sections", () => {
         const productId = "testProduct3Columns";
 
         let sections = List<MenuSectionModel>().asMutable();
@@ -100,140 +117,18 @@ describe("ProductMenu render", () => {
             key: "assays"
         }));
         sections.push(yourItemsSection);
-        updateProductMenuModel(
-            productId,
+        const model = new ProductMenuModel(
             {
+                productId: productId,
                 isLoaded: true,
                 isLoading: false,
                 sections: sections.asImmutable()
-            },
-            false
+            }
         );
 
-        const menuButton = mount(<ProductMenu productId={productId} />);
-        expect(menuButton.find('div.col-3').length).toBe(1);
+        const menuButton = mount(<ProductMenu model={model} />);
+        expect(menuButton.find(".menu-section").length).toBe(3);
         expect(menuButton).toMatchSnapshot();
         menuButton.unmount();
     });
-
-    test("two columns for assays", () => {
-        const productId = "testProduct4Columns";
-        let sections = List<MenuSectionModel>().asMutable();
-        sections.push( MenuSectionModel.create({
-            label: "Sample Sets",
-            url: undefined,
-            items: sampleSetItems.slice(0, 2),
-            itemLimit: 2,
-            key: "samples"
-        }));
-        sections.push( MenuSectionModel.create({
-            label: "Assays",
-            items: assayItems,
-            key: "assays"
-        }));
-        sections.push(yourItemsSection);
-        updateProductMenuModel(
-            productId,
-            {
-                isLoaded: true,
-                isLoading: false,
-                sections: sections.asImmutable()
-            },
-            false
-        );
-        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
-        sectionConfigs.set("assays", new MenuSectionConfig({
-            maxColumns: 2,
-            maxItemsPerColumn: 2
-        }));
-
-        const menuButton = mount(<ProductMenu productId={productId} sectionConfigs={sectionConfigs.asImmutable()}/>);
-
-        expect(menuButton.find('div.col-4').length).toBe(1);
-        expect(menuButton).toMatchSnapshot();
-        menuButton.unmount();
-    });
-
-    test("two columns for assays and samples", () => {
-        const productId = "testProduct4Columns";
-        let sections = List<MenuSectionModel>().asMutable();
-        sections.push( new MenuSectionModel({
-            label: "Sample Sets",
-            url: undefined,
-            items: sampleSetItems,
-            key: "samples"
-        }));
-        sections.push( new MenuSectionModel({
-            label: "Assays",
-            items: assayItems,
-            key: "assays"
-        }));
-        sections.push(yourItemsSection);
-        updateProductMenuModel(
-            productId,
-            {
-                isLoaded: true,
-                isLoading: false,
-                sections: sections.asImmutable()
-            },
-            false
-        );
-
-        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
-        sectionConfigs.set("assays", new MenuSectionConfig({
-            maxColumns: 2,
-            maxItemsPerColumn: 2
-        }));
-        sectionConfigs.set("samples", new MenuSectionConfig({
-            maxColumns: 2,
-            maxItemsPerColumn: 2
-        }));
-
-        const menuButton = mount(<ProductMenu productId={productId} sectionConfigs={sectionConfigs}/>);
-        expect(menuButton.find('div.col-5').length).toBe(1);
-        expect(menuButton).toMatchSnapshot();
-        menuButton.unmount();
-    });
-
-    test("two columns with overflow link", () => {
-        const productId = "testProductOverflowLink";
-        let sections = List<MenuSectionModel>().asMutable();
-        sections.push( new MenuSectionModel({
-            label: "Sample Sets",
-            url: undefined,
-            items: sampleSetItems,
-            key: "samples",
-            totalCount: 4
-        }));
-        sections.push( new MenuSectionModel({
-            label: "Assays",
-            items: assayItems,
-            key: "assays",
-            totalCount: 5
-        }));
-        sections.push(yourItemsSection);
-        updateProductMenuModel(
-            productId,
-            {
-                isLoaded: true,
-                isLoading: false,
-                sections: sections.asImmutable()
-            },
-            false
-        );
-        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
-        sectionConfigs.set("assays", new MenuSectionConfig({
-            maxColumns: 2,
-            maxItemsPerColumn: 2
-        }));
-        sectionConfigs.set("samples", new MenuSectionConfig({
-            maxColumns: 2,
-            maxItemsPerColumn: 2
-        }));
-
-        const menuButton = mount(<ProductMenu productId={productId} sectionConfigs={sectionConfigs}/>);
-        expect(menuButton.find('div.col-5').length).toBe(1);
-        expect(menuButton).toMatchSnapshot();
-        menuButton.unmount();
-    })
 });

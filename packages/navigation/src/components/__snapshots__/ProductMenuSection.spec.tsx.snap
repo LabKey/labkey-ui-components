@@ -1,0 +1,395 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductMenuSection render empty section no text 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "emptyText": undefined,
+      "maxItemsPerColumn": 12,
+      "maxColumns": 1,
+    }
+  }
+  maxColumns={1}
+  productId="testProduct"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "itemLimit": 2,
+      "key": "samples",
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Sample Sets icon"
+      className="menu-section-image"
+      height="24px"
+      src="/testProduct/images/samples.svg"
+      width="24px"
+    />
+     
+    Sample Sets
+  </span>
+  <hr />
+  <ul
+    key="samplescol-1"
+  />
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render empty section with empty text 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "emptyText": "Test empty text",
+      "maxItemsPerColumn": 12,
+      "maxColumns": 1,
+    }
+  }
+  maxColumns={1}
+  productId="testProduct"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "itemLimit": undefined,
+      "key": "samples",
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Sample Sets icon"
+      className="menu-section-image"
+      height="24px"
+      src="/testProduct/images/samples.svg"
+      width="24px"
+    />
+     
+    Sample Sets
+  </span>
+  <hr />
+  <ul
+    key="samplescol-1"
+  >
+    <li
+      className="empty-section"
+      key="empty"
+    >
+      Test empty text
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render one-column section 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "emptyText": undefined,
+      "maxItemsPerColumn": 12,
+      "maxColumns": 1,
+    }
+  }
+  maxColumns={1}
+  productId="testProduct3Columns"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [
+        Immutable.Record {
+          "id": 1,
+          "key": undefined,
+          "label": "Sample Set 1",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 2,
+          "key": undefined,
+          "label": "Sample Set 2",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 3,
+          "key": undefined,
+          "label": "Sample Set 3",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 4,
+          "key": undefined,
+          "label": "Sample Set 4",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+      ],
+      "totalCount": 0,
+      "itemLimit": 2,
+      "key": "samples",
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Sample Sets icon"
+      className="menu-section-image"
+      height="24px"
+      src="/testProduct3Columns/images/samples.svg"
+      width="24px"
+    />
+     
+    Sample Sets
+  </span>
+  <hr />
+  <ul
+    key="samplescol-1"
+  >
+    <li
+      key="Sample Set 1"
+    >
+      Sample Set 1
+    </li>
+    <li
+      key="Sample Set 2"
+    >
+      Sample Set 2
+    </li>
+    <li
+      key="Sample Set 3"
+    >
+      Sample Set 3
+    </li>
+    <li
+      key="Sample Set 4"
+    >
+      Sample Set 4
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render two columns with overflow link 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "emptyText": undefined,
+      "maxItemsPerColumn": 2,
+      "maxColumns": 2,
+    }
+  }
+  maxColumns={1}
+  productId="testProductOverflowLink"
+  section={
+    Immutable.Record {
+      "label": "Assays",
+      "url": undefined,
+      "items": Immutable.List [
+        Object {
+          "id": 11,
+          "label": "Assay 1",
+        },
+        Object {
+          "id": 12,
+          "label": "Assay 2",
+        },
+        Object {
+          "id": 13,
+          "label": "Assay 3",
+        },
+        Object {
+          "id": 14,
+          "label": "Assay 4",
+        },
+        Object {
+          "id": 15,
+          "label": "Assay 5",
+        },
+      ],
+      "totalCount": 5,
+      "itemLimit": undefined,
+      "key": "assays",
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Assays icon"
+      className="menu-section-image"
+      height="24px"
+      src="/testProductOverflowLink/images/assays.svg"
+      width="24px"
+    />
+     
+    Assays
+  </span>
+  <hr />
+  <ul
+    key="assayscol-1"
+  >
+    <li
+      key="Assay 1"
+    >
+      Assay 1
+    </li>
+    <li
+      key="Assay 2"
+    >
+      Assay 2
+    </li>
+    <li
+      className="overflow-link"
+      key="overflow"
+    >
+      <a
+        href="#/assays"
+      >
+        See all 
+        5
+      </a>
+    </li>
+  </ul>
+  <ul
+    key="assayscol-2"
+  >
+    <li
+      key="Assay 3"
+    >
+      Assay 3
+    </li>
+    <li
+      key="Assay 4"
+    >
+      Assay 4
+    </li>
+  </ul>
+</ProductMenuSection>
+`;
+
+exports[`ProductMenuSection render two-column section 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "emptyText": undefined,
+      "maxItemsPerColumn": 2,
+      "maxColumns": 2,
+    }
+  }
+  maxColumns={1}
+  productId="testProduct4Columns"
+  section={
+    Immutable.Record {
+      "label": "Assays",
+      "url": undefined,
+      "items": Immutable.List [
+        Immutable.Record {
+          "id": 11,
+          "key": undefined,
+          "label": "Assay 1",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 12,
+          "key": undefined,
+          "label": "Assay 2",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 13,
+          "key": undefined,
+          "label": "Assay 3",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 14,
+          "key": undefined,
+          "label": "Assay 4",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+        Immutable.Record {
+          "id": 15,
+          "key": undefined,
+          "label": "Assay 5",
+          "url": undefined,
+          "orderNum": undefined,
+          "requiresLogin": false,
+        },
+      ],
+      "totalCount": 0,
+      "itemLimit": undefined,
+      "key": "assays",
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <img
+      alt="Assays icon"
+      className="menu-section-image"
+      height="24px"
+      src="/testProduct4Columns/images/assays.svg"
+      width="24px"
+    />
+     
+    Assays
+  </span>
+  <hr />
+  <ul
+    key="assayscol-1"
+  >
+    <li
+      key="Assay 1"
+    >
+      Assay 1
+    </li>
+    <li
+      key="Assay 2"
+    >
+      Assay 2
+    </li>
+  </ul>
+  <ul
+    key="assayscol-2"
+  >
+    <li
+      key="Assay 3"
+    >
+      Assay 3
+    </li>
+    <li
+      key="Assay 4"
+    >
+      Assay 4
+    </li>
+  </ul>
+</ProductMenuSection>
+`;

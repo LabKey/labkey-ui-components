@@ -1,13 +1,11 @@
 import React from 'reactn';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
-import { initNavigationState, updateProductMenuModel } from '../global';
 import { User } from '@glass/models';
 import { UserMenu } from './UserMenu';
-import { MenuSectionModel } from '../model';
+import { MenuSectionModel, ProductMenuModel } from '../model';
 
 beforeAll(() => {
-    initNavigationState();
     LABKEY.devMode = false;
 });
 
@@ -35,7 +33,10 @@ describe("UserMenu", () => {
     }));
 
     test("not initialized", () => {
-        const tree = renderer.create(<UserMenu productId="testProduct" user={new User()}/>).toJSON();
+        const model = new ProductMenuModel({
+            productId: "testProduct"
+        });
+        const tree = renderer.create(<UserMenu model={model} user={new User()}/>).toJSON();
         expect(tree).toBe(null);
     });
 
@@ -45,16 +46,15 @@ describe("UserMenu", () => {
             isSignedIn: false
         });
 
-        updateProductMenuModel(
-            productId,
+        const model = new ProductMenuModel(
             {
                 isLoaded: true,
                 isLoading: false,
+                productId,
                 sections: sections.asImmutable()
-            },
-            false
+            }
         );
-        const tree = renderer.create(<UserMenu productId={productId} user={user}/>).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
@@ -64,16 +64,15 @@ describe("UserMenu", () => {
             isSignedIn: true
         });
 
-        updateProductMenuModel(
-            productId,
+        const model = new ProductMenuModel(
             {
                 isLoaded: true,
                 isLoading: false,
+                productId,
                 sections: sections.asImmutable()
-            },
-            false
+            }
         );
-        const tree = renderer.create(<UserMenu productId={productId} user={user}/>).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
@@ -83,16 +82,15 @@ describe("UserMenu", () => {
             isSignedIn: true
         });
         LABKEY.devMode = true;
-        updateProductMenuModel(
-            productId,
+        const model = new ProductMenuModel(
             {
                 isLoaded: true,
                 isLoading: false,
+                productId,
                 sections: sections.asImmutable()
-            },
-            false
+            }
         );
-        const tree = renderer.create(<UserMenu productId={productId} user={user}/>).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
@@ -102,20 +100,19 @@ describe("UserMenu", () => {
             isSignedIn: true
         });
 
-        updateProductMenuModel(
-            productId,
+        const model = new ProductMenuModel(
             {
                 isLoaded: true,
                 isLoading: false,
+                productId,
                 sections: sections.asImmutable()
-            },
-            false
+            }
         );
         let extraUserItems = [
             <div key="e1">Extra One</div>,
             <div key="e2">Extra Two</div>
         ];
-        const tree = renderer.create(<UserMenu productId={productId} user={user} extraUserItems={extraUserItems}/>).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user} extraUserItems={extraUserItems}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
@@ -125,14 +122,14 @@ describe("UserMenu", () => {
             isSignedIn: true
         });
 
-        updateProductMenuModel(
-            productId,
+        const model = new ProductMenuModel(
+
             {
                 isLoaded: true,
                 isLoading: false,
+                productId,
                 sections: sections.asImmutable()
-            },
-            false
+            }
         );
         let extraUserItems = [
             <div key="e1">Extra One</div>,
@@ -142,7 +139,7 @@ describe("UserMenu", () => {
             <div key="e1">Extra Dev One</div>,
             <div key="e2">Extra Dev Two</div>
         ];
-        const tree = renderer.create(<UserMenu productId={productId} user={user} extraUserItems={extraUserItems} extraDevItems={extraDevItems}/>).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user} extraUserItems={extraUserItems} extraDevItems={extraDevItems}/>).toJSON();
         expect(tree).toMatchSnapshot();
     })
 });

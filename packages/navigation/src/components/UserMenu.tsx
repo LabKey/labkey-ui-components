@@ -3,16 +3,15 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
-import React from 'reactn'
-import { Dropdown, MenuItem, Image } from 'react-bootstrap'
+import * as React from 'react'
+import { Dropdown, Image, MenuItem } from 'react-bootstrap'
 
 import { User } from '@glass/models';
-import { menuInit } from '../actions';
-import { MenuSectionModel } from '../model';
-import { devToolsActive, toggleDevTools, buildURL } from '@glass/utils';
+import { MenuSectionModel, ProductMenuModel } from '../model';
+import { buildURL, devToolsActive, toggleDevTools } from '@glass/utils';
 
 interface UserMenuProps {
-    productId: string
+    model: ProductMenuModel
     user: User
     extraDevItems?: any
     extraUserItems?: any
@@ -20,16 +19,8 @@ interface UserMenuProps {
 
 export class UserMenu extends React.Component<UserMenuProps, any> {
 
-    componentWillMount() {
-        this.initMenuModel(this.props)
-    }
-
-    initMenuModel(props: UserMenuProps)  {
-        menuInit(props.productId)
-    }
-
     getSection() : MenuSectionModel {
-        return this.global.Navigation_menu.getSection("user");
+        return this.props.model.getSection("user");
     }
 
     logout() {
@@ -37,9 +28,9 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
     }
 
     render() {
-        const { extraDevItems, extraUserItems, user } = this.props;
+        const { extraDevItems, extraUserItems, model, user } = this.props;
 
-        const menuSection = this.getSection();
+        const menuSection = model.getSection("user");
 
         if (menuSection) {
             let profileLink,

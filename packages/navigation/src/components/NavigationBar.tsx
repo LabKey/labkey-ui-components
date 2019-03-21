@@ -9,13 +9,13 @@ import { UserMenu } from "./UserMenu";
 
 import { User } from '@glass/models';
 import { MenuSectionConfig } from "./ProductMenuSection";
-
+import { ProductMenuModel } from "../model";
 
 interface NavigationBarProps {
-    brand?: ReactNode,
+    brand?: ReactNode
     menuSectionConfigs?: Map<string, MenuSectionConfig>
-    productId?: string,
-    showSearchBox?: boolean,
+    model: ProductMenuModel
+    showSearchBox?: boolean
     user?: User
 }
 
@@ -25,12 +25,12 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
     };
 
     render() {
-        const { brand, menuSectionConfigs, productId, showSearchBox, user } = this.props;
+        const { brand, menuSectionConfigs, model, showSearchBox, user } = this.props;
 
-        const productMenu = productId ? <ProductMenu sectionConfigs={menuSectionConfigs} productId={productId}/> : null;
+        const productMenu = model ? <ProductMenu model={model} sectionConfigs={menuSectionConfigs}/> : null;
 
         const searchBox = showSearchBox ? <SearchBox/> : null;
-        const userMenu = user ? <UserMenu productId={productId} user={user}/> : null;
+        const userMenu = user ? <UserMenu model={model} user={user}/> : null;
 
         return (
             <nav className="navbar navbar-container test-loc-nav-header">

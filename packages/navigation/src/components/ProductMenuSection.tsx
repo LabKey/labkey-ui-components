@@ -69,7 +69,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         );
 
         const allItems = section.items;
-        const haveOverflow = section.totalCount > config.maxColumns * config.maxItemsPerColumn; // totalCount may be larger than allItems.size
+        const haveOverflow = section.totalCount > Math.min(section.items.size, config.maxColumns * config.maxItemsPerColumn); // totalCount may be larger than allItems.size
         let columnNum = 1;
         let startIndex = 0;
         let endIndex = Math.min(config.maxItemsPerColumn, allItems.size);

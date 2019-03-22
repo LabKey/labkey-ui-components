@@ -28,12 +28,12 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         maxColumns: 1
     };
 
-    renderMenuItemsList(items, columnNumber: number = 1, withOverflow: boolean = false)
+    renderMenuItemsList(items, columnNumber: number = 1, totalColumns: number = 1, withOverflow: boolean = false)
     {
         const { config, section } = this.props;
 
         return (
-            <ul key={section.key + 'col-' + columnNumber}>
+            <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
                 {items.isEmpty() ?
                     config.emptyText && <li key="empty" className="empty-section">{config.emptyText}</li>
                     : items.map(item => {
@@ -78,15 +78,16 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         let columnNum = 1;
         let startIndex = 0;
         let endIndex = Math.min(config.maxItemsPerColumn, allItems.size);
+        let numColumns = Math.min(config.maxColumns, Math.ceil(allItems.size / config.maxItemsPerColumn));
         let columns = [
-            this.renderMenuItemsList(allItems.slice(startIndex, endIndex),  columnNum, haveOverflow)
+            this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, haveOverflow)
         ];
         while (endIndex < allItems.size && columnNum < config.maxColumns)
         {
             startIndex = endIndex;
             endIndex = Math.min(endIndex + config.maxItemsPerColumn, allItems.size);
             columnNum++;
-            columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex),  columnNum, haveOverflow && columnNum == 1));
+            columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, false));
         }
 
         return (

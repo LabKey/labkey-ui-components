@@ -48,6 +48,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         const { model } = this.props;
 
         let containerCls = 'product-menu-content ';
+        let menuSectionCls = 'menu-section col-' + model.sections.size;
         let inside = <LoadingSpinner/>;
         if (model && model.isLoaded) {
             if (model.isError) {
@@ -60,7 +61,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                     <>
                         {model.sections.map(section => {
                             return (
-                                <div key={section.key} className="menu-section">
+                                <div key={section.key} className={menuSectionCls}>
                                     <ProductMenuSection productId={model.productId} section={section} config={this.getSectionConfig(section.key)}/>
                                 </div>
                             );

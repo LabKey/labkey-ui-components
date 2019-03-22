@@ -21,7 +21,7 @@ The easiest way to use `@glass` components is to install them from npm and bundl
 
 #### Setting the Registry Scope
 
-This package is currently availble on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
+This package is currently available on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
 ```
 npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```

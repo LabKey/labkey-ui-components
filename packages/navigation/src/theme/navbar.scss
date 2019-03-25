@@ -129,9 +129,14 @@
       li {
         padding-bottom: 5px;
       }
+
       li a {
-        color: black;
+        color: $text-color;
       }
+      li a:focus, li a:hover {
+        color: $link-hover-color;
+      }
+
       li.overflow-link a {
         color: $brand-primary;
       }

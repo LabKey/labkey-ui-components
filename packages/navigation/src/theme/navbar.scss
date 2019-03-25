@@ -137,7 +137,19 @@
         color: $link-hover-color;
       }
 
-      li.overflow-link a {
+      &.col-1 {
+        width: 95%;
+      }
+      &.col-2 {
+        width: 45%;
+      }
+    }
+
+    .overflow-link {
+      float: left;
+      margin: 0 5px;
+
+      a {
         color: $brand-primary;
       }
     }

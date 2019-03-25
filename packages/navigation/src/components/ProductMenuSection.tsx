@@ -44,8 +44,8 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
                     return <li key={item.label}>{item.label}</li>
                     })
                 }
-                {withOverflow &&  <li className="overflow-link" key="overflow"><a href={AppURL.create(section.key).toHref()}>See all {section.totalCount}</a></li>}
             </ul>
+
         )
     }
 
@@ -88,6 +88,9 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
             endIndex = Math.min(endIndex + config.maxItemsPerColumn, allItems.size);
             columnNum++;
             columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, false));
+        }
+        if (haveOverflow) {
+            columns.push(<span className="overflow-link" key="overflow"><a href={AppURL.create(section.key).toHref()}>See all {section.totalCount}</a></span>)
         }
 
         return (

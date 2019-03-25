@@ -154,7 +154,7 @@ describe("ProductMenuSection render", () => {
 
         const menuSection = mount(<ProductMenuSection section={section} productId={productId} config={sectionConfig}/>);
         expect(menuSection.find('ul').length).toBe(2);
-        expect(menuSection.find('li.overflow-link').length).toBe(1);
+        expect(menuSection.find('span.overflow-link').length).toBe(1);
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     })

@@ -37,6 +37,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
   </span>
   <hr />
   <ul
+    className="col-0"
     key="samplescol-1"
   />
 </ProductMenuSection>
@@ -79,6 +80,7 @@ exports[`ProductMenuSection render empty section with empty text 1`] = `
   </span>
   <hr />
   <ul
+    className="col-0"
     key="samplescol-1"
   >
     <li
@@ -161,6 +163,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
   </span>
   <hr />
   <ul
+    className="col-1"
     key="samplescol-1"
   >
     <li
@@ -245,6 +248,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
   </span>
   <hr />
   <ul
+    className="col-2"
     key="assayscol-1"
   >
     <li
@@ -257,19 +261,9 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
     >
       Assay 2
     </li>
-    <li
-      className="overflow-link"
-      key="overflow"
-    >
-      <a
-        href="#/assays"
-      >
-        See all 
-        5
-      </a>
-    </li>
   </ul>
   <ul
+    className="col-2"
     key="assayscol-2"
   >
     <li
@@ -283,6 +277,17 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       Assay 4
     </li>
   </ul>
+  <span
+    className="overflow-link"
+    key="overflow"
+  >
+    <a
+      href="#/assays"
+    >
+      See all 
+      5
+    </a>
+  </span>
 </ProductMenuSection>
 `;
 
@@ -364,6 +369,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
   </span>
   <hr />
   <ul
+    className="col-2"
     key="assayscol-1"
   >
     <li
@@ -378,6 +384,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
     </li>
   </ul>
   <ul
+    className="col-2"
     key="assayscol-2"
   >
     <li

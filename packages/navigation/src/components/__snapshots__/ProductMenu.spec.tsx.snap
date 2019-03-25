@@ -72,16 +72,20 @@ exports[`ProductMenu render loading 1`] = `
       onKeyDown={[Function]}
       onSelect={[Function]}
     >
-      <span
-        className=""
+      <div
+        className="menu-section col-0"
       >
-        <i
-          aria-hidden="true"
-          className="fa fa-spinner fa-spin"
-        />
-         
-        Loading...
-      </span>
+        <span
+          className=""
+        >
+          <i
+            aria-hidden="true"
+            className="fa fa-spinner fa-spin"
+          />
+           
+          Loading...
+        </span>
+      </div>
     </div>
   </ul>
 </div>
@@ -312,7 +316,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                     onSelect={[Function]}
                   >
                     <div
-                      className="menu-section"
+                      className="menu-section col-3"
                       key="samples"
                     >
                       <ProductMenuSection
@@ -384,6 +388,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                         </span>
                         <hr />
                         <ul
+                          className="col-1"
                           key="samplescol-1"
                         >
                           <li
@@ -410,7 +415,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                       </ProductMenuSection>
                     </div>
                     <div
-                      className="menu-section"
+                      className="menu-section col-3"
                       key="assays"
                     >
                       <ProductMenuSection
@@ -490,6 +495,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                         </span>
                         <hr />
                         <ul
+                          className="col-1"
                           key="assayscol-1"
                         >
                           <li
@@ -521,7 +527,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                       </ProductMenuSection>
                     </div>
                     <div
-                      className="menu-section"
+                      className="menu-section col-3"
                       key="user"
                     >
                       <ProductMenuSection
@@ -565,6 +571,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                         </span>
                         <hr />
                         <ul
+                          className="col-1"
                           key="usercol-1"
                         >
                           <li

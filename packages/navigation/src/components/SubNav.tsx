@@ -49,6 +49,7 @@ export class SubNav extends React.Component<ISubNavProps, SubNavState> {
     }
 
     componentDidMount() {
+        this.onResize();
         $(window).resize(this.onResize);
     }
 

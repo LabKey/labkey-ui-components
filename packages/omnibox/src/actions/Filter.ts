@@ -325,16 +325,19 @@ export class FilterAction implements Action {
         return this.getFilterParameters(paramKey, paramValue).filters.length > 0;
     }
 
-    parseParam(paramKey: string, paramValue: any): Array<string> | Array<Value> {
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
         let results: Array<Value> = [];
         const { param, filters } = this.getFilterParameters(paramKey, paramValue);
 
         if (filters.length > 0) {
-            for (let i=0; i < filters.length; i++) {
+            for (let i = 0; i < filters.length; i++) {
                 const columnName = filters[i].getColumnName();
+                const column = parseColumns(columns, columnName).first();
+                const columnLabel = column ? column.shortCaption : columnName;
+
                 const operator = resolveSymbol(filters[i].getFilterType());
                 let rawValue = filters[i].getValue();
-                const display = this.getDisplayValue(columnName, operator, Utils.isArray(rawValue) ? rawValue[0] : rawValue);
+                const display = this.getDisplayValue(columnLabel, operator, Utils.isArray(rawValue) ? rawValue[0] : rawValue);
 
                 results.push({
                     displayValue: display.displayValue,

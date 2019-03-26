@@ -122,7 +122,7 @@ export class ViewAction implements Action {
         return paramKey && paramKey.toLowerCase() === this.param;
     }
 
-    parseParam(paramKey: string, paramValue: any): Array<string> | Array<Value> {
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
         let results: Array<Value> = [];
 
         if (paramValue) {

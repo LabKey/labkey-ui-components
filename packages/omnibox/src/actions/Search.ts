@@ -2,6 +2,9 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { List } from 'immutable'
+import { QueryColumn } from '@glass/models'
+
 import { Action, ActionOption, ActionValue, Value } from './Action'
 
 export class SearchAction implements Action {
@@ -57,7 +60,7 @@ export class SearchAction implements Action {
         return paramKey && paramKey.toLowerCase() === this.param.toLowerCase();
     }
 
-    parseParam(paramKey: string, paramValue: any): Array<string> | Array<Value> {
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
         return paramValue.split(';');
     }
 }

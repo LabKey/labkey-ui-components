@@ -87,7 +87,6 @@ export class ProductMenuModel extends Record( {
     message: string;
     sections: List<MenuSectionModel>;
     productId: string;
-    error: string;
 
     constructor(values?: {[key: string]: any}) {
         super(values);

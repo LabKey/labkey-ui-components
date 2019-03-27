@@ -49,7 +49,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
 
         let containerCls = 'product-menu-content ';
         let menuSectionCls = 'menu-section col-' + model.sections.size;
-        let inside = <LoadingSpinner/>;
+        let inside = <div className={menuSectionCls + " menu-loading"}><LoadingSpinner/></div>;
         if (model && model.isLoaded) {
             if (model.isError) {
                 containerCls += ' error';

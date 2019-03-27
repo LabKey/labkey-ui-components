@@ -139,14 +139,6 @@ describe("ProductMenuSection render", () => {
             totalCount: 5
         });
 
-        const model = new ProductMenuModel(
-            {   productId,
-                isLoaded: true,
-                isLoading: false,
-                sections: sections.asImmutable()
-            }
-        );
-        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
         const sectionConfig = new MenuSectionConfig({
             maxColumns: 2,
             maxItemsPerColumn: 2

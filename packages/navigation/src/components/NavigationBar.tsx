@@ -1,4 +1,4 @@
-import React from 'reactn'
+import * as React from 'react'
 import { ReactNode } from "react";
 import { Map } from 'immutable'
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
@@ -34,29 +34,33 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
         const userMenu = user ? <UserMenu model={model} user={user}/> : null;
 
         return (
+
             <nav className="navbar navbar-container test-loc-nav-header">
-                <span className="navbar-left">
-                    <span className="navbar-item pull-left">
-                        {brand}
-                    </span>
-                    <span className="navbar-item">
-                        {productMenu}
-                    </span>
-                    {projectName && (
-                        <span className="navbar-item">
-                            <span className="project-name"><i className="fa fa-folder-open-o"/> {projectName} </span>
+                <div className="container">
+                    <span className="navbar-left">
+                        <span className="navbar-item pull-left">
+                            {brand}
                         </span>
-                    )}
-                </span>
-                <span className="navbar-right pull-right">
-                    <span className="navbar-item">
-                        {searchBox}
+                        <span className="navbar-item">
+                            {productMenu}
+                        </span>
+                        {projectName && (
+                            <span className="navbar-item">
+                                <span className="project-name"><i className="fa fa-folder-open-o"/> {projectName} </span>
+                            </span>
+                        )}
                     </span>
-                    <span className="pull-right">
-                        {userMenu}
+                    <span className="navbar-right pull-right">
+                        <span className="navbar-item">
+                            {searchBox}
+                        </span>
+                        <span className="pull-right">
+                            {userMenu}
+                        </span>
                     </span>
-                </span>
+                </div>
             </nav>
+
         )
     }
 

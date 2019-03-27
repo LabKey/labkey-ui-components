@@ -170,7 +170,11 @@
   color: $light-gray;
 }
 
-
+.navbar {
+  .container {
+    padding: 0;
+  }
+}
 .sub-nav {
   border-radius: 0;
 }

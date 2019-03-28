@@ -395,7 +395,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     };
 
     const location = getLocation();
-    const queryString = buildQueryString(location.query);
+    const queryString = buildQueryString(location.query, true);
     const p = location.query.get(model.createParam('p'));
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));
@@ -1121,8 +1121,10 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
         });
         updateLookupStore(store, {}, false);
 
-        searchLookup(column, maxRows, undefined, values);
+        return searchLookup(column, maxRows, undefined, values);
     }
+
+    return Promise.resolve();
 }
 
 function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
@@ -1172,7 +1174,7 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
             ];
         }
 
-        searchRows(selectRowOptions, token, lookup.displayColumn).then((result) => {
+        return searchRows(selectRowOptions, token, lookup.displayColumn).then((result) => {
             const {displayColumn, keyColumn} = column.lookup;
             const {key, models, totalRows} = result;
 

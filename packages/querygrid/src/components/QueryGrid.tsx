@@ -68,23 +68,21 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             _modelId = generateId(QUERY_GRID_PREFIX);
         }
 
-        // set local state for this component
-        this.state = {
-            modelId: _modelId,
-            unlisten: undefined // this will be set in the componentDidMount after the listen() is called
-        };
-    }
-
-    componentDidMount() {
-        this.initModel(this.props);
-
         const unlisten = getBrowserHistory().listen((location, action) => {
             if (this.props.model && this.props.model.bindURL) {
                 reloadQueryGridModel(this.props.model);
             }
         });
 
-        this.setState({unlisten});
+        // set local state for this component
+        this.state = {
+            modelId: _modelId,
+            unlisten
+        };
+    }
+
+    componentDidMount() {
+        this.initModel(this.props);
     }
 
     componentWillReceiveProps(nextProps: QueryGridProps) {

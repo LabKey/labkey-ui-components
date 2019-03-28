@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { gridInit, gridInvalidate, gridRefresh, gridShowError } from './actions'
+import { gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalidate, schemaGridInvalidate } from './actions'
 import { getStateQueryGridModel } from './model'
 import { initQueryGridState, removeQueryGridModel, setQueryMetadata, setQueryColumnRenderers, getEditorModel, getQueryGridModel } from './global'
 import { selectRows, searchRows, getQueryDetails, invalidateQueryDetailsCacheKey, ISelectRowsResult } from './query/api'
@@ -30,6 +30,8 @@ export {
     // grid functions
     gridInit,
     gridInvalidate,
+    queryGridInvalidate,
+    schemaGridInvalidate,
     gridRefresh,
     gridShowError,
     generateId,

@@ -215,11 +215,11 @@ export function clearError(model: QueryGridModel) {
     }
 }
 
-export function schemaInvalidate(schemaName: string) {
+export function schemaGridInvalidate(schemaName: string) {
     getQueryGridModelsForSchema(schemaName).map((model) => gridInvalidate(model));
 }
 
-export function queryInvalidate(schemaQuery: SchemaQuery) {
+export function queryGridInvalidate(schemaQuery: SchemaQuery) {
     getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
 }
 

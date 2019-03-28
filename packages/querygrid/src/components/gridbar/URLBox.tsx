@@ -152,8 +152,9 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
                 for (let a=0; a < actions.length; a++) {
                     for (let p=0; p < paramValues.length; p++) {
-                        if (actions[a].matchParam(key, paramValues[p])) {
-                            let values = actions[a].parseParam(key, paramValues[p], this.getColumns(true));
+                        const decodedParamVals = decodeURIComponent(paramValues[p]);
+                        if (actions[a].matchParam(key, decodedParamVals)) {
+                            let values = actions[a].parseParam(key, decodedParamVals, this.getColumns(true));
 
                             for (let v=0; v < values.length; v++) {
                                 if (typeof values[v] === 'string') {

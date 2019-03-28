@@ -37,6 +37,11 @@ interface QueryGridState {
      * is not provided but persistence of the generated model is desired (fetched results, etc)
      */
     modelId: string
+
+    /**
+     * Function returned by the getBrowserHistory().listen() call so that we can cleanup after unmount
+     */
+    unlisten: any
 }
 
 export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
@@ -63,24 +68,34 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             _modelId = generateId(QUERY_GRID_PREFIX);
         }
 
-        getBrowserHistory().listen((location, action) => {
-            if (this.props.model && this.props.model.bindURL) {
-                reloadQueryGridModel(this.props.model);
-            }
-        });
-
         // set local state for this component
         this.state = {
-            modelId: _modelId
+            modelId: _modelId,
+            unlisten: undefined // this will be set in the componentDidMount after the listen() is called
         };
     }
 
     componentDidMount() {
         this.initModel(this.props);
+
+        const unlisten = getBrowserHistory().listen((location, action) => {
+            if (this.props.model && this.props.model.bindURL) {
+                reloadQueryGridModel(this.props.model);
+            }
+        });
+
+        this.setState({unlisten});
     }
 
     componentWillReceiveProps(nextProps: QueryGridProps) {
         this.initModel(nextProps);
+    }
+
+    componentWillUnmount() {
+        const { unlisten } = this.state;
+        if (unlisten) {
+            unlisten();
+        }
     }
 
     initModel(props: QueryGridProps) {

@@ -46,10 +46,10 @@ export function getLocation() : Location
     return location;
 }
 
-export function buildQueryString(params: Map<string, string | number>, shouldEncode?: boolean): string {
+export function buildQueryString(params: Map<string, string | number>): string {
     let q = '', sep = '';
     params.forEach((v, k) => {
-        q += sep + k + '=' + (shouldEncode ? encodeURIComponent(v.toString()) : v);
+        q += sep + k + '=' + v;
         sep = '&';
     });
 

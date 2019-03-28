@@ -395,7 +395,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     };
 
     const location = getLocation();
-    const queryString = buildQueryString(location.query, true);
+    const queryString = buildQueryString(location.query);
     const p = location.query.get(model.createParam('p'));
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));

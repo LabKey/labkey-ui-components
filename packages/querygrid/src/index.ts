@@ -9,7 +9,6 @@ import { selectRows, searchRows, getQueryDetails, invalidateQueryDetailsCacheKey
 import { getLocation, replaceParameters, pushParameter, pushParameters, Location } from './util/URL'
 import { generateId, debounce } from './util/util'
 import { URLResolver } from './util/URLResolver'
-import { QueryGrid } from './components/QueryGrid'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { AliasRenderer } from './renderers/AliasRenderer'
@@ -59,7 +58,6 @@ export {
     MultiValueRenderer,
 
     // components
-    QueryGrid,
     QueryGridPanel,
     EditableGridPanel
 }

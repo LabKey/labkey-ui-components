@@ -22,6 +22,7 @@ interface Props {
     asPanel?: boolean
     showTabs?: boolean
     showAllTabs?: boolean
+    showGridBar?: boolean
 }
 
 interface State {
@@ -31,7 +32,8 @@ interface State {
 export class QueryGridPanel extends React.Component<Props, State> {
 
     static defaultProps = {
-        asPanel: true
+        asPanel: true,
+        showGridBar: true
     };
 
     constructor(props: Props) {
@@ -129,12 +131,12 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     render() {
-        const { asPanel, buttons, header, message, model } = this.props;
+        const { asPanel, showGridBar, buttons, header, message, model } = this.props;
         const activeModel = this.getModel();
 
         const content = model ? (
             <>
-                <QueryGridBar buttons={buttons} model={activeModel} />
+                {showGridBar && <QueryGridBar buttons={buttons} model={activeModel} />}
                 {message}
 
                 {/* Grid row */}

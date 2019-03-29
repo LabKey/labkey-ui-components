@@ -37,6 +37,10 @@ const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
 export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
+    if (!model || model.isLoaded || model.isLoading) {
+        return;
+    }
+
     let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
 
     if (!newModel.isLoaded) {

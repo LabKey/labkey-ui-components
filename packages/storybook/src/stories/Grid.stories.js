@@ -1,16 +1,17 @@
-import { storiesOf } from '@storybook/react'
-import { withMarkdownNotes } from '@storybook/addon-notes'
-import { withKnobs, text, boolean } from '@storybook/addon-knobs/react'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { Grid } from "../../../grid";
+import * as constants from "./constants";
+import { withKnobs, text, boolean } from "@storybook/addon-knobs";
 
-import * as constants from "../../storybook/src/stories/constants";
-import {Grid} from "..";
+import '../app.css'
 
 storiesOf('Grid', module)
     .addDecorator(withKnobs)
-    .add('With basic data', withMarkdownNotes(constants.gridWithBasicDataMD)(() =>
-        <Grid data={constants.gridData} />))
-    .add('With columns', withMarkdownNotes(constants.gridWithColumnsMD)(() =>
-        <Grid data={constants.gridData} columns={constants.gridColumns} />))
+    .add('With basic data', () =>
+        <Grid data={constants.gridData} />)
+    .add('With columns', () =>
+        <Grid data={constants.gridData} columns={constants.gridColumns} />)
     .add('With knobs', () =>
         <Grid
             bordered={boolean('bordered', true)}

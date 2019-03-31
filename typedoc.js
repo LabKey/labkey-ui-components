@@ -8,7 +8,7 @@ module.exports = {
     theme: "default",
     mode: "modules",
     exclude: [
-        "**/*+(wrapper|wrapper-dom|.spec).ts",
+        "**/*+(wrapper|wrapper-dom|.spec|.stories).ts",
         "**/__snapshots__/**",
         "**/__mocks__/**"
     ],

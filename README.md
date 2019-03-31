@@ -148,7 +148,8 @@ This deployment of docs should be done after each pull request is merged into ``
 
 #### Storybook
 
-A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". These stories are composed by developers to show features of a component and let other members of the team interact with a component. If you're doing active development you can start up Storybook via:
+A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". 
+These stories are composed by developers to show features of a component and let other members of the team interact with a component. If you're doing active development you can start up Storybook via:
 
 ```sh
 cd packages/storybook

@@ -25,6 +25,7 @@ import {
     getQueryGridModel,
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
+    getQueryGridModelsForGridId,
     updateQueryGridModel,
     updateSelections,
     getEditorModel,
@@ -225,6 +226,10 @@ export function schemaGridInvalidate(schemaName: string) {
 
 export function queryGridInvalidate(schemaQuery: SchemaQuery) {
     getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
+}
+
+export function gridIdInvalidate(gridId: string) {
+    getQueryGridModelsForGridId(gridId).map((model) => gridInvalidate(model));
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {

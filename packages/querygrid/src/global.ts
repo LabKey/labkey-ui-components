@@ -68,6 +68,11 @@ export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List
     return getGlobalState('models').filter(model => model.getModelName() === modelName).toList();
 }
 
+export function getQueryGridModelsForGridId(gridId: string): List<QueryGridModel> {
+    const prefix = (gridId + '|').toLowerCase();
+    return getGlobalState('models').filter(model => model.getId().indexOf(prefix) === 0).toList();
+}
+
 /**
  * Helper function for all callers/actions that would like to update information for a QueryGridModel in the global state.
  * @param model QueryGridModel in the global state to be updated, or to be added to global state if it does not already exist by Id

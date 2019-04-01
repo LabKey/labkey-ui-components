@@ -28,7 +28,7 @@ const namedExportOptions = {
         'reactn': ['getGlobal', 'setGlobal'],
         // this is required to avoid errors such as this:  Error: 'arrayOf' is not exported by ../../node_modules/react-router/node_modules/prop-types/index.js
         'react-router/node_modules/prop-types/index.js': ['array', 'arrayOf', 'bool', 'element', 'func', 'object', 'shape', 'string', 'oneOfType'],
-        'node_modules/prop-types/index.js': ['array', 'arrayOf', 'bool', 'element', 'func', 'object', 'shape', 'string', 'oneOfType']
+        'prop-types': ['array', 'arrayOf', 'bool', 'element', 'func', 'object', 'shape', 'string', 'oneOfType']
     }
 };
 

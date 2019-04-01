@@ -73,7 +73,7 @@ exports[`ProductMenu render loading 1`] = `
       onSelect={[Function]}
     >
       <div
-        className="menu-section col-0"
+        className="menu-section col-0 menu-loading"
       >
         <span
           className=""

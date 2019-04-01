@@ -271,6 +271,7 @@
   vertical-align: middle;
 }
 
+.user-name,
 .project-name {
   border-radius: 4px;
   background-color: white;
@@ -280,4 +281,8 @@
 #user-menu-dropdown {
   box-shadow: none;
   text-decoration: none;
+}
+
+.user-name {
+  font-family: FontAwesome, $font-family-sans-serif;
 }

@@ -72,28 +72,17 @@ storiesOf('NavigationBar', module)
             message,
             productId,
         });
-        const isSignedIn = boolean('isSignedIn', true);
 
-        const isDevMode = boolean('devMode', false);
+        const brandIcon = text("brand icon", "http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png");
         const brandText = text('brand text', 'Logo');
-        const brand = <b>{brandText}</b>;
+        const brand = brandIcon ? <img src={brandIcon}  height="38px" width="38px"/> : <b>{brandText}</b>;
 
-
-        LABKEY['devMode'] = isDevMode;
         return <NavigationBar
             brand={brand}
             projectName={text('projectName', 'Current Project')}
             menuSectionConfigs={undefined}
             model={model}
             showSearchBox={boolean('showSearchBox', true)}
-            user={
-                new User( {
-                    avatar: undefined,
-                    displayName: "Test User",
-                    isSignedIn,
-                    isGuest: !isSignedIn
-                })
-            }
         />
     })
     .add("With empty section", () => {
@@ -181,6 +170,11 @@ storiesOf('NavigationBar', module)
                 new MenuItemModel({
                     key: "cart",
                     label: "Shopping Cart"
+                }),
+                new MenuItemModel( {
+                    key: "profile",
+                    requiresLogin: true,
+                    label: "Profile"
                 })
             ])
         }));
@@ -211,6 +205,9 @@ storiesOf('NavigationBar', module)
             iconCls: text('userIconClass', 'fas fa-user-circle', "User")
         }));
 
+        LABKEY['devMode'] = boolean('devMode', false, userGroup);
+        const isSignedIn = boolean('User is signed in', true, userGroup);
+
         return <NavigationBar
             menuSectionConfigs={sectionConfigs.asImmutable()}
             model={model}
@@ -219,8 +216,8 @@ storiesOf('NavigationBar', module)
                 new User( {
                     avatar: undefined,
                     displayName: "Test User",
-                    isSignedIn: true,
-                    isGuest: false
+                    isSignedIn,
+                    isGuest: !isSignedIn
                 })
             }
         />

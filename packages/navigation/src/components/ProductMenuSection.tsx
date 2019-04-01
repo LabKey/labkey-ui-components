@@ -6,10 +6,14 @@ import { AppURL, imageURL } from '@glass/utils';
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,
+    iconURL: undefined,
+    iconCls: undefined,
     maxItemsPerColumn: 12,
-    maxColumns: 1
+    maxColumns: 1,
 }){
     emptyText: string;
+    iconURL: string;
+    iconCls: string;
     maxItemsPerColumn: number;
     maxColumns: number;
 }
@@ -52,22 +56,24 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     render() {
         const { config, productId, section } = this.props;
         let icon;
-        if (section.key === 'user')
-            icon = <span className="fas fa-user-circle menu-section-icon" />;
-        else
-            icon = (
+        if (config.iconURL) {
+            icon =  (
                 <img
                     alt={section.label + ' icon'}
-                    className="menu-section-image"
-                    src={imageURL(productId, section.key + '.svg')}
+                    className={"menu-section-image " + config.iconCls}
+                    src={config.iconURL}
                     height="24px"
                     width="24px"
                 />
             );
+        } else if (config.iconCls) {
+            icon = <span className={config.iconCls + " menu-section-icon"}/>;
+        }
+        const label = icon ? (<>{icon}&nbsp;{section.label}</>) : section.label;
         const header = (
             <>
                 <span className="menu-section-header">
-                    {section.url ? <a href={AppURL.create(section.key).toHref()}>{icon}&nbsp;{section.label}</a> : <>{icon}&nbsp;{section.label}</>}
+                    {section.url ? <a href={AppURL.create(section.key).toHref()}>{label}</a> : <>{label}</>}
                 </span>
                 <hr/>
             </>

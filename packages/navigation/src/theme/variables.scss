@@ -1,0 +1,24 @@
+$light-gray: #d3d3d3;
+
+$gray-base:              #000 !default;
+$gray-darker:            lighten($gray-base, 13.5%) !default; // #222
+$gray-dark:              lighten($gray-base, 20%) !default;   // #333
+$gray:                   lighten($gray-base, 33.5%) !default; // #555
+$gray-light:             lighten($gray-base, 46.7%) !default; // #777
+$gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
+
+$footer-height: 40px;
+$header-height: 40px;
+$header-spacing-no-scroll: 104px;
+
+$font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+//-- Z-index master list
+$zindex-navbar:            1000 !default;
+
+$brand-danger:          #d9534f;
+$brand-primary: #2980b9;
+$brand-secondary: #236fa0;
+
+$text-color:            $gray-dark !default;
+$link-hover-color:      darken($brand-primary, 15%) !default;

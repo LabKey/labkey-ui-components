@@ -6,11 +6,15 @@ import { Map } from 'immutable'
 
 import { getBrowserHistory } from "./global";
 
+// This type is roughly equivalent to the Location object from this history package
+// but here we have all fields optional to make it also compatible with the window.location object
 export type Location = {
-    pathname?: string
+    action?: string
     hash?: string
-    search?: string
+    key?: string
+    pathname?: string
     query?: Map<string, any>
+    search?: string
     state?: any // {[key:string]: string}
 }
 

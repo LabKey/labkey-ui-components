@@ -1,9 +1,9 @@
 {
-  "name": "@glass/domainproperties",
-  "version": "0.0.3",
-  "description": "Domain property related components for LabKey domains.",
-  "main": "dist/domainproperties.cjs.js",
-  "module": "dist/domainproperties.es.js",
+  "name": "@glass/PACKAGE_NAME",
+  "version": "0.0.2",
+  "description": "PACkAGE_DESCRIPTION",
+  "main": "dist/PACKAGE_NAME.cjs.js",
+  "module": "dist/PACKAGE_NAME.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -12,14 +12,13 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
+    "test": "cross-env NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "Cory Nathe",
+  "author": "AUTHOR_NAME",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
@@ -29,9 +28,6 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/grid": "0.0.3",
-    "@glass/models": "0.0.4",
-    "@glass/utils": "0.0.5"
   },
   "jest": {
     "globals": {

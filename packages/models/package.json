@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/utils": "0.0.4"
+    "@glass/utils": "0.0.6"
   },
   "peerDependencies": {
     "immutable": "^3.8.2"

@@ -1,9 +1,9 @@
 {
-  "name": "@glass/querygrid",
-  "version": "0.0.8",
-  "description": "Query Grid for LabKey schema/query data views",
-  "main": "dist/querygrid.cjs.js",
-  "module": "dist/querygrid.es.js",
+  "name": "@glass/PACKAGE_NAME",
+  "version": "0.0.2",
+  "description": "PACkAGE_DESCRIPTION",
+  "main": "dist/PACKAGE_NAME.cjs.js",
+  "module": "dist/PACKAGE_NAME.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -12,14 +12,13 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
+    "test": "cross-env NODE_ENV=test jest"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "Cory Nathe",
+  "author": "AUTHOR_NAME",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
@@ -29,20 +28,6 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/grid": "0.0.3",
-    "@glass/models": "0.0.3",
-    "@glass/omnibox": "0.0.4",
-    "@glass/utils": "0.0.6",
-    "bootstrap-sass": "3.4.0",
-    "history": "4.7.2",
-    "normalizr": "3.3.0"
-  },
-  "peerDependencies": {
-    "immutable": "^3.8.2",
-    "jquery": "^3.0",
-    "react": "^16.0",
-    "react-dom": "^16.0",
-    "reactn": "^1.0.0"
   },
   "jest": {
     "globals": {

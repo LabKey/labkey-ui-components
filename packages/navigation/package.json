@@ -1,9 +1,10 @@
 {
-  "name": "@glass/querygrid",
-  "version": "0.0.8",
-  "description": "Query Grid for LabKey schema/query data views",
-  "main": "dist/querygrid.cjs.js",
-  "module": "dist/querygrid.es.js",
+  "name": "@glass/navigation",
+  "version": "0.0.15",
+  "description": "Navigation elements and actions for an application and its pages",
+  "main": "dist/navigation.cjs.js",
+  "module": "dist/navigation.es.js",
+  "style": "dist/navigation.css",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -12,14 +13,16 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
+    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
+    "watch": "watch 'yarn build' ./src"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "Cory Nathe",
+  "author": "Susan Hert",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
@@ -29,20 +32,17 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/grid": "0.0.3",
     "@glass/models": "0.0.3",
-    "@glass/omnibox": "0.0.4",
     "@glass/utils": "0.0.6",
-    "bootstrap-sass": "3.4.0",
-    "history": "4.7.2",
-    "normalizr": "3.3.0"
+    "@types/prop-types": "15.5.5",
+    "@types/react-router": "3.0.13",
+    "prop-types": "15.7.2",
+    "react-router": "3.2.1"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",
-    "jquery": "^3.0",
     "react": "^16.0",
-    "react-dom": "^16.0",
-    "reactn": "^1.0.0"
+    "react-dom": "^16.0"
   },
   "jest": {
     "globals": {
@@ -58,6 +58,9 @@
     },
     "setupFilesAfterEnv": [
       "<rootDir>/../../test/jest.setup.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"

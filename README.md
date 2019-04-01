@@ -10,9 +10,10 @@ Defines all of the components available in the @glass scope. These React compone
 | @glass/domainproperties | Domain property related components for LabKey domains | 0.0.2 |
 | @glass/grid | Simple grid display for LabKey data views | 0.0.3 |
 | @glass/models | Shared models for LabKey components | 0.0.3 |
+| @glass/navigation | Application navigation elements and functions | 0.0.15 |
 | @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.4 |
 | @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.8 |
-| @glass/utils | Utility functions and components for LabKey views | 0.0.4|
+| @glass/utils | Utility functions and components for LabKey views | 0.0.6 |
 
 ## Using Components
 
@@ -20,7 +21,7 @@ The easiest way to use `@glass` components is to install them from npm and bundl
 
 #### Setting the Registry Scope
 
-This package is currently availble on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
+This package is currently available on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
 ```
 npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```
@@ -96,12 +97,14 @@ To create a new package:
 
 * Create a new directory in the `glass-components/packages` directory.
 * Edit the root-level `package.json` and add the new directory to the `workspaces` array.
-* Copy the `package-scripts.js` file from an existing package to the new directory.
-* Copy and modify (or create) the `package.json`, `rollup.config.js`, and `tsconfig.json` files in your new package directory.
+* Follow the instructions in the `packages/template` `README.md` file to put necessary files in place
+* Run `yarn build`
+
+Generally, when doing development, you should:
+
 * Place source code in a `src` subdirectory.
 * Place typing files in a `src/typings` subdirectory.
 * Add documentation a-plenty.
-* Run `yarn build`
 
 #### Local Development
 

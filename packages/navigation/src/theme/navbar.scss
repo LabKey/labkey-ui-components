@@ -78,7 +78,8 @@
   width: 740px;
 
   &.error {
-    color: $brand-danger
+    color: $brand-danger;
+    padding-left: 8px;
   }
 
   .col-2 {

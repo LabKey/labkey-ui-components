@@ -43,9 +43,9 @@
     "rollup-plugin-sass": "1.1.0",
     "rollup-plugin-typescript2": "0.19.2",
     "sass-loader": "7.1.0",
-    "@storybook/addon-knobs": "5.0.5",
-    "@storybook/addon-notes": "5.0.5",
-    "@storybook/react": "5.0.5",
+    "@storybook/addon-knobs": "5.0.6",
+    "@storybook/addon-notes": "5.0.6",
+    "@storybook/react": "5.0.6",
     "ts-jest": "23.1.4",
     "ts-loader": "5.3.3",
     "tslint": "5.10.0",
@@ -62,7 +62,6 @@
     "packages/grid",
     "packages/omnibox",
     "packages/querygrid",
-    "packages/domainproperties",
-    "packages/storybook"
+    "packages/domainproperties"
   ]
 }

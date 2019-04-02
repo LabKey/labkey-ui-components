@@ -11,9 +11,9 @@ export class MenuSectionConfig extends Record({
     maxItemsPerColumn: 12,
     maxColumns: 1,
 }){
-    emptyText: string;
-    iconURL: string;
-    iconCls: string;
+    emptyText?: string;
+    iconURL?: string;
+    iconCls?: string;
     maxItemsPerColumn: number;
     maxColumns: number;
 }
@@ -54,20 +54,20 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     }
 
     render() {
-        const { config, productId, section } = this.props;
+        const { config, section } = this.props;
         let icon;
         if (config.iconURL) {
             icon =  (
                 <img
                     alt={section.label + ' icon'}
-                    className={"menu-section-image " + config.iconCls}
+                    className={"menu-section-image " + (config.iconCls || '')}
                     src={config.iconURL}
                     height="24px"
                     width="24px"
                 />
             );
         } else if (config.iconCls) {
-            icon = <span className={config.iconCls + " menu-section-icon"}/>;
+            icon = <span className={(config.iconCls || '') + " menu-section-icon"}/>;
         }
         const label = icon ? (<>{icon}&nbsp;{section.label}</>) : section.label;
         const header = (

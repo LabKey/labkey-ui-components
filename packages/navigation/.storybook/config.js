@@ -5,7 +5,7 @@
  */
 import { configure } from '@storybook/react'
 
-const req = require.context('../src/components/stories', true, /\.tsx$/);
+const req = require.context('../src/stories', true, /\.tsx$/);
 
 function loadStories() {
     req.keys().forEach(filename => req(filename));

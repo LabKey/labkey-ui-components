@@ -11,9 +11,9 @@ import { List, Map } from "immutable";
 import './stories.css'
 
 import { User } from '@glass/models'
-import { MenuSectionConfig } from "../ProductMenuSection";
-import { MenuItemModel, MenuSectionModel, ProductMenuModel } from "../../model";
-import { NavigationBar } from "../NavigationBar";
+import { MenuSectionConfig } from "../components/ProductMenuSection";
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from "../model";
+import { NavigationBar } from "../components/NavigationBar";
 
 const fruitTree = [
     "Apple",

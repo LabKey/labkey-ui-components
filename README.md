@@ -10,7 +10,7 @@ Defines all of the components available in the @glass scope. These React compone
 | @glass/domainproperties | Domain property related components for LabKey domains | 0.0.2 |
 | @glass/grid | Simple grid display for LabKey data views | 0.0.3 |
 | @glass/models | Shared models for LabKey components | 0.0.3 |
-| @glass/navigation | Application navigation elements and functions | 0.0.15 |
+| @glass/navigation | Application navigation elements and functions | 0.0.16 |
 | @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.4 |
 | @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.8 |
 | @glass/utils | Utility functions and components for LabKey views | 0.0.6 |
@@ -109,11 +109,11 @@ Generally, when doing development, you should:
 #### Local Development
 
 In order to use and test the components you are developing or modifying in this repository within another application, 
-you can use [npm link](https://docs.npmjs.com/cli/link.html) 
+you can use [npm link](https://docs.npmjs.com/cli/link.html) (or `yarn link`, presumably)
 (also see [this discussion](https://medium.com/@the1mills/how-to-test-your-npm-module-without-publishing-it-every-5-minutes-1c4cb4b369be))
 to create symbolic links to your local versions of the packages.  Once modifications have been made and published, you can use [npm uninstall](https://docs.npmjs.com/cli/uninstall.html)
 (also see [this discussion](https://medium.com/@alexishevia/the-magic-behind-npm-link-d94dcb3a81af)) to remove the symbolic
-link (or, you can remove it yourself manually).  Please note that you will likey want to use the ``--no-save`` option 
+link (or, you can remove it yourself manually).  Please note that you will likely want to use the ``--no-save`` option 
 when uninstalling to prevent your ``package.json`` file from being updated.
 
 For example, if making changes to the grid package, you can do the following:
@@ -121,12 +121,29 @@ For example, if making changes to the grid package, you can do the following:
 * ``npm link``  (this creates a link to this directory in the ``lib/node_modules`` directory of the node version currently on your path)
 * ``cd my_application``
 * ``npm link @glass/grid`` (note that the scope is required here)
+(Alternatively, you can do this in one command from `my_application` by specifying the directory to link from:
+``npm link /path/to/packages/grid``)
 
 Then, when you no longer wish to reference the local installation, you can do
 * ``npm uninstall --no-save @glass/grid``
 
 This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
 need to use ``npm install``.
+
+We have had varying degrees of success with using `link`.  If modifying only one package within this repository, it will
+likely work just fine.  If you modify a package and something it depends on, this can produce some baffling type mismatch
+errors.  An alternative process that seems to work in this case, but is a bit more tedious is the use `yarn watch` in 
+conjunction with a copy command. The `watch` command can automatically build a package when the source code changes (
+see the `packages/template/package.json` script declaration). You will then need to manually copy the `dist` directory
+created by the build into the application's `node_modules/@glass/<package_name>` directory.
+                                  
+For example, for the navigation package, you could do:
+* ``cd packages/navigation``
+* ``yarn watch``
+* edit files
+* wait for recompile trigged by the `watch` to happen
+* ``cp -r dist /path/to/my_app/node_modules/\@glass/navigation``
+ 
  
 ### Documentation
 We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/glass-components/), which is **publicly available on the internet**, 
@@ -149,14 +166,29 @@ This deployment of docs should be done after each pull request is merged into ``
 #### Storybook
 
 A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories". 
-These stories are composed by developers to show features of a component and let other members of the team interact with a component. If you're doing active development you can start up Storybook via:
+These stories are composed by developers to show features of a component and let other members of the team interact with a component. Because storybook uses WebPack's hot reloading,
+this is also a great way to do visual inspection and testing of your components in isolation.
+
+Each package that is developed should create a set of stories that illustrate the components in that package.  We follow these
+conventions currently:
+* Each package as a `.storybook` directory that contains the configuration files for storybook.  See `packages/template/.storybook` for and example.
+* Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components
+* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a use can
+explore the different options available within a component.  See the `navigation` package for a few examples.
+
+You can start up Storybook via:
 
 ```sh
-cd packages/storybook
+cd packages/<you package>
 yarn run storybook
 
 # The storybook instance is now available at http://localhost:9001
 ```
+
+When changes are made to the source code for the components or the stories, the storybook instance will automatically reload.  However,
+if making changes to the scss files within a package, you will still have to build the package manually.  It is probably possible to
+change the `.storybook/webpack.config.js` to also do hot reloading when scss files are changed, but efforts to date have not been
+successful.
 
 ## Publishing
 

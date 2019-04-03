@@ -33,14 +33,13 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
         const menuSection = model.getSection("user");
 
         if (menuSection) {
-            let profileLink,
-                logoutLink,
+            let logoutLink,
                 logoutDivider;
 
             let menuItems = [];
             menuSection.items.forEach((item) => {
                 if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
-                    profileLink = menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
+                    menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
                 }
             });
             menuItems.push(
@@ -59,11 +58,13 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
             return (
                 <Dropdown id="user-menu-dropdown">
                     <Dropdown.Toggle useAnchor={true}>
-                        <Image src={user.avatar}
+                        {user.avatar ? <Image src={user.avatar}
                                alt="User Avatar"
                                rounded={true}
                                height={32}
-                               width={32}/>
+                               width={32}/> : <span className="navbar-item">
+                                <span className="user-name"><span className="fas fa-user-circle"/> {user.displayName} </span>
+                            </span>}
                     </Dropdown.Toggle>
                     <Dropdown.Menu pullRight className="pull-right">
                         {menuItems}

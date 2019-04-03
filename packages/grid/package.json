@@ -12,6 +12,7 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
   },
@@ -28,7 +29,9 @@
     "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "3.3.7"
+  },
   "peerDependencies": {
     "immutable": "^3.8.2",
     "react": "^16.0",

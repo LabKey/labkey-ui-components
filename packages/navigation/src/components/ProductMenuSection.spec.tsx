@@ -70,7 +70,9 @@ describe("ProductMenuSection render", () => {
             key: "samples",
         });
 
-        const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig()}/>);
+        const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig({
+            iconURL: "/testProduct/images/samples.svg"
+        })}/>);
 
         expect(menuSection.find('li').length).toBe(0);
         expect(menuSection).toMatchSnapshot();
@@ -82,7 +84,10 @@ describe("ProductMenuSection render", () => {
             items: List<MenuSectionModel>(),
             key: "samples",
         });
-        const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig({ emptyText: "Test empty text"})}/>);
+        const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig({
+            emptyText: "Test empty text",
+            iconURL: "/testProduct/images/samples.svg"
+        })}/>);
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
         expect(menuSection.contains("Test empty text")).toBe(true);
@@ -101,7 +106,9 @@ describe("ProductMenuSection render", () => {
             key: "samples"
         });
 
-        const menuSection = mount(<ProductMenuSection productId={productId} section={section} config={new MenuSectionConfig()} />);
+        const menuSection = mount(<ProductMenuSection productId={productId} section={section} config={new MenuSectionConfig({
+            iconURL: "/testProduct3Columns/images/samples.svg"
+        })} />);
         expect(menuSection.find('ul').length).toBe(1);
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
@@ -117,6 +124,7 @@ describe("ProductMenuSection render", () => {
         });
 
         const sectionConfig = new MenuSectionConfig({
+            iconURL: "/testProduct4Columns/images/assays.svg",
             maxColumns: 2,
             maxItemsPerColumn: 2
         });
@@ -140,6 +148,7 @@ describe("ProductMenuSection render", () => {
         });
 
         const sectionConfig = new MenuSectionConfig({
+            iconURL: "/testProductOverflowLink/images/assays.svg",
             maxColumns: 2,
             maxItemsPerColumn: 2
         });

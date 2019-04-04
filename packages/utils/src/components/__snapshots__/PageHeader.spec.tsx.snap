@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PageHeader /> render with children 1`] = `
+<div
+  className="page-header"
+>
+  <div>
+    Header text in the header
+  </div>
+  ;
+  <h2
+    className="text-capitalize no-margin-top"
+  >
+    reder with children
+  </h2>
+</div>
+`;
+
+exports[`<PageHeader /> render with icon 1`] = `
+<div
+  className="page-header"
+>
+  <h2
+    className="text-capitalize no-margin-top"
+  >
+    <span
+      className="fa fa-spinner"
+    >
+       
+    </span>
+  </h2>
+</div>
+`;
+
+exports[`<PageHeader /> render with icon and title 1`] = `
+<div
+  className="page-header"
+>
+  <h2
+    className="text-capitalize no-margin-top"
+  >
+    Page title
+  </h2>
+</div>
+`;
+
+exports[`<PageHeader /> render with title no icon 1`] = `
+<div
+  className="page-header"
+>
+  <h2
+    className="text-capitalize no-margin-top"
+  >
+    Page title
+  </h2>
+</div>
+`;
+
+exports[`<PageHeader /> render without properties 1`] = `
+<div
+  className="page-header"
+>
+  <h2
+    className="text-capitalize no-margin-top"
+  />
+</div>
+`;

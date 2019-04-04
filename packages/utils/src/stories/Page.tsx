@@ -9,20 +9,22 @@ import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
-import { PageHeader } from "..";
+import { Page } from "..";
 
-storiesOf("PageHeader", module)
+storiesOf("Page", module)
     .addDecorator(withKnobs)
     .add("with knobs", () => {
-
-        const hasChildren = boolean("Add content above title?", true);
-        const children = hasChildren ? <Button href="#">Header action link</Button> : undefined;
+        const hasChildren = boolean("Has child elements?", true);
+        const children = hasChildren ? [
+            <Button href="#">Button 1</Button>,
+            <div>A div element</div>
+        ]: undefined;
         return (
-            <PageHeader
-                icon={text("Font-awesome icon name", "spinner fa-spin")}
-                title={text("Title", "Loading...")}
-                >
+            <Page
+                notFound={boolean('Page not found?', false)}
+                hasHeader={boolean('Page has its own header?', false)}
+            >
                 {children}
-            </PageHeader>
+            </Page>
         )
     });

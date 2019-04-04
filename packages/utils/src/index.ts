@@ -14,6 +14,9 @@ import {
 import { Alert } from './components/Alert'
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
+import { NotFound } from './components/NotFound'
+import { Page } from './components/Page'
+import { PageHeader } from './components/PageHeader'
 import { Tip } from './components/Tip'
 import { AppURL, buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 
@@ -22,6 +25,9 @@ export {
     Alert,
     CustomToggle,
     LoadingSpinner,
+    NotFound,
+    Page,
+    PageHeader,
     Tip,
 
     // models

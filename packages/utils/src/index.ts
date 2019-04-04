@@ -17,6 +17,7 @@ import { LoadingSpinner } from './components/LoadingSpinner'
 import { NotFound } from './components/NotFound'
 import { Page } from './components/Page'
 import { PageHeader } from './components/PageHeader'
+import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
 import { AppURL, buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 
@@ -28,6 +29,7 @@ export {
     NotFound,
     Page,
     PageHeader,
+    Progress,
     Tip,
 
     // models

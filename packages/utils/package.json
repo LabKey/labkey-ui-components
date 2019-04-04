@@ -54,6 +54,9 @@
     "setupFilesAfterEnv": [
       "<rootDir>/../../test/jest.setup.ts"
     ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

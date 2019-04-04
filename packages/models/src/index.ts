@@ -5,8 +5,8 @@
 import { GRID_EDIT_INDEX, GRID_SELECTION_INDEX, GRID_CHECKBOX_OPTIONS } from './constants'
 import {
     QueryColumn, QueryGridModel, QueryInfo, QuerySort, QueryLookup, QueryInfoStatus,
-    Container, User, SchemaQuery, ViewInfo, SchemaDetails,
-    IQueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse
+    Container, User, SchemaQuery, ViewInfo, SchemaDetails, MessageLevel, LastActionStatus,
+    IQueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse, insertColumnFilter
 } from './model'
 import { resolveKey, resolveKeyFromJson, resolveSchemaQuery, getSchemaQuery, decodePart, encodePart } from './utils'
 
@@ -34,6 +34,8 @@ export {
     SchemaDetails,
     SchemaQuery,
     ViewInfo,
+    MessageLevel,
+    LastActionStatus,
 
     // functions
     decodePart,
@@ -41,5 +43,6 @@ export {
     getSchemaQuery,
     resolveKey,
     resolveKeyFromJson,
-    resolveSchemaQuery
+    resolveSchemaQuery,
+    insertColumnFilter
 }

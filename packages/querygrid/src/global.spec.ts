@@ -26,7 +26,7 @@ describe("model updates", () => {
            id: "test1",
            pageNumber: 10
        });
-       updateQueryGridModel(model, {pageNumber: 10}, false);
+       updateQueryGridModel(model, {pageNumber: 10}, undefined, false);
        expect(getQueryGridModel("test1")).toEqual(updatedModel);
 
 
@@ -43,7 +43,7 @@ describe("model updates", () => {
             query: schemaQ.queryName,
             maxRows: 4
         });
-        updateQueryGridModel(model, {}, false);
+        updateQueryGridModel(model, {}, undefined, false);
         const sqList = getQueryGridModelsForSchemaQuery(schemaQ);
         expect(sqList).toContain(model);
         expect(sqList.size).toBe(1);
@@ -85,8 +85,8 @@ describe("model updates", () => {
             query: schemaQ2.queryName,
             id: 'model2'
         });
-        updateQueryGridModel(model1, {}, false);
-        updateQueryGridModel(model2, {}, false);
+        updateQueryGridModel(model1, {}, undefined, false);
+        updateQueryGridModel(model2, {}, undefined, false);
         const sqList = getQueryGridModelsForSchema(schemaQ.schemaName);
         expect(sqList.size).toBe(2);
         expect(sqList).toContain(model1);
@@ -109,8 +109,8 @@ describe("model updates", () => {
             query: schemaQ.queryName,
             id: 'model2'
         });
-        updateQueryGridModel(model1, {}, false);
-        updateQueryGridModel(model2, {}, false);
+        updateQueryGridModel(model1, {}, undefined, false);
+        updateQueryGridModel(model2, {}, undefined, false);
         const sqList = getQueryGridModelsForSchemaQuery(schemaQ);
         expect(sqList.size).toBe(2);
         expect(sqList).toContain(model1);

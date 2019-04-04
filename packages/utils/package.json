@@ -1,6 +1,6 @@
 {
   "name": "@glass/utils",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Utility functions and components for LabKey views",
   "main": "dist/utils.cjs.js",
   "module": "dist/utils.es.js",

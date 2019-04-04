@@ -14,7 +14,7 @@ const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
 
 export enum QueryInfoStatus { ok, notFound, unknown }
-enum MessageLevel { info, warning, error }
+export enum MessageLevel { info, warning, error }
 
 /**
  * Model for org.labkey.api.data.Container as returned by Container.toJSON()
@@ -1096,7 +1096,7 @@ export class ViewInfo extends Record({
     }
 }
 
-class LastActionStatus extends Record({
+export class LastActionStatus extends Record({
     type: undefined,
     date: undefined,
     level: MessageLevel.info,
@@ -1145,7 +1145,7 @@ function getSortsFromView(rawViewInfo): List<QuerySort> {
     return List<QuerySort>();
 }
 
-function insertColumnFilter(col: QueryColumn): boolean {
+export function insertColumnFilter(col: QueryColumn): boolean {
     return (
         col &&
         col.removeFromViews !== true &&

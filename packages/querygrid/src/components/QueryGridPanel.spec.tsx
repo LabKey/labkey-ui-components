@@ -19,8 +19,8 @@ const modelIsLoaded2 = new QueryGridModel({
 
 beforeAll(() => {
     initQueryGridState();
-    updateQueryGridModel(modelIsLoaded, {}, false);
-    updateQueryGridModel(modelIsLoaded2, {}, false);
+    updateQueryGridModel(modelIsLoaded, {}, undefined, false);
+    updateQueryGridModel(modelIsLoaded2, {}, undefined, false);
 });
 
 // Mock all the actions to test just the rendering parts for QueryGridPanel itself
@@ -47,7 +47,7 @@ describe("QueryGridPanel render", () => {
             isError: true,
             message: 'My QueryGridModel error message.'
         });
-        updateQueryGridModel(model, {}, false);
+        updateQueryGridModel(model, {}, undefined, false);
 
         const tree = renderer.create(<QueryGridPanel model={model}/>);
         expect(tree).toMatchSnapshot();

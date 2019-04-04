@@ -9,7 +9,7 @@ import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
-import { Page } from "..";
+import { Page, PageHeader } from "..";
 
 storiesOf("Page", module)
     .addDecorator(withKnobs)
@@ -27,4 +27,38 @@ storiesOf("Page", module)
                 {children}
             </Page>
         )
-    });
+    })
+    .add("with PageHeader child", () => {
+        return (
+            <Page>
+                <PageHeader>
+                    <span>
+                        <Button>Action 1</Button>
+                        <Button>Action 2</Button>
+                    </span>
+                </PageHeader>
+                <span>Page content</span>
+                <table className="table table-bordered">
+                    <thead>
+                    <tr >
+                        <th className="grid-header-cell">Key</th>
+                        <th className="grid-header-cell">Language</th>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td>Schl&uuml;ssel</td>
+                        <td>German</td>
+                    </tr>
+                    <tr>
+
+                        <td>cl&eacute;</td>
+                        <td>French</td>
+                    </tr>
+                    <tr>
+                        <td>n&oslash;kkel</td>
+                        <td>Norweigan</td>
+                    </tr>
+                </table>
+            </Page>
+        )
+    })

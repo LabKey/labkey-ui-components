@@ -11,7 +11,7 @@ exports[`<PageHeader /> render with children 1`] = `
   <h2
     className="text-capitalize no-margin-top"
   >
-    reder with children
+    render with children
   </h2>
 </div>
 `;

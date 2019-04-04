@@ -26,7 +26,7 @@ describe("<PageHeader />", () => {
 
     test("render with children", () => {
         const tree = renderer.create(
-            <PageHeader title={"reder with children"}>
+            <PageHeader title={"render with children"}>
                 <div>Header text in the header</div>;
             </PageHeader>
         );

@@ -5,6 +5,8 @@ exports[`ProductMenuSection render empty section no text 1`] = `
   config={
     Immutable.Record {
       "emptyText": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "iconCls": undefined,
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
     }
@@ -27,7 +29,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
   >
     <img
       alt="Sample Sets icon"
-      className="menu-section-image"
+      className="menu-section-image "
       height="24px"
       src="/testProduct/images/samples.svg"
       width="24px"
@@ -48,6 +50,8 @@ exports[`ProductMenuSection render empty section with empty text 1`] = `
   config={
     Immutable.Record {
       "emptyText": "Test empty text",
+      "iconURL": "/testProduct/images/samples.svg",
+      "iconCls": undefined,
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
     }
@@ -70,7 +74,7 @@ exports[`ProductMenuSection render empty section with empty text 1`] = `
   >
     <img
       alt="Sample Sets icon"
-      className="menu-section-image"
+      className="menu-section-image "
       height="24px"
       src="/testProduct/images/samples.svg"
       width="24px"
@@ -98,6 +102,8 @@ exports[`ProductMenuSection render one-column section 1`] = `
   config={
     Immutable.Record {
       "emptyText": undefined,
+      "iconURL": "/testProduct3Columns/images/samples.svg",
+      "iconCls": undefined,
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
     }
@@ -153,7 +159,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
   >
     <img
       alt="Sample Sets icon"
-      className="menu-section-image"
+      className="menu-section-image "
       height="24px"
       src="/testProduct3Columns/images/samples.svg"
       width="24px"
@@ -195,6 +201,8 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
   config={
     Immutable.Record {
       "emptyText": undefined,
+      "iconURL": "/testProductOverflowLink/images/assays.svg",
+      "iconCls": undefined,
       "maxItemsPerColumn": 2,
       "maxColumns": 2,
     }
@@ -238,7 +246,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
   >
     <img
       alt="Assays icon"
-      className="menu-section-image"
+      className="menu-section-image "
       height="24px"
       src="/testProductOverflowLink/images/assays.svg"
       width="24px"
@@ -296,6 +304,8 @@ exports[`ProductMenuSection render two-column section 1`] = `
   config={
     Immutable.Record {
       "emptyText": undefined,
+      "iconURL": "/testProduct4Columns/images/assays.svg",
+      "iconCls": undefined,
       "maxItemsPerColumn": 2,
       "maxColumns": 2,
     }
@@ -359,7 +369,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
   >
     <img
       alt="Assays icon"
-      className="menu-section-image"
+      className="menu-section-image "
       height="24px"
       src="/testProduct4Columns/images/assays.svg"
       width="24px"

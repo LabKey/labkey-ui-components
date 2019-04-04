@@ -1,13 +1,14 @@
 /*
- * Copyright (c) 2018 LabKey Corporation
+ * Copyright (c) 2019 LabKey Corporation
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import { configure } from '@storybook/react'
 
+const req = require.context('../src/stories', true, /\.js$/);
+
 function loadStories() {
-    require('../src/stories/index.js');
-    // require additional stories here
+    req.keys().forEach(filename => req(filename));
 }
 
 configure(loadStories, module);

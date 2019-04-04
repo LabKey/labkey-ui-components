@@ -323,6 +323,8 @@ exports[`ProductMenu render multiple sections 1`] = `
                         config={
                           Immutable.Record {
                             "emptyText": undefined,
+                            "iconURL": undefined,
+                            "iconCls": undefined,
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                           }
@@ -376,14 +378,6 @@ exports[`ProductMenu render multiple sections 1`] = `
                         <span
                           className="menu-section-header"
                         >
-                          <img
-                            alt="Sample Sets icon"
-                            className="menu-section-image"
-                            height="24px"
-                            src="/testProduct3Columns/images/samples.svg"
-                            width="24px"
-                          />
-                           
                           Sample Sets
                         </span>
                         <hr />
@@ -422,6 +416,8 @@ exports[`ProductMenu render multiple sections 1`] = `
                         config={
                           Immutable.Record {
                             "emptyText": undefined,
+                            "iconURL": undefined,
+                            "iconCls": undefined,
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                           }
@@ -483,14 +479,6 @@ exports[`ProductMenu render multiple sections 1`] = `
                         <span
                           className="menu-section-header"
                         >
-                          <img
-                            alt="Assays icon"
-                            className="menu-section-image"
-                            height="24px"
-                            src="/testProduct3Columns/images/assays.svg"
-                            width="24px"
-                          />
-                           
                           Assays
                         </span>
                         <hr />
@@ -534,6 +522,8 @@ exports[`ProductMenu render multiple sections 1`] = `
                         config={
                           Immutable.Record {
                             "emptyText": undefined,
+                            "iconURL": undefined,
+                            "iconCls": undefined,
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                           }
@@ -563,10 +553,6 @@ exports[`ProductMenu render multiple sections 1`] = `
                         <span
                           className="menu-section-header"
                         >
-                          <span
-                            className="fas fa-user-circle menu-section-icon"
-                          />
-                           
                           Your Items
                         </span>
                         <hr />

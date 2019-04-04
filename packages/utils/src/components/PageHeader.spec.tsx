@@ -14,7 +14,6 @@ describe("<PageHeader />", () => {
     });
 
     test("render with title no icon", () => {
-        const messageNode = <div className="special-class">A div message</div>;
         const tree = renderer.create(<PageHeader title={"Page title"}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });

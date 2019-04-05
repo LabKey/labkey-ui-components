@@ -19,7 +19,7 @@ storiesOf("PageHeader", module)
         const children = hasChildren ? <Button href="#">Header action link</Button> : undefined;
         return (
             <PageHeader
-                icon={text("Font-awesome icon name", "spinner fa-spin")}
+                iconCls={text("Icon class name", "fa fa-spinner fa-spin")}
                 title={text("Title", "Loading...")}
                 >
                 {children}

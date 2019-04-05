@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 interface PageHeaderProps {
-    icon?: string
+    iconCls?: string
     // showNotifications?: boolean
     title?: string
 }
@@ -17,13 +17,13 @@ export class PageHeader extends React.Component<PageHeaderProps, any> {
     // };
 
     render() {
-        const { icon, title } = this.props;
+        const { iconCls, title } = this.props;
 
         return (
             <div className="page-header">
                 {this.props.children}
                 <h2 className="text-capitalize no-margin-top">
-                    {icon ? <span className={`fa fa-${icon}`}>&nbsp;</span> : null}
+                    {iconCls ? <span className={iconCls}>&nbsp;</span> : null}
                     {title}
                 </h2>
                 {/*{showNotifications && <Notification/>}*/}

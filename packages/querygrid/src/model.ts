@@ -17,7 +17,7 @@ const emptyList = List<string>();
 
 interface IStateModelProps {
     allowSelection?: boolean
-    baseFilters?: List<Filter.Filter>
+    baseFilters?: List<Filter.IFilter>
     bindURL?: boolean
     editable?: boolean
     isPaged?: boolean
@@ -71,7 +71,7 @@ export function getStateQueryGridModel(
 
     let modelProps: Partial<IQueryGridModel> = {
         allowSelection: true,
-        baseFilters: List<Filter.Filter>(),
+        baseFilters: List<Filter.IFilter>(),
         bindURL: true,
         editable: false,
         id: modelId,

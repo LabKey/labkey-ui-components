@@ -89,7 +89,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
     }
 }
 
-export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.Filter>): Promise<ISelectResponse> {
+export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>): Promise<ISelectResponse> {
 
     const filters = filterList.reduce((prev, next)=> {
         return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
@@ -279,10 +279,10 @@ export function reloadQueryGridModel(model: QueryGridModel) {
     gridLoad(newModel);
 }
 
-// Takes a List<Filter.Filter> and remove each filter from the grid model
+// Takes a List<Filter.IFilter> and remove each filter from the grid model
 // Alternately, the 'all' flag can be set to true to remove all filters. This
 // setting takes precedence over the filters list.
-export function removeFilters(model: QueryGridModel, filters?: List<any>, all: boolean = false) {
+export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilter>, all: boolean = false) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters, true));
     }
@@ -311,7 +311,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<any>, all: b
     }
 }
 
-export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>) {
+export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters));
     }
@@ -396,7 +396,7 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
 
 function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     let props = {
-        filterArray: List<Filter.Filter>(),
+        filterArray: List<Filter.IFilter>(),
         pageNumber: 1,
         sorts: model.sorts || undefined,
         urlParamValues: Map<string, any>().asMutable(),
@@ -409,7 +409,7 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));
 
-    props.filterArray = List<Filter.Filter>(Filter.getFiltersFromUrl(queryString, model.urlPrefix))
+    props.filterArray = List<Filter.IFilter>(Filter.getFiltersFromUrl(queryString, model.urlPrefix))
         .concat(bindSearch(q))
         .toList();
     props.sorts = getSortFromUrl(queryString, model.urlPrefix);
@@ -437,8 +437,8 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     return props;
 }
 
-function bindSearch(searchTerm: string): List<Filter.Filter> {
-    let searchFilters = List<Filter.Filter>().asMutable();
+function bindSearch(searchTerm: string): List<Filter.IFilter> {
+    let searchFilters = List<Filter.IFilter>().asMutable();
 
     if (searchTerm) {
         searchTerm.split(';').forEach((term) => {
@@ -453,7 +453,7 @@ function bindSearch(searchTerm: string): List<Filter.Filter> {
 
 interface IExportOptions {
     columns?: string
-    filters?: List<Filter.Filter>
+    filters?: List<Filter.IFilter>
     sorts?: string
     showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED'
     selectionKey?: string
@@ -1179,7 +1179,7 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
 
         if (values) {
             selectRowOptions.filterArray = [
-                Filter.create(column.lookup.displayColumn, values.join(';'), Filter.Types.IN)
+                Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN)
             ];
         }
 
@@ -1564,8 +1564,11 @@ function parsePasteCellLookup(column: QueryColumn, lookup: LookupStore, value: s
                 const vd = lookup.descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
                 if (!vd) {
                     unmatched.push(vt);
+                    return {display: vt, raw: vt};
                 }
-                return vd;
+                else {
+                    return vd;
+                }
             }
         })
         .filter(v => v !== undefined)

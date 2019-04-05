@@ -151,7 +151,7 @@ export class AppURL extends Record({
     _params: undefined
 }) {
     _baseUrl: string;
-    _filters: List<Filter.Filter>;
+    _filters: List<Filter.IFilter>;
     _params: Map<string, any>;
 
     constructor(values?: {[key:string]: any}) {
@@ -193,7 +193,7 @@ export class AppURL extends Record({
         })
     }
 
-    addFilters(...filters: Array<Filter.Filter>): AppURL {
+    addFilters(...filters: Array<Filter.IFilter>): AppURL {
         return this.merge({
             _filters: this._filters ? this._filters.concat(filters) : List(filters)
         }) as AppURL;

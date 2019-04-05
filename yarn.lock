@@ -1178,46 +1178,22 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.2.tgz#63985d3d8b02530e0869962f4da09142ee8e200e"
   integrity sha512-n/VQ4mbfr81aqkx/XmVicOLjviMuy02eenSdJY33SVA7S2J42EU0P1H0mOogfYedb3wXA0d/LVtBrgTSm04WEA==
 
-"@glass/models@0.0.4":
-  version "0.0.4"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/models/-/@glass/models-0.0.4.tgz#9e7277abcb650663a87e8fcc22fd8ddd20ae2e60"
-  integrity sha1-nnJ3q8tlBmOofo/MIv2N3SCuLmA=
-  dependencies:
-    "@glass/utils" "0.0.5"
-
-"@glass/omnibox@0.0.6":
-  version "0.0.6"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/omnibox/-/@glass/omnibox-0.0.6.tgz#46420ca948c62b3dae778ec6f755f93e5fa62072"
-  integrity sha1-RkIMqUjGKz2ud47G91X5Pl+mIHI=
-  dependencies:
-    "@glass/models" "0.0.4"
-    "@glass/utils" "0.0.5"
-    react-input-autosize "2.2.1"
-
-"@glass/utils@0.0.5":
-  version "0.0.5"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/utils/-/@glass/utils-0.0.5.tgz#2ff16f7f7c6c7fd203253236c9507377d012f628"
-  integrity sha1-L/Fvf3xsf9IDJTI2yVBzd9AS9ig=
-  dependencies:
-    "@labkey/api" "0.0.9"
-    react-bootstrap "0.32.4"
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
-"@labkey/api@0.0.9":
-  version "0.0.9"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.9.tgz#c721e230bad869941f6d1b3fe538b479bb15a9aa"
-  integrity sha1-xyHiMLrYaZQfbRs/5Ti0ebsVqao=
+"@labkey/api@0.0.14":
+  version "0.0.14"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.14.tgz#d4e8edefac76e56ded77324f6854da43174e7984"
+  integrity sha1-1Ojt76x25W3tdzJPaFTaQxdOeYQ=
 
-"@labkey/dependencies@0.0.1":
-  version "0.0.1"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.1.tgz#64a3eec7d0e87ade8dbb9c5631cb11d5dac2e6f3"
-  integrity sha1-ZKPux9Doet6Nu5xWMcsR1drC5vM=
+"@labkey/dependencies@0.0.2":
+  version "0.0.2"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.2.tgz#c20e8d3819603c752c3a86c0d9e50d3406d70583"
+  integrity sha1-wg6NOBlgPHUsOobA2eUNNAbXBYM=
   dependencies:
-    "@labkey/api" "0.0.9"
+    "@labkey/api" "0.0.14"
     "@types/react" "16.4.18"
     "@types/react-dom" "16.0.9"
     font-awesome "4.7.0"

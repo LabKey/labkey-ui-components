@@ -3,30 +3,28 @@ import { MenuItem } from 'react-bootstrap'
 import { List } from 'immutable';
 import { ISubItem, SubMenuItem } from "./SubMenuItem";
 
-export interface CreateMenuOption {
-    insertHref: string
+export interface MenuOption {
+    href: string
     name: string
-    pluralName: string
     route: string
 }
 
-interface CreationSubMenuProps {
+interface SubMenuProps {
     currentMenuChoice?: string
-    options: List<CreateMenuOption>
+    options: List<MenuOption>
     text: string
 }
 
-export class CreationSubMenu extends React.Component<CreationSubMenuProps, any> {
+export class SubMenu extends React.Component<SubMenuProps, any> {
 
-    constructor(props: CreationSubMenuProps) {
+    constructor(props: SubMenuProps) {
         super(props);
 
         this.isCurrentMenuChoice = this.isCurrentMenuChoice.bind(this);
     }
 
-    isCurrentMenuChoice(option: CreateMenuOption): boolean {
+    isCurrentMenuChoice(option: MenuOption): boolean {
         const { currentMenuChoice } = this.props;
-
         return option.route === currentMenuChoice;
     }
 
@@ -35,7 +33,7 @@ export class CreationSubMenu extends React.Component<CreationSubMenuProps, any> 
         const currentOption = options.find(this.isCurrentMenuChoice);
 
         if (currentOption) {
-            return <MenuItem href={currentOption.insertHref} key={0}>{currentOption.name}</MenuItem>
+            return <MenuItem href={currentOption.href} key={0}>{currentOption.name}</MenuItem>
         }
 
         return undefined;
@@ -49,7 +47,7 @@ export class CreationSubMenu extends React.Component<CreationSubMenuProps, any> 
             if (!this.isCurrentMenuChoice(option)) {
                 items.push({
                     text: option.name,
-                    href: option.insertHref
+                    href: option.href
                 });
             }
         });
@@ -64,7 +62,7 @@ export class CreationSubMenu extends React.Component<CreationSubMenuProps, any> 
         if (currentMenuChoice && options.size < 3) {
             options.forEach((option, i) => {
                 items.push(
-                    <MenuItem href={option.insertHref} key={i}>{option.name}</MenuItem>
+                    <MenuItem href={option.href} key={i}>{option.name}</MenuItem>
                 )
             });
         }

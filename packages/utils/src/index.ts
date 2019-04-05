@@ -12,8 +12,8 @@ import {
     not
 } from './utils'
 import { Alert } from './components/Alert'
-import { CreateButton } from './components/menus/CreateButton'
-import { CreationSubMenu } from "./components/menus/CreationSubMenu";
+import { MultiMenuButton } from './components/menus/CreateButton'
+import { SubMenu } from "./components/menus/SubMenu";
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { NotFound } from './components/NotFound'
@@ -31,8 +31,8 @@ import './theme/index.scss'
 export {
     // components
     Alert,
-    CreateButton,
-    CreationSubMenu,
+    MultiMenuButton,
+    SubMenu,
     CustomToggle,
     LoadingSpinner,
     NotFound,

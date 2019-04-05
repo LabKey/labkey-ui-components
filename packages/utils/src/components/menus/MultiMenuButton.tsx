@@ -6,14 +6,15 @@ import * as React from 'react'
 import { List } from 'immutable'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 
-interface CreateButtonProps {
+interface MultiMenuButtonProps {
+    bsStyle?: string
     currentContextKey?: any
     currentMenuChoice?: string
-    entityType?: string
+    id?: string
     menuKeys: List<string>
     pullRight?: boolean
     renderMenuItem: any
-    updateExperimentCallback? : any
+    title: string,
 }
 
 
@@ -22,9 +23,14 @@ interface State {
     opened?: boolean
 }
 
-export class CreateButton extends React.Component<CreateButtonProps, State> {
+export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State> {
 
-    constructor(props: CreateButtonProps) {
+    static defaultProps = {
+        bsStyle: "success",
+        id: "multi-menu-dropdown"
+    };
+
+    constructor(props: MultiMenuButtonProps) {
         super(props);
 
         this.onToggle = this.onToggle.bind(this);
@@ -44,11 +50,11 @@ export class CreateButton extends React.Component<CreateButtonProps, State> {
     }
 
     renderMenuItems() {
-        const { currentContextKey, menuKeys, renderMenuItem } = this.props;
+        const { currentContextKey, currentMenuChoice, menuKeys, renderMenuItem } = this.props;
 
         let items = [];
         if (currentContextKey) {
-            items.push(renderMenuItem(currentContextKey));
+            items.push(renderMenuItem(currentContextKey, currentMenuChoice));
             items.push(<MenuItem divider key={"d"}/>);
         }
         menuKeys
@@ -61,16 +67,16 @@ export class CreateButton extends React.Component<CreateButtonProps, State> {
     }
 
     render() {
-        const { pullRight } = this.props;
+        const { id, bsStyle, pullRight, title } = this.props;
         const { opened } = this.state;
 
         return (
             <DropdownButton
-                id="create-dropdown"
-                bsStyle="success"
+                id={id}
+                bsStyle={bsStyle}
                 onToggle={this.onToggle}
                 pullRight={pullRight}
-                title="Create"
+                title={title}
             >
                 {opened && this.renderMenuItems()}
             </DropdownButton>

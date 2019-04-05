@@ -1,7 +1,7 @@
 import * as React from "react";
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { Progress } from "..";
+import { Progress } from "../components/Progress";
 
 storiesOf("Progress", module)
     .addDecorator(withKnobs)

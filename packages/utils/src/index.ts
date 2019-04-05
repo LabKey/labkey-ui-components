@@ -12,24 +12,34 @@ import {
     not
 } from './utils'
 import { Alert } from './components/Alert'
+import { CreateButton } from './components/menus/CreateButton'
+import { CreationSubMenu } from "./components/menus/CreationSubMenu";
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { NotFound } from './components/NotFound'
 import { Page } from './components/Page'
 import { PageHeader } from './components/PageHeader'
 import { Progress } from './components/Progress'
+import { SubMenuItem } from './components/menus/SubMenuItem'
 import { Tip } from './components/Tip'
 import { AppURL, buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
+
+// Import the scss file so it will be processed in the rollup scripts
+import './theme/index.scss'
+
 
 export {
     // components
     Alert,
+    CreateButton,
+    CreationSubMenu,
     CustomToggle,
     LoadingSpinner,
     NotFound,
     Page,
     PageHeader,
     Progress,
+    SubMenuItem,
     Tip,
 
     // models

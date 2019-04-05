@@ -6,6 +6,7 @@
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
+import sass from "rollup-plugin-sass";
 
 const input = 'src/index.ts';
 
@@ -32,7 +33,10 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript()
+            typescript(),
+            sass({
+                output: 'dist/utils.css'
+            })
         ]
     },
     {
@@ -46,7 +50,8 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript()
+            typescript(),
+            sass()
         ]
     },
     {
@@ -61,7 +66,8 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript()
+            typescript(),
+            sass()
         ]
     }
 ]

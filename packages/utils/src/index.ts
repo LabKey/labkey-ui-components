@@ -31,14 +31,14 @@ import './theme/index.scss'
 export {
     // components
     Alert,
-    MultiMenuButton,
-    SubMenu,
     CustomToggle,
     LoadingSpinner,
     NotFound,
     Page,
     PageHeader,
     Progress,
+    MultiMenuButton,
+    SubMenu,
     SubMenuItem,
     Tip,
 

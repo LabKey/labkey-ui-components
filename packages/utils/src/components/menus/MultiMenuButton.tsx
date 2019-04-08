@@ -5,15 +5,16 @@
 import * as React from 'react'
 import { List } from 'immutable'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { ReactNode } from "react";
 
 interface MultiMenuButtonProps {
     bsStyle?: string
-    currentContextKey?: any
-    currentMenuChoice?: string
+    currentSubMenuKey?: any
+    currentSubMenuChoice?: string
     id?: string
     menuKeys: List<string>
     pullRight?: boolean
-    renderMenuItem: any
+    renderMenuItem: (currentSubMenuKey: string, currentSubMenuChoice?: string) => ReactNode
     title: string,
 }
 
@@ -50,15 +51,15 @@ export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State
     }
 
     renderMenuItems() {
-        const { currentContextKey, currentMenuChoice, menuKeys, renderMenuItem } = this.props;
+        const { currentSubMenuKey, currentSubMenuChoice, menuKeys, renderMenuItem } = this.props;
 
         let items = [];
-        if (currentContextKey) {
-            items.push(renderMenuItem(currentContextKey, currentMenuChoice));
+        if (currentSubMenuKey) {
+            items.push(renderMenuItem(currentSubMenuKey, currentSubMenuChoice));
             items.push(<MenuItem divider key={"d"}/>);
         }
         menuKeys
-            .filter((key) => key != currentContextKey)
+            .filter((key) => key != currentSubMenuKey)
             .forEach((key) => {
                 items.push(renderMenuItem(key));
             });

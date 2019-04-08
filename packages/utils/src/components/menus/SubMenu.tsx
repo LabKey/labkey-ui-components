@@ -6,7 +6,7 @@ import { ISubItem, SubMenuItem } from "./SubMenuItem";
 export interface MenuOption {
     href: string
     name: string
-    route: string
+    key: string
 }
 
 interface SubMenuProps {
@@ -25,7 +25,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
 
     isCurrentMenuChoice(option: MenuOption): boolean {
         const { currentMenuChoice } = this.props;
-        return option.route === currentMenuChoice;
+        return option.key === currentMenuChoice;
     }
 
     getCurrentMenuChoiceItem() {

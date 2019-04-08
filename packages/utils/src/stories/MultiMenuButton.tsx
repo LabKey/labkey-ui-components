@@ -11,23 +11,22 @@ import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs
 import './stories.css'
 
 import { MultiMenuButton } from "../components/menus/MultiMenuButton";
-import { SubMenu } from "../components/menus/SubMenu";
-import { MenuOption } from "../components/menus/SubMenu";
+import { MenuOption, SubMenu } from "../components/menus/SubMenu";
 
-// Note that usually the route and name are not the same, but we use the same values
-// here to make interaction easier.  The route is what is compared to the current choice.
+// Note that usually the key and name are not the same, but we use the same values
+// here to make interaction easier.  The key is what is compared to the current choice.
 const breakfastOptions = [
     {
         name: "Eggs",
-        route: "Eggs"
+        key: "Eggs"
     },
     {
         name: "Waffles",
-        route: "Waffles"
+        key: "Waffles"
     },
     {
         name: "Muffins",
-        route: "Muffins"
+        key: "Muffins"
     }
 ];
 
@@ -35,41 +34,41 @@ const breakfastOptions = [
 const lunchOptions = List<MenuOption>([
     {
         name: "Sandwich",
-        route: "Sandwich"
+        key: "Sandwich"
     },
     {
         name: "Soup",
-        route: "Soup"
+        key: "Soup"
     },
     {
         name: "Salad",
-        route: "Salad"
+        key: "Salad"
     }
 ]);
 
 const dinnerOptions = List<MenuOption>([
     {
         name: "Roast beast",
-        route: "Roast beast"
+        key: "Roast beast"
     },
     {
         name: "Curry",
-        route: "Curry"
+        key: "Curry"
     },
     {
         name: "Pasta",
-        route: "Pasta"
+        key: "Pasta"
     }
 ]);
 
 const snackOptions = List<MenuOption>([
     {
         name: "Trail Mix",
-        route: "Trail Mix"
+        key: "Trail Mix"
     },
     {
         name: "Fruit",
-        route: "Fruit"
+        key: "Fruit"
     }
 ]);
 
@@ -92,8 +91,8 @@ storiesOf("MultiMenuButton", module)
         contextOptions.unshift("");
         const currentMenuChoice = text("Current sub-menu choice", undefined);
         const context = select("Current sub-menu", contextOptions, undefined);
-        return <MultiMenuButton currentContextKey={context}
-                                currentMenuChoice={currentMenuChoice}
+        return <MultiMenuButton currentSubMenuKey={context}
+                                currentSubMenuChoice={currentMenuChoice}
                                 title={text("Button title", "Prepare")}
                                 menuKeys={List(menuMap.keySeq().toArray())}
                                 renderMenuItem={renderMenuItem}/>

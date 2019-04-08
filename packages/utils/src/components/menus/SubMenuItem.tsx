@@ -10,6 +10,7 @@ const emptyFn = () => {};
 
 export interface ISubItem extends MenuItemProps {
     disabledMsg?: string
+    disabledOverlayPlacement?: 'top' | 'right' | 'bottom' | 'left'
     text: string
 }
 
@@ -180,7 +181,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 if (item.disabledMsg && item.disabled) {
                     const overlay = <Popover id="attach-submenu-warning">{item.disabledMsg}</Popover>;
                     return (
-                        <OverlayTrigger overlay={overlay} placement={"right"}>
+                        <OverlayTrigger overlay={overlay} placement={item.disabledOverlayPlacement || "right"}>
                             {menuItem}
                         </OverlayTrigger>
                     );
@@ -204,7 +205,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     render() {
         const { allowFilter, disabled, filterPlaceholder, icon, items, itemsCls, minToFilter, text } = this.props;
         const { expanded } = this.state;
-        const filterActive = allowFilter && items && items.length > minToFilter;
+        const filterActive = allowFilter && items && items.length >= minToFilter;
 
         const menuItemProps = {
             className: classNames('dropdown-submenu', { disabled }),

@@ -22,13 +22,7 @@ exports[`<PageHeader /> render with icon 1`] = `
 >
   <h2
     className="text-capitalize no-margin-top"
-  >
-    <span
-      className="fa fa-spinner"
-    >
-       
-    </span>
-  </h2>
+  />
 </div>
 `;
 

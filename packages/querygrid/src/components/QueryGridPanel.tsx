@@ -22,6 +22,7 @@ interface Props {
     asPanel?: boolean
     showTabs?: boolean
     showAllTabs?: boolean
+    showGridBar?: boolean
 }
 
 interface State {
@@ -31,14 +32,15 @@ interface State {
 export class QueryGridPanel extends React.Component<Props, State> {
 
     static defaultProps = {
-        asPanel: true
+        asPanel: true,
+        showGridBar: true
     };
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            activeTab: 0
+            activeTab: undefined // initially set to undefined until a tab is clicked
         };
     }
 
@@ -59,25 +61,36 @@ export class QueryGridPanel extends React.Component<Props, State> {
         });
     }
 
-    getModel(): QueryGridModel {
-        const { model } = this.props;
+    getActiveModel(): QueryGridModel {
+        const { activeTab } = this.state;
+        const models = this.getModelsAsList(this.props);
+        const nonZeroModels = models.filter((model) => model && model.isLoaded && model.totalRows > 0);
 
         let activeModel;
-        if (List.isList(model)) {
-            activeModel = this.getModelsAsList(this.props).get(this.state.activeTab);
+        if (this.hasTabs()) {
+            if (activeTab !== undefined) {
+                activeModel = models.get(activeTab);
+            }
+            else {
+                activeModel = nonZeroModels.size > 0 ? nonZeroModels.get(0) : models.get(0);
+            }
         }
         else {
-            activeModel = model as QueryGridModel;
+            activeModel = nonZeroModels.size > 0 ? nonZeroModels.get(0) : models.get(0);
         }
+
+        return activeModel;
+    }
+
+    getModel(): QueryGridModel {
+        const activeModel = this.getActiveModel();
 
         // need to access this.global directly to connect this component to the re-render cycle
         return activeModel ? this.global.QueryGrid_models.get(activeModel.getId()) : undefined;
     }
 
     getModelsFromGlobalState(): List<QueryGridModel> {
-        return this.getModelsAsList(this.props).map((model, index) => {
-           return getQueryGridModel(model.getId());
-        }).toList();
+        return this.getModelsAsList(this.props).map((model) => getQueryGridModel(model.getId())).toList();
     }
 
     getModelsAsList(props: Props): List<QueryGridModel> {
@@ -87,20 +100,16 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     hasTabs(): boolean {
-        const { showTabs, model } = this.props;
-
+        const { showTabs } = this.props;
         if (showTabs)
             return true;
 
-        if (List.isList(model)) {
-            let modelList = this.getModelsAsList(this.props);
-
-            if (modelList.size < 2)
-                return false;
-            else {
-                let nonZeroSets = modelList.reduce((count, model) => (count + (model.totalRows > 0 ? 1 : 0)), 0);
-                return nonZeroSets > 1;
-            }
+        const models = this.getModelsAsList(this.props);
+        if (models.size < 2)
+            return false;
+        else {
+            const nonZeroSets = models.reduce((count, model) => (count + (model.totalRows > 0 ? 1 : 0)), 0);
+            return nonZeroSets > 1;
         }
 
         return false;
@@ -112,15 +121,15 @@ export class QueryGridPanel extends React.Component<Props, State> {
 
     renderTabs() {
         const { showAllTabs } = this.props;
-        const { activeTab } = this.state;
+        const activeModel = this.getActiveModel();
 
         return this.hasTabs() ? (
             <ul className="nav nav-tabs">
                 {
-                    this.getModelsFromGlobalState().map((value, index) => (
-                        value && (showAllTabs || value.totalRows > 0 || (value.filterArray && value.filterArray.size > 0)) &&
-                        <li key={index} className={activeTab === index ? "active" : ""}>
-                            <a onClick={() => this.setActiveTab(index)}>{value.title ? value.title : (value.queryInfo ? value.queryInfo.queryLabel : value.query)} ({value.totalRows})</a>
+                    this.getModelsFromGlobalState().map((model, index) => (
+                        model && (showAllTabs || model.totalRows > 0 || (model.filterArray && model.filterArray.size > 0)) &&
+                        <li key={index} className={activeModel.getId() === model.getId() ? "active" : ""}>
+                            <a onClick={() => this.setActiveTab(index)}>{model.title ? model.title : (model.queryInfo ? model.queryInfo.queryLabel : model.query)} ({model.totalRows})</a>
                         </li>
                     ))
                 }
@@ -129,12 +138,12 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     render() {
-        const { asPanel, buttons, header, message, model } = this.props;
+        const { asPanel, showGridBar, buttons, header, message, model } = this.props;
         const activeModel = this.getModel();
 
         const content = model ? (
             <>
-                <QueryGridBar buttons={buttons} model={activeModel} />
+                {showGridBar && <QueryGridBar buttons={buttons} model={activeModel} />}
                 {message}
 
                 {/* Grid row */}

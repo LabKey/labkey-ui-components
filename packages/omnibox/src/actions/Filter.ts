@@ -9,20 +9,18 @@ import { naturalSort } from '@glass/utils'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
 
-type FilterType = Filter.FilterType;
-
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
- * to quickly resolve a FilterType from a symbol/suffix for a filter.
+ * to quickly resolve a IFilterType from a symbol/suffix for a filter.
  */
 
 // construct symbol map
-let SYMBOL_MAP = Map<string /* symbol */, Map<string /* suffix */, FilterType>>().asMutable();
-let SUFFIX_MAP = Map<string /* suffix */, FilterType>().asMutable();
+let SYMBOL_MAP = Map<string /* symbol */, Map<string /* suffix */, Filter.IFilterType>>().asMutable();
+let SUFFIX_MAP = Map<string /* suffix */, Filter.IFilterType>().asMutable();
 
 let TYPE_SET = Set<string>().asMutable();
-let TYPE_MAP = Map<string, FilterType>(Filter.Types);
-TYPE_MAP.valueSeq().forEach((type: FilterType) => {
+let TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
+TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
     // there are duplicates of the same filter in the type map (e.g. NEQ and NOT_EQUAL)
     const suffix = type.getURLSuffix();
     const symbol = type.getDisplaySymbol();
@@ -34,7 +32,7 @@ TYPE_MAP.valueSeq().forEach((type: FilterType) => {
         if (symbol !== null) {
 
             if (!SYMBOL_MAP.has(symbol)) {
-                SYMBOL_MAP.set(symbol, Map<string, FilterType>().asMutable());
+                SYMBOL_MAP.set(symbol, Map<string, Filter.IFilterType>().asMutable());
             }
 
             SYMBOL_MAP.get(symbol).set(suffix, type);
@@ -105,13 +103,13 @@ function resolveFieldKey(columnName: string, column?: QueryColumn): string {
 }
 
 /**
- * Given a symbol/suffix and a QueryColumn this will resolve the FilterType based on the column
+ * Given a symbol/suffix and a QueryColumn this will resolve the IFilterType based on the column
  * type matched against the symbol/suffix.
  * @param symbolOrSuffix
  * @param column
- * @returns {FilterType}
+ * @returns {IFilterType}
  */
-function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): FilterType {
+function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.IFilterType {
     if (SUFFIX_MAP.has(symbolOrSuffix)) {
         return SUFFIX_MAP.get(symbolOrSuffix);
     }
@@ -120,7 +118,7 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): FilterT
         let symbolTypes = SYMBOL_MAP.get(symbolOrSuffix);
         let types = Filter.getFilterTypesForType(column.get('jsonType'));
 
-        let value: FilterType;
+        let value: Filter.IFilterType;
         let match = false;
 
         for (let i=0; i < types.length; i++) {
@@ -149,11 +147,11 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): FilterT
 }
 
 /**
- * Given a FilterType resolves the symbol (string) that should be displayed
+ * Given a IFilterType resolves the symbol (string) that should be displayed
  * @param filterType
  * @returns {string}
  */
-function resolveSymbol(filterType: FilterType): string {
+function resolveSymbol(filterType: Filter.IFilterType): string {
     return filterType.getDisplaySymbol() == null ? filterType.getURLSuffix() : filterType.getDisplaySymbol();
 }
 
@@ -161,7 +159,7 @@ export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
     optionalLabel = 'columns';
-    resolveColumns: () => Promise<List<QueryColumn>> = undefined;
+    resolveColumns: (allColumns?: boolean) => Promise<List<QueryColumn>> = undefined;
     resolveModel: () => Promise<QueryGridModel>;
     urlPrefix: string;
 
@@ -172,10 +170,10 @@ export class FilterAction implements Action {
     }
 
     static parseTokens(tokens: Array<string>, columns: List<QueryColumn>): {
-        activeFilterType?: FilterType
+        activeFilterType?: Filter.IFilterType
         columnName: string
         column?: QueryColumn
-        filterTypes?: Array<FilterType>
+        filterTypes?: Array<Filter.IFilterType>
         rawValue: any
     } {
         let options = {
@@ -193,7 +191,6 @@ export class FilterAction implements Action {
             // see if the column is in our current domain
             const column = parseColumns(columns, options.columnName).first();
             if (column) {
-
                 options.column = column;
                 options.filterTypes = Filter.getFilterTypesForType(column.get('jsonType')); // TODO: Need to filter this set
 
@@ -213,15 +210,11 @@ export class FilterAction implements Action {
     }
 
     completeAction(tokens: Array<string>): Promise<Value> {
-
         return new Promise((resolve) => {
-
-            return this.resolveColumns().then((columns: List<QueryColumn>) => {
-
+            return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
                 const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns);
 
                 if (column && activeFilterType && rawValue !== undefined) {
-
                     const operator = resolveSymbol(activeFilterType);
                     const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
                     const display = this.getDisplayValue(column.shortCaption, operator, rawValue);
@@ -243,9 +236,7 @@ export class FilterAction implements Action {
     }
 
     fetchOptions(tokens: Array<string>): Promise<Array<ActionOption>> {
-
         return new Promise((resolve) => {
-
             return this.resolveColumns().then((columns) => {
 
                 let results: Array<ActionOption> = [];
@@ -332,16 +323,19 @@ export class FilterAction implements Action {
         return this.getFilterParameters(paramKey, paramValue).filters.length > 0;
     }
 
-    parseParam(paramKey: string, paramValue: any): Array<string> | Array<Value> {
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
         let results: Array<Value> = [];
         const { param, filters } = this.getFilterParameters(paramKey, paramValue);
 
         if (filters.length > 0) {
-            for (let i=0; i < filters.length; i++) {
+            for (let i = 0; i < filters.length; i++) {
                 const columnName = filters[i].getColumnName();
+                const column = parseColumns(columns, columnName).first();
+                const columnLabel = column ? column.shortCaption : columnName;
+
                 const operator = resolveSymbol(filters[i].getFilterType());
                 let rawValue = filters[i].getValue();
-                const display = this.getDisplayValue(columnName, operator, Utils.isArray(rawValue) ? rawValue[0] : rawValue);
+                const display = this.getDisplayValue(columnLabel, operator, rawValue);
 
                 results.push({
                     displayValue: display.displayValue,
@@ -415,32 +409,46 @@ export class FilterAction implements Action {
         });
     }
 
-    private getDisplayValue(columnName: string, operator: string, rawValue: string): {displayValue: string, isReadOnly: boolean} {
-        // handle multi-value filters
-        let _rawValue: string | Array<string> = rawValue;
+    private getDisplayValue(columnName: string, operator: string, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
         let isReadOnly = false;
 
-        if (rawValue && rawValue.indexOf(';') > -1) {
-            _rawValue = rawValue.split(';');
+        let display : string;
+        let type = Filter.getFilterTypeForURLSuffix(operator);
+        if (type && type.isMultiValued()) {
+            if (rawValue instanceof String) {
+                // TODO: port the IFilterType.parseValue to labkey-api-js
+                rawValue = rawValue.split(type.getMultiValueSeparator());
+            }
+
+            if (!(rawValue instanceof Array)) {
+                throw new Error("Expected '" + type.getMultiValueSeparator() + "' string or an Array of values, got: " + rawValue);
+            }
+
             // TODO: This is just a stopgap to prevent rendering crazy long IN clauses. Pretty much any solution besides
             // showing all the values or this would be preferred. See 28884.
-            if (_rawValue.length > 3) {
-                _rawValue = `(${_rawValue.length} values)`;
+            if (rawValue.length > 3) {
+                display = `(${rawValue.length} values)`;
                 isReadOnly = true;
             }
             else {
-                _rawValue = _rawValue.join(', ');
+                display = rawValue.join(', ');
             }
+
+        }
+        else {
+            display = ""+rawValue;
         }
 
         return {
-            displayValue: [columnName, operator, _rawValue].join(' '),
+            displayValue: [columnName, operator, display].join(' '),
             isReadOnly
         };
     }
 
-    private getFilterParameters(paramKey: string, paramValue: any): {param: string, filters: Array<Filter.Filter>} {
-        const param = [paramKey, paramValue].join('=');
+    private getFilterParameters(paramKey: string, paramValue: any): {param: string, filters: Array<Filter.IFilter>} {
+        // Need to re-encode paramValue because it has already been decoded, and getFiltersFromUrl assumes that the
+        // strings passed in are URL encoded. See Issue #34630 for more details.
+        const param = `${paramKey}=${encodeURIComponent(paramValue)}`;
 
         return {
             filters: Filter.getFiltersFromUrl(param, this.urlPrefix),

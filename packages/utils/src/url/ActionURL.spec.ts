@@ -28,9 +28,10 @@ describe('AppURL', () => {
         expect(AppURL.create("somePath")
             .addFilters(
                 Filter.create("Status", "open", Filter.Types.NOT_EQUAL),
-                Filter.create('RowId', "10;11;12", Filter.Types.IN)
+                Filter.create('RowId', "10;11;12", Filter.Types.IN),
+                Filter.create('Bob', ['a',20,30], Filter.Types.IN)
             ).toHref())
-            .toBe(url + '?query.Status~neq=open&query.RowId~in=10;11;12');
+            .toBe(url + '?query.Status~neq=open&query.RowId~in=10;11;12&query.Bob~in=a;20;30');
     });
 
     test('addParam', () => {

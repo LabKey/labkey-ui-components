@@ -10,11 +10,8 @@ import { GridColumn } from '@glass/grid'
 import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel } from '@glass/models'
 import { CustomToggle } from '@glass/utils'
 
-import { AliasRenderer } from './renderers/AliasRenderer'
-import { AppendUnits } from './renderers/AppendUnits'
 import { DefaultRenderer } from './renderers/DefaultRenderer'
-import { FileColumnRenderer } from './renderers/FileColumnRenderer'
-import { MultiValueRenderer } from './renderers/MultiValueRenderer'
+import { getQueryColumnRenderers } from './global'
 
 export function headerCell(handleSort: any, column: GridColumn, i: number, selectable?: boolean, sortable: boolean = true) {
 
@@ -72,19 +69,12 @@ export function headerSelectionCell(handleSelection: any, model: QueryGridModel)
     )
 }
 
-const columnRenderers = {
-    aliasrenderer: AliasRenderer,
-    appendunits: AppendUnits,
-    defaultrenderer: DefaultRenderer,
-    filecolumnrenderer: FileColumnRenderer,
-    multivaluecolumnrenderer: MultiValueRenderer,
-};
-
 export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
 
     if (columns) {
         return columns.map((col: QueryColumn) => {
-            let node = columnRenderers.defaultrenderer;
+            const columnRenderers = getQueryColumnRenderers();
+            let node = DefaultRenderer;
             if (col && col.columnRenderer && columnRenderers[col.columnRenderer.toLowerCase()]) {
                 node = columnRenderers[col.columnRenderer.toLowerCase()];
             }

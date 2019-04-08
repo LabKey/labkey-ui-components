@@ -5,17 +5,14 @@
 import { fromJS, List, Map, OrderedMap } from 'immutable'
 import { normalize, schema } from 'normalizr'
 import { Query, Filter } from '@labkey/api'
-import {
-    QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo,
-    resolveKeyFromJson, resolveSchemaQuery
-} from '@glass/models'
+import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery } from '@glass/models'
 
 import { URLResolver } from '../util/URLResolver'
 import { getQueryMetadata } from '../global'
 
 let queryDetailsCache: {[key: string]: Promise<QueryInfo>} = {};
 
-export function invalidateCacheKey(key: string): void {
+export function invalidateQueryDetailsCacheKey(key: string): void {
     delete queryDetailsCache[key];
 }
 
@@ -40,7 +37,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                     // where it is unable to resolve the tableInfo. This is deemed a 'success'
                     // by the request standards but here we reject as an outright failure
                     if (queryDetails.exception) {
-                        invalidateCacheKey(key);
+                        invalidateQueryDetailsCacheKey(key);
                         reject({
                             schemaQuery,
                             message: queryDetails.exception,
@@ -52,7 +49,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
                     }
                 },
                 failure: (error, request) => {
-                    invalidateCacheKey(key);
+                    invalidateQueryDetailsCacheKey(key);
                     reject({
                         message: error.exception,
                         exceptionClass: error.exceptionClass,

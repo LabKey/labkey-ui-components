@@ -8,14 +8,21 @@ import { QueryGridModel } from "@glass/models";
 import { LoadingSpinner } from "@glass/utils";
 
 import { gridInit } from "../../actions";
-import { EditableGrid } from "./EditableGrid";
+import { EditableGrid, EditableGridProps } from "./EditableGrid";
 
-type Props = {
+interface Props extends EditableGridProps {
     title?: string
-    model: QueryGridModel
-};
+}
 
 export class EditableGridPanel extends React.Component<Props, any> {
+
+    constructor(props: EditableGridProps) {
+        super(props);
+
+        if (!props.model) {
+            throw new Error('EditableGridPanel: a model must be provided.');
+        }
+    }
 
     componentDidMount() {
         this.initModel(this.props);
@@ -50,14 +57,14 @@ export class EditableGridPanel extends React.Component<Props, any> {
         }
 
         if (!title) {
-            return <EditableGrid model={model}/>
+            return <EditableGrid {...this.props}/>
         }
 
         return (
             <Panel>
                 <Panel.Heading>{title}</Panel.Heading>
                 <Panel.Body className={'table-responsive'}>
-                    <EditableGrid model={model}/>
+                    <EditableGrid {...this.props}/>
                 </Panel.Body>
             </Panel>
         );

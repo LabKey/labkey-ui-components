@@ -2,12 +2,12 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react'
+import React from 'reactn'
 import { List, Map } from 'immutable'
 import { QueryColumn, QueryGridModel } from '@glass/models'
 import { OmniBox, Action, ActionValue, ActionValueCollection, FilterAction, SearchAction, SortAction, ViewAction } from '@glass/omnibox'
 
-import { Location, getLocation, replaceParameters } from "../../util/URL";
+import { getLocation, replaceParameters, Location } from "../../util/URL";
 
 const emptyList = List<QueryColumn>();
 
@@ -61,16 +61,21 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         return !nextState.changeLock && !isLocationEqual(this.state.location, nextState.location);
     }
 
-    private getColumns(): List<QueryColumn> {
-        if (this.props.queryModel) {
-            return this.props.queryModel.getColumns();
+    private getColumns(allColumns?: boolean): List<QueryColumn> {
+        const queryModel = this.getQueryModel();
+        if (!queryModel) {
+            return emptyList;
         }
 
-        return emptyList;
+        if (allColumns) {
+            return queryModel.getAllColumns();
+        }
+
+        return queryModel.getDisplayColumns();
     }
 
     onOmniBoxChange(actionValueCollection: Array<ActionValueCollection>, boxActions: Array<Action>) {
-        const { queryModel} = this.props;
+        const queryModel = this.getQueryModel();
         const location = getLocation();
 
         let params = Map<string, string>().asMutable();
@@ -100,7 +105,10 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         }
 
         // TODO: This is a overly simplified mechanism for suppressing unwanted updates. Figure out a better model
-        // for piping URL updates
+        //  for piping URL updates
+        // TODO: Also this doesn't do what you think it does. setState is not atomic unless you use the callback
+        //  version of it. It is entirely plausible that changeLock is still false, by the time we call updateURL, and
+        //  even by the time we set changeLock to false again.
         this.setState({
             changeLock: true
         });
@@ -114,7 +122,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     }
 
     mapParamsToActionValues(): {actions: Array<Action>, values: Array<ActionValue>} {
-        const { queryModel } = this.props;
+        const queryModel = this.getQueryModel();
         const location = getLocation();
         const urlPrefix = queryModel ? queryModel.urlPrefix : undefined;
 
@@ -144,13 +152,11 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
                 for (let a=0; a < actions.length; a++) {
                     for (let p=0; p < paramValues.length; p++) {
-                        if (actions[a].matchParam(key, paramValues[p])) {
-
-                            // location returns decoded parameters
-                            let values = actions[a].parseParam(key, paramValues[p]);
+                        const decodedParamVals = decodeURIComponent(paramValues[p]);
+                        if (actions[a].matchParam(key, decodedParamVals)) {
+                            let values = actions[a].parseParam(key, decodedParamVals, this.getColumns(true));
 
                             for (let v=0; v < values.length; v++) {
-
                                 if (typeof values[v] === 'string') {
                                     actionValues.push({
                                         action: actions[a],
@@ -175,16 +181,23 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         }
     }
 
-    requestColumns(): Promise<List<QueryColumn>> {
-        return Promise.resolve(this.getColumns());
+    requestColumns(allColumns?: boolean): Promise<List<QueryColumn>> {
+        return Promise.resolve(this.getColumns(allColumns));
     }
 
     requestModel(): Promise<QueryGridModel> {
-        return Promise.resolve(this.props.queryModel);
+        return Promise.resolve(this.getQueryModel());
+    }
+
+    getQueryModel(): QueryGridModel {
+        const { queryModel } = this.props;
+
+        // need to access this.global directly to connect this component to the re-render cycle
+        return queryModel ? this.global.QueryGrid_models.get(queryModel.getId()) : undefined;
     }
 
     render() {
-        const { queryModel } = this.props;
+        const queryModel = this.getQueryModel();
         const { actions, values } = this.mapParamsToActionValues();
 
         return (

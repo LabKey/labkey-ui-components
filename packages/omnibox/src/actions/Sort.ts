@@ -151,7 +151,7 @@ export class SortAction implements Action {
         return paramKey && paramKey.toLowerCase() === this.param;
     }
 
-    parseParam(paramKey: string, paramValue: any): Array<string> | Array<Value> {
+    parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): Array<string> | Array<Value> {
 
         let columnName,
             dir,
@@ -164,9 +164,11 @@ export class SortAction implements Action {
             if (raw.length > 0) {
                 dir = raw.indexOf('-') === 0 ? 'DESC' : 'ASC';
                 columnName = dir === 'DESC' ? raw.slice(1) : raw;
+                const column = parseColumns(columns, columnName).first();
+                const columnLabel = column ? column.shortCaption : columnName;
 
                 return {
-                    displayValue: columnName,
+                    displayValue: columnLabel,
                     param: raw,
                     value: columnName + ' ' + dir.toLowerCase()
                 };

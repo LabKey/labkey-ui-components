@@ -8,14 +8,11 @@ import { Dropdown, MenuItem } from 'react-bootstrap'
 import { List } from 'immutable'
 import $ from 'jquery'
 import { Grid, GridColumn } from '@glass/grid'
-import { QueryColumn, QueryGridModel } from '@glass/models'
+import { QueryColumn, QueryGridModel, GRID_EDIT_INDEX } from '@glass/models'
 import { Alert, LoadingSpinner } from '@glass/utils'
 
-import {
-    beginDrag, endDrag, inDrag, select, removeRow, addRows,
-    clearSelection, copyEvent, pasteEvent, getDataEdit
-} from '../../actions'
-import { GRID_EDIT_INDEX } from '../../constants'
+import { beginDrag, endDrag, inDrag, select, removeRow, addRows, clearSelection, copyEvent, pasteEvent } from '../../actions'
+import { getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
 
@@ -56,20 +53,22 @@ function inputCellKey(col: QueryColumn, row: any): string {
     return [col.fieldKey, indexKey].join('_$Cell$_');
 }
 
-interface Props {
+export interface EditableGridProps {
     allowAdd?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
+    disabled?: boolean
     model: QueryGridModel
     isSubmitting?: boolean
     loadData?: boolean
 }
 
-export class EditableGrid extends React.Component<Props, any> {
+export class EditableGrid extends React.Component<EditableGridProps, any> {
 
     static defaultProps = {
         allowAdd: true,
         allowRemove: true,
+        disabled: false,
         isSubmitting: false,
         loadData: false
     };
@@ -78,7 +77,7 @@ export class EditableGrid extends React.Component<Props, any> {
     private readonly table: React.RefObject<any>;
     private readonly wrapper: React.RefObject<any>;
 
-    constructor(props: Props) {
+    constructor(props: EditableGridProps) {
         super(props);
 
         this.onAddRows = this.onAddRows.bind(this);
@@ -96,10 +95,6 @@ export class EditableGrid extends React.Component<Props, any> {
 
         this.table = OrigReact.createRef();
         this.wrapper = OrigReact.createRef();
-
-        if (!props.model) {
-            throw new Error('EditableGrid: a model must be provided.');
-        }
     }
 
     componentDidMount() {
@@ -116,7 +111,7 @@ export class EditableGrid extends React.Component<Props, any> {
 
     generateColumns(): List<GridColumn> {
         const { allowRemove } = this.props;
-        const { model } = this.props;
+        const model = this.getModel();
 
         let gridColumns = List<GridColumn>([
             allowRemove ? new GridColumn({
@@ -141,7 +136,7 @@ export class EditableGrid extends React.Component<Props, any> {
         model.getInsertColumns().forEach(qCol => {
             gridColumns.push(new GridColumn({
                 align: qCol.align,
-                cell: inputCellFactory(model.id),
+                cell: inputCellFactory(model.getId()),
                 index: qCol.fieldKey,
                 raw: qCol,
                 title: qCol.caption,
@@ -153,7 +148,7 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     headerCell(col: GridColumn) {
-        const { model } = this.props;
+        const model = this.getModel();
 
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
@@ -167,9 +162,10 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     onDocumentClick(event: any) {
-        const { model } = this.props;
+        const { disabled } = this.props;
+        const model = this.getModel();
 
-        if (this.table && this.table.current &&
+        if (!disabled && this.table && this.table.current &&
             (!$.contains(this.table.current, event.target) && !$(event.target).parent('.cell-lookup')) &&
             !inDrag(model.getId())) {
             clearSelection(model.getId());
@@ -177,23 +173,28 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     onCopy(event: any) {
-        copyEvent(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            copyEvent(this.props.model.getId(), event);
     }
 
     onKeyDown(event: any) {
-        select(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            select(this.props.model.getId(), event);
     }
 
     onMouseDown(event: any) {
-        beginDrag(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            beginDrag(this.props.model.getId(), event);
     }
 
     onMouseUp(event: any) {
-        endDrag(this.props.model.getId(), event);
+        if (!this.props.disabled)
+            endDrag(this.props.model.getId(), event);
     }
 
     onPaste(event: any) {
-        pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask);
+        if (!this.props.disabled)
+            pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask);
     }
 
     showMask() {
@@ -208,19 +209,25 @@ export class EditableGrid extends React.Component<Props, any> {
     }
 
     onAddRows(count: number) {
-        const { model } = this.props;
+        const model = this.getModel();
         addRows(model, count);
     }
 
     renderError() {
-        const { model } = this.props;
+        const model = this.getModel();
         if (model.isError) {
             return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>
         }
     }
 
+    getModel() {
+        const { model } = this.props;
+        return getQueryGridModel(model.getId());
+    }
+
     render() {
-        const { addControlProps, allowAdd, isSubmitting, model } = this.props;
+        const { addControlProps, allowAdd, isSubmitting } = this.props;
+        const model = this.getModel();
 
         if (!model || !model.isLoaded) {
             return <LoadingSpinner/>;
@@ -239,7 +246,7 @@ export class EditableGrid extends React.Component<Props, any> {
                             cellular={true}
                             columns={this.generateColumns()}
                             condensed={false}
-                            data={getDataEdit(model)}
+                            data={model.getDataEdit()}
                             headerCell={this.headerCell}
                             responsive={false}
                             rowKey={GRID_EDIT_INDEX}

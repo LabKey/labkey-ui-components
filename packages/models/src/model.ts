@@ -6,7 +6,7 @@ import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 import { intersect, toLowerSafe } from '@glass/utils'
 
-import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './constants'
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
 import { resolveKey } from "./utils";
 
 const emptyList = List<string>();
@@ -14,7 +14,7 @@ const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
 
 export enum QueryInfoStatus { ok, notFound, unknown }
-enum MessageLevel { info, warning, error }
+export enum MessageLevel { info, warning, error }
 
 /**
  * Model for org.labkey.api.data.Container as returned by Container.toJSON()
@@ -375,14 +375,14 @@ export interface IQueryGridModel {
     schema?: string
     query?: string
     allowSelection?: boolean
-    baseFilters?: List<Filter.Filter>
+    baseFilters?: List<Filter.IFilter>
     bindURL?: boolean
     data?: Map<any, Map<string, any>>
     dataIds?: List<any>
     displayColumns?: List<string>
     editable?: boolean
     editing?: boolean
-    filterArray?: List<Filter.Filter>
+    filterArray?: List<Filter.IFilter>
     isError?: boolean
     isLoaded?: boolean
     isLoading?: boolean
@@ -434,14 +434,14 @@ export class QueryGridModel extends Record({
     query: undefined,
 
     allowSelection: true,
-    baseFilters: List<Filter.Filter>(),
+    baseFilters: List<Filter.IFilter>(),
     bindURL: true,
     data: Map<any, Map<string, any>>(),
     dataIds: List<any>(),
     displayColumns: undefined,
     editable: false,
     editing: false,
-    filterArray: List<Filter.Filter>(),
+    filterArray: List<Filter.IFilter>(),
     isError: false,
     isLoaded: false,
     isLoading: false,
@@ -475,14 +475,14 @@ export class QueryGridModel extends Record({
     schema: string;
     query: string;
     allowSelection: boolean;
-    baseFilters: List<Filter.Filter>;
+    baseFilters: List<Filter.IFilter>;
     bindURL: boolean;
     data: Map<any, Map<string, any>>;
     dataIds: List<any>;
     displayColumns: List<string>;
     editable: boolean;
     editing: boolean;
-    filterArray: List<Filter.Filter>;
+    filterArray: List<Filter.IFilter>;
     isError: boolean;
     isLoaded: boolean;
     isLoading: boolean;
@@ -544,7 +544,7 @@ export class QueryGridModel extends Record({
      * Returns the set of display columns for this QueryGridModel based on its configuration.
      * @returns {List<QueryColumn>}
      */
-    getColumns(): List<QueryColumn> {
+    getDisplayColumns(): List<QueryColumn> {
         if (this.queryInfo) {
             let cols = this.queryInfo.getDisplayColumns(this.view);
 
@@ -554,6 +554,14 @@ export class QueryGridModel extends Record({
             }
 
             return cols;
+        }
+
+        return emptyColumns;
+    }
+
+    getAllColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            return List<QueryColumn>(this.queryInfo.columns.values());
         }
 
         return emptyColumns;
@@ -578,10 +586,10 @@ export class QueryGridModel extends Record({
 
     getExportColumnsString(): string {
         // does not include required columns -- app only
-        return this.getColumns().map(c => c.fieldKey).join(',');
+        return this.getDisplayColumns().map(c => c.fieldKey).join(',');
     }
 
-    getFilters(): List<Filter.Filter> {
+    getFilters(): List<Filter.IFilter> {
         if (this.queryInfo) {
             if (this.keyValue !== undefined) {
                 if (this.queryInfo.pkCols.size === 1) {
@@ -645,7 +653,7 @@ export class QueryGridModel extends Record({
     getRequestColumnsString(): string {
         let fieldKeys = this.requiredColumns
             .concat(this.getKeyColumns().map(c => c.fieldKey))
-            .concat(this.getColumns().map(c => c.fieldKey));
+            .concat(this.getDisplayColumns().map(c => c.fieldKey));
 
         if (this.omittedColumns.size > 0) {
             const lowerOmit = toLowerSafe(this.omittedColumns);
@@ -736,6 +744,20 @@ export class QueryGridModel extends Record({
             canInsert: false,
             insertUrl: false
         });
+    }
+
+    getDataEdit(): List<Map<string, any>> {
+        return this.dataIds.map(i => {
+            if (this.data.has(i)) {
+                return this.data.get(i).merge({
+                    [GRID_EDIT_INDEX]: i
+                });
+            }
+
+            return Map<string, any>({
+                [GRID_EDIT_INDEX]: i
+            })
+        }).toList();
     }
 }
 
@@ -885,7 +907,7 @@ export class QueryInfo extends Record({
             .toList();
     }
 
-    getFilters(view?: string): List<Filter.Filter> {
+    getFilters(view?: string): List<Filter.IFilter> {
         if (view) {
             let viewInfo = this.getView(view);
 
@@ -896,7 +918,7 @@ export class QueryInfo extends Record({
             console.warn('Unable to find view:', view, '(' + this.schemaName + '.' + this.name + ')');
         }
 
-        return List<Filter.Filter>();
+        return List<Filter.IFilter>();
     }
 
     getPkCols(): List<QueryColumn> {
@@ -1010,7 +1032,7 @@ export class ViewInfo extends Record({
     columns: List<IViewInfoColumn>(),
     // deletable: false,
     // editable: false,
-    filters: List<Filter.Filter>(),
+    filters: List<Filter.IFilter>(),
     hidden: false,
     // inherit: false,
     isDefault: false,
@@ -1027,7 +1049,7 @@ export class ViewInfo extends Record({
     columns: List<IViewInfoColumn>;
     // deletable: boolean;
     // editable: boolean;
-    filters: List<Filter.Filter>;
+    filters: List<Filter.IFilter>;
     hidden: boolean;
     // inherit: boolean;
     isDefault: boolean; // 'default' is a JavaScript keyword
@@ -1074,7 +1096,7 @@ export class ViewInfo extends Record({
     }
 }
 
-class LastActionStatus extends Record({
+export class LastActionStatus extends Record({
     type: undefined,
     date: undefined,
     level: MessageLevel.info,
@@ -1090,8 +1112,8 @@ class LastActionStatus extends Record({
     }
 }
 
-function getFiltersFromView(rawViewInfo): List<Filter.Filter> {
-    let filters = List<Filter.Filter>().asMutable();
+function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
+    let filters = List<Filter.IFilter>().asMutable();
 
     // notice, in the raw version it is raw.filter (no s)
     if (rawViewInfo && rawViewInfo.filter) {
@@ -1123,7 +1145,7 @@ function getSortsFromView(rawViewInfo): List<QuerySort> {
     return List<QuerySort>();
 }
 
-function insertColumnFilter(col: QueryColumn): boolean {
+export function insertColumnFilter(col: QueryColumn): boolean {
     return (
         col &&
         col.removeFromViews !== true &&

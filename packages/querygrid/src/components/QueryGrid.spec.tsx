@@ -37,7 +37,7 @@ describe("QueryGrid render", () => {
             schema: schemaQuery.schemaName,
             query: schemaQuery.queryName,
         });
-        updateQueryGridModel(model, {}, false);
+        updateQueryGridModel(model, {}, undefined, false);
         const tree = renderer.create(<QueryGrid model={model} schemaQuery={schemaQuery}/>);
         expect(tree).toMatchSnapshot();
     });

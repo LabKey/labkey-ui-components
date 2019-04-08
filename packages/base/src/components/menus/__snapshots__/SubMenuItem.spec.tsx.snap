@@ -83,19 +83,6 @@ exports[`<SubMenuItem /> allow filtering with just enough items 1`] = `
     className="well"
   >
     <MenuItem
-      bsClass="dropdown"
-      disabled={false}
-      divider={false}
-      header={false}
-    >
-      <input
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Filter..."
-        type="text"
-      />
-    </MenuItem>
-    <MenuItem
       active={true}
       bsClass="dropdown"
       disabled={false}

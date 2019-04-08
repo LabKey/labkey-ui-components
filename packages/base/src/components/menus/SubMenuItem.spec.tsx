@@ -65,7 +65,7 @@ describe("<SubMenuItem />", () => {
     test("allow filtering but not enough items", () => {
         const menu = shallow(<SubMenuItem
             allowFilter={true}
-            minToFilter={items.length + 1}
+            maxWithoutFilter={items.length + 1}
             items={items}
             text={"Filtering below limit"}
         />);
@@ -79,7 +79,7 @@ describe("<SubMenuItem />", () => {
     test("allow filtering with more than enough items", () => {
         const menu = shallow(<SubMenuItem
             allowFilter={true}
-            minToFilter={items.length - 1}
+            maxWithoutFilter={items.length - 1}
             items={items}
             text={"Filtering above limit"}
             filterPlaceholder={"Custom placeholder..."}
@@ -94,14 +94,14 @@ describe("<SubMenuItem />", () => {
     test("allow filtering with just enough items", () => {
         const menu = shallow(<SubMenuItem
             allowFilter={true}
-            minToFilter={items.length}
+            maxWithoutFilter={items.length}
             items={items}
             text={"Filtering at limit"}
             filterPlaceholder={"Filter..."}
         />);
         menu.find({role: 'menuitem'}).prop('onClick')();
         expect(menu.state()['expanded']).toBe(true);
-        expect(menu.find({placeholder: "Filter..."})).toHaveLength(1);
+        expect(menu.find({placeholder: "Filter..."})).toHaveLength(0);
 
         expect(menu).toMatchSnapshot();
     });

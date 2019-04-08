@@ -21,7 +21,7 @@ export interface SubMenuItemProps {
     icon?: string
     items?: Array<ISubItem>
     itemsCls?: string
-    minToFilter?: number
+    maxWithoutFilter?: number
     onMouseOut?: any
     onMouseOver?: any
     text?: string
@@ -40,7 +40,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         allowFilter: true,
         filterPlaceholder: 'Filter...',
         itemsCls: 'well',
-        minToFilter: 5
+        maxWithoutFilter: 5
     };
 
     refs: {
@@ -203,9 +203,9 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     }
 
     render() {
-        const { allowFilter, disabled, filterPlaceholder, icon, items, itemsCls, minToFilter, text } = this.props;
+        const { allowFilter, disabled, filterPlaceholder, icon, items, itemsCls, maxWithoutFilter, text } = this.props;
         const { expanded } = this.state;
-        const filterActive = allowFilter && items && items.length >= minToFilter;
+        const filterActive = allowFilter && items && items.length > maxWithoutFilter;
 
         const menuItemProps = {
             className: classNames('dropdown-submenu', { disabled }),

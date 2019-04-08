@@ -60,7 +60,7 @@ storiesOf("SubMenuItem", module)
                     icon={text("Font awesome icon name", undefined)}
                     items={allItems.slice(0, numItems)}
                     itemsCls={text("class name for items container", "well")}
-                    minToFilter={number("Minimum item count for filtering", 4, {}, filterGroup)}
+                    maxWithoutFilter={number("Maximum item count without filtering", 4, {}, filterGroup)}
                     text={text("Text", "Item text")}
                 />
             )

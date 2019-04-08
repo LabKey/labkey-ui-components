@@ -74,7 +74,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
             let menuProps = {
                 key: 1,
                 items: this.getItems(),
-                minToFilter: 10,
+                maxWithoutFilter: 10,
                 text
             };
             items.push(<SubMenuItem {...menuProps}/>);

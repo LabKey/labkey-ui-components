@@ -89,7 +89,7 @@ storiesOf("MultiMenuButton", module)
     .addDecorator(withKnobs)
     .add("with knobs", () => {
         let contextOptions = menuMap.keySeq().toArray();
-        contextOptions.unshift(undefined);
+        contextOptions.unshift("");
         const currentMenuChoice = text("Current sub-menu choice", undefined);
         const context = select("Current sub-menu", contextOptions, undefined);
         return <MultiMenuButton currentContextKey={context}

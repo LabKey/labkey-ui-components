@@ -7,7 +7,6 @@ export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
 
 export const LOOKUP_DEFAULT_SIZE = 25;
-export const GRID_EDIT_INDEX = '__editing__';
 
 export enum EXPORT_TYPES {
     CSV,

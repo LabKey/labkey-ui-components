@@ -1,6 +1,6 @@
 {
   "name": "@glass/utils",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "description": "Utility functions and components for LabKey views",
   "main": "dist/utils.cjs.js",
   "module": "dist/utils.es.js",
@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@labkey/api": "0.0.9",
     "react-bootstrap": "0.32.4"
   },
   "peerDependencies": {

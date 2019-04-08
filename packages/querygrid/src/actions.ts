@@ -5,15 +5,15 @@
 import { List, Map, OrderedMap, Set, fromJS } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
 import { buildURL, getSortFromUrl, naturalSort, not } from '@glass/utils'
 
 import { getQueryDetails, searchRows } from './query/api'
 import { isEqual } from './query/filter'
-import { getLocation, replaceParameter, replaceParameters } from "./util/URL";
+import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
 import {
     FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES, KEYS,
-    SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE, GRID_EDIT_INDEX
+    SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE
 } from "./constants";
 import { cancelEvent, setCopyValue, getPasteValue } from './events'
 import {
@@ -25,6 +25,7 @@ import {
     getQueryGridModel,
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
+    getQueryGridModelsForGridId,
     updateQueryGridModel,
     updateSelections,
     getEditorModel,
@@ -36,31 +37,35 @@ import {
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
-export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true) {
-    let newModel = updateQueryGridModel(model, {}, false);
+export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
+    if (!model || model.isLoaded || model.isLoading) {
+        return;
+    }
+
+    let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
 
     if (!newModel.isLoaded) {
         if (newModel.bindURL) {
             newModel = updateQueryGridModel(newModel, {
                 isLoading: true,
                 ...bindURLProps(newModel)
-            });
+            }, connectedComponent);
         }
         else {
-            newModel = updateQueryGridModel(newModel, {isLoading: true});
+            newModel = updateQueryGridModel(newModel, {isLoading: true}, connectedComponent);
         }
 
         fetchQueryInfo(newModel).then(queryInfo => {
             newModel = updateQueryGridModel(newModel, {
                 queryInfo: bindQueryInfo(queryInfo)
-            });
+            }, connectedComponent);
 
             if (newModel.editable) {
                 initEditorModel(newModel);
             }
 
             if (shouldLoadData) {
-                gridLoad(newModel);
+                gridLoad(newModel, connectedComponent);
             }
             else {
                 newModel = updateQueryGridModel(newModel, {
@@ -68,23 +73,23 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true) 
                     isLoading: false,
                     isLoaded: true,
                     message: undefined
-                });
+                }, connectedComponent);
 
                 if (newModel.editable) {
                     loadDataForEditor(newModel);
                 }
             }
         }).catch(reason => {
-            setError(newModel, reason.message);
+            setError(newModel, reason.message, connectedComponent);
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, bindURLProps(newModel));
-        gridLoad(newModel);
+        newModel = updateQueryGridModel(newModel, bindURLProps(newModel), connectedComponent);
+        gridLoad(newModel, connectedComponent);
     }
 }
 
-export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.Filter>): Promise<ISelectResponse> {
+export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>): Promise<ISelectResponse> {
 
     const filters = filterList.reduce((prev, next)=> {
         return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
@@ -124,7 +129,7 @@ export function gridSelectAll(model: QueryGridModel) {
 
             }).catch(err => {
                 const error = err ? err : {message: 'Something went wrong in selecting all items for this grid (name: ' + model.getModelName() + ', id:' + id + ')'};
-                handleQueryErrorAction(model, error);
+                gridShowError(model, error);
             });
         }
     })
@@ -215,23 +220,33 @@ export function clearError(model: QueryGridModel) {
     }
 }
 
-export function schemaInvalidate(schemaName: string) {
-    getQueryGridModelsForSchema(schemaName).map((model) => invalidate(model));
+export function schemaGridInvalidate(schemaName: string) {
+    getQueryGridModelsForSchema(schemaName).map((model) => gridInvalidate(model));
 }
 
-export function queryInvalidate(schemaQuery: SchemaQuery) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => invalidate(model));
+export function queryGridInvalidate(schemaQuery: SchemaQuery) {
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
 }
 
-export function invalidate(model: QueryGridModel): QueryGridModel {
-    return updateQueryGridModel(model, {
+export function gridIdInvalidate(gridId: string) {
+    getQueryGridModelsForGridId(gridId).map((model) => gridInvalidate(model));
+}
+
+export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
+    const newModel = updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
         isError: false,
         isLoaded: false,
         isLoading: false,
         message: undefined
-    });
+    }, connectedComponent);
+
+    if (shouldInit) {
+        gridInit(newModel, true, connectedComponent);
+    }
+
+    return newModel;
 }
 
 export function loadPage(model: QueryGridModel, pageNumber: number) {
@@ -248,14 +263,12 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
     }
 }
 
-export function refresh(model: QueryGridModel) {
-    let newModel = invalidate(model);
-
+export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Component) {
     if (model.allowSelection) {
-        setGridUnselected(newModel);
+        setGridUnselected(model);
     }
 
-    gridLoad(newModel);
+    gridLoad(model, connectedComponent);
 }
 
 export function reloadQueryGridModel(model: QueryGridModel) {
@@ -266,10 +279,10 @@ export function reloadQueryGridModel(model: QueryGridModel) {
     gridLoad(newModel);
 }
 
-// Takes a List<Filter.Filter> and remove each filter from the grid model
+// Takes a List<Filter.IFilter> and remove each filter from the grid model
 // Alternately, the 'all' flag can be set to true to remove all filters. This
 // setting takes precedence over the filters list.
-export function removeFilters(model: QueryGridModel, filters?: List<any>, all: boolean = false) {
+export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilter>, all: boolean = false) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters, true));
     }
@@ -298,7 +311,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<any>, all: b
     }
 }
 
-export function addFilters(model: QueryGridModel, filters: List<Filter.Filter>) {
+export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>) {
     if (model.bindURL) {
         replaceParameters(getLocation(), getFilterParameters(filters));
     }
@@ -347,14 +360,14 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     });
 }
 
-export function gridLoad(model: QueryGridModel) {
+export function gridLoad(model: QueryGridModel, connectedComponent?: React.Component) {
     // validate view exists prior to initiating request
     if (model.view && model.queryInfo && !model.queryInfo.getView(model.view)) {
         setError(model, `Unable to find view "${model.view}".`);
         return;
     }
 
-    let newModel = updateQueryGridModel(model, {isLoading: true});
+    let newModel = updateQueryGridModel(model, {isLoading: true}, connectedComponent);
 
     newModel.loader.fetch(newModel).then(response => {
         if (newModel.editable) {
@@ -371,19 +384,19 @@ export function gridLoad(model: QueryGridModel) {
             totalRows,
             data,
             dataIds
-        });
+        }, connectedComponent);
 
         if (newModel.allowSelection) {
             fetchSelectedIfNeeded(newModel);
         }
     }, payload => {
-        handleQueryErrorAction(payload.model, payload.error);
+        gridShowError(payload.model, payload.error, connectedComponent);
     });
 }
 
 function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     let props = {
-        filterArray: List<Filter.Filter>(),
+        filterArray: List<Filter.IFilter>(),
         pageNumber: 1,
         sorts: model.sorts || undefined,
         urlParamValues: Map<string, any>().asMutable(),
@@ -391,12 +404,12 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     };
 
     const location = getLocation();
-    const queryString = location.search;
+    const queryString = buildQueryString(location.query);
     const p = location.query.get(model.createParam('p'));
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));
 
-    props.filterArray = List<Filter.Filter>(Filter.getFiltersFromUrl(queryString, model.urlPrefix))
+    props.filterArray = List<Filter.IFilter>(Filter.getFiltersFromUrl(queryString, model.urlPrefix))
         .concat(bindSearch(q))
         .toList();
     props.sorts = getSortFromUrl(queryString, model.urlPrefix);
@@ -421,12 +434,11 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
 
     props.urlParamValues = props.urlParamValues.asImmutable();
 
-
     return props;
 }
 
-function bindSearch(searchTerm: string): List<Filter.Filter> {
-    let searchFilters = List<Filter.Filter>().asMutable();
+function bindSearch(searchTerm: string): List<Filter.IFilter> {
+    let searchFilters = List<Filter.IFilter>().asMutable();
 
     if (searchTerm) {
         searchTerm.split(';').forEach((term) => {
@@ -441,7 +453,7 @@ function bindSearch(searchTerm: string): List<Filter.Filter> {
 
 interface IExportOptions {
     columns?: string
-    filters?: List<Filter.Filter>
+    filters?: List<Filter.IFilter>
     sorts?: string
     showRows?: 'ALL' | 'SELECTED' | 'UNSELECTED'
     selectionKey?: string
@@ -540,6 +552,7 @@ export function gridSelectView(model: QueryGridModel, view: ViewInfo) {
     replaceParameter(getLocation(), model.createParam('view'), viewName);
 }
 
+// Complex comparator to determine if the location matches the models location-sensitive properties
 function hasURLChange(model: QueryGridModel): boolean {
     if (!model || !model.bindURL) {
         return false;
@@ -627,7 +640,7 @@ function fetchSelectedIfNeeded(model: QueryGridModel) {
                 });
             }
         }, payload => {
-            handleQueryErrorAction(payload.model, payload.error);
+            gridShowError(payload.model, payload.error);
         });
     }
 }
@@ -724,7 +737,7 @@ function setGridUnselected(model: QueryGridModel) {
         });
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong'};
-        handleQueryErrorAction(model, error);
+        gridShowError(model, error);
     })
 }
 
@@ -784,17 +797,17 @@ export function fetchCharts(schemaQuery: SchemaQuery): Promise<List<DataViewInfo
     });
 }
 
-function setError(model: QueryGridModel, message: string) {
+function setError(model: QueryGridModel, message: string, connectedComponent?: React.Component) {
     updateQueryGridModel(model, {
         isLoading: false,
         isLoaded: true,
         isError: true,
         message
-    })
+    }, connectedComponent)
 }
 
-function handleQueryErrorAction(model: QueryGridModel, error: any) {
-    setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error');
+export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component) {
+    setError(model, error ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception) : 'Query error', connectedComponent);
 }
 
 export function genCellKey(colIdx: number, rowIdx: number): string {
@@ -1117,8 +1130,10 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
         });
         updateLookupStore(store, {}, false);
 
-        searchLookup(column, maxRows, undefined, values);
+        return searchLookup(column, maxRows, undefined, values);
     }
+
+    return Promise.resolve();
 }
 
 function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
@@ -1164,11 +1179,11 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
 
         if (values) {
             selectRowOptions.filterArray = [
-                Filter.create(column.lookup.displayColumn, values.join(';'), Filter.Types.IN)
+                Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN)
             ];
         }
 
-        searchRows(selectRowOptions, token, lookup.displayColumn).then((result) => {
+        return searchRows(selectRowOptions, token, lookup.displayColumn).then((result) => {
             const {displayColumn, keyColumn} = column.lookup;
             const {key, models, totalRows} = result;
 
@@ -1549,8 +1564,11 @@ function parsePasteCellLookup(column: QueryColumn, lookup: LookupStore, value: s
                 const vd = lookup.descriptors.find(d => d.display && d.display.toString().toLowerCase() === vl);
                 if (!vd) {
                     unmatched.push(vt);
+                    return {display: vt, raw: vt};
                 }
-                return vd;
+                else {
+                    return vd;
+                }
             }
         })
         .filter(v => v !== undefined)
@@ -1712,18 +1730,4 @@ export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
             dataIds: model.dataIds.remove(idIndex)
         });
     }
-}
-
-export function getDataEdit(model: QueryGridModel): List<Map<string, any>> {
-    return model.dataIds.map(i => {
-        if (model.data.has(i)) {
-            return model.data.get(i).merge({
-                [GRID_EDIT_INDEX]: i
-            });
-        }
-
-        return Map<string, any>({
-            [GRID_EDIT_INDEX]: i
-        })
-    }).toList();
 }

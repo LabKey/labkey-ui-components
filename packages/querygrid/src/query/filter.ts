@@ -5,13 +5,13 @@
 import { List } from 'immutable'
 import { Filter } from '@labkey/api'
 
-export function isEqual(first: List<Filter.Filter>, second: List<Filter.Filter>): boolean {
+export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter>): boolean {
     if (first.size !== second.size) {
         return false;
     }
 
     let isEqual = true;
-    first.forEach((f: Filter.Filter, i: number) => {
+    first.forEach((f: Filter.IFilter, i: number) => {
         const s = second.get(i);
         if (f === undefined) {
             if (s !== undefined) {

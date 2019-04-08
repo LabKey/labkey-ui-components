@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { List } from 'immutable'
+import { QueryColumn } from '@glass/models'
+
 /**
  * The Action interface specifies the functionality that must be implemented for an Action to participate
  * in the OmniBox action framework. Action's are considered stateless so a given instance of a type of Action
@@ -93,7 +96,7 @@ export interface Action {
      * @param paramKey
      * @param paramValue
      */
-    parseParam: (paramKey: string, paramValue: any) => Array<string> | Array<Value>
+    parseParam: (paramKey: string, paramValue: any, columns: List<QueryColumn>) => Array<string> | Array<Value>
 
     singleton?: boolean
 }

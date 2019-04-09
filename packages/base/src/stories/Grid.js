@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { Grid } from "../../../grid"
-import * as constants from "./constants"
-import { withKnobs, text, boolean } from "@storybook/addon-knobs"
+import { withKnobs, text, boolean } from '@storybook/addon-knobs'
+
+import { Grid } from '../components/Grid'
+import * as constants from './constants'
 
 import './stories.css'
 

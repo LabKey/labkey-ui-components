@@ -15,9 +15,11 @@
  */
 import React from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX, QueryGridModel, SchemaQuery, Grid, GridColumn, GridProps, Alert, LoadingSpinner } from '@glass/base'
+import {
+    GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX, QueryGridModel, SchemaQuery,
+    Grid, GridColumn, GridProps, Alert, LoadingSpinner, generateId
+} from '@glass/base'
 
-import { generateId } from '../util/util'
 import { QUERY_GRID_PREFIX } from '../constants'
 import { gridInit, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from '../actions'
 import { getStateQueryGridModel, getStateModelId } from '../model'

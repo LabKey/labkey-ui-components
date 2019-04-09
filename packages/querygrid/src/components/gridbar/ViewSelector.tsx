@@ -5,10 +5,9 @@
 import React from 'reactn'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { List } from 'immutable'
-import { QueryGridModel, ViewInfo, naturalSort } from '@glass/base'
+import { QueryGridModel, ViewInfo, naturalSort, generateId } from '@glass/base'
 
 import { gridSelectView } from '../../actions'
-import { generateId } from '../../util/util'
 
 const emptyList = List<React.ReactNode>();
 

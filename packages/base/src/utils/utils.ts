@@ -124,8 +124,6 @@ export function not(predicate: (...args: any[]) => boolean): (...args: any[]) =>
     };
 }
 
-const DEV_TOOLS_URL_PARAMETER = 'devTools';
-
 export function applyDevTools() {
     if (devToolsActive() && window['devToolsExtension']) {
         return window['devToolsExtension']();
@@ -134,6 +132,7 @@ export function applyDevTools() {
     return f => f;
 }
 
+const DEV_TOOLS_URL_PARAMETER = 'devTools';
 
 export function devToolsActive(): boolean {
     return LABKEY.devMode === true && hasParameter(DEV_TOOLS_URL_PARAMETER);
@@ -143,4 +142,28 @@ export function toggleDevTools() {
     if (LABKEY.devMode) {
         toggleParameter(DEV_TOOLS_URL_PARAMETER, 1);
     }
+}
+
+let DOM_COUNT = 0;
+const DOM_PREFIX = 'labkey-app-';
+
+// Generate an id with a dom-unique integer suffix
+export function generateId(prefix?: string): string {
+    return (prefix ? prefix : DOM_PREFIX) + DOM_COUNT++;
+}
+
+// http://davidwalsh.name/javascript-debounce-function
+export function debounce(func, wait, immediate?: boolean) {
+    let timeout: number;
+    return function () {
+        const context = this, args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = window.setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
 }

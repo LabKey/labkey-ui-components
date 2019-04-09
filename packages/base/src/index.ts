@@ -10,7 +10,7 @@ import {
 } from './models/model'
 import {
     resolveKey, resolveKeyFromJson, resolveSchemaQuery, getSchemaQuery, decodePart, encodePart,
-    applyDevTools, devToolsActive, intersect, naturalSort, not, toggleDevTools, toLowerSafe
+    applyDevTools, devToolsActive, intersect, naturalSort, not, toggleDevTools, toLowerSafe, generateId, debounce
 } from './utils/utils'
 import {
     AppURL, buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter
@@ -89,6 +89,8 @@ export {
     naturalSort,
     not,
     toLowerSafe,
+    generateId,
+    debounce,
 
     // url functions
     buildURL,

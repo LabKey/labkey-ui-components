@@ -126,7 +126,6 @@ describe("<SubMenuItem />", () => {
             items={items}
             text={"onMouseOut item"}
         />);
-        // menu.simulate('mouseover');
         menu.simulate('mouseout');
         expect(mouseOutFn).toHaveBeenCalledTimes(1);
 

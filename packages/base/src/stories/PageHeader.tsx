@@ -10,6 +10,16 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
 import { PageHeader } from "../components/PageHeader";
+import { initNotificationsState } from "../components/notifications/global";
+import { createNotification } from "../components/notifications/actions";
+import { NotificationItemModel, Persistence } from "../components/notifications/model";
+
+initNotificationsState();
+LABKEY['moduleContext'] = {};
+createNotification(new NotificationItemModel({
+    message: "A sample notification",
+    persistence: Persistence.LOGIN_SESSION
+}));
 
 storiesOf("PageHeader", module)
     .addDecorator(withKnobs)
@@ -17,9 +27,12 @@ storiesOf("PageHeader", module)
 
         const hasChildren = boolean("Add content above title?", true);
         const children = hasChildren ? <Button href="#">Header action link</Button> : undefined;
+        const showNotifications = boolean("Show notifications?", false);
+
         return (
             <PageHeader
                 iconCls={text("Icon class name", "fa fa-spinner fa-spin")}
+                showNotifications={showNotifications}
                 title={text("Title", "Loading...")}
                 >
                 {children}

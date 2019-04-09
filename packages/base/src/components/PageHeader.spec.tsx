@@ -10,7 +10,7 @@ describe("<PageHeader />", () => {
     });
 
     test("render with icon", () => {
-        const tree = renderer.create(<PageHeader icon="spinner"/>).toJSON();
+        const tree = renderer.create(<PageHeader iconCls="spinner"/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 

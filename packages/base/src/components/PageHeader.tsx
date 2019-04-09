@@ -3,21 +3,24 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import { Notification } from './notifications/Notification'
+import { User } from "..";
 
 interface PageHeaderProps {
     iconCls?: string
-    // showNotifications?: boolean
+    showNotifications?: boolean
     title?: string
+    user?: User
 }
 
 export class PageHeader extends React.Component<PageHeaderProps, any> {
 
-    // static defaultProps = {
-    //     showNotifications: true
-    // };
+    static defaultProps = {
+        showNotifications: true
+    };
 
     render() {
-        const { iconCls, title } = this.props;
+        const { iconCls, showNotifications, title, user } = this.props;
 
         return (
             <div className="page-header">
@@ -26,7 +29,7 @@ export class PageHeader extends React.Component<PageHeaderProps, any> {
                     {iconCls ? <span className={iconCls}>&nbsp;</span> : null}
                     {title}
                 </h2>
-                {/*{showNotifications && <Notification/>}*/}
+                {showNotifications && <Notification user={user}/>}
             </div>
         )
     }

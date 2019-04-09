@@ -45,23 +45,25 @@ storiesOf("SubMenuItem", module)
                 const disabledItemMsg = text("Disabled item text", undefined, disabledGroup);
                 if (disableItem) {
                     allItems[1]['disabled'] = true;
-                    allItems[1]['disabledOverlayPlacement'] = "bottom"; // using the default "right" will not show it in the storybook frame
                     if (disabledItemMsg) {
                         allItems[1]['disabledMsg'] = disabledItemMsg;
                     }
                 }
+
             }
 
             return (
-                <SubMenuItem
-                    allowFilter={boolean("Allow option filtering?", true, filterGroup)}
-                    disabled={boolean("Disabled?", false)}
-                    filterPlaceholder={text("Filter placeholder text", "Filter...", filterGroup)}
-                    icon={text("Font awesome icon name", undefined)}
-                    items={allItems.slice(0, numItems)}
-                    itemsCls={text("class name for items container", "well")}
-                    maxWithoutFilter={number("Maximum item count without filtering", 4, {}, filterGroup)}
-                    text={text("Text", "Item text")}
-                />
+                <ul style={{listStyle: "none", width: "40%"}}>
+                    <SubMenuItem
+                        allowFilter={boolean("Allow option filtering?", true, filterGroup)}
+                        disabled={boolean("Disabled?", false)}
+                        filterPlaceholder={text("Filter placeholder text", "Filter...", filterGroup)}
+                        icon={text("Font awesome icon name (e.g., star)", undefined)}
+                        items={allItems.slice(0, numItems)}
+                        itemsCls={text("class name for items container", "well")}
+                        maxWithoutFilter={number("Maximum item count without filtering", 4, {}, filterGroup)}
+                        text={text("Text", "Item text")}
+                    />
+                </ul>
             )
         });

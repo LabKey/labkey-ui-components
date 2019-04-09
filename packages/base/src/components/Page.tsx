@@ -3,8 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import { PageHeader } from "./PageHeader";
-import { NotFound } from "./NotFound";
+
+import { PageHeader } from './PageHeader'
+import { NotFound } from './NotFound'
 
 interface PageProps {
     notFound?: boolean

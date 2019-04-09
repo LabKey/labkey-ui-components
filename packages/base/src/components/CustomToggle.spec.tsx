@@ -1,7 +1,8 @@
 import React from 'reactn'
 import renderer from 'react-test-renderer'
-import { CustomToggle } from "./CustomToggle";
-import { shallow } from "enzyme";
+import { shallow } from 'enzyme'
+
+import { CustomToggle } from './CustomToggle'
 
 describe("<CustomToggle />", () => {
    test("render children", () => {

@@ -3,9 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import { ReactNode } from 'react'
 import { List } from 'immutable'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { ReactNode } from "react";
 
 interface MultiMenuButtonProps {
     bsStyle?: string

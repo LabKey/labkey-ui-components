@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { PageHeader } from "./PageHeader";
-import renderer from 'react-test-renderer';
+import renderer from 'react-test-renderer'
+
+import { PageHeader } from './PageHeader'
 
 describe("<PageHeader />", () => {
     test("render without properties", () => {

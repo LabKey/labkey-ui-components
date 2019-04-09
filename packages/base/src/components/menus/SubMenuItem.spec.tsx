@@ -1,7 +1,8 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
-import { shallow } from "enzyme";
-import { SubMenuItem } from "./SubMenuItem";
+import { shallow } from 'enzyme'
+
+import { SubMenuItem } from './SubMenuItem'
 
 const items = [
     {

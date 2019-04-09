@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { List } from 'immutable'
 import renderer from 'react-test-renderer'
-import { shallow } from "enzyme";
-import { MultiMenuButton } from "./MultiMenuButton";
+import { shallow } from 'enzyme'
+
+import { MultiMenuButton } from './MultiMenuButton'
 
 const menuKeys = List<string>(["first", "second", "third"]);
 

@@ -1,7 +1,8 @@
 import * as React from "react";
 import { MenuItem } from 'react-bootstrap'
-import { List } from 'immutable';
-import { ISubItem, SubMenuItem } from "./SubMenuItem";
+import { List } from 'immutable'
+
+import { ISubItem, SubMenuItem } from './SubMenuItem'
 
 export interface MenuOption {
     href: string

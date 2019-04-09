@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { List } from 'immutable'
 import renderer from 'react-test-renderer'
-import { MenuOption, SubMenu } from "./SubMenu";
+
+import { MenuOption, SubMenu } from './SubMenu'
 
 describe("<SubMenu />", () => {
     test("no options", () => {

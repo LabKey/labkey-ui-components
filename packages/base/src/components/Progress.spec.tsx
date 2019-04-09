@@ -1,7 +1,8 @@
-import * as React from 'react';
-import { Modal, ProgressBar } from 'react-bootstrap';
-import { Progress } from "./Progress";
-import { mount } from "enzyme";
+import * as React from 'react'
+import { Modal, ProgressBar } from 'react-bootstrap'
+import { mount } from 'enzyme'
+
+import { Progress } from './Progress'
 
 beforeAll(() => {
     jest.useFakeTimers();

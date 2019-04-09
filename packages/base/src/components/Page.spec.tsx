@@ -1,9 +1,10 @@
 import * as React from 'react';
-import renderer from 'react-test-renderer';
-import { Page } from "./Page";
-import { shallow } from "enzyme";
-import { NotFound } from "./NotFound";
-import { PageHeader } from "./PageHeader";
+import renderer from 'react-test-renderer'
+import { shallow } from 'enzyme'
+
+import { Page } from './Page'
+import { NotFound } from './NotFound'
+import { PageHeader } from './PageHeader'
 
 describe("<Page /> document title", () => {
    test("empty properties", () => {

@@ -1,6 +1,7 @@
-import React from 'reactn';
-import renderer from 'react-test-renderer';
-import { Alert } from "./Alert";
+import * from 'react'
+import renderer from 'react-test-renderer'
+
+import { Alert } from './Alert'
 
 describe('<Alert />', () => {
     test('Renders with children', () => {

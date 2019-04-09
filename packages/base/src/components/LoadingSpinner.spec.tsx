@@ -1,6 +1,7 @@
 import React from 'reactn';
-import renderer from 'react-test-renderer';
-import { LoadingSpinner } from "./LoadingSpinner";
+import renderer from 'react-test-renderer'
+
+import { LoadingSpinner } from './LoadingSpinner'
 
 describe("<LoadingSpinner />", () => {
     test("render without properties", () => {

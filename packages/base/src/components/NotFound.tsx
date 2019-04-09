@@ -3,7 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import { Page } from "./Page";
+
+import { Page } from './Page'
 
 export class NotFound extends React.Component<any, any>{
     render() {

@@ -1,9 +1,9 @@
 {
-  "name": "@glass/PACKAGE_NAME",
-  "version": "0.0.1",
-  "description": "PACkAGE_DESCRIPTION",
-  "main": "dist/PACKAGE_NAME.cjs.js",
-  "module": "dist/PACKAGE_NAME.es.js",
+  "name": "@glass/base",
+  "version": "0.1.0",
+  "description": "Base components, models, and utility functions for LabKey applications and pages",
+  "main": "dist/base.cjs.js",
+  "module": "dist/base.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -20,7 +20,7 @@
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "AUTHOR_NAME",
+  "author": "Cory Nathe",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"

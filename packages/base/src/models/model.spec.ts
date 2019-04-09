@@ -1,7 +1,4 @@
-import { List } from 'immutable'
-
-import { QueryGridModel, QueryInfo } from './models'
-import { ViewInfo } from './models'
+import { QueryGridModel } from './model'
 
 describe("QueryGridModel", () => {
 

@@ -9,7 +9,6 @@ import { storiesOf } from '@storybook/react'
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
-
 import { MultiMenuButton } from "../components/menus/MultiMenuButton";
 import { MenuOption, SubMenu } from "../components/menus/SubMenu";
 

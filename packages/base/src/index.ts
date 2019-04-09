@@ -17,7 +17,7 @@ import {
 } from './url/ActionURL'
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'
-import { SubMenu } from "./components/menus/SubMenu";
+import { MenuOption, SubMenu } from "./components/menus/SubMenu";
 import { SubMenuItem } from "./components/menus/SubMenuItem";
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
@@ -27,6 +27,7 @@ import { PageHeader } from './components/PageHeader'
 import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
+import { createNotification } from './components/notifications/actions'
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -71,11 +72,15 @@ export {
     Page,
     PageHeader,
     Progress,
+    MenuOption,
     MultiMenuButton,
     SubMenu,
     SubMenuItem,
     Tip,
     Grid,
+
+    // notification functions
+    createNotification,
 
     // util functions
     decodePart,

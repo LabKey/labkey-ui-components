@@ -18,8 +18,9 @@ const globals = {
 const external = Object.keys(globals);
 
 const namedExports = {
-    // Could be utilized for named exports
-    // 'immutable': [ 'fromJS', 'List', 'Map' ]
+    // Named exports for packages
+    // (when you get an error like: Error: 'getGlobal' is not exported by ../../node_modules/reactn/index.js)
+    'reactn': ['getGlobal', 'setGlobal'],
 };
 
 export default [

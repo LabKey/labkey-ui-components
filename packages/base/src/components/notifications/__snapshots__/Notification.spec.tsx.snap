@@ -1,0 +1,374 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Notification/> multiple notification classes 1`] = `
+Array [
+  <div
+    className="notification-container alert alert-info"
+    key="info"
+  >
+    <ul>
+      <li
+        key="0"
+      >
+        <NotificationItem
+          item={
+            Immutable.Record {
+              "alertClass": "info",
+              "data": undefined,
+              "id": "info1",
+              "isDismissible": true,
+              "isDismissed": false,
+              "message": "info message 1",
+              "onDismiss": undefined,
+              "persistence": 0,
+            }
+          }
+          user={
+            Immutable.Record {
+              "id": 0,
+              "canDelete": false,
+              "canDeleteOwn": false,
+              "canInsert": false,
+              "canUpdate": false,
+              "canUpdateOwn": false,
+              "displayName": "guest",
+              "email": "guest",
+              "phone": null,
+              "avatar": "undefined/_images/defaultavatar.png",
+              "isAdmin": false,
+              "isGuest": true,
+              "isSignedIn": false,
+              "isSystemAdmin": false,
+              "permissionsList": Immutable.List [],
+            }
+          }
+        />
+      </li>
+      <li
+        key="1"
+      >
+        <NotificationItem
+          item={
+            Immutable.Record {
+              "alertClass": "info",
+              "data": undefined,
+              "id": "info2",
+              "isDismissible": true,
+              "isDismissed": false,
+              "message": "info message 2",
+              "onDismiss": undefined,
+              "persistence": 0,
+            }
+          }
+          user={
+            Immutable.Record {
+              "id": 0,
+              "canDelete": false,
+              "canDeleteOwn": false,
+              "canInsert": false,
+              "canUpdate": false,
+              "canUpdateOwn": false,
+              "displayName": "guest",
+              "email": "guest",
+              "phone": null,
+              "avatar": "undefined/_images/defaultavatar.png",
+              "isAdmin": false,
+              "isGuest": true,
+              "isSignedIn": false,
+              "isSystemAdmin": false,
+              "permissionsList": Immutable.List [],
+            }
+          }
+        />
+      </li>
+    </ul>
+  </div>,
+  <div
+    className="notification-container alert alert-success"
+    key="success"
+  >
+    <NotificationItem
+      item={
+        Immutable.Record {
+          "alertClass": "success",
+          "data": undefined,
+          "id": "notification_0",
+          "isDismissible": true,
+          "isDismissed": false,
+          "message": "default message class",
+          "onDismiss": undefined,
+          "persistence": 0,
+        }
+      }
+      key="0"
+      user={
+        Immutable.Record {
+          "id": 0,
+          "canDelete": false,
+          "canDeleteOwn": false,
+          "canInsert": false,
+          "canUpdate": false,
+          "canUpdateOwn": false,
+          "displayName": "guest",
+          "email": "guest",
+          "phone": null,
+          "avatar": "undefined/_images/defaultavatar.png",
+          "isAdmin": false,
+          "isGuest": true,
+          "isSignedIn": false,
+          "isSystemAdmin": false,
+          "permissionsList": Immutable.List [],
+        }
+      }
+    />
+  </div>,
+  <div
+    className="notification-container alert alert-danger"
+    key="danger"
+  >
+    <NotificationItem
+      item={
+        Immutable.Record {
+          "alertClass": "danger",
+          "data": undefined,
+          "id": "danger1",
+          "isDismissible": true,
+          "isDismissed": false,
+          "message": "Danger, Will Robinson!",
+          "onDismiss": undefined,
+          "persistence": 0,
+        }
+      }
+      key="0"
+      user={
+        Immutable.Record {
+          "id": 0,
+          "canDelete": false,
+          "canDeleteOwn": false,
+          "canInsert": false,
+          "canUpdate": false,
+          "canUpdateOwn": false,
+          "displayName": "guest",
+          "email": "guest",
+          "phone": null,
+          "avatar": "undefined/_images/defaultavatar.png",
+          "isAdmin": false,
+          "isGuest": true,
+          "isSignedIn": false,
+          "isSystemAdmin": false,
+          "permissionsList": Immutable.List [],
+        }
+      }
+    />
+  </div>,
+]
+`;
+
+exports[`<Notification/> no notification with header 1`] = `null`;
+
+exports[`<Notification/> no notifications 1`] = `null`;
+
+exports[`<Notification/> one notification 1`] = `
+<div
+  className="notification-container alert alert-success"
+  key="success"
+>
+  <NotificationItem
+    item={
+      Immutable.Record {
+        "alertClass": "success",
+        "data": undefined,
+        "id": "one_notification",
+        "isDismissible": true,
+        "isDismissed": false,
+        "message": "one is the loneliest number",
+        "onDismiss": undefined,
+        "persistence": 0,
+      }
+    }
+    key="0"
+    user={
+      Immutable.Record {
+        "id": 0,
+        "canDelete": false,
+        "canDeleteOwn": false,
+        "canInsert": false,
+        "canUpdate": false,
+        "canUpdateOwn": false,
+        "displayName": "guest",
+        "email": "guest",
+        "phone": null,
+        "avatar": "undefined/_images/defaultavatar.png",
+        "isAdmin": false,
+        "isGuest": true,
+        "isSignedIn": false,
+        "isSystemAdmin": false,
+        "permissionsList": Immutable.List [],
+      }
+    }
+  />
+</div>
+`;
+
+exports[`<Notification/> with trial notification for admin 1`] = `
+<Notification
+  user={
+    Immutable.Record {
+      "id": 0,
+      "canDelete": false,
+      "canDeleteOwn": false,
+      "canInsert": false,
+      "canUpdate": false,
+      "canUpdateOwn": false,
+      "displayName": "guest",
+      "email": "guest",
+      "phone": null,
+      "avatar": "undefined/_images/defaultavatar.png",
+      "isAdmin": true,
+      "isGuest": true,
+      "isSignedIn": false,
+      "isSystemAdmin": false,
+      "permissionsList": Immutable.List [],
+    }
+  }
+>
+  <div
+    className="notification-container alert alert-warning"
+    key="warning"
+  >
+    <NotificationItem
+      item={
+        Immutable.Record {
+          "alertClass": "warning",
+          "data": undefined,
+          "id": "trial_ending",
+          "isDismissible": true,
+          "isDismissed": false,
+          "message": [Function],
+          "onDismiss": [Function],
+          "persistence": 1,
+        }
+      }
+      key="0"
+      user={
+        Immutable.Record {
+          "id": 0,
+          "canDelete": false,
+          "canDeleteOwn": false,
+          "canInsert": false,
+          "canUpdate": false,
+          "canUpdateOwn": false,
+          "displayName": "guest",
+          "email": "guest",
+          "phone": null,
+          "avatar": "undefined/_images/defaultavatar.png",
+          "isAdmin": true,
+          "isGuest": true,
+          "isSignedIn": false,
+          "isSystemAdmin": false,
+          "permissionsList": Immutable.List [],
+        }
+      }
+    >
+      <div>
+        <span>
+          This LabKey trial site will expire in 1 day.
+           
+          <a
+            href="your/link/to/the/future"
+            target="_blank"
+          >
+            Upgrade now
+          </a>
+        </span>
+        <i
+          className="fa fa-times-circle pointer"
+          onClick={[Function]}
+          style={
+            Object {
+              "float": "right",
+            }
+          }
+        />
+      </div>
+    </NotificationItem>
+  </div>
+</Notification>
+`;
+
+exports[`<Notification/> with trial notification for non-admin 1`] = `
+<Notification
+  user={
+    Immutable.Record {
+      "id": 0,
+      "canDelete": false,
+      "canDeleteOwn": false,
+      "canInsert": false,
+      "canUpdate": false,
+      "canUpdateOwn": false,
+      "displayName": "guest",
+      "email": "guest",
+      "phone": null,
+      "avatar": "undefined/_images/defaultavatar.png",
+      "isAdmin": false,
+      "isGuest": true,
+      "isSignedIn": false,
+      "isSystemAdmin": false,
+      "permissionsList": Immutable.List [],
+    }
+  }
+>
+  <div
+    className="notification-container alert alert-warning"
+    key="warning"
+  >
+    <NotificationItem
+      item={
+        Immutable.Record {
+          "alertClass": "warning",
+          "data": undefined,
+          "id": "trial_ending",
+          "isDismissible": true,
+          "isDismissed": false,
+          "message": [Function],
+          "onDismiss": [Function],
+          "persistence": 1,
+        }
+      }
+      key="0"
+      user={
+        Immutable.Record {
+          "id": 0,
+          "canDelete": false,
+          "canDeleteOwn": false,
+          "canInsert": false,
+          "canUpdate": false,
+          "canUpdateOwn": false,
+          "displayName": "guest",
+          "email": "guest",
+          "phone": null,
+          "avatar": "undefined/_images/defaultavatar.png",
+          "isAdmin": false,
+          "isGuest": true,
+          "isSignedIn": false,
+          "isSystemAdmin": false,
+          "permissionsList": Immutable.List [],
+        }
+      }
+    >
+      <div>
+        This LabKey trial site will expire in 1 day.
+        <i
+          className="fa fa-times-circle pointer"
+          onClick={[Function]}
+          style={
+            Object {
+              "float": "right",
+            }
+          }
+        />
+      </div>
+    </NotificationItem>
+  </div>
+</Notification>
+`;

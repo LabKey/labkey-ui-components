@@ -4,8 +4,7 @@
  */
 import React from 'reactn'
 import { Panel } from 'react-bootstrap'
-import { QueryGridModel } from "@glass/models";
-import { LoadingSpinner } from "@glass/utils";
+import { QueryGridModel, LoadingSpinner } from "@glass/base";
 
 import { gridInit } from "../../actions";
 import { EditableGrid, EditableGridProps } from "./EditableGrid";

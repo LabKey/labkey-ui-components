@@ -1,9 +1,9 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer';
+import { QueryGridModel, SchemaQuery } from '@glass/base'
 
-import { QueryGrid } from "./QueryGrid";
-import { QueryGridModel, SchemaQuery } from "@glass/models/src";
-import { initQueryGridState, updateQueryGridModel } from "../global";
+import { QueryGrid } from './QueryGrid'
+import { initQueryGridState, updateQueryGridModel } from '../global'
 
 beforeAll(() => {
     initQueryGridState()

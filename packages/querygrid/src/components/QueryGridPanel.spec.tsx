@@ -1,10 +1,10 @@
 import React from 'reactn';
-import renderer from 'react-test-renderer';
-import {List, Map, fromJS} from 'immutable';
+import renderer from 'react-test-renderer'
+import {List, Map, fromJS} from 'immutable'
+import { QueryGridModel } from '@glass/base'
 
-import { QueryGridPanel } from "./QueryGridPanel";
-import { QueryGridModel } from "@glass/models/src";
-import { initQueryGridState, updateQueryGridModel } from "../global";
+import { QueryGridPanel } from './QueryGridPanel'
+import { initQueryGridState, updateQueryGridModel } from '../global'
 
 const modelIsLoaded = new QueryGridModel({
     id: 'queryGridLoaded',

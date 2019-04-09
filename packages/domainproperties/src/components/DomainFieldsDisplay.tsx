@@ -3,12 +3,11 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import {Panel} from "react-bootstrap";
-import {QueryColumn} from "@glass/models";
-import {Grid} from "@glass/grid";
+import { Panel } from 'react-bootstrap'
+import { Grid } from '@glass/base'
 
-import {DomainDesign} from "../models";
-import {DOMAIN_FIELD_COLS} from "../constants";
+import { DomainDesign } from "../models";
+import { DOMAIN_FIELD_COLS } from "../constants";
 
 type Props = {
     domain: DomainDesign,

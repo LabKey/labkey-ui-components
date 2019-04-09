@@ -26,6 +26,7 @@ import { Page } from './components/Page'
 import { PageHeader } from './components/PageHeader'
 import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
+import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -42,6 +43,7 @@ export {
     IGridLoader,
     IGridResponse,
     IGridSelectionResponse,
+    GridProps,
 
     //models
     AppURL,
@@ -58,6 +60,8 @@ export {
     ViewInfo,
     MessageLevel,
     LastActionStatus,
+    GridColumn,
+    GridData,
 
     //components
     Alert,
@@ -71,6 +75,7 @@ export {
     SubMenu,
     SubMenuItem,
     Tip,
+    Grid,
 
     // util functions
     decodePart,

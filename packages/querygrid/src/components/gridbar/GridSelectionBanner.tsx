@@ -4,7 +4,7 @@
  */
 import React from 'reactn'
 import { Button } from 'react-bootstrap'
-import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/models'
+import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/base'
 
 import { gridSelectAll } from '../../actions'
 

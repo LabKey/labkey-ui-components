@@ -4,8 +4,7 @@
  */
 import * as React from 'react'
 import $ from 'jquery'
-import { QueryGridModel } from '@glass/models'
-import { LoadingSpinner } from '@glass/utils'
+import { QueryGridModel, LoadingSpinner } from '@glass/base'
 
 import { DataViewInfo, VisualizationConfigModel } from '../../model'
 import { getVisualizationConfig } from '../../actions'

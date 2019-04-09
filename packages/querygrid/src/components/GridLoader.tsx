@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { fromJS, List } from 'immutable'
-import { QueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse } from '@glass/models'
+import { QueryGridModel, IGridLoader, IGridResponse, IGridSelectionResponse } from '@glass/base'
 
 import { selectRows } from '../query/api'
 import { getSelected } from '../actions'

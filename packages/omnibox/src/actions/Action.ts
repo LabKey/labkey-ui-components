@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { QueryColumn } from '@glass/models'
+import { QueryColumn } from '@glass/base'
 
 /**
  * The Action interface specifies the functionality that must be implemented for an Action to participate

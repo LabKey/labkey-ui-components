@@ -5,8 +5,7 @@
 import React from 'reactn'
 import { DropdownButton, MenuItem, Modal } from 'react-bootstrap'
 import { List } from 'immutable'
-import { QueryGridModel } from '@glass/models'
-import { naturalSort } from '@glass/utils'
+import { QueryGridModel, naturalSort } from '@glass/base'
 
 import { generateId } from '../../util/util'
 import { DataViewInfo } from '../../model'

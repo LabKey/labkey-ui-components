@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import {List} from "immutable";
-import {GridColumn} from "@glass/grid";
+import {GridColumn} from "@glass/base";
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

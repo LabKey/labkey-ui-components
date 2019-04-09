@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -29,9 +29,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/grid": "0.0.3",
-    "@glass/models": "0.0.6",
-    "@glass/utils": "0.0.8"
+    "@glass/base": "0.1.0"
   },
   "jest": {
     "globals": {

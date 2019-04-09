@@ -3,9 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Set } from 'immutable'
-import { Filter, Utils } from '@labkey/api'
-import { QueryGridModel, QueryColumn } from '@glass/models'
-import { naturalSort } from '@glass/utils'
+import { Filter } from '@labkey/api'
+import { QueryGridModel, QueryColumn, naturalSort } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
 

@@ -7,7 +7,7 @@ import { Filter } from '@labkey/api'
 import {
     QueryColumn, QueryInfo, QueryGridModel, SchemaQuery, ViewInfo,
     IQueryGridModel, IGridLoader, resolveSchemaQuery
-} from '@glass/models'
+} from '@glass/base'
 
 import { genCellKey } from './actions'
 import { getQueryGridModel } from './global'

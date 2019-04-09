@@ -2,12 +2,11 @@ import * as React from 'react'
 import { ReactNode } from "react";
 import { Map } from 'immutable'
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
+import { User } from '@glass/base'
 
 import { ProductMenu } from "./ProductMenu";
 import { SearchBox } from "./SearchBox";
 import { UserMenu } from "./UserMenu";
-
-import { User } from '@glass/models';
 import { MenuSectionConfig } from "./ProductMenuSection";
 import { ProductMenuModel } from "../model";
 

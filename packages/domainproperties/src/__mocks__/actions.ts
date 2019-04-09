@@ -1,5 +1,5 @@
 import {Map, fromJS} from "immutable";
-import {SchemaQuery} from "@glass/models";
+import {SchemaQuery} from "@glass/base";
 
 import { DomainDesign } from "../models";
 

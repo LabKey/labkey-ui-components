@@ -16,7 +16,7 @@ This repository defines all of the components available in the @glass scope. The
 | @glass/models | Shared models for LabKey components | 0.0.6 |
 | @glass/navigation | Application navigation elements and functions | 0.0.19 |
 | @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.8 |
-| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.23 |
+| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.24 |
 | @glass/utils | Utility functions and components for LabKey views | 0.0.8 |
 
 ## Using @glass npm packages

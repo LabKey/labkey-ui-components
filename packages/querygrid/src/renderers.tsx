@@ -70,13 +70,13 @@ export function headerSelectionCell(handleSelection: any, model: QueryGridModel)
 }
 
 export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
-
     if (columns) {
+        const columnRenderers: Map<string, any> = getQueryColumnRenderers();
+
         return columns.map((col: QueryColumn) => {
-            const columnRenderers = getQueryColumnRenderers();
             let node = DefaultRenderer;
-            if (col && col.columnRenderer && columnRenderers[col.columnRenderer.toLowerCase()]) {
-                node = columnRenderers[col.columnRenderer.toLowerCase()];
+            if (col && col.columnRenderer && columnRenderers.has(col.columnRenderer.toLowerCase())) {
+                node = columnRenderers.get(col.columnRenderer.toLowerCase());
             }
 
             // TODO: Just generate one function per type

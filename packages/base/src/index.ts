@@ -28,6 +28,7 @@ import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { createNotification } from './components/notifications/actions'
+import { RequiresPermissionHOC } from "./components/Permissions"
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -78,6 +79,7 @@ export {
     SubMenuItem,
     Tip,
     Grid,
+    RequiresPermissionHOC,
 
     // notification functions
     createNotification,

@@ -10,3 +10,15 @@ export enum GRID_CHECKBOX_OPTIONS {
     SOME,
     NONE
 }
+
+export const PermissionTypes = {
+    // CRUD
+    Admin: 'org.labkey.api.security.permissions.AdminPermission',
+    Delete: 'org.labkey.api.security.permissions.DeletePermission',
+    Insert: 'org.labkey.api.security.permissions.InsertPermission',
+    Read: 'org.labkey.api.security.permissions.ReadPermission',
+    Update: 'org.labkey.api.security.permissions.UpdatePermission',
+
+    // Study
+    DesignAssay: 'org.labkey.api.study.permissions.DesignAssayPermission'
+};

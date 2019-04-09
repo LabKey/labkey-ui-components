@@ -1,8 +1,10 @@
-import { QueryGridModel, QueryInfo } from ".";
-import { ViewInfo } from ".";
-import { List } from "immutable";
+import { List } from 'immutable'
+
+import { QueryGridModel, QueryInfo } from './models'
+import { ViewInfo } from './models'
 
 describe("QueryGridModel", () => {
+
    test("createParam no prefix", () => {
         const model = new QueryGridModel();
         expect(model.createParam("param")).toEqual("param");

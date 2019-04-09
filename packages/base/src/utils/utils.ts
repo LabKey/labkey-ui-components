@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { SchemaQuery } from './model'
+import { SchemaQuery } from '../models/model'
 
 // 36009: Case-insensitive variant of QueryKey.decodePart
 export function decodePart(s: string): string {

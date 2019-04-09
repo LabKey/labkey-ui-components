@@ -1,5 +1,5 @@
 import { getSchemaQuery, resolveKey, resolveKeyFromJson, resolveSchemaQuery } from "./utils";
-import { SchemaQuery } from "./model";
+import { SchemaQuery } from "../models/model";
 
 describe('resolveKey', () => {
     test("no encodings", () => {
@@ -11,7 +11,7 @@ describe('resolveKey', () => {
     test("with encodings", () => {
         expect(resolveKey("$chem&", "{query,/.more~less}")).toBe("$dchem$a/{query$c$s$pmore$tless$b");
         expect(resolveKey("$,hema$", "q&x&&&d")).toBe("$d$chema$d/q$ax$a$a$ad");
-    })
+    });
 });
 
 describe("resolveKeyFromJson", () => {
@@ -36,7 +36,7 @@ describe("resolveSchemaQuery", () => {
             queryName: "my favorite query"
         });
         expect(resolveSchemaQuery(schemaQuery)).toBe("name/my favorite query")
-    })
+    });
 });
 
 describe("getSchemaQuery", () => {
@@ -57,5 +57,5 @@ describe("getSchemaQuery", () => {
            schemaName: "one.two.three$",
            queryName: "q1"
        }));
-   })
+   });
 });

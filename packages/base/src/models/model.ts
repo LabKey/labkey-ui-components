@@ -7,7 +7,7 @@ import { ActionURL, Filter } from '@labkey/api'
 import { intersect, toLowerSafe } from '@glass/utils'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey } from "./utils";
+import { resolveKey } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();

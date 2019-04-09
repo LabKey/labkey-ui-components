@@ -15,16 +15,16 @@ import { dismissNotifications } from "./global";
 import { getDateFormat } from "../../utils/Date";
 
 
-interface Props {
+interface NotificationProps {
     notificationHeader?: string
-    user: User
+    user?: User
 }
 
 
-export class Notification extends React.Component<Props, any> {
+export class Notification extends React.Component<NotificationProps, any> {
 
     componentWillMount() {
-        this.createSystemNotification();
+        Notification.createSystemNotification();
     }
 
     componentWillUnmount() {
@@ -58,7 +58,7 @@ export class Notification extends React.Component<Props, any> {
         return null;
     }
 
-    createSystemNotification() {
+    static createSystemNotification() {
         if (LABKEY.moduleContext.trialservices && LABKEY.moduleContext.trialservices.trialEndDate) {
 
             createNotification({

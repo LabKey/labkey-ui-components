@@ -28,6 +28,7 @@ import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { createNotification } from './components/notifications/actions'
+import { initNotificationsState } from './components/notifications/global'
 import { RequiresPermissionHOC } from "./components/Permissions"
 
 // Import the scss file so it will be processed in the rollup scripts
@@ -83,6 +84,7 @@ export {
 
     // notification functions
     createNotification,
+    initNotificationsState,
 
     // util functions
     decodePart,

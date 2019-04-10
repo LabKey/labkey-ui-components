@@ -5,6 +5,11 @@ import { shallow } from 'enzyme'
 import { Page } from './Page'
 import { NotFound } from './NotFound'
 import { PageHeader } from './PageHeader'
+import { notificationInit } from "../test/setupUtils";
+
+beforeEach(() => {
+    notificationInit()
+});
 
 describe("<Page /> document title", () => {
    test("empty properties", () => {

@@ -8,19 +8,16 @@ import { storiesOf } from '@storybook/react'
 import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
-import { initNotificationsState } from "../components/notifications/global";
 import { User } from "@glass/models";
 import { Notification } from '../components/notifications/Notification';
 import { createNotification } from "../components/notifications/actions";
-import moment = require("moment");
 import { NotificationItemModel } from "../components/notifications/model";
 import { generateId } from "../utils/utils";
+import { notificationInit } from "../test/setupUtils";
+import moment = require("moment");
 
-initNotificationsState();
-LABKEY['container'] = {
-    'formats': {dateTimeFormat: "yyyy-MM-dd HH:mm", numberFormat: null, dateFormat: "yyyy-MM-dd"}
-};
-LABKEY['moduleContext'] = {};
+// initialize the global state and the LABKEY object
+notificationInit();
 
 storiesOf("Notification", module)
     .addDecorator(withKnobs)

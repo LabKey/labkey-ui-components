@@ -10,12 +10,12 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
 import { PageHeader } from "../components/PageHeader";
-import { initNotificationsState } from "../components/notifications/global";
 import { createNotification } from "../components/notifications/actions";
 import { NotificationItemModel, Persistence } from "../components/notifications/model";
+import { notificationInit } from "../test/setupUtils";
 
-initNotificationsState();
-LABKEY['moduleContext'] = {};
+notificationInit();
+
 createNotification(new NotificationItemModel({
     message: "A sample notification",
     persistence: Persistence.LOGIN_SESSION

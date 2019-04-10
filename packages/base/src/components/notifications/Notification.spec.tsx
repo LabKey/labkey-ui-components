@@ -5,18 +5,12 @@ import { Notification } from './Notification'
 import { createNotification } from "./actions";
 import { NotificationItemModel } from "./model";
 import { mount, shallow } from "enzyme";
-import { initNotificationsState } from "./global";
 import { NotificationItem } from "./NotificationItem";
+import { notificationInit } from "../../test/setupUtils";
 import moment = require("moment");
 
 beforeEach(() => {
-    initNotificationsState();
-    LABKEY.moduleContext = {
-
-    };
-    LABKEY.container = {
-        'formats': {dateTimeFormat: "yyyy-MM-dd HH:mm", numberFormat: null, dateFormat: "yyyy-MM-dd"}
-    };
+    notificationInit()
 });
 
 describe("<Notification/>", () => {

@@ -2,6 +2,11 @@ import * as React from 'react';
 import renderer from 'react-test-renderer'
 
 import { PageHeader } from './PageHeader'
+import { notificationInit } from '../test/setupUtils'
+
+beforeEach(() => {
+   notificationInit()
+});
 
 describe("<PageHeader />", () => {
     test("render without properties", () => {

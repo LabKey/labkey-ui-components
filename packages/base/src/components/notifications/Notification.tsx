@@ -59,7 +59,7 @@ export class Notification extends React.Component<NotificationProps, any> {
     }
 
     static createSystemNotification() {
-        if (LABKEY.moduleContext.trialservices && LABKEY.moduleContext.trialservices.trialEndDate) {
+        if (LABKEY.moduleContext && LABKEY.moduleContext.trialservices && LABKEY.moduleContext.trialservices.trialEndDate) {
 
             createNotification({
                 alertClass: 'warning',
@@ -97,14 +97,17 @@ export class Notification extends React.Component<NotificationProps, any> {
 
     getAlertClassLists() {
         let listMap = Map<string, List<NotificationItemModel>>();
-        this.getNotifications().forEach((item) => {
-            if (!item.isDismissed) {
-                if (!listMap.get(item.alertClass)) {
-                    listMap = listMap.set(item.alertClass, List<NotificationItemModel>().asMutable());
+        const notifications = this.getNotifications();
+        if (notifications) {
+            notifications.forEach((item) => {
+                if (!item.isDismissed) {
+                    if (!listMap.get(item.alertClass)) {
+                        listMap = listMap.set(item.alertClass, List<NotificationItemModel>().asMutable());
+                    }
+                    listMap.get(item.alertClass).push(item);
                 }
-                listMap.get(item.alertClass).push(item);
-            }
-        });
+            });
+        }
         return listMap.asImmutable();
     }
 

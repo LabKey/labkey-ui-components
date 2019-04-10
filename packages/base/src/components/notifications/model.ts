@@ -15,6 +15,8 @@ export const enum Persistence {
     LOGIN_SESSION,
 }
 
+// This interface is available so you do not have .create a Model object and so the id can be optionally
+// created for you.
 export interface NotificationItemProps {
     alertClass?: string
     data?: any

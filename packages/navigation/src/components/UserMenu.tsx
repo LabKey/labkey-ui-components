@@ -8,7 +8,6 @@ import { Dropdown, Image, MenuItem } from 'react-bootstrap'
 import { User, buildURL, devToolsActive, toggleDevTools } from '@glass/base'
 
 import { MenuSectionModel, ProductMenuModel } from '../model'
-import { createNotification } from "@glass/base";
 
 interface UserMenuProps {
     model: ProductMenuModel
@@ -19,18 +18,16 @@ interface UserMenuProps {
 
 export class UserMenu extends React.Component<UserMenuProps, any> {
 
+    constructor(props: any) {
+        super(props);
+    }
+
     getSection() : MenuSectionModel {
         return this.props.model.getSection("user");
     }
 
     logout() {
         console.log("Not logging you out.  Just so you know.");
-    }
-
-    notify() {
-        createNotification({
-            message: 'This is a test notification.'
-        })
     }
 
     render() {
@@ -83,9 +80,6 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                                 </MenuItem>
                                 <MenuItem onClick={toggleDevTools}>
                                     {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
-                                </MenuItem>
-                                <MenuItem onClick={this.notify}>
-                                    Fire Notification
                                 </MenuItem>
                                 {extraDevItems}
                             </>

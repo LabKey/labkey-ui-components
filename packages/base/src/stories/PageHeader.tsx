@@ -17,7 +17,8 @@ import { notificationInit } from "../test/setupUtils";
 notificationInit();
 
 createNotification(new NotificationItemModel({
-    message: "A sample notification",
+    id: "login_seesion_notice",
+    message: "A login session notification (from PageHeader story)",
     persistence: Persistence.LOGIN_SESSION
 }));
 

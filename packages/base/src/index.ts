@@ -32,6 +32,7 @@ import {
     generateId,
     getSchemaQuery,
     intersect,
+    hasAllPermissions,
     naturalSort,
     not,
     resolveKey,
@@ -70,7 +71,10 @@ import {
     NotificationItemProps,
     Persistence,
 } from './components/notifications/model'
-import { RequiresPermissionHOC } from "./components/Permissions"
+import {
+    PermissionAllowed,
+    PermissionNotAllowed,
+} from "./components/Permissions"
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
@@ -126,7 +130,8 @@ export {
     SubMenuItem,
     Tip,
     Grid,
-    RequiresPermissionHOC,
+    PermissionAllowed,
+    PermissionNotAllowed,
 
     // notification functions
     createNotification,
@@ -141,6 +146,7 @@ export {
     resolveSchemaQuery,
     insertColumnFilter,
     intersect,
+    hasAllPermissions,
     naturalSort,
     not,
     toLowerSafe,

@@ -1,10 +1,12 @@
 import { List } from 'immutable'
 
-import { SchemaQuery } from '../models/model'
+import { SchemaQuery, User } from '../models/model'
 import {
     getSchemaQuery, resolveKey, resolveKeyFromJson, resolveSchemaQuery,
     intersect, naturalSort, toLowerSafe
 } from './utils'
+import { hasAllPermissions } from './utils';
+import { PermissionTypes } from '../models/constants'
 
 const emptyList = List<string>();
 
@@ -127,5 +129,38 @@ describe("toLowerSafe", () => {
     test("strings and numbers", () => {
         expect(toLowerSafe(List<string>([1, 2, 'TEST ', ' Test', 3.0, 4.4, 'TeSt', 'test'])))
             .toEqual(List<string>(['test ', ' test', 'test', 'test']));
+    });
+});
+
+describe("hasAllPermissions", () => {
+    test("user without permission", () => {
+        expect(hasAllPermissions(new User(), [PermissionTypes.Insert])).toBe(false);
+    });
+
+
+    test("user has some but not all permissions", () => {
+        expect(hasAllPermissions(new User({
+            permissionsList: [PermissionTypes.Read]
+        }), [PermissionTypes.Insert, PermissionTypes.Read])).toBe(false);
+    });
+
+    test("user has only required permission", () => {
+        expect(hasAllPermissions(new User({
+            permissionsList: [PermissionTypes.Insert]
+        }), [PermissionTypes.Insert])).toBe(true);
+    });
+
+    test("user has more permission", () => {
+        expect(hasAllPermissions(new User({
+            permissionsList: [PermissionTypes.Insert, PermissionTypes.Delete, PermissionTypes.Read]
+        }), [PermissionTypes.Insert])).toBe(true);
+    });
+
+
+    test("user permissions do not intersect", () => {
+        expect(hasAllPermissions(new User({
+            permissionsList: [PermissionTypes.Delete, PermissionTypes.Read]
+        }), [PermissionTypes.Insert])).toBe(false);
+
     });
 });

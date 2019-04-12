@@ -4,6 +4,7 @@
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
+  "style": "dist/domainproperties.css",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -29,6 +30,10 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "1.2.17",
+    "@fortawesome/free-solid-svg-icons": "5.8.1",
+    "@fortawesome/react-fontawesome": "0.1.4",
+    "@fortawesome/fontawesome-free": "5.8.1",
     "@glass/grid": "0.0.3",
     "@glass/models": "0.0.6",
     "@glass/utils": "0.0.8"
@@ -45,9 +50,7 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupFilesAfterEnv": [
-      "<rootDir>/../../test/jest.setup.ts"
-    ],
+    "setupFilesAfterEnv": ["<rootDir>/../../test/jest.setup.ts"],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

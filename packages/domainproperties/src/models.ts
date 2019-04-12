@@ -1,14 +1,75 @@
-/*
- * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
- */
 import {List, Record, fromJS} from "immutable";
-import {QueryColumn, SchemaQuery} from "@glass/models";
+
+interface IPropDescType{
+    name: string,
+    display?: string,
+    rangeURI?: string,
+    conceptURI?: string
+}
+
+export class PropDescType extends Record({
+    name: '',
+    display: '',
+    rangeURI: '',
+    conceptURI: ''
+}) implements IPropDescType {
+    name: string;
+    display: string;
+    rangeURI: string;
+    conceptURI: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+export const PropDescTypes = List([
+    new PropDescType({name: 'string', display: 'Text (String)', rangeURI: 'http://www.w3.org/2001/XMLSchema#string'}),
+    new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: 'http://www.w3.org/2001/XMLSchema#multiLine'}),
+    new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: 'http://www.w3.org/2001/XMLSchema#boolean'}),
+    new PropDescType({name: 'int', display: 'Integer', rangeURI: 'http://www.w3.org/2001/XMLSchema#int'}),
+    new PropDescType({name: 'double', display: 'Number (Double)', rangeURI: 'http://www.w3.org/2001/XMLSchema#double'}),
+    new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: 'http://www.w3.org/2001/XMLSchema#dateTime'}),
+    new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: 'http://www.w3.org/2001/XMLSchema#string', conceptURI: 'http://www.labkey.org/exp/xml#flag'}),
+    new PropDescType({name: 'fileLink', display: 'File', rangeURI: 'http://cpas.fhcrc.org/exp/xml#fileLink'}),
+    new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: 'http://www.labkey.org/exp/xml#attachment'}),
+    new PropDescType({name: 'users', display: 'User', rangeURI: 'http://www.labkey.org/exp/xml#int'}),
+    new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: 'http://www.w3.org/2001/XMLSchema#string', conceptURI: 'http://cpas.labkey.com/Study#ParticipantId'}),
+    new PropDescType({name: 'lookup', display: 'Lookup'}),
+]);
+
+export const DOMAIN_FIELD_PREFIX = 'dom-row-';
+export const DOMAIN_FIELD_NAME = 'name';
+export const DOMAIN_FIELD_TYPE = 'type';
+export const DOMAIN_FIELD_REQ = 'req';
+export const DOMAIN_FIELD_DETAILS = 'details';
+export const DOMAIN_FIELD_ADV = 'adv';
+
+export interface IDomainFormInput {
+    domain: DomainDesign
+    onChange?: (evt: any) => any
+    onSubmit?: () => any
+}
+
+export class DomainFormInput extends Record({
+    domain: undefined,
+    onChange: undefined,
+    onSubmit: undefined,
+}) implements IDomainFormInput {
+    domain: undefined;
+    onChange: undefined;
+    onSubmit: undefined;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
 
 interface IDomainDesign {
     name: string
     description?: string
     domainURI: string
+    domainId: number
     fields?: List<DomainField>
     indices?: List<DomainIndex>
 }
@@ -17,12 +78,14 @@ export class DomainDesign extends Record({
     name: '',
     description: '',
     domainURI: undefined,
+    domainId: null,
     fields: List<DomainField>(),
     indices: List<DomainIndex>()
 }) implements IDomainDesign {
     name: string;
     description: string;
     domainURI: string;
+    domainId: number;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
 
@@ -61,7 +124,7 @@ class DomainIndex extends Record({
 interface IDomainField {
     name: string
     rangeURI: string
-
+    propertyId: number
     description?: string
     label?: string
     conceptURI?: string
@@ -74,9 +137,13 @@ interface IDomainField {
     userEditable?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
+    updatedField?: boolean
+    newField?: boolean
+    renderUpdate?: boolean
 }
 
-class DomainField extends Record({
+export class DomainField extends Record({
+    propertyId: undefined,
     name: undefined,
     description: undefined,
     label: undefined,
@@ -86,8 +153,12 @@ class DomainField extends Record({
     lookupContainer: undefined,
     lookupSchema: undefined,
     lookupQuery: undefined,
-    scale: undefined
+    scale: undefined,
+    updatedField: undefined,
+    newField: undefined,
+    renderUpdate: undefined
 }) implements IDomainField {
+    propertyId: number;
     name: string;
     description: string;
     label: string;
@@ -98,6 +169,9 @@ class DomainField extends Record({
     lookupSchema: string;
     lookupQuery: string;
     scale: number;
+    updatedField: boolean;
+    newField: boolean;
+    renderUpdate: boolean;
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();

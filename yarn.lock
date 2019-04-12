@@ -1178,27 +1178,15 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.2.tgz#63985d3d8b02530e0869962f4da09142ee8e200e"
   integrity sha512-n/VQ4mbfr81aqkx/XmVicOLjviMuy02eenSdJY33SVA7S2J42EU0P1H0mOogfYedb3wXA0d/LVtBrgTSm04WEA==
 
-"@glass/models@0.0.6":
-  version "0.0.6"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/models/-/@glass/models-0.0.6.tgz#1f8390b779a9ca5d2d865b7b37ff5fb62e765d4e"
-  integrity sha1-H4OQt3mpyl0thlt7N/9fti52XU4=
+"@glass/base@0.1.0":
+  version "0.1.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.1.0.tgz#8cfd020b38c7b23cb1345b237106a3d78c1a2c3f"
+  integrity sha1-jP0CCzjHsjyxNFsjcQaj14waLD8=
   dependencies:
-    "@glass/utils" "0.0.8"
-
-"@glass/omnibox@0.0.8":
-  version "0.0.8"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/omnibox/-/@glass/omnibox-0.0.8.tgz#2b52859cdd13e80f76132b1757cff21c690be6c7"
-  integrity sha1-K1KFnN0T6A92EysXV8/yHGkL5sc=
-  dependencies:
-    "@glass/models" "0.0.6"
-    "@glass/utils" "0.0.8"
-    react-input-autosize "2.2.1"
-
-"@glass/utils@0.0.8":
-  version "0.0.8"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/utils/-/@glass/utils-0.0.8.tgz#9418172b693277dabd9a4474aca606fed540d758"
-  integrity sha1-lBgXK2kyd9q9mkR0rKYG/tVA11g=
-  dependencies:
+    bootstrap "3.3.7"
+    moment "2.24.0"
+    moment-jdateformatparser "1.1.0"
+    numeral "2.0.6"
     react-bootstrap "0.32.4"
 
 "@icons/material@^0.2.4":

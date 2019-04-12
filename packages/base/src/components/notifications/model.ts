@@ -4,8 +4,8 @@
  */
 import * as React from 'react'
 import { Record } from 'immutable'
-import { User } from "@glass/models";
 import { generateId } from '../../utils/utils'
+import { User } from "../..";
 
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;

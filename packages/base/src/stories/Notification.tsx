@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react'
 import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.css'
-import { User } from "@glass/models";
+import { User } from "../models/model"
 import { Notification } from '../components/notifications/Notification';
 import { createNotification } from "../components/notifications/actions";
 import { NotificationItemModel } from "../components/notifications/model";

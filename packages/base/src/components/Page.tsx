@@ -7,7 +7,7 @@ import * as React from 'react'
 import { PageHeader } from './PageHeader'
 import { NotFound } from './NotFound'
 
-interface PageProps {
+export interface PageProps {
     notFound?: boolean
     hasHeader?: boolean
     title?: string
@@ -17,6 +17,7 @@ interface PageProps {
 export class Page extends React.Component<PageProps, any> {
 
     static defaultProps = {
+        notFound: false,
         hasHeader: false
     };
 
@@ -44,6 +45,11 @@ export class Page extends React.Component<PageProps, any> {
         }
     }
 
+    isHeader(child) : boolean {
+        // Dev/Prod builds require slightly different requirements for this check
+        return child.type === PageHeader || child.type.name === 'PageHeader'
+    }
+
     render() {
         const { children, notFound } = this.props;
 
@@ -56,11 +62,7 @@ export class Page extends React.Component<PageProps, any> {
             if (!hasHeader) {
                 React.Children.forEach(children, (child: any) => {
                     if (!hasHeader && child && child.type) {
-                        if (
-                            // Dev/Prod builds require slightly different requirements for this check
-                            (child.type === PageHeader)  ||
-                            (child.type.name === 'PageHeader' || child.type.name === 'PageDetailHeader')
-                        ) {
+                        if (this.isHeader(child)) {
                             hasHeader = true;
                         }
                     }

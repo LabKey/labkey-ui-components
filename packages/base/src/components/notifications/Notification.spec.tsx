@@ -1,6 +1,6 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
-import { User } from "@glass/models";
+import { User } from "../../models/model";
 import { Notification } from './Notification'
 import { createNotification } from "./actions";
 import { NotificationItemModel } from "./model";

@@ -10,9 +10,10 @@ import { NotificationItemModel, NotificationItemProps, Persistence } from './mod
 import { createNotification, setTrialBannerDismissSessionKey } from './actions'
 
 import { NotificationItem } from "./NotificationItem";
-import { User } from "@glass/models";
+
 import { dismissNotifications } from "./global";
 import { getDateFormat } from "../../utils/Date";
+import { User } from "../../models/model";
 
 
 interface NotificationProps {
@@ -45,7 +46,7 @@ export class Notification extends React.Component<NotificationProps, any> {
                 message = "This LabKey trial site has expired.";
             else
                 message = "This LabKey trial site will expire in " + dayDiff + ((dayDiff == 1) ? " day." : " days.");
-            if (LABKEY.moduleContext.trialservices.upgradeLink && user.isAdmin)
+            if (LABKEY.moduleContext.trialservices.upgradeLink && user && user.isAdmin)
                 return (
                     <span>
                         {message}

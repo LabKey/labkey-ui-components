@@ -1,7 +1,7 @@
 import { NotificationItemModel } from "./model";
 import * as React from "react";
-import { User } from "@glass/models";
 import { dismissNotifications } from "./global";
+import { User } from "../..";
 
 interface ItemProps {
     item: NotificationItemModel

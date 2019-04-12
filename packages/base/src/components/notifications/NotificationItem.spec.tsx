@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NotificationItemModel } from "./model";
 import { NotificationItem } from "./NotificationItem";
-import { User } from "@glass/models";
+import { User } from "../../models/model";
 import { shallow } from "enzyme";
 import { initNotificationsState } from "./global";
 import { createNotification } from "./actions";

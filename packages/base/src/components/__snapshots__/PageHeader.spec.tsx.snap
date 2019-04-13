@@ -39,6 +39,11 @@ exports[`<PageHeader /> render with icon and title 1`] = `
   <h2
     className="text-capitalize no-margin-top"
   >
+    <span
+      className="fa fa-star"
+    >
+       
+    </span>
     Page title
   </h2>
 </div>

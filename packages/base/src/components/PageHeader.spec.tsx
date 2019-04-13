@@ -25,7 +25,7 @@ describe("<PageHeader />", () => {
     });
 
     test("render with icon and title", () => {
-        const tree = renderer.create(<PageHeader title={"Page title"}/>).toJSON();
+        const tree = renderer.create(<PageHeader title={"Page title"} iconCls={"fa fa-star"}/>).toJSON();
         expect(tree).toMatchSnapshot();
     });
 

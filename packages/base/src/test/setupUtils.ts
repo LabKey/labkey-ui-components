@@ -1,8 +1,8 @@
-import { initNotificationsState } from "../components/notifications/global";
+import { resetNotificationsState } from "../components/notifications/global";
 
 // initialize the global state and the LABKEY object with enough structure to work for notifications
 export function notificationInit()  {
-    initNotificationsState();
+    resetNotificationsState();
     LABKEY.moduleContext = {
 
     };

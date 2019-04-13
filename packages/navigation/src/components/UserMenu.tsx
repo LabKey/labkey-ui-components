@@ -18,10 +18,6 @@ interface UserMenuProps {
 
 export class UserMenu extends React.Component<UserMenuProps, any> {
 
-    constructor(props: any) {
-        super(props);
-    }
-
     getSection() : MenuSectionModel {
         return this.props.model.getSection("user");
     }

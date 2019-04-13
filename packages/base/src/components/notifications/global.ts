@@ -12,7 +12,7 @@ import { NotificationItemModel, Persistence } from './model'
  * Initialize the global state object for this package.
  */
 export function initNotificationsState() {
-    if (!getGlobal().QueryGrid_models) {
+    if (!getGlobal().Notifications) {
         resetNotificationsState()
     }
 

@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Map } from 'immutable';
-import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { ProductMenuModel } from '../model';
-import { LoadingSpinner } from '@glass/utils';
-import { MenuSectionConfig, ProductMenuSection } from "./ProductMenuSection";
+import { DropdownButton } from 'react-bootstrap'
+import { LoadingSpinner } from '@glass/base'
+
+import { ProductMenuModel } from '../model'
+import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection'
 
 
 interface ProductMenuProps {

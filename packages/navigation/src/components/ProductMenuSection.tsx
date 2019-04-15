@@ -1,8 +1,9 @@
 import React from "reactn";
 import { Record } from 'immutable';
-import { DropdownButton, MenuItem } from 'react-bootstrap'
+import { AppURL, imageURL } from '@glass/base'
+
 import { MenuSectionModel } from '../model';
-import { AppURL, imageURL } from '@glass/utils';
+
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,

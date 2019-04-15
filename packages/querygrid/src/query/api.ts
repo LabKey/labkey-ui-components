@@ -5,7 +5,7 @@
 import { fromJS, List, Map, OrderedMap } from 'immutable'
 import { normalize, schema } from 'normalizr'
 import { Query, Filter } from '@labkey/api'
-import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery } from '@glass/models'
+import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery } from '@glass/base'
 
 import { URLResolver } from '../util/URLResolver'
 import { getQueryMetadata } from '../global'

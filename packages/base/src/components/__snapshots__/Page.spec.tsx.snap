@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Page /> page not found 1`] = `
+Array [
+  <div
+    className="page-header"
+  >
+    <h2
+      className="text-capitalize no-margin-top"
+    />
+  </div>,
+  <h1>
+    Not Found
+  </h1>,
+]
+`;
+
+exports[`<Page /> render with children and no header 1`] = `
+Array [
+  <div
+    className="page-header"
+  >
+    <h2
+      className="text-capitalize no-margin-top"
+    />
+  </div>,
+  <div>
+    The page contents
+  </div>,
+]
+`;

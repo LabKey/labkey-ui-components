@@ -7,7 +7,6 @@ import { gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalida
 import { initQueryGridState, removeQueryGridModel, setQueryMetadata, setQueryColumnRenderers, getEditorModel, getQueryGridModel } from './global'
 import { selectRows, searchRows, getQueryDetails, invalidateQueryDetailsCacheKey, ISelectRowsResult } from './query/api'
 import { getLocation, replaceParameters, pushParameter, pushParameters, Location } from './util/URL'
-import { generateId, debounce } from './util/util'
 import { URLResolver } from './util/URLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
@@ -35,8 +34,6 @@ export {
     schemaGridInvalidate,
     gridRefresh,
     gridShowError,
-    generateId,
-    debounce,
 
     // query related items
     ISelectRowsResult,

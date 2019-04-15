@@ -1,6 +1,6 @@
 import { List, Record } from 'immutable'
 import { Ajax, Utils } from '@labkey/api'
-import { AppURL, buildURL } from '@glass/utils'
+import { AppURL, buildURL } from '@glass/base'
 
 export class MenuSectionModel extends Record( {
     label: undefined,

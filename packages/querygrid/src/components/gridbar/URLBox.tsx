@@ -4,7 +4,8 @@
  */
 import React from 'reactn'
 import { List, Map } from 'immutable'
-import { QueryColumn, QueryGridModel } from '@glass/models'
+
+import { QueryColumn, QueryGridModel } from '@glass/base'
 import { OmniBox, Action, ActionValue, ActionValueCollection, FilterAction, SearchAction, SortAction, ViewAction } from '@glass/omnibox'
 
 import { getLocation, replaceParameters, Location } from "../../util/URL";

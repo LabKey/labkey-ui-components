@@ -7,7 +7,7 @@ import React from 'reactn'
 import classNames from 'classnames'
 import { List } from 'immutable'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { QueryColumn } from '@glass/models'
+import { QueryColumn } from '@glass/base'
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events'
 import { focusCell, inDrag, modifyCell, selectCell } from '../../actions'

@@ -5,10 +5,9 @@
 
 import * as React from 'react'
 import { Dropdown, Image, MenuItem } from 'react-bootstrap'
+import { User, buildURL, devToolsActive, toggleDevTools } from '@glass/base'
 
-import { User } from '@glass/models';
-import { MenuSectionModel, ProductMenuModel } from '../model';
-import { buildURL, devToolsActive, toggleDevTools } from '@glass/utils';
+import { MenuSectionModel, ProductMenuModel } from '../model'
 
 interface UserMenuProps {
     model: ProductMenuModel

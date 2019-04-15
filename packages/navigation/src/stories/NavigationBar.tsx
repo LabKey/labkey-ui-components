@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2018 LabKey Corporation
+ * Copyright (c) 2019 LabKey Corporation
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { List, Map } from "immutable";
+import { List, Map } from 'immutable'
+import { User } from '@glass/base'
+
+import { MenuSectionConfig } from '../components/ProductMenuSection'
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../model'
+import { NavigationBar } from '../components/NavigationBar'
 
 import './stories.css'
-
-import { User } from '@glass/models'
-import { MenuSectionConfig } from "../components/ProductMenuSection";
-import { MenuItemModel, MenuSectionModel, ProductMenuModel } from "../model";
-import { NavigationBar } from "../components/NavigationBar";
 
 const fruitTree = [
     "Apple",

@@ -1,6 +1,6 @@
 {
   "name": "@glass/PACKAGE_NAME",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "PACkAGE_DESCRIPTION",
   "main": "dist/PACKAGE_NAME.cjs.js",
   "module": "dist/PACKAGE_NAME.es.js",
@@ -45,6 +45,9 @@
     },
     "setupFilesAfterEnv": [
       "<rootDir>/../../test/jest.setup.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ],
     "testPathIgnorePatterns": [
       "/node_modules/"

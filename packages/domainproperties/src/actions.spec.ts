@@ -1,4 +1,4 @@
-import { SchemaQuery } from "@glass/models";
+import { SchemaQuery } from "@glass/base";
 
 import { fetchDomain } from "./actions";
 import { DomainDesign } from "./models";

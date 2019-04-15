@@ -5,10 +5,8 @@
 import * as React from 'react'
 import classNames from 'classnames'
 import { OrderedMap } from 'immutable'
-import { Dropdown, MenuItem, Modal } from 'react-bootstrap'
-import { GridColumn } from '@glass/grid'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel } from '@glass/models'
-import { CustomToggle } from '@glass/utils'
+import { Dropdown, MenuItem } from 'react-bootstrap'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, CustomToggle, GridColumn } from '@glass/base'
 
 import { DefaultRenderer } from './renderers/DefaultRenderer'
 import { getQueryColumnRenderers } from './global'
@@ -70,13 +68,13 @@ export function headerSelectionCell(handleSelection: any, model: QueryGridModel)
 }
 
 export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): OrderedMap<string, QueryColumn> {
-
     if (columns) {
+        const columnRenderers: Map<string, any> = getQueryColumnRenderers();
+
         return columns.map((col: QueryColumn) => {
-            const columnRenderers = getQueryColumnRenderers();
             let node = DefaultRenderer;
-            if (col && col.columnRenderer && columnRenderers[col.columnRenderer.toLowerCase()]) {
-                node = columnRenderers[col.columnRenderer.toLowerCase()];
+            if (col && col.columnRenderer && columnRenderers.has(col.columnRenderer.toLowerCase())) {
+                node = columnRenderers.get(col.columnRenderer.toLowerCase());
             }
 
             // TODO: Just generate one function per type

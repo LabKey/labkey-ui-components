@@ -4,8 +4,7 @@
  */
 import React from 'reactn'
 import { Button } from 'react-bootstrap'
-import { QueryGridModel } from '@glass/models'
-import { Tip } from '@glass/utils'
+import { QueryGridModel, Tip } from '@glass/base'
 
 import { loadPage } from '../../actions'
 

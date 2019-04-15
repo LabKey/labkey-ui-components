@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NotificationItem /> dismissible item 1`] = `
+<div>
+  A dismissible message
+  <i
+    className="fa fa-times-circle pointer"
+    onClick={[Function]}
+    style={
+      Object {
+        "float": "right",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`<NotificationItem /> not dismissible item 1`] = `
+<div>
+  A message
+</div>
+`;
+
+exports[`<NotificationItem /> with message function 1`] = `
+<div>
+  <i
+    className="fa fa-times-circle pointer"
+    onClick={[Function]}
+    style={
+      Object {
+        "float": "right",
+      }
+    }
+  />
+</div>
+`;

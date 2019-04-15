@@ -1,9 +1,10 @@
-import React from 'reactn';
-import { List } from 'immutable';
-import renderer from 'react-test-renderer';
-import { User } from '@glass/models';
-import { UserMenu } from './UserMenu';
-import { MenuSectionModel, ProductMenuModel } from '../model';
+import React from 'reactn'
+import { List } from 'immutable'
+import renderer from 'react-test-renderer'
+import { User } from '@glass/base'
+
+import { UserMenu } from './UserMenu'
+import { MenuSectionModel, ProductMenuModel } from '../model'
 
 beforeAll(() => {
     LABKEY.devMode = false;

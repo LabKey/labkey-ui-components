@@ -6,11 +6,10 @@ import {
     removeQueryGridModel, updateCharts, updateEditorModel, updateLookupStore,
     updateQueryGridModel, updateSelections
 } from "./global";
-import { QueryGridModel } from "@glass/models";
-import { SchemaQuery } from "@glass/models";
+import { QueryGridModel, SchemaQuery, GRID_CHECKBOX_OPTIONS, QueryColumn } from '@glass/base'
 import { List } from "immutable";
-import { DataViewInfo, EditorModel, LookupStore } from "./model";
-import { GRID_CHECKBOX_OPTIONS, QueryColumn } from "@glass/models/src";
+
+import { DataViewInfo, EditorModel, LookupStore } from './model'
 
 beforeEach(() => {
     resetQueryGridState();

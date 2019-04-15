@@ -4,7 +4,7 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { QueryGridModel, resolveSchemaQuery } from '@glass/models'
+import { QueryGridModel, resolveSchemaQuery } from '@glass/base'
 
 import { fetchCharts } from '../../actions'
 import { DataViewInfo } from '../../model'

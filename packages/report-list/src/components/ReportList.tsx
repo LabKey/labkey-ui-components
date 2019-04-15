@@ -26,15 +26,15 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
                         </p>
 
                         <p>
-                            Created By: {createdBy}
+                            <strong>Created By:</strong> {createdBy}
                         </p>
 
                         <p>
-                            Type: {type}
+                            <strong>Type:</strong> {type}
                         </p>
 
                         <p>
-                            Description: {description}
+                            <strong>Description:</strong> {description}
                         </p>
 
                         <Image src={thumbnail}/>
@@ -120,5 +120,3 @@ export class ReportList extends React.PureComponent<ReportListProps> {
         );
     }
 }
-
-export default ReportList;

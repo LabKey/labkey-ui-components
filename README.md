@@ -176,13 +176,13 @@ Each package that is developed should create a set of stories that illustrate th
 conventions currently:
 * Each package as a `.storybook` directory that contains the configuration files for storybook.  See `packages/template/.storybook` for and example.
 * Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components
-* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a use can
+`* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a user can
 explore the different options available within a component.  See the `navigation` package for a few examples.
 
 You can start up Storybook via:
 
 ```sh
-cd packages/<you package>
+cd packages/<your package>
 yarn run storybook
 
 # The storybook instance is now available at http://localhost:9001

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Media, Image, Panel, Modal } from 'react-bootstrap'
 import { IReportItem } from "../model";
-import { LoadingSpinner } from '@glass/utils'
+import { LoadingSpinner } from '@glass/base'
 
 interface ReportItemModalProps {
     report: IReportItem,

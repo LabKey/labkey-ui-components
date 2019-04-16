@@ -233,6 +233,12 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
         else if (model.isLoaded) {
             return (
                 <div>
+                    {allowAdd && addControlProps.placement !== 'bottom' && (
+                        <AddRowsControl
+                            {...addControlProps}
+                            disable={isSubmitting}
+                            onAdd={this.onAddRows}/>
+                    )}
                     <div className="editable-grid__container"
                          onKeyDown={this.onKeyDown}
                          onMouseDown={this.onMouseDown}
@@ -251,7 +257,7 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
                             striped={false}
                             tableRef={this.table} />
                     </div>
-                    {allowAdd && (
+                    {allowAdd && addControlProps.placement !== 'top' && (
                         <AddRowsControl
                             {...addControlProps}
                             disable={isSubmitting}

@@ -14,6 +14,7 @@ export interface AddRowsControlProps {
     nounPlural?: string
     nounSingular?: string
     onAdd: Function
+    placement?: 'top' | 'bottom' | 'both'
 }
 
 interface AddRowsControlState {
@@ -28,7 +29,8 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         maxCount: 100,
         minCount: 1,
         nounPlural: 'rows',
-        nounSingular: 'row'
+        nounSingular: 'row',
+        placement: 'bottom'
     };
 
     private addCount: React.RefObject<any>;

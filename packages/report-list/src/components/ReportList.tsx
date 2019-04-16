@@ -87,7 +87,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
     }
 }
 
-interface ReportListProps {
+export interface ReportListProps {
     loading: boolean,
     reports: Array<IReportItem>,
     onReportClicked(report: IReportItem): void,

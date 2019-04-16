@@ -1,5 +1,5 @@
 .report-list {
-  border: 1px solid black;
+  border: 1px solid $border-color;
 }
 .report-list-item {
   cursor: pointer;
@@ -13,7 +13,7 @@ img.report-list-item__icon {
   padding: 0 10px;
 }
 .report-list-item {
-  border-top: 1px solid black;
+  border-top: 1px solid $border-color;
   padding: 10px;
   margin: 0;
 }

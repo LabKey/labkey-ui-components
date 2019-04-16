@@ -6,7 +6,7 @@ import * as React from 'react'
 import * as PropTypes from 'prop-types'
 import { Link, InjectedRouter } from 'react-router'
 
-import { AppURL } from '@glass/utils'
+import { AppURL } from '@glass/base'
 
 interface NavItemProps {
     onlyActiveOnIndex?: boolean

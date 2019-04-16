@@ -5,8 +5,10 @@
 import { List, Map, OrderedMap, Set, fromJS } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel } from '@glass/models'
-import { buildURL, getSortFromUrl, naturalSort, not } from '@glass/utils'
+import {
+    GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel,
+    buildURL, getSortFromUrl, naturalSort, not
+} from '@glass/base'
 
 import { getQueryDetails, searchRows } from './query/api'
 import { isEqual } from './query/filter'

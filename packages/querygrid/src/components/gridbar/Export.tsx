@@ -5,8 +5,7 @@
 import * as React from 'react'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { Set } from 'immutable'
-import { QueryGridModel } from '@glass/models'
-import { Tip } from '@glass/utils'
+import { QueryGridModel, Tip } from '@glass/base'
 
 import { gridExport } from "../../actions";
 import { EXPORT_TYPES } from "../../constants";

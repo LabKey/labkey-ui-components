@@ -57,12 +57,10 @@
     "**/event-stream": "^4.0.1"
   },
   "workspaces": [
-    "packages/utils",
-    "packages/models",
-    "packages/navigation",
-    "packages/grid",
+    "packages/base",
     "packages/omnibox",
     "packages/querygrid",
+    "packages/navigation",
     "packages/domainproperties"
   ]
 }

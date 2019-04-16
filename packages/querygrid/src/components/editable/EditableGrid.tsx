@@ -7,9 +7,7 @@ import React from 'reactn'
 import { Dropdown, MenuItem } from 'react-bootstrap'
 import { List } from 'immutable'
 import $ from 'jquery'
-import { Grid, GridColumn } from '@glass/grid'
-import { QueryColumn, QueryGridModel, GRID_EDIT_INDEX } from '@glass/models'
-import { Alert, LoadingSpinner } from '@glass/utils'
+import { Grid, GridColumn, QueryColumn, QueryGridModel, GRID_EDIT_INDEX, Alert, LoadingSpinner } from '@glass/base'
 
 import { beginDrag, endDrag, inDrag, select, removeRow, addRows, clearSelection, copyEvent, pasteEvent } from '../../actions'
 import { getQueryGridModel } from "../../global";

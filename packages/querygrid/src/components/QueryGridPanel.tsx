@@ -4,8 +4,7 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { QueryGridModel } from '@glass/models'
-import { Alert, LoadingSpinner } from '@glass/utils'
+import { QueryGridModel, Alert, LoadingSpinner } from '@glass/base'
 
 import { gridInit } from '../actions'
 import { getQueryGridModel } from '../global'

@@ -6,7 +6,7 @@ import * as OrigReact from 'react'
 import React from 'reactn'
 import classNames from 'classnames'
 import { List } from 'immutable'
-import { QueryColumn } from '@glass/models'
+import { QueryColumn } from '@glass/base'
 
 import { initLookup, modifyCell, searchLookup } from '../../actions'
 import { cancelEvent } from '../../events'

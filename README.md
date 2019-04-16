@@ -11,13 +11,11 @@ This repository defines all of the components available in the @glass scope. The
 <!--- keep these alphabetical --->
 | Package | Description | Current Verison |
 | --- | --- | --- |
-| @glass/domainproperties | Domain property related components for LabKey domains | 0.0.5 |
-| @glass/grid | Simple grid display for LabKey data views | 0.0.3 |
-| @glass/models | Shared models for LabKey components | 0.0.6 |
-| @glass/navigation | Application navigation elements and functions | 0.0.19 |
-| @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.0.8 |
-| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.0.23 |
-| @glass/utils | Utility functions and components for LabKey views | 0.0.8 |
+| @glass/base | Base components, models, and utility functions for LabKey applications and pages | 0.1.5 |
+| @glass/navigation | Application navigation elements and functions | 0.1.5 |
+| @glass/omnibox | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 0.1.5 |
+| @glass/querygrid | Query Grid for LabKey schema/query data views | 0.1.5 |
+| @glass/domainproperties | Domain property related components for LabKey domains | 0.0.6 |
 
 ## Using @glass npm packages
 
@@ -39,11 +37,11 @@ or via a `.npmrc` file
 
 To install using npm
 ```
-npm install @glass/grid
+npm install @glass/base
 ```
-You can then import @glass/grid in your application as follows:
+You can then import @glass/base in your application as follows:
 ```js
-import { Grid } from '@glass/grid';
+import { Grid } from '@glass/base';
 ```
 
 ## Development
@@ -120,16 +118,16 @@ to create symbolic links to your local versions of the packages.  Once modificat
 link (or, you can remove it yourself manually).  Please note that you will likely want to use the ``--no-save`` option 
 when uninstalling to prevent your ``package.json`` file from being updated.
 
-For example, if making changes to the grid package, you can do the following:
-* ``cd packages/grid``
+For example, if making changes to the base package, you can do the following:
+* ``cd packages/base``
 * ``npm link``  (this creates a link to this directory in the ``lib/node_modules`` directory of the node version currently on your path)
 * ``cd my_application``
-* ``npm link @glass/grid`` (note that the scope is required here)
+* ``npm link @glass/base`` (note that the scope is required here)
 (Alternatively, you can do this in one command from `my_application` by specifying the directory to link from:
-``npm link /path/to/packages/grid``)
+``npm link /path/to/packages/base``)
 
 Then, when you no longer wish to reference the local installation, you can do
-* ``npm uninstall --no-save @glass/grid``
+* ``npm uninstall --no-save @glass/base``
 
 This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
 need to use ``npm install``.

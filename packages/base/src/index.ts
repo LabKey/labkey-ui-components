@@ -63,6 +63,8 @@ import { PageHeader } from './components/PageHeader'
 import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
+import { FormSection } from './components/FormSection'
+import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
@@ -136,6 +138,8 @@ export {
     Grid,
     PermissionAllowed,
     PermissionNotAllowed,
+    FormSection,
+    FileAttachmentForm,
 
     // notification functions
     createNotification,

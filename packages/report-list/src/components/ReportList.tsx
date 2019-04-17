@@ -102,19 +102,23 @@ export class ReportList extends React.PureComponent<ReportListProps> {
         if (loading) {
             body = <LoadingSpinner />;
         } else if (reports.length === 0) {
-            body = <div>No reports avaialable.</div>;
+            body = <div className="report-list__message">No reports.</div>;
         } else {
-            body = reports.map((report: IReportItem) => {
-                return <ReportListItem key={report.detailsUrl} report={report} onClick={() => onReportClicked(report)} />;
+            const reportEls = reports.map((report: IReportItem) => {
+                return <ReportListItem key={report.detailsUrl} report={report} onClick={onReportClicked} />;
             });
+
+            body = (
+                <Media.List className="report-list__list">
+                    {reportEls}
+                </Media.List>
+            );
         }
 
         return (
             <Panel>
                 <div className="report-list">
-                    <Media.List className="report-list__list">
-                        {body}
-                    </Media.List>
+                    {body}
                 </div>
             </Panel>
         );

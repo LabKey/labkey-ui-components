@@ -5,30 +5,30 @@
 import * as OrigReact from 'react'
 import React from 'reactn'
 import { Dropdown, MenuItem } from 'react-bootstrap'
-import { List, Map } from 'immutable'
+import { List, Map, Set } from 'immutable'
 import $ from 'jquery'
 import {
-    Grid,
-    GridColumn,
-    QueryColumn,
-    QueryGridModel,
-    GRID_EDIT_INDEX,
     Alert,
+    Grid,
+    GRID_CHECKBOX_OPTIONS,
+    GRID_EDIT_INDEX,
+    GRID_SELECTION_INDEX,
+    GridColumn,
     LoadingSpinner,
-    GRID_SELECTION_INDEX, GRID_CHECKBOX_OPTIONS
+    QueryColumn,
+    QueryGridModel
 } from '@glass/base'
 
 import {
-    beginDrag,
-    endDrag,
-    inDrag,
-    select,
-    removeRow,
     addRows,
+    beginDrag,
     clearSelection,
     copyEvent,
+    endDrag,
+    inDrag,
     pasteEvent,
-    toggleGridRowSelection, toggleGridSelected
+    removeRow,
+    select
 } from '../../actions'
 import { getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
@@ -74,24 +74,29 @@ function inputCellKey(col: QueryColumn, row: any): string {
 
 export interface EditableGridProps {
     allowAdd?: boolean
+    allowBulkDelete?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
     disabled?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
-    loadData?: boolean
 }
 
-export class EditableGrid extends React.Component<EditableGridProps, any> {
+export interface EditableGridState {
+    selected: Set<string>
+    selectedState: GRID_CHECKBOX_OPTIONS
+}
+
+export class EditableGrid extends React.Component<EditableGridProps, EditableGridState> {
 
     static defaultProps = {
         allowAdd: true,
+        allowBulkDelete: false,
         allowRemove: true,
         disabled: false,
         isSubmitting: false,
-        initialEmptyRowCount: 1,
-        loadData: false
+        initialEmptyRowCount: 1
     };
 
     private maskDelay: number;
@@ -113,9 +118,16 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
         this.onPaste = this.onPaste.bind(this);
         this.showMask = this.showMask.bind(this);
         this.toggleMask = this.toggleMask.bind(this);
+        this.select = this.select.bind(this);
+        this.selectAll = this.selectAll.bind(this);
 
         this.table = OrigReact.createRef();
         this.wrapper = OrigReact.createRef();
+
+        this.state = {
+            selected: Set<string>(),
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE
+        }
     }
 
     componentWillMount() {
@@ -126,7 +138,6 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
     }
 
     componentWillReceiveProps(nextProps: EditableGridProps) {
-        // console.log("willReceive nextProps", nextProps);
         const newModel = this.getModel(nextProps);
         if (newModel.isLoaded && newModel.data.size === 0)
             addRows(newModel, nextProps.initialEmptyRowCount);
@@ -146,35 +157,49 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
     }
 
     select(row: Map<string, any>, evt) {
-        const model = this.getModel(this.props);
-
-        if (model) {
-            toggleGridRowSelection(model, row, evt.currentTarget.checked === true);
+        const key = row.get(GRID_EDIT_INDEX);
+        let selected = this.state.selected;
+        if (evt.currentTarget.checked) {
+            selected = selected.add(key);
         }
+        else {
+            selected = selected.remove(key);
+        }
+        this.setState(() => {
+            return {
+                selected: selected,
+                selectedState: this.getModel(this.props).dataIds.size === selected.size ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.SOME
+            };
+        });
     }
 
     selectAll(evt) {
         const model = this.getModel(this.props);
-
         if (model) {
-            const selected = evt.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
-            toggleGridSelected(model, selected);
+            const selected = evt.currentTarget.checked === true && this.state.selectedState !== GRID_CHECKBOX_OPTIONS.ALL;
+            this.setState(() => {
+                return {
+                    selected: selected ? Set<string>(model.dataIds.toArray()) : Set<string>(),
+                    selectedState: selected ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
+                };
+            })
         }
     }
 
     generateColumns(): List<GridColumn> {
-        const { allowRemove } = this.props;
+        const { allowBulkDelete, allowRemove } = this.props;
         const model = this.getModel(this.props);
         let gridColumns = List<GridColumn>();
 
-        if (model.allowSelection) {
+        if (allowBulkDelete) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
                 showHeader: true,
                 cell: (selected: boolean, row) => {
                     return <input
-                        checked={selected === true}
+                        className={"edit-grid-row-checkbox"}
+                        checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
                         type="checkbox"
                         onChange={this.select.bind(this, row)}/>;
                 }
@@ -217,8 +242,8 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
 
     headerCell(col: GridColumn) {
         const model = this.getModel(this.props);
-        if (model.allowSelection && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
-            return headerSelectionCell(this.selectAll, model)
+        if (this.props.allowBulkDelete && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
+            return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);

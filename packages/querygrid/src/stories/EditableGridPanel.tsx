@@ -139,7 +139,6 @@ storiesOf('EditableGridPanel', module)
         // columns = columns.asImmutable();
         // samplesQueryInfo.columns = columns;
        let model = new QueryGridModel({
-            allowSelection: boolean("allowSelection?", false, MODEL_GROUP),
             data: Map<string, Map<string, any>>(),
             dataIds: List<any>(),
             id: modelId,
@@ -162,12 +161,12 @@ storiesOf('EditableGridPanel', module)
         return <EditableGridPanel
                     addControlProps={addRowsControl}
                     allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
+                    allowBulkDelete={boolean("Allow bulk delete?", true, PANEL_GROUP)}
                     allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
                     disabled={boolean("Disabled?", false, PANEL_GROUP)}
                     initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
                     model={model}
                     isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
-                    loadData={boolean("Load data?", false, PANEL_GROUP)}
                     title={text("Title", "Grid title", PANEL_GROUP)}
                 />
     });

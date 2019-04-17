@@ -1688,6 +1688,11 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
     }
 }
 
+// TODO remove multiple rows.  We will need to find the rowIndexes before caling this.
+export function removeRows(model: QueryGridModel, dataIds: Set<string>, rowIndexes: any) {
+
+}
+
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
     if (model.editable) {
         const editorModel = getEditorModel(model.getId());

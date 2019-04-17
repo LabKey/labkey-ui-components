@@ -2,13 +2,15 @@ import * as React from "react";
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
 import {DomainRow} from "./DomainRow";
 import {DomainDesign, DomainFormInput, IDomainFormInput} from "../models";
-import {updateField} from "../actions";
 
 interface IDomainFormState {
     domainDesign: DomainDesign,
     id: string
 }
 
+/**
+ * Form containing all properties of a domain
+ */
 export default class DomainForm extends React.Component<IDomainFormInput, IDomainFormState> {
 
     constructor(props: DomainFormInput) {

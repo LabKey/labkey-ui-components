@@ -12,12 +12,12 @@ import {
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_REQ,
     DOMAIN_FIELD_TYPE,
-    DomainField,
     PropDescTypes
-} from "../models";
+} from "../constants";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import {DomainField} from "../models";
 
 library.add(faPencilAlt);
 
@@ -30,6 +30,9 @@ interface IDomainRow {
     name: string
 }
 
+/**
+ * React component for one property in a domain
+ */
 export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
 {
 
@@ -42,11 +45,16 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
         this.getDataType = this.getDataType.bind(this);
     }
 
+    /**
+     *  Performance update to prevent unnecessary renders of domain rows on any state update
+     */
     shouldComponentUpdate(nextProps: Readonly<IDomainRowDisplay>, nextState: Readonly<IDomainRow>, nextContext: any): boolean
     {
-        // Value may be undefined so need to check for false or undefined
-        // Performance update to prevent unnecessary renders of domain rows on any state update
-        return (nextProps.field.renderUpdate ? true : false);
+        // Check first if this optimization is being used. See actions.updateDomainField for example where this is set.
+        if (typeof nextProps.field.renderUpdate !== "undefined") {
+            return nextProps.field.renderUpdate
+        }
+        else return true;  // Not optimizing, just updating every time
     }
 
     generateToolTip(tooltip: string, id: number): React.ReactElement<TooltipProps>
@@ -54,7 +62,9 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
         return <Tooltip id={id.toString()}>{tooltip}</Tooltip>;
     }
 
-    // Field details
+    /**
+     *  Details section of property row
+     */
     getDetails()
     {
         let details = '';
@@ -83,6 +93,9 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
         return details;
     }
 
+    /**
+     * Gets display datatype from rangeURI, conceptURI and lookup values
+     */
     getDataType()
     {
         const types = PropDescTypes.filter((value) => {
@@ -176,4 +189,5 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
             </Row>
         );
     }
-};
+}
+

@@ -9,10 +9,16 @@ import {
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_REQ,
     DOMAIN_FIELD_TYPE,
-    DomainDesign,
     PropDescTypes
-} from "./models";
+} from "../constants";
+import {DomainDesign} from "../models";
 
+/**
+ * @param domainId: Fetch domain by Id. Priority param over schema and query name.
+ * @param schemaName: Schema of domain.
+ * @param queryName: Query of domain.
+ * @return Promise wrapped Domain API call.
+ */
 export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.get({
@@ -29,6 +35,10 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
     });
 }
 
+/**
+ * @param domain: DomainDesign to save
+ * @return Promise wrapped Domain API call.
+ */
 export function saveDomain(domain: DomainDesign) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.save({
@@ -44,7 +54,14 @@ export function saveDomain(domain: DomainDesign) : Promise<DomainDesign> {
     })
 }
 
-export function updateField(domain: DomainDesign, fieldId: string, value: any) {
+/**
+ *
+ * @param domain: DomainDesign to update
+ * @param fieldId: Field Id to update
+ * @param value: New value
+ * @return copy of domain with updated field
+ */
+export function updateDomainField(domain: DomainDesign, fieldId: string, value: any) {
     const idType = fieldId.split(DOMAIN_FIELD_PREFIX)[1];
     const type = idType.split("-")[0];
     const id = idType.split("-")[1];
@@ -52,8 +69,8 @@ export function updateField(domain: DomainDesign, fieldId: string, value: any) {
     const newFields = domain.fields.map((field) => {
 
         if (field.propertyId.toString() === id) {
-            field.updatedField = true;
-            field.renderUpdate = true;
+            field.updatedField = true;  // Set for field details in DomainRow
+            field.renderUpdate = true;  // Set for render optimization in DomainRow
             switch (type) {
                 case DOMAIN_FIELD_NAME:
                     field.name = value;
@@ -81,6 +98,10 @@ export function updateField(domain: DomainDesign, fieldId: string, value: any) {
     return Object.assign({}, domain, {fields: List(newFields)});
 }
 
+/**
+ * @param domain: DomainDesign to clear
+ * @return copy of domain with details cleared
+ */
 export function clearFieldDetails(domain: DomainDesign) {
 
     const newFields = domain.fields.map((field) => {

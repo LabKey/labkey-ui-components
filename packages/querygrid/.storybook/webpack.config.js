@@ -10,6 +10,11 @@ module.exports = async ({ config, mode }) => {
         loaders: ['babel-loader', 'ts-loader']
     });
 
+    config.module.rules.push({
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+    });
+
     config.resolve.extensions.push('.ts', '.tsx', ".scss");
 
     // Return the altered config

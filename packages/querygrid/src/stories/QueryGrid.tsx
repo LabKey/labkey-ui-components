@@ -9,7 +9,7 @@ import { initQueryGridState, updateQueryGridModel } from "../global";
 initQueryGridState();
 initBrowserHistoryState();
 
-import './stories.css'
+import './stories.scss'
 
 storiesOf('QueryGrid', module)
     .addDecorator(withKnobs)

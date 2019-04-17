@@ -6,6 +6,7 @@
     "jsx": "react",
     "lib": ["es2015", "es2017", "dom"],
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "sourceMap": false,
     "target": "es5",
     "types": ["jest"] // implicitly include only jest types; otherwise get those included via import

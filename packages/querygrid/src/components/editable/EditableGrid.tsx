@@ -5,14 +5,35 @@
 import * as OrigReact from 'react'
 import React from 'reactn'
 import { Dropdown, MenuItem } from 'react-bootstrap'
-import { List } from 'immutable'
+import { List, Map } from 'immutable'
 import $ from 'jquery'
-import { Grid, GridColumn, QueryColumn, QueryGridModel, GRID_EDIT_INDEX, Alert, LoadingSpinner } from '@glass/base'
+import {
+    Grid,
+    GridColumn,
+    QueryColumn,
+    QueryGridModel,
+    GRID_EDIT_INDEX,
+    Alert,
+    LoadingSpinner,
+    GRID_SELECTION_INDEX, GRID_CHECKBOX_OPTIONS
+} from '@glass/base'
 
-import { beginDrag, endDrag, inDrag, select, removeRow, addRows, clearSelection, copyEvent, pasteEvent } from '../../actions'
+import {
+    beginDrag,
+    endDrag,
+    inDrag,
+    select,
+    removeRow,
+    addRows,
+    clearSelection,
+    copyEvent,
+    pasteEvent,
+    toggleGridRowSelection, toggleGridSelected
+} from '../../actions'
 import { getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
+import { headerSelectionCell } from "../../renderers";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -56,6 +77,7 @@ export interface EditableGridProps {
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
     disabled?: boolean
+    initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
     loadData?: boolean
@@ -68,6 +90,7 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
         allowRemove: true,
         disabled: false,
         isSubmitting: false,
+        initialEmptyRowCount: 1,
         loadData: false
     };
 
@@ -95,6 +118,21 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
         this.wrapper = OrigReact.createRef();
     }
 
+    componentWillMount() {
+        const { initialEmptyRowCount } = this.props;
+        const model = this.getModel(this.props);
+        if (model.isLoaded && model.data.size === 0)
+            addRows(model, initialEmptyRowCount);
+    }
+
+    componentWillReceiveProps(nextProps: EditableGridProps) {
+        // console.log("willReceive nextProps", nextProps);
+        const newModel = this.getModel(nextProps);
+        if (newModel.isLoaded && newModel.data.size === 0)
+            addRows(newModel, nextProps.initialEmptyRowCount);
+    }
+
+
     componentDidMount() {
         document.addEventListener('click', this.onDocumentClick);
         document.addEventListener('copy', this.onCopy);
@@ -107,11 +145,43 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
         document.removeEventListener('paste', this.onPaste);
     }
 
+    select(row: Map<string, any>, evt) {
+        const model = this.getModel(this.props);
+
+        if (model) {
+            toggleGridRowSelection(model, row, evt.currentTarget.checked === true);
+        }
+    }
+
+    selectAll(evt) {
+        const model = this.getModel(this.props);
+
+        if (model) {
+            const selected = evt.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
+            toggleGridSelected(model, selected);
+        }
+    }
+
     generateColumns(): List<GridColumn> {
         const { allowRemove } = this.props;
-        const model = this.getModel();
+        const model = this.getModel(this.props);
+        let gridColumns = List<GridColumn>();
 
-        let gridColumns = List<GridColumn>([
+        if (model.allowSelection) {
+            const selColumn = new GridColumn({
+                index: GRID_SELECTION_INDEX,
+                title: '&nbsp;',
+                showHeader: true,
+                cell: (selected: boolean, row) => {
+                    return <input
+                        checked={selected === true}
+                        type="checkbox"
+                        onChange={this.select.bind(this, row)}/>;
+                }
+            });
+            gridColumns = gridColumns.push(selColumn);
+        }
+        gridColumns = gridColumns.push(
             allowRemove ? new GridColumn({
                 index: GRID_EDIT_INDEX,
                 showHeader: false,
@@ -129,10 +199,10 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
                     </Dropdown>
                 )
             }) : COUNT_COL
-        ]).asMutable();
+        );
 
         model.getInsertColumns().forEach(qCol => {
-            gridColumns.push(new GridColumn({
+            gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
                 cell: inputCellFactory(model.getId()),
                 index: qCol.fieldKey,
@@ -142,12 +212,14 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
             }));
         });
 
-        return gridColumns.asImmutable();
+        return gridColumns;
     }
 
     headerCell(col: GridColumn) {
-        const model = this.getModel();
-
+        const model = this.getModel(this.props);
+        if (model.allowSelection && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
+            return headerSelectionCell(this.selectAll, model)
+        }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
             return [col.title, (qColumn.required ? '*': undefined)].join(' ');
@@ -161,7 +233,7 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
 
     onDocumentClick(event: any) {
         const { disabled } = this.props;
-        const model = this.getModel();
+        const model = this.getModel(this.props);
 
         if (!disabled && this.table && this.table.current &&
             (!$.contains(this.table.current, event.target) && !$(event.target).parent('.cell-lookup')) &&
@@ -207,25 +279,25 @@ export class EditableGrid extends React.Component<EditableGridProps, any> {
     }
 
     onAddRows(count: number) {
-        const model = this.getModel();
+        const model = this.getModel(this.props);
         addRows(model, count);
     }
 
     renderError() {
-        const model = this.getModel();
+        const model = this.getModel(this.props);
         if (model.isError) {
             return <Alert>{model.message ? model.message : 'Something went wrong.'}</Alert>
         }
     }
 
-    getModel() {
-        const { model } = this.props;
+    getModel(props: EditableGridProps) {
+        const { model } = props;
         return getQueryGridModel(model.getId());
     }
 
     render() {
         const { addControlProps, allowAdd, isSubmitting } = this.props;
-        const model = this.getModel();
+        const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {
             return <LoadingSpinner/>;

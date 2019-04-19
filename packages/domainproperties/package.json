@@ -13,14 +13,16 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
+    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
+    "watch": "watch 'yarn build' ./src"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "Cory Nathe",
+  "author": "Marty Pradere",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"

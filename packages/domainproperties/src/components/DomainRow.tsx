@@ -181,7 +181,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
                 <Col xs={1}>
                     <OverlayTrigger overlay={this.generateToolTip('Advanced Settings', field.propertyId)}
                                     placement="top">
-                        <div className='domain-field-advanced-icon' id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_ADV + "-" + field.propertyId}>
+                        <div className='domain-field-advanced-icon pull-right' id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_ADV + "-" + field.propertyId}>
                             <FontAwesomeIcon icon={faPencilAlt}/>
                         </div>
                     </OverlayTrigger>

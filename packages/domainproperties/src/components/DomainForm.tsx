@@ -5,7 +5,7 @@ import {DomainDesign, DomainFormInput, IDomainFormInput} from "../models";
 
 interface IDomainFormState {
     domainDesign: DomainDesign,
-    id: string
+    id: string // TODO is this used anymore or should it be removed?
 }
 
 /**
@@ -45,7 +45,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
                             </Row>
                             <Row className='domain-form-search'>
                                 <Col xs={3}>
-                                    <FormControl id={"dom-search-" + name} type="text" placeholder={'Filter Fields'}/>
+                                    <FormControl id={"dom-search-" + name} type="text" placeholder={'Filter Fields'} disabled={true}/>
                                 </Col>
                                 <Col xs={1}/>
                                 <Col xs={8} md={6} lg={4}>
@@ -53,7 +53,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
                                         <span>Show Fields Defined By: </span>
                                     </Col>
                                     <Col xs={7} className='domain-zero-padding'>
-                                        <FormControl id={"dom-user-" + name} type="text" placeholder={'User'}/>
+                                        <FormControl id={"dom-user-" + name} type="text" placeholder={'User'} disabled={true}/>
                                     </Col>
                                 </Col>
                             </Row>

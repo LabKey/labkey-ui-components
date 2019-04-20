@@ -8,6 +8,7 @@ import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import DomainForm from "../components/DomainForm";
+import { updateDomainField } from "../actions/actions";
 import { DomainDesign } from "../models";
 import data from "../test/data/property-getDomain.json";
 import './stories.scss'
@@ -17,12 +18,23 @@ class DomainFormContainer extends React.PureComponent<any, any> {
         super(props);
 
         this.state = {
-            domain: new DomainDesign(data),
+            domain: DomainDesign.create(data),
         };
     }
 
-    onChange = () => {
-        console.log('onchange');
+    onChange = (evt) => {
+        if (evt instanceof DomainDesign) {
+            this.setState(() => ({
+                domain: evt
+            }));
+        }
+        else {
+            let value = evt.target.value;
+            if (evt.target.type === "checkbox") {
+                value = evt.target.checked;
+            }
+            this.setState({domain: updateDomainField(this.state.domain, evt.target.id, value)});
+        }
     };
 
     render() {

@@ -1,7 +1,9 @@
 import * as React from "react";
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {DomainRow} from "./DomainRow";
-import {DomainDesign, DomainFormInput, IDomainFormInput} from "../models";
+import {DomainDesign, DomainField, DomainFormInput, IDomainFormInput} from "../models";
 
 interface IDomainFormState {
     domainDesign: DomainDesign,
@@ -26,6 +28,18 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
         return valid;
     }
+
+    onAddField = () => {
+        const {domain, onChange} = this.props;
+
+        const newDomain = domain.merge({
+            fields: domain.fields.push(new DomainField())
+        });
+
+        if (onChange) {
+            onChange(newDomain);
+        }
+    };
 
     render() {
         const {domain, onChange} = this.props;
@@ -80,6 +94,13 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
                                     />
                                 })}
                             </Form>
+                            <Row>
+                                <Col xs={12}>
+                                    <span className={"domain-form-add"} onClick={this.onAddField}>
+                                        <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
+                                    </span>
+                                </Col>
+                            </Row>
                         </Panel.Body>
                     </Panel>
                 ) : <b>Invalid domain</b>}

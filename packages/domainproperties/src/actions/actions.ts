@@ -11,7 +11,7 @@ import {
     DOMAIN_FIELD_TYPE,
     PropDescTypes
 } from "../constants";
-import {DomainDesign} from "../models";
+import { DomainDesign, DomainField } from "../models";
 
 /**
  * @param domainId: Fetch domain by Id. Priority param over schema and query name.
@@ -26,7 +26,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             schemaName,
             queryName,
             success: (data) => {
-                resolve(data);
+                resolve(DomainDesign.create(data));
             },
             failure: (error) => {
                 reject(error);
@@ -45,7 +45,7 @@ export function saveDomain(domain: DomainDesign) : Promise<DomainDesign> {
             domainDesign: domain,
             domainId: domain.domainId,
             success: (data) => {
-                resolve(data);
+                resolve(DomainDesign.create(data));
             },
             failure: (error) => {
                 reject(error);
@@ -61,7 +61,7 @@ export function saveDomain(domain: DomainDesign) : Promise<DomainDesign> {
  * @param value: New value
  * @return copy of domain with updated field
  */
-export function updateDomainField(domain: DomainDesign, fieldId: string, value: any) {
+export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
     const idType = fieldId.split(DOMAIN_FIELD_PREFIX)[1];
     const type = idType.split("-")[0];
     const id = idType.split("-")[1];
@@ -69,33 +69,35 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
     const newFields = domain.fields.map((field) => {
 
         if (field.propertyId.toString() === id) {
-            field.updatedField = true;  // Set for field details in DomainRow
-            field.renderUpdate = true;  // Set for render optimization in DomainRow
+            let newField = field.set('updatedField', true); // Set for field details in DomainRow
+            newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
+
             switch (type) {
                 case DOMAIN_FIELD_NAME:
-                    field.name = value;
+                    newField = newField.set('name', value);
                     break;
                 case DOMAIN_FIELD_TYPE:
                     PropDescTypes.map((type) => {
                         if (type.name === value) {
-                            field.rangeURI = type.rangeURI;
-                            field.conceptURI = type.conceptURI;
+                            newField = newField.set('rangeURI', type.rangeURI);
+                            newField = newField.set('conceptURI', type.conceptURI);
                         }
                     });
                     break;
                 case DOMAIN_FIELD_REQ:
-                    field.required = value;
+                    newField = newField.set('required', value);
                     break;
             }
-        }
-        else {
-            field.renderUpdate = false;
+
+            return newField;
         }
 
         return field;
     });
 
-    return Object.assign({}, domain, {fields: List(newFields)});
+    return domain.merge({
+        fields: List<DomainField>(newFields)
+    }) as DomainDesign;
 }
 
 /**
@@ -111,5 +113,7 @@ export function clearFieldDetails(domain: DomainDesign) {
         return field;
     });
 
-    return Object.assign({}, domain, {fields: List(newFields)});
+    return domain.merge({
+        fields: List<DomainField>(newFields)
+    }) as DomainDesign;
 }

@@ -71,6 +71,27 @@ export class DomainDesign extends Record({
     fields: List<DomainField>;
     indices: List<DomainIndex>;
 
+    static create(rawModel): DomainDesign {
+        let fields = List<DomainField>();
+        let indices = List<DomainIndex>();
+
+        if (rawModel) {
+            if (rawModel.fields) {
+                fields = DomainField.fromJS(rawModel.fields);
+            }
+
+            if (rawModel.indices) {
+                indices = DomainIndex.fromJS(rawModel.indices);
+            }
+        }
+
+        return new DomainDesign({
+            ...rawModel,
+            fields,
+            indices
+        })
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }

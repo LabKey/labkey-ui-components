@@ -34,3 +34,17 @@
 .domain-field-advanced-icon {
   color: $gray-light;
 };
+
+.domain-form-add {
+  color: $gray-dark;
+  opacity: 0.5;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.domain-form-add-btn {
+  color: $brand-success;
+}

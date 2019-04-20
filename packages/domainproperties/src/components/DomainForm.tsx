@@ -33,7 +33,10 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         const {domain, onChange} = this.props;
 
         const newDomain = domain.merge({
-            fields: domain.fields.push(new DomainField())
+            fields: domain.fields.push(new DomainField({
+                newField: true,
+                renderUpdate: true
+            }))
         });
 
         if (onChange) {
@@ -86,9 +89,10 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
                                 </Col>
                             </Row>
                             <Form>
-                                {domain.fields.map((field) => {
+                                {domain.fields.map((field, index) => {
                                     return <DomainRow
-                                        key={'domain-row-key-' + field.propertyId}
+                                        key={'domain-row-key-' + index}
+                                        index={index}
                                         onChange={onChange}
                                         field={field}
                                     />

@@ -57,8 +57,8 @@ interface IDomainDesign {
 }
 
 export class DomainDesign extends Record({
-    name: '',
-    description: '',
+    name: undefined,
+    description: undefined,
     domainURI: undefined,
     domainId: null,
     fields: List<DomainField>(),
@@ -128,6 +128,7 @@ interface IDomainField {
     name: string
     rangeURI: string
     propertyId: number
+    propertyURI: string
     description?: string
     label?: string
     conceptURI?: string
@@ -140,6 +141,7 @@ interface IDomainField {
     userEditable?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
+
     updatedField?: boolean
     newField?: boolean
     renderUpdate?: boolean
@@ -147,6 +149,7 @@ interface IDomainField {
 
 export class DomainField extends Record({
     propertyId: undefined,
+    propertyURI: undefined,
     name: undefined,
     description: undefined,
     label: undefined,
@@ -157,11 +160,13 @@ export class DomainField extends Record({
     lookupSchema: undefined,
     lookupQuery: undefined,
     scale: undefined,
+
     updatedField: undefined,
     newField: undefined,
     renderUpdate: undefined
 }) implements IDomainField {
     propertyId: number;
+    propertyURI: string;
     name: string;
     description: string;
     label: string;
@@ -172,6 +177,7 @@ export class DomainField extends Record({
     lookupSchema: string;
     lookupQuery: string;
     scale: number;
+
     updatedField: boolean;
     newField: boolean;
     renderUpdate: boolean;

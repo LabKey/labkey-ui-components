@@ -64,11 +64,11 @@ export function saveDomain(domain: DomainDesign) : Promise<DomainDesign> {
 export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
     const idType = fieldId.split(DOMAIN_FIELD_PREFIX)[1];
     const type = idType.split("-")[0];
-    const id = idType.split("-")[1];
+    const index = idType.split("-")[1];
 
-    const newFields = domain.fields.map((field) => {
+    const newFields = domain.fields.map((field, i) => {
 
-        if (field.propertyId.toString() === id) {
+        if (i.toString() === index) {
             let newField = field.set('updatedField', true); // Set for field details in DomainRow
             newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
 

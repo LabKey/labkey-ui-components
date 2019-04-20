@@ -18,21 +18,18 @@ import { DomainField } from "../models";
 library.add(faPencilAlt);
 
 interface IDomainRowDisplay {
+    index: number,
     field: DomainField,
     onChange: (any) => any
-}
-
-interface IDomainRow {
-    name: string
 }
 
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
+export class DomainRow extends React.Component<IDomainRowDisplay, any>
 {
 
-    constructor(props: IDomainRowDisplay, state: IDomainRow)
+    constructor(props: IDomainRowDisplay, state: any)
     {
         super(props, state);
 
@@ -43,7 +40,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
     /**
      *  Performance update to prevent unnecessary renders of domain rows on any state update
      */
-    shouldComponentUpdate(nextProps: Readonly<IDomainRowDisplay>, nextState: Readonly<IDomainRow>, nextContext: any): boolean
+    shouldComponentUpdate(nextProps: Readonly<IDomainRowDisplay>, nextState: Readonly<any>, nextContext: any): boolean
     {
         // Check first if this optimization is being used. See actions.updateDomainField for example where this is set.
         if (typeof nextProps.field.renderUpdate !== "undefined") {
@@ -125,27 +122,27 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
 
     render()
     {
-        const {field, onChange} = this.props;
+        const {index, field, onChange} = this.props;
 
         return (
 
-            <Row className='domain-field-row' key={DOMAIN_FIELD_PREFIX + "-" + field.propertyId}>
+            <Row className='domain-field-row' key={DOMAIN_FIELD_PREFIX + "-" + index}>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_NAME + "-" + field.propertyId} type="text"
+                        <FormControl id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_NAME + "-" + index} type="text"
                                      value={field.name} onChange={onChange}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
                     <Tip caption={'Data Type'}>
-                        <select id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_TYPE + "-" + field.propertyId}
+                        <select id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_TYPE + "-" + index}
                                 className={'form-control'} onChange={onChange} value={this.getDataType()}>
                             {
                                 PropDescTypes.map(function (type) {
                                     if (type.display)
                                     {
                                         return <option
-                                            key={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_TYPE + 'option-' + type.name + '-' + field.propertyId}
+                                            key={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_TYPE + 'option-' + type.name + '-' + index}
                                             value={type.name}>{type.display}</option>
                                     }
                                     return ''
@@ -159,19 +156,19 @@ export class DomainRow extends React.Component<IDomainRowDisplay, IDomainRow>
                     <div className='domain-field-checkbox'>
                         <Tip caption={'Required?'}>
                             <Checkbox className='domain-field-checkbox'
-                                      id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_REQ + "-" + field.propertyId}
+                                      id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_REQ + "-" + index}
                                       checked={field.required} onChange={onChange}/>
                         </Tip>
                     </div>
                 </Col>
                 <Col xs={5}>
-                <span id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_DETAILS + "-" + field.propertyId} className='domain-field-details'>
+                <span id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_DETAILS + "-" + index} className='domain-field-details'>
                     {this.getDetails()}
                 </span>
                 </Col>
                 <Col xs={1}>
                     <Tip caption={'Advanced Settings'}>
-                        <div className='domain-field-advanced-icon pull-right' id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_ADV + "-" + field.propertyId}>
+                        <div className='domain-field-advanced-icon pull-right' id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_ADV + "-" + index}>
                             <FontAwesomeIcon icon={faPencilAlt}/>
                         </div>
                     </Tip>

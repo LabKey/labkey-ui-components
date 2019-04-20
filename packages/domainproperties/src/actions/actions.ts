@@ -104,13 +104,12 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
  * @param domain: DomainDesign to clear
  * @return copy of domain with details cleared
  */
-export function clearFieldDetails(domain: DomainDesign) {
+export function clearFieldDetails(domain: DomainDesign): DomainDesign {
 
     const newFields = domain.fields.map((field) => {
-        field.updatedField = false;
-        field.newField = false;
-
-        return field;
+        let newField = field.set('updatedField', false);
+        newField = newField.set('newField', false);
+        return newField;
     });
 
     return domain.merge({

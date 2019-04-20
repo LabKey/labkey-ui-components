@@ -39,13 +39,13 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
  * @param domain: DomainDesign to save
  * @return Promise wrapped Domain API call.
  */
-export function saveDomain(domain: DomainDesign) : Promise<DomainDesign> {
+export function saveDomain(domain: DomainDesign) : Promise<boolean> {
     return new Promise((resolve, reject) => {
         Domain.save({
             domainDesign: domain,
             domainId: domain.domainId,
             success: (data) => {
-                resolve(DomainDesign.create(data));
+                resolve(data.success);
             },
             failure: (error) => {
                 reject(error);

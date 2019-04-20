@@ -325,7 +325,8 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
 }
 
-function loadDataForEditor(model: QueryGridModel, response?: any) {
+// exporting for use in test, but we should really figure out how to initialize the test better
+export function loadDataForEditor(model: QueryGridModel, response?: any) {
     const rows: List<Map<string, any>> = response ? response.data : List();
     const columns = model.getInsertColumns();
     let cellValues = Map<string, List<ValueDescriptor>>().asMutable();
@@ -867,7 +868,8 @@ export function inDrag(modelId: string): boolean {
     return dragLock.get(modelId) !== undefined;
 }
 
-function initEditorModel(model: QueryGridModel) {
+// exporting for tests, but we should really figure out how to initialize the test better
+export function initEditorModel(model: QueryGridModel) {
     const newModel = new EditorModel({id: model.getId()});
     updateEditorModel(newModel, {}, false);
 }
@@ -1688,9 +1690,61 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
     }
 }
 
-// TODO remove multiple rows.  We will need to find the rowIndexes before caling this.
-export function removeRows(model: QueryGridModel, dataIds: Set<string>, rowIndexes: any) {
 
+export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  ) {
+    const editorModel = getEditorModel(model.getId());
+    // sort descending so we remove the data for the row with the largest index first and don't mess up the index number for other rows
+    const sortedIdIndexes = dataIdIndexes.sort().reverse();
+    if (model.editable) {
+        let newCellMessages = editorModel.cellMessages;
+        let newCellValues = editorModel.cellValues;
+
+        sortedIdIndexes.forEach((rowIdx) => {
+            newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+                const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+                if (oldRowIdx > rowIdx) {
+                    return newCellMessages.set([colIdx, oldRowIdx - 1].join('-'), message);
+                } else if (oldRowIdx < rowIdx) {
+                    return newCellMessages.set(cellKey, message);
+                }
+
+                return newCellMessages;
+            }, Map<string, CellMessage>());
+            newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+                const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+
+                if (oldRowIdx > rowIdx) {
+                    return newCellValues.set([colIdx, oldRowIdx - 1].join('-'), value);
+                } else if (oldRowIdx < rowIdx) {
+                    return newCellValues.set(cellKey, value);
+                }
+
+                return newCellValues;
+            }, Map<string, List<ValueDescriptor>>())
+        });
+        updateEditorModel(editorModel, {
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            rowCount: editorModel.rowCount - dataIdIndexes.size,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues
+        });
+    }
+    let data = model.data;
+    let dataIds = model.dataIds;
+    sortedIdIndexes.forEach((dataIdIndex) => {
+        const dataId = dataIds.get(dataIdIndex);
+        data = data.remove(dataId);
+        dataIds = dataIds.remove(dataIdIndex);
+    });
+
+    updateQueryGridModel(model, {
+        data,
+        dataIds
+    });
 }
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {

@@ -1,9 +1,6 @@
 // #Grids
 // Grid Styling
-.editable-grid__container {
-  display: inline-block;
-  padding-right: 15px;
-}
+
 
 .form-horizontal .control-label.text-left{
   text-align: left;
@@ -135,6 +132,11 @@
 
 .grid-testing {
   min-width: 50px;
+}
+
+.editable-grid__container {
+  display: inline-block;
+  padding-right: 15px;
 }
 
 .edit-grid-container {

@@ -7,6 +7,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import sass from "rollup-plugin-sass";
+import copy from 'rollup-plugin-copy';
 
 const input = 'src/index.ts';
 
@@ -34,9 +35,17 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript(),
+            typescript({
+                objectHashIgnoreUnknownHack: true,
+                clean: true
+            }),
             sass({
                 output: 'dist/base.css'
+            }),
+            copy({
+                targets: [
+                     'src/typings/react-bootstrap.d.ts'
+                ]
             })
         ]
     },

@@ -19,7 +19,6 @@ const PANEL_GROUP = "Grid";
 
 initQueryGridState();
 
-
 const queryInfo = () => QueryInfo.create({
     "pkCols": [
         "RowId"

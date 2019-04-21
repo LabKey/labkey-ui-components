@@ -77,7 +77,7 @@ function inputCellKey(col: QueryColumn, row: any): string {
 
 export interface EditableGridProps {
     allowAdd?: boolean
-    allowBulkDelete?: boolean
+    allowBulkRemove?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
     disabled?: boolean
@@ -95,7 +95,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     static defaultProps = {
         allowAdd: true,
-        allowBulkDelete: false,
+        allowBulkRemove: false,
         allowRemove: true,
         disabled: false,
         isSubmitting: false,
@@ -201,11 +201,11 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     generateColumns(): List<GridColumn> {
-        const { allowBulkDelete, allowRemove } = this.props;
+        const { allowBulkRemove, allowRemove } = this.props;
         const model = this.getModel(this.props);
         let gridColumns = List<GridColumn>();
 
-        if (allowBulkDelete) {
+        if (allowBulkRemove) {
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
@@ -243,7 +243,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         model.getInsertColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
-                cell: inputCellFactory(model.getId(), allowBulkDelete),
+                cell: inputCellFactory(model.getId(), allowBulkRemove),
                 index: qCol.fieldKey,
                 raw: qCol,
                 title: qCol.caption,
@@ -256,7 +256,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     headerCell(col: GridColumn) {
         const model = this.getModel(this.props);
-        if (this.props.allowBulkDelete && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
+        if (this.props.allowBulkRemove && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectAll, this.state.selectedState, false);
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
@@ -355,10 +355,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     renderTopControls() {
-        const { addControlProps, allowAdd, allowBulkDelete, isSubmitting } = this.props;
+        const { addControlProps, allowAdd, allowBulkRemove, isSubmitting } = this.props;
         return (
             <div>
-                {allowBulkDelete && (
+                {allowBulkRemove && (
                         <DropdownButton
                             disabled={this.state.selected.size === 0}
                             id="manageEditableGridDropdown"

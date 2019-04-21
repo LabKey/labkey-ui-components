@@ -170,7 +170,7 @@ storiesOf('EditableGridPanel', module)
         return <EditableGridPanel
             addControlProps={addRowsControl}
             allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
-            allowBulkDelete={boolean("Allow bulk delete?", true, PANEL_GROUP)}
+            allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
             allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
             disabled={boolean("Disabled?", false, PANEL_GROUP)}
             initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
@@ -202,7 +202,7 @@ storiesOf('EditableGridPanel', module)
             maxCount:  100,
             nounPlural:  "rows",
             nounSingular: "row",
-            placement: select("Controls placement", ['top', 'bottom', 'both'], "bottom")
+            placement: select("Controls placement", ['top', 'bottom', 'both'], "bottom", PANEL_GROUP)
         };
 
         // This does seem to set up a mock response, but the promise that uses
@@ -229,7 +229,7 @@ storiesOf('EditableGridPanel', module)
             <EditableGridPanel
                 addControlProps={addRowsControl}
                 allowAdd={true}
-                allowBulkDelete={true}
+                allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
                 allowRemove={true}
                 disabled={false}
                 initialEmptyRowCount={4}

@@ -51,11 +51,13 @@ const COUNT_COL = new GridColumn({
     )
 });
 
-function inputCellFactory(modelId: string) {
+// the column index for cell values and cell messages does not include either the selection
+// column or the row number column, so we adjust the value passed to <Cell> to accommodate.
+function inputCellFactory(modelId: string, allowSelection?: boolean) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => (
         <Cell
             col={c.raw}
-            colIdx={cn-1}
+            colIdx={cn-(allowSelection ? 2 : 1)}
             key={inputCellKey(c.raw, row)}
             modelId={modelId}
             row={row}
@@ -132,25 +134,22 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }
     }
 
-    resetState() {
-        this.setState
-    }
-
     componentWillMount() {
-        const { initialEmptyRowCount } = this.props;
-        const model = this.getModel(this.props);
-        if (model.isLoaded && model.data.size === 0) {
-            addRows(model, initialEmptyRowCount);
-        }
+        this.initModel(this.props);
     }
 
     componentWillReceiveProps(nextProps: EditableGridProps) {
-        const newModel = this.getModel(nextProps);
-        if (newModel.isLoaded && newModel.data.size === 0) {
-            addRows(newModel, nextProps.initialEmptyRowCount);
-        }
+        this.initModel(nextProps);
     }
 
+    initModel(props: EditableGridProps) {
+        const { initialEmptyRowCount } = props;
+        const model = this.getModel(props);
+
+        if (model.isLoaded && !model.isError && model.data.size === 0) {
+            addRows(model, initialEmptyRowCount);
+        }
+    }
 
     componentDidMount() {
         document.addEventListener('click', this.onDocumentClick);
@@ -213,7 +212,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 showHeader: true,
                 cell: (selected: boolean, row) => {
                     return <input
-                        className="edit-grid-row-checkbox"
+                        style={{margin: "0 8px"}}
                         checked={this.state.selected.contains(row.get(GRID_EDIT_INDEX))}
                         type="checkbox"
                         onChange={this.select.bind(this, row)}/>;
@@ -244,7 +243,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         model.getInsertColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
-                cell: inputCellFactory(model.getId()),
+                cell: inputCellFactory(model.getId(), allowBulkDelete),
                 index: qCol.fieldKey,
                 raw: qCol,
                 title: qCol.caption,

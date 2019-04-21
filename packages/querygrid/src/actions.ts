@@ -1749,47 +1749,5 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
 }
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
-    if (model.editable) {
-        const editorModel = getEditorModel(model.getId());
-        updateEditorModel(editorModel, {
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            rowCount: editorModel.rowCount - 1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: Set<string>(),
-            cellMessages: editorModel.cellMessages.reduce((newCellMessages, message, cellKey) => {
-                const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-
-                if (oldRowIdx > rowIdx) {
-                    return newCellMessages.set([colIdx, oldRowIdx - 1].join('-'), message);
-                }
-                else if (oldRowIdx < rowIdx) {
-                    return newCellMessages.set(cellKey, message);
-                }
-
-                return newCellMessages;
-            }, Map<string, CellMessage>()),
-            cellValues: editorModel.cellValues.reduce((newCellValues, value, cellKey) => {
-                const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-
-                if (oldRowIdx > rowIdx) {
-                    return newCellValues.set([colIdx, oldRowIdx - 1].join('-'), value);
-                }
-                else if (oldRowIdx < rowIdx) {
-                    return newCellValues.set(cellKey, value);
-                }
-
-                return newCellValues;
-            }, Map<string, List<ValueDescriptor>>())
-        });
-    }
-
-    const idIndex = model.dataIds.findIndex(id => id === dataId);
-    if (idIndex !== undefined) {
-        updateQueryGridModel(model, {
-            data: model.data.remove(dataId),
-            dataIds: model.dataIds.remove(idIndex)
-        });
-    }
+    removeRows(model, List<number>([rowIdx]));
 }

@@ -51,7 +51,7 @@
 
 .grid-header-cell {
   position: relative;
-  padding: 0 8px;
+  padding: 0 9px;
 }
 
 .grid-header-sort {
@@ -148,10 +148,6 @@
 // usable, but not completely dominate the page.
 .edit-grid-container .Select {
   min-width: 250px;
-}
-
-.edit-grid-row-checkbox {
-  padding: 0 8px;
 }
 
 .table tbody tr td .editable-grid__removal-cell {

@@ -589,7 +589,8 @@ function fetchQueryInfo(model: QueryGridModel): Promise<QueryInfo> {
     })
 }
 
-function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
+// exporting for testing
+export function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
     if (queryInfo) {
         return queryInfo.merge({
             columns: bindColumnRenderers(queryInfo.columns)

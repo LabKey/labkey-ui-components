@@ -1,13 +1,17 @@
 import React from 'reactn';
 import { storiesOf } from "@storybook/react";
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+
 import { List, Map, OrderedMap } from 'immutable';
-import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from "@glass/base";
+import { GRID_EDIT_INDEX, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from "@glass/base";
 import { initQueryGridState, updateQueryGridModel } from "../global";
-import { EditableGridPanel, gridInit } from ".."
+import { bindQueryInfo, gridInit, gridLoad, initEditorModel, loadDataForEditor } from "../actions";
+import { EditableGridPanel } from "../components/editable/EditableGridPanel"
+import samplesQueryInfo  from "./data/samplesQueryInfo.json"
+import mock from 'xhr-mock';
 
 import './stories.scss'
-import { initEditorModel, loadDataForEditor } from "../actions";
+
 
 const MODEL_GROUP = "Query grid model";
 const CONTROLS_GROUP = "Grid controls";
@@ -23,7 +27,7 @@ const queryInfo = () => QueryInfo.create({
     "canEditSharedViews": true,
     "insertUrl": "\/labkey\/Biologics\/query-insertQueryRow.view?schemaName=samples&query.queryName=MixtureBatches",
     "columns": OrderedMap<string, QueryColumn>({
-        "rowid": {
+        "rowid": QueryColumn.create({
             "align": "right",
             "caption": "Row Id",
             "conceptURI": null,
@@ -49,8 +53,8 @@ const queryInfo = () => QueryInfo.create({
             "type": "Integer",
             "userEditable": false,
             "removeFromViews": false
-        },
-        "name": {
+        }),
+        "name": QueryColumn.create({
             "align": "left",
             "caption": text("Name field caption", "Name", PANEL_GROUP),
             "conceptURI": null,
@@ -76,8 +80,8 @@ const queryInfo = () => QueryInfo.create({
             "type": "Text (String)",
             "userEditable": true,
             "removeFromViews": false
-        },
-        "value": {
+        }),
+        "value": QueryColumn.create({
             "align": "left",
             "caption": text("Value field caption", "Value", PANEL_GROUP),
             "conceptURI": null,
@@ -103,21 +107,22 @@ const queryInfo = () => QueryInfo.create({
             "type": "Text (String)",
             "userEditable": true,
             "removeFromViews": false
-        },
-
+        })
     })
 });
 
 const data = Map<any, Map<string, any>>({
     "1": Map<string, any>({
+        GRID_EDIT_INDEX: 1,
         "rowid": "1",
-        "Name": "one",
-        "Value": "first"
+        "Name": "name one",
+        "Value": "first value"
     }),
     "2": Map<any, Map<string, any>>({
+        GRID_EDIT_INDEX: 2,
         "rowid": "2",
-        "name": "two",
-        "value": "second"
+        "Name": "name two",
+        "Value": "second value"
     })
 });
 
@@ -174,4 +179,66 @@ storiesOf('EditableGridPanel', module)
             isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
             title={text("Title", "Grid title", PANEL_GROUP)}
         />
-    });
+    })
+    .add("With data", () => {
+        const modelId = "editableWithData";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "schema",
+            queryName: "editableData"
+        });
+        let model = new QueryGridModel({
+            data: data,
+            dataIds: dataIds,
+            editable: true,
+            id: modelId,
+            isLoaded: true,
+            isLoading: false,
+            isError: false,
+            schema: schemaQuery.schemaName,
+            query: schemaQuery.queryName,
+            queryInfo: queryInfo()
+        });
+        let addRowsControl = {
+            minCount:  1,
+            maxCount:  100,
+            nounPlural:  "rows",
+            nounSingular: "row",
+            placement: select("Controls placement", ['top', 'bottom', 'both'], "bottom")
+        };
+
+        // This does seem to set up a mock response, but the promise that uses
+        // this response gets "undefined" for teh queryDetails objec for some reason.
+        // mock.setup();
+        //
+        // console.log("samplesQueryInfo", samplesQueryInfo);
+        // mock.get('labkey/query/testContainer/getQueryDetails.api?schemaName=schema&queryName=editableData&viewName=*', {
+        //     status: 200,
+        //     body: samplesQueryInfo
+        // });
+
+        let response = {
+            data: data.toList()
+        };
+
+        let newModel = updateQueryGridModel(model, {
+            queryInfo: bindQueryInfo(model.queryInfo)
+        }, undefined, false);
+        initEditorModel(newModel);
+        loadDataForEditor(newModel, response);
+
+        return (
+            <EditableGridPanel
+                addControlProps={addRowsControl}
+                allowAdd={true}
+                allowBulkDelete={true}
+                allowRemove={true}
+                disabled={false}
+                initialEmptyRowCount={4}
+                model={newModel}
+                isSubmitting={false}
+                title={"Editable grid with data"}
+            />
+        )
+    })
+
+;

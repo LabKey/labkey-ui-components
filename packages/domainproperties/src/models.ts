@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import {List, Record, fromJS} from "immutable";
+import {TEXT_RANGE_URI} from "./constants";
 
 interface IPropDescType{
     name: string,
@@ -150,10 +151,10 @@ interface IDomainField {
 export class DomainField extends Record({
     propertyId: undefined,
     propertyURI: undefined,
-    name: undefined,
+    name: '',
     description: undefined,
     label: undefined,
-    rangeURI: undefined,
+    rangeURI: TEXT_RANGE_URI,
     conceptURI: undefined,
     required: false,
     lookupContainer: undefined,

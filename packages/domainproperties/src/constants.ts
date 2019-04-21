@@ -13,8 +13,10 @@ export const DOMAIN_FIELD_REQ = 'req';
 export const DOMAIN_FIELD_DETAILS = 'details';
 export const DOMAIN_FIELD_ADV = 'adv';
 
+export const TEXT_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
+
 export const PropDescTypes = List([
-    new PropDescType({name: 'string', display: 'Text (String)', rangeURI: 'http://www.w3.org/2001/XMLSchema#string'}),
+    new PropDescType({name: 'string', display: 'Text (String)', rangeURI: TEXT_RANGE_URI}),
     new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: 'http://www.w3.org/2001/XMLSchema#multiLine'}),
     new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: 'http://www.w3.org/2001/XMLSchema#boolean'}),
     new PropDescType({name: 'int', display: 'Integer', rangeURI: 'http://www.w3.org/2001/XMLSchema#int'}),

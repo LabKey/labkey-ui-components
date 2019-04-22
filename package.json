@@ -7,7 +7,7 @@
     "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
   },
   "dependencies": {
-    "@labkey/dependencies": "0.0.2",
+    "@labkey/dependencies": "0.0.3",
     "classnames": "2.2.6",
     "watch": "1.0.2"
   },
@@ -43,6 +43,7 @@
     "rollup-plugin-node-resolve": "4.0.1",
     "rollup-plugin-sass": "1.1.0",
     "rollup-plugin-typescript2": "0.19.2",
+    "rollup-plugin-copy": "1.1.0",
     "sass-loader": "7.1.0",
     "@storybook/addon-knobs": "5.0.6",
     "@storybook/addon-notes": "5.0.6",

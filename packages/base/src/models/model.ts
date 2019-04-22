@@ -235,6 +235,7 @@ export class QueryColumn extends Record({
     columnRenderer: undefined,
     detailRenderer: undefined,
     inputRenderer: undefined,
+    placeholder: undefined,
     removeFromViews: false,
     sorts: undefined,
     units: undefined
@@ -296,6 +297,7 @@ export class QueryColumn extends Record({
     columnRenderer: string;
     detailRenderer: string;
     inputRenderer: string;
+    placeholder: string;
     sorts: '+' | '-';
     removeFromViews: boolean; // strips this column from all ViewInfo definitions
     units: string;

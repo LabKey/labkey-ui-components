@@ -21,6 +21,7 @@ interface Props {
     colIdx: number
     modelId: string
     name?: string
+    placeholder?: string
     row: any
     rowIdx: number
 }
@@ -73,6 +74,10 @@ export class Cell extends React.Component<Props, any> {
     }
 
     handleDblClick() {
+        const { col } = this.props;
+        if (col.readOnly)
+            return;
+
         clearTimeout(this.clickTO);
         const { colIdx, modelId, rowIdx } = this.props;
         focusCell(modelId, colIdx, rowIdx);
@@ -214,18 +219,24 @@ export class Cell extends React.Component<Props, any> {
     }
 
     render() {
-        const { col, colIdx, modelId, rowIdx } = this.props;
+        const { col, colIdx, modelId, placeholder, rowIdx } = this.props;
         const message = this.message();
         const selected = this.selected();
         const values = this.values();
 
         if (!this.focused()) {
+            let valueDisplay = values
+                .filter(vd => vd.display !== undefined)
+                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
+
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
                     'cell-selected': selected,
                     'cell-selection': this.selection(),
-                    'cell-warning': message !== undefined
+                    'cell-warning': message !== undefined,
+                    'cell-read-only': col.readOnly,
+                    'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined
                 }),
                 onDoubleClick: this.handleDblClick,
                 onKeyDown: this.handleKeys,
@@ -235,10 +246,8 @@ export class Cell extends React.Component<Props, any> {
                 tabIndex: -1
             };
 
-            const valueDisplay = values
-                .filter(vd => vd.display !== undefined)
-                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
-
+            if (valueDisplay.length == 0 && placeholder)
+                valueDisplay=placeholder;
             const cell = <div {...displayProps}>{valueDisplay}</div>;
 
             if (message) {
@@ -274,10 +283,12 @@ export class Cell extends React.Component<Props, any> {
         const inputProps = {
             autoFocus: true,
             defaultValue: values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '',
+            disabled: col.readOnly,
             className: 'cellular-input',
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onKeyDown: this.handleKeys,
+            placeholder: placeholder,
             tabIndex: -1,
             type: 'text'
         };

@@ -60,6 +60,7 @@ function inputCellFactory(modelId: string, allowSelection?: boolean) {
             colIdx={cn-(allowSelection ? 2 : 1)}
             key={inputCellKey(c.raw, row)}
             modelId={modelId}
+            placeholder={c.placeholder}
             row={row}
             rowIdx={rn}/>
     );
@@ -245,6 +246,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 align: qCol.align,
                 cell: inputCellFactory(model.getId(), allowBulkRemove),
                 index: qCol.fieldKey,
+                placeholder: qCol.placeholder,
                 raw: qCol,
                 title: qCol.caption,
                 width: 100

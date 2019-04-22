@@ -290,6 +290,18 @@ $table-cell-selection-bg-color: #EDF3FF;
         background-color: $state-warning-bg;
       }
     }
+
+    .cell-placeholder {
+      color: $light-gray;
+    }
+
+    .cell-read-only {
+      background-color: $light-gray;
+
+      &.cell-placeholder {
+        color: $gray-light
+      }
+    }
   }
 }
 

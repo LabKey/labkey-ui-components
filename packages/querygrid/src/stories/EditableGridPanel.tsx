@@ -239,5 +239,161 @@ storiesOf('EditableGridPanel', module)
             />
         )
     })
+    .add("Read-only columns and placeholders", () => {
+        const data = Map<any, Map<string, any>>({
+            "1": Map<string, any>({
+                GRID_EDIT_INDEX: 1,
+                "rowid": "1",
+                "Name": "name one"
+            }),
+            "2": Map<any, Map<string, any>>({
+                GRID_EDIT_INDEX: 2,
+                "rowid": "2",
+                "Value": "second value"
+            })
+        });
 
+        const dataIds = List<any>(["1", "2"]);
+        const queryInfo = () => QueryInfo.create({
+            "pkCols": [
+                "RowId"
+            ],
+            "canEditSharedViews": true,
+            "insertUrl": "\/labkey\/Biologics\/query-insertQueryRow.view?schemaName=samples&query.queryName=MixtureBatches",
+            "columns": OrderedMap<string, QueryColumn>({
+                "rowid": QueryColumn.create({
+                    "align": "right",
+                    "caption": "Row Id",
+                    "conceptURI": null,
+                    "defaultValue": null,
+                    "description": "Contains the unique identifier for this sample",
+                    "fieldKey": "RowId",
+                    "fieldKeyArray": [
+                        "RowId"
+                    ],
+                    "hidden": true,
+                    "inputType": "text",
+                    "isKeyField": true,
+                    "jsonType": "int",
+                    "multiValue": false,
+                    "name": "RowId",
+                    "rangeURI": null,
+                    "readOnly": true,
+                    "required": true,
+                    "shortCaption": "Row Id",
+                    "shownInInsertView": false,
+                    "shownInUpdateView": false,
+                    "sortable": true,
+                    "type": "Integer",
+                    "userEditable": false,
+                    "removeFromViews": false
+                }),
+                "name": QueryColumn.create({
+                    "align": "left",
+                    "caption":  "Name",
+                    "conceptURI": null,
+                    "defaultValue": null,
+                    "description": "Contains a short description for this sample\nIf not provided, a unique name will be generated from the expression:\nB-${now:date}-${dailySampleCount}",
+                    "fieldKey": "Name",
+                    "fieldKeyArray": [
+                        "Name"
+                    ],
+                    "hidden": false,
+                    "inputType": "text",
+                    "isKeyField": false,
+                    "jsonType": "string",
+                    "multiValue": false,
+                    "name": "Name",
+                    "placeholder": text("Name placeholder", "Enter a name", PANEL_GROUP),
+                    "rangeURI": null,
+                    "readOnly": boolean("Name read only?", false, PANEL_GROUP),
+                    "required": true,
+                    "shortCaption": "Name",
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "sortable": true,
+                    "type": "Text (String)",
+                    "userEditable": true,
+                    "removeFromViews": false
+                }),
+                "value": QueryColumn.create({
+                    "align": "left",
+                    "caption": "Value",
+                    "conceptURI": null,
+                    "defaultValue": null,
+                    "description": "Contains a value for this sample",
+                    "fieldKey": "Value",
+                    "fieldKeyArray": [
+                        "Value"
+                    ],
+                    "hidden": false,
+                    "inputType": "text",
+                    "isKeyField": false,
+                    "jsonType": "string",
+                    "multiValue": false,
+                    "name": "Value",
+                    "placeholder": text("Value placeholder", "Enter a value", PANEL_GROUP),
+                    "rangeURI": null,
+                    "readOnly": boolean("Value field read-only?", false, PANEL_GROUP),
+                    "required": false,
+                    "shortCaption": "Value",
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "sortable": true,
+                    "type": "Text (String)",
+                    "userEditable": true,
+                    "removeFromViews": false
+                })
+            })
+        });
+        const modelId = "editableWithData";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "schema",
+            queryName: "editableData"
+        });
+        let model = new QueryGridModel({
+            data: data,
+            dataIds: dataIds,
+            editable: true,
+            id: modelId,
+            isLoaded: true,
+            isLoading: false,
+            isError: false,
+            schema: schemaQuery.schemaName,
+            query: schemaQuery.queryName,
+            queryInfo: queryInfo()
+        });
+        let addRowsControl = {
+            minCount:  1,
+            maxCount:  100,
+            nounPlural:  "rows",
+            nounSingular: "row",
+            placement: select("Controls placement", ['top', 'bottom', 'both'], "bottom", PANEL_GROUP)
+        };
+
+        let response = {
+            data: data.toList()
+        };
+
+        let newModel = updateQueryGridModel(model, {
+            queryInfo: bindQueryInfo(model.queryInfo)
+        }, undefined, false);
+        initEditorModel(newModel);
+        loadDataForEditor(newModel, response);
+
+        return (
+            <EditableGridPanel
+                addControlProps={addRowsControl}
+                allowAdd={true}
+                allowBulkRemove={false}
+                allowRemove={true}
+                disabled={false}
+                initialEmptyRowCount={4}
+                model={newModel}
+                isSubmitting={false}
+                title={"Editable grid with read-only data"}
+            />
+        )
+
+    })
 ;

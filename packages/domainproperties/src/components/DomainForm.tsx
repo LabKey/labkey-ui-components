@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {DomainRow} from "./DomainRow";
 import {DomainDesign, DomainField} from "../models";
-import { updateDomainField } from "..";
+import {updateDomainField} from "../actions/actions";
 
 interface IDomainFormInput {
     domain: DomainDesign

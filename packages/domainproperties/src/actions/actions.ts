@@ -91,8 +91,9 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
 
     const newFields = domain.fields.map((field, i) => {
 
+        let newField;
         if (i.toString() === index) {
-            let newField = field.set('updatedField', true); // Set for field details in DomainRow
+            newField = field.set('updatedField', true); // Set for field details in DomainRow
             newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
 
             switch (type) {
@@ -111,11 +112,12 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
                     newField = newField.set('required', value);
                     break;
             }
-
-            return newField;
+        }
+        else {
+            newField = field.set('renderUpdate', false); // Do not re-render
         }
 
-        return field;
+        return newField;
     });
 
     return domain.merge({

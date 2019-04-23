@@ -18,7 +18,6 @@ export {
     fetchDomain,
     saveDomain,
     clearFieldDetails,
-    updateDomainField,
 
     // models
     DomainDesign

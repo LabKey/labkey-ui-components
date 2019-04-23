@@ -325,7 +325,6 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
 }
 
-// exporting for use in test, but we should really figure out how to initialize the test better
 function loadDataForEditor(model: QueryGridModel, response?: any) {
     const rows: List<Map<string, any>> = response ? response.data : List();
     const columns = model.getInsertColumns();
@@ -589,7 +588,6 @@ function fetchQueryInfo(model: QueryGridModel): Promise<QueryInfo> {
     })
 }
 
-// exporting for testing
 function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
     if (queryInfo) {
         return queryInfo.merge({
@@ -869,7 +867,6 @@ export function inDrag(modelId: string): boolean {
     return dragLock.get(modelId) !== undefined;
 }
 
-// exporting for tests, but we should really figure out how to initialize the test better
 function initEditorModel(model: QueryGridModel) {
     const newModel = new EditorModel({id: model.getId()});
     updateEditorModel(newModel, {}, false);

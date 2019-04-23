@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.6",
+  "version": "0.0.7-alpha.7",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -36,7 +36,7 @@
     "@fortawesome/free-solid-svg-icons": "5.8.1",
     "@fortawesome/react-fontawesome": "0.1.4",
     "@fortawesome/fontawesome-free": "5.8.1",
-    "@glass/base": "0.1.5"
+    "@glass/base": "0.1.7"
   },
   "jest": {
     "globals": {

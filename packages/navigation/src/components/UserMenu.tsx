@@ -37,9 +37,9 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
 
             let menuItems = [];
             menuSection.items.forEach((item) => {
-                // if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
-                //     menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
-                // }
+                if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
+                    menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
+                }
             });
             menuItems.push(
                 <MenuItem key="projectBegin" href={buildURL('project', 'begin.view', undefined, {returnURL: false})}>

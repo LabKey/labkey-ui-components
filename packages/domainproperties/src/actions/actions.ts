@@ -9,9 +9,9 @@ import {
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_REQ,
     DOMAIN_FIELD_TYPE,
-    PropDescTypes
+    PROP_DESC_TYPES
 } from "../constants";
-import { DomainDesign, DomainField } from "../models";
+import {DomainDesign, DomainField, PropDescType} from "../models";
 
 /**
  * @param domainId: Fetch domain by Id. Priority param over schema and query name.
@@ -54,6 +54,30 @@ export function saveDomain(domain: DomainDesign) : Promise<boolean> {
     })
 }
 
+export function createId(prefix: string, name: string, index: any) {
+    return prefix + '-' + name + '-' + index;
+}
+
+function getNameFromId(id: string) : string {
+    const parts = id.split('-');
+    if (parts.length === 3) {
+        return parts[1];
+    }
+    else {
+        return null;
+    }
+}
+
+function getIndexFromId(id: string): string {
+    const parts = id.split('-');
+    if (parts.length === 3) {
+        return parts[2];
+    }
+    else {
+        return null;
+    }
+}
+
 /**
  *
  * @param domain: DomainDesign to update
@@ -62,9 +86,8 @@ export function saveDomain(domain: DomainDesign) : Promise<boolean> {
  * @return copy of domain with updated field
  */
 export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
-    const idType = fieldId.split(DOMAIN_FIELD_PREFIX)[1];
-    const type = idType.split("-")[0];
-    const index = idType.split("-")[1];
+    const type = getNameFromId(fieldId);
+    const index = getIndexFromId(fieldId);
 
     const newFields = domain.fields.map((field, i) => {
 
@@ -77,7 +100,7 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
                     newField = newField.set('name', value);
                     break;
                 case DOMAIN_FIELD_TYPE:
-                    PropDescTypes.map((type) => {
+                    PROP_DESC_TYPES.map((type) => {
                         if (type.name === value) {
                             newField = newField.set('rangeURI', type.rangeURI);
                             newField = newField.set('conceptURI', type.conceptURI);
@@ -115,4 +138,43 @@ export function clearFieldDetails(domain: DomainDesign): DomainDesign {
     return domain.merge({
         fields: List<DomainField>(newFields)
     }) as DomainDesign;
+}
+
+/**
+ * Gets display datatype from rangeURI, conceptURI and lookup values
+ */
+export function getDataType(): PropDescType {
+    const types = PROP_DESC_TYPES.filter((value) => {
+
+        // handle matching rangeURI and conceptURI
+        if (value.rangeURI === this.props.field.rangeURI)
+        {
+            if (!this.props.field.lookupQuery &&
+                ((!value.conceptURI && !this.props.field.conceptURI) || (value.conceptURI === this.props.field.conceptURI)))
+            {
+                return true;
+            }
+        }
+        // handle selected lookup option
+        else if (value.name === 'lookup' && this.props.field.lookupQuery && this.props.field.lookupQuery !== 'users')
+        {
+            return true;
+        }
+        // handle selected users option
+        else if (value.name === 'users' && this.props.field.lookupQuery && this.props.field.lookupQuery === 'users')
+        {
+            return true;
+        }
+
+        return false;
+    });
+
+    // If found return name
+    if (types.size > 0)
+    {
+        return types.get(0);
+    }
+
+    // default to the text type
+    return PROP_DESC_TYPES.get(0);
 }

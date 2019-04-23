@@ -7,13 +7,14 @@ import {
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_REQ,
     DOMAIN_FIELD_TYPE,
-    PropDescTypes
+    PROP_DESC_TYPES
 } from "../constants";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Tip } from "@glass/base";
 import { DomainField } from "../models";
+import {createId, getDataType} from "../actions/actions";
 
 library.add(faPencilAlt);
 
@@ -29,30 +30,20 @@ interface IDomainRowDisplay {
 export class DomainRow extends React.Component<IDomainRowDisplay, any>
 {
 
-    constructor(props: IDomainRowDisplay, state: any)
-    {
-        super(props, state);
-
-        this.getDetails = this.getDetails.bind(this);
-        this.getDataType = this.getDataType.bind(this);
-    }
-
     /**
      *  Performance update to prevent unnecessary renders of domain rows on any state update
      */
     shouldComponentUpdate(nextProps: Readonly<IDomainRowDisplay>, nextState: Readonly<any>, nextContext: any): boolean
     {
         // Check first if this optimization is being used. See actions.updateDomainField for example where this is set.
-        if (typeof nextProps.field.renderUpdate !== "undefined") {
-            return nextProps.field.renderUpdate
-        }
-        else return true;  // Not optimizing, just updating every time
+        // Not optimizing, just update every time
+        return (typeof nextProps.field.renderUpdate !== "undefined" ? nextProps.field.renderUpdate: true)
     }
 
     /**
      *  Details section of property row
      */
-    getDetails()
+    getDetails = (): string =>
     {
         let details = '';
 
@@ -80,69 +71,29 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
         return details;
     }
 
-    /**
-     * Gets display datatype from rangeURI, conceptURI and lookup values
-     */
-    getDataType()
-    {
-        const types = PropDescTypes.filter((value) => {
-
-            // handle matching rangeURI and conceptURI
-            if (value.rangeURI === this.props.field.rangeURI)
-            {
-                if (!this.props.field.lookupQuery &&
-                    ((!value.conceptURI && !this.props.field.conceptURI) || (value.conceptURI === this.props.field.conceptURI)))
-                {
-                    return true;
-                }
-            }
-            // handle selected lookup option
-            else if (value.name === 'lookup' && this.props.field.lookupQuery && this.props.field.lookupQuery !== 'users')
-            {
-                return true;
-            }
-            // handle selected users option
-            else if (value.name === 'users' && this.props.field.lookupQuery && this.props.field.lookupQuery === 'users')
-            {
-                return true;
-            }
-
-            return false;
-        });
-
-        // If found return name
-        if (types.size > 0)
-        {
-            return types.get(0).name;
-        }
-
-        // default to the text type
-        return 'string';
-    }
-
     render()
     {
         const {index, field, onChange} = this.props;
 
         return (
 
-            <Row className='domain-field-row' key={DOMAIN_FIELD_PREFIX + "-" + index}>
+            <Row className='domain-field-row' key={createId(DOMAIN_FIELD_PREFIX,"domainrow", index)}>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_NAME + "-" + index} type="text"
+                        <FormControl id={createId(DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_NAME, index)} type="text"
                                      value={field.name} onChange={onChange}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
                     <Tip caption={'Data Type'}>
-                        <select id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_TYPE + "-" + index}
-                                className={'form-control'} onChange={onChange} value={this.getDataType()}>
+                        <select id={createId(DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE, index)}
+                                className={'form-control'} onChange={onChange} value={getDataType().name}>
                             {
-                                PropDescTypes.map(function (type) {
+                                PROP_DESC_TYPES.map(function (type) {
                                     if (type.display)
                                     {
                                         return <option
-                                            key={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_TYPE + 'option-' + type.name + '-' + index}
+                                            key={createId(DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
                                             value={type.name}>{type.display}</option>
                                     }
                                     return ''
@@ -156,19 +107,19 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                     <div className='domain-field-checkbox'>
                         <Tip caption={'Required?'}>
                             <Checkbox className='domain-field-checkbox'
-                                      id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_REQ + "-" + index}
+                                      id={createId(DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_REQ, index)}
                                       checked={field.required} onChange={onChange}/>
                         </Tip>
                     </div>
                 </Col>
                 <Col xs={5}>
-                <span id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_DETAILS + "-" + index} className='domain-field-details'>
+                <span id={createId(DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_DETAILS, index)} className='domain-field-details'>
                     {this.getDetails()}
                 </span>
                 </Col>
                 <Col xs={1}>
                     <Tip caption={'Advanced Settings'}>
-                        <div className='domain-field-advanced-icon pull-right' id={DOMAIN_FIELD_PREFIX + DOMAIN_FIELD_ADV + "-" + index}>
+                        <div className='domain-field-advanced-icon pull-right' id={createId(DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_ADV, index)}>
                             <FontAwesomeIcon icon={faPencilAlt}/>
                         </div>
                     </Tip>

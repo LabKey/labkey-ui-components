@@ -77,7 +77,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                     title="Menu"
                     open={this.state.menuOpen}
                     onToggle={this.toggleMenu}
-                    rootCloseEvent="mousedown"
+                    // rootCloseEvent="mousedown"
             >
                 <div className={containerCls} onClick={this.toggleMenu}>
                 {inside}

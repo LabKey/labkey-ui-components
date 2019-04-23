@@ -28,26 +28,6 @@ export class PropDescType extends Record({
     }
 }
 
-export interface IDomainFormInput {
-    domain: DomainDesign
-    onChange?: (evt: any) => any
-    onSubmit?: () => any
-}
-
-export class DomainFormInput extends Record({
-    domain: undefined,
-    onChange: undefined,
-    onSubmit: undefined,
-}) implements IDomainFormInput {
-    domain: undefined;
-    onChange: undefined;
-    onSubmit: undefined;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-}
-
 interface IDomainDesign {
     name: string
     description?: string

@@ -3,30 +3,22 @@ import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {DomainRow} from "./DomainRow";
-import {DomainDesign, DomainField, DomainFormInput, IDomainFormInput} from "../models";
+import {DomainDesign, DomainField} from "../models";
 
-interface IDomainFormState {
-    domainDesign: DomainDesign,
-    id: string // TODO is this used anymore or should it be removed?
+interface IDomainFormInput {
+    domain: DomainDesign
+    onChange?: (evt: any) => any
+    onSubmit?: () => any
 }
 
 /**
  * Form containing all properties of a domain
  */
-export default class DomainForm extends React.Component<IDomainFormInput, IDomainFormState> {
+export default class DomainForm extends React.Component<IDomainFormInput, any> {
 
-    constructor(props: DomainFormInput) {
-        super(props);
 
-    }
-
-    isValidDomain(domainDesign) {
-        let valid = true;
-        if (!domainDesign || !domainDesign.name) {
-            valid = false;
-        }
-
-        return valid;
+    isValidDomain(domainDesign: DomainDesign): boolean {
+        return !!(domainDesign && domainDesign.name);
     }
 
     onAddField = () => {

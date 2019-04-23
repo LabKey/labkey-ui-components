@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.1.5"
+    "@glass/base": "0.1.7"
   },
   "jest": {
     "globals": {

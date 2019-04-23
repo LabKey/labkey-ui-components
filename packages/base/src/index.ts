@@ -79,6 +79,8 @@ import {
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
+// export * from './typings/react-bootstrap.d.ts'
+
 // Add explicit export block for the classes and functions to be exported from this package
 export {
     // constants

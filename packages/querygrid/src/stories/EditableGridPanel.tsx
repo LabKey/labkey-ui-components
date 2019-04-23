@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { Map, fromJS } from 'immutable';
 import { GRID_EDIT_INDEX, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, IGridLoader } from "@glass/base";
-import mock from 'xhr-mock';
+import mock, { proxy } from 'xhr-mock';
 
 import { gridInit } from "../actions";
 import { getStateQueryGridModel } from "../model";
@@ -33,28 +33,28 @@ const GRID_DATA = Map<any, Map<string, any>>({
     })
 });
 
-function setUpMock() {
-    mock.setup();
 
-    mock.get(/.*\/query\/.*\/getQueryDetails.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixtureBatchesQueryInfo)
-    });
+mock.setup();
 
-    mock.post(/.*\/query\/.*\/getQuery.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixtureTypesQuery)
-    });
-}
+mock.get(/.*\/query\/.*\/getQueryDetails.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(mixtureBatchesQueryInfo)
+});
+
+mock.post(/.*\/query\/.*\/getQuery.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(mixtureTypesQuery)
+});
+mock.use(proxy);
+
 
 initQueryGridState();
 
 storiesOf('EditableGridPanel', module)
     .addDecorator(withKnobs)
     .add("without data", () => {
-        setUpMock();
         setQueryMetadata(fromJS({
             columnDefaults: {
                 flag: {
@@ -80,7 +80,7 @@ storiesOf('EditableGridPanel', module)
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
         };
 
-        const component = <EditableGridPanel
+        return <EditableGridPanel
             addControlProps={addRowsControl}
             allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
             allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
@@ -91,11 +91,9 @@ storiesOf('EditableGridPanel', module)
             title={text("Title", "Grid title", PANEL_GROUP)}
             model={model}
         />;
-        mock.reset();
-        return component;
+
     })
     .add("with data", () => {
-        setUpMock();
         setQueryMetadata(fromJS({
             columnDefaults: {
                 flag: {
@@ -134,7 +132,7 @@ storiesOf('EditableGridPanel', module)
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
         };
 
-        const component =
+        return (
             <EditableGridPanel
                 addControlProps={addRowsControl}
                 allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
@@ -144,12 +142,10 @@ storiesOf('EditableGridPanel', module)
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
                 title={text("Title", "Editable grid with data", PANEL_GROUP)}
                 model={model}
-            />;
-        mock.reset();
-        return component;
+            />
+        );
     })
     .add("with read-only columns and placeholders", () => {
-        setUpMock();
         const modelId = "editableWitReadOnlyAndPlaceHolders";
         const schemaQuery = new SchemaQuery({
             schemaName: "schema",
@@ -177,11 +173,11 @@ storiesOf('EditableGridPanel', module)
                 readOnly: boolean("Name field read-only?", true)
             },
             "Alias": {
-                placeholder : text("Alias placeholder text ", "Enter an alias")
+                placeholder : text("Alias placeholder text here ", "Enter an alias")
             }
         });
 
-        const component =
+        return (
             <EditableGridPanel
                 allowAdd={true}
                 allowBulkRemove={true}
@@ -191,8 +187,6 @@ storiesOf('EditableGridPanel', module)
                 model={model}
                 isSubmitting={false}
                 title={"Editable grid with read-only data"}
-            />;
-
-        mock.reset();
-        return component;
+            />
+        );
     });

@@ -1183,18 +1183,19 @@
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
-"@labkey/api@0.0.14":
-  version "0.0.14"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.14.tgz#d4e8edefac76e56ded77324f6854da43174e7984"
-  integrity sha1-1Ojt76x25W3tdzJPaFTaQxdOeYQ=
+"@labkey/api@0.0.16":
+  version "0.0.16"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.16.tgz#d79f0a4fc0a5bb5a4cf1fefcda3e377d39cff29e"
+  integrity sha1-158KT8Clu1pM8f782j43fTnP8p4=
 
-"@labkey/dependencies@0.0.2":
-  version "0.0.2"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.2.tgz#c20e8d3819603c752c3a86c0d9e50d3406d70583"
-  integrity sha1-wg6NOBlgPHUsOobA2eUNNAbXBYM=
+"@labkey/dependencies@0.0.3":
+  version "0.0.3"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.3.tgz#1f15cad7602e1efbf4747c5f99d67656bf80e6e4"
+  integrity sha1-HxXK12AuHvv0dHxfmdZ2Vr+A5uQ=
   dependencies:
-    "@labkey/api" "0.0.14"
+    "@labkey/api" "0.0.16"
     "@types/react" "16.4.18"
+    "@types/react-bootstrap" "0.32.17"
     "@types/react-dom" "16.0.9"
     font-awesome "4.7.0"
     immutable "3.8.2"
@@ -1752,6 +1753,13 @@
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
+
+"@types/react-bootstrap@0.32.17":
+  version "0.32.17"
+  resolved "https://registry.yarnpkg.com/@types/react-bootstrap/-/react-bootstrap-0.32.17.tgz#62be3350734c7433683f54ec02afba69e7412427"
+  integrity sha512-w/Agv91PQ2q5w4MK+plWshyvLMFePxdl+b2KtlFHBSbr6FgaguIGEAdhA3l0hyKDmEj3VMHGFiBqwhsQJ2Rltg==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react-dom@16.0.9":
   version "16.0.9"
@@ -10153,6 +10161,15 @@ rollup-plugin-commonjs@9.2.1:
     magic-string "^0.25.1"
     resolve "^1.10.0"
     rollup-pluginutils "^2.3.3"
+
+rollup-plugin-copy@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-copy/-/rollup-plugin-copy-1.1.0.tgz#bfcbfd6894634be720bfad9d03644c40a70b3b16"
+  integrity sha512-4QjLhJFcOFHjozhChjuXRymFgLYDb2cqUSZuIXbfMQo83xCxgSxYXEFDhsSstD/3NTTQzAKaRK9JAoUH8B3FbA==
+  dependencies:
+    chalk "^2.4.2"
+    fs-extra "^7.0.1"
+    is-plain-object "^2.0.4"
 
 rollup-plugin-node-resolve@4.0.1:
   version "4.0.1"

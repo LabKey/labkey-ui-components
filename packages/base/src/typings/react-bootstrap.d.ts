@@ -2,10 +2,11 @@
 // Project: http://react-bootstrap.github.io/
 // Definitions by: Nick Arnold <https://github.com/labkey-nicka>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+import * as React from 'react';
+import {AppURL} from "../url/ActionURL";
+
 
 declare module "react-bootstrap" {
-
-    import * as React from 'react';
 
     export type BsStyleTypes = 'danger' | 'default' | 'info' | 'primary' | 'success' | 'warning';
 
@@ -33,7 +34,7 @@ declare module "react-bootstrap" {
         bsClass?: string;
         bsSize?: string
         bsStyle?: string;
-        className?: string
+        className?: string;
         href?: string;
         target?: string;
         title?: React.ReactNode;
@@ -117,6 +118,7 @@ declare module "react-bootstrap" {
         onSelect?: Function;
         onToggle?: Function;
         role?: string;
+        rootCloseEvent?: string;
     }
 
     export class DropdownButton extends React.Component<DropdownButtonProps, any> {}
@@ -197,7 +199,7 @@ declare module "react-bootstrap" {
         divider?: any; // TODO: Not really any
         eventKey?: any;
         header?: boolean;
-        href?: string;
+        href?: string | AppURL;
         target?: string;
         title?: string;
         onClick?: any;

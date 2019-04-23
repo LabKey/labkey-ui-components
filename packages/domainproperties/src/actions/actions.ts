@@ -54,8 +54,8 @@ export function saveDomain(domain: DomainDesign) : Promise<boolean> {
     })
 }
 
-export function createId(prefix: string, name: string, index: any) {
-    return prefix + '-' + name + '-' + index;
+export function createFormInputId(name: string, index: any) {
+    return DOMAIN_FIELD_PREFIX + '-' + name + '-' + index;
 }
 
 function getNameFromId(id: string) : string {
@@ -143,25 +143,25 @@ export function clearFieldDetails(domain: DomainDesign): DomainDesign {
 /**
  * Gets display datatype from rangeURI, conceptURI and lookup values
  */
-export function getDataType(): PropDescType {
+export function getDataType(field: DomainField): PropDescType {
     const types = PROP_DESC_TYPES.filter((value) => {
 
         // handle matching rangeURI and conceptURI
-        if (value.rangeURI === this.props.field.rangeURI)
+        if (value.rangeURI === field.rangeURI)
         {
-            if (!this.props.field.lookupQuery &&
-                ((!value.conceptURI && !this.props.field.conceptURI) || (value.conceptURI === this.props.field.conceptURI)))
+            if (!field.lookupQuery &&
+                ((!value.conceptURI && !field.conceptURI) || (value.conceptURI === field.conceptURI)))
             {
                 return true;
             }
         }
         // handle selected lookup option
-        else if (value.name === 'lookup' && this.props.field.lookupQuery && this.props.field.lookupQuery !== 'users')
+        else if (value.name === 'lookup' && field.lookupQuery && field.lookupQuery !== 'users')
         {
             return true;
         }
         // handle selected users option
-        else if (value.name === 'users' && this.props.field.lookupQuery && this.props.field.lookupQuery === 'users')
+        else if (value.name === 'users' && field.lookupQuery && field.lookupQuery === 'users')
         {
             return true;
         }

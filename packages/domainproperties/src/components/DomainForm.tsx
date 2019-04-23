@@ -4,18 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {DomainRow} from "./DomainRow";
 import {DomainDesign, DomainField} from "../models";
+import { updateDomainField } from "..";
 
 interface IDomainFormInput {
     domain: DomainDesign
-    onChange?: (evt: any) => any
-    onSubmit?: () => any
+    onChange: (newDomain: DomainDesign) => any
 }
 
 /**
  * Form containing all properties of a domain
  */
 export default class DomainForm extends React.Component<IDomainFormInput, any> {
-
 
     isValidDomain(domainDesign: DomainDesign): boolean {
         return !!(domainDesign && domainDesign.name);
@@ -29,7 +28,22 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
                 newField: true,
                 renderUpdate: true
             }))
-        });
+        }) as DomainDesign;
+
+        if (onChange) {
+            onChange(newDomain);
+        }
+    };
+
+    onFieldChange = (evt) => {
+        const {domain, onChange} = this.props;
+
+        let value = evt.target.value;
+        if (evt.target.type === "checkbox") {
+            value = evt.target.checked;
+        }
+
+        const newDomain = updateDomainField(domain, evt.target.id, value);
 
         if (onChange) {
             onChange(newDomain);
@@ -37,7 +51,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
     };
 
     render() {
-        const {domain, onChange} = this.props;
+        const {domain} = this.props;
 
         return (
             <>
@@ -85,7 +99,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
                                     return <DomainRow
                                         key={'domain-row-key-' + index}
                                         index={index}
-                                        onChange={onChange}
+                                        onChange={this.onFieldChange}
                                         field={field}
                                     />
                                 })}

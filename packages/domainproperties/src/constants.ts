@@ -6,7 +6,7 @@ import {List} from "immutable";
 import {GridColumn} from "@glass/base";
 import {PropDescType} from "./models";
 
-export const DOMAIN_FIELD_PREFIX = 'dom-row';
+export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
 export const DOMAIN_FIELD_NAME = 'name';
 export const DOMAIN_FIELD_TYPE = 'type';
 export const DOMAIN_FIELD_REQ = 'req';

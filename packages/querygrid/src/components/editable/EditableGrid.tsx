@@ -53,14 +53,15 @@ const COUNT_COL = new GridColumn({
 
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
-function inputCellFactory(modelId: string, allowSelection?: boolean) {
+function inputCellFactory(modelId: string, allowSelection?: boolean, columnMetadata?: EditableColumnMetadata) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => (
         <Cell
             col={c.raw}
             colIdx={cn-(allowSelection ? 2 : 1)}
             key={inputCellKey(c.raw, row)}
             modelId={modelId}
-            placeholder={c.placeholder}
+            placeholder={columnMetadata ? columnMetadata.placeholder: undefined}
+            readOnly={ c.raw.readOnly || (columnMetadata ? columnMetadata.readOnly : false)}
             row={row}
             rowIdx={rn}/>
     );
@@ -76,11 +77,17 @@ function inputCellKey(col: QueryColumn, row: any): string {
     return [col.fieldKey, indexKey].join('_$Cell$_');
 }
 
+export interface EditableColumnMetadata {
+    placeholder: string,
+    readOnly: boolean
+}
+
 export interface EditableGridProps {
     allowAdd?: boolean
     allowBulkRemove?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
+    columnMetadata?: Map<string, EditableColumnMetadata>
     disabled?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
@@ -98,6 +105,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         allowAdd: true,
         allowBulkRemove: false,
         allowRemove: true,
+        columnMetadata: Map<string, EditableColumnMetadata>(),
         disabled: false,
         isSubmitting: false,
         initialEmptyRowCount: 1
@@ -202,7 +210,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     generateColumns(): List<GridColumn> {
-        const { allowBulkRemove, allowRemove } = this.props;
+        const { allowBulkRemove, allowRemove, columnMetadata } = this.props;
         const model = this.getModel(this.props);
         let gridColumns = List<GridColumn>();
 
@@ -244,9 +252,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         model.getInsertColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
-                cell: inputCellFactory(model.getId(), allowBulkRemove),
+                cell: inputCellFactory(model.getId(), allowBulkRemove, columnMetadata.get(qCol.fieldKey)),
                 index: qCol.fieldKey,
-                placeholder: qCol.placeholder,
                 raw: qCol,
                 title: qCol.caption,
                 width: 100

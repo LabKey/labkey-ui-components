@@ -22,6 +22,7 @@ interface Props {
     modelId: string
     name?: string
     placeholder?: string
+    readOnly?: boolean
     row: any
     rowIdx: number
 }
@@ -74,8 +75,8 @@ export class Cell extends React.Component<Props, any> {
     }
 
     handleDblClick() {
-        const { col } = this.props;
-        if (col.readOnly)
+        const { readOnly } = this.props;
+        if (readOnly)
             return;
 
         clearTimeout(this.clickTO);
@@ -219,7 +220,7 @@ export class Cell extends React.Component<Props, any> {
     }
 
     render() {
-        const { col, colIdx, modelId, placeholder, rowIdx } = this.props;
+        const { col, colIdx, modelId, placeholder, readOnly, rowIdx } = this.props;
         const message = this.message();
         const selected = this.selected();
         const values = this.values();
@@ -235,7 +236,7 @@ export class Cell extends React.Component<Props, any> {
                     'cell-selected': selected,
                     'cell-selection': this.selection(),
                     'cell-warning': message !== undefined,
-                    'cell-read-only': col.readOnly,
+                    'cell-read-only': readOnly,
                     'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined
                 }),
                 onDoubleClick: this.handleDblClick,
@@ -283,7 +284,7 @@ export class Cell extends React.Component<Props, any> {
         const inputProps = {
             autoFocus: true,
             defaultValue: values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '',
-            disabled: col.readOnly,
+            disabled: readOnly,
             className: 'cellular-input',
             onBlur: this.handleBlur,
             onChange: this.handleChange,

@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.7-alpha.6",
+  "version": "0.0.6",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -50,7 +50,9 @@
     "moduleNameMapper": {
       "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
     },
-    "setupFilesAfterEnv": ["<rootDir>/../../test/jest.setup.ts"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/../../test/jest.setup.ts"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],

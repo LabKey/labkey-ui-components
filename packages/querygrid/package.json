@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.1.7-alpha.1",
+    "@glass/base": "0.1.7-alpha.2",
     "@glass/omnibox": "0.1.5",
     "bootstrap-sass": "3.4.0",
     "history": "4.7.2",

@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { Map, fromJS } from 'immutable';
-import { GRID_EDIT_INDEX, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, IGridLoader } from "@glass/base";
+import { fromJS, Map } from 'immutable';
+import { SchemaQuery } from "@glass/base";
 import mock, { proxy } from 'xhr-mock';
 
 import { gridInit } from "../actions";
 import { getStateQueryGridModel } from "../model";
 import { initQueryGridState, setQueryMetadata } from "../global";
 import { EditableGridPanel } from "../components/editable/EditableGridPanel";
-import mixtureBatchesQueryInfo  from "./data/mixtureBatches-getQueryDetails.json";
-import mixtureTypesQuery  from "./data/mixtureTypes-getQuery.json";
+import mixtureBatchesQueryInfo from "../test/data/mixtureBatches-getQueryDetails.json";
+import mixtureTypesQuery from "../test/data/mixtureTypes-getQuery.json";
+import * as constants from '../test/data/constants';
 
 import './stories.scss'
 import { EditableColumnMetadata } from "../components/editable/EditableGrid";
@@ -18,20 +19,6 @@ import { EditableColumnMetadata } from "../components/editable/EditableGrid";
 const CONTROLS_GROUP = "Grid controls";
 const PANEL_GROUP = "Grid";
 
-const GRID_DATA = Map<any, Map<string, any>>({
-    "1": Map<string, any>({
-        GRID_EDIT_INDEX: 1,
-        "rowid": "1",
-        "Name": "name one",
-        "Description": "first description"
-    }),
-    "2": Map<any, Map<string, any>>({
-        GRID_EDIT_INDEX: 2,
-        "rowid": "2",
-        "Name": "name two",
-        "Description": "second description"
-    })
-});
 
 
 mock.setup();
@@ -114,8 +101,8 @@ storiesOf('EditableGridPanel', module)
                 fetch: () => {
                     return new Promise((resolve) => {
                         resolve({
-                            data: GRID_DATA,
-                            dataIds: GRID_DATA.keySeq().toList(),
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
                 }
@@ -146,6 +133,13 @@ storiesOf('EditableGridPanel', module)
         );
     })
     .add("with read-only columns and placeholders", () => {
+        setQueryMetadata(fromJS({
+            columnDefaults: {
+                flag: {
+                    removeFromViews: true
+                }
+            }
+        }));
         const modelId = "editableWitReadOnlyAndPlaceHolders";
         const schemaQuery = new SchemaQuery({
             schemaName: "schema",
@@ -158,8 +152,8 @@ storiesOf('EditableGridPanel', module)
                 fetch: () => {
                     return new Promise((resolve) => {
                         resolve({
-                            data: GRID_DATA,
-                            dataIds: GRID_DATA.keySeq().toList(),
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
                         });
                     });
                 }

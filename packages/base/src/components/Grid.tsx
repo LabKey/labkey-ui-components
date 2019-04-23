@@ -23,7 +23,6 @@ interface ColumnProps {
     format?: string
     index: string
     showHeader?: boolean
-    placeholder?: string
     raw?: any
     tableCell?: boolean
     title: string
@@ -36,7 +35,6 @@ class Column implements ColumnProps {
     format: string;
     index: string;
     raw: any;
-    placeholder: string;
     showHeader: boolean;
     tableCell: boolean;
     title: string;
@@ -48,7 +46,6 @@ class Column implements ColumnProps {
         this.format = config.format;
         this.raw = config.raw;
         this.width = config.width;
-        this.placeholder = config.placeholder;
 
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {

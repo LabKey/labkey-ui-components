@@ -230,7 +230,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             gridColumns = gridColumns.push(selColumn);
         }
         gridColumns = gridColumns.push(
-            allowRemove ? new GridColumn({
+            allowBulkRemove || allowRemove ? new GridColumn({
                 index: GRID_EDIT_INDEX,
                 showHeader: false,
                 tableCell: true,

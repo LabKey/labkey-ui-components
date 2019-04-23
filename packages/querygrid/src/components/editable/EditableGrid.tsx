@@ -371,7 +371,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             </MenuItem>
                         </DropdownButton>
                 )}
-                {allowAdd && addControlProps.placement !== 'bottom' && (
+                {allowAdd && addControlProps && addControlProps.placement !== 'bottom' && (
                     <AddRowsControl
                         {...addControlProps}
                         disable={isSubmitting}
@@ -416,7 +416,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             striped={false}
                             tableRef={this.table} />
                     </div>
-                    {allowAdd && addControlProps.placement !== 'top' && (
+                    {allowAdd && (!addControlProps || addControlProps.placement !== 'top') && (
                         <AddRowsControl
                             {...addControlProps}
                             disable={isSubmitting}

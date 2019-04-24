@@ -61,7 +61,7 @@ function inputCellFactory(modelId: string, allowSelection?: boolean, columnMetad
             key={inputCellKey(c.raw, row)}
             modelId={modelId}
             placeholder={columnMetadata ? columnMetadata.placeholder: undefined}
-            readOnly={ c.raw.readOnly || (columnMetadata ? columnMetadata.readOnly : false)}
+            readOnly={ columnMetadata ? columnMetadata.readOnly : false}
             row={row}
             rowIdx={rn}/>
     );

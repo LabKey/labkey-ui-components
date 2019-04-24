@@ -183,4 +183,38 @@ storiesOf('EditableGridPanel', module)
                 title={"Editable grid with read-only data"}
             />
         );
-    });
+    })
+    .add("with bulk edit", () => {
+        const modelId = "editableWithBulkEdit";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "schema",
+            queryName: modelId
+        });
+
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+        gridInit(model, true);
+        return (
+            <EditableGridPanel
+                allowAdd={true}
+                allowBulkRemove={boolean("Allow bulk remove?", false)}
+                allowBulkUpdate={true}
+                model={model}
+                isSubmitting={false}
+                bulkUpdateText={text("Bulk Update text", "Bulk Insert")}
+                title={"Editable grid with bulk insert capabilities"}
+            />
+        );
+    })
+;

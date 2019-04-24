@@ -34,6 +34,8 @@
     "@glass/base": "0.1.7",
     "@glass/omnibox": "0.1.7",
     "bootstrap-sass": "3.4.0",
+    "formsy-react-components": "1.0.0",
+    "formsy-react": "1.1.5",
     "history": "4.7.2",
     "normalizr": "3.3.0"
   },

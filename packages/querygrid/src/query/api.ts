@@ -518,3 +518,76 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
         });
     });
 }
+
+export interface InsertRowsOptions {
+    fillEmptyFields?: boolean
+    rows: List<any>
+    schemaQuery: SchemaQuery
+}
+
+interface InsertRowsResponse {
+    rows: Array<any>
+    schemaQuery: SchemaQuery
+}
+
+export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
+    return new Promise((resolve, reject) => {
+        const { fillEmptyFields, rows, schemaQuery } = options;
+
+        Query.insertRows({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            rows: fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows,
+            apiVersion: 13.2,
+            success: (response) => {
+                resolve(Object.assign({}, {
+                    schemaQuery,
+                    rows: response.rows
+                }));
+            },
+            failure: (error) => {
+                reject(Object.assign({}, {
+                    schemaQuery
+                }, error));
+            }
+        });
+    });
+}
+
+// Ensures that the List of row objects are fully (as opposed to sparsely) populated. This avoids the server
+// failing to map columns on sparsely populated data sets.
+// As an example:
+//
+// [
+//     {},
+//     {"columnA": "AA"},
+//     {"columnD": "DD"}
+// ]
+//
+// becomes:
+//
+// [
+//     {"columnA": null, "columnD": null},
+//     {"columnA": "AA", "columnD": null},
+//     {"columnA": null, "columnD": "DD"}
+// ]
+function ensureAllFieldsInAllRows(rows: List<any>): List<any> {
+    let masterRecord = Map<string, any>().asMutable();
+
+    rows.forEach((row) => {
+        row.keySeq().forEach((key) => {
+            masterRecord.set(key, null);
+        });
+    });
+
+    masterRecord = masterRecord.asImmutable();
+
+    return rows.reduce((allFieldRows, row) => (
+        allFieldRows.push(ensureNullForUndefined(masterRecord.merge(row)))
+    ), List<Map<string, any>>());
+}
+
+// undefined is not a valid JSON value so the values must be mapped to null.
+function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
+    return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
+}

@@ -43,9 +43,9 @@ export default [
                 output: 'dist/base.css'
             }),
             copy({
-                targets: [
-                     'src/typings/react-bootstrap.d.ts'
-                ]
+                targets: {
+                    'src/typings/react-bootstrap.d.ts': 'dist/typings/react-bootstrap.d.ts'
+                }
             })
         ]
     },

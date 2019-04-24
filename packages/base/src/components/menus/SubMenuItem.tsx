@@ -12,6 +12,7 @@ export interface ISubItem extends MenuItemProps {
     disabledMsg?: string
     disabledOverlayPlacement?: 'top' | 'right' | 'bottom' | 'left'
     text: string
+    href?: string
 }
 
 export interface SubMenuItemProps {

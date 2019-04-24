@@ -25,6 +25,7 @@ import {
 } from './models/model'
 import {
     applyDevTools,
+    caseInsensitive,
     debounce,
     decodePart,
     devToolsActive,
@@ -66,6 +67,7 @@ import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
+import { datePlaceholder } from './utils/Date';
 import {
     MessageFunction,
     NotificationItemModel,
@@ -143,7 +145,11 @@ export {
     createNotification,
     initNotificationsState,
 
+    // date functions
+    datePlaceholder,
+
     // util functions
+    caseInsensitive,
     decodePart,
     encodePart,
     getSchemaQuery,
@@ -171,4 +177,5 @@ export {
     applyDevTools,
     devToolsActive,
     toggleDevTools
+
 }

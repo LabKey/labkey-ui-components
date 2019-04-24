@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Set } from 'immutable'
+import { Utils } from '@labkey/api'
 
 import { SchemaQuery, User } from '../models/model'
 import { hasParameter, toggleParameter } from '../url/ActionURL'
@@ -78,6 +79,26 @@ export function naturalSort(aso: string, bso: string): number {
         }
     }
     return b[i] ? -1 : 0;
+}
+
+// Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
+// If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
+export function caseInsensitive(obj: Object, prop: string): any {
+    if (obj === undefined || obj === null) {
+        return undefined;
+    }
+
+    if (Utils.isString(prop)) {
+        const lower = prop.toLowerCase();
+
+        for (let p in obj) {
+            if (obj.hasOwnProperty(p) && p.toLowerCase() === lower) {
+                return obj[p];
+            }
+        }
+    }
+
+    return undefined;
 }
 
 /**

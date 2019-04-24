@@ -198,8 +198,12 @@ successful.
 In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://internal.labkey.com/wiki/Handbook/Dev/page.view?name=npmrc) to create your .npmrc file.
 If you do not have permissions to publish to this repository, contact a local Artifactory administrator who can grant you those permissions.
 
-To publish, increment the version number in accordance with [SemVer](https://semver.org/), update this Readme.md, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
+To publish, update the package's README.md file with release notes for the
+changes included, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
 
 ```sh
-npm publish
+yarn publish
 ```
+This will prompt you for the new version.  Choose a version increment in accordance with [SemVer](https://semver.org/).  This command will
+update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository. (Note,
+you could instead use `npm publish`, but you will have to update the `package.json` file manually before using that command.)

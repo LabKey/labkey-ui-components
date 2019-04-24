@@ -100,7 +100,11 @@ export class ReportList extends React.PureComponent<ReportListProps> {
         let body: any;
 
         if (loading) {
-            body = <LoadingSpinner />;
+            body = (
+                <div className="report-list__message">
+                    <LoadingSpinner />
+                </div>
+            );
         } else if (reports.length === 0) {
             body = <div className="report-list__message">No reports.</div>;
         } else {

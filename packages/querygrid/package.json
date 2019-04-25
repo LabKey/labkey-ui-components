@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.1.7",
-    "@glass/omnibox": "0.1.7",
+    "@glass/base": "0.1.8",
+    "@glass/omnibox": "0.1.8",
     "bootstrap-sass": "3.4.0",
     "formsy-react-components": "1.0.0",
     "formsy-react": "1.1.5",

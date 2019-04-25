@@ -35,6 +35,7 @@ import { getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
 import { headerSelectionCell } from "../../renderers";
+import { BulkUpdateModal } from "./BulkUpdateModal";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -99,6 +100,7 @@ export interface EditableGridProps {
 export interface EditableGridState {
     selected: Set<string>
     selectedState: GRID_CHECKBOX_OPTIONS
+    showBulkUpdate: boolean
 }
 
 export class EditableGrid extends React.Component<EditableGridProps, EditableGridState> {
@@ -123,7 +125,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         super(props);
 
         this.onAddRows = this.onAddRows.bind(this);
-        this.onBulkUpdate = this.onBulkUpdate.bind(this);
+        this.toggleBulkUpdate = this.toggleBulkUpdate.bind(this);
         this.generateColumns = this.generateColumns.bind(this);
         this.headerCell = this.headerCell.bind(this);
         this.hideMask = this.hideMask.bind(this);
@@ -144,7 +146,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
         this.state = {
             selected: Set<string>(),
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+            showBulkUpdate: false
         }
     }
 
@@ -336,8 +339,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         addRows(model, count);
     }
 
-    onBulkUpdate() {
-        console.log("update many things");
+    toggleBulkUpdate() {
+        this.setState(() => {
+            return {
+                showBulkUpdate: !this.state.showBulkUpdate
+            }
+        });
     }
 
     renderError() {
@@ -402,14 +409,26 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 {allowBulkUpdate && (
                     <div className={haveLeftControls? "col-sm-8" : "col-xs_12"}>
                         <div className="pull-right control-right">
-                            <Button onClick={this.onBulkUpdate} >
+                            <Button onClick={this.toggleBulkUpdate} >
                                 {bulkUpdateText}
                             </Button>
                         </div>
                     </div>
                 )}
-
             </div>
+        )
+    }
+
+    renderBulkUpdate() {
+        const { showBulkUpdate } = this.state;
+
+        const model = this.getModel(this.props);
+        return (
+            showBulkUpdate &&
+            <BulkUpdateModal
+                queryInfo={model.queryInfo}
+                schemaQuery={model.queryInfo.schemaQuery}
+            />
         )
     }
 
@@ -449,6 +468,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             onAdd={this.onAddRows}/>
                     )}
                     {this.renderError()}
+                    {this.renderBulkUpdate()}
                 </div>
             )
         }

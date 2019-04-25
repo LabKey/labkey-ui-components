@@ -39,5 +39,10 @@ storiesOf('QueryInfoForm', module)
             }
         });
         gridInit(model, true);
-        return <QueryInfoForm queryInfo={model.queryInfo} schemaQuery={schemaQuery}/>
+        return (
+            <QueryInfoForm
+                asModal={boolean("asModal?", false)}
+                queryInfo={model.queryInfo}
+                schemaQuery={schemaQuery}/>
+        )
     });

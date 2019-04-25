@@ -4,7 +4,7 @@
  */
 import * as React from 'react'
 
-import {Alert} from 'react-bootstrap'
+import { Alert, Modal } from 'react-bootstrap'
 import Formsy from 'formsy-react'
 import {List} from 'immutable'
 import {Utils} from '@labkey/api'
@@ -13,8 +13,10 @@ import {QueryInfo, SchemaQuery} from '@glass/base'
 import {insertRows, selectRows} from '../../query/api'
 import {QueryFormInputs} from './QueryFormInputs'
 
-interface Props {
+export interface QueryInfoFormProps {
+    asModal?: boolean
     errorCallback?: (error: any) => any
+    errorMessagePrefix?: string
     fieldValues?: any
     onCancel?: () => any
     onSuccess?: (data: any) => any
@@ -24,23 +26,26 @@ interface Props {
 
 
 interface State {
+    show: boolean
     canSubmit: boolean
     isSubmitted: boolean
     isSubmitting: boolean
     errorMsg: string
 }
 
-export class QueryInfoForm extends React.Component<Props, State> {
+export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
-    constructor(props: Props) {
+    constructor(props: QueryInfoFormProps) {
         super(props);
 
         this.disableSubmitButton = this.disableSubmitButton.bind(this);
         this.enableSubmitButton = this.enableSubmitButton.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
+        this.onHide = this.onHide.bind(this);
 
         this.state = {
+            show: true,
             canSubmit: false,
             isSubmitted: false,
             isSubmitting: false,
@@ -113,26 +118,34 @@ export class QueryInfoForm extends React.Component<Props, State> {
     }
 
     renderError() {
+        const { errorMessagePrefix } = this.props;
         const { errorMsg } = this.state;
         if (errorMsg) {
             return (
                 <Alert bsStyle="danger">
-                    <strong>Oh snap!</strong> {errorMsg}
+                    {errorMessagePrefix && <strong>{errorMessagePrefix}</strong>} {errorMsg}
                 </Alert>
             );
         }
         return null;
     }
 
+    onHide() {
+        console.log("modal hidden");
+        this.setState({
+            show:false
+        });
+    }
+
     render() {
-        const { queryInfo, fieldValues } = this.props;
+        const { asModal, queryInfo, fieldValues } = this.props;
         const { canSubmit, isSubmitted, isSubmitting } = this.state;
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
         }
 
-        return (
+        const content = (
             <div>
                 {this.renderError()}
                 <Formsy className="form-horizontal"
@@ -145,5 +158,17 @@ export class QueryInfoForm extends React.Component<Props, State> {
                 </Formsy>
             </div>
         );
+
+        if (asModal) {
+            return (
+                <Modal bsSize="large" show={this.state.show} onHide={this.onHide}>
+                    <Modal.Body>
+                        {content}
+                    </Modal.Body>
+                </Modal>
+            )
+        }
+        else
+            return content;
     }
 }

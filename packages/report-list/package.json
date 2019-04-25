@@ -30,8 +30,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.1.5",
-    "react-bootstrap": "0.32.4"
+    "@glass/base": "0.2.0-alpha.1"
   },
   "jest": {
     "globals": {

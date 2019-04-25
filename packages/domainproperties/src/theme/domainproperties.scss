@@ -1,4 +1,8 @@
 
+.domain-form-panel {
+  min-width: 1000px;
+}
+
 .domain-form-hdr-row {
   margin: 0 0 5px 5px;
   color: $gray;
@@ -28,7 +32,7 @@
 
 .domain-field-details {
   color: $gray-dark;
-  margin: 5px 0 0 10px;
+  margin: 5px 0 0 8px;
 };
 
 .domain-field-advanced-icon {

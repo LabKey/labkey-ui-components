@@ -56,7 +56,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
         return (
             <>
                 {this.isValidDomain(domain) ? (
-                    <Panel>
+                    <Panel className={"domain-form-panel"}>
                         <Panel.Heading>
                             <div className={"panel-title"}>{"Field Properties - " + domain.name}</div>
                         </Panel.Heading>

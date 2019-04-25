@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FileAttachmentForm/> no props 1`] = `
+<Fragment>
+  <span
+    className="translator--toggle__wizard"
+  >
+    <FormSection
+      iconSpacer={false}
+      label="Attachments"
+      showLabel={true}
+    >
+      <FileAttachmentContainer
+        acceptedFormats=""
+        allowDirectories={true}
+        allowMultiple={true}
+        handleChange={[Function]}
+        handleRemoval={[Function]}
+        labelLong="Select file or drag and drop here"
+      />
+    </FormSection>
+  </span>
+</Fragment>
+`;
+
+exports[`<FileAttachmentForm/> with attributes 1`] = `
+<Fragment>
+  <span
+    className="translator--toggle__wizard"
+  >
+    <FormSection
+      iconSpacer={false}
+      label="file attachment"
+      showLabel={true}
+    >
+      <FileAttachmentContainer
+        acceptedFormats=".tsv, .xls, .xlsx"
+        allowDirectories={false}
+        allowMultiple={false}
+        handleChange={[Function]}
+        handleRemoval={[Function]}
+        labelLong="Select file or drag and drop here"
+      />
+    </FormSection>
+  </span>
+  <div
+    className="file-form-formats"
+  >
+    <strong>
+      Supported formats include: 
+    </strong>
+    .tsv, .xls, .xlsx
+  </div>
+</Fragment>
+`;

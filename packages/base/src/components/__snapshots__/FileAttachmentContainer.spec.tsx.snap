@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FileAttachmentContainer/> error msg 1`] = `
+<FileAttachmentContainer
+  acceptedFormats=".tsv, .xls, .xlsx"
+  allowDirectories={false}
+  allowMultiple={false}
+>
+  <div>
+    <div
+      className="file-upload--container block"
+    >
+      <label
+        className="file-upload--label"
+        htmlFor="fileUpload"
+        onDragEnter={[Function]}
+        onDragLeave={[Function]}
+        onDragOver={[Function]}
+        onDrop={[Function]}
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-cloud-upload fa-2x cloud-logo"
+        />
+      </label>
+      <input
+        accept=".tsv, .xls, .xlsx"
+        className="file-upload--input"
+        id="fileUpload"
+        multiple={false}
+        name="fileUpload"
+        onChange={[Function]}
+        type="file"
+      />
+    </div>
+    <div
+      className="has-error"
+    >
+      <span
+        className="error-message help-block"
+      >
+        invalid file
+      </span>
+    </div>
+  </div>
+</FileAttachmentContainer>
+`;
+
+exports[`<FileAttachmentContainer/> no props 1`] = `
+<div>
+  <div
+    className="file-upload--container block"
+  >
+    <label
+      className="file-upload--label"
+      htmlFor="fileUpload"
+      onDragEnter={[Function]}
+      onDragLeave={[Function]}
+      onDragOver={[Function]}
+      onDrop={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-cloud-upload fa-2x cloud-logo"
+      />
+    </label>
+    <input
+      className="file-upload--input"
+      id="fileUpload"
+      multiple={false}
+      name="fileUpload"
+      onChange={[Function]}
+      type="file"
+    />
+  </div>
+</div>
+`;
+
+exports[`<FileAttachmentContainer/> with attributes 1`] = `
+<div>
+  <div
+    className="file-upload--container block"
+  >
+    <label
+      className="file-upload--label"
+      htmlFor="fileUpload"
+      onDragEnter={[Function]}
+      onDragLeave={[Function]}
+      onDragOver={[Function]}
+      onDrop={[Function]}
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-cloud-upload fa-2x cloud-logo"
+      />
+    </label>
+    <input
+      accept=".tsv, .xls, .xlsx"
+      className="file-upload--input"
+      id="fileUpload"
+      multiple={false}
+      name="fileUpload"
+      onChange={[Function]}
+      type="file"
+    />
+  </div>
+</div>
+`;

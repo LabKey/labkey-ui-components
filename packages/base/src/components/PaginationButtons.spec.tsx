@@ -7,9 +7,6 @@ import { mount } from 'enzyme';
 import { PaginationButtons } from './PaginationButtons';
 
 const noop = () => {};
-// Note: if we change the selector to just .pagination-buttons__prev then wrapper.find returns two items, even though
-// the snapshot proves there is only one item with this class. If you use the debugger and call wrapper.html() it
-// also only has one matching element in the HTML returned. Enzyme docs indicate that the behavior I am seeing is wrong.
 const prevSelector = '.pagination-buttons__prev';
 const nextSelector = '.pagination-buttons__next';
 

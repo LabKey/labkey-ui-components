@@ -10,8 +10,8 @@ const noop = () => {};
 // Note: if we change the selector to just .pagination-buttons__prev then wrapper.find returns two items, even though
 // the snapshot proves there is only one item with this class. If you use the debugger and call wrapper.html() it
 // also only has one matching element in the HTML returned. Enzyme docs indicate that the behavior I am seeing is wrong.
-const prevSelector = 'button.pagination-buttons__prev';
-const nextSelector = 'button.pagination-buttons__next';
+const prevSelector = '.pagination-buttons__prev';
+const nextSelector = '.pagination-buttons__next';
 
 describe("<PaginationButtons />", () => {
     test("Render without properties", () => {
@@ -36,9 +36,9 @@ describe("<PaginationButtons />", () => {
         expect(tree).toMatchSnapshot();
 
         const wrapper = mount(component);
-        wrapper.find(prevSelector).simulate('click');
+        wrapper.find(prevSelector).hostNodes().simulate('click');
         expect(prev).toHaveBeenCalledTimes(0);
-        wrapper.find(nextSelector).simulate('click');
+        wrapper.find(nextSelector).hostNodes().simulate('click');
         expect(next).toHaveBeenCalledTimes(1);
     });
 
@@ -52,9 +52,9 @@ describe("<PaginationButtons />", () => {
         expect(tree).toMatchSnapshot();
 
         const wrapper = mount(component);
-        wrapper.find(prevSelector).simulate('click');
+        wrapper.find(prevSelector).hostNodes().simulate('click');
         expect(prev).toHaveBeenCalledTimes(1);
-        wrapper.find(nextSelector).simulate('click');
+        wrapper.find(nextSelector).hostNodes().simulate('click');
         expect(next).toHaveBeenCalledTimes(0);
     });
 
@@ -68,9 +68,9 @@ describe("<PaginationButtons />", () => {
         expect(tree).toMatchSnapshot();
 
         const wrapper = mount(component);
-        wrapper.find(prevSelector).simulate('click');
+        wrapper.find(prevSelector).hostNodes().simulate('click');
         expect(prev).toHaveBeenCalledTimes(0);
-        wrapper.find(nextSelector).simulate('click');
+        wrapper.find(nextSelector).hostNodes().simulate('click');
         expect(next).toHaveBeenCalledTimes(0);
     });
 

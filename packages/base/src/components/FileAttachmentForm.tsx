@@ -120,6 +120,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 <div className="col-md-5">
                     <div className="pull-right">
                         <Button
+                            className={"file-form-submit-btn"}
                             onClick={this.handleSubmit}
                             bsStyle="success"
                             disabled={this.state.attachedFiles.size == 0}
@@ -170,7 +171,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         toggle={isSubmitting}/>
                 )}
                 {acceptedFormats && showAcceptedFormats && (
-                    <div>
+                    <div className={"file-form-formats"}>
                         <strong>Supported formats include: </strong>{acceptedFormats}
                     </div>
                 )}

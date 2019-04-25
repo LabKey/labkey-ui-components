@@ -43,7 +43,9 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
       />
     </FormSection>
   </span>
-  <div>
+  <div
+    className="file-form-formats"
+  >
     <strong>
       Supported formats include: 
     </strong>

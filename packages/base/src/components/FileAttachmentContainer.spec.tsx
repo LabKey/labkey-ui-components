@@ -32,6 +32,8 @@ describe("<FileAttachmentContainer/>", () => {
         testFile['name'] = 'foo.txt';
         page.find('input').simulate('change', {target: [testFile]});
         expect(onChange).toHaveBeenCalledTimes(1);
+
+        page.unmount();
     });
 
     test("error msg", () => {
@@ -42,7 +44,52 @@ describe("<FileAttachmentContainer/>", () => {
 
         // haven't figured out how to get a file to upload to perform some of the
         // validation, so we will just test that the error message is rendered correctly
-        page.setState({errorMsg : 'invalid file'})
+        page.setState({errorMsg : 'invalid file'});
         expect(page).toMatchSnapshot();
+
+        page.unmount();
+    });
+
+    test('with single file', () => {
+        const page = mount(
+            <FileAttachmentContainer
+                allowMultiple={false}
+                allowDirectories={false}
+            />
+        );
+
+        expect(page.find('.file-upload--container')).toHaveLength(1);
+        expect(page.find('.attached-file--container')).toHaveLength(0);
+
+        page.setState({
+            files: {'files1': new Blob(['text'], {type : 'text/plain'})}
+        });
+        expect(page.find('.file-upload--container').props().className).toContain("hidden");
+        expect(page.find('.attached-file--container')).toHaveLength(1);
+
+        page.unmount();
+    });
+
+    test('with multiple files', () => {
+        const page = mount(
+            <FileAttachmentContainer
+                allowMultiple={true}
+                allowDirectories={false}
+            />
+        );
+
+        expect(page.find('.file-upload--container')).toHaveLength(1);
+        expect(page.find('.attached-file--container')).toHaveLength(0);
+
+        page.setState({
+            files: {
+                'files1': new Blob(['text'], {type : 'text/plain'}),
+                'files2': new Blob(['text'], {type : 'text/plain'})
+            }
+        });
+        expect(page.find('.file-upload--container').props().className).toContain("block");
+        expect(page.find('.attached-file--container')).toHaveLength(2);
+
+        page.unmount();
     });
 });

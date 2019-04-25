@@ -11,6 +11,7 @@ import { initQueryGridState, setQueryMetadata } from "../global";
 import { EditableGridPanel } from "../components/editable/EditableGridPanel";
 import mixtureBatchesQueryInfo from "../test/data/mixtureBatches-getQueryDetails.json";
 import mixtureTypesQuery from "../test/data/mixtureTypes-getQuery.json";
+import samplesInsert from '../test/data/samples-insertRows.json';
 import * as constants from '../test/data/constants';
 
 import './stories.scss'
@@ -33,6 +34,12 @@ mock.post(/.*\/query\/.*\/getQuery.*/, {
     status: 200,
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(mixtureTypesQuery)
+});
+
+mock.post(/.*\/query\/.*\/insertRows.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(samplesInsert)
 });
 mock.use(proxy);
 

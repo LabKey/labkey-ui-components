@@ -5,6 +5,7 @@
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
+import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
 export interface AddRowsControlProps {
     disable?: boolean
@@ -26,7 +27,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     static defaultProps = {
         disable: false,
         initialCount: 1,
-        maxCount: 100,
+        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS,
         minCount: 1,
         nounPlural: 'rows',
         nounSingular: 'row',

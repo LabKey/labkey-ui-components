@@ -1,20 +1,17 @@
 import React from 'reactn';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { QueryGrid } from "../components/QueryGrid";
-import { QueryGridModel, SchemaQuery } from "@glass/base";
+import { SchemaQuery } from "@glass/base";
 import { initBrowserHistoryState } from "../util/global";
-import { initQueryGridState, updateQueryGridModel } from "../global";
-import mixtureBatchesQueryInfo from "../test/data/mixtureBatches-getQueryDetails.json";
-
-initQueryGridState();
-initBrowserHistoryState();
-
+import { initQueryGridState } from "../global";
 import './stories.scss'
 import { QueryInfoForm } from "../components/forms/QueryInfoForm";
 import { getStateQueryGridModel } from "../model";
 import * as constants from "../test/data/constants";
 import { gridInit } from "../actions";
+
+initQueryGridState();
+initBrowserHistoryState();
 
 storiesOf('QueryInfoForm', module)
     .addDecorator(withKnobs)
@@ -41,7 +38,6 @@ storiesOf('QueryInfoForm', module)
         gridInit(model, true);
         return (
             <QueryInfoForm
-                asModal={boolean("asModal?", false)}
                 queryInfo={model.queryInfo}
                 schemaQuery={schemaQuery}/>
         )

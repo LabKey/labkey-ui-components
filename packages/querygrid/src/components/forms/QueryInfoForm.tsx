@@ -3,25 +3,38 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import { ReactNode } from 'react'
 
-import { Alert, Modal } from 'react-bootstrap'
+import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy from 'formsy-react'
-import {List} from 'immutable'
-import {Utils} from '@labkey/api'
-import {QueryInfo, SchemaQuery} from '@glass/base'
+import { Input } from 'formsy-react-components'
+import { List } from 'immutable'
+import { Utils } from '@labkey/api'
+import { QueryInfo, SchemaQuery } from '@glass/base'
 
-import {insertRows, selectRows} from '../../query/api'
-import {QueryFormInputs} from './QueryFormInputs'
+import { insertRows, selectRows } from '../../query/api'
+import { QueryFormInputs } from './QueryFormInputs'
+import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
 export interface QueryInfoFormProps {
     asModal?: boolean
+    cancelText?: string
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
+    countText?: string,
+    maxCount?: number,
     onCancel?: () => any
+    onHide?: () => any
     onSuccess?: (data: any) => any
     queryInfo: QueryInfo
     schemaQuery: SchemaQuery
+    isSubmittedText?: string
+    isSubmittingText?: string
+    submitText: string
+    title?: string,
+    header?: ReactNode
+    singularNoun?: string
 }
 
 
@@ -31,9 +44,20 @@ interface State {
     isSubmitted: boolean
     isSubmitting: boolean
     errorMsg: string
+    count: number
 }
 
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
+
+    static defaultProps = {
+        countText: "Quantity",
+        cancelText: "Cancel",
+        submitText: "Submit",
+        isSubmittedText: "Submitted",
+        isSubmittingText: "Submitting...",
+        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS
+    };
+
 
     constructor(props: QueryInfoFormProps) {
         super(props);
@@ -43,13 +67,16 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
         this.onHide = this.onHide.bind(this);
+        this.onCountChange = this.onCountChange.bind(this);
+        this.setSubmitting = this.setSubmitting.bind(this);
 
         this.state = {
             show: true,
             canSubmit: false,
             isSubmitted: false,
             isSubmitting: false,
-            errorMsg: undefined
+            errorMsg: undefined,
+            count: undefined
         };
     }
 
@@ -90,16 +117,20 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     handleValidSubmit(row: any) {
         const { errorCallback, schemaQuery, onSuccess } = this.props;
+        const { count } = this.state;
 
         this.setState({
             errorMsg: undefined,
             isSubmitting: true
         });
 
-        //ToDo: Use queryInfo to validate submission
+        delete row.numItems;
+        let rows = List<any>();
+        for (var i = 0; i < count; i++)
+            rows = rows.push(row);
         insertRows({
             schemaQuery,
-            rows: List.of(row)
+            rows
         }).then((data) => {
             this.setState({
                 errorMsg: undefined,
@@ -117,6 +148,12 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
+    isValid(count: number): boolean {
+        const { maxCount } = this.props;
+
+        return !maxCount || count !== undefined && count > 0 && count <= maxCount;
+    }
+
     renderError() {
         const { errorMessagePrefix } = this.props;
         const { errorMsg } = this.state;
@@ -130,31 +167,106 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         return null;
     }
 
-    onHide() {
-        console.log("modal hidden");
-        this.setState({
-            show:false
+    setSubmitting() {
+        this.setState(() => {
+            return {
+                errorMsg: undefined,
+                isSubmitting: true
+            }
         });
     }
 
+    onHide() {
+        const { onHide } = this.props;
+
+        if (onHide) {
+            onHide();
+        }
+
+        this.setState(() => {
+            return {
+                show: false
+            }
+        });
+    }
+
+    onCountChange(field,value) {
+        this.setState(() => {
+            return {
+                count: value
+            }
+        });
+    }
+
+    renderButtons() {
+
+        const { cancelText, submitText, isSubmittedText, isSubmittingText, singularNoun } = this.props;
+
+        const { count, canSubmit, isSubmitting, isSubmitted } = this.state;
+
+        return (
+            <div className="form-group no-margin-bottom">
+                <div className="col-sm-12">
+                    <div className="pull-left">
+                        <Button onClick={this.onHide}>{cancelText}</Button>
+                    </div>
+                    <div className="btn-group pull-right">
+                        <Button
+                            bsStyle="success"
+                            disabled={!canSubmit || count === 0}
+                            onClick={this.setSubmitting}
+                            type="submit">
+                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{singularNoun ? ' ' + singularNoun : null}
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     render() {
-        const { asModal, queryInfo, fieldValues } = this.props;
-        const { canSubmit, isSubmitted, isSubmitting } = this.state;
+        const { asModal, countText, header, maxCount, queryInfo, fieldValues, title } = this.props;
+        const { count } = this.state;
+
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
         }
 
+        const countError = count !== undefined && !this.isValid(count);
+
         const content = (
             <div>
+                {header}
                 {this.renderError()}
                 <Formsy className="form-horizontal"
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
                         onInvalid={this.disableSubmitButton}>
+                        <Input
+                            id="numItems"
+                            label={countText}
+                            labelClassName={'control-label text-left'}
+                            name={"numItems"}
+                            max={maxCount}
+                            onChange={this.onCountChange}
+                            required={true}
+                            step={"1"}
+                            style={{width: '75px'}}
+                            type={"number"}
+                            validations={"isInt"}
+                            value={count}
+                        />
+                        {countError &&
+                            (<span style={{display: 'inline-block', padding: '6px 8px'}}>
+                                 <span className="text-danger">{`Must be <= ${maxCount}`}</span>
+                            </span>)
+                        }
+                    <hr/>
                     <QueryFormInputs
                         queryInfo={queryInfo}
                         fieldValues={fieldValues} />
+                    {this.renderButtons()}
                 </Formsy>
             </div>
         );
@@ -162,13 +274,20 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         if (asModal) {
             return (
                 <Modal bsSize="large" show={this.state.show} onHide={this.onHide}>
+                    {title && (
+                        <Modal.Header>
+                            <Modal.Title>{title}</Modal.Title>
+                        </Modal.Header>
+                    )}
                     <Modal.Body>
                         {content}
                     </Modal.Body>
                 </Modal>
             )
         }
-        else
+        else {
             return content;
+        }
+
     }
 }

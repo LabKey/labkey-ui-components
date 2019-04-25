@@ -35,7 +35,9 @@ import { getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
 import { headerSelectionCell } from "../../renderers";
-import { BulkUpdateModal } from "./BulkUpdateModal";
+import { ReactNode } from "react";
+import { QueryInfoForm } from "../forms/QueryInfoForm";
+import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -419,16 +421,33 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         )
     }
 
+    renderBulkCreationHeader() : ReactNode {
+        return (
+            <div className={"editable-grid__bulk-header"}>
+                Choose parents for generated samples and assign values in bulk.  Once added, you can make changes to
+                individual samples in the grid.
+            </div>
+        )
+    }
+
     renderBulkUpdate() {
         const { showBulkUpdate } = this.state;
 
         const model = this.getModel(this.props);
+
         return (
             showBulkUpdate &&
-            <BulkUpdateModal
-                queryInfo={model.queryInfo}
-                schemaQuery={model.queryInfo.schemaQuery}
-            />
+                <QueryInfoForm
+                    asModal={true}
+                    maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
+                    onHide={this.toggleBulkUpdate}
+                    onCancel={this.toggleBulkUpdate}
+                    onSuccess={this.toggleBulkUpdate}
+                    queryInfo={model.queryInfo}
+                    schemaQuery={model.queryInfo.schemaQuery}
+                    title={"Bulk Creation of Sample IDs"}
+                    header={this.renderBulkCreationHeader()}
+                />
         )
     }
 

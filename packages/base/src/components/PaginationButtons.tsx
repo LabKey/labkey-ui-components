@@ -1,0 +1,50 @@
+import * as React from 'react';
+import { Button } from "react-bootstrap";
+
+export interface PaginationButtonsProps {
+    total: number,
+    currentPage: number,
+    perPage: number,
+    previousPage(): void,
+    nextPage(): void,
+}
+
+export class PaginationButtons extends React.PureComponent<PaginationButtonsProps> {
+    render() {
+        const { total, currentPage, perPage, previousPage, nextPage } = this.props;
+        const pageStart = (currentPage * perPage) + 1;
+        let pageEnd = (currentPage + 1) * perPage;
+        const previousDisabled = currentPage === 0;
+
+        if (pageEnd >= total) {
+            pageEnd = total;
+        }
+
+        const nextDisabled = pageEnd >= total;
+
+        return (
+            <div className="pagination-buttons">
+                <div className="pagination-buttons__info">
+                    <span className="pagination-info__start">{pageStart}</span>
+                    <span> - </span>
+                    <span className="pagination-info__end">{pageEnd}</span>
+                    <span> of </span>
+                    <span className="pagination-info__total">{total}</span>
+                </div>
+
+                <div className="pagination-buttons__buttons btn-group">
+                    <Button className="pagination-buttons__prev"
+                            onClick={previousPage}
+                            disabled={previousDisabled}
+                    >
+                        <i className="fa fa-chevron-left"/>
+                    </Button>
+
+                    <Button className="pagination-buttons__next" onClick={nextPage} disabled={nextDisabled}>
+                        <i className="fa fa-chevron-right"/>
+                    </Button>
+                </div>
+            </div>
+        );
+    }
+}

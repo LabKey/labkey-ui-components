@@ -16,6 +16,7 @@ import { insertRows, selectRows } from '../../query/api'
 import { QueryFormInputs } from './QueryFormInputs'
 import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
+
 export interface QueryInfoFormProps {
     asModal?: boolean
     cancelText?: string
@@ -98,7 +99,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     handleCancel() {
-        const {  onCancel } = this.props;
+        const { onCancel } = this.props;
         if (Utils.isFunction(onCancel)) {
             onCancel();
         }

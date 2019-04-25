@@ -38,6 +38,7 @@ storiesOf('QueryInfoForm', module)
         gridInit(model, true);
         return (
             <QueryInfoForm
+                asModal={false}
                 queryInfo={model.queryInfo}
                 schemaQuery={schemaQuery}/>
         )

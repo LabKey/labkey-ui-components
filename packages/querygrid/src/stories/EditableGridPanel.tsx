@@ -21,7 +21,6 @@ const CONTROLS_GROUP = "Grid controls";
 const PANEL_GROUP = "Grid";
 
 
-
 mock.setup();
 
 mock.get(/.*\/query\/.*\/getQueryDetails.*/, {
@@ -212,6 +211,12 @@ storiesOf('EditableGridPanel', module)
             }
         });
         gridInit(model, true);
+
+        const bulkUpdateProps = {
+            header: text("Header for bulk insert", "Create some mixture data here."),
+            title: text("Title for bulk import", "Bulk creation of mixture data")
+        };
+
         return (
             <EditableGridPanel
                 allowAdd={true}
@@ -219,6 +224,7 @@ storiesOf('EditableGridPanel', module)
                 allowBulkUpdate={true}
                 model={model}
                 isSubmitting={false}
+                bulkUpdateProps={bulkUpdateProps}
                 bulkUpdateText={text("Bulk Update text", "Bulk Insert")}
                 title={"Editable grid with bulk insert capabilities"}
             />

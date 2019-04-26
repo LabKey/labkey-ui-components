@@ -1178,17 +1178,6 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.2.tgz#63985d3d8b02530e0869962f4da09142ee8e200e"
   integrity sha512-n/VQ4mbfr81aqkx/XmVicOLjviMuy02eenSdJY33SVA7S2J42EU0P1H0mOogfYedb3wXA0d/LVtBrgTSm04WEA==
 
-"@glass/base@0.1.7":
-  version "0.1.7"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.1.7.tgz#bb4f8671bf5c20f435ffce188013f16e2f78d2bb"
-  integrity sha1-u0+Gcb9cIPQ1/84YgBPxbi940rs=
-  dependencies:
-    bootstrap "3.3.7"
-    moment "2.24.0"
-    moment-jdateformatparser "1.1.0"
-    numeral "2.0.6"
-    react-bootstrap "0.32.4"
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"

@@ -1689,10 +1689,12 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
 }
 
 
-export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  ) {
+export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     const editorModel = getEditorModel(model.getId());
+
     // sort descending so we remove the data for the row with the largest index first and don't mess up the index number for other rows
     const sortedIdIndexes = dataIdIndexes.sort().reverse();
+
     if (model.editable) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
@@ -1708,6 +1710,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
 
                 return newCellMessages;
             }, Map<string, CellMessage>());
+
             newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
                 const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
 
@@ -1720,6 +1723,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
                 return newCellValues;
             }, Map<string, List<ValueDescriptor>>())
         });
+
         updateEditorModel(editorModel, {
             focusColIdx: -1,
             focusRowIdx: -1,
@@ -1731,6 +1735,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
             cellValues: newCellValues
         });
     }
+
     let data = model.data;
     let dataIds = model.dataIds;
     sortedIdIndexes.forEach((dataIdIndex) => {

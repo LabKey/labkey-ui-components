@@ -2,7 +2,7 @@
 
 exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
 <div
-  className="panel panel-default"
+  className="domain-form-panel panel panel-default"
 >
   <div
     className="panel-heading"
@@ -135,7 +135,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
 
 exports[`DomainFormDisplay domain form with all field types 1`] = `
 <div
-  className="panel panel-default"
+  className="domain-form-panel panel panel-default"
 >
   <div
     className="panel-heading"
@@ -1919,7 +1919,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
 
 exports[`DomainFormDisplay domain form with no fields 1`] = `
 <div
-  className="panel panel-default"
+  className="domain-form-panel panel panel-default"
 >
   <div
     className="panel-heading"
@@ -2052,7 +2052,7 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
 
 exports[`DomainFormDisplay domain form with updated fields 1`] = `
 <div
-  className="panel panel-default"
+  className="domain-form-panel panel panel-default"
 >
   <div
     className="panel-heading"

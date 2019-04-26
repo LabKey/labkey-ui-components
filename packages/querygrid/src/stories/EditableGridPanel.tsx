@@ -3,15 +3,11 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { fromJS, Map } from 'immutable';
 import { SchemaQuery } from "@glass/base";
-import mock, { proxy } from 'xhr-mock';
 
 import { gridInit } from "../actions";
 import { getStateQueryGridModel } from "../model";
 import { initQueryGridState, setQueryMetadata } from "../global";
 import { EditableGridPanel } from "../components/editable/EditableGridPanel";
-import mixtureBatchesQueryInfo from "../test/data/mixtureBatches-getQueryDetails.json";
-import mixtureTypesQuery from "../test/data/mixtureTypes-getQuery.json";
-import samplesInsert from '../test/data/samples-insertRows.json';
 import * as constants from '../test/data/constants';
 
 import './stories.scss'
@@ -19,29 +15,6 @@ import { EditableColumnMetadata } from "../components/editable/EditableGrid";
 
 const CONTROLS_GROUP = "Grid controls";
 const PANEL_GROUP = "Grid";
-
-
-mock.setup();
-
-mock.get(/.*\/query\/.*\/getQueryDetails.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(mixtureBatchesQueryInfo)
-});
-
-mock.post(/.*\/query\/.*\/getQuery.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(mixtureTypesQuery)
-});
-
-mock.post(/.*\/query\/.*\/insertRows.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(samplesInsert)
-});
-mock.use(proxy);
-
 
 initQueryGridState();
 
@@ -148,6 +121,7 @@ storiesOf('EditableGridPanel', module)
                 }
             }
         }));
+
         const modelId = "editableWitReadOnlyAndPlaceHolders";
         const schemaQuery = new SchemaQuery({
             schemaName: "schema",
@@ -196,6 +170,14 @@ storiesOf('EditableGridPanel', module)
         );
     })
     .add("with bulk edit", () => {
+        setQueryMetadata(fromJS({
+            columnDefaults: {
+                flag: {
+                    removeFromViews: true
+                }
+            }
+        }));
+
         const modelId = "editableWithBulkEdit";
         const schemaQuery = new SchemaQuery({
             schemaName: "schema",
@@ -234,5 +216,4 @@ storiesOf('EditableGridPanel', module)
                 title={"Editable grid with bulk insert capabilities"}
             />
         );
-    })
-;
+    });

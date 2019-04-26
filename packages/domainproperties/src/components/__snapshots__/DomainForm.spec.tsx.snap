@@ -1,0 +1,2851 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <div
+      className="panel-title"
+    >
+      Field Properties - update field types
+    </div>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+      </p>
+    </div>
+    <div
+      className="domain-form-search row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <input
+          className="form-control"
+          disabled={true}
+          id="dom-search-nodejs"
+          placeholder="Filter Fields"
+          type="text"
+        />
+      </div>
+      <div
+        className="col-xs-1"
+      />
+      <div
+        className="col-lg-4 col-md-6 col-xs-8"
+      >
+        <div
+          className="domain-zero-padding col-xs-5"
+        >
+          <span>
+            Show Fields Defined By: 
+          </span>
+        </div>
+        <div
+          className="domain-zero-padding col-xs-7"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id="dom-user-nodejs"
+            placeholder="User"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <b>
+          Field Name
+        </b>
+      </div>
+      <div
+        className="col-xs-2"
+      >
+        <b>
+          Date Type
+        </b>
+      </div>
+      <div
+        className="col-xs-1"
+      >
+        <b>
+          Required?
+        </b>
+      </div>
+      <div
+        className="col-xs-6"
+      >
+        <b>
+          Details
+        </b>
+      </div>
+    </div>
+    <form
+      className=""
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <span
+          className="domain-form-add"
+          onClick={[Function]}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
+            data-icon="plus-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+           Add field
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainFormDisplay domain form with all field types 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <div
+      className="panel-title"
+    >
+      Field Properties - all field types
+    </div>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+      </p>
+    </div>
+    <div
+      className="domain-form-search row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <input
+          className="form-control"
+          disabled={true}
+          id="dom-search-nodejs"
+          placeholder="Filter Fields"
+          type="text"
+        />
+      </div>
+      <div
+        className="col-xs-1"
+      />
+      <div
+        className="col-lg-4 col-md-6 col-xs-8"
+      >
+        <div
+          className="domain-zero-padding col-xs-5"
+        >
+          <span>
+            Show Fields Defined By: 
+          </span>
+        </div>
+        <div
+          className="domain-zero-padding col-xs-7"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id="dom-user-nodejs"
+            placeholder="User"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <b>
+          Field Name
+        </b>
+      </div>
+      <div
+        className="col-xs-2"
+      >
+        <b>
+          Date Type
+        </b>
+      </div>
+      <div
+        className="col-xs-1"
+      >
+        <b>
+          Required?
+        </b>
+      </div>
+      <div
+        className="col-xs-6"
+      >
+        <b>
+          Details
+        </b>
+      </div>
+    </div>
+    <form
+      className=""
+    >
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-0"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="key"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-0"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="int"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-0"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-0"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-0"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-1"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="string"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-1"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="string"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-1"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-1"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-2"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="multiline"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-2"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="multiLine"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-2"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-2"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-3"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="boolean"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-3"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="boolean"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-3"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-3"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-4"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="double"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-4"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="double"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-4"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-4"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-4"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-5"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="datetime"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-5"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="dateTime"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-5"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-5"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-5"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-6"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="flag"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-6"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="flag"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-6"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-6"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-6"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-7"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="file link"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-7"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="fileLink"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-7"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-7"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-7"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-8"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="participant id"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-8"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="ParticipantId"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-8"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-8"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-8"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-9"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="attachment"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-9"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="attachment"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-9"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-9"
+          >
+            
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-9"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <span
+          className="domain-form-add"
+          onClick={[Function]}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
+            data-icon="plus-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+           Add field
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainFormDisplay domain form with no fields 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <div
+      className="panel-title"
+    >
+      Field Properties - no fields
+    </div>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+      </p>
+    </div>
+    <div
+      className="domain-form-search row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <input
+          className="form-control"
+          disabled={true}
+          id="dom-search-nodejs"
+          placeholder="Filter Fields"
+          type="text"
+        />
+      </div>
+      <div
+        className="col-xs-1"
+      />
+      <div
+        className="col-lg-4 col-md-6 col-xs-8"
+      >
+        <div
+          className="domain-zero-padding col-xs-5"
+        >
+          <span>
+            Show Fields Defined By: 
+          </span>
+        </div>
+        <div
+          className="domain-zero-padding col-xs-7"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id="dom-user-nodejs"
+            placeholder="User"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <b>
+          Field Name
+        </b>
+      </div>
+      <div
+        className="col-xs-2"
+      >
+        <b>
+          Date Type
+        </b>
+      </div>
+      <div
+        className="col-xs-1"
+      >
+        <b>
+          Required?
+        </b>
+      </div>
+      <div
+        className="col-xs-6"
+      >
+        <b>
+          Details
+        </b>
+      </div>
+    </div>
+    <form
+      className=""
+    />
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <span
+          className="domain-form-add"
+          onClick={[Function]}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
+            data-icon="plus-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+           Add field
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainFormDisplay domain form with updated fields 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <div
+      className="panel-title"
+    >
+      Field Properties - update field types
+    </div>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+      </p>
+    </div>
+    <div
+      className="domain-form-search row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <input
+          className="form-control"
+          disabled={true}
+          id="dom-search-nodejs"
+          placeholder="Filter Fields"
+          type="text"
+        />
+      </div>
+      <div
+        className="col-xs-1"
+      />
+      <div
+        className="col-lg-4 col-md-6 col-xs-8"
+      >
+        <div
+          className="domain-zero-padding col-xs-5"
+        >
+          <span>
+            Show Fields Defined By: 
+          </span>
+        </div>
+        <div
+          className="domain-zero-padding col-xs-7"
+        >
+          <input
+            className="form-control"
+            disabled={true}
+            id="dom-user-nodejs"
+            placeholder="User"
+            type="text"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <div
+        className="col-xs-3"
+      >
+        <b>
+          Field Name
+        </b>
+      </div>
+      <div
+        className="col-xs-2"
+      >
+        <b>
+          Date Type
+        </b>
+      </div>
+      <div
+        className="col-xs-1"
+      >
+        <b>
+          Required?
+        </b>
+      </div>
+      <div
+        className="col-xs-6"
+      >
+        <b>
+          Details
+        </b>
+      </div>
+    </div>
+    <form
+      className=""
+    >
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-0"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="newfieldname"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-0"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="int"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-0"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-0"
+          >
+            Updated
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-0"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-1"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="string changed to boolean"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-1"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="boolean"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-1"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-1"
+          >
+            Updated
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-1"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-2"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="int changed to participant"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-2"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="ParticipantId"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-2"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-2"
+          >
+            Updated
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-2"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        className="domain-field-row row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          <input
+            className="form-control"
+            id="domainpropertiesrow-name-3"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="text"
+            value="flag changed to attachment"
+          />
+        </div>
+        <div
+          className="col-xs-2"
+        >
+          <select
+            className="form-control"
+            id="domainpropertiesrow-type-3"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            value="attachment"
+          >
+            <option
+              value="string"
+            >
+              Text (String)
+            </option>
+            <option
+              value="multiLine"
+            >
+              Multi-Line Text
+            </option>
+            <option
+              value="boolean"
+            >
+              Boolean
+            </option>
+            <option
+              value="int"
+            >
+              Integer
+            </option>
+            <option
+              value="double"
+            >
+              Number (Double)
+            </option>
+            <option
+              value="dateTime"
+            >
+              Date Time
+            </option>
+            <option
+              value="flag"
+            >
+              Flag (String)
+            </option>
+            <option
+              value="fileLink"
+            >
+              File
+            </option>
+            <option
+              value="attachment"
+            >
+              Attachment
+            </option>
+            <option
+              value="users"
+            >
+              User
+            </option>
+            <option
+              value="ParticipantId"
+            >
+              Subject/Participant (String)
+            </option>
+            <option
+              value="lookup"
+            >
+              Lookup
+            </option>
+          </select>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-checkbox"
+          >
+            <div
+              className="domain-field-checkbox checkbox"
+            >
+              <label
+                title=""
+              >
+                <input
+                  checked={false}
+                  disabled={false}
+                  id="domainpropertiesrow-req-3"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  type="checkbox"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          className="col-xs-5"
+        >
+          <span
+            className="domain-field-details"
+            id="domainpropertiesrow-details-3"
+          >
+            Updated
+          </span>
+        </div>
+        <div
+          className="col-xs-1"
+        >
+          <div
+            className="domain-field-advanced-icon pull-right"
+            id="domainpropertiesrow-adv-3"
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <span
+          className="domain-form-add"
+          onClick={[Function]}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
+            data-icon="plus-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+           Add field
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainFormDisplay with empty domain form 1`] = `
+<b>
+  Invalid domain
+</b>
+`;

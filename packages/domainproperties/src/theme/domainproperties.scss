@@ -1,0 +1,54 @@
+
+.domain-form-panel {
+  min-width: 1000px;
+}
+
+.domain-form-hdr-row {
+  margin: 0 0 5px 5px;
+  color: $gray;
+};
+
+.domain-form-search {
+  margin-bottom: 20px;
+};
+
+.domain-zero-padding {
+  padding: 0
+}
+
+.domain-field-row {
+  border: 1px solid $gray-border;
+  border-radius: 2px;
+  margin: 0 0 20px 0;
+  padding: 13px 10px 5px 0;
+  box-shadow: inset 0 1px 3px 2px $gray-shadow;
+};
+
+.domain-field-checkbox {
+  padding-left: 25%;
+  width: 12px;
+  margin: 8px 0 0 0;
+};
+
+.domain-field-details {
+  color: $gray-dark;
+  margin: 5px 0 0 8px;
+};
+
+.domain-field-advanced-icon {
+  color: $gray-light;
+};
+
+.domain-form-add {
+  color: $gray-dark;
+  opacity: 0.5;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.domain-form-add-btn {
+  color: $brand-success;
+}

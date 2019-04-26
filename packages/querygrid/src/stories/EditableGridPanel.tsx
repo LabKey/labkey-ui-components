@@ -174,8 +174,11 @@ storiesOf('EditableGridPanel', module)
             "Name": {
                 readOnly: boolean("Name field read-only?", true)
             },
-            "Alias": {
-                placeholder : text("Alias placeholder text", "Enter an alias")
+            "mixtureTypeId": {
+                placeholder : text("Mixture Type placeholder text", "Select a type...")
+            },
+            "extraTestColumn": {
+                placeholder : text("Extra Test Column placeholder text", "Enter text here")
             }
         });
 

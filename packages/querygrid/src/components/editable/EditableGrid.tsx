@@ -347,11 +347,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     toggleBulkUpdate() {
-        this.setState(() => {
-            return {
-                showBulkUpdate: !this.state.showBulkUpdate
-            }
-        });
+        this.setState((state) => ({
+            showBulkUpdate: !state.showBulkUpdate
+        }));
     }
 
     renderError() {

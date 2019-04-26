@@ -93,8 +93,7 @@ export class URLResolver {
                     if (filters.length > 0) {
                         for (let i=0; i < filters.length; i++) {
                             if (filters[i].getColumnName().toLowerCase() === 'batch/rowid') {
-
-                                let rowId = filters[i].getValue()[0];
+                                let rowId = filters[i].getValue();
 
                                 // expecting a schema of assay.<provider>.<protocol>
                                 if (schema.indexOf('assay.') === 0) {

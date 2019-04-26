@@ -73,17 +73,19 @@ storiesOf('EditableGridPanel', module)
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
         };
 
-        return <EditableGridPanel
-            addControlProps={addRowsControl}
-            allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
-            allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
-            allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
-            disabled={boolean("Disabled?", false, PANEL_GROUP)}
-            initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
-            isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
-            title={text("Title", "Grid title", PANEL_GROUP)}
-            model={model}
-        />;
+        return (
+            <EditableGridPanel
+                addControlProps={addRowsControl}
+                allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
+                allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
+                allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
+                disabled={boolean("Disabled?", false, PANEL_GROUP)}
+                initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
+                isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
+                title={text("Title", "Grid title", PANEL_GROUP)}
+                model={model}
+            />
+        );
 
     })
     .add("with data", () => {
@@ -173,7 +175,7 @@ storiesOf('EditableGridPanel', module)
                 readOnly: boolean("Name field read-only?", true)
             },
             "Alias": {
-                placeholder : text("Alias placeholder text here ", "Enter an alias")
+                placeholder : text("Alias placeholder text", "Enter an alias")
             }
         });
 

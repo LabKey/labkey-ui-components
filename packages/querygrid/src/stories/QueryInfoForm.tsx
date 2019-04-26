@@ -13,6 +13,12 @@ import { gridInit } from "../actions";
 initQueryGridState();
 initBrowserHistoryState();
 
+function formSubmit(data: any) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        resolve( console.log("resolved"))
+    });
+}
+
 storiesOf('QueryInfoForm', module)
     .addDecorator(withKnobs)
     .add("default", () => {
@@ -38,6 +44,7 @@ storiesOf('QueryInfoForm', module)
         gridInit(model, true);
         return (
             <QueryInfoForm
+                onSubmit={formSubmit}
                 asModal={false}
                 queryInfo={model.queryInfo}
                 schemaQuery={schemaQuery}/>

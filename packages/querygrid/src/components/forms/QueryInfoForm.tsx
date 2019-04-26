@@ -8,14 +8,12 @@ import { ReactNode } from 'react'
 import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy from 'formsy-react'
 import { Input } from 'formsy-react-components'
-import { List } from 'immutable'
 import { Utils } from '@labkey/api'
 import { QueryInfo, SchemaQuery } from '@glass/base'
 
-import { insertRows, selectRows } from '../../query/api'
+import { selectRows } from '../../query/api'
 import { QueryFormInputs } from './QueryFormInputs'
 import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
-
 
 export interface QueryInfoFormProps {
     asModal?: boolean
@@ -23,10 +21,11 @@ export interface QueryInfoFormProps {
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
-    countText?: string,
-    maxCount?: number,
+    countText?: string
+    maxCount?: number
     onCancel?: () => any
     onHide?: () => any
+    onSubmit: (data: any) => Promise<any>
     onSuccess?: (data: any) => any
     queryInfo: QueryInfo
     schemaQuery: SchemaQuery
@@ -111,13 +110,13 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     handleSubmitError(error: any) {
         this.setState({
-            errorMsg: error.exception,
+            errorMsg: "There was an error submitting the data.  " + error.exception, // TODO add some actionable text here
             isSubmitting: false
         });
     }
 
     handleValidSubmit(row: any) {
-        const { errorCallback, schemaQuery, onSuccess } = this.props;
+        const { errorCallback, schemaQuery, onSubmit, onSuccess } = this.props;
         const { count } = this.state;
 
         this.setState({
@@ -125,14 +124,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             isSubmitting: true
         });
 
-        delete row.numItems;
-        let rows = List<any>();
-        for (var i = 0; i < count; i++)
-            rows = rows.push(row);
-        insertRows({
-            schemaQuery,
-            rows
-        }).then((data) => {
+        onSubmit(row).then((data) => {
             this.setState({
                 errorMsg: undefined,
                 isSubmitted: true,

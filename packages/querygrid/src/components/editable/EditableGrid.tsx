@@ -99,6 +99,7 @@ export interface EditableGridProps {
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
+    nounPlural?: string
 }
 
 export interface EditableGridState {
@@ -118,7 +119,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         columnMetadata: Map<string, EditableColumnMetadata>(),
         disabled: false,
         isSubmitting: false,
-        initialEmptyRowCount: 1
+        initialEmptyRowCount: 1,
+        nounPlural: "Rows"
     };
 
     private maskDelay: number;
@@ -143,6 +145,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.toggleMask = this.toggleMask.bind(this);
         this.select = this.select.bind(this);
         this.selectAll = this.selectAll.bind(this);
+        this.bulkAdd = this.bulkAdd.bind(this);
         this.removeSelectedRows = this.removeSelectedRows.bind(this);
 
         this.table = OrigReact.createRef();
@@ -433,7 +436,27 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         )
     }
 
+    bulkAdd(data: any) : Promise<any> {
+        const { nounPlural } = this.props;
+        const model = this.getModel(this.props);
+
+        const numItems = data.numItems;
+        delete data.numItems;
+
+        if (numItems) {
+            return new Promise((resolve) => {
+                addRows(model, numItems, Map<string, any>(data));
+                resolve({
+                    success: true,
+                    message: "Added " + numItems + " " + nounPlural
+                });
+            });
+        }
+    }
+
     renderBulkUpdate() {
+
+        const { nounPlural } = this.props;
 
         const { showBulkUpdate } = this.state;
 
@@ -442,7 +465,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return (
             showBulkUpdate &&
                 <QueryInfoForm
+                    onSubmit={this.bulkAdd}
                     asModal={true}
+                    submitText={`Add ${nounPlural} to Grid`}
                     maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
                     onHide={this.toggleBulkUpdate}
                     onCancel={this.toggleBulkUpdate}

@@ -1212,6 +1212,69 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
     }
 }
 
+export function updateEditorData(gridModel: QueryGridModel, data: List<any>, count: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
+    const columns = gridModel.getInsertColumns();
+    const editorModel = getEditorModel(gridModel.getId());
+
+    // const getLookup = (col: QueryColumn) => getLookupStore(col);
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+    let selectionCells = editorModel.selectionCells;
+
+    let values = List<List<ValueDescriptor>>();
+    let messages = List<CellMessage>();
+
+    data.forEach((value, cn) => {
+
+        // const colIdx = colMin + cn;
+        // const col = columns.get(colIdx);
+
+        let cv: List<ValueDescriptor>;
+        let msg: CellMessage;
+
+        // if (col && col.isLookup()) {
+        //     const {message, values} = parsePasteCellLookup(col, getLookup(col), value);
+        //     cv = values;
+        //
+        //     if (message) {
+        //         msg = message;
+        //     }
+        // } else {
+            cv = List([{
+                display: value,
+                raw: value
+            }]);
+        // }
+        //
+        if (msg) {
+            messages = messages.push(msg);
+        } else {
+            messages = messages.push(undefined);
+        }
+
+        values = values.push(cv);
+    });
+
+    for (let rowIdx = rowMin; rowIdx < rowMin + count; rowIdx++) {
+        data.forEach((value, cn) => {
+
+            const colIdx = colMin + cn;
+            const col = columns.get(colIdx);
+            const cellKey = genCellKey(colIdx, rowIdx);
+
+            cellMessages = cellMessages.set(cellKey, messages.get(cn));
+            selectionCells = selectionCells.add(cellKey);
+            cellValues = cellValues.set(cellKey, values.get(cn));
+        });
+    }
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages,
+        selectionCells,
+        rowCount: editorModel.rowCount + count});
+}
+
 export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any) {
     const model = getEditorModel(modelId);
 
@@ -1389,14 +1452,19 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
     });
 }
 
-export function addRows(model: QueryGridModel, count?: number): EditorModel {
+export function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): EditorModel {
     let editorModel = getEditorModel(model.getId());
 
     if (count > 0) {
         if (model.editable) {
-            editorModel = updateEditorModel(editorModel, {
-                rowCount: editorModel.rowCount + count
-            });
+            if (rowData) {
+                editorModel = updateEditorData(model, rowData.toList(), count, model.getData().size);
+            }
+            else {
+                editorModel = updateEditorModel(editorModel, {
+                    rowCount: editorModel.rowCount + count
+                });
+            }
         }
 
         let data = model.data.asMutable();
@@ -1406,7 +1474,7 @@ export function addRows(model: QueryGridModel, count?: number): EditorModel {
             // ensure we don't step on another ID
             let id = GRID_EDIT_INDEX + ID_COUNTER++;
 
-            data.set(id, EMPTY_ROW);
+            data.set(id, rowData || EMPTY_ROW);
             dataIds.push(id);
         }
 

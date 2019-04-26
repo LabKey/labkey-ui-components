@@ -50,6 +50,18 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
         }
     };
 
+    getAddFieldButton() {
+        return (
+            <Row>
+                <Col xs={12}>
+                    <span className={"domain-form-add"} onClick={this.onAddField}>
+                        <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
+                    </span>
+                </Col>
+            </Row>
+        )
+    }
+
     render() {
         const {domain} = this.props;
 
@@ -104,20 +116,21 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
                                     />
                                 })}
                             </Form>
-                            <Row>
-                                <Col xs={12}>
-                                    <span className={"domain-form-add"} onClick={this.onAddField}>
-                                        <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
-                                    </span>
-                                </Col>
-                            </Row>
+                            {this.getAddFieldButton()}
                         </Panel.Body>
                     </Panel>
                 ) :
-                    <Panel className='domain-form-no-field-panel'>No fields have been defined for this list yet.
-                        Start by using the “Add Field” button below. Learn more about
-                        <a href='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'> creating list designs
-                        </a> in our documentation.</Panel>
+                    <Panel className='.domain-form-panel'>
+                        <Panel.Body>
+                            <Panel className='domain-form-no-field-panel'>No fields have been defined for this list yet.
+                                Start by using the “Add Field” button below. Learn more about
+                                <a href='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'> creating
+                                    list designs
+                                </a> in our documentation.
+                            </Panel>
+                            {this.getAddFieldButton()}
+                        </Panel.Body>
+                    </Panel>
                 }
             </>
         );

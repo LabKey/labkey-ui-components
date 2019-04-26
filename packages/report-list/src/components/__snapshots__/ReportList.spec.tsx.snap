@@ -1,0 +1,2037 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReportList /> Render loading 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="report-list"
+  >
+    <div
+      className="report-list__message"
+    >
+      <span
+        className=""
+      >
+        <i
+          aria-hidden="true"
+          className="fa fa-spinner fa-spin"
+        />
+         
+        Loading...
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ReportList /> Render with data 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="report-list"
+  >
+    <ul
+      className="report-list__list media-list"
+    >
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-area-chart fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Chart View: Systolic vs Diastolic
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A953"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-sliders fa-rotate-90 fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Scatter: Systolic vs Diastolic
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A950"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-line-chart fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Time Chart: Body Temp + Pulse For Group 2
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A952"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Abbreviated Demographics
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=DEM-1&query.viewName=Abbreviated%20Demographics"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Alt ID mapping
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=5002"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            APX-1: Abbreviated Physical Exam
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=136"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            className="report-list-item__icon"
+            src="crosstab.png?revision=3"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Crosstab: MouseId Counts
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A954"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            DEM-1: Demographics
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=1"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            FPX-1: Final Complete Physical Exam
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=200"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            PRE-1: Pre-Existing Conditions
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=12"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            className="report-list-item__icon"
+            src="/r_logo.svg?revision=3"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            R Report: Dataset Column Names
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A951"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCP-1: Reactogenicity-Resolution
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=192"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            SCL-1: Specimen Collection
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=449"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Types
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=2"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            VAC-1: Post-enrollment Vaccination
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=135"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            verifyAssay
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=5001"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            AE-1:(VTN) AE Log
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=420"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Chemistry + Criteria + Demographics
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=CPS-1&query.viewName=Chemistry%20%2B%20Criteria%20%2B%20Demographics"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            CM-1:(Ph I/II) Concomitant Medications Log
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=423"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            CPS-1: Screening Chemistry Panel
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=19"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            ECI-1: Eligibility Criteria
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=23"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            ESI-1: End of Study Inventory
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=489"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            IHT-1:  Interim HIV Test
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=360"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            IV-1:Interim Visit
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=350"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            PIL-1: Participant Incident Log
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=487"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            SIA-1: Social Impact Assessment
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=150"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            SIL-1: Social Impact Log
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=151"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            CPF-1: Follow-up Chemistry Panel
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=144"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            LLF-1: Follow-up Local Lab Results (Page 1)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=143"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            LLS-1: Screening Local Lab Results (Page 1)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=16"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            LLS-2: Screening Local Lab Results (Page 2)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=17"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            MV-1: Missed Visit
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=463"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            PRC-1: Participant Receipt
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=466"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            PT-1: Participant Transfer
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=465"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            URF-1: Follow-up Urinalysis (Page 1)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=140"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            URF-2: Follow-up Urinalysis (Page 2)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=141"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            URS-1: Screening Urinalysis
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=14"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            BRA-1: Behavioral Risk Assessment (Page 1)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=171"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            BRA-2: Behavioral Risk Assessment (Page 2)
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=172"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            DOV-1: Discontinuation of Vaccination
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=300"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            OTB-1: Outside Testing/Belief
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=173"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Quality Control Report
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=501"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCB-1: Reactogenicity-Baseline
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=180"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCE-1: Reactogenicity-Day 0
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=184"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCM-1: Reactogenicity-Early Assessment
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=182"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            SP-1: Study Product Admin. Error
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=310"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            TM-1: Termination
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=490"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            ENR-1: Enrollment
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=124"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            EPX-1: Enrollment Abbreviated Physical Exam
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=122"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            EVC-1: Enrollment Vaccination
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=125"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            PO-1: Pregnancy Outcome
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=441"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            PR-1: Pregnancy Report and History
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=440"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCF-1: Reactogenicity-Day 2
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=188"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCH-1: Reactogenicity-Day 1
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=186"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-table fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            RCT-1: Reactogenicity-Day 3
+          </h4>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=190"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <span
+            className="report-list-item__icon fa fa-clipboard fa-4x"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            Mouse Report: 2 Dem Vars + 3 Other Vars
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A949"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            className="report-list-item__icon"
+            src="/r_logo.svg?revision=3"
+          />
+        </div>
+        <div
+          className="report-list-item__body media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            TestReport
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            Vader
+          </p>
+        </div>
+        <div
+          className="media-right media-middle"
+        >
+          <a
+            className="report-list-item__external-link"
+            href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A955"
+          >
+            <span
+              className="fa fa-external-link"
+            />
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<ReportList /> Render with no data 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="report-list"
+  >
+    <div
+      className="report-list__message"
+    >
+      No reports.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ReportListItem /> ReportListItem renders 1`] = `
+<li
+  className="report-list-item media"
+  onClick={[Function]}
+>
+  <div
+    className="media-left"
+  >
+    <span
+      className="report-list-item__icon fa fa-area-chart fa-4x"
+    />
+  </div>
+  <div
+    className="report-list-item__body media-body"
+  >
+    <h4
+      className="report-list-item__name media-heading"
+    >
+      Chart View: Systolic vs Diastolic
+    </h4>
+    <p
+      className="report-list-item__person"
+    >
+      Created by: 
+      Vader
+    </p>
+  </div>
+  <div
+    className="media-right media-middle"
+  >
+    <a
+      className="report-list-item__external-link"
+      href="/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A953"
+    >
+      <span
+        className="fa fa-external-link"
+      />
+    </a>
+  </div>
+</li>
+`;

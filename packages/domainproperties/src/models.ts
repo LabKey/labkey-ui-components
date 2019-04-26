@@ -3,7 +3,15 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import {List, Record, fromJS} from "immutable";
-import {TEXT_RANGE_URI} from "./constants";
+import {
+    ATTACHMENT_RANGE_URI,
+    BOOLEAN_RANGE_URI,
+    DATETIME_RANGE_URI,
+    DOUBLE_RANGE_URI, FILELINK_RANGE_URI, FLAG_CONCEPT_URI,
+    INT_RANGE_URI,
+    MULTILINE_RANGE_URI, PARTICIPANTID_CONCEPT_URI, STRING_RANGE_URI,
+    USER_RANGE_URI
+} from "./constants";
 
 interface IPropDescType{
     name: string,
@@ -27,6 +35,21 @@ export class PropDescType extends Record({
         super(values);
     }
 }
+
+export const PROP_DESC_TYPES = List([
+    new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI}),
+    new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
+    new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
+    new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
+    new PropDescType({name: 'double', display: 'Number (Double)', rangeURI: DOUBLE_RANGE_URI}),
+    new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI}),
+    new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI}),
+    new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI}),
+    new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI}),
+    new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI}),
+    new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI}),
+    new PropDescType({name: 'lookup', display: 'Lookup'}),
+]);
 
 interface IDomainDesign {
     name: string
@@ -83,7 +106,7 @@ interface IDomainIndex {
     type: 'primary' | 'unique'
 }
 
-class DomainIndex extends Record({
+export class DomainIndex extends Record({
     columns: List<string>(),
     type: undefined
 }) implements IDomainIndex {
@@ -134,7 +157,7 @@ export class DomainField extends Record({
     name: '',
     description: undefined,
     label: undefined,
-    rangeURI: TEXT_RANGE_URI,
+    rangeURI: STRING_RANGE_URI,
     conceptURI: undefined,
     required: false,
     lookupContainer: undefined,

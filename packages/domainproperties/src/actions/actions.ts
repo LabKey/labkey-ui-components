@@ -8,10 +8,9 @@ import {
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_REQ,
-    DOMAIN_FIELD_TYPE,
-    PROP_DESC_TYPES
+    DOMAIN_FIELD_TYPE
 } from "../constants";
-import {DomainDesign, DomainField, PropDescType} from "../models";
+import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES} from "../models";
 
 /**
  * @param domainId: Fetch domain by Id. Priority param over schema and query name.
@@ -171,7 +170,7 @@ export function getDataType(field: DomainField): PropDescType {
         return false;
     });
 
-    // If found return name
+    // If found return type
     if (types.size > 0)
     {
         return types.get(0);

@@ -113,7 +113,12 @@ export default class DomainForm extends React.Component<IDomainFormInput, any> {
                             </Row>
                         </Panel.Body>
                     </Panel>
-                ) : <b>Invalid domain</b>}
+                ) :
+                    <Panel className='domain-form-no-field-panel'>No fields have been defined for this list yet.
+                        Start by using the “Add Field” button below. Learn more about
+                        <a href='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'> creating list designs
+                        </a> in our documentation.</Panel>
+                }
             </>
         );
     }

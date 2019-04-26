@@ -2,28 +2,99 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import {List, Record, fromJS} from 'immutable'
+import {List, Record, fromJS} from "immutable";
+import {
+    ATTACHMENT_RANGE_URI,
+    BOOLEAN_RANGE_URI,
+    DATETIME_RANGE_URI,
+    DOUBLE_RANGE_URI, FILELINK_RANGE_URI, FLAG_CONCEPT_URI,
+    INT_RANGE_URI,
+    MULTILINE_RANGE_URI, PARTICIPANTID_CONCEPT_URI, STRING_RANGE_URI,
+    USER_RANGE_URI
+} from "./constants";
+
+interface IPropDescType{
+    name: string,
+    display?: string,
+    rangeURI?: string,
+    conceptURI?: string
+}
+
+export class PropDescType extends Record({
+    name: '',
+    display: '',
+    rangeURI: '',
+    conceptURI: ''
+}) implements IPropDescType {
+    name: string;
+    display: string;
+    rangeURI: string;
+    conceptURI: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+export const PROP_DESC_TYPES = List([
+    new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI}),
+    new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
+    new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
+    new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
+    new PropDescType({name: 'double', display: 'Number (Double)', rangeURI: DOUBLE_RANGE_URI}),
+    new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI}),
+    new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI}),
+    new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI}),
+    new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI}),
+    new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI}),
+    new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI}),
+    new PropDescType({name: 'lookup', display: 'Lookup'}),
+]);
 
 interface IDomainDesign {
     name: string
     description?: string
     domainURI: string
+    domainId: number
     fields?: List<DomainField>
     indices?: List<DomainIndex>
 }
 
 export class DomainDesign extends Record({
-    name: '',
-    description: '',
+    name: undefined,
+    description: undefined,
     domainURI: undefined,
+    domainId: null,
     fields: List<DomainField>(),
     indices: List<DomainIndex>()
 }) implements IDomainDesign {
     name: string;
     description: string;
     domainURI: string;
+    domainId: number;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
+
+    static create(rawModel): DomainDesign {
+        let fields = List<DomainField>();
+        let indices = List<DomainIndex>();
+
+        if (rawModel) {
+            if (rawModel.fields) {
+                fields = DomainField.fromJS(rawModel.fields);
+            }
+
+            if (rawModel.indices) {
+                indices = DomainIndex.fromJS(rawModel.indices);
+            }
+        }
+
+        return new DomainDesign({
+            ...rawModel,
+            fields,
+            indices
+        })
+    }
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -35,7 +106,7 @@ interface IDomainIndex {
     type: 'primary' | 'unique'
 }
 
-class DomainIndex extends Record({
+export class DomainIndex extends Record({
     columns: List<string>(),
     type: undefined
 }) implements IDomainIndex {
@@ -60,7 +131,8 @@ class DomainIndex extends Record({
 interface IDomainField {
     name: string
     rangeURI: string
-
+    propertyId: number
+    propertyURI: string
     description?: string
     label?: string
     conceptURI?: string
@@ -73,20 +145,32 @@ interface IDomainField {
     userEditable?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
+
+    updatedField?: boolean
+    newField?: boolean
+    renderUpdate?: boolean
 }
 
-class DomainField extends Record({
-    name: undefined,
+export class DomainField extends Record({
+    propertyId: undefined,
+    propertyURI: undefined,
+    name: '',
     description: undefined,
     label: undefined,
-    rangeURI: undefined,
+    rangeURI: STRING_RANGE_URI,
     conceptURI: undefined,
     required: false,
     lookupContainer: undefined,
     lookupSchema: undefined,
     lookupQuery: undefined,
-    scale: undefined
+    scale: undefined,
+
+    updatedField: undefined,
+    newField: undefined,
+    renderUpdate: undefined
 }) implements IDomainField {
+    propertyId: number;
+    propertyURI: string;
     name: string;
     description: string;
     label: string;
@@ -97,6 +181,10 @@ class DomainField extends Record({
     lookupSchema: string;
     lookupQuery: string;
     scale: number;
+
+    updatedField: boolean;
+    newField: boolean;
+    renderUpdate: boolean;
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();

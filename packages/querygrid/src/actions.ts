@@ -1219,7 +1219,7 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
     // const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
-    let selectionCells = editorModel.selectionCells;
+    let selectionCells = Set<string>();
 
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();

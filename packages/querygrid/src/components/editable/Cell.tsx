@@ -78,7 +78,7 @@ export class Cell extends React.Component<Props, any> {
         return this.props.readOnly || this.props.col.readOnly;
     }
 
-    handleDblClick() {;
+    handleDblClick() {
         if (this.isReadOnly())
             return;
 
@@ -114,7 +114,7 @@ export class Cell extends React.Component<Props, any> {
                 break;
             case KEYS.Backspace:
             case KEYS.Delete:
-                if (!focused && selected) {
+                if (!focused && selected && !this.isReadOnly()) {
                     cancelEvent(event);
                     modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
@@ -150,7 +150,7 @@ export class Cell extends React.Component<Props, any> {
                     }
                     else {
                         // Do not cancel event here, otherwise, key capture will be lost
-                        focusCell(modelId, colIdx, rowIdx, true);
+                        focusCell(modelId, colIdx, rowIdx, !this.isReadOnly());
                     }
                 }
         }

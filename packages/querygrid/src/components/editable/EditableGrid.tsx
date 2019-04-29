@@ -312,7 +312,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     onPaste(event: any) {
         if (!this.props.disabled)
-            pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask);
+            pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask, this.props.columnMetadata);
     }
 
     showMask() {

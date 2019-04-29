@@ -16,7 +16,6 @@ import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
 
 interface Props {
-    className?: string // This is not used.  Remove?
     col: QueryColumn
     colIdx: number
     modelId: string

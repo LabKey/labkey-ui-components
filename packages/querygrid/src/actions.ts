@@ -35,6 +35,7 @@ import {
     getLookupStore,
     updateLookupStore
 } from './global'
+import { EditableColumnMetadata } from "./components/editable/EditableGrid";
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -1189,25 +1190,27 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
             const {displayColumn, keyColumn} = column.lookup;
             const {key, models, totalRows} = result;
 
-            let descriptors = fromJS(models[key])
-                .reduce((list, row) => {
-                    const key = row.getIn([keyColumn, 'value']);
+            if (models[key]) {
+                let descriptors = fromJS(models[key])
+                    .reduce((list, row) => {
+                        const key = row.getIn([keyColumn, 'value']);
 
-                    if (key !== undefined && key !== null) {
-                        return list.push({
-                            display: row.getIn([displayColumn, 'displayValue']) || row.getIn([displayColumn, 'value']),
-                            raw: key
-                        });
-                    }
-                }, List<ValueDescriptor>()).sortBy(vd => vd.display, naturalSort)
-                .reduce((map, vd) => map.set(vd.raw, vd), OrderedMap<any, ValueDescriptor>());
+                        if (key !== undefined && key !== null) {
+                            return list.push({
+                                display: row.getIn([displayColumn, 'displayValue']) || row.getIn([displayColumn, 'value']),
+                                raw: key
+                            });
+                        }
+                    }, List<ValueDescriptor>()).sortBy(vd => vd.display, naturalSort)
+                    .reduce((map, vd) => map.set(vd.raw, vd), OrderedMap<any, ValueDescriptor>());
 
-            updateLookupStore(store, {
-                isLoaded: true,
-                isLoading: false,
-                matchCount: totalRows,
-                descriptors
-            });
+                updateLookupStore(store, {
+                    isLoaded: true,
+                    isLoading: false,
+                    matchCount: totalRows,
+                    descriptors
+                });
+            }
         });
     }
 }
@@ -1275,17 +1278,17 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
         rowCount: editorModel.rowCount + count});
 }
 
-export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any) {
+export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
     const model = getEditorModel(modelId);
 
     // If a cell has focus do not accept incoming paste events -- allow for normal paste to input
     if (model && model.hasSelection() && !model.hasFocus()) {
         cancelEvent(event);
-        pasteCell(modelId, model.selectedColIdx, model.selectedRowIdx, getPasteValue(event), onBefore, onComplete);
+        pasteCell(modelId, model.selectedColIdx, model.selectedRowIdx, getPasteValue(event), onBefore, onComplete, columnMetadata);
     }
 }
 
-function pasteCell(modelId: string, colIdx: number, rowIdx: number, value: any, onBefore?: any, onComplete?: any) {
+function pasteCell(modelId: string, colIdx: number, rowIdx: number, value: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
     const gridModel = getQueryGridModel(modelId);
     let model = getEditorModel(modelId);
 
@@ -1314,7 +1317,7 @@ function pasteCell(modelId: string, colIdx: number, rowIdx: number, value: any, 
 
             Promise.all(columnLoaders)
                 .then(() => {
-                    return pasteCellLoad(model, gridModel, paste, (col: QueryColumn) => getLookupStore(col))
+                    return pasteCellLoad(model, gridModel, paste, (col: QueryColumn) => getLookupStore(col), columnMetadata)
                         .then((payload) => {
                             model = updateEditorModel(model, {
                                 cellMessages: payload.cellMessages,
@@ -1507,11 +1510,12 @@ function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
     return valuesByColumn.asImmutable();
 }
 
-function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPasteModel, getLookup: (col: QueryColumn) => LookupStore): Promise<{
-    cellMessages: CellMessages
-    cellValues: CellValues
-    selectionCells: Set<string>
-}> {
+function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>) {
+    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
+    return (column && column.readOnly) || (metadata && metadata.readOnly);
+}
+
+function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPasteModel, getLookup: (col: QueryColumn) => LookupStore, columnMetadata: Map<string, EditableColumnMetadata>): Promise<{ cellMessages: CellMessages; cellValues: CellValues; selectionCells: Set<string> }> {
     return new Promise((resolve) => {
         const { data } = paste.payload;
         const columns = gridModel.getInsertColumns();
@@ -1545,15 +1549,17 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                             }]);
                         }
 
-                        if (msg) {
-                            cellMessages.set(cellKey, msg);
-                        }
-                        else {
-                            cellMessages.remove(cellKey);
+                        if (!isReadOnly(col, columnMetadata)) {
+                            if (msg) {
+                                cellMessages.set(cellKey, msg);
+                            } else {
+                                cellMessages.remove(cellKey);
+                            }
+                            cellValues.set(cellKey, cv);
                         }
 
                         selectionCells.add(cellKey);
-                        cellValues.set(cellKey, cv);
+
                     });
                 });
             });
@@ -1572,29 +1578,30 @@ function pasteCellLoad(model: EditorModel, gridModel: QueryGridModel, paste: IPa
                     let msg: CellMessage;
 
                     if (col && col.isLookup()) {
-                        const { message, values } = parsePasteCellLookup(col, getLookup(col), value);
+                        const {message, values} = parsePasteCellLookup(col, getLookup(col), value);
                         cv = values;
 
                         if (message) {
                             msg = message;
                         }
-                    }
-                    else {
+                    } else {
                         cv = List([{
                             display: value,
                             raw: value
                         }]);
                     }
 
-                    if (msg) {
-                        cellMessages.set(cellKey, msg);
-                    }
-                    else {
-                        cellMessages.remove(cellKey);
+                    if (!isReadOnly(col, columnMetadata)) {
+                        if (msg) {
+                            cellMessages.set(cellKey, msg);
+                        } else {
+                            cellMessages.remove(cellKey);
+                        }
+                        cellValues.set(cellKey, cv);
                     }
 
                     selectionCells.add(cellKey);
-                    cellValues.set(cellKey, cv);
+
                 });
             });
         }
@@ -1757,10 +1764,12 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
 }
 
 
-export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  ) {
+export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     const editorModel = getEditorModel(model.getId());
+
     // sort descending so we remove the data for the row with the largest index first and don't mess up the index number for other rows
     const sortedIdIndexes = dataIdIndexes.sort().reverse();
+
     if (model.editable) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
@@ -1776,6 +1785,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
 
                 return newCellMessages;
             }, Map<string, CellMessage>());
+
             newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
                 const [colIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
 
@@ -1788,6 +1798,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
                 return newCellValues;
             }, Map<string, List<ValueDescriptor>>())
         });
+
         updateEditorModel(editorModel, {
             focusColIdx: -1,
             focusRowIdx: -1,
@@ -1799,6 +1810,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>  )
             cellValues: newCellValues
         });
     }
+
     let data = model.data;
     let dataIds = model.dataIds;
     sortedIdIndexes.forEach((dataIdIndex) => {

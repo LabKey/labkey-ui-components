@@ -4,15 +4,21 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-## version 0.1.8 
+## version ???
 *Released*: ???
-
 * port caseInsensitive function from Biologics
 * export datePlaceholder function
 
+### version 0.1.8
+*Released*: 25 April 2019
+* Add FileAttachmentForm and related components
+
+### version 0.1.7
+*Released*: 23 April 2019
+* React bootstrap typings - augment @types/react-bootstrap and make shareable
+
 ### version 0.1.6
 *Released*: 16 April 2019
-
 * initial documented release
 
 

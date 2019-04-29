@@ -92,7 +92,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         const { count } = this.state;
 
         const hasError = count !== undefined && !this.isValid(count);
-        const wrapperClasses = classNames('form-group margin-top', {
+        const wrapperClasses = classNames('editable-grid__controls', 'form-group margin-top', {
             'has-error': hasError
         });
 

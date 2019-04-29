@@ -363,6 +363,18 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }));
     }
 
+    renderAddRowsControl(location: string) {
+        const { addControlProps, allowAdd, allowBulkRemove, isSubmitting } = this.props;
+        return (
+            allowAdd && addControlProps && (addControlProps.placement === 'both' || addControlProps.placement === location) && (
+                <AddRowsControl
+                    {...addControlProps}
+                    disable={isSubmitting}
+                    onAdd={this.onAddRows}/>
+            )
+        )
+    }
+
     renderTopControls() {
         const { addControlProps, allowAdd, allowBulkRemove, isSubmitting } = this.props;
         return (
@@ -378,12 +390,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             </MenuItem>
                         </DropdownButton>
                 )}
-                {allowAdd && addControlProps && addControlProps.placement !== 'bottom' && (
-                    <AddRowsControl
-                        {...addControlProps}
-                        disable={isSubmitting}
-                        onAdd={this.onAddRows}/>
-                )}
+                {this.renderAddRowsControl('top')}
             </div>
         )
     }
@@ -423,12 +430,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             striped={false}
                             tableRef={this.table} />
                     </div>
-                    {allowAdd && (!addControlProps || addControlProps.placement !== 'top') && (
-                        <AddRowsControl
-                            {...addControlProps}
-                            disable={isSubmitting}
-                            onAdd={this.onAddRows}/>
-                    )}
+                    {this.renderAddRowsControl('bottom')}
                     {this.renderError()}
                 </div>
             )

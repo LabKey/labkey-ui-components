@@ -1,9 +1,6 @@
 // #Grids
 // Grid Styling
-.editable-grid__container {
-  display: inline-block;
-  padding-right: 15px;
-}
+
 
 .form-horizontal .control-label.text-left{
   text-align: left;
@@ -54,6 +51,7 @@
 
 .grid-header-cell {
   position: relative;
+  padding: 0 9px;
 }
 
 .grid-header-sort {
@@ -134,6 +132,11 @@
 
 .grid-testing {
   min-width: 50px;
+}
+
+.editable-grid__container {
+  display: inline-block;
+  padding-right: 15px;
 }
 
 .edit-grid-container {
@@ -287,6 +290,18 @@ $table-cell-selection-bg-color: #EDF3FF;
         background-color: $state-warning-bg;
       }
     }
+
+    .cell-placeholder {
+      color: $light-gray;
+    }
+
+    .cell-read-only {
+      background-color: $light-gray;
+
+      &.cell-placeholder {
+        color: $gray-light
+      }
+    }
   }
 }
 
@@ -342,4 +357,11 @@ $table-cell-selection-bg-color: #EDF3FF;
 // Grid bar
 .QueryGrid-bottom-spacing {
   padding-bottom: 15px;
+}
+
+// Add rows controls
+.editable-grid__controls {
+  .input-group {
+    display: table;
+  }
 }

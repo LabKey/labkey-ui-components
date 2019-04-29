@@ -48,15 +48,14 @@ export function headerCell(handleSort: any, column: GridColumn, i: number, selec
     );
 }
 
-export function headerSelectionCell(handleSelection: any, model: QueryGridModel) {
-    const { selectedState, isLoaded } = model;
 
-    const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL,
-        isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME,
-        disabled = !(isLoaded && model.totalRows !== 0);
+export function headerSelectionCell(handleSelection: any, selectedState: GRID_CHECKBOX_OPTIONS, disabled: boolean) {
+
+    const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
+    const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
+
     // Ref below is required as indeterminate is not an actual HTML attribute
     // See: https://github.com/facebook/react/issues/1798
-
     return (
         <input
             checked={isChecked}

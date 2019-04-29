@@ -10,6 +10,7 @@ import { getLocation, replaceParameters, pushParameter, pushParameters, Location
 import { URLResolver } from './util/URLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
+import { EditableColumnMetadata } from "./components/editable/EditableGrid";
 import { AliasRenderer } from './renderers/AliasRenderer'
 import { AppendUnits } from './renderers/AppendUnits'
 import { DefaultRenderer } from './renderers/DefaultRenderer'
@@ -59,5 +60,8 @@ export {
 
     // components
     QueryGridPanel,
-    EditableGridPanel
+    EditableGridPanel,
+
+    // interfaces
+    EditableColumnMetadata
 }

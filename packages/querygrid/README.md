@@ -4,7 +4,7 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version X.Y.Z
+### version 0.2.0
 *Released*: ???
 * Update EditableGrid to allow for bulk removal of rows in the grid
 * Update EditableGrid to allow for read-only columns and placeholder text

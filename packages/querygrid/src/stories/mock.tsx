@@ -15,18 +15,17 @@ mock.get(/.*\/query\/.*\/getQueryDetails.*/, {
     body: JSON.stringify(mixtureBatchesQueryInfo)
 });
 
-mock.post(/.*\/query\/.*\/getQuery.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(mixtureTypesQuery)
+mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
+    let responseBody;
+    if (req.body().indexOf("query.queryName=Mixtures"))
+        responseBody = mixturesQuery;
+    else
+        responseBody = mixtureTypesQuery;
+    return res
+        .status(200)
+        .headers({'Content-Type': 'application/json'})
+        .body(JSON.stringify(responseBody));
 });
-
-// TODO how to match on different query requests?
-// mock.post(/.*\/query\/.*\/getQuery.*/, {
-//     status: 200,
-//     headers: {'Content-Type': 'application/json'},
-//     body: JSON.stringify(mixturesQuery)
-// });
 
 mock.post(/.*\/query\/.*\/insertRows.*/, {
     status: 200,

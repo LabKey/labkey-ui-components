@@ -16,6 +16,7 @@ import { AppendUnits } from './renderers/AppendUnits'
 import { DefaultRenderer } from './renderers/DefaultRenderer'
 import { FileColumnRenderer } from './renderers/FileColumnRenderer'
 import { MultiValueRenderer } from './renderers/MultiValueRenderer'
+import { QueryInfoForm } from './components/forms/QueryInfoForm'
 
 export {
     // global state functions
@@ -61,6 +62,7 @@ export {
     // components
     QueryGridPanel,
     EditableGridPanel,
+    QueryInfoForm,
 
     // interfaces
     EditableColumnMetadata

@@ -21,15 +21,25 @@ export class PaginationButtons extends React.PureComponent<PaginationButtonsProp
         }
 
         const nextDisabled = pageEnd >= total;
+        const isValid = !isNaN(pageStart) && !isNaN(pageEnd) && !isNaN(total) && pageStart <= pageEnd;
+        let pageInfo;
 
-        return (
-            <div className="pagination-buttons">
-                <div className="pagination-buttons__info">
+        if (isValid) {
+            pageInfo = (
+                <>
                     <span className="pagination-info__start">{pageStart}</span>
                     <span> - </span>
                     <span className="pagination-info__end">{pageEnd}</span>
                     <span> of </span>
                     <span className="pagination-info__total">{total}</span>
+                </>
+            );
+        }
+
+        return (
+            <div className="pagination-buttons">
+                <div className="pagination-buttons__info">
+                    {pageInfo}
                 </div>
 
                 <div className="pagination-buttons__buttons btn-group">

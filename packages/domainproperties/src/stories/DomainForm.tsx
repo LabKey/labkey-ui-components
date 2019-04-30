@@ -31,7 +31,8 @@ class DomainFormContainer extends React.PureComponent<any, any> {
         const { domain } = this.state;
 
         return (
-            <DomainForm domain={domain} onChange={this.onChange}/>
+            <DomainForm domain={domain} onChange={this.onChange} helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'
+                        helpNoun='list'/>
         )
     }
 }
@@ -42,7 +43,8 @@ storiesOf("DomainForm", module)
         const domain = new DomainDesign();
 
         return (
-            <DomainForm domain={domain} onChange={() => {}}/>
+            <DomainForm domain={domain} onChange={() => {}} helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'
+                        helpNoun='list'/>
         )
     })
     .add("with domain properties", () => {

@@ -6,6 +6,7 @@
   "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
   "fields" : [ {
     "propertyId" : 392739,
+    "displayId" : 392739,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldText",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,
@@ -56,6 +57,7 @@
     "PHI" : "NotPHI"
   }, {
     "propertyId" : 392740,
+    "displayId" : 392740,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldInteger",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,
@@ -97,6 +99,7 @@
     "PHI" : "NotPHI"
   }, {
     "propertyId" : 392741,
+    "displayId" : 392741,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldDouble",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,
@@ -138,6 +141,7 @@
     "PHI" : "NotPHI"
   }, {
     "propertyId" : 392742,
+    "displayId" : 392742,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldDate",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,
@@ -179,6 +183,7 @@
     "PHI" : "NotPHI"
   }, {
     "propertyId" : 392743,
+    "displayId" : 392743,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldMultiLine",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,
@@ -220,6 +225,7 @@
     "PHI" : "NotPHI"
   }, {
     "propertyId" : 392744,
+    "displayId" : 392744,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldBoolean",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,

@@ -20,7 +20,7 @@
   border: 1px solid $gray-border;
   border-radius: 2px;
   margin: 0 0 20px 0;
-  padding: 13px 10px 5px 0;
+  padding: 13px 10px 5px 15px;
   box-shadow: inset 0 1px 3px 2px $gray-shadow;
 };
 
@@ -54,8 +54,33 @@
 }
 
 .domain-form-no-field-panel {
-  height: 56px;
-  margin: 15px 0px;
+  height: 53px;
+  margin: 25px 0px 20px 0px;
   padding: 20px;
   box-shadow: inset 0 1px 3px 2px $gray-shadow;
+}
+
+.domain-row-expanded-height {
+  height: 50px;
+}
+
+.domain-row-expanded {
+  background-color: $gray-shadow;
+  margin-right: 0;
+}
+
+.domain-row-button {
+  font-size: 12px;
+}
+
+.domain-row-remove-button {
+  background-color: $red-button;
+  background-image: none;
+  color: white;
+}
+
+.domain-row-remove-button:hover {
+  color: $red-button;
+  background-image: none;
+  background-color: white;
 }

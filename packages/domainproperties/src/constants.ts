@@ -11,6 +11,7 @@ export const DOMAIN_FIELD_TYPE = 'type';
 export const DOMAIN_FIELD_REQ = 'req';
 export const DOMAIN_FIELD_DETAILS = 'details';
 export const DOMAIN_FIELD_ADV = 'adv';
+export const DOMAIN_FIELD_DELETE = 'delete';
 
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';

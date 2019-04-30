@@ -25,7 +25,8 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             schemaName,
             queryName,
             success: (data) => {
-                resolve(DomainDesign.create(data));
+                const newDomain = initializeDisplayIds(DomainDesign.create(data));
+                resolve(newDomain);
             },
             failure: (error) => {
                 reject(error);
@@ -36,21 +37,52 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 
 /**
  * @param domain: DomainDesign to save
+ * @param kind: DomainKind if creating new Domain
+ * @param options: Options for creating new Domain
+ * @param name: Name of new Domain
  * @return Promise wrapped Domain API call.
  */
-export function saveDomain(domain: DomainDesign) : Promise<boolean> {
+export function saveDomain(domain: DomainDesign, kind: string, options: any, name: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        Domain.save({
-            domainDesign: domain,
-            domainId: domain.domainId,
-            success: (data) => {
-                resolve(data.success);
-            },
-            failure: (error) => {
-                reject(error);
-            }
-        })
+        if (domain.domainId) {
+            Domain.save({
+                domainDesign: domain,
+                domainId: domain.domainId,
+                success: (data) => {
+                    // Domain.save only returns success
+                    const newDomain = initializeDisplayIds(domain);
+                    resolve(newDomain);
+                },
+                failure: (error) => {
+                    reject(error);
+                }
+            })
+        }
+        else {
+            Domain.create({
+                kind,
+                options,
+                domainDesign: domain.set('name', name),
+                success: (data) => {
+                    const newDomain = initializeDisplayIds(DomainDesign.create(data));
+                    resolve(newDomain);
+                },
+                failure: (error) => {
+                    reject(error);
+                }
+            })
+        }
     })
+}
+
+function initializeDisplayIds(domain: DomainDesign): DomainDesign {
+    const newFields = domain.fields.map((field) => {
+        return field.set('displayId', field.propertyId);
+    });
+
+    return domain.merge({
+        fields: List<DomainField>(newFields)
+    }) as DomainDesign;
 }
 
 export function createFormInputId(name: string, index: any) {
@@ -67,7 +99,7 @@ function getNameFromId(id: string) : string {
     }
 }
 
-function getIndexFromId(id: string): string {
+export function getIndexFromId(id: string): string {
     const parts = id.split('-');
     if (parts.length === 3) {
         return parts[2];
@@ -86,12 +118,12 @@ function getIndexFromId(id: string): string {
  */
 export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
     const type = getNameFromId(fieldId);
-    const index = getIndexFromId(fieldId);
+    const index = parseInt(getIndexFromId(fieldId));
 
-    const newFields = domain.fields.map((field, i) => {
+    const newFields = domain.fields.map((field) => {
 
         let newField;
-        if (i.toString() === index) {
+        if (field.displayId === index) {
             newField = field.set('updatedField', true); // Set for field details in DomainRow
             newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
 

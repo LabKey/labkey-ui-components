@@ -401,7 +401,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         const haveLeftControls = allowBulkRemove || showAddOnTop;
         return (
             <div className="row QueryGrid-bottom-spacing">
-                <div className={"col-sm-4"}>
+                {haveLeftControls && <div className={"col-sm-4"}>
                     <div className="btn-group">
                         {allowBulkRemove && (
                             <DropdownButton
@@ -416,9 +416,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                         )}
                         {this.renderAddRowsControl('top')}
                     </div>
-                </div>
+                </div>}
                 {allowBulkUpdate && (
-                    <div className={haveLeftControls? "col-sm-8" : "col-xs_12"}>
+                    <div className={haveLeftControls? "col-sm-8" : "col-xs-12"}>
                         <div className="pull-right control-right">
                             <Button onClick={this.toggleBulkUpdate} >
                                 {bulkUpdateText}
@@ -494,13 +494,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         else if (model.isLoaded) {
             return (
                 <div>
-                    <div className="row QueryGrid-bottom-spacing">
-                        <div className={"col-sm-4 col-md-4"}>
-                            <div className="btn-group">
-                                {this.renderTopControls()}
-                            </div>
-                        </div>
-                    </div>
+                    {this.renderTopControls()}
                     <div className="editable-grid__container"
                          onKeyDown={this.onKeyDown}
                          onMouseDown={this.onMouseDown}

@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import {ReportItemModal, ReportList, ReportListItem} from './ReportList';
 import { flattenApiResponse } from '../model';
-import exampleData from '../data/example_browse_data_tree_api.json';
+import exampleData from '../test_data/example_browse_data_tree_api.json';
 import { LoadingSpinner } from '@glass/base';
 
 const noop = () => {};

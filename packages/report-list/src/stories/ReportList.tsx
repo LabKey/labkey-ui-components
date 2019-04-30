@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import data from "../data/example_browse_data_tree_api.json";
+import data from "../test_data/example_browse_data_tree_api.json";
 import { flattenApiResponse } from "../model";
 import { ReportList, ReportItemModal } from "../components/ReportList";
 import "./stories.scss";

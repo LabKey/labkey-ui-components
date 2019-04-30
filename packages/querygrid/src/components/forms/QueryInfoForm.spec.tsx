@@ -5,7 +5,7 @@ import mixtureQuery from "../../test/data/mixtures-getQuery.json";
 import { getQueryDetails, initQueryGridState } from "../..";
 import mock, { proxy } from "xhr-mock";
 import { QueryInfoForm } from "./QueryInfoForm";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import { QueryFormInputs } from "./QueryFormInputs";
 import { Button, Modal, ModalTitle } from "react-bootstrap";
 
@@ -47,10 +47,10 @@ const schemaQuery = new SchemaQuery({
 
 describe("QueryInfoForm", () => {
    test("default props", () => {
-       const onSubmit= jest.fn();
+       expect.hasAssertions();
        return getQueryDetails(schemaQuery).then((queryInfo) => {
            const formWrapper = shallow(
-               <QueryInfoForm schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={onSubmit}/>
+               <QueryInfoForm schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
            );
            expect(formWrapper.find(QueryFormInputs)).toHaveLength(1);
            expect(formWrapper.find(Button)).toHaveLength(2);
@@ -59,6 +59,7 @@ describe("QueryInfoForm", () => {
 
 
    test("with header", () => {
+       expect.hasAssertions();
        return getQueryDetails(schemaQuery).then( (queryInfo) => {
            const header = <span className={"header-info"}>Header info here</span>;
            const formWrapper = shallow(
@@ -70,6 +71,7 @@ describe("QueryInfoForm", () => {
    });
 
    test("as modal", () => {
+       expect.hasAssertions();
        return getQueryDetails(schemaQuery).then( (queryInfo) => {
            const formWrapper = shallow(
                <QueryInfoForm asModal={true} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
@@ -80,6 +82,7 @@ describe("QueryInfoForm", () => {
    });
 
    test("as modal with title", () => {
+       expect.hasAssertions();
        return getQueryDetails(schemaQuery).then( (queryInfo) => {
            const formWrapper = shallow(
                <QueryInfoForm asModal={true} title={"Test modal title"} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
@@ -90,6 +93,16 @@ describe("QueryInfoForm", () => {
            expect(modalTitle.childAt(0).text()).toBe("Test modal title");
 
        });
+   });
+
+   test("don't allowing multiple", () => {
+       expect.hasAssertions();
+       return getQueryDetails(schemaQuery).then((queryInfo) => {
+           const formWrapper = shallow(
+               <QueryInfoForm allowMultiple={false} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
+           );
+           expect(formWrapper.find("input#numItems")).toHaveLength(0);
+       })
    });
 
    test("custom text", () => {
@@ -126,11 +139,12 @@ describe("QueryInfoForm", () => {
     //         const formWrapper = mount(
     //             <QueryInfoForm schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
     //         );
-    //         console.log(formWrapper.debug());
     //
     //         const countInput = formWrapper.find("input#numItems");
     //         countInput.simulate('focus');
     //         countInput.simulate('change', { target: {value: "1"}});
+    //         const domNode = countInput.getDOMNode() as HTMLInputElement;
+    //         domNode.value = "2";
     //         formWrapper.update();
     //         // console.log('countInput before', countInput.debug());
     //         // countInput.getElement().value=4;

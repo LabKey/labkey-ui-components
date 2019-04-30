@@ -17,6 +17,7 @@ import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
 export interface QueryInfoFormProps {
     asModal?: boolean
+    allowMultiple?: boolean
     cancelText?: string
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
@@ -35,6 +36,7 @@ export interface QueryInfoFormProps {
     title?: string,
     header?: ReactNode
     singularNoun?: string
+    pluralNoun?: string
 }
 
 
@@ -50,6 +52,7 @@ interface State {
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     static defaultProps = {
+        allowMultiple: true,
         countText: "Quantity",
         cancelText: "Cancel",
         submitText: "Submit",
@@ -193,10 +196,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     renderButtons() {
 
-        const { cancelText, submitText, isSubmittedText, isSubmittingText, singularNoun } = this.props;
+        const { cancelText, submitText, isSubmittedText, isSubmittingText, pluralNoun, singularNoun } = this.props;
 
         const { count, canSubmit, isSubmitting, isSubmitted } = this.state;
 
+        const suffix = (count > 1) ? pluralNoun : singularNoun;
         return (
             <div className="form-group no-margin-bottom">
                 <div className="col-sm-12">
@@ -210,7 +214,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             disabled={!canSubmit || count === 0}
                             onClick={this.setSubmitting}
                             type="submit">
-                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{singularNoun ? ' ' + singularNoun : null}
+                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{suffix  ? ' ' + suffix : null}
                         </Button>
                     </div>
                 </div>
@@ -219,7 +223,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { asModal, countText, header, maxCount, queryInfo, fieldValues, title } = this.props;
+        const { allowMultiple, asModal, countText, header, maxCount, queryInfo, fieldValues, title } = this.props;
         const { count } = this.state;
 
 
@@ -237,24 +241,28 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
                         onInvalid={this.disableSubmitButton}>
-                    <Input
-                        id="numItems"
-                        label={countText}
-                        labelClassName={'control-label text-left'}
-                        name={"numItems"}
-                        max={maxCount}
-                        onChange={this.onCountChange}
-                        required={true}
-                        step={"1"}
-                        style={{width: '75px'}}
-                        type={"number"}
-                        validations={"isInt"}
-                        value={count}
-                    />
-                    {countError &&
-                        (<span style={{display: 'inline-block', padding: '6px 8px'}}>
-                             <span className="text-danger">{`Must be <= ${maxCount}`}</span>
-                        </span>)
+                    {allowMultiple && (
+                        <>
+                            <Input
+                                id="numItems"
+                                label={countText}
+                                labelClassName={'control-label text-left'}
+                                name={"numItems"}
+                                max={maxCount}
+                                onChange={this.onCountChange}
+                                required={true}
+                                step={"1"}
+                                style={{width: '75px'}}
+                                type={"number"}
+                                validations={"isInt"}
+                                value={count}
+                            />
+                            {countError &&
+                                (<span style={{display: 'inline-block', padding: '6px 8px'}}>
+                                     <span className="text-danger">{`Must be <= ${maxCount}`}</span>
+                                </span>)
+                            }
+                        </>)
                     }
                     <hr/>
                     <QueryFormInputs

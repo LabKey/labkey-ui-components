@@ -3,15 +3,11 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { QueryGrid } from "../components/QueryGrid";
 import { QueryGridModel, SchemaQuery } from "@glass/base";
-import { initBrowserHistoryState } from "../util/global";
 import { initQueryGridState, updateQueryGridModel } from "../global";
-import { initQueryGridState } from "../global";
 import { getStateQueryGridModel } from "../model";
+import './stories.scss'
 
 initQueryGridState();
-initBrowserHistoryState();
-
-import './stories.scss'
 
 storiesOf('QueryGrid', module)
     .addDecorator(withKnobs)

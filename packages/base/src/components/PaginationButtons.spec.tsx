@@ -1,6 +1,6 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 // We use mount instead of shallow because there is a bug in enzyme where simulating clicks with shallow is broken:
 // https://github.com/airbnb/enzyme/issues/386
 
@@ -76,5 +76,15 @@ describe("<PaginationButtons />", () => {
             <PaginationButtons total={63} currentPage={3} perPage={20} previousPage={noop} nextPage={noop}/>
         )).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test("Hide counts with invalid data", () => {
+        const prev = jest.fn();
+        const next = jest.fn();
+        const component = (
+            <PaginationButtons total={0} currentPage={1} perPage={20} previousPage={prev} nextPage={next}/>
+        );
+        const wrapper = shallow(component);
+        expect(wrapper.find('.pagination-buttons__info').text()).toEqual('');
     });
 });

@@ -31,7 +31,7 @@ export interface QueryInfoFormProps {
     schemaQuery: SchemaQuery
     isSubmittedText?: string
     isSubmittingText?: string
-    submitText: string
+    submitText?: string
     title?: string,
     header?: ReactNode
     singularNoun?: string
@@ -201,10 +201,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             <div className="form-group no-margin-bottom">
                 <div className="col-sm-12">
                     <div className="pull-left">
-                        <Button onClick={this.onHide}>{cancelText}</Button>
+                        <Button className={"test-loc-cancel-button"} onClick={this.onHide}>{cancelText}</Button>
                     </div>
                     <div className="btn-group pull-right">
                         <Button
+                            className={"test-loc-submit-button"}
                             bsStyle="success"
                             disabled={!canSubmit || count === 0}
                             onClick={this.setSubmitting}
@@ -236,25 +237,25 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
                         onInvalid={this.disableSubmitButton}>
-                        <Input
-                            id="numItems"
-                            label={countText}
-                            labelClassName={'control-label text-left'}
-                            name={"numItems"}
-                            max={maxCount}
-                            onChange={this.onCountChange}
-                            required={true}
-                            step={"1"}
-                            style={{width: '75px'}}
-                            type={"number"}
-                            validations={"isInt"}
-                            value={count}
-                        />
-                        {countError &&
-                            (<span style={{display: 'inline-block', padding: '6px 8px'}}>
-                                 <span className="text-danger">{`Must be <= ${maxCount}`}</span>
-                            </span>)
-                        }
+                    <Input
+                        id="numItems"
+                        label={countText}
+                        labelClassName={'control-label text-left'}
+                        name={"numItems"}
+                        max={maxCount}
+                        onChange={this.onCountChange}
+                        required={true}
+                        step={"1"}
+                        style={{width: '75px'}}
+                        type={"number"}
+                        validations={"isInt"}
+                        value={count}
+                    />
+                    {countError &&
+                        (<span style={{display: 'inline-block', padding: '6px 8px'}}>
+                             <span className="text-danger">{`Must be <= ${maxCount}`}</span>
+                        </span>)
+                    }
                     <hr/>
                     <QueryFormInputs
                         queryInfo={queryInfo}

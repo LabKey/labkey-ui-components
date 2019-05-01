@@ -17,6 +17,7 @@ import { DefaultRenderer } from './renderers/DefaultRenderer'
 import { FileColumnRenderer } from './renderers/FileColumnRenderer'
 import { MultiValueRenderer } from './renderers/MultiValueRenderer'
 import { QueryInfoForm } from './components/forms/QueryInfoForm'
+import { LabelOverlay } from './components/forms/LabelOverlay'
 
 export {
     // global state functions
@@ -60,8 +61,9 @@ export {
     MultiValueRenderer,
 
     // components
-    QueryGridPanel,
+    LabelOverlay,
     EditableGridPanel,
+    QueryGridPanel,
     QueryInfoForm,
 
     // interfaces

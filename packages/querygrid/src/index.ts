@@ -6,8 +6,11 @@ import { getStateQueryGridModel } from './model'
 import { gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalidate, schemaGridInvalidate, gridIdInvalidate } from './actions'
 import { initQueryGridState, removeQueryGridModel, setQueryMetadata, setQueryColumnRenderers, getEditorModel, getQueryGridModel } from './global'
 import { selectRows, searchRows, getQueryDetails, invalidateQueryDetailsCacheKey, ISelectRowsResult } from './query/api'
+import { SCHEMAS } from './query/schemas'
 import { getLocation, replaceParameters, pushParameter, pushParameters, Location } from './util/URL'
 import { URLResolver } from './util/URLResolver'
+import { URLService } from './util/URLService'
+import { AssayResolver, AssayRunResolver, SamplesResolver, SampleSetResolver } from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -22,6 +25,9 @@ import { SelectInput } from './components/forms/SelectInput'
 import { QuerySelect } from './components/forms/QuerySelect'
 
 export {
+    // constants
+    SCHEMAS,
+
     // global state functions
     initQueryGridState,
     getStateQueryGridModel,
@@ -50,6 +56,11 @@ export {
     // location related items
     Location,
     URLResolver,
+    URLService,
+    AssayResolver,
+    AssayRunResolver,
+    SamplesResolver,
+    SampleSetResolver,
     getLocation,
     pushParameter,
     pushParameters,

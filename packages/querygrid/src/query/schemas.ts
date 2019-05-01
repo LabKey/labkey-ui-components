@@ -23,3 +23,8 @@ export const SAMPLE_SETS = {
     RAW_MATERIALS:     SchemaQuery.create(SAMPLE_SET_SCHEMA, 'RawMaterials'),
     SAMPLES:           SchemaQuery.create(SAMPLE_SET_SCHEMA, 'Samples')
 };
+
+export const SCHEMAS = {
+    EXP_TABLES: EXP_TABLES,
+    SAMPLE_SETS: SAMPLE_SETS
+};

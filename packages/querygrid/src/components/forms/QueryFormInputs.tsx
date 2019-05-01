@@ -6,10 +6,10 @@ import * as React from 'react'
 import { Map, OrderedMap } from 'immutable'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo } from '@glass/base'
+import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '@glass/base'
 
 import { resolveRenderer } from './renderers'
-// import {QuerySelect} from './QuerySelect'
+import { QuerySelect } from './QuerySelect'
 import { TextInput } from './TextInput'
 import { DateInput } from './DateInput'
 import { CheckboxInput } from './CheckboxInput'
@@ -156,35 +156,34 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         // undefined 'displayAsLookup' just respects the lookup.
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {
-                            console.log("displayAsLookup not yet available");
-                            // const multiple = col.isJunctionLookup();
-                            // const joinValues = multiple && !col.isExpInput();
-                            // let id = col.fieldKey + i + (componentKey ? componentKey : '');
-                            //
-                            // return (
-                            //     <React.Fragment key={i}>
-                            //         {this.renderLabelField(col)}
-                            //         <QuerySelect
-                            //             componentId={id}
-                            //             destroyOnDismount={destroyOnDismount}
-                            //             fireQSChangeOnInit={fireQSChangeOnInit}
-                            //             joinValues={joinValues}
-                            //             label={col.caption}
-                            //             loadOnChange
-                            //             loadOnFocus
-                            //             maxRows={10}
-                            //             multiple={multiple}
-                            //             name={col.name}
-                            //             onQSChange={this.onQSChange}
-                            //             placeholder="Select or type to search..."
-                            //             preLoad
-                            //             previewOptions={true}
-                            //             required={col.required}
-                            //             schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
-                            //             valueColumn={col.lookup.keyColumn}
-                            //             value={value}/>
-                            //     </React.Fragment>
-                            // )
+                            const multiple = col.isJunctionLookup();
+                            const joinValues = multiple && !col.isExpInput();
+                            let id = col.fieldKey + i + (componentKey ? componentKey : '');
+
+                            return (
+                                <React.Fragment key={i}>
+                                    {this.renderLabelField(col)}
+                                    <QuerySelect
+                                        componentId={id}
+                                        destroyOnDismount={destroyOnDismount}
+                                        fireQSChangeOnInit={fireQSChangeOnInit}
+                                        joinValues={joinValues}
+                                        label={col.caption}
+                                        loadOnChange
+                                        loadOnFocus
+                                        maxRows={10}
+                                        multiple={multiple}
+                                        name={col.name}
+                                        onQSChange={this.onQSChange}
+                                        placeholder="Select or type to search..."
+                                        preLoad
+                                        previewOptions={true}
+                                        required={col.required}
+                                        schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
+                                        valueColumn={col.lookup.keyColumn}
+                                        value={value}/>
+                                </React.Fragment>
+                            )
                         }
                     }
 

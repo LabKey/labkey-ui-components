@@ -33,11 +33,13 @@
   "dependencies": {
     "@glass/base": "0.2.0-alpha.1",
     "@glass/omnibox": "0.1.9-alpha.1",
+    "@types/react-select": "1.0.57",
     "bootstrap-sass": "3.4.0",
     "formsy-react-components": "1.0.0",
     "formsy-react": "1.1.5",
     "history": "4.7.2",
-    "normalizr": "3.3.0"
+    "normalizr": "3.3.0",
+    "react-select": "1.0.0-rc.10"
   },
   "devDependencies": {
     "xhr-mock": "2.4.1"

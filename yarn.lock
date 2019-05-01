@@ -1820,6 +1820,13 @@
     "@types/history" "^3"
     "@types/react" "*"
 
+"@types/react-select@1.0.57":
+  version "1.0.57"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-1.0.57.tgz#13ddd443becc9b3d34640a19fd6f2f78fdd7a735"
+  integrity sha512-0Jzvjxp/eCoA7i8nXndeEpLTa+O5qK5fMK9E4ZOP6oe7om5Cw1YiVlPat16URmSbTH8GwALDAdN8aClg9K41ow==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.4.14"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.14.tgz#47c604c8e46ed674bbdf4aabf82b34b9041c6a04"
@@ -3393,7 +3400,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.2.6, classnames@^2.2.5:
+classnames@2.2.6, classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
@@ -9528,7 +9535,7 @@ react-hotkeys@2.0.0-pre4:
   dependencies:
     prop-types "^15.6.1"
 
-react-input-autosize@2.2.1, react-input-autosize@^2.2.1:
+react-input-autosize@2.2.1, react-input-autosize@^2.0.1, react-input-autosize@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.2.1.tgz#ec428fa15b1592994fb5f9aa15bb1eb6baf420f8"
   integrity sha512-3+K4CD13iE4lQQ2WlF8PuV5htfmTRLH6MDnfndHM6LuBRszuXnuyIfE7nhSKt8AzRBZ50bu0sAhkNMeS5pxQQA==
@@ -9643,6 +9650,15 @@ react-router@3.2.1:
     loose-envify "^1.2.0"
     prop-types "^15.5.6"
     warning "^3.0.0"
+
+react-select@1.0.0-rc.10:
+  version "1.0.0-rc.10"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.0.0-rc.10.tgz#f137346250f9255c979fbfa21860899928772350"
+  integrity sha1-8Tc0YlD5JVyXn7+iGGCJmSh3I1A=
+  dependencies:
+    classnames "^2.2.4"
+    prop-types "^15.5.8"
+    react-input-autosize "^2.0.1"
 
 react-select@^2.3.0:
   version "2.4.2"

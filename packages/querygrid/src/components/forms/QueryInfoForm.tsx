@@ -106,6 +106,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             onCancel();
         }
         else {
+            // TODO: what do we want to do here? or should we require the application to implement this goBack() if they want to use it?
             // dispatch(goBack());
             console.log("goBack() action not yet implemented");
         }

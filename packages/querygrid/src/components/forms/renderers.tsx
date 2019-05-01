@@ -3,12 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import { List, Map } from 'immutable'
 import { Input } from 'formsy-react-components'
 import { generateId, QueryColumn } from '@glass/base'
 
 import { LabelOverlay } from './LabelOverlay'
-
-// import {SelectInput} from './SelectInput'
+import {SelectInput} from './SelectInput'
 
 interface AliasInputProps {
     col: QueryColumn
@@ -28,23 +28,22 @@ class AliasInput extends React.Component<AliasInputProps, any> {
 
     render() {
         const { col, editing, value } = this.props;
-        console.log("AliasInput not yet implemented");
-        return undefined;
-        // return <SelectInput
-        //     addLabelText="Press enter to add '{label}'"
-        //     allowCreate={true}
-        //     id={this._id}
-        //     inputClass={editing ? 'col-sm-12' : undefined}
-        //     joinValues={true}
-        //     label={<LabelOverlay column={col} inputId={this._id} isFormsy={false} />}
-        //     multiple={true}
-        //     name={col.name}
-        //     noResultsText="Enter alias name(s)"
-        //     placeholder="Enter alias name(s)"
-        //     promptTextCreator={(text: string) => `Create alias "${text}"`}
-        //     saveOnBlur={true}
-        //     value={value}
-        // />;
+
+        return <SelectInput
+            addLabelText="Press enter to add '{label}'"
+            allowCreate={true}
+            id={this._id}
+            inputClass={editing ? 'col-sm-12' : undefined}
+            joinValues={true}
+            label={<LabelOverlay column={col} inputId={this._id} isFormsy={false} />}
+            multiple={true}
+            name={col.name}
+            noResultsText="Enter alias name(s)"
+            placeholder="Enter alias name(s)"
+            promptTextCreator={(text: string) => `Create alias "${text}"`}
+            saveOnBlur={true}
+            value={value}
+        />;
     }
 }
 
@@ -82,4 +81,35 @@ export function resolveRenderer(column: QueryColumn) {
     }
 
     return inputRenderer;
+}
+
+function findValue(data: Map<string, any>, lookup?: boolean) {
+    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
+}
+
+export function resolveDetailFieldValue(data: any, lookup?: boolean): string | Array<string> {
+    let value;
+
+    if (data) {
+        if (List.isList(data) && data.size) {
+            value = data.map(d => {
+                if (d.has('formattedValue')) {
+                    return d.get('formattedValue');
+                }
+
+                let o = findValue(d, lookup);
+                return o !== null && o !== undefined ? o : undefined;
+            }).toArray();
+        }
+        else if (data.has('formattedValue')) {
+            value = data.get('formattedValue');
+        }
+        else {
+            let o = findValue(data, lookup);
+            value = o !== null && o !== undefined ? o : undefined;
+        }
+    }
+
+    // avoid setting value to 'null' use 'undefined' instead
+    return value === null ? undefined : value;
 }

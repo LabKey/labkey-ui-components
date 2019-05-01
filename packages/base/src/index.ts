@@ -39,6 +39,7 @@ import {
     resolveKey,
     resolveKeyFromJson,
     resolveSchemaQuery,
+    similaritySortFactory,
     toggleDevTools,
     toLowerSafe
 } from './utils/utils'
@@ -168,6 +169,7 @@ export {
     toLowerSafe,
     generateId,
     debounce,
+    similaritySortFactory,
 
     // url functions
     buildURL,

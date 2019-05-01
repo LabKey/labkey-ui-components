@@ -1215,11 +1215,41 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
     }
 }
 
+function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: any) {
+
+    if (value === undefined || value === null || typeof(value) === 'string') {
+        return {
+            values: List([{
+                display: value,
+                raw: value
+            }])
+        };
+    }
+
+    let message: CellMessage;
+    let values = List<ValueDescriptor>();
+
+    const valueDescriptor = lookup.descriptors.find(d => d.raw && d.raw === value);
+    if (!valueDescriptor) {
+        message = {
+            message: 'Could not find data for ' + value
+        }
+    }
+    else {
+        values = values.push(valueDescriptor);
+    }
+
+    return {
+        message,
+        values
+    }
+}
+
 export function updateEditorData(gridModel: QueryGridModel, data: List<any>, count: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
     const columns = gridModel.getInsertColumns();
     const editorModel = getEditorModel(gridModel.getId());
 
-    // const getLookup = (col: QueryColumn) => getLookupStore(col);
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     let selectionCells = Set<string>();
@@ -1229,26 +1259,25 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
 
     data.forEach((value, cn) => {
 
-        // const colIdx = colMin + cn;
-        // const col = columns.get(colIdx);
+        const colIdx = colMin + cn;
+        const col = columns.get(colIdx);
 
         let cv: List<ValueDescriptor>;
         let msg: CellMessage;
 
-        // if (col && col.isLookup()) {
-        //     const {message, values} = parsePasteCellLookup(col, getLookup(col), value);
-        //     cv = values;
-        //
-        //     if (message) {
-        //         msg = message;
-        //     }
-        // } else {
+        if (col && col.isLookup()) {
+            const {message, values} = getLookupDisplayValue(col, getLookup(col), value);
+            cv = values;
+            if (message) {
+                msg = message;
+            }
+        } else {
             cv = List([{
                 display: value,
                 raw: value
             }]);
-        // }
-        //
+        }
+
         if (msg) {
             messages = messages.push(msg);
         } else {

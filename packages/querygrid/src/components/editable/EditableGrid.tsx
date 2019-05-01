@@ -383,18 +383,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }));
     }
 
-    renderAddRowsControl(location: string) {
-        const { addControlProps, allowAdd, allowBulkRemove, isSubmitting } = this.props;
-        return (
-            allowAdd && addControlProps && (addControlProps.placement === 'both' || addControlProps.placement === location) && (
-                <AddRowsControl
-                    {...addControlProps}
-                    disable={isSubmitting}
-                    onAdd={this.onAddRows}/>
-            )
-        )
-    }
-
     renderTopControls() {
         const { addControlProps, allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, isSubmitting } = this.props;
         const showAddOnTop = allowAdd && addControlProps && addControlProps.placement !== 'bottom';
@@ -404,17 +392,20 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 {haveLeftControls && <div className={"col-sm-4"}>
                     <div className="btn-group">
                         {allowBulkRemove && (
-                            <DropdownButton
+                            <Button
                                 disabled={this.state.selected.size === 0}
-                                id="manageEditableGridDropdown"
+                                onClick={this.removeSelectedRows}
                                 bsStyle="primary"
-                                title="Manage">
-                                <MenuItem onClick={this.removeSelectedRows}>
-                                    Delete rows
-                                </MenuItem>
-                            </DropdownButton>
+                                title="Delete rows">
+                                Delete rows
+                            </Button>
                         )}
-                        {this.renderAddRowsControl('top')}
+                        {allowAdd && addControlProps && addControlProps.placement != 'bottom' && (
+                                <AddRowsControl
+                                    {...addControlProps}
+                                    disable={isSubmitting}
+                                    onAdd={this.onAddRows}/>
+                        )}
                     </div>
                 </div>}
                 {allowBulkUpdate && (
@@ -513,7 +504,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             striped={false}
                             tableRef={this.table} />
                     </div>
-                    {this.renderAddRowsControl('bottom')}
+                    {allowAdd && (!addControlProps || addControlProps.placement != 'top') && (
+                        <AddRowsControl
+                            {...addControlProps}
+                            disable={isSubmitting}
+                            onAdd={this.onAddRows}/>
+                    )}
                     {this.renderError()}
                     {this.renderBulkUpdate()}
                 </div>

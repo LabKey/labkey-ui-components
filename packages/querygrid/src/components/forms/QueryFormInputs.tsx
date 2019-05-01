@@ -15,6 +15,7 @@ import { DateInput } from './DateInput'
 import { CheckboxInput } from './CheckboxInput'
 import { TextAreaInput } from './TextAreaInput'
 import { FileInput } from './FileInput'
+import { initLookup } from "../../actions";
 
 const LABEL_FIELD_SUFFIX = '::label';
 
@@ -153,6 +154,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.isLookup()) {
+                        initLookup(col, undefined);
                         // undefined 'displayAsLookup' just respects the lookup.
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {

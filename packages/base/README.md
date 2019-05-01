@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## version ???
 *Released*: ???
-* port caseInsensitive function from Biologics
+* port caseInsensitive and similaritySortFactory functions from Biologics
 * export datePlaceholder function
 
 ### version 0.1.8

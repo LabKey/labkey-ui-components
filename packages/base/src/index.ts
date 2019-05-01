@@ -3,7 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
+import {fetchProtocol} from './action/actions'
 import {
+    AssayProtocolModel,
     Container,
     IGridLoader,
     IGridResponse,
@@ -44,7 +46,6 @@ import {
     toLowerSafe
 } from './utils/utils'
 import {
-    AppURL,
     buildURL,
     getSortFromUrl,
     hasParameter,
@@ -52,6 +53,7 @@ import {
     setParameter,
     toggleParameter
 } from './url/ActionURL'
+import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'
 import { MenuOption, SubMenu } from "./components/menus/SubMenu";
@@ -106,6 +108,7 @@ export {
 
     //models
     AppURL,
+    AssayProtocolModel,
     Container,
     User,
     QueryColumn,
@@ -146,6 +149,9 @@ export {
     FormSection,
     FileAttachmentForm,
 
+    // actions
+    fetchProtocol,
+
     // notification functions
     createNotification,
     initNotificationsState,
@@ -178,6 +184,7 @@ export {
     imageURL,
     setParameter,
     toggleParameter,
+    spliceURL,
 
     // devTools functions
     applyDevTools,

@@ -1153,3 +1153,53 @@ export function insertColumnFilter(col: QueryColumn): boolean {
         col.fieldKeyArray.length === 1
     );
 }
+
+export class AssayProtocolModel extends Record({
+    allowTransformationScript: false,
+    autoCopyTargetContainer: undefined,
+    availableDetectionMethods: undefined,
+    availableMetadataInputFormats: undefined,
+    availablePlateTemplates: undefined,
+    backgroundUpload: false,
+    description: undefined,
+    // domains: undefined,
+    editableResults: false,
+    editableRuns: false,
+    metadataInputFormatHelp: undefined,
+    moduleTransformScripts: undefined,
+    name: undefined,
+    protocolId: undefined,
+    protocolParameters: undefined,
+    protocolTransformScripts: undefined,
+    providerName: undefined,
+    saveScriptFiles: false,
+    selectedDetectionMethod: undefined,
+    selectedMetadataInputFormat: undefined,
+    selectedPlateTemplate: undefined
+}) {
+    allowTransformationScript: boolean;
+    autoCopyTargetContainer: string;
+    availableDetectionMethods: any;
+    availableMetadataInputFormats: any;
+    availablePlateTemplates: any;
+    backgroundUpload: boolean;
+    description: string;
+    // domains: any;
+    editableResults: boolean;
+    editableRuns: boolean;
+    metadataInputFormatHelp: any;
+    moduleTransformScripts: Array<any>;
+    name: string;
+    protocolId: number;
+    protocolParameters: any;
+    protocolTransformScripts: any;
+    providerName: string;
+    saveScriptFiles: boolean;
+    selectedDetectionMethod: any;
+    selectedMetadataInputFormat: any;
+    selectedPlateTemplate: any;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}

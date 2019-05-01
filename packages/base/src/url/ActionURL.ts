@@ -2,8 +2,9 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, Record } from 'immutable'
-import { ActionURL, Filter, Utils } from '@labkey/api'
+import { OrderedMap } from 'immutable'
+import { ActionURL, Utils } from '@labkey/api'
+import { AppURL } from "./AppURL";
 
 function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {
@@ -143,116 +144,4 @@ export function imageURL(application: string, src: string): string {
 
 export function toggleParameter(parameterName: string, value: any): void {
     setParameter(parameterName, hasParameter(parameterName) ? undefined : value);
-}
-
-export class AppURL extends Record({
-    _baseUrl: undefined,
-    _filters: undefined,
-    _params: undefined
-}) {
-    _baseUrl: string;
-    _filters: List<Filter.IFilter>;
-    _params: Map<string, any>;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
-    static create(...parts): AppURL {
-
-        let baseUrl = '';
-        for (let i=0; i < parts.length; i++) {
-            if (parts[i] === undefined || parts[i] === null || parts[i] === '') {
-                let sep = '';
-                throw 'AppURL: Unable to create URL with empty parts. Parts are [' + parts.reduce((str, part) => {
-                    str += sep + part;
-                    sep = ', ';
-                    return str;
-                }, '') + '].';
-            }
-
-            const stringPart = parts[i].toString();
-            let newPart = encodeURIComponent(stringPart);
-
-            if (i == 0) {
-                if (stringPart.indexOf('/') === 0) {
-                    baseUrl += newPart;
-                }
-                else {
-                    baseUrl += '/' + newPart;
-                }
-            }
-            else {
-                baseUrl += '/' + newPart;
-            }
-        }
-
-        // TODO: Stop toLowerCase as it can break case-sensitive keys (e.g. /q/lists/someList/myKeyField)
-        return new AppURL({
-            _baseUrl: baseUrl.toLowerCase()
-        })
-    }
-
-    addFilters(...filters: Array<Filter.IFilter>): AppURL {
-        return this.merge({
-            _filters: this._filters ? this._filters.concat(filters) : List(filters)
-        }) as AppURL;
-    }
-
-    addParam(key: string, value: any): AppURL {
-        return this.addParams({
-            [key]: value
-        });
-    }
-
-    addParams(params: any): AppURL {
-        if (params) {
-            return this.merge({
-                _params: this._params ? this._params.merge(params) : Map(params)
-            }) as AppURL;
-        }
-
-        return this;
-    }
-
-    toHref(urlPrefix?: string): string {
-        return '#' + this.toString(urlPrefix);
-    }
-
-    toQuery(urlPrefix?: string): {[key: string]: any} {
-        let query = {};
-
-        if (this._params) {
-            this._params.forEach((value: any, key: string) => {
-                query[key] = value;
-            });
-        }
-
-        if (this._filters) {
-            this._filters.forEach((f) => {
-                query[f.getURLParameterName(urlPrefix)] = f.getURLParameterValue();
-            });
-        }
-
-        return query;
-    }
-
-    toString(urlPrefix?: string): string {
-        let url = this._baseUrl;
-        let parts = [];
-
-        if (this._params) {
-            this._params.forEach((value: any, key: string) => {
-                parts.push(key + '=' + value);
-            });
-        }
-
-        if (this._filters) {
-            this._filters.forEach((f) => {
-                parts.push(f.getURLParameterName(urlPrefix) + '=' + f.getURLParameterValue());
-            });
-        }
-
-        return url + (parts.length > 0 ? '?' + parts.join('&') : '');
-    };
 }

@@ -1,16 +1,12 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { fromJS, Map } from 'immutable';
+import { Map } from 'immutable';
 import { SchemaQuery } from "@glass/base";
-import mock, { proxy } from 'xhr-mock';
 
 import { gridInit } from "../actions";
 import { getStateQueryGridModel } from "../model";
-import { initQueryGridState, setQueryMetadata } from "../global";
 import { EditableGridPanel } from "../components/editable/EditableGridPanel";
-import mixtureBatchesQueryInfo from "../test/data/mixtureBatches-getQueryDetails.json";
-import mixtureTypesQuery from "../test/data/mixtureTypes-getQuery.json";
 import * as constants from '../test/data/constants';
 
 import './stories.scss'
@@ -19,41 +15,13 @@ import { EditableColumnMetadata } from "../components/editable/EditableGrid";
 const CONTROLS_GROUP = "Grid controls";
 const PANEL_GROUP = "Grid";
 
-
-
-mock.setup();
-
-mock.get(/.*\/query\/.*\/getQueryDetails.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(mixtureBatchesQueryInfo)
-});
-
-mock.post(/.*\/query\/.*\/getQuery.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(mixtureTypesQuery)
-});
-mock.use(proxy);
-
-
-initQueryGridState();
-
 storiesOf('EditableGridPanel', module)
     .addDecorator(withKnobs)
     .add("without data", () => {
-        setQueryMetadata(fromJS({
-            columnDefaults: {
-                flag: {
-                    removeFromViews: true
-                }
-            }
-        }));
-
         const modelId = "editableWithoutData";
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "editableWithoutData"
+            schemaName: "exp.data",
+            queryName: "mixtures"
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true
@@ -81,18 +49,10 @@ storiesOf('EditableGridPanel', module)
 
     })
     .add("with data", () => {
-        setQueryMetadata(fromJS({
-            columnDefaults: {
-                flag: {
-                    removeFromViews: true
-                }
-            }
-        }));
-
         const modelId = "editableWithData";
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "editableWithData"
+            schemaName: "exp.data",
+            queryName: "mixtures"
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
@@ -133,18 +93,10 @@ storiesOf('EditableGridPanel', module)
         );
     })
     .add("with read-only columns and placeholders", () => {
-        setQueryMetadata(fromJS({
-            columnDefaults: {
-                flag: {
-                    removeFromViews: true
-                }
-            }
-        }));
-
         const modelId = "editableWitReadOnlyAndPlaceHolders";
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: "editableWitReadOnlyAndPlaceHolders"
+            schemaName: "exp.data",
+            queryName: "mixtures"
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {
@@ -189,18 +141,10 @@ storiesOf('EditableGridPanel', module)
         );
     })
     .add("with bulk edit", () => {
-        setQueryMetadata(fromJS({
-            columnDefaults: {
-                flag: {
-                    removeFromViews: true
-                }
-            }
-        }));
-
         const modelId = "editableWithBulkEdit";
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: modelId
+            schemaName: "exp.data",
+            queryName: "mixtures"
         });
 
         const model = getStateQueryGridModel(modelId, schemaQuery, {

@@ -2,13 +2,8 @@ import React from 'reactn';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { QueryGridPanel } from "../components/QueryGridPanel";
-import { QueryGridModel, SchemaQuery } from "@glass/base";
-import { initBrowserHistoryState } from "../util/global";
-import { initQueryGridState } from "../global";
+import { SchemaQuery } from "@glass/base";
 import { getStateQueryGridModel } from "../model";
-
-initQueryGridState();
-initBrowserHistoryState();
 
 import './stories.scss'
 

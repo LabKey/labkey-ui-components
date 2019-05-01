@@ -2,15 +2,12 @@ import React from 'reactn';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { SchemaQuery } from "@glass/base";
-import { getStateQueryGridModel } from "../model";
-import { initQueryGridState } from "../global";
-import './stories.scss'
-import { QueryInfoForm } from "../components/forms/QueryInfoForm";
 
+import { getStateQueryGridModel } from "../model";
+import { QueryInfoForm } from "../components/forms/QueryInfoForm";
 import * as constants from "../test/data/constants";
 import { gridInit } from "../actions";
-
-initQueryGridState();
+import './stories.scss'
 
 function formSubmit(data: any) : Promise<any> {
     return new Promise((resolve, reject) => {
@@ -41,6 +38,7 @@ storiesOf('QueryInfoForm', module)
             }
         });
         gridInit(model, true);
+
         return (
             <QueryInfoForm
                 onSubmit={formSubmit}

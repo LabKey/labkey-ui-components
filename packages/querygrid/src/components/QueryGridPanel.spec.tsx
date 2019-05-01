@@ -1,6 +1,6 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer'
-import {List, Map, fromJS} from 'immutable'
+import { List } from 'immutable'
 import { QueryGridModel } from '@glass/base'
 
 import { QueryGridPanel } from './QueryGridPanel'

@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [
+    "../../node_modules/@glass/base/dist/typings/react-bootstrap.d.ts",
     "src/typings/main.d.ts",
     "src/index.ts"
   ]

@@ -4832,6 +4832,11 @@ estree-walker@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.5.2.tgz#d3850be7529c9580d815600b53126515e146dd39"
 
+estree-walker@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.0.tgz#5d865327c44a618dde5699f763891ae31f257dae"
+  integrity sha512-peq1RfVAVzr3PU/jL31RaOjUKLoZJpObQWJJ+LgfcxDUifyLZ1RjPQZTl0pzj2uJ45b7A7XpyppXvxdEqzo4rw==
+
 esutils@^2.0.0, esutils@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
@@ -10136,18 +10141,18 @@ resolve@1.1.7:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
 
-resolve@1.8.1, resolve@^1.3.2, resolve@^1.5.0:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.8.1.tgz#82f1ec19a423ac1fbd080b0bab06ba36e84a7a26"
-  dependencies:
-    path-parse "^1.0.5"
-
-resolve@^1.1.6, resolve@^1.10.0, resolve@^1.8.1:
+resolve@1.10.0, resolve@^1.1.6, resolve@^1.10.0, resolve@^1.8.1:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.0.tgz#3bdaaeaf45cc07f375656dfd2e54ed0810b101ba"
   integrity sha512-3sUr9aq5OfSg2S9pNtPA9hL1FVEAjvfOC4leW0SNf/mpnaakz2a9femSd6LqAww2RaFctwyf1lCqnTHuF1rxDg==
   dependencies:
     path-parse "^1.0.6"
+
+resolve@^1.3.2, resolve@^1.5.0:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.8.1.tgz#82f1ec19a423ac1fbd080b0bab06ba36e84a7a26"
+  dependencies:
+    path-parse "^1.0.5"
 
 restore-cursor@^2.0.0:
   version "2.0.0"
@@ -10229,23 +10234,23 @@ rollup-plugin-sass@1.1.0:
     rollup-pluginutils ">= 1.3.1"
     sass "1.7.2"
 
-rollup-plugin-typescript2@0.19.2:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.19.2.tgz#87d9c799cd6e02efbedbba25af12753a1e92b6c2"
-  integrity sha512-DRG7SaYX0QzBIz6rII5nm1UkiceS95r8mJjujugybyIueNF3auvzGTHMK62O7As/0q5RHjXsOguWOUv+KJKLFA==
+rollup-plugin-typescript2@0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-typescript2/-/rollup-plugin-typescript2-0.20.1.tgz#fb1d411975cd875d24882ea66f5f4fd11d2f2240"
+  integrity sha512-uxA5JQNOfmJ9rsO0yJKTObb1t4nNYUexCg9zxhEKF+NzZwljYWdfgrA06UzA24cOk8fQjGEe7Q5+Vge2vFlnnw==
   dependencies:
     fs-extra "7.0.1"
-    resolve "1.8.1"
-    rollup-pluginutils "2.3.3"
+    resolve "1.10.0"
+    rollup-pluginutils "2.4.1"
     tslib "1.9.3"
 
-rollup-pluginutils@2.3.3, rollup-pluginutils@^2.3.0, rollup-pluginutils@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.3.3.tgz#3aad9b1eb3e7fe8262820818840bf091e5ae6794"
-  integrity sha512-2XZwja7b6P5q4RZ5FhyX1+f46xi1Z3qBKigLRZ6VTZjwbN0K1IFGMlwm06Uu0Emcre2Z63l77nq/pzn+KxIEoA==
+rollup-pluginutils@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.4.1.tgz#de43ab54965bbf47843599a7f3adceb723de38db"
+  integrity sha512-wesMQ9/172IJDIW/lYWm0vW0LiKe5Ekjws481R7z9WTRtmO59cqyM/2uUlxvf6yzm/fElFmHUobeQOYz46dZJw==
   dependencies:
-    estree-walker "^0.5.2"
-    micromatch "^2.3.11"
+    estree-walker "^0.6.0"
+    micromatch "^3.1.10"
 
 "rollup-pluginutils@>= 1.3.1":
   version "2.3.2"
@@ -10253,6 +10258,14 @@ rollup-pluginutils@2.3.3, rollup-pluginutils@^2.3.0, rollup-pluginutils@^2.3.3:
   dependencies:
     estree-walker "^0.5.2"
     micromatch "^3.1.10"
+
+rollup-pluginutils@^2.3.0, rollup-pluginutils@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.3.3.tgz#3aad9b1eb3e7fe8262820818840bf091e5ae6794"
+  integrity sha512-2XZwja7b6P5q4RZ5FhyX1+f46xi1Z3qBKigLRZ6VTZjwbN0K1IFGMlwm06Uu0Emcre2Z63l77nq/pzn+KxIEoA==
+  dependencies:
+    estree-walker "^0.5.2"
+    micromatch "^2.3.11"
 
 rollup@1.6.0:
   version "1.6.0"
@@ -12164,6 +12177,14 @@ x-is-string@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/x-is-string/-/x-is-string-0.1.0.tgz#474b50865af3a49a9c4657f05acd145458f77d82"
   integrity sha1-R0tQhlrzpJqcRlfwWs0UVFj3fYI=
+
+xhr-mock@2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/xhr-mock/-/xhr-mock-2.4.1.tgz#cb502e3d50b8b2ec31bd61766ce516bfc1dd072f"
+  integrity sha1-y1AuPVC4suwxvWF2bOUWv8HdBy8=
+  dependencies:
+    global "^4.3.0"
+    url "^0.11.0"
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

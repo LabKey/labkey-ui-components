@@ -16,11 +16,12 @@ import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
 
 interface Props {
-    className?: string
     col: QueryColumn
     colIdx: number
     modelId: string
     name?: string
+    placeholder?: string
+    readOnly?: boolean
     row: any
     rowIdx: number
 }
@@ -72,7 +73,14 @@ export class Cell extends React.Component<Props, any> {
         }, 250);
     }
 
+    isReadOnly() : boolean {
+        return this.props.readOnly || this.props.col.readOnly;
+    }
+
     handleDblClick() {
+        if (this.isReadOnly())
+            return;
+
         clearTimeout(this.clickTO);
         const { colIdx, modelId, rowIdx } = this.props;
         focusCell(modelId, colIdx, rowIdx);
@@ -105,7 +113,7 @@ export class Cell extends React.Component<Props, any> {
                 break;
             case KEYS.Backspace:
             case KEYS.Delete:
-                if (!focused && selected) {
+                if (!focused && selected && !this.isReadOnly()) {
                     cancelEvent(event);
                     modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
                 }
@@ -141,7 +149,7 @@ export class Cell extends React.Component<Props, any> {
                     }
                     else {
                         // Do not cancel event here, otherwise, key capture will be lost
-                        focusCell(modelId, colIdx, rowIdx, true);
+                        focusCell(modelId, colIdx, rowIdx, !this.isReadOnly());
                     }
                 }
         }
@@ -214,18 +222,24 @@ export class Cell extends React.Component<Props, any> {
     }
 
     render() {
-        const { col, colIdx, modelId, rowIdx } = this.props;
+        const { col, colIdx, modelId, placeholder, rowIdx } = this.props;
         const message = this.message();
         const selected = this.selected();
         const values = this.values();
 
         if (!this.focused()) {
+            let valueDisplay = values
+                .filter(vd => vd.display !== undefined)
+                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
+
             const displayProps = {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
                     'cell-selected': selected,
                     'cell-selection': this.selection(),
-                    'cell-warning': message !== undefined
+                    'cell-warning': message !== undefined,
+                    'cell-read-only': this.isReadOnly(),
+                    'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined
                 }),
                 onDoubleClick: this.handleDblClick,
                 onKeyDown: this.handleKeys,
@@ -235,10 +249,8 @@ export class Cell extends React.Component<Props, any> {
                 tabIndex: -1
             };
 
-            const valueDisplay = values
-                .filter(vd => vd.display !== undefined)
-                .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
-
+            if (valueDisplay.length == 0 && placeholder)
+                valueDisplay=placeholder;
             const cell = <div {...displayProps}>{valueDisplay}</div>;
 
             if (message) {
@@ -274,10 +286,12 @@ export class Cell extends React.Component<Props, any> {
         const inputProps = {
             autoFocus: true,
             defaultValue: values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '',
+            disabled: this.isReadOnly(),
             className: 'cellular-input',
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onKeyDown: this.handleKeys,
+            placeholder: placeholder,
             tabIndex: -1,
             type: 'text'
         };

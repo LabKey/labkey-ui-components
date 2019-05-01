@@ -18,6 +18,8 @@ import { FileColumnRenderer } from './renderers/FileColumnRenderer'
 import { MultiValueRenderer } from './renderers/MultiValueRenderer'
 import { QueryInfoForm } from './components/forms/QueryInfoForm'
 import { LabelOverlay } from './components/forms/LabelOverlay'
+import { SelectInput } from './components/forms/SelectInput'
+import { QuerySelect } from './components/forms/QuerySelect'
 
 export {
     // global state functions
@@ -65,6 +67,8 @@ export {
     EditableGridPanel,
     QueryGridPanel,
     QueryInfoForm,
+    SelectInput,
+    QuerySelect,
 
     // interfaces
     EditableColumnMetadata

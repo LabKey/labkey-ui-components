@@ -5,17 +5,20 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {DomainRow} from "./DomainRow";
 import {DomainDesign, DomainField} from "../models";
 import {getIndexFromId, updateDomainField} from "../actions/actions";
+import DomainConfirm from "./DomainConfirm";
 
 interface IDomainFormInput {
     domain: DomainDesign
-    onChange: (newDomain: DomainDesign) => any
+    onChange: (newDomain: DomainDesign, dirty: boolean) => any
     helpURL: string
     helpNoun: string
 }
 
 interface IDomainFormState {
     idCount: number,
-    expanded: number
+    expanded: number,
+    showConfirm: boolean,
+    deleteTarget: string
 }
 
 /**
@@ -29,7 +32,9 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
         this.state = {
             idCount: 0,
-            expanded: undefined
+            expanded: undefined,
+            showConfirm: false,
+            deleteTarget: undefined
         };
 
     }
@@ -65,13 +70,13 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         }) as DomainDesign;
 
         if (onChange) {
-            onChange(newDomain);
+            onChange(newDomain, false);
         }
     };
 
-    onDeleteField = (evt) => {
+    onDeleteField = () => {
         const {domain, onChange} = this.props;
-        const index = parseInt(getIndexFromId(evt.target.id));
+        const index = parseInt(getIndexFromId(this.state.deleteTarget));
 
         const newFields = domain.fields.filter((field) => {
             return field.displayId !== index;
@@ -81,8 +86,10 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
             fields: newFields
         }) as DomainDesign;
 
+        this.setState({showConfirm: false})
+
         if (onChange) {
-            onChange(newDomain);
+            onChange(newDomain, true);
         }
     };
 
@@ -110,7 +117,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         }) as DomainDesign;
 
         if (onChange) {
-            onChange(newDomain);
+            onChange(newDomain, true);
         }
     };
 
@@ -125,8 +132,16 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         const newDomain = updateDomainField(domain, evt.target.id, value);
 
         if (onChange) {
-            onChange(newDomain);
+            onChange(newDomain, true);
         }
+    };
+
+    onDelete = (evt) => {
+        this.setState({showConfirm: true, deleteTarget: evt.target.id})
+    };
+
+    cancelDelete = () => {
+        this.setState({showConfirm: false})
     };
 
     getAddFieldButton() {
@@ -147,6 +162,15 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         return (
             <>
                 {this.isValidDomain(domain) ? (
+                    <>
+                    <DomainConfirm show={this.state.showConfirm}
+                                   title='Confirm Field Deletion'
+                                   msg='Are you sure you want to remove this field? All of its data will be deleted as well.'
+                                   onConfirm={this.onDeleteField}
+                                   onCancel={this.cancelDelete}
+                                   confirmButtonText='Delete'
+                                   cancelButtonText='Cancel'
+                                   confirmVariant='danger'/>
                     <Panel className={"domain-form-panel"}>
                         <Panel.Heading>
                             <div className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
@@ -195,7 +219,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
                                                 onChange={this.onFieldChange}
                                                 field={field}
                                                 onExpand={this.onFieldExpand}
-                                                onDelete={this.onDeleteField}
+                                                onDelete={this.onDelete}
                                                 expanded={this.state.expanded === index}
                                                 index={index}
                                             />
@@ -214,6 +238,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
                             {this.getAddFieldButton()}
                         </Panel.Body>
                     </Panel>
+                    </>
                 ) :
                     <Panel className='.domain-form-panel'>
                         <Panel.Body>

@@ -35,9 +35,32 @@
   margin: 5px 0 0 8px;
 };
 
-.domain-field-advanced-icon {
+.domain-field-advanced-icon > button,
+.domain-field-advanced-icon > button:focus,
+.domain-field-advanced-icon > button:hover,
+.domain-field-advanced-icon > button:active{
   color: $gray-light;
+  background-color: white;
+  background-image: none;
+  border: 0;
+  outline: 0;
 };
+
+.domain-field-advanced-icon-expanded > button,
+.domain-field-advanced-icon-expanded > button:focus,
+.domain-field-advanced-icon-expanded > button:hover,
+.domain-field-advanced-icon-expanded > button:active{
+  color: $gray-light;
+  background-color: $gray-shadow;
+  background-image: none;
+  border: 0;
+  outline: 0;
+};
+
+.domain-adv-tip {
+  margin-top: -13px;
+  padding-top: 13px;
+}
 
 .domain-form-add {
   color: $gray-dark;

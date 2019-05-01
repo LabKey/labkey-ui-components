@@ -4,8 +4,9 @@
  */
 import {fetchDomain, saveDomain, clearFieldDetails} from "./actions/actions";
 import {DomainDesign} from "./models";
-import DomainForm from "./components/DomainForm"
-import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay"
+import DomainForm from "./components/DomainForm";
+import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
+import DomainConfirm from "./components/DomainConfirm";
 
 import './theme/index.scss'
 
@@ -13,6 +14,7 @@ export {
     // components
     DomainForm,
     DomainFieldsDisplay,
+    DomainConfirm,
 
     // functions
     fetchDomain,

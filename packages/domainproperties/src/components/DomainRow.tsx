@@ -98,7 +98,8 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                         <Tip caption={'Data Type'}>
                             <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                                     key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                    className={'form-control'} onChange={onChange} value={getDataType(field).name}>
+                                    className={'form-control'} onChange={onChange} value={getDataType(field).name}
+                                    disabled={!!field.propertyId}>
                                 {
                                     PROP_DESC_TYPES.map(function (type) {
                                         if (type.display)
@@ -128,22 +129,24 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                     {expanded &&
                         <>
                         <Col xs={1}>
-                            <Button className='domain-row-button domain-row-remove-button'
+                            <Button bsClass='btn btn-danger' className='domain-row-button pull-right'
                             onClick={onDelete} id={createFormInputId(DOMAIN_FIELD_DELETE, index)}>Remove Field</Button>
                         </Col>
                         <Col xs={1}>
-                            <Button className='domain-row-button'>Advanced Settings</Button>
+                            <Button bsClass='btn btn-light' className='domain-row-button'>Advanced Settings</Button>
                         </Col>
                         </>
                     }
                     <Col xs={1}>
-                        {/*<Tip caption={'Advanced Settings'}>*/}
-                            <div className='domain-field-advanced-icon pull-right'>
-                                <Button onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)}>
-                                    <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)} icon={faPencilAlt} />
+                        <Tip caption={'Advanced Settings'}>
+                            <div className={"domain-adv-tip pull-right " + (expanded ? 'domain-field-advanced-icon-expanded' : 'domain-field-advanced-icon')}>
+                                <Button
+                                    onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)}>
+                                    <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)}
+                                                     icon={faPencilAlt}/>
                                 </Button>
                             </div>
-                        {/*</Tip>*/}
+                        </Tip>
                     </Col>
                 </Row>
                 {expanded &&

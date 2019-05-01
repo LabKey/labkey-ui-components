@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Update package for changes to @glass/base
+
 ### version 0.0.8
 *Released*: 26 April 2019
 * Epic 5419: Domain Designer, Edit standard settings name/type/required

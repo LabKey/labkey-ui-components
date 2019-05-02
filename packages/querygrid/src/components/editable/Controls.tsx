@@ -7,6 +7,8 @@ import { Button } from 'react-bootstrap'
 import classNames from 'classnames'
 import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
+export type PlacementType = 'top' | 'bottom' | 'both';
+
 export interface AddRowsControlProps {
     disable?: boolean
     initialCount?: number
@@ -15,7 +17,7 @@ export interface AddRowsControlProps {
     nounPlural?: string
     nounSingular?: string
     onAdd: Function
-    placement?: 'top' | 'bottom' | 'both'
+    placement?: PlacementType
 }
 
 interface AddRowsControlState {
@@ -88,11 +90,12 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     render() {
-        const { disable, maxCount, minCount, nounPlural, nounSingular } = this.props;
+        const { disable, maxCount, minCount, nounPlural, nounSingular, placement } = this.props;
         const { count } = this.state;
 
         const hasError = count !== undefined && !this.isValid(count);
-        const wrapperClasses = classNames('editable-grid__controls', 'form-group margin-top', {
+        const wrapperClasses = classNames('editable-grid__controls', 'form-group', {
+            'margin-top': placement === 'bottom',
             'has-error': hasError
         });
 

@@ -17,6 +17,20 @@ const PANEL_GROUP = "Grid";
 
 storiesOf('EditableGridPanel', module)
     .addDecorator(withKnobs)
+    .add("default properties", () => {
+        const modelId = "editableDefaultProps";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true
+        });
+        return <EditableGridPanel
+            model={model}
+        />;
+
+    })
     .add("without data", () => {
         const modelId = "editableWithoutData";
         const schemaQuery = new SchemaQuery({

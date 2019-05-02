@@ -98,7 +98,6 @@ export interface EditableGridProps {
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
-    nounPlural?: string
 }
 
 export interface EditableGridState {
@@ -114,12 +113,15 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         allowBulkUpdate: false,
         allowBulkRemove: false,
         allowRemove: true,
+        addControlProps: {
+            nounPlural: "Rows",
+            nounSingular: "Row"
+        },
         bulkUpdateText: "Bulk Update",
         columnMetadata: Map<string, EditableColumnMetadata>(),
         disabled: false,
         isSubmitting: false,
-        initialEmptyRowCount: 1,
-        nounPlural: "Rows"
+        initialEmptyRowCount: 1
     };
 
     private maskDelay: number;
@@ -385,7 +387,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     renderTopControls() {
         const { addControlProps, allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, isSubmitting } = this.props;
-        const showAddOnTop = allowAdd && addControlProps && addControlProps.placement !== 'bottom';
+        const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
         const haveLeftControls = allowBulkRemove || showAddOnTop;
         return (
             <div className="row QueryGrid-bottom-spacing">
@@ -400,11 +402,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                                 Delete rows
                             </Button>
                         )}
-                        {allowAdd && addControlProps && addControlProps.placement != 'bottom' && (
-                                <AddRowsControl
-                                    {...addControlProps}
-                                    disable={isSubmitting}
-                                    onAdd={this.onAddRows}/>
+                        {showAddOnTop && (
+                            <AddRowsControl
+                                {...addControlProps}
+                                placement={"top"}
+                                disable={isSubmitting}
+                                onAdd={this.onAddRows}/>
                         )}
                     </div>
                 </div>}
@@ -432,7 +435,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     bulkAdd(data: any) : Promise<any> {
-        const { nounPlural } = this.props;
+        const addControlProps = this.props.addControlProps;
+        const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
         const numItems = data.numItems;
@@ -443,16 +447,13 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 addRows(model, numItems, Map<string, any>(data));
                 resolve({
                     success: true,
-                    message: "Added " + numItems + " " + nounPlural
+                    message: "Added " + numItems + " " + (numItems > 1 ? nounPlural : nounSingular)
                 });
             });
         }
     }
 
     renderBulkUpdate() {
-
-        const { nounPlural } = this.props;
-
         const { showBulkUpdate } = this.state;
 
         const model = this.getModel(this.props);
@@ -462,7 +463,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             <QueryInfoForm
                 onSubmit={this.bulkAdd}
                 asModal={true}
-                submitText={`Add ${nounPlural} to Grid`}
+                submitText={`Add ${this.props.addControlProps.nounPlural} to Grid`}
                 maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
@@ -473,6 +474,15 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 header={this.renderBulkCreationHeader()}
             />
         )
+    }
+
+    getControlsPlacement() {
+        const { addControlProps } = this.props;
+
+        if (!addControlProps || !addControlProps.placement) {
+            return 'bottom';
+        }
+        return addControlProps.placement;
     }
 
     render() {
@@ -504,9 +514,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             striped={false}
                             tableRef={this.table} />
                     </div>
-                    {allowAdd && (!addControlProps || addControlProps.placement != 'top') && (
+                    {allowAdd && (this.getControlsPlacement() != 'top') && (
                         <AddRowsControl
                             {...addControlProps}
+                            placement={"bottom"}
                             disable={isSubmitting}
                             onAdd={this.onAddRows}/>
                     )}

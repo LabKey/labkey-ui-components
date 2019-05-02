@@ -135,6 +135,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 
 interface QuerySelectStateProps {
     model: QuerySelectModel
+    error: any
 }
 
 export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelectStateProps> {
@@ -161,7 +162,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         this.onFocus = this.onFocus.bind(this);
 
         this.state = {
-            model: undefined
+            model: undefined,
+            error: undefined
         };
     }
 
@@ -180,6 +182,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         initSelect(props, this.state.model)
             .then((model) => {
                 this.setState(() => ({model}));
+            }, (reason) => {
+                this.setState(() => ({error: reason}));
             });
     }
 
@@ -264,9 +268,23 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
 
     render() {
         const { filterOptions, label, previewOptions, required, showLoading } = this.props;
-        const { model } = this.state;
+        const { error, model } = this.state;
 
-        if (model && model.isInit) {
+        if ( error ) {
+            const inputProps = {
+                disabled: true,
+                formsy: this.props.formsy,
+                isLoading: false,
+                label,
+                name: this.props.name || this.props.componentId + '-error',
+                placeholder: 'Error: ' + error.message,
+                required,
+                type: 'text'
+            };
+
+            return <SelectInput {...inputProps}/>
+        }
+        else if (model && model.isInit) {
 
             const inputProps = Object.assign({
                 id: model.id,

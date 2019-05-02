@@ -8,7 +8,7 @@ import mock, { proxy } from "xhr-mock";
 import { getStateQueryGridModel } from "../../model";
 import * as constants from "../../test/data/constants";
 import { gridInit } from "../../actions";
-import mixtureBatchesQueryInfo from "../../test/data/mixtureBatches-getQueryDetails.json";
+import mixturesQueryInfo from "../../test/data/mixtures-getQueryDetails.json";
 import mixtureTypesQuery from "../../test/data/mixtureTypes-getQuery.json";
 
 const GRID_ID = "CellTestModel";
@@ -23,7 +23,7 @@ beforeAll(() => {
     mock.get(/.*\/query\/getQueryDetails.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixtureBatchesQueryInfo)
+        body: JSON.stringify(mixturesQueryInfo)
     });
 
     mock.post(/.*\/query\/getQuery.*/, {

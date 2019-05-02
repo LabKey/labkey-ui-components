@@ -10,6 +10,7 @@ import { TextInput } from "./TextInput";
 import { DateInput } from "./DateInput";
 import { CheckboxInput } from "./CheckboxInput";
 import { FileInput } from "./FileInput";
+import { SelectInput } from "./SelectInput";
 
 beforeAll(() => {
     initQueryGridState();
@@ -45,9 +46,10 @@ describe("QueryFormInputs", () => {
                 <Formsy>
                     <QueryFormInputs queryInfo = {queryInfo}/>
                 </Formsy>);
-            expect(formWrapper.find(TextInput)).toHaveLength(5);
+            expect(formWrapper.find(TextInput)).toHaveLength(4);
             expect(formWrapper.find(DateInput)).toHaveLength(1);
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
+            expect(formWrapper.find(SelectInput)).toHaveLength(1);
             // default properties don't render file inputs
             expect(formWrapper.find(FileInput)).toHaveLength(0);
 

@@ -126,6 +126,77 @@ export class AssayRunResolver implements AppRouteResolver {
 }
 
 /**
+ * Resolves list routes dynamically
+ * /q/lists/22/14/... -> /q/lists/listByName/14/...
+ */
+export class ListResolver implements AppRouteResolver {
+
+    fetched: boolean;
+    lists: Map<number, string>; // Map<listId, listName>
+
+    constructor(lists?: Map<number, string>) {
+        this.fetched = false;
+        this.lists = lists !== undefined ? lists : Map<number, string>();
+    }
+
+    matches(route: string): boolean {
+        return /\/q\/lists\/(\d+$|\d+\/)/.test(route);
+    }
+
+    fetch(parts: Array<any>): Promise<AppURL | boolean> {
+        // ["q", "lists", "44", ...]
+        const listIdIndex = 2;
+        const listIdNum: number = parseInt(parts[listIdIndex]);
+
+        if (isNaN(listIdNum)) {
+            // skip it
+            return Promise.resolve(true);
+        }
+        else if (this.lists.has(listIdNum)) {
+            // resolve it
+            const newParts = [this.lists.get(listIdNum)];
+            return Promise.resolve(spliceURL(parts, newParts, listIdIndex));
+        }
+        else if (this.fetched) {
+            // skip it
+            return Promise.resolve(true);
+        }
+        else {
+            // fetch it
+            return new Promise((resolve) => {
+                return selectRows({
+                    schemaName: 'ListManager',
+                    queryName: 'ListManager',
+                    columns: 'ListId,Name'
+                }).then((result) => {
+                    this.fetched = true;
+
+                    // fulfill local cache
+                    const allLists = Map<number, string>().asMutable();
+                    const lists = result.models[result.key];
+                    for (var i in lists) {
+                        if (lists.hasOwnProperty(i)) {
+                            allLists.set(lists[i].ListId.value, lists[i].Name.value.toLowerCase());
+                        }
+                    }
+                    this.lists = allLists.asImmutable();
+
+                    // respond
+                    if (this.lists.has(listIdNum)) {
+                        // resolve it
+                        const newParts = [this.lists.get(listIdNum)];
+                        return resolve(spliceURL(parts, newParts, listIdIndex));
+                    }
+
+                    // skip it
+                    return resolve(true);
+                });
+            });
+        }
+    }
+}
+
+/**
  * Resolves sample routes dynamically
  * rd/samples/14/... -> /samples/sampleSetByName/14/... || /media/batches/14
  */
@@ -225,12 +296,12 @@ export class SampleSetResolver implements AppRouteResolver {
     }
 
     matches(route: string): boolean {
-        return /\/rd\/samples\/(\w+$|\w+\/)/.test(route);
+        return /\/rd\/samples\/(\w+)/.test(route);
     }
 
     fetch(parts: Array<any>): Promise<AppURL | boolean> {
-        const sampleSetNameIndex = 2,
-            sampleSetName: string = parts[sampleSetNameIndex].toLowerCase();
+        const sampleSetNameIndex = 2;
+        const sampleSetName: string = decodeURIComponent(parts[sampleSetNameIndex].toString().toLowerCase());
 
         if (this.sets.contains(sampleSetName)) {
             const newParts = ['samples', sampleSetName];

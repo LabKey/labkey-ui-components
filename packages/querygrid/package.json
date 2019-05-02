@@ -53,7 +53,9 @@
   },
   "jest": {
     "globals": {
-      "LABKEY": {}
+      "LABKEY": {
+        "contextPath": "/labkey"
+      }
     },
     "moduleFileExtensions": [
       "ts",

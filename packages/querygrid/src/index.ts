@@ -10,7 +10,7 @@ import { SCHEMAS } from './query/schemas'
 import { getLocation, replaceParameters, pushParameter, pushParameters, Location } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import { AssayResolver, AssayRunResolver, SamplesResolver, SampleSetResolver } from './util/AppURLResolver'
+import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver, SampleSetResolver } from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -60,6 +60,7 @@ export {
     URLService,
     AssayResolver,
     AssayRunResolver,
+    ListResolver,
     SamplesResolver,
     SampleSetResolver,
     getLocation,

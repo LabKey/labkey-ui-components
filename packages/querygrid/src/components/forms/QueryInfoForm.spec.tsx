@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SchemaQuery } from "@glass/base";
-import batchesQueryInfo from "../../test/data/mixtureBatches-getQueryDetails.json";
+import mixturesQueryInfo from "../../test/data/mixtures-getQueryDetails.json";
 import mixtureQuery from "../../test/data/mixtures-getQuery.json";
 import { getQueryDetails, initQueryGridState } from "../..";
 import mock, { proxy } from "xhr-mock";
@@ -17,7 +17,7 @@ beforeAll(() => {
     mock.get(/.*\/query\/getQueryDetails.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(batchesQueryInfo)
+        body: JSON.stringify(mixturesQueryInfo)
     });
 
     mock.post(/.*\/query\/getQuery.*/, {

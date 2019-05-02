@@ -26,7 +26,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
 
     isCurrentMenuChoice(option: MenuOption): boolean {
         const { currentMenuChoice } = this.props;
-        return option.key === currentMenuChoice;
+        return currentMenuChoice && option.key.toLowerCase() === currentMenuChoice.toLowerCase();
     }
 
     getCurrentMenuChoiceItem() {

@@ -8,6 +8,9 @@ Query Grid for LabKey schema/query data views
 *Released*: ???
 * Port QueryFormInputs and the various input fields from Biologics
 * Port QuerySelect, SelectInput and related actions/models from Biologics
+* Add optional remove parameter to the gridInvalidate methods
+* Port URLService, AssayResolver, AssayRunResolver, ListResolver, and SamplesResolver from Biologics
+* Port insertRows function from Biologics
 * Update package for changes to @glass/base
 
 ### version 0.2.0

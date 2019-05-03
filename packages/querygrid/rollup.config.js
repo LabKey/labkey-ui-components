@@ -28,22 +28,6 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/querygrid.cjs.js',
-            format: 'cjs'
-        },
-        plugins: [
-            resolve(),
-            commonjs({namedExports}),
-            typescript(),
-            sass({
-                output: 'dist/querygrid.css'
-            })
-        ]
-    },
-    {
-        external: external,
-        input: input,
-        output: {
             file: 'dist/querygrid.es.js',
             format: 'es',
             name: 'querygrid'
@@ -52,23 +36,9 @@ export default [
             resolve(),
             commonjs({namedExports}),
             typescript(),
-            sass()
-        ]
-    },
-    {
-        external: external,
-        input: input,
-        output: {
-            file: 'dist/querygrid.umd.js',
-            format: 'umd',
-            name: 'querygrid',
-            globals: globals
-        },
-        plugins: [
-            resolve(),
-            commonjs({namedExports}),
-            typescript(),
-            sass()
+            sass({
+                output: 'dist/querygrid.css'
+            })
         ]
     }
 ]

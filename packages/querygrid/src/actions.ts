@@ -33,7 +33,8 @@ import {
     getEditorModel,
     updateEditorModel,
     getLookupStore,
-    updateLookupStore
+    updateLookupStore,
+    removeQueryGridModel
 } from './global'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
 
@@ -223,16 +224,25 @@ export function clearError(model: QueryGridModel) {
     }
 }
 
-export function schemaGridInvalidate(schemaName: string) {
-    getQueryGridModelsForSchema(schemaName).map((model) => gridInvalidate(model));
+export function schemaGridInvalidate(schemaName: string, remove: boolean = false) {
+    getQueryGridModelsForSchema(schemaName).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
-export function queryGridInvalidate(schemaQuery: SchemaQuery) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
+export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = false) {
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
-export function gridIdInvalidate(gridId: string) {
-    getQueryGridModelsForGridId(gridId).map((model) => gridInvalidate(model));
+export function gridIdInvalidate(gridId: string, remove: boolean = false) {
+    getQueryGridModelsForGridId(gridId).map((model) => gridRemoveOrInvalidate(model, remove));
+}
+
+function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
+    if (remove) {
+        removeQueryGridModel(model);
+    }
+    else {
+        gridInvalidate(model);
+    }
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {

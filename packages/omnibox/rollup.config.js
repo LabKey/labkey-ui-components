@@ -20,10 +20,8 @@ const external = Object.keys(globals);
 
 const input = 'src/index.ts';
 
-const cjsOptions = {
-    namedExports: {
-        'jquery': [ '$' ]
-    }
+const namedExports = {
+    'jquery': [ '$' ]
 };
 
 export default [
@@ -36,7 +34,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs(cjsOptions),
+            commonjs({namedExports}),
             typescript(),
             sass({
                 output: 'dist/omnibox.css'
@@ -53,23 +51,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs(cjsOptions),
-            typescript(),
-            sass()
-        ]
-    },
-    {
-        external,
-        input,
-        output: {
-            file: 'dist/omnibox.umd.js',
-            format: 'umd',
-            name: 'omnibox',
-            globals
-        },
-        plugins: [
-            resolve(),
-            commonjs(cjsOptions),
+            commonjs({namedExports}),
             typescript(),
             sass()
         ]

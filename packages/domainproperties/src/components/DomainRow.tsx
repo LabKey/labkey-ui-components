@@ -13,9 +13,11 @@ import { Tip } from "@glass/base";
 import { DomainField, PROP_DESC_TYPES } from "../models";
 import { createFormInputId, getDataType } from "../actions/actions";
 import {DomainRowExpandedOptions} from "./DomainRowExpandedOptions";
+import {Draggable} from "react-beautiful-dnd";
 
 interface IDomainRowDisplay {
     index: number,
+    id: number
     field: DomainField,
     onExpand: (any) => void,
     onDelete: (any) => void,
@@ -35,7 +37,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
     shouldComponentUpdate(nextProps: Readonly<IDomainRowDisplay>, nextState: Readonly<any>, nextContext: any): boolean
     {
         // Check first if this optimization is being used. See actions.updateDomainField for example where this is set.
-        // Not optimizing, just update every time
+        // Not optimizing than just update every time
         return (typeof nextProps.field.renderUpdate !== "undefined" ? nextProps.field.renderUpdate: true)
     }
 
@@ -82,22 +84,28 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
 
     render()
     {
-        const {index, field, onChange, onDelete, onExpand, expanded} = this.props;
+        const {index, id, field, onChange, onDelete, onExpand, expanded} = this.props;
 
         return (
-            <div className={'domain-field-row ' + (expanded?'domain-row-expanded ':'')}>
-                <Row key={createFormInputId("domainrow", index)}>
+            <Draggable draggableId={createFormInputId("domaindrag", id)} index={index}>
+                {(provided) => (
+            <div className={'domain-field-row ' + (expanded?'domain-row-expanded ':'')}
+                 {...provided.draggableProps}
+                 {...provided.dragHandleProps}
+                 ref={provided.innerRef}
+            >
+                <Row key={createFormInputId("domainrow", id)}>
                     <Col xs={3}>
                         <Tip caption={'Name'}>
-                            <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
-                                         key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
+                            <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, id)} type="text"
+                                         key={createFormInputId(DOMAIN_FIELD_NAME, id)} value={field.name}
                                          onChange={onChange}/>
                         </Tip>
                     </Col>
                     <Col xs={2}>
                         <Tip caption={'Data Type'}>
-                            <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                    key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                            <select id={createFormInputId(DOMAIN_FIELD_TYPE, id)}
+                                    key={createFormInputId(DOMAIN_FIELD_TYPE, id)}
                                     className={'form-control'} onChange={onChange} value={getDataType(field).name}
                                     disabled={!!field.propertyId}>
                                 {
@@ -105,7 +113,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                                         if (type.display)
                                         {
                                             return <option
-                                                key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
+                                                key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, id)}
                                                 value={type.name}>{type.display}</option>
                                         }
                                         return ''
@@ -119,18 +127,18 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                         <div className='domain-field-checkbox'>
                             <Tip caption={'Required?'}>
                                 <Checkbox className='domain-field-checkbox'
-                                          id={createFormInputId(DOMAIN_FIELD_REQ, index)}
-                                          key={createFormInputId(DOMAIN_FIELD_REQ, index)}
+                                          id={createFormInputId(DOMAIN_FIELD_REQ, id)}
+                                          key={createFormInputId(DOMAIN_FIELD_REQ, id)}
                                           checked={field.required} onChange={onChange}/>
                             </Tip>
                         </div>
                     </Col>
-                    {this.getDetails(index, expanded)}
+                    {this.getDetails(id, expanded)}
                     {expanded &&
                         <>
                         <Col xs={1}>
                             <Button bsClass='btn btn-danger' className='domain-row-button pull-right'
-                            onClick={onDelete} id={createFormInputId(DOMAIN_FIELD_DELETE, index)}>Remove Field</Button>
+                            onClick={onDelete} id={createFormInputId(DOMAIN_FIELD_DELETE, id)}>Remove Field</Button>
                         </Col>
                         <Col xs={1}>
                             <Button bsClass='btn btn-light' className='domain-row-button'>Advanced Settings</Button>
@@ -141,8 +149,8 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                         <Tip caption={'Advanced Settings'}>
                             <div className={"domain-adv-tip pull-right " + (expanded ? 'domain-field-advanced-icon-expanded' : 'domain-field-advanced-icon')}>
                                 <Button
-                                    onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)}>
-                                    <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)}
+                                    onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, id)}>
+                                    <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, id)}
                                                      icon={faPencilAlt}/>
                                 </Button>
                             </div>
@@ -150,9 +158,11 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                     </Col>
                 </Row>
                 {expanded &&
-                    <DomainRowExpandedOptions fieldId={index} domainField={field}/>
+                    <DomainRowExpandedOptions fieldId={id} domainField={field}/>
                 }
             </div>
+                    )}
+            </Draggable>
         );
     }
 }

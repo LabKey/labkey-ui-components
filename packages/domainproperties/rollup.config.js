@@ -20,7 +20,12 @@ const external = Object.keys(globals);
 const namedExports = {
     // Could be utilized for named exports
     // 'immutable': [ 'fromJS', 'List', 'Map' ]
+    '../../node_modules/react-redux/node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
 };
+
+const include = [
+    /node_modules/
+]
 
 export default [
     {
@@ -32,7 +37,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports}),
+            commonjs({namedExports, include}),
             typescript(),
             sass({
                 output: 'dist/domainproperties.css'
@@ -49,7 +54,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports}),
+            commonjs({namedExports, include}),
             typescript(),
             sass()
         ]
@@ -65,7 +70,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports}),
+            commonjs({namedExports, include}),
             typescript(),
             sass()
         ]

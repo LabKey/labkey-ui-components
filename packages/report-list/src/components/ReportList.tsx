@@ -72,7 +72,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
                     {iconEl}
                 </Media.Left>
 
-                <Media.Body className="report-list-item__body">
+                <Media.Body>
                     <Media.Heading className="report-list-item__name">{name}</Media.Heading>
                     {createdByEl}
                 </Media.Body>

@@ -1,7 +1,6 @@
+import { Ajax, Utils } from '@labkey/api'
 
-import {Ajax, Utils} from '@labkey/api'
-
-import {AssayProtocolModel} from "../models/model";
+import { AssayProtocolModel } from "../models/model";
 import { buildURL } from "../url/ActionURL";
 
 export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {

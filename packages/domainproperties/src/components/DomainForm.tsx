@@ -146,6 +146,24 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         this.setState({showConfirm: false})
     };
 
+    onBeforeDragStart = (result) => {
+        const { domain, onChange } = this.props;
+        const newFields = List<DomainField>().asMutable();
+
+        // Don't re-render all fields on drag start. Perf improvement.
+        domain.fields.forEach((field) => {
+            newFields.push(field.merge({"renderUpdate": false}) as DomainField)
+        });
+
+        const newDomain = domain.merge({
+            fields: newFields
+        }) as DomainDesign;
+
+        if (onChange) {
+            onChange(newDomain, true);
+        }
+    };
+
     onDragEnd = (result) => {
         const { domain, onChange } = this.props;
 
@@ -168,6 +186,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
         const newFields = List<DomainField>().asMutable();
         domain.fields.forEach((field, index) => {
+
             // move down
             if (field.displayId !== idIndex && srcIndex < destIndex) {
                 newFields.push(field.merge({"renderUpdate": true}) as DomainField);
@@ -211,7 +230,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         return (
             <>
                 {this.isValidDomain(domain) ? (
-                        <DragDropContext onDragEnd={this.onDragEnd}>
+                        <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                             <DomainConfirm show={this.state.showConfirm}
                                            title='Confirm Field Deletion'
                                            msg='Are you sure you want to remove this field? All of its data will be deleted as well.'

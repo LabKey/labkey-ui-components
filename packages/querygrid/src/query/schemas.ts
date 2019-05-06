@@ -1,4 +1,6 @@
-import { SchemaQuery } from '@glass/base';
+import { Map, List } from 'immutable'
+import { Query } from '@labkey/api'
+import { QueryInfo, SchemaDetails, SchemaQuery } from '@glass/base';
 
 // EXP
 const EXP_SCHEMA = 'exp';
@@ -28,3 +30,79 @@ export const SCHEMAS = {
     EXP_TABLES: EXP_TABLES,
     SAMPLE_SETS: SAMPLE_SETS
 };
+
+export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {
+    return new Promise((resolve, reject) => {
+        Query.getSchemas({
+            apiVersion: 9.3,
+            schemaName,
+            success: function(schemas) {
+                resolve(
+                    resolveSchemas(schemas)
+                        .filter(schema => {
+                            const start = schemaName ? schemaName.length + 1 : 0
+                            return schema.fullyQualifiedName.substring(start).indexOf('.') === -1;
+                        })
+                        .sortBy(schema => schema.schemaName.toLowerCase())
+                        .toList()
+                );
+            },
+            failure: function(error) {
+                reject(error);
+            }
+        })
+    });
+}
+
+function resolveSchemas(schemas, allSchemas?: Map<string, SchemaDetails>): Map<string, SchemaDetails> {
+
+    let top = false;
+    if (allSchemas === undefined) {
+        top = true;
+        allSchemas = Map<string, SchemaDetails>().asMutable();
+    }
+
+    for (let schemaName in schemas) {
+        if (schemas.hasOwnProperty(schemaName)) {
+            let schema = schemas[schemaName];
+            allSchemas.set(schema.fullyQualifiedName.toLowerCase(), SchemaDetails.create(schema));
+            if (schema.schemas !== undefined) {
+                resolveSchemas(schema.schemas, allSchemas);
+            }
+        }
+    }
+
+    return top ? allSchemas.asImmutable() : allSchemas;
+}
+
+// DO NOT USE THIS if you're looking for QueryInfo
+export function fetchGetQueries(schemaName: string): Promise<List<QueryInfo>> {
+    return new Promise((resolve, reject) => {
+        Query.getQueries({
+            schemaName,
+            success: (data) => {
+                let queries = data.queries.map((getQueryResult) => {
+                    getQueryResult.schemaName = schemaName;
+                    return QueryInfo.create(getQueryResult);
+                });
+
+                queries = List<QueryInfo>(queries)
+                    .sort((a, b) => {
+                        if (a.name && b.name) {
+                            let aLower = a.name.toLowerCase();
+                            let bLower = b.name.toLowerCase();
+
+                            return aLower === bLower ? 0 : (aLower > bLower ? 1 : -1);
+                        }
+
+                        return a.name === b.name ? 0 : (a.name > b.name ? 1 : -1);
+                    }).toList();
+
+                resolve(queries);
+            },
+            failure: (error) => {
+                reject(error);
+            }
+        })
+    });
+}

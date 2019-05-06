@@ -24,6 +24,8 @@ import { LabelOverlay } from './components/forms/LabelOverlay'
 import { SelectInput } from './components/forms/SelectInput'
 import { QuerySelect } from './components/forms/QuerySelect'
 import { PlacementType } from './components/editable/Controls'
+import { SchemaListing } from './components/listing/SchemaListing'
+import { QueriesListing } from './components/listing/QueriesListing'
 
 export {
     // constants
@@ -82,6 +84,8 @@ export {
     QueryInfoForm,
     SelectInput,
     QuerySelect,
+    SchemaListing,
+    QueriesListing,
 
     // interfaces
     EditableColumnMetadata,

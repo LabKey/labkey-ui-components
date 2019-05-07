@@ -6,7 +6,7 @@ import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey, intersect, toLowerSafe } from '../utils/utils'
+import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -129,6 +129,13 @@ export class User extends Record(defaultUser) implements IUserProps {
     }
 }
 
+export interface IParsedSelectionKey {
+    keys: string
+    schemaQuery: SchemaQuery
+}
+
+const APP_SELECTION_PREFIX = 'appkey';
+
 export class SchemaQuery extends Record({
     schemaName: undefined,
     queryName: undefined,
@@ -173,6 +180,23 @@ export class SchemaQuery extends Record({
         }
 
         return false;
+    }
+
+    static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
+        const [ appkey /* not used */, schemaQueryKey, keys ] = selectionKey.split('|');
+
+        return {
+            keys,
+            schemaQuery: getSchemaQuery(schemaQueryKey)
+        };
+    }
+
+    static createAppSelectionKey(targetSQ: SchemaQuery, keys: Array<any>): string {
+        return [
+            APP_SELECTION_PREFIX,
+            resolveSchemaQuery(targetSQ),
+            keys.join(';')
+        ].join('|');
     }
 }
 

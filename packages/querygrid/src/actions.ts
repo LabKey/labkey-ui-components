@@ -2,39 +2,60 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, Set, fromJS } from 'immutable'
+import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
 import {
-    GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel,
-    buildURL, getSortFromUrl, naturalSort, not
+    buildURL,
+    getSortFromUrl,
+    GRID_CHECKBOX_OPTIONS,
+    GRID_EDIT_INDEX,
+    naturalSort,
+    not,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery,
+    ViewInfo
 } from '@glass/base'
 
 import { getQueryDetails, searchRows } from './query/api'
 import { isEqual } from './query/filter'
 import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
 import {
-    FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES, KEYS,
-    SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE
+    EXPORT_TYPES,
+    FASTA_EXPORT_CONTROLLER,
+    GENBANK_EXPORT_CONTROLLER,
+    KEYS,
+    LOOKUP_DEFAULT_SIZE,
+    MODIFICATION_TYPES,
+    SELECTION_TYPES
 } from "./constants";
-import { cancelEvent, setCopyValue, getPasteValue } from './events'
+import { cancelEvent, getPasteValue, setCopyValue } from './events'
 import {
-    DataViewInfo, VisualizationConfigModel, ValueDescriptor, EditorModel, EditorModelProps,
-    LookupStore, CellMessages, CellValues, CellMessage
+    CellMessage,
+    CellMessages,
+    CellValues,
+    DataViewInfo,
+    EditorModel,
+    EditorModelProps,
+    LookupStore,
+    ValueDescriptor,
+    VisualizationConfigModel
 } from './model'
 import { bindColumnRenderers } from './renderers'
 import {
+    getEditorModel,
+    getLookupStore,
     getQueryGridModel,
+    getQueryGridModelsForGridId,
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
-    getQueryGridModelsForGridId,
-    updateQueryGridModel,
-    updateSelections,
-    getEditorModel,
+    removeQueryGridModel,
     updateEditorModel,
-    getLookupStore,
     updateLookupStore,
-    removeQueryGridModel
+    updateQueryGridModel,
+    updateSelections
 } from './global'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
 
@@ -752,6 +773,43 @@ function setGridUnselected(model: QueryGridModel) {
         const error = err ? err : {message: 'Something went wrong'};
         gridShowError(model, error);
     })
+}
+
+interface ISelectionResponse {
+    resolved: boolean
+    schemaQuery?: SchemaQuery
+    selected: Array<any>
+}
+
+export function getSelection(location: any): Promise<ISelectionResponse> {
+    if (location && location.query && location.query.selectionKey) {
+        const key = location.query.selectionKey;
+
+        return new Promise(resolve => {
+            const { keys, schemaQuery } = SchemaQuery.parseSelectionKey(key);
+
+            if (keys !== undefined) {
+                return resolve({
+                    resolved: true,
+                    schemaQuery,
+                    selected: keys.split(';')
+                });
+            }
+
+            return getSelected(key).then((response) => {
+                resolve({
+                    resolved: true,
+                    schemaQuery,
+                    selected: response.selected
+                });
+            });
+        });
+    }
+
+    return Promise.resolve({
+        resolved: false,
+        selected: []
+    });
 }
 
 function getFilterParameters(filters: List<any>, remove: boolean = false): Map<string, string> {

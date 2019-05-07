@@ -49,6 +49,8 @@ storiesOf('EditableGridPanel', module)
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
         };
 
+        const onRowCountChange = () => { console.log("Row count has changed"); };
+
         return <EditableGridPanel
             addControlProps={addRowsControl}
             allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
@@ -58,6 +60,7 @@ storiesOf('EditableGridPanel', module)
             initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
             isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
             title={text("Title", "Grid title", PANEL_GROUP)}
+            onRowCountChange={onRowCountChange}
             model={model}
         />;
 

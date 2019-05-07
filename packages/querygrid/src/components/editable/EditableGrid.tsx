@@ -5,7 +5,7 @@
 import * as OrigReact from 'react'
 import { ReactNode } from 'react'
 import React from 'reactn'
-import { Button, Dropdown, DropdownButton, MenuItem } from 'react-bootstrap'
+import { Button, Dropdown, MenuItem } from 'react-bootstrap'
 import { List, Map, Set } from 'immutable'
 import $ from 'jquery'
 import {
@@ -28,11 +28,11 @@ import {
     endDrag,
     inDrag,
     pasteEvent,
-    removeRows,
     removeRow,
+    removeRows,
     select
 } from '../../actions'
-import { getQueryGridModel } from "../../global";
+import { getEditorModel, getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
 import { headerSelectionCell } from "../../renderers";
@@ -98,6 +98,7 @@ export interface EditableGridProps {
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
+    onRowCountChange?: () => any
 }
 
 export interface EditableGridState {
@@ -148,6 +149,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         this.selectAll = this.selectAll.bind(this);
         this.bulkAdd = this.bulkAdd.bind(this);
         this.removeSelectedRows = this.removeSelectedRows.bind(this);
+        this.onRowCountChange = this.onRowCountChange.bind(this);
 
         this.table = OrigReact.createRef();
         this.wrapper = OrigReact.createRef();
@@ -173,6 +175,14 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
         if (model.isLoaded && !model.isError && model.data.size === 0) {
             addRows(model, initialEmptyRowCount);
+            this.onRowCountChange();
+        }
+    }
+
+    onRowCountChange() {
+        const { onRowCountChange } = this.props;
+        if (onRowCountChange) {
+            onRowCountChange();
         }
     }
 
@@ -307,28 +317,39 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     onCopy(event: any) {
-        if (!this.props.disabled)
+        if (!this.props.disabled) {
             copyEvent(this.props.model.getId(), event);
+        }
     }
 
     onKeyDown(event: any) {
-        if (!this.props.disabled)
+        if (!this.props.disabled) {
             select(this.props.model.getId(), event);
+        }
     }
 
     onMouseDown(event: any) {
-        if (!this.props.disabled)
+        if (!this.props.disabled) {
             beginDrag(this.props.model.getId(), event);
+        }
     }
 
     onMouseUp(event: any) {
-        if (!this.props.disabled)
+        if (!this.props.disabled) {
             endDrag(this.props.model.getId(), event);
+        }
     }
 
     onPaste(event: any) {
-        if (!this.props.disabled)
-            pasteEvent(this.props.model.getId(), event, this.showMask, this.hideMask, this.props.columnMetadata);
+        if (!this.props.disabled) {
+            const modelId = this.props.model.getId();
+            const beforeRowCount = getEditorModel(modelId).rowCount;
+            pasteEvent(modelId, event, this.showMask, this.hideMask, this.props.columnMetadata);
+            const afterRowCount =  getEditorModel(modelId).rowCount;
+            if (beforeRowCount !== afterRowCount) {
+                this.onRowCountChange();
+            }
+        }
     }
 
     showMask() {
@@ -345,6 +366,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     onAddRows(count: number) {
         const model = this.getModel(this.props);
         addRows(model, count);
+        this.onRowCountChange();
     }
 
     toggleBulkUpdate() {
@@ -383,6 +405,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             selected: Set<string>(),
             selectedState: GRID_CHECKBOX_OPTIONS.NONE
         }));
+        this.onRowCountChange();
     }
 
     renderTopControls() {
@@ -445,6 +468,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         if (numItems) {
             return new Promise((resolve) => {
                 addRows(model, numItems, Map<string, any>(data));
+                this.onRowCountChange();
                 resolve({
                     success: true,
                     message: "Added " + numItems + " " + (numItems > 1 ? nounPlural : nounSingular)

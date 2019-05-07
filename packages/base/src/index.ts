@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
-import {fetchProtocol} from './action/actions'
+import { fetchProtocol } from './action/actions'
 import {
     AssayProtocolModel,
     Container,
@@ -34,8 +34,8 @@ import {
     encodePart,
     generateId,
     getSchemaQuery,
-    intersect,
     hasAllPermissions,
+    intersect,
     naturalSort,
     not,
     resolveKey,
@@ -45,14 +45,9 @@ import {
     toggleDevTools,
     toLowerSafe
 } from './utils/utils'
-import {
-    buildURL,
-    getSortFromUrl,
-    hasParameter,
-    imageURL,
-    setParameter,
-    toggleParameter
-} from './url/ActionURL'
+import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
+import { AddEntityButton } from "./components/AddEntityButton"
+import { RemoveEntityButton } from "./components/RemoveEntityButton"
 import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'
@@ -79,10 +74,7 @@ import {
     NotificationItemProps,
     Persistence,
 } from './components/notifications/model'
-import {
-    PermissionAllowed,
-    PermissionNotAllowed,
-} from "./components/Permissions"
+import { PermissionAllowed, PermissionNotAllowed, } from "./components/Permissions"
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
@@ -129,6 +121,8 @@ export {
     GridData,
 
     //components
+    AddEntityButton,
+    RemoveEntityButton,
     Alert,
     CustomToggle,
     LoadingSpinner,

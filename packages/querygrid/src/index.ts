@@ -2,15 +2,44 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { getStateQueryGridModel } from './model'
-import { gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalidate, schemaGridInvalidate, gridIdInvalidate } from './actions'
-import { initQueryGridState, removeQueryGridModel, setQueryMetadata, setQueryColumnRenderers, getEditorModel, getQueryGridModel } from './global'
-import { selectRows, searchRows, getQueryDetails, invalidateQueryDetailsCacheKey, ISelectRowsResult } from './query/api'
+import { EditorModel, getStateQueryGridModel } from './model'
+import {
+    getSelected,
+    gridIdInvalidate,
+    gridInit,
+    gridInvalidate,
+    gridRefresh,
+    gridShowError,
+    queryGridInvalidate,
+    schemaGridInvalidate
+} from './actions'
+import {
+    getEditorModel,
+    getQueryGridModel,
+    initQueryGridState,
+    removeQueryGridModel,
+    setQueryColumnRenderers,
+    setQueryMetadata
+} from './global'
+import {
+    getQueryDetails,
+    insertRows,
+    invalidateQueryDetailsCacheKey,
+    ISelectRowsResult,
+    searchRows,
+    selectRows
+} from './query/api'
 import { SCHEMAS } from './query/schemas'
-import { getLocation, replaceParameters, pushParameter, pushParameters, Location } from './util/URL'
+import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver, SampleSetResolver } from './util/AppURLResolver'
+import {
+    AssayResolver,
+    AssayRunResolver,
+    ListResolver,
+    SampleSetResolver,
+    SamplesResolver
+} from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -26,6 +55,7 @@ import { QuerySelect } from './components/forms/QuerySelect'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
+import { ReactSelectOption } from './components/forms/model'
 
 export {
     // constants
@@ -41,6 +71,7 @@ export {
     setQueryColumnRenderers,
 
     // grid functions
+    getSelected,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -51,6 +82,7 @@ export {
 
     // query related items
     ISelectRowsResult,
+    insertRows,
     selectRows,
     searchRows,
     getQueryDetails,
@@ -91,5 +123,7 @@ export {
     EditableColumnMetadata,
 
     // types
-    PlacementType
+    PlacementType,
+    ReactSelectOption,
+    EditorModel
 }

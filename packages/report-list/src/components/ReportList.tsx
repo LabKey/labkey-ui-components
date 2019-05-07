@@ -53,6 +53,12 @@ interface ReportListItemProps {
 export class ReportListItem extends React.PureComponent<ReportListItemProps> {
     onClick = () => this.props.onClick(this.props.report);
 
+    onLinkClicked = (e) => {
+        // We need to stop event propagation when clicking on a link or it will also trigger the onClick handler
+        e.stopPropagation();
+        return true;
+    };
+
     render() {
         const { name, detailsUrl, icon, iconCls, createdBy } = this.props.report;
         let createdByEl;
@@ -78,7 +84,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
                 </Media.Body>
 
                 <Media.Right align="middle">
-                    <a href={detailsUrl} className="report-list-item__external-link">
+                    <a href={detailsUrl} className="report-list-item__external-link" target="_blank" onClick={this.onLinkClicked}>
                         <span className="fa fa-external-link" />
                     </a>
                 </Media.Right>

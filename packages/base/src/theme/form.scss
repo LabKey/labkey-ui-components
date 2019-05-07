@@ -15,3 +15,15 @@
 .translator--toggle__wizard {
   color: #3495D2;
 }
+
+.container--action-button {
+  cursor: pointer;
+}
+
+.container--removal-icon {
+  color: lightgrey;
+}
+
+.container--addition-icon {
+  color: $brand-success;
+}

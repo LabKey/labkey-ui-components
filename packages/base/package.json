@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.2.0-fb-grid-bulk-edit.2",
+  "version": "0.2.0-fb-grid-bulk-edit.3",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -20,8 +20,8 @@
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
     "watch:build": "watch 'yarn build' ./src",
     "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
-    "watch:buildAndCopy" : "npm run watch:build & npm run watch:distCopy",
-    "watch" : "npm run watch"
+    "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
+    "watch": "npm run watch"
   },
   "repository": {
     "type": "git",

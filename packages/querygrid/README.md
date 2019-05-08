@@ -12,6 +12,7 @@ Query Grid for LabKey schema/query data views
 * Port URLService, AssayResolver, AssayRunResolver, ListResolver, and SamplesResolver from Biologics
 * Port insertRows function from Biologics
 * Update package for changes to @glass/base
+* Add option for AddRowsControl to have a "quick add" menu option as well 
 
 ### version 0.2.0
 *Released*: 29 April 2019

@@ -6,6 +6,10 @@ Query Grid for LabKey schema/query data views
 
 ### version ???
 *Released*: ???
+* Port HeatMap components from Biologics
+
+### version ???
+*Released*: ???
 * Port QueryFormInputs and the various input fields from Biologics
 * Port QuerySelect, SelectInput and related actions/models from Biologics
 * Add optional remove parameter to the gridInvalidate methods

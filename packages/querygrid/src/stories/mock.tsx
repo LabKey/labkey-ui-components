@@ -16,6 +16,10 @@ import noDataQuery from '../test/data/noData-getQuery.json';
 import getSchemasJson from '../test/data/getSchemas.json';
 import assayGetSchemasJson from '../test/data/assay-getSchemas.json';
 import assayGetQueriesJson from '../test/data/assay-getQueries.json';
+import sampleSetHeatMapQueryInfo from '../test/data/sampleSetHeatMap-getQueryDetails.json';
+import sampleSetHeatMapQuery from '../test/data/sampleSetHeatMap-getQuery.json';
+import assaysHeatMapQueryInfo from '../test/data/assaysHeatMap-getQueryDetails.json';
+import assaysHeatMapQuery from '../test/data/assaysHeatMap-getQuery.json';
 
 mock.setup();
 
@@ -28,6 +32,10 @@ mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
         responseBody = mixturesQueryInfo;
     else if (queryParams.schemaName.toLowerCase() === 'lists' && queryParams.queryName.toLowerCase() === 'mixturetypes')
         responseBody = mixtureTypesQueryInfo;
+    else if (queryParams.schemaName.toLowerCase() === 'exp' && queryParams.queryName.toLowerCase() === 'samplesetheatmap')
+        responseBody = sampleSetHeatMapQueryInfo;
+    else if (queryParams.schemaName.toLowerCase() === 'exp' && queryParams.queryName.toLowerCase() === 'assaysheatmap')
+        responseBody = assaysHeatMapQueryInfo;
 
     return res
         .status(200)
@@ -44,6 +52,10 @@ mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
         responseBody = mixtureTypesQuery;
     else if (bodyParams.indexOf("&query.queryname=gridwithoutdata&") > -1)
         responseBody = noDataQuery;
+    else if (bodyParams.indexOf("&query.queryname=samplesetheatmap&") > -1)
+        responseBody = sampleSetHeatMapQuery;
+    else if (bodyParams.indexOf("&query.queryname=assaysheatmap&") > -1)
+        responseBody = assaysHeatMapQuery;
 
     return res
         .status(200)

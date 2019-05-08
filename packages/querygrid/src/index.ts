@@ -56,6 +56,7 @@ import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
+import { HeatMap } from './components/heatmap/HeatMap'
 
 export {
     // constants
@@ -118,6 +119,7 @@ export {
     QuerySelect,
     SchemaListing,
     QueriesListing,
+    HeatMap,
 
     // interfaces
     EditableColumnMetadata,

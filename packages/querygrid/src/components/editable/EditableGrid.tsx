@@ -98,7 +98,7 @@ export interface EditableGridProps {
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
-    onRowCountChange?: () => any
+    onRowCountChange?: (rowCount: number) => any
 }
 
 export interface EditableGridState {
@@ -182,7 +182,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     onRowCountChange() {
         const { onRowCountChange } = this.props;
         if (onRowCountChange) {
-            onRowCountChange();
+            onRowCountChange(getEditorModel(this.getModel(this.props).getId()).rowCount);
         }
     }
 
@@ -268,7 +268,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             {rn+1}
                         </RightClickToggle>
                         <Dropdown.Menu>
-                            <MenuItem onSelect={() => removeRow(model, d, rn)}>Delete row</MenuItem>
+                            <MenuItem onSelect={() => {
+                                removeRow(model, d, rn);
+                                this.onRowCountChange();
+                            }}>Delete row</MenuItem>
                         </Dropdown.Menu>
                     </Dropdown>
                 )

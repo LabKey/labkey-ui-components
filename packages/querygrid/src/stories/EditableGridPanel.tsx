@@ -49,7 +49,7 @@ storiesOf('EditableGridPanel', module)
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
         };
 
-        const onRowCountChange = () => { console.log("Row count has changed"); };
+        const onRowCountChange = (count: number ) => { console.log("Row count has changed to " + count); };
 
         return <EditableGridPanel
             addControlProps={addRowsControl}

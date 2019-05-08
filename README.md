@@ -107,7 +107,7 @@ Generally, when doing development, you should:
 
 * Place source code in a `src` subdirectory.
 * Place typing files in a `src/typings` subdirectory.
-* Add documentation a-plenty.
+* Add documentation a-plenty and update the package `README.md` release notes as you add/fix/update the package.
 
 #### Local Development
 
@@ -146,6 +146,32 @@ For example, for the navigation package, you could do:
 * edit files
 * wait for recompile trigged by the `watch` to happen
 * ``cp -r dist /path/to/my_app/node_modules/\@glass/navigation``
+
+#### Feature branch package versioning
+
+When updates are made to any @glass npm package, the version number updates will follow [SemVer](https://semver.org/). 
+The next version you go to for a package should be based on the following guidelines:
+1. Am I fixing a bug but not adding anything new - use the next patch version 
+1. Am I adding something new, but not changing anything that already existed - user the next minor version
+1. Am I breaking something existing because of my changes - use the next major version
+
+With that in mind, we want to make use of “alpha” versioning while a feature / story is being developed 
+and only go to that next “release” version right before feature branch on glass-components is ready to 
+merge back to master. 
+
+Steps for package version numbering during feature branch development:
+1. Create your feature branch off of master, i.e. fb_feature_1, and add your changes. 
+1. When you are ready to push an alpha version up to Artifactory so you can test it in your application and
+on TeamCity, update the `package.json` version for that package. Ex. if adding a new feature and the current version is `0.1.0`,
+you would use `0.2.0-fb-feature-1.1`.
+1. If you make further edits to your feature branch and need to push new alpha versions, you would just bump the last
+digit in your package version number (i.e. `0.2.0-fb-feature-1.2`, `0.2.0-fb-feature-1.3`, etc.).
+1. Once your feature branch is complete and ready to merge, you do one more package version update to what will be the
+"release" version (i.e. `0.2.0` in this scenario) and then build/publish and complete the merge. Don't forget to update
+the release notes in your package's `README.md` file for this version number. And don't forget to update your application
+package.json for this new version number (if that applies).
+1. Once merged and the "release" version has been pushed to Artifactory, you can then go to Artifactory and delete your
+alpha versions of that package for this feature branch.
  
  
 ### Documentation
@@ -188,22 +214,20 @@ yarn run storybook
 # The storybook instance is now available at http://localhost:9001
 ```
 
-When changes are made to the source code for the components or the stories, the storybook instance will automatically reload.  However,
-if making changes to the scss files within a package, you will still have to build the package manually.  It is probably possible to
-change the `.storybook/webpack.config.js` to also do hot reloading when scss files are changed, but efforts to date have not been
-successful.
+When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
 ## Publishing
 
 In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://internal.labkey.com/wiki/Handbook/Dev/page.view?name=npmrc) to create your .npmrc file.
 If you do not have permissions to publish to this repository, contact a local Artifactory administrator who can grant you those permissions.
 
-To publish, update the package's README.md file with release notes for the
-changes included, and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
+To publish, update the package's `README.md` file with release notes for the
+changes included and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:
 
 ```sh
 yarn publish
 ```
+
 This will prompt you for the new version.  Choose a version increment in accordance with [SemVer](https://semver.org/).  This command will
 update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository. (Note,
 you could instead use `npm publish`, but you will have to update the `package.json` file manually before using that command.)

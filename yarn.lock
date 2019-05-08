@@ -1210,6 +1210,25 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
+"@glass/base@0.2.0-fb-grid-bulk-edit.2":
+  version "0.2.0-fb-grid-bulk-edit.2"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.2.0-fb-grid-bulk-edit.2.tgz#9ccc2a5b7cf2bcc02c964978001f271e2d337e8f"
+  integrity sha1-nMwqW3zyvMAslkl4AB8nHi0zfo8=
+  dependencies:
+    bootstrap "3.3.7"
+    moment "2.24.0"
+    moment-jdateformatparser "1.1.0"
+    numeral "2.0.6"
+    react-bootstrap "0.32.4"
+
+"@glass/omnibox@0.2.0-fb-grid-bulk-edit.1":
+  version "0.2.0-fb-grid-bulk-edit.1"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/omnibox/-/@glass/omnibox-0.2.0-fb-grid-bulk-edit.1.tgz#55d64e8380aaf0ad5f27228b0eb8b5e1fca54d2f"
+  integrity sha1-VdZOg4Cq8K1fJyKLDri14fylTS8=
+  dependencies:
+    "@glass/base" "0.2.0-fb-grid-bulk-edit.1"
+    react-input-autosize "2.2.1"
+
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"

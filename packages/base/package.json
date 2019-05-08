@@ -5,6 +5,9 @@
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
   "types": "dist/index.d.ts",
+  "config": {
+    "application_dir": "/path/to/application/node_modules/\\@glass/base/dist"
+  },
   "files": [
     "dist/"
   ],
@@ -15,7 +18,10 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
-    "watch": "watch 'yarn build' ./src"
+    "watch:build": "watch 'yarn build' ./src",
+    "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
+    "watch:buildAndCopy" : "npm run watch:build & npm run watch:distCopy",
+    "watch" : "npm run watch"
   },
   "repository": {
     "type": "git",

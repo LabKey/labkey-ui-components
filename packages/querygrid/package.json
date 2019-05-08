@@ -5,6 +5,9 @@
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
   "types": "dist/index.d.ts",
+  "config": {
+    "application_dir": "/path/to/application/node_modules/\\@glass/querygrid/dist"
+  },
   "files": [
     "dist/"
   ],

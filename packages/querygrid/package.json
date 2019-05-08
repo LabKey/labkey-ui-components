@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.3.0-fb-grid-bulk-edit.5",
+  "version": "0.3.0-fb-grid-bulk-edit.6",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -15,6 +15,7 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "prepublish": "yarn build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",

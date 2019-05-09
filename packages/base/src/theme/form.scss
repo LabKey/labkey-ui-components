@@ -27,3 +27,30 @@
 .container--addition-icon {
   color: $brand-success;
 }
+
+// CreatedModified component
+
+.createdmodified {
+  color: grey;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.component-crumbcreate--container {
+
+  .breadcrumb {
+    padding: 8px 20px;
+  }
+
+  .createdmodified {
+    padding: 8px 20px;
+    text-align: right;
+  }
+}
+
+.cbmb-inline {
+  display: inline-block;
+  margin-right: 10px;
+}

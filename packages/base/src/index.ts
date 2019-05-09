@@ -67,7 +67,9 @@ import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
-import { datePlaceholder } from './utils/Date';
+import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
+import { Theme, SVGIcon } from './components/SVGIcon';
+import { CreatedModified } from './components/CreatedModified';
 import {
     MessageFunction,
     NotificationItemModel,
@@ -142,6 +144,7 @@ export {
     PermissionNotAllowed,
     FormSection,
     FileAttachmentForm,
+    CreatedModified,
 
     // actions
     fetchProtocol,
@@ -152,6 +155,11 @@ export {
 
     // date functions
     datePlaceholder,
+    getUnFormattedNumber,
+
+    // images
+    Theme,
+    SVGIcon,
 
     // util functions
     caseInsensitive,

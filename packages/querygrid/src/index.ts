@@ -23,11 +23,12 @@ import {
 } from './global'
 import {
     getQueryDetails,
-    insertRows,
     invalidateQueryDetailsCacheKey,
     ISelectRowsResult,
+    insertRows,
     searchRows,
-    selectRows
+    selectRows,
+    updateRows
 } from './query/api'
 import { SCHEMAS } from './query/schemas'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
@@ -50,8 +51,10 @@ import { FileColumnRenderer } from './renderers/FileColumnRenderer'
 import { MultiValueRenderer } from './renderers/MultiValueRenderer'
 import { QueryInfoForm } from './components/forms/QueryInfoForm'
 import { LabelOverlay } from './components/forms/LabelOverlay'
-import { SelectInput } from './components/forms/SelectInput'
+import { SelectInput } from './components/forms/input/SelectInput'
 import { QuerySelect } from './components/forms/QuerySelect'
+import { PageDetailHeader } from './components/forms/PageDetailHeader'
+import { DetailEditing } from './components/forms/detail/DetailEditing'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
@@ -86,6 +89,7 @@ export {
     insertRows,
     selectRows,
     searchRows,
+    updateRows,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
 
@@ -117,6 +121,8 @@ export {
     QueryInfoForm,
     SelectInput,
     QuerySelect,
+    PageDetailHeader,
+    DetailEditing,
     SchemaListing,
     QueriesListing,
     HeatMap,

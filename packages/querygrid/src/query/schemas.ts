@@ -2,6 +2,9 @@ import { Map, List } from 'immutable'
 import { Query } from '@labkey/api'
 import { QueryInfo, SchemaDetails, SchemaQuery } from '@glass/base';
 
+// Created By / Modified By
+export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);
+
 // EXP
 const EXP_SCHEMA = 'exp';
 export const EXP_TABLES = {
@@ -28,7 +31,8 @@ export const SAMPLE_SETS = {
 
 export const SCHEMAS = {
     EXP_TABLES: EXP_TABLES,
-    SAMPLE_SETS: SAMPLE_SETS
+    SAMPLE_SETS: SAMPLE_SETS,
+    CBMB: CBMB
 };
 
 export function fetchSchemas(schemaName?: string): Promise<List<Map<string, SchemaDetails>>> {

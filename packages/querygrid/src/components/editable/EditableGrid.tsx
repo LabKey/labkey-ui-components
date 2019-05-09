@@ -81,8 +81,8 @@ function inputCellKey(col: QueryColumn, row: any): string {
 }
 
 export interface EditableColumnMetadata {
-    placeholder: string,
-    readOnly: boolean
+    placeholder?: string,
+    readOnly?: boolean
 }
 
 export interface EditableGridProps {
@@ -98,7 +98,7 @@ export interface EditableGridProps {
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
-    onRowCountChange?: (rowCount: number) => any
+    onRowCountChange?: (rowCount?: number) => any
 }
 
 export interface EditableGridState {
@@ -182,7 +182,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     onRowCountChange() {
         const { onRowCountChange } = this.props;
         if (onRowCountChange) {
-            onRowCountChange(getEditorModel(this.getModel(this.props).getId()).rowCount);
+            onRowCountChange();
         }
     }
 

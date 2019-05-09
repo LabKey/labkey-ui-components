@@ -31,8 +31,9 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/querygrid.cjs.js',
-            format: 'cjs'
+            file: 'dist/querygrid.es.js',
+            format: 'es',
+            name: 'querygrid'
         },
         plugins: [
             resolve(),
@@ -47,9 +48,8 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/querygrid.es.js',
-            format: 'es',
-            name: 'querygrid'
+            file: 'dist/querygrid.cjs.js',
+            format: 'cjs'
         },
         plugins: [
             resolve(),

@@ -11,6 +11,7 @@ import * as constants from '../test/data/constants';
 
 import './stories.scss'
 import { EditableColumnMetadata } from "../components/editable/EditableGrid";
+import { PlacementType } from "..";
 
 const CONTROLS_GROUP = "Grid controls";
 const PANEL_GROUP = "Grid";
@@ -198,4 +199,42 @@ storiesOf('EditableGridPanel', module)
                 title={"Editable grid with bulk insert capabilities"}
             />
         );
-    });
+    })
+    .add("with quick add action", () => {
+        const modelId = "editableWithQuickAdd";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true
+        });
+
+        const addRowsControl = {
+            minCount:  1,
+            maxCount:  1000,
+            nounPlural: "samples",
+            nounSingular: "sample",
+            placement: 'top' as PlacementType,
+            quickAddText: text("Quick add text", "Add Ids and Finish" ),
+            onQuickAdd: (count: number) => { window.alert("Adding " + count + (count === 1 ? " sample." : " samples.")) }
+        };
+
+        const onRowCountChange = (count: number ) => { console.log("Row count has changed to " + count); };
+
+        return (
+            <EditableGridPanel
+                addControlProps={addRowsControl}
+                allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
+                allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
+                allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
+                disabled={boolean("Disabled?", false, PANEL_GROUP)}
+                initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
+                isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
+                title={text("Title", "Grid title", PANEL_GROUP)}
+                onRowCountChange={onRowCountChange}
+                model={model}
+            />
+        );
+    })
+;

@@ -7,6 +7,7 @@ Query Grid for LabKey schema/query data views
 ### version ???
 *Released*: ???
 * Port HeatMap components from Biologics
+* PageDetailHeader, DetailEditing, updateRows and related actions/models from Biologics
 
 ### version ???
 *Released*: ???

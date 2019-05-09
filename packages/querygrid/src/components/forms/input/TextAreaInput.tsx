@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Textarea } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
-import { LabelOverlay } from './LabelOverlay'
+import { LabelOverlay } from '../LabelOverlay'
 
 
 interface TextAreaInputProps {

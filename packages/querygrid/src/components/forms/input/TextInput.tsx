@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Input } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
-import { LabelOverlay } from './LabelOverlay'
+import { LabelOverlay } from '../LabelOverlay'
 
 export interface TextInputProps {
     changeDebounceInterval?: number

@@ -6,11 +6,11 @@ import { QueryFormInputs } from "./QueryFormInputs";
 import { getQueryDetails, initQueryGridState } from "../..";
 import mock, { proxy } from "xhr-mock";
 import { mount } from "enzyme";
-import { TextInput } from "./TextInput";
-import { DateInput } from "./DateInput";
-import { CheckboxInput } from "./CheckboxInput";
-import { FileInput } from "./FileInput";
-import { SelectInput } from "./SelectInput";
+import { TextInput } from "./input/TextInput";
+import { DateInput } from "./input/DateInput";
+import { CheckboxInput } from "./input/CheckboxInput";
+import { FileInput } from "./input/FileInput";
+import { SelectInput } from "./input/SelectInput";
 
 beforeAll(() => {
     initQueryGridState();

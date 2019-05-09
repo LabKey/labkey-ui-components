@@ -7,7 +7,7 @@ import { fromJS, List } from 'immutable'
 import { Filter, Utils } from '@labkey/api'
 import { SchemaQuery, QueryColumn } from '@glass/base'
 
-import { DELIMITER, SelectInput } from './SelectInput'
+import { DELIMITER, SelectInput } from './input/SelectInput'
 import { resolveDetailFieldValue } from './renderers'
 import { initSelect } from './actions'
 import { FOCUS_FLAG } from './constants'

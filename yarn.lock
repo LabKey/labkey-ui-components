@@ -1439,7 +1439,7 @@
 
 "@labkey/dependencies@0.0.3":
   version "0.0.3"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.3.tgz#1f15cad7602e1efbf4747c5f99d67656bf80e6e4"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.3.tgz#1f15cad7602e1efbf4747c5f99d67656bf80e6e4"
   integrity sha1-HxXK12AuHvv0dHxfmdZ2Vr+A5uQ=
   dependencies:
     "@labkey/api" "0.0.16"

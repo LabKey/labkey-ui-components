@@ -50,6 +50,8 @@ import { SelectInput } from './components/forms/input/SelectInput'
 import { QuerySelect } from './components/forms/QuerySelect'
 import { PageDetailHeader } from './components/forms/PageDetailHeader'
 import { DetailEditing } from './components/forms/detail/DetailEditing'
+import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
+import { Detail } from './components/forms/detail/Detail'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
@@ -109,6 +111,7 @@ export {
     DefaultRenderer,
     FileColumnRenderer,
     MultiValueRenderer,
+    resolveDetailRenderer,
 
     // components
     LabelOverlay,
@@ -119,6 +122,7 @@ export {
     QuerySelect,
     PageDetailHeader,
     DetailEditing,
+    Detail,
     SchemaListing,
     QueriesListing,
     HeatMap,

@@ -5,6 +5,13 @@ import { QueryInfo, SchemaDetails, SchemaQuery } from '@glass/base';
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);
 
+// ASSAY
+const ASSAY_SCHEMA = 'assay';
+export const ASSAY_TABLES = {
+    ASSAY_LIST:            SchemaQuery.create(ASSAY_SCHEMA, 'AssayList'),
+    SCHEMA:                ASSAY_SCHEMA
+};
+
 // EXP
 const EXP_SCHEMA = 'exp';
 export const EXP_TABLES = {
@@ -49,6 +56,7 @@ export const SAMPLE_SETS = {
 };
 
 export const SCHEMAS = {
+    ASSAY_TABLES: ASSAY_TABLES,
     EXP_TABLES: EXP_TABLES,
     SAMPLE_SETS: SAMPLE_SETS,
     DATA_CLASSES: DATA_CLASSES,

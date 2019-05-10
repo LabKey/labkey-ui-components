@@ -9,6 +9,7 @@ Base components, models, and utility functions for LabKey applications and pages
 * port caseInsensitive, similaritySortFactory, spliceURL, and fetchProtocol functions from Biologics
 * port AssayProtocolModel model from Biologics
 * export datePlaceholder function
+* export capitalizeFirstChar utility method
 
 ### version 0.1.8
 *Released*: 25 April 2019

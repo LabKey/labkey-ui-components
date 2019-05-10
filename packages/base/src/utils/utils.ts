@@ -118,6 +118,18 @@ export function intersect(a: List<string>, b: List<string>): List<string> {
 }
 
 /**
+ * Returns a new string in which the first character of the given string is capitalized.  If
+ * the value is, empty, undefined, or not a string returns the value.
+ * @param value string to convert
+ */
+export function capitalizeFirstChar(value: string): string {
+    if (value && typeof value === 'string' && value.length > 1) {
+        return [value.substr(0,1).toUpperCase(), value.substr(1)].join('');
+    }
+    return value;
+}
+
+/**
  * Returns a copy of List<string> and ensures that in copy all values are lower case strings.
  * @param a
  */

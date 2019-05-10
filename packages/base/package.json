@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.2.0-fb-grid-bulk-edit.3",
+  "version": "0.2.0-fb-grid-bulk-edit.4",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

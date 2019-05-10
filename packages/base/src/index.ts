@@ -28,6 +28,7 @@ import {
 } from './models/model'
 import {
     applyDevTools,
+    capitalizeFirstChar,
     caseInsensitive,
     debounce,
     decodePart,
@@ -166,6 +167,7 @@ export {
 
     // util functions
     caseInsensitive,
+    capitalizeFirstChar,
     decodePart,
     encodePart,
     getSchemaQuery,

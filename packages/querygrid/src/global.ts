@@ -107,7 +107,8 @@ export function updateQueryGridModel(model: QueryGridModel, updates: any, connec
  */
 export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component) {
     setGlobal({
-        QueryGrid_models: getGlobalState('models').delete(model.getId())
+        QueryGrid_models: getGlobalState('models').delete(model.getId()),
+        QueryGrid_editors: getGlobalState('editors').delete(model.getId())
     },
 
     (global) => {

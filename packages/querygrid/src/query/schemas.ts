@@ -19,6 +19,25 @@ export const EXP_TABLES = {
     SAMPLE_SET_HEAT_MAP:    SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap')
 };
 
+// DATA CLASSES
+const DATA_CLASS_SCHEMA = 'exp.data';
+export const DATA_CLASSES = {
+    SCHEMA:                DATA_CLASS_SCHEMA,
+    CELL_LINE:             SchemaQuery.create(DATA_CLASS_SCHEMA, 'CellLine'),
+    CONSTRUCT:             SchemaQuery.create(DATA_CLASS_SCHEMA, 'Construct'),
+    EXPRESSION_SYSTEM:     SchemaQuery.create(DATA_CLASS_SCHEMA, 'ExpressionSystem'),
+    MOLECULE:              SchemaQuery.create(DATA_CLASS_SCHEMA, 'Molecule'),
+    MOLECULE_SET:          SchemaQuery.create(DATA_CLASS_SCHEMA, 'MoleculeSet'),
+    MOLECULAR_SPECIES:     SchemaQuery.create(DATA_CLASS_SCHEMA, 'MolecularSpecies'),
+    MOLECULAR_SPECIES_SEQ: SchemaQuery.create(DATA_CLASS_SCHEMA, 'MolecularSpeciesSequence'),
+    NUC_SEQUENCE:          SchemaQuery.create(DATA_CLASS_SCHEMA, 'NucSequence'),
+    PROTEIN_SEQUENCE:      SchemaQuery.create(DATA_CLASS_SCHEMA, 'ProtSequence'),
+    VECTOR:                SchemaQuery.create(DATA_CLASS_SCHEMA, 'Vector'),
+
+    INGREDIENTS:           SchemaQuery.create(DATA_CLASS_SCHEMA, 'Ingredients'),
+    MIXTURES:              SchemaQuery.create(DATA_CLASS_SCHEMA, 'Mixtures')
+};
+
 // SAMPLE SETS
 const SAMPLE_SET_SCHEMA = 'samples';
 export const SAMPLE_SETS = {
@@ -32,6 +51,7 @@ export const SAMPLE_SETS = {
 export const SCHEMAS = {
     EXP_TABLES: EXP_TABLES,
     SAMPLE_SETS: SAMPLE_SETS,
+    DATA_CLASSES: DATA_CLASSES,
     CBMB: CBMB
 };
 

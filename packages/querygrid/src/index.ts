@@ -24,6 +24,7 @@ import {
 import {
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
+    InsertRowsResponse,
     ISelectRowsResult,
     insertRows,
     searchRows,
@@ -34,13 +35,7 @@ import { SCHEMAS } from './query/schemas'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import {
-    AssayResolver,
-    AssayRunResolver,
-    ListResolver,
-    SampleSetResolver,
-    SamplesResolver
-} from './util/AppURLResolver'
+import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -86,6 +81,7 @@ export {
 
     // query related items
     ISelectRowsResult,
+    InsertRowsResponse,
     insertRows,
     selectRows,
     searchRows,

@@ -18,6 +18,9 @@ Query Grid for LabKey schema/query data views
 * Port insertRows function from Biologics
 * Update package for changes to @glass/base
 * Add option for AddRowsControl to have a "quick add" menu option as well 
+* When removing queryGridModel, also remove the corresponding editGridModel
+* Add DATA_CLASSES schema
+* convert InsertRowsResponse to class and export it
 
 ### version 0.2.0
 *Released*: 29 April 2019

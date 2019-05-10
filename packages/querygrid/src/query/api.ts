@@ -2,10 +2,10 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List, Map, OrderedMap } from 'immutable'
+import { fromJS, List, Map, OrderedMap, Record } from 'immutable'
 import { normalize, schema } from 'normalizr'
 import { Query, Filter } from '@labkey/api'
-import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery } from '@glass/base'
+import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery, caseInsensitive } from '@glass/base'
 
 import { URLResolver } from '../util/URLResolver'
 import { getQueryMetadata } from '../global'
@@ -525,9 +525,27 @@ export interface InsertRowsOptions {
     schemaQuery: SchemaQuery
 }
 
-interface InsertRowsResponse {
-    rows: Array<any>
-    schemaQuery: SchemaQuery
+export class InsertRowsResponse extends Record({
+    rows: Array<any>(),
+    schemaQuery: undefined,
+    error: undefined
+}){
+    rows: Array<any>;
+    schemaQuery: SchemaQuery;
+    error: string;
+
+    getFilter(): Filter.IFilter {
+        const rowIds = [];
+
+        // insertRows returns properties with differing case
+        this.rows.map(row => caseInsensitive(row, 'rowId')).forEach(rowId => {
+            if (rowId !== undefined) {
+                rowIds.push(rowId);
+            }
+        });
+
+        return Filter.create('RowId', rowIds, Filter.Types.IN);
+    }
 }
 
 export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
@@ -540,15 +558,16 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             rows: fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows,
             apiVersion: 13.2,
             success: (response) => {
-                resolve(Object.assign({}, {
+                resolve(new InsertRowsResponse( {
                     schemaQuery,
                     rows: response.rows
                 }));
             },
             failure: (error) => {
-                reject(Object.assign({}, {
-                    schemaQuery
-                }, error));
+                reject(new InsertRowsResponse({
+                    schemaQuery,
+                    error
+                }));
             }
         });
     });

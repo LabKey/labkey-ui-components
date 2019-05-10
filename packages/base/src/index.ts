@@ -3,9 +3,10 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
-import { fetchProtocol } from './action/actions'
+import { fetchProtocol, fetchAllAssays } from './action/actions'
 import {
     AssayProtocolModel,
+    AssayDefinitionModel,
     Container,
     IGridLoader,
     IGridResponse,
@@ -103,6 +104,7 @@ export {
     //models
     AppURL,
     AssayProtocolModel,
+    AssayDefinitionModel,
     Container,
     User,
     QueryColumn,
@@ -148,6 +150,7 @@ export {
 
     // actions
     fetchProtocol,
+    fetchAllAssays,
 
     // notification functions
     createNotification,

@@ -6,12 +6,13 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## version ???
 *Released*: ???
-* SVGIcon and CreatedModified from Biologics
+* port SVGIcon and CreatedModified from Biologics
+* port AssayDefinitionModel and fetchAllAssays from Biologics
 
 ## version ???
 *Released*: ???
-* port caseInsensitive, similaritySortFactory, spliceURL, and fetchProtocol functions from Biologics
-* port AssayProtocolModel model from Biologics
+* port caseInsensitive, similaritySortFactory, spliceURL functions from Biologics
+* port AssayProtocolModel and fetchProtocol model from Biologics
 * export datePlaceholder function
 
 ### version 0.1.8

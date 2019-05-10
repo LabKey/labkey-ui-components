@@ -2,11 +2,11 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
+import { List, Map, OrderedMap, OrderedSet, Record, fromJS } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery } from '../utils/utils'
+import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery, decodePart } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -1226,4 +1226,212 @@ export class AssayProtocolModel extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+}
+
+enum AssayDomainTypes {
+    BATCH = 'Batch',
+    RUN = 'Run',
+    RESULT = 'Result',
+}
+
+enum AssayLink {
+    BATCHES = 'batches',
+    BEGIN = 'begin',
+    DESIGN_COPY = 'designCopy',
+    DESIGN_EDIT = 'designEdit',
+    IMPORT = 'import',
+    RESULT = 'result',
+    RESULTS = 'results',
+    RUNS = 'runs'
+}
+
+interface ScopedSampleColumn {
+    domain: AssayDomainTypes;
+    column: QueryColumn;
+}
+
+const SAMPLE_SETS_SCHEMA = 'samples';
+const EXP_MATERIALS = SchemaQuery.create('exp', 'Materials');
+
+export class AssayDefinitionModel extends Record({
+    containerPath: undefined,
+    description: undefined,
+    domains: Map<string, List<QueryColumn>>(),
+    domainTypes: Map<string, string>(),
+    id: undefined,
+    importAction: undefined,
+    importController: undefined,
+    links: Map<AssayLink, string>(),
+    name: undefined,
+    projectLevel: undefined,
+    protocolSchemaName: undefined,
+    templateLink: undefined,
+    type: undefined
+}) {
+    containerPath: string;
+    description: string;
+    domains: Map<string, List<QueryColumn>>;
+    domainTypes: Map<string, string>;
+    id: number;
+    importAction: string;
+    importController: string;
+    links: Map<AssayLink, string>;
+    name: string;
+    projectLevel: boolean;
+    protocolSchemaName: string;
+    templateLink: string;
+    type: string;
+
+    static create(rawModel): AssayDefinitionModel {
+        let domains = Map<string, List<QueryColumn>>();
+        let domainTypes = Map<string, string>();
+        let links = Map<AssayLink, string>();
+
+        if (rawModel) {
+            if (rawModel.domainTypes) {
+                domainTypes = fromJS(rawModel.domainTypes);
+            }
+
+            if (rawModel.domains) {
+                const rawDomains = Object.keys(rawModel.domains).reduce((result, k) => {
+                    result[k] = List<QueryColumn>(rawModel.domains[k].map(rawColumn => QueryColumn.create(rawColumn)));
+                    return result;
+                }, {});
+                domains = Map<string, List<QueryColumn>>(rawDomains);
+            }
+
+            if (rawModel.links) {
+                links = fromJS(rawModel.links);
+            }
+        }
+
+        return new AssayDefinitionModel({
+            ...rawModel,
+            domains,
+            domainTypes,
+            links,
+            protocolSchemaName: decodePart(rawModel.protocolSchemaName),
+        });
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    getDomainByType(domainType: AssayDomainTypes): List<QueryColumn> {
+        if (this.domainTypes.has(domainType)) {
+            return this.domains.get(this.domainTypes.get(domainType));
+        }
+
+        return undefined;
+    }
+
+    // getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
+    //     let url;
+    //     // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
+    //     if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
+    //         url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
+    //         if (dataTab)
+    //             url = url.addParam('dataTab', dataTab);
+    //         if (selectionKey)
+    //             url = url.addParam('selectionKey', selectionKey);
+    //         url = url.toHref();
+    //     }
+    //     else {
+    //         url = this.links.get(AssayLink.IMPORT)
+    //     }
+    //     return url;
+    // }
+
+    hasLookup(targetSQ: SchemaQuery): boolean {
+        const isSampleSet = targetSQ.hasSchema(SAMPLE_SETS_SCHEMA);
+        const findLookup = (col) => {
+            if (col.isLookup()) {
+                const lookupSQ = SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName);
+                const isMatch = targetSQ.isEqual(lookupSQ);
+
+                // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well
+                if (isSampleSet) {
+                    return isMatch || EXP_MATERIALS.isEqual(lookupSQ);
+                }
+
+                return isMatch;
+            }
+
+            return false;
+        };
+
+        // Traditional for loop so we can short circuit.
+        for (const k of Object.keys(AssayDomainTypes)) {
+            const domainType = AssayDomainTypes[k];
+            const domainColumns = this.getDomainByType(domainType);
+
+            if (domainColumns && domainColumns.find(findLookup)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private getSampleColumnByDomain(domainType: AssayDomainTypes): QueryColumn {
+        const columns = this.getDomainByType(domainType);
+
+        if (columns) {
+            return columns.find(c => isSampleLookup(c));
+        }
+
+        return null;
+    }
+
+
+    getSampleColumn(): ScopedSampleColumn {
+        // The order matters here, we care about result, run, and batch in that order.
+        for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
+            const column = this.getSampleColumnByDomain(domain);
+
+            if (column) {
+                return {column, domain};
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * getSampleColumnLookup returns the string representation of the sample column relative from the Results table.
+     */
+    getSampleColumnLookup(): string {
+        const sampleCol = this.getSampleColumn();
+
+        if (sampleCol) {
+            if (sampleCol.domain == AssayDomainTypes.RESULT) {
+                return sampleCol.column.fieldKey;
+            } else if (sampleCol.domain == AssayDomainTypes.RUN) {
+                return `Run/${sampleCol.column.fieldKey}`;
+            } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
+                return `Run/Batch/${sampleCol.column.fieldKey}`;
+            }
+
+            throw new Error("Unexpected Assay Domain Type.");
+        }
+
+        return null;
+    }
+}
+
+function isSampleLookup(column: QueryColumn) {
+    /**
+     * 35881: Ensure that a column is a valid lookup to one of the following
+     * - exp.Materials
+     * - samples.* (any sample set)
+     */
+
+    if (!column.isLookup()) {
+        return false;
+    }
+
+    const lookupSQ = SchemaQuery.create(column.lookup.schemaName, column.lookup.queryName);
+
+    return EXP_MATERIALS.isEqual(lookupSQ) || lookupSQ.hasSchema(SAMPLE_SETS_SCHEMA);
 }

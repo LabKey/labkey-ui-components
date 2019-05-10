@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.3.0-fb-sample-details.1",
+  "version": "0.3.0-fb-sample-details.2",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "^0.2.0-fb-grid-bulk-edit.3",
-    "@glass/omnibox": "^0.2.0-fb-grid-bulk-edit.3",
+    "@glass/base": "0.2.0-fb-sample-details.1",
+    "@glass/omnibox": "0.2.0-fb-sample-details.1",
     "@types/prop-types": "15.5.5",
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",

@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import {Utils} from '@labkey/api'
 
 import { imageURL } from "../url/ActionURL";
 
@@ -15,7 +16,7 @@ export enum Theme {
 
 export function iconURL(iconDir: string, prefix: string, theme?: Theme): string {
 
-    if (!prefix) {
+    if (!prefix || !Utils.isString(prefix)) {
         prefix = 'default';
     }
 

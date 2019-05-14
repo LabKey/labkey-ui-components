@@ -24,10 +24,6 @@ const namedExports = {
     '../../node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
 };
 
-const include = [
-    /node_modules/
-]
-
 export default [
     {
         external: external,
@@ -38,7 +34,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports, include}),
+            commonjs({namedExports}),
             typescript(),
             sass({
                 output: 'dist/domainproperties.css'
@@ -55,7 +51,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports, include}),
+            commonjs({namedExports}),
             typescript(),
             sass()
         ]
@@ -71,7 +67,7 @@ export default [
         },
         plugins: [
             resolve(),
-            commonjs({namedExports, include}),
+            commonjs({namedExports}),
             typescript(),
             sass()
         ]

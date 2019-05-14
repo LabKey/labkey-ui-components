@@ -4,12 +4,11 @@ import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import {Alert} from '@glass/base';
+import {Alert, ConfirmModal} from '@glass/base';
 
 import {DomainRow} from "./DomainRow";
 import {DomainDesign, DomainField} from "../models";
 import {getIndexFromId, updateDomainField} from "../actions/actions";
-import DomainConfirm from "./DomainConfirm";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -218,7 +217,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
     renderFieldRemoveConfirm() {
         return (
-            <DomainConfirm
+            <ConfirmModal
                 title='Confirm Field Deletion'
                 msg='Are you sure you want to remove this field? All of its data will be deleted as well.'
                 onConfirm={this.onDeleteConfirm}

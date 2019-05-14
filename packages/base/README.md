@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Add ConfirmModal component
+
 ### version 0.1.8
 *Released*: 25 April 2019
 * Add FileAttachmentForm and related components

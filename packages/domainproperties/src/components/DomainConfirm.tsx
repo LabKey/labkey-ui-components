@@ -12,7 +12,14 @@ interface IDomainConfirm {
     confirmVariant: string
 }
 
+// TODO move this to @glass/base and rename to ConfirmDialog or ConfirmModal
 export default class DomainConfirm extends React.PureComponent<IDomainConfirm, any> {
+    static defaultProps = {
+        show: true,
+        title: 'Confirm',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No'
+    };
 
     render() {
         const { show, title, msg, onConfirm, onCancel, confirmButtonText, cancelButtonText, confirmVariant } = this.props;

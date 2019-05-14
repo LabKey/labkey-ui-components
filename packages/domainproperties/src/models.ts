@@ -149,7 +149,6 @@ interface IDomainField {
     updatedField?: boolean
     newField?: boolean
     renderUpdate?: boolean
-    displayId?: number
 }
 
 export class DomainField extends Record({
@@ -167,8 +166,7 @@ export class DomainField extends Record({
     scale: undefined,
     updatedField: undefined,
     newField: undefined,
-    renderUpdate: undefined,
-    displayId: undefined
+    renderUpdate: undefined
 }) implements IDomainField {
     propertyId: number;
     propertyURI: string;
@@ -185,7 +183,6 @@ export class DomainField extends Record({
     updatedField: boolean;
     newField: boolean;
     renderUpdate: boolean;
-    displayId: number;
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();

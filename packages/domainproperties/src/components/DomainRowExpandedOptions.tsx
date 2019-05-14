@@ -1,10 +1,10 @@
 import * as React from "react";
-import {DomainField} from "../models";
-import {Row} from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
+import {Alert} from "@glass/base";
 
+import {DomainField} from "../models";
 
 interface IDomainRowExpandedOptions {
-    fieldId: number,
     domainField: DomainField
 }
 
@@ -12,7 +12,10 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
     render() {
         return(
-          <Row className='domain-row-expanded domain-row-expanded-height'>
+          <Row className='domain-row-expanded'>
+              <Col xs={12}>
+                <Alert bsStyle={'info'}>Expanded state domain row options coming soon...</Alert>
+              </Col>
           </Row>
         );
     }

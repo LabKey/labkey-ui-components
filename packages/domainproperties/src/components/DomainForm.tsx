@@ -1,13 +1,15 @@
 import * as React from "react";
+import {List} from "immutable";
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import {Alert} from '@glass/base';
+
 import {DomainRow} from "./DomainRow";
 import {DomainDesign, DomainField} from "../models";
 import {getIndexFromId, updateDomainField} from "../actions/actions";
 import DomainConfirm from "./DomainConfirm";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
-import {List} from "immutable";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -17,26 +19,26 @@ interface IDomainFormInput {
 }
 
 interface IDomainFormState {
-    idCount: number,
-    expanded: number,
-    showConfirm: boolean,
-    deleteTarget: string
+    expandedRowIndex: number,
+    showConfirm: boolean
 }
 
 /**
  * Form containing all properties of a domain
  */
 export default class DomainForm extends React.Component<IDomainFormInput, IDomainFormState> {
+    static defaultProps = {
+        helpNoun: 'domain',
+        helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+    };
 
     constructor(props)
     {
         super(props);
 
         this.state = {
-            idCount: 0,
-            expanded: undefined,
-            showConfirm: false,
-            deleteTarget: undefined
+            expandedRowIndex: undefined,
+            showConfirm: false
         };
 
     }
@@ -45,50 +47,43 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         return !!(domainDesign);
     }
 
-    onFieldExpand = (evt: any) => {
+    onFieldExpandToggle = (evt: any) => {
         const { domain, onChange } = this.props;
-        const prevExpanded = this.state.expanded;
+        const prevExpanded = this.state.expandedRowIndex;
 
         // Bit of a hack to work with fontawesome svg icon
         const id = evt.target.id || evt.target.parentElement.id || evt.target.parentElement.parentElement.id;
-        let index = -1;
-        if (!!id) {
-            index = parseInt(getIndexFromId(id));
-        }
+        let index = id ? parseInt(getIndexFromId(id)) : undefined;
 
-        this.setState(() => ({
-            expanded: (this.state.expanded === index ? null : index)
-        }));
-
-        const newFields = domain.fields.map((field) => {
-            if (field.displayId === index || field.displayId === prevExpanded) {
-                return field.set("renderUpdate", true);
-            }
-            return field.set("renderUpdate", false);
+        this.setState((state) => ({expandedRowIndex: state.expandedRowIndex === index ? undefined : index}));
+        const newFields = domain.fields.map((field, i) => {
+            return field.set("renderUpdate", (i === prevExpanded || i === index));
         });
 
-        const newDomain = domain.merge({
-            fields: newFields
-        }) as DomainDesign;
+        const newDomain = domain.merge({fields: newFields}) as DomainDesign;
 
         if (onChange) {
             onChange(newDomain, false);
         }
     };
 
-    onDeleteField = () => {
+    onDeleteConfirm = () => {
         const {domain, onChange} = this.props;
-        const index = parseInt(getIndexFromId(this.state.deleteTarget));
+        const {expandedRowIndex} = this.state;
 
-        const newFields = domain.fields.filter((field) => {
-            return field.displayId !== index;
+        // filter to the non-removed fields
+        let newFields = domain.fields.filter((field, i) => {
+            return i !== expandedRowIndex;
         });
 
-        const newDomain = domain.merge({
-            fields: newFields
-        }) as DomainDesign;
+        // make sure to force the domain renderUpdate
+        newFields = newFields.map((field) => {
+            return field.set("renderUpdate", true) as DomainField;
+        });
 
-        this.setState({showConfirm: false})
+        const newDomain = domain.merge({fields: newFields}) as DomainDesign;
+
+        this.setState(() => ({showConfirm: false, expandedRowIndex: undefined}));
 
         if (onChange) {
             onChange(newDomain, true);
@@ -97,30 +92,19 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
     onAddField = () => {
         const {domain, onChange} = this.props;
-        let alreadyTaken;
-        let index = this.state.idCount;
-
-        // Loop through and find next not taken displayId integer
-        do {
-            index++;
-            alreadyTaken = domain.fields.reduce((accum, field) => {
-                return accum || (field.displayId === index)
-            }, false)
-        } while(alreadyTaken);
-
-        this.setState({idCount: index});
 
         const newDomain = domain.merge({
             fields: domain.fields.push(new DomainField({
                 newField: true,
-                renderUpdate: true,
-                displayId: index
+                renderUpdate: true
             }))
         }) as DomainDesign;
 
         if (onChange) {
             onChange(newDomain, true);
         }
+
+        this.setState(() => ({expandedRowIndex: newDomain.fields.size - 1}));
     };
 
     onFieldChange = (evt) => {
@@ -138,12 +122,21 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         }
     };
 
-    onDelete = (evt) => {
-        this.setState({showConfirm: true, deleteTarget: evt.target.id})
+    onDeleteBtnHandler = (evt) => {
+        const { domain } = this.props;
+        const { expandedRowIndex } = this.state;
+
+        // only show the confirm delete for previously existing fields
+        if (domain.fields.get(expandedRowIndex).propertyId) {
+            this.setState(() => ({showConfirm: true}));
+        }
+        else {
+            this.onDeleteConfirm();
+        }
     };
 
-    cancelDelete = () => {
-        this.setState({showConfirm: false})
+    onConfirmCancel = () => {
+        this.setState(() => ({showConfirm: false}));
     };
 
     onBeforeDragStart = (result) => {
@@ -169,11 +162,8 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
         let destIndex = 0;
         let srcIndex = result.source.index;
-        let idIndex = -1;
         const id = result.draggableId;
-        if (id) {
-            idIndex = parseInt(getIndexFromId(id))
-        }
+        let idIndex = id ? parseInt(getIndexFromId(id)) : undefined;
 
         if (result.destination) {
             destIndex = result.destination.index;
@@ -182,22 +172,22 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         if (srcIndex === destIndex)
             return;
 
-        let movedField = domain.fields.find((field) => field.displayId === idIndex);
+        let movedField = domain.fields.find((field, i) => i === idIndex);
 
         const newFields = List<DomainField>().asMutable();
-        domain.fields.forEach((field, index) => {
+        domain.fields.forEach((field, i) => {
 
             // move down
-            if (field.displayId !== idIndex && srcIndex < destIndex) {
+            if (i !== idIndex && srcIndex < destIndex) {
                 newFields.push(field.merge({"renderUpdate": true}) as DomainField);
             }
 
-            if (index === destIndex) {
+            if (i === destIndex) {
                 newFields.push(movedField.merge({"renderUpdate": true}) as DomainField);
             }
 
             // move up
-            if (field.displayId !== idIndex && srcIndex > destIndex) {
+            if (i !== idIndex && srcIndex > destIndex) {
                 newFields.push(field.merge({"renderUpdate": true}) as DomainField);
             }
 
@@ -210,6 +200,8 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         if (onChange) {
             onChange(newDomain, true);
         }
+
+        this.setState(() => ({expandedRowIndex: undefined}));
     };
 
     getAddFieldButton() {
@@ -224,112 +216,121 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         )
     }
 
+    renderFieldRemoveConfirm() {
+        return (
+            <DomainConfirm
+                title='Confirm Field Deletion'
+                msg='Are you sure you want to remove this field? All of its data will be deleted as well.'
+                onConfirm={this.onDeleteConfirm}
+                onCancel={this.onConfirmCancel}
+                confirmVariant='danger'
+            />
+        )
+    }
+
+    renderRowHeaders() {
+        return (
+            <Row className='domain-form-hdr-row'>
+                <Col xs={3}>
+                    <b>Field Name</b>
+                </Col>
+                <Col xs={2}>
+                    <b>Date Type</b>
+                </Col>
+                <Col xs={1}>
+                    <b>Required?</b>
+                </Col>
+                <Col xs={6}>
+                    <b>Details</b>
+                </Col>
+            </Row>
+        )
+    }
+
+    renderEmptyDomain() {
+        const {helpURL, helpNoun} = this.props;
+
+        return (
+            <Panel className='domain-form-no-field-panel'>
+                {'No fields have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
+                <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
+            </Panel>
+        )
+    }
+
+    renderSearchRow() {
+        return (
+            <Row className='domain-form-search'>
+                <Col xs={3}>
+                    <FormControl id={"dom-search-" + name} type="text" placeholder={'Filter Fields'}
+                                 disabled={true}/>
+                </Col>
+                <Col xs={1}/>
+                <Col xs={8} md={6} lg={4}>
+                    <Col xs={5} className='domain-zero-padding'>
+                        <span>Show Fields Defined By: </span>
+                    </Col>
+                    <Col xs={7} className='domain-zero-padding'>
+                        <FormControl id={"dom-user-" + name} type="text" placeholder={'User'}
+                                     disabled={true}/>
+                    </Col>
+                </Col>
+            </Row>
+        )
+    }
+
     render() {
-        const {domain, helpURL, helpNoun} = this.props;
+        const {domain} = this.props;
+        const {showConfirm, expandedRowIndex} = this.state;
 
         return (
             <>
-                {this.isValidDomain(domain) ? (
-                        <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                            <DomainConfirm show={this.state.showConfirm}
-                                           title='Confirm Field Deletion'
-                                           msg='Are you sure you want to remove this field? All of its data will be deleted as well.'
-                                           onConfirm={this.onDeleteField}
-                                           onCancel={this.cancelDelete}
-                                           confirmButtonText='Delete'
-                                           cancelButtonText='Cancel'
-                                           confirmVariant='danger'/>
-                            <Panel className={"domain-form-panel"}>
-                                <Panel.Heading>
-                                    <div
-                                        className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
-                                </Panel.Heading>
-                                <Panel.Body>
-                                    <Row className='domain-form-hdr-row'>
-                                        <p>Adjust fields and their properties that will be shown within this domain. Click a
-                                            row
-                                            to
-                                            access additional options. Drag and drop rows to re-order them.</p>
-                                    </Row>
-                                    <Row className='domain-form-search'>
-                                        <Col xs={3}>
-                                            <FormControl id={"dom-search-" + name} type="text" placeholder={'Filter Fields'}
-                                                         disabled={true}/>
-                                        </Col>
-                                        <Col xs={1}/>
-                                        <Col xs={8} md={6} lg={4}>
-                                            <Col xs={5} className='domain-zero-padding'>
-                                                <span>Show Fields Defined By: </span>
-                                            </Col>
-                                            <Col xs={7} className='domain-zero-padding'>
-                                                <FormControl id={"dom-user-" + name} type="text" placeholder={'User'}
-                                                             disabled={true}/>
-                                            </Col>
-                                        </Col>
-                                    </Row>
-                                    {domain.fields.size > 0 ?
-                                        <>
-                                            <Row className='domain-form-hdr-row'>
-                                                <Col xs={3}>
-                                                    <b>Field Name</b>
-                                                </Col>
-                                                <Col xs={2}>
-                                                    <b>Date Type</b>
-                                                </Col>
-                                                <Col xs={1}>
-                                                    <b>Required?</b>
-                                                </Col>
-                                                <Col xs={6}>
-                                                    <b>Details</b>
-                                                </Col>
-                                            </Row>
-                                            <Droppable droppableId='domain-form-droppable'>
-                                                {(provided) => (
-                                                    <div ref={provided.innerRef}
-                                                         {...provided.droppableProps}>
-                                                        <Form>
-                                                            {(domain.fields.map((field, index) => {
-                                                                let id = typeof field.displayId !== 'undefined' ? field.displayId : field.propertyId;
-                                                                return <DomainRow
-                                                                    key={'domain-row-key-' + id}
-                                                                    onChange={this.onFieldChange}
-                                                                    field={field}
-                                                                    onExpand={this.onFieldExpand}
-                                                                    onDelete={this.onDelete}
-                                                                    expanded={this.state.expanded === id}
-                                                                    index={index}
-                                                                    id={id}
-                                                                />
-                                                            }))}
-                                                            {provided.placeholder}
-                                                        </Form>
-
-                                                    </div>
-                                                )}
-                                            </Droppable>
-                                        </>
-                                        :
-                                        <>
-                                            <Panel
-                                                className='domain-form-no-field-panel'>{'No fields have been defined for this '
-                                            + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
-                                                <a href={helpURL}>{' creating ' + helpNoun + ' designs '}
-                                                </a> in our documentation.
-                                            </Panel>
-                                        </>
-                                    }
-                                    {this.getAddFieldButton()}
-                                </Panel.Body>
-                            </Panel>
-                        </DragDropContext>
-                ) :
-                    <Panel className='.domain-form-panel'>
-                        <Panel.Body>
-                            <Panel className='domain-form-no-field-panel'>Invalid domain design.</Panel>
-                            {this.getAddFieldButton()}
-                        </Panel.Body>
-                    </Panel>
-                }
+                {showConfirm && this.renderFieldRemoveConfirm()}
+                <Panel className={"domain-form-panel"}>
+                    <Panel.Heading>
+                        <div className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
+                    </Panel.Heading>
+                    <Panel.Body>
+                        {this.isValidDomain(domain) ? (
+                            <>
+                                <Row className='domain-form-hdr-row'>
+                                    <p>Adjust fields and their properties that will be shown within this domain. Click a row
+                                        to access additional options. Drag and drop rows to re-order them.</p>
+                                </Row>
+                                {this.renderSearchRow()}
+                                {domain.fields.size > 0 ?
+                                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
+                                        {this.renderRowHeaders()}
+                                        <Droppable droppableId='domain-form-droppable'>
+                                            {(provided) => (
+                                                <div ref={provided.innerRef}
+                                                     {...provided.droppableProps}>
+                                                    <Form>
+                                                        {(domain.fields.map((field, i) => {
+                                                            return <DomainRow
+                                                                key={'domain-row-key-' + i}
+                                                                field={field}
+                                                                index={i}
+                                                                expanded={expandedRowIndex === i}
+                                                                onChange={this.onFieldChange}
+                                                                onExpand={this.onFieldExpandToggle}
+                                                                onDelete={this.onDeleteBtnHandler}
+                                                            />
+                                                        }))}
+                                                        {provided.placeholder}
+                                                    </Form>
+                                                </div>
+                                            )}
+                                        </Droppable>
+                                    </DragDropContext>
+                                    : this.renderEmptyDomain()
+                                }
+                                {this.getAddFieldButton()}
+                            </>
+                        ) :<Alert>Invalid domain design.</Alert>
+                        }
+                    </Panel.Body>
+                </Panel>
             </>
         );
     }

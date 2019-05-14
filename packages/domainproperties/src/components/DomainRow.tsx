@@ -175,7 +175,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                         <Row key={createFormInputId("domainrow", index)}>
                             {this.renderBaseFields()}
                             <Col xs={6}>
-                                {!expanded && this.getDetails()}
+                                {this.getDetails()}
                                 {this.renderButtons()}
                             </Col>
                         </Row>

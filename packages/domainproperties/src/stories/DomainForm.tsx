@@ -12,12 +12,18 @@ import { DomainDesign } from "../models";
 import data from "../test/data/property-getDomain.json";
 import './stories.scss'
 
-class DomainFormContainer extends React.PureComponent<any, any> {
-    constructor(props) {
+interface Props {
+    data: {}
+    helpNoun?: any
+    helpURL?: any
+}
+
+class DomainFormContainer extends React.PureComponent<Props, any> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
-            domain: DomainDesign.create(data),
+            domain: DomainDesign.create(props.data),
         };
     }
 
@@ -31,8 +37,11 @@ class DomainFormContainer extends React.PureComponent<any, any> {
         const { domain } = this.state;
 
         return (
-            <DomainForm domain={domain} onChange={this.onChange} helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'
-                        helpNoun='list'/>
+            <DomainForm
+                {...this.props}
+                domain={domain}
+                onChange={this.onChange}
+            />
         )
     }
 }
@@ -40,15 +49,18 @@ class DomainFormContainer extends React.PureComponent<any, any> {
 storiesOf("DomainForm", module)
     .addDecorator(withKnobs)
     .add("with empty domain", () => {
-        const domain = new DomainDesign();
-
         return (
-            <DomainForm domain={domain} onChange={() => {}} helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=listDefineFields'
-                        helpNoun='list'/>
+            <DomainFormContainer
+                data={undefined}
+                helpNoun={text('helpNoun', undefined)}
+                helpURL={text('helpURL', undefined)}
+            />
         )
     })
     .add("with domain properties", () => {
         return (
-            <DomainFormContainer/>
+            <DomainFormContainer
+                data={data}
+            />
         )
     });

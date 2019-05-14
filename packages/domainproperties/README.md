@@ -4,6 +4,12 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Epic 5420: Domain Designer, allow add/remove of field rows in domain
+    - updated display for domain state with no fields
+    - including drag-n-drop to reorder fields
+
 ### version 0.0.8
 *Released*: 26 April 2019
 * Epic 5419: Domain Designer, Edit standard settings name/type/required

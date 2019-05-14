@@ -103,7 +103,9 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
             onChange(newDomain, true);
         }
 
-        this.setState(() => ({expandedRowIndex: newDomain.fields.size - 1}));
+        this.setState(() => ({expandedRowIndex: undefined}));
+
+        // TODO give focus to the "Name" field for the newly added row
     };
 
     onFieldChange = (evt) => {

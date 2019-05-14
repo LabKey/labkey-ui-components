@@ -81,9 +81,88 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
         )
     }
 
+    renderBaseFields() {
+        const {index, field, onChange} = this.props;
+
+        return (
+            <>
+                <Col xs={3}>
+                    <Tip caption={'Name'}>
+                        <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
+                                     key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
+                                     onChange={onChange}/>
+                    </Tip>
+                </Col>
+                <Col xs={2}>
+                    <Tip caption={'Data Type'}>
+                        <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                                key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                                className={'form-control'} onChange={onChange} value={getDataType(field).name}
+                                disabled={!!field.propertyId}>
+                            {
+                                PROP_DESC_TYPES.map(function (type) {
+                                    if (type.display)
+                                    {
+                                        return <option
+                                            key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
+                                            value={type.name}>{type.display}</option>
+                                    }
+                                    return ''
+                                })
+                            }
+                        </select>
+                    </Tip>
+                </Col>
+                <Col xs={1}>
+                    <div className='domain-field-checkbox'>
+                        <Tip caption={'Required?'}>
+                            <Checkbox className='domain-field-checkbox'
+                                      id={createFormInputId(DOMAIN_FIELD_REQ, index)}
+                                      key={createFormInputId(DOMAIN_FIELD_REQ, index)}
+                                      checked={field.required} onChange={onChange}/>
+                        </Tip>
+                    </div>
+                </Col>
+            </>
+        )
+    }
+
+    renderButtons() {
+        const {index, onDelete, onExpand, expanded} = this.props;
+
+        return (
+            <div className={'pull-right'}>
+                {expanded &&
+                <>
+                    <Button
+                        bsClass='btn btn-danger'
+                        className='domain-row-button'
+                        onClick={onDelete}
+                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
+                    >
+                        Remove Field
+                    </Button>
+                    <Button
+                        disabled={true}
+                        bsClass='btn btn-light'
+                        className='domain-row-button'
+                    >
+                        Advanced Settings
+                    </Button>
+                </>
+                }
+                <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
+                    <Tip caption={'Additional Settings'}>
+                        <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)} icon={faPencilAlt}/>
+                    </Tip>
+                </div>
+            </div>
+        )
+    }
+
     render()
     {
-        const {index, field, onChange, onDelete, onExpand, expanded} = this.props;
+        const {index, field, expanded} = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
@@ -94,71 +173,10 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                          ref={provided.innerRef}
                     >
                         <Row key={createFormInputId("domainrow", index)}>
-                            <Col xs={3}>
-                                <Tip caption={'Name'}>
-                                    <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
-                                                 key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                                 onChange={onChange}/>
-                                </Tip>
-                            </Col>
-                            <Col xs={2}>
-                                <Tip caption={'Data Type'}>
-                                    <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                            key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                            className={'form-control'} onChange={onChange} value={getDataType(field).name}
-                                            disabled={!!field.propertyId}>
-                                        {
-                                            PROP_DESC_TYPES.map(function (type) {
-                                                if (type.display)
-                                                {
-                                                    return <option
-                                                        key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
-                                                        value={type.name}>{type.display}</option>
-                                                }
-                                                return ''
-                                            })
-                                        }
-                                    </select>
-                                </Tip>
-                            </Col>
-                            <Col xs={1}>
-                                <div className='domain-field-checkbox'>
-                                    <Tip caption={'Required?'}>
-                                        <Checkbox className='domain-field-checkbox'
-                                                  id={createFormInputId(DOMAIN_FIELD_REQ, index)}
-                                                  key={createFormInputId(DOMAIN_FIELD_REQ, index)}
-                                                  checked={field.required} onChange={onChange}/>
-                                    </Tip>
-                                </div>
-                            </Col>
+                            {this.renderBaseFields()}
                             <Col xs={6}>
                                 {!expanded && this.getDetails()}
-                                <div className={'pull-right'}>
-                                    {expanded &&
-                                    <>
-                                        <Button
-                                            bsClass='btn btn-danger'
-                                            className='domain-row-button'
-                                            onClick={onDelete}
-                                            id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                                        >
-                                            Remove Field
-                                        </Button>
-                                        <Button
-                                            disabled={true}
-                                            bsClass='btn btn-light'
-                                            className='domain-row-button'
-                                        >
-                                            Advanced Settings
-                                        </Button>
-                                    </>
-                                    }
-                                    <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
-                                        <Tip caption={'Additional Settings'}>
-                                            <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)} icon={faPencilAlt}/>
-                                        </Tip>
-                                    </div>
-                                </div>
+                                {this.renderButtons()}
                             </Col>
                         </Row>
                         {expanded &&

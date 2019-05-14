@@ -79,13 +79,7 @@
 }
 
 .domain-row-remove-button {
-  background-color: $red-button;
+  background-color: $brand-danger;
   background-image: none;
   color: white;
-}
-
-.domain-row-remove-button:hover {
-  color: $red-button;
-  background-image: none;
-  background-color: white;
 }

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Button, Modal} from "react-bootstrap";
 
-interface IDomainConfirm {
+interface Props {
     show: boolean
     title: string
     msg: string
@@ -12,8 +12,7 @@ interface IDomainConfirm {
     confirmVariant: string
 }
 
-// TODO move this to @glass/base and rename to ConfirmDialog or ConfirmModal
-export default class DomainConfirm extends React.PureComponent<IDomainConfirm, any> {
+export class ConfirmModal extends React.PureComponent<Props, any> {
     static defaultProps = {
         show: true,
         title: 'Confirm',

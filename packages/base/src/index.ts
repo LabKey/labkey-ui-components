@@ -68,6 +68,7 @@ import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
+import { ConfirmModal } from './components/ConfirmModal'
 import {
     MessageFunction,
     NotificationItemModel,
@@ -142,6 +143,7 @@ export {
     PermissionNotAllowed,
     FormSection,
     FileAttachmentForm,
+    ConfirmModal,
 
     // notification functions
     createNotification,

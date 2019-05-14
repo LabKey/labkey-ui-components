@@ -66,9 +66,12 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
     <div
       className="domain-form-no-field-panel panel panel-default"
     >
-      No fields have been defined for this undefined yet. Start by using the “Add Field” button below. Learn more about 
-      <a>
-         creating undefined designs 
+      No fields have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
+      <a
+        href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        target="_blank"
+      >
+         creating domain designs 
       </a>
        in our documentation.
     </div>
@@ -2127,9 +2130,12 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
     <div
       className="domain-form-no-field-panel panel panel-default"
     >
-      No fields have been defined for this undefined yet. Start by using the “Add Field” button below. Learn more about 
-      <a>
-         creating undefined designs 
+      No fields have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
+      <a
+        href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        target="_blank"
+      >
+         creating domain designs 
       </a>
        in our documentation.
     </div>
@@ -3096,9 +3102,12 @@ exports[`DomainFormDisplay with empty domain form 1`] = `
     <div
       className="domain-form-no-field-panel panel panel-default"
     >
-      No fields have been defined for this undefined yet. Start by using the “Add Field” button below. Learn more about 
-      <a>
-         creating undefined designs 
+      No fields have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
+      <a
+        href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        target="_blank"
+      >
+         creating domain designs 
       </a>
        in our documentation.
     </div>

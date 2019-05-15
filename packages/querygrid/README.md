@@ -16,6 +16,7 @@ Query Grid for LabKey schema/query data views
 * When removing queryGridModel, also remove the corresponding editGridModel
 * Add DATA_CLASSES schema
 * convert InsertRowsResponse to class and export it
+* add addColumns and removeColumn for modifying an EditableGrid model (and the corresponding QueryGriModel)
 
 ### version 0.2.0
 *Released*: 29 April 2019

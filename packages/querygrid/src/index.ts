@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { EditorModel, getStateQueryGridModel } from './model'
-import { getSelected, gridIdInvalidate, gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalidate, schemaGridInvalidate } from './actions'
+import { addColumns, getSelected, gridIdInvalidate, gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalidate, removeColumn, schemaGridInvalidate } from './actions'
 import { getEditorModel, getQueryGridModel, initQueryGridState, removeQueryGridModel, setQueryColumnRenderers, setQueryMetadata } from './global'
 import { getQueryDetails, insertRows, InsertRowsResponse, invalidateQueryDetailsCacheKey, ISelectRowsResult, searchRows, selectRows } from './query/api'
 import { SCHEMAS } from './query/schemas'
@@ -59,6 +59,10 @@ export {
     searchRows,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
+
+    // editable grid related items
+    addColumns,
+    removeColumn,
 
     // location related items
     Location,

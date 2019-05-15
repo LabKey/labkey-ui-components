@@ -4,7 +4,7 @@ import {
     DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE,
     DOMAIN_FIELD_DETAILS,
     DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_REQ,
+    DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE
 } from "../constants";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -117,8 +117,8 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                     <div className='domain-field-checkbox'>
                         <Tip caption={'Required?'}>
                             <Checkbox className='domain-field-checkbox'
-                                      id={createFormInputId(DOMAIN_FIELD_REQ, index)}
-                                      key={createFormInputId(DOMAIN_FIELD_REQ, index)}
+                                      id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
+                                      key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       checked={field.required} onChange={onChange}/>
                         </Tip>
                     </div>
@@ -162,7 +162,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
 
     render()
     {
-        const {index, field, expanded} = this.props;
+        const {index, field, expanded, onChange} = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
@@ -180,7 +180,7 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                             </Col>
                         </Row>
                         {expanded &&
-                            <DomainRowExpandedOptions domainField={field}/>
+                            <DomainRowExpandedOptions field={field} index={index} onChange={onChange}/>
                         }
                     </div>
                 )}

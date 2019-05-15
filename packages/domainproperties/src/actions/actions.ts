@@ -4,12 +4,7 @@
  */
 import {Domain} from "@labkey/api";
 import {List} from "immutable";
-import {
-    DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_PREFIX,
-    DOMAIN_FIELD_REQ,
-    DOMAIN_FIELD_TYPE
-} from "../constants";
+import {DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE} from "../constants";
 import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES} from "../models";
 
 /**
@@ -114,9 +109,6 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
             newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
 
             switch (type) {
-                case DOMAIN_FIELD_NAME:
-                    newField = newField.set('name', value);
-                    break;
                 case DOMAIN_FIELD_TYPE:
                     PROP_DESC_TYPES.map((type) => {
                         if (type.name === value) {
@@ -125,8 +117,8 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
                         }
                     });
                     break;
-                case DOMAIN_FIELD_REQ:
-                    newField = newField.set('required', value);
+                default:
+                    newField = newField.set(type, value);
                     break;
             }
         }

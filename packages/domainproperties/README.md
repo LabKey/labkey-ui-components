@@ -9,6 +9,7 @@ Domain property related components for LabKey domains
 * Epic 5420: Domain Designer, allow add/remove of field rows in domain
     - updated display for domain state with no fields
     - including drag-n-drop to reorder fields
+* Epic 5716: Domain Designer, add expended field inputs for description, url, label, and import aliases
 
 ### version 0.0.8
 *Released*: 26 April 2019

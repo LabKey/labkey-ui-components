@@ -14,8 +14,7 @@ import { resolveRenderer } from "../renderers";
 import { MultiValueRenderer } from "../../../renderers/MultiValueRenderer";
 import { AliasRenderer } from "../../../renderers/AliasRenderer";
 import { AppendUnits } from "../../../renderers/AppendUnits";
-
-// import { Select } from './Input/Select'
+import { SelectRowsSelect } from "../input/SelectRowsSelect";
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
@@ -91,18 +90,17 @@ export function resolveDetailEditRenderer(col: QueryColumn): React.ReactNode {
                 // 29232: When displaying a lookup, always use the value
                 const multiple = col.isJunctionLookup(),
                     joinValues = multiple && !col.isDataInput();
-                // TODO need to figure this part out for the part from Biologics
-                // return (
-                //     <Select
-                //         containerClass="form-group row"
-                //         inputClass="col-sm-12"
-                //         joinValues={joinValues}
-                //         key={col.name}
-                //         multiple={multiple}
-                //         queryColumn={col}
-                //         value={resolveDetailFieldValue(data, true)}
-                //         required={col.required}/>
-                // );
+                return (
+                    <SelectRowsSelect
+                        containerClass="form-group row"
+                        inputClass="col-sm-12"
+                        joinValues={joinValues}
+                        key={col.name}
+                        multiple={multiple}
+                        queryColumn={col}
+                        value={resolveDetailFieldValue(data, true)}
+                        required={col.required}/>
+                );
             }
         }
 

@@ -519,6 +519,34 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
     });
 }
 
+interface ErrorMessage {
+    //msg: string // Duplicate
+    message: string
+}
+
+interface InsertRowError {
+    errors: Array<ErrorMessage>
+}
+
+export class InsertRowsErrorResponse extends Record ({
+    errors: undefined,
+    errorCount: 0,
+    exception: undefined,
+    extraContext: undefined,
+    success: false
+}) {
+
+    errors: Array<InsertRowError>;
+    errorCount: number;
+    exception: string;
+    extraContext: any;
+    success: boolean;
+
+    getErrorMessage() {
+        return this.exception; // TODO make this more user friendly by including row number and excluding techincal details
+    }
+}
+
 export interface InsertRowsOptions {
     fillEmptyFields?: boolean
     rows: List<any>
@@ -532,7 +560,7 @@ export class InsertRowsResponse extends Record({
 }){
     rows: Array<any>;
     schemaQuery: SchemaQuery;
-    error: string;
+    error: InsertRowsErrorResponse;
 
     getFilter(): Filter.IFilter {
         const rowIds = [];

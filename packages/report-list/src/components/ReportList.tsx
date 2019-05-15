@@ -84,7 +84,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
                 </Media.Body>
 
                 <Media.Right align="middle">
-                    <a href={detailsUrl} className="report-list-item__external-link" target="_blank" onClick={this.onLinkClicked}>
+                    <a href={detailsUrl} className="report-list-item__external-link" onClick={this.onLinkClicked}>
                         <span className="fa fa-external-link" />
                     </a>
                 </Media.Right>

@@ -1620,18 +1620,19 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
     return editorModel;
 }
 
-export function removeColumn(model: QueryGridModel, colIndex: number, fieldKey: string) {
+export function removeColumn(model: QueryGridModel, fieldKey: string) {
     let editorModel = getEditorModel(model.getId());
 
+    let deleteIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === fieldKey);
     if (model.editable) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
 
         newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
             const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-            if (oldColIdx > colIndex) {
+            if (oldColIdx > deleteIndex) {
                 return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
-            } else if (oldColIdx < colIndex) {
+            } else if (oldColIdx < deleteIndex) {
                 return newCellMessages.set(cellKey, message);
             }
 
@@ -1641,9 +1642,9 @@ export function removeColumn(model: QueryGridModel, colIndex: number, fieldKey: 
         newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
             const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
 
-            if (oldColIdx > colIndex) {
+            if (oldColIdx > deleteIndex) {
                 return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
-            } else if (oldColIdx < colIndex) {
+            } else if (oldColIdx < deleteIndex) {
                 return newCellValues.set(cellKey, value);
             }
 

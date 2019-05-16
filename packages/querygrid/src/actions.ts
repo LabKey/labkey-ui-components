@@ -1545,6 +1545,77 @@ function parsePaste(value: string): IParsePastePayload {
     }
 }
 
+export function changeColumn(model: QueryGridModel, existingFieldKey: string, newQueryColumn: QueryColumn) : EditorModel {
+    let editorModel = getEditorModel(model.getId());
+
+    const colIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === existingFieldKey.toLowerCase());
+
+    if (model.editable) { // how/why would you get here without the grid being editable?
+
+        let newCellMessages = editorModel.cellMessages;
+        let newCellValues = editorModel.cellValues;
+
+        // get rid of existing messages and values at the designated index.
+        newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+            const [oldColIdx] = cellKey.split('-').map((v) => parseInt(v));
+            if (oldColIdx !== colIndex) {
+                return newCellMessages.set(cellKey, message);
+            }
+
+            return newCellMessages;
+        }, Map<string, CellMessage>());
+
+        newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+            const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+
+            if (oldColIdx !== colIndex) {
+                return newCellValues.set(cellKey, value);
+            }
+
+            return newCellValues;
+        }, Map<string, List<ValueDescriptor>>());
+
+
+        editorModel = updateEditorModel(editorModel, {
+            focusColIdx: -1,
+            focusRowIdx: -1,
+            selectedColIdx: -1,
+            selectedRowIdx: -1,
+            selectionCells: Set<string>(),
+            cellMessages: newCellMessages,
+            cellValues: newCellValues
+        });
+    }
+
+    const currentCol = model.queryInfo.columns.get(model.queryInfo.columns.keySeq().get(colIndex));
+
+    // remove existing column and set new column in data
+    let data = model.data;
+    data = data.map((rowData) => {
+        rowData = rowData.remove(currentCol.fieldKey);
+        return rowData.set(newQueryColumn.fieldKey, undefined)
+    }).toMap();
+
+    let columns = OrderedMap<string, QueryColumn>();
+    let index = 0;
+    model.queryInfo.columns.forEach((column, key) => {
+        if (index == colIndex) {
+            columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+        }
+        else {
+            columns = columns.set(key, column);
+        }
+        index++;
+    });
+
+    updateQueryGridModel(model, {
+        data,
+        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+    });
+
+    return editorModel;
+}
+
 export function addColumns(model: QueryGridModel, colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : EditorModel {
     let editorModel = getEditorModel(model.getId());
 
@@ -1620,10 +1691,12 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
     return editorModel;
 }
 
-export function removeColumn(model: QueryGridModel, fieldKey: string) {
+export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    let deleteIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === fieldKey);
+    const lcFieldKey = fieldKey.toLowerCase();
+    let deleteIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === lcFieldKey);
+
     if (model.editable) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
@@ -1669,7 +1742,7 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) {
         return rowData.remove(fieldKey);
     }).toMap();
 
-    const columns = model.queryInfo.columns.remove(fieldKey.toLowerCase());
+    const columns = model.queryInfo.columns.remove(lcFieldKey);
 
     updateQueryGridModel(model, {
         data,

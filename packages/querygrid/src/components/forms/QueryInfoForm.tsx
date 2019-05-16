@@ -113,6 +113,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     handleSubmitError(error: any) {
+        console.error(error);
         this.setState({
             errorMsg: "There was an error submitting the data.  " + error.exception, // TODO add some actionable text here
             isSubmitting: false

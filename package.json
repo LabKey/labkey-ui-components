@@ -7,7 +7,7 @@
     "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
   },
   "dependencies": {
-    "@labkey/dependencies": "0.0.4-alpha2",
+    "@labkey/dependencies": "0.0.4",
     "classnames": "2.2.6",
     "watch": "1.0.2"
   },

@@ -1283,10 +1283,10 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.16.tgz#d79f0a4fc0a5bb5a4cf1fefcda3e377d39cff29e"
   integrity sha1-158KT8Clu1pM8f782j43fTnP8p4=
 
-"@labkey/dependencies@0.0.4-alpha2":
-  version "0.0.4-alpha2"
-  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.4-alpha2.tgz#acab05f3e1fae49b2812745cacd7e0010785fd16"
-  integrity sha1-rKsF8+H65JsoEnRcrNfgAQeF/RY=
+"@labkey/dependencies@0.0.4":
+  version "0.0.4"
+  resolved "http://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.4.tgz#a4b07d2ffed7c82bc928ed253617e8ba1f26d012"
+  integrity sha1-pLB9L/7XyCvJKO0lNhfouh8m0BI=
   dependencies:
     "@labkey/api" "0.0.16"
     "@types/react" "16.8.15"

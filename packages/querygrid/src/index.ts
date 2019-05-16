@@ -11,7 +11,10 @@ import {
     gridRefresh,
     gridShowError,
     queryGridInvalidate,
-    schemaGridInvalidate
+    schemaGridInvalidate,
+    addColumns,
+    changeColumn,
+    removeColumn
 } from './actions'
 import {
     getEditorModel,
@@ -90,6 +93,11 @@ export {
     updateRows,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
+
+    // editable grid related items
+    addColumns,
+    changeColumn,
+    removeColumn,
 
     // location related items
     Location,

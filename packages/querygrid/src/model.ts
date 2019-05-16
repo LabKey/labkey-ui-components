@@ -503,6 +503,10 @@ export class EditorModel extends Record({
         )
     }
 
+    hasData() : boolean {
+        return this.cellValues.find((valueDescriptor) => valueDescriptor.size > 0) !== undefined;
+    }
+
     isFocused(colIdx: number, rowIdx: number): boolean {
         return (
             colIdx > -1 && rowIdx > -1 &&

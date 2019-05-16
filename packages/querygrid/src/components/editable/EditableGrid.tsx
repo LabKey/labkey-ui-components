@@ -390,6 +390,11 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return getQueryGridModel(model.getId());
     }
 
+    getEditorModel() {
+        const modelId = this.props.model.getId();
+        return getEditorModel(modelId);
+    }
+
     getSelectedRowIndexes() : List<number>{
         const model = this.getModel(this.props);
         const { selected } = this.state;
@@ -412,7 +417,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     renderTopControls() {
-        const { addControlProps, allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, isSubmitting } = this.props;
+        const { addControlProps, allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, initialEmptyRowCount, isSubmitting } = this.props;
+        const editorModel = this.getEditorModel();
+
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
         const haveLeftControls = allowBulkRemove || showAddOnTop;
         return (
@@ -421,7 +428,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                     <div className="btn-group">
                         {allowBulkRemove && (
                             <Button
-                                disabled={this.state.selected.size === 0}
+                                disabled={this.state.selected.size === 0 || (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData()) }
                                 onClick={this.removeSelectedRows}
                                 bsStyle="primary"
                                 title="Delete rows">

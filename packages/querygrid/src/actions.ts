@@ -1372,7 +1372,8 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
         cellValues,
         cellMessages,
         selectionCells,
-        rowCount: editorModel.rowCount + count});
+        rowCount: editorModel.rowCount + Number(count)
+    });
 }
 
 export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
@@ -1758,11 +1759,15 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
 
 export function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): EditorModel {
     let editorModel = getEditorModel(model.getId());
-
+    let updatedModel = model;
     if (count > 0) {
         if (model.editable) {
             if (rowData) {
-                editorModel = updateEditorData(model, rowData.toList(), count, model.getData().size);
+                const hasData = editorModel.hasData();
+                if (!hasData) {
+                    updatedModel = removeAllRows(model);
+                }
+                editorModel = updateEditorData(updatedModel, rowData.toList(), count, hasData ? updatedModel.getData().size : 0);
             }
             else {
                 editorModel = updateEditorModel(editorModel, {
@@ -1771,8 +1776,8 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
             }
         }
 
-        let data = model.data;
-        let dataIds = model.dataIds;
+        let data = updatedModel.data;
+        let dataIds = updatedModel.dataIds;
 
         for (let i = 0; i < count; i++) {
             // ensure we don't step on another ID
@@ -1782,7 +1787,7 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
             dataIds = dataIds.push(id);
         }
 
-        updateQueryGridModel(model, {
+        updateQueryGridModel(updatedModel, {
             data,
             dataIds
         });
@@ -2062,6 +2067,26 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
             selectCell(modelId, nextCol, nextRow);
         }
     }
+}
+
+export function removeAllRows(model: QueryGridModel) : QueryGridModel {
+    const editorModel = getEditorModel(model.getId());
+
+    updateEditorModel(editorModel, {
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        rowCount: 0,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: Map<string, CellMessage>(),
+        cellValues: Map<string, CellValues>()
+    });
+
+    return updateQueryGridModel(model, {
+        data: Map<any, Map<string, any>>(),
+        dataIds: List<any>()
+    });
 }
 
 

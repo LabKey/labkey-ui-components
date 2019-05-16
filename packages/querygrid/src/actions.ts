@@ -1550,42 +1550,40 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
 
     const colIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === existingFieldKey.toLowerCase());
 
-    if (model.editable) { // how/why would you get here without the grid being editable?
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
 
-        let newCellMessages = editorModel.cellMessages;
-        let newCellValues = editorModel.cellValues;
+    // get rid of existing messages and values at the designated index.
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx !== colIndex) {
+            return newCellMessages.set(cellKey, message);
+        }
 
-        // get rid of existing messages and values at the designated index.
-        newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-            const [oldColIdx] = cellKey.split('-').map((v) => parseInt(v));
-            if (oldColIdx !== colIndex) {
-                return newCellMessages.set(cellKey, message);
-            }
+        return newCellMessages;
+    }, Map<string, CellMessage>());
 
-            return newCellMessages;
-        }, Map<string, CellMessage>());
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
 
-        newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-            const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx !== colIndex) {
+            return newCellValues.set(cellKey, value);
+        }
 
-            if (oldColIdx !== colIndex) {
-                return newCellValues.set(cellKey, value);
-            }
-
-            return newCellValues;
-        }, Map<string, List<ValueDescriptor>>());
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
 
 
-        editorModel = updateEditorModel(editorModel, {
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: Set<string>(),
-            cellMessages: newCellMessages,
-            cellValues: newCellValues
-        });
-    }
+    editorModel = updateEditorModel(editorModel, {
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues
+    });
+
 
     const currentCol = model.queryInfo.columns.get(model.queryInfo.columns.keySeq().get(colIndex));
 
@@ -1619,49 +1617,48 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
 export function addColumns(model: QueryGridModel, colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    if (model.editable) {
-        let newCellMessages = editorModel.cellMessages;
-        let newCellValues = editorModel.cellValues;
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
 
-        newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-            const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-            if (oldColIdx >= colIndex) {
-                return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
-            } else if (oldColIdx < colIndex) {
-                return newCellMessages.set(cellKey, message);
-            }
-
-            return newCellMessages;
-        }, Map<string, CellMessage>());
-
-        newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-            const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-
-            if (oldColIdx >= colIndex) {
-                return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
-            } else if (oldColIdx < colIndex) {
-                return newCellValues.set(cellKey, value);
-            }
-
-            return newCellValues;
-        }, Map<string, List<ValueDescriptor>>());
-        for (var rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
-            for (let c = 0; c < queryColumns.size; c++) {
-                newCellValues = newCellValues.set(genCellKey(colIndex + c, rowIdx), List<ValueDescriptor>());
-            }
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx >= colIndex) {
+            return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
+        } else if (oldColIdx < colIndex) {
+            return newCellMessages.set(cellKey, message);
         }
 
-        editorModel = updateEditorModel(editorModel, {
-            colCount: editorModel.colCount + queryColumns.size,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: Set<string>(),
-            cellMessages: newCellMessages,
-            cellValues: newCellValues
-        });
+        return newCellMessages;
+    }, Map<string, CellMessage>());
+
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+
+        if (oldColIdx >= colIndex) {
+            return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
+        } else if (oldColIdx < colIndex) {
+            return newCellValues.set(cellKey, value);
+        }
+
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
+    for (var rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        for (let c = 0; c < queryColumns.size; c++) {
+            newCellValues = newCellValues.set(genCellKey(colIndex + c, rowIdx), List<ValueDescriptor>());
+        }
     }
+
+    editorModel = updateEditorModel(editorModel, {
+        colCount: editorModel.colCount + queryColumns.size,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues
+    });
+
 
     let data = model.data;
     data = data.map((rowData) => {
@@ -1697,44 +1694,43 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorMo
     const lcFieldKey = fieldKey.toLowerCase();
     let deleteIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === lcFieldKey);
 
-    if (model.editable) {
-        let newCellMessages = editorModel.cellMessages;
-        let newCellValues = editorModel.cellValues;
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
 
-        newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-            const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-            if (oldColIdx > deleteIndex) {
-                return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
-            } else if (oldColIdx < deleteIndex) {
-                return newCellMessages.set(cellKey, message);
-            }
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx > deleteIndex) {
+            return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
+        } else if (oldColIdx < deleteIndex) {
+            return newCellMessages.set(cellKey, message);
+        }
 
-            return newCellMessages;
-        }, Map<string, CellMessage>());
+        return newCellMessages;
+    }, Map<string, CellMessage>());
 
-        newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-            const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
 
-            if (oldColIdx > deleteIndex) {
-                return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
-            } else if (oldColIdx < deleteIndex) {
-                return newCellValues.set(cellKey, value);
-            }
+        if (oldColIdx > deleteIndex) {
+            return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
+        } else if (oldColIdx < deleteIndex) {
+            return newCellValues.set(cellKey, value);
+        }
 
-            return newCellValues;
-        }, Map<string, List<ValueDescriptor>>());
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
 
-        editorModel = updateEditorModel(editorModel, {
-            colCount: editorModel.colCount - 1,
-            focusColIdx: -1,
-            focusRowIdx: -1,
-            selectedColIdx: -1,
-            selectedRowIdx: -1,
-            selectionCells: Set<string>(),
-            cellMessages: newCellMessages,
-            cellValues: newCellValues
-        });
-    }
+    editorModel = updateEditorModel(editorModel, {
+        colCount: editorModel.colCount - 1,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues
+    });
+
 
     // remove column from all rows in queryGridModel.data
     let data = model.data;

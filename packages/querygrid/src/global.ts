@@ -184,7 +184,7 @@ function getSelectedState(
     if (
         maxRows === selectedOnPage ||
         totalRows === totalSelected && totalRows !== 0 ||
-        selectedOnPage === dataIds.size && selectedOnPage > 0
+        selectedOnPage === totalSelected && selectedOnPage === dataIds.size && selectedOnPage > 0
     ) {
         return GRID_CHECKBOX_OPTIONS.ALL;
     }

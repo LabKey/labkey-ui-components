@@ -208,7 +208,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
 
         let isEditable = false;
         if (queryModel && queryModel.queryInfo) {
-            isEditable = queryModel.queryInfo.isAppEditable();
+            const hasData = queryModel.getData().size > 0;
+            isEditable = hasData && queryModel.queryInfo.isAppEditable();
         }
 
         const header = <DetailPanelHeader

@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import { Panel } from 'react-bootstrap'
 import { Map, OrderedMap } from 'immutable'
 import { LoadingSpinner, QueryGridModel } from '@glass/base'
 
@@ -67,20 +68,29 @@ interface DetailProps {
     queryModel?: QueryGridModel
     detailRenderer?: Function
     titleRenderer?: Function
+    asPanel: boolean
 }
 
 
 export class Detail extends React.Component<DetailProps, any> {
 
+    static defaultProps = {
+        asPanel: false
+    };
+
     render() {
-        const { queryModel, detailRenderer, titleRenderer } = this.props;
+        const { queryModel, detailRenderer, titleRenderer, asPanel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
             const fields = processFields(queryModel, detailRenderer, titleRenderer);
             const target = queryModel.getData();
+            let body;
 
-            return (
-                <div>
+            if (target.size === 0) {
+                body = <div>No data available.</div>
+            }
+            else {
+                body = <div>
                     {target.map((row: any, i: number) => {
 
                         // key safety
@@ -107,6 +117,20 @@ export class Detail extends React.Component<DetailProps, any> {
                         );
                     })}
                 </div>
+            }
+
+            return (
+                <>
+                    {asPanel ?
+                        <Panel>
+                            <Panel.Heading>Details</Panel.Heading>
+                            <Panel.Body>
+                                {body}
+                            </Panel.Body>
+                        </Panel>
+                        : body
+                    }
+                </>
             );
         }
 

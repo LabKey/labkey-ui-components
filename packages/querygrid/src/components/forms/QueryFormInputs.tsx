@@ -29,6 +29,7 @@ interface QueryFormInputsProps {
     destroyOnDismount?: boolean
     fieldValues?: any
     fireQSChangeOnInit?: boolean
+    checkRequiredFields?: boolean
     includeLabelField?: boolean
     onQSChange?: (name: string, value: string | Array<any>, items: any) => any
     queryColumns?: OrderedMap<string, QueryColumn>
@@ -45,6 +46,7 @@ interface State {
 export class QueryFormInputs extends React.Component<QueryFormInputsProps, State> {
 
     static defaultProps = {
+        checkRequiredFields: true,
         includeLabelField: false,
         renderFileInputs: false,
     };
@@ -117,6 +119,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             destroyOnDismount,
             fieldValues,
             fireQSChangeOnInit,
+            checkRequiredFields,
             lookups,
             queryColumns,
             queryInfo,
@@ -135,6 +138,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 .valueSeq()
                 .map((col: QueryColumn, i: number) => {
                     let value = caseInsensitive(fieldValues, col.name);
+                    if (!checkRequiredFields) {
+                        col = col.set('required', false) as QueryColumn;
+                    }
 
                     if (!value && lookups) {
                         value = lookups.get(col.name) || lookups.get((col.name).toLowerCase());

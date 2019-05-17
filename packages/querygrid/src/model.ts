@@ -471,6 +471,25 @@ export class EditorModel extends Record({
         return data.asImmutable();
     }
 
+    // TODO This might be used to determine when to activate a submit button for saving the grid
+    // However, we don't rerender the grid after data are entered into cells, so it's somewhat ineffectual.
+    // Leaving for now to see if we can put this to good use.
+    hasRequiredData(queryGridModel: QueryGridModel) : boolean {
+        const columns = queryGridModel.getInsertColumns();
+        let missingData = false;
+        for (let rn = 0; rn < queryGridModel.data.size; rn++) {
+            columns.forEach((col, cn) => {
+                if (col.required) {
+                    const values = this.getValue(cn, rn);
+                    if (values.isEmpty || values.find((value) => (value.raw !== undefined))) {
+                        missingData = true;
+                    }
+                }
+            });
+        }
+        return !missingData;
+    }
+
     getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
         const cellKey = genCellKey(colIdx, rowIdx);
         if (this.cellValues.has(cellKey)) {
@@ -501,6 +520,16 @@ export class EditorModel extends Record({
             colIdx > -1 && rowIdx > -1 &&
             this.selectionCells.get(genCellKey(colIdx, rowIdx)) !== undefined
         )
+    }
+
+    hasRawValue(descriptor: ValueDescriptor) {
+        return descriptor.raw !== undefined && descriptor.raw !== "";
+    }
+
+    hasData() : boolean {
+        return this.cellValues.find((valueList) => {
+            return valueList.find(value => this.hasRawValue(value)) !== undefined
+        } ) !== undefined;
     }
 
     isFocused(colIdx: number, rowIdx: number): boolean {

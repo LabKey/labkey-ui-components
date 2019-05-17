@@ -59,7 +59,7 @@ storiesOf('EditableGridPanel', module)
                 allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
                 allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
                 disabled={boolean("Disabled?", false, PANEL_GROUP)}
-                initialEmptyRowCount={number("Initial empty rows", 4, {}, PANEL_GROUP)}
+                initialEmptyRowCount={number("Initial empty rows", 1, {}, PANEL_GROUP)}
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
                 title={text("Title", "Grid title", PANEL_GROUP)}
                 onRowCountChange={onRowCountChange}

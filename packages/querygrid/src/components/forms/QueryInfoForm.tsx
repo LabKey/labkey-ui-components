@@ -19,6 +19,9 @@ export interface QueryInfoFormProps {
     asModal?: boolean
     allowMultiple?: boolean
     cancelText?: string
+    // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
+    // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
+    checkRequiredFields?: boolean
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
@@ -53,6 +56,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     static defaultProps = {
         allowMultiple: true,
+        checkRequiredFields: true,
         countText: "Quantity",
         cancelText: "Cancel",
         submitText: "Submit",
@@ -113,6 +117,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     handleSubmitError(error: any) {
+        console.error(error);
         this.setState({
             errorMsg: "There was an error submitting the data.  " + error.exception, // TODO add some actionable text here
             isSubmitting: false
@@ -224,7 +229,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { allowMultiple, asModal, countText, header, maxCount, queryInfo, fieldValues, title } = this.props;
+        const { allowMultiple, asModal, countText, header, checkRequiredFields, maxCount, queryInfo, fieldValues, title } = this.props;
         const { count } = this.state;
 
 
@@ -267,6 +272,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                     }
                     <hr/>
                     <QueryFormInputs
+                        checkRequiredFields={checkRequiredFields}
                         queryInfo={queryInfo}
                         fieldValues={fieldValues} />
                     {this.renderButtons()}

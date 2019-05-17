@@ -1334,7 +1334,10 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
         let msg: CellMessage;
 
         if (col && col.isLookup()) {
-            const {message, values} = getLookupDisplayValue(col, getLookup(col), value);
+            // value had better be the rowId here.  If it's the display value, which
+            // happens to be a number, much confusion will arise.
+            const intVal = parseInt(value);
+            const {message, values} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? value : intVal);
             cv = values;
             if (message) {
                 msg = message;

@@ -50,8 +50,8 @@ storiesOf('QueryInfoForm', module)
     .add("with knobs", () => {
         const modelId = "customizableForm";
         const schemaQuery = new SchemaQuery({
-            schemaName: "schema",
-            queryName: modelId
+            schemaName: "exp.data",
+            queryName: "mixtures"
         });
         const model = getStateQueryGridModel(modelId, schemaQuery, {
             editable: true,
@@ -70,6 +70,7 @@ storiesOf('QueryInfoForm', module)
         return (
             <QueryInfoForm
                 header={text("Form header", undefined)}
+                checkRequiredFields={boolean("Check required fields?", undefined)}
                 allowMultiple={boolean("Include count field?", true)}
                 maxCount={number("Max count", 100)}
                 countText={text("Count text", "Quantity")}

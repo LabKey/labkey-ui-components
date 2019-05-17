@@ -497,7 +497,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             <QueryInfoForm
                 onSubmit={this.bulkAdd}
                 asModal={true}
-                submitText={`Add ${this.props.addControlProps.nounPlural} to Grid`}
+                checkRequiredFields={false}
+                submitText={`Add ${this.props.addControlProps.nounPlural} to grid`}
                 maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}

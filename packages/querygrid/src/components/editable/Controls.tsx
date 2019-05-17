@@ -86,7 +86,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         let count = parseInt(event.target.value);
 
         if (isNaN(count)) {
-            count = this.props.minCount;
+            count = undefined
         }
 
         this.setState({
@@ -148,7 +148,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         ref={this.addCount}
                         style={{width: '65px'}}
                         type="number"
-                        value={count.toString()} />
+                        value={count ? count.toString() : undefined} />
                     <span style={{display: 'inline-block', padding: '6px 8px'}}>
                         {hasError ? <span className="text-danger">{`${minCount}-${maxCount} ${nounPlural}.`}</span> : (count === 1 ? nounSingular : nounPlural)}
                     </span>

@@ -1,9 +1,10 @@
 import mock, { proxy } from 'xhr-mock';
 import { fromJS } from 'immutable';
+import { initNotificationsState } from "@glass/base";
 
 import { initQueryGridState } from "../global";
 import { initBrowserHistoryState } from "../util/global";
-import { initNotificationsState } from "@glass/base";
+import { SCHEMAS } from "../query/schemas";
 
 import mixturesQueryInfo from "../test/data/mixtures-getQueryDetails.json";
 import mixtureTypesQueryInfo from "../test/data/mixtureTypes-getQueryDetails.json";
@@ -20,6 +21,11 @@ import sampleSetHeatMapQueryInfo from '../test/data/sampleSetHeatMap-getQueryDet
 import sampleSetHeatMapQuery from '../test/data/sampleSetHeatMap-getQuery.json';
 import assaysHeatMapQueryInfo from '../test/data/assaysHeatMap-getQueryDetails.json';
 import assaysHeatMapQuery from '../test/data/assaysHeatMap-getQuery.json';
+import sampleSetQueryInfo from '../test/data/samplesSet-getQueryDetails.json';
+import sampleDetailsQuery from '../test/data/sampleDetails-getQuery.json';
+import lookuplistQueryInfo from '../test/data/lookuplist-getQueryDetails.json';
+import lookuplistQuery from '../test/data/lookuplist-getQuery.json';
+import samplesUpdate from '../test/data/samples-updateRows.json';
 
 mock.setup();
 
@@ -36,6 +42,10 @@ mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
         responseBody = sampleSetHeatMapQueryInfo;
     else if (queryParams.schemaName.toLowerCase() === 'exp' && queryParams.queryName.toLowerCase() === 'assaysheatmap')
         responseBody = assaysHeatMapQueryInfo;
+    else if (queryParams.schemaName.toLowerCase() === 'samples' && queryParams.queryName.toLowerCase() === 'samples')
+        responseBody = sampleSetQueryInfo;
+    else if (queryParams.schemaName.toLowerCase() === 'lists' && queryParams.queryName.toLowerCase() === 'lookuplist')
+        responseBody = lookuplistQueryInfo;
 
     return res
         .status(200)
@@ -56,6 +66,10 @@ mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
         responseBody = sampleSetHeatMapQuery;
     else if (bodyParams.indexOf("&query.queryname=assaysheatmap&") > -1)
         responseBody = assaysHeatMapQuery;
+    else if (bodyParams.indexOf("&query.queryname=samples&") > -1)
+        responseBody = sampleDetailsQuery;
+    else if (bodyParams.indexOf("&query.queryname=lookuplist&") > -1)
+        responseBody = lookuplistQuery;
 
     return res
         .status(200)
@@ -82,6 +96,19 @@ mock.get(/.*\/query\/.*\/getQueries.*/, (req, res) => {
     let responseBody;
     if (queryParams.schemaName.toLowerCase() === 'assay')
         responseBody = assayGetQueriesJson;
+
+    return res
+        .status(200)
+        .headers({'Content-Type': 'application/json'})
+        .body(JSON.stringify(responseBody));
+});
+
+mock.post(/.*\/query\/.*\/updateRows.*/,  (req, res) => {
+    const bodyParams = req.body().toLowerCase();
+    console.log(bodyParams);
+    let responseBody;
+    if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1)
+        responseBody = samplesUpdate;
 
     return res
         .status(200)
@@ -123,6 +150,19 @@ initQueryGridState(fromJS({
     columnDefaults: {
         flag: {
             removeFromViews: true
+        }
+    },
+    schema: {
+        [SCHEMAS.SAMPLE_SETS.SCHEMA]: {
+            columnDefaults: {
+                name: {
+                    caption: 'Sample ID',
+                    shownInUpdateView: false
+                }
+            },
+            queryDefaults: {
+                appEditableTable: true
+            }
         }
     }
 }));

@@ -11,16 +11,18 @@ interface DetailPanelHeaderProps {
     onClickFn?: () => void
     title?: string
     warning?: string
+    useEditIcon: boolean
 }
 
 export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, any> {
 
     static defaultProps = {
-        title: 'Details'
+        title: 'Details',
+        useEditIcon: true
     };
 
     render() {
-        const { isEditable, canUpdate, editing, onClickFn, warning, title  } = this.props;
+        const { isEditable, canUpdate, editing, onClickFn, warning, title, useEditIcon } = this.props;
 
         if (editing) {
             return (
@@ -42,7 +44,7 @@ export class DetailPanelHeader extends React.Component<DetailPanelHeaderProps, a
                 {isEditable && canUpdate && (
                     <>
                         <div className="detail__edit-button" onClick={onClickFn}>
-                            <i className="fa fa-pencil-square-o"/>
+                            {useEditIcon ? <i className="fa fa-pencil-square-o"/> : 'Edit'}
                         </div>
                         <div className="clearfix"/>
                     </>

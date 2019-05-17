@@ -17,6 +17,7 @@ interface DetailEditingProps {
     queryModel: QueryGridModel
     canUpdate: boolean
     onUpdate?: () => void
+    useEditIcon: boolean
 }
 
 interface DetailEditingState {
@@ -27,6 +28,9 @@ interface DetailEditingState {
 }
 
 export class DetailEditing extends React.Component<DetailEditingProps, DetailEditingState> {
+    static defaultProps = {
+        useEditIcon: true
+    };
 
     constructor(props: DetailEditingProps) {
         super(props);
@@ -203,7 +207,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     render() {
-        const { queryModel, canUpdate } = this.props;
+        const { queryModel, canUpdate, useEditIcon } = this.props;
         const { editing, warning, error } = this.state;
 
         let isEditable = false;
@@ -213,6 +217,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
         }
 
         const header = <DetailPanelHeader
+            useEditIcon={useEditIcon}
             isEditable={isEditable}
             canUpdate={canUpdate}
             editing={editing}

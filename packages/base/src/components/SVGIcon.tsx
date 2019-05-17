@@ -32,6 +32,7 @@ export function iconURL(iconDir: string, prefix: string, theme?: Theme): string 
 function imgProps(props: Props): React.ImgHTMLAttributes<HTMLImageElement> {
     let imgProps = Object.assign({}, props);
     delete imgProps.activeTheme;
+    delete imgProps.iconDir;
     delete imgProps.iconSrc;
     delete imgProps.isActive;
     delete imgProps.isInverted;

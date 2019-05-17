@@ -1,4 +1,4 @@
-import React from 'reactn';
+import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { LoadingSpinner, QueryGridModel, SchemaQuery } from "@glass/base";
@@ -7,8 +7,8 @@ import { getStateQueryGridModel } from "../model";
 import { gridInit } from "../actions";
 import { DetailEditing } from "../components/forms/detail/DetailEditing";
 import { SCHEMAS } from "../query/schemas";
-import './stories.scss'
 import { getQueryGridModel } from "../global";
+import './stories.scss'
 
 interface Props {
     canUpdate: boolean

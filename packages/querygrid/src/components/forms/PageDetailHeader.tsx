@@ -13,8 +13,9 @@ interface Props {
     content?: Array<any>
     description?: string
     fieldTriggerProps?: FieldEditTriggerProps
-    iconDir: string
+    iconDir?: string
     iconSrc?: string
+    iconUrl?: string
     leftColumns?: number
     subTitle?: any
     title: any
@@ -27,17 +28,22 @@ export class PageDetailHeader extends React.Component<Props, any> {
     };
 
     render() {
-        const { children, description, fieldTriggerProps, iconDir, iconSrc, leftColumns, subTitle, title, user } = this.props;
+        const { children, description, fieldTriggerProps, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title, user } = this.props;
 
         return (
             <div className="page-header">
                 <div className={`col-md-${leftColumns} detail__header--container`}>
                     <div className="detail__header--image-container">
-                        <SVGIcon
-                            iconDir={iconDir}
-                            iconSrc={iconSrc ? iconSrc : ''}
-                            className="detail__header-icon"
-                        />
+                        {iconUrl ? <img
+                                src={iconUrl}
+                                className="detail__header-icon"
+                            />
+                            : <SVGIcon
+                                iconDir={iconDir}
+                                iconSrc={iconSrc ? iconSrc : ''}
+                                className="detail__header-icon"
+                            />
+                        }
                     </div>
                     <h2 className="no-margin-top detail__header--name">{title}</h2>
                     {subTitle && (

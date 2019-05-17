@@ -105,7 +105,6 @@ mock.get(/.*\/query\/.*\/getQueries.*/, (req, res) => {
 
 mock.post(/.*\/query\/.*\/updateRows.*/,  (req, res) => {
     const bodyParams = req.body().toLowerCase();
-    console.log(bodyParams);
     let responseBody;
     if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1)
         responseBody = samplesUpdate;

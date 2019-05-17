@@ -1,11 +1,11 @@
-import React from 'reactn';
+import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import { AppURL } from "@glass/base";
 
 import { HeatMap } from "../components/heatmap/HeatMap";
 import { EXP_TABLES } from "../query/schemas";
 import './stories.scss'
-import { AppURL } from "@glass/base";
 
 storiesOf('HeatMap', module)
     .addDecorator(withKnobs)

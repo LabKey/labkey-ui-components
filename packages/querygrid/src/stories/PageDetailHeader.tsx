@@ -17,8 +17,17 @@ storiesOf('PageDetailHeader', module)
             },
             CreatedBy: {
                 displayValue: "username",
-                url: "#/q/core/siteusers/1004",
+                url: "#/q/core/siteusers/1001",
                 value: 1001
+            },
+            Modified: {
+                formattedValue: "2019-05-16 19:45",
+                value: "2019-05-16 19:45:40.593"
+            },
+            ModifiedBy: {
+                displayValue: "username2",
+                url: "#/q/core/siteusers/1002",
+                value: 1002
             }
         }));
 

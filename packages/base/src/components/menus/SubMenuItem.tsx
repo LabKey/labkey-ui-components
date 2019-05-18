@@ -70,9 +70,9 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     }
 
     onItemEnter(activeIdx: number) {
-        this.setState({
+        this.setState(() => ({
             activeIdx
-        })
+        }));
     }
 
     onKeyDown(evt: any) {
@@ -89,16 +89,16 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 this.select();
                 return;
             case 38: // up arrow
-                this.setState({
+                this.setState(() => ({
                     activeIdx: this.state.activeIdx === 0 ? this.props.items.length - 1 : this.state.activeIdx - 1
-                });
+                }));
                 evt.preventDefault();
                 return;
             case 40: // down arrow
                 const upperBound = this.props.items.length - 1;
-                this.setState({
+                this.setState(() => ({
                     activeIdx: this.state.activeIdx >= upperBound ? 0 : this.state.activeIdx + 1
-                });
+                }));
                 evt.preventDefault();
                 return;
         }
@@ -115,11 +115,11 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
             }
         });
 
-        this.setState({
+        this.setState(() => ({
             activeIdx: 0,
             filterInput,
             filterItems
-        });
+        }));
     }
 
     select() {
@@ -141,12 +141,13 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
 
     toggle() {
         const expanded = !this.state.expanded;
-
-        this.setState({
-            activeIdx: 0,
-            expanded,
-            filterInput: undefined,
-            filterItems: this.props.items
+        this.setState(() => {
+            return {
+                activeIdx: 0,
+                expanded,
+                filterInput: undefined,
+                filterItems: this.props.items
+            }
         });
 
         if (expanded) {
@@ -196,9 +197,9 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
 
     onMouseOut() {
         const { onMouseOut } = this.props;
-        this.setState({
+        this.setState(() => ({
             activeIdx: undefined
-        });
+        }));
         if (onMouseOut)
             onMouseOut();
     }

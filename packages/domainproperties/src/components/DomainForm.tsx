@@ -185,6 +185,9 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
             if (i === destIndex) {
                 newFields.push(movedField.merge({"renderUpdate": true}) as DomainField);
+                if (idIndex === this.state.expandedRowIndex) {
+                    this.setState(() => ({expandedRowIndex: destIndex}));
+                }
             }
 
             // move up
@@ -201,8 +204,6 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         if (onChange) {
             onChange(newDomain, true);
         }
-
-        this.setState(() => ({expandedRowIndex: undefined}));
     };
 
     getAddFieldButton() {

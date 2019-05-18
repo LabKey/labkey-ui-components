@@ -151,11 +151,12 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                     </Button>
                 </>
                 }
+                <Tip caption={'Additional Settings'}>
                 <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
-                    <Tip caption={'Additional Settings'}>
+
                         <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)} icon={faPencilAlt}/>
-                    </Tip>
                 </div>
+                </Tip>
             </div>
         )
     }

@@ -560,6 +560,29 @@ export class EditorModel extends Record({
         };
     }
 
+    getValidationErrors(queryGridModel: QueryGridModel, uniqueFieldKey?: string) : Array<string> {
+        let { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, "Name");
+        let errors = [];
+        if (!uniqueKeyViolations.isEmpty()) {
+            const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
+                return keyMessages.concat(valueMap.reduce((messages, rowNumbers, values) => {
+                    messages.push("Duplicate value (" + values + ") for " + fieldNames + " on rows " + rowNumbers.join(", ") + ".");
+                    return messages;
+                }, new Array<string>()));
+            }, new Array<string>());
+            errors = errors.concat(messages);
+        }
+        if (!missingRequired.isEmpty()) {
+            const messages = missingRequired.reduce((messages, rowNumbers, fieldName) => {
+                messages.push(fieldName + " is missing from " + (rowNumbers.size > 1 ? "rows " : "row ") + rowNumbers.join(", ") + "." );
+                return messages;
+            }, new Array<string>()).join(" ");
+            errors = errors.concat(messages);
+        }
+
+        return errors;
+    }
+
     getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {
         const cellKey = genCellKey(colIdx, rowIdx);
         if (this.cellValues.has(cellKey)) {

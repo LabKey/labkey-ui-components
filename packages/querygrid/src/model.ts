@@ -471,23 +471,93 @@ export class EditorModel extends Record({
         return data.asImmutable();
     }
 
-    // TODO This might be used to determine when to activate a submit button for saving the grid
-    // However, we don't rerender the grid after data are entered into cells, so it's somewhat ineffectual.
-    // Leaving for now to see if we can put this to good use.
-    hasRequiredData(queryGridModel: QueryGridModel) : boolean {
+    /**
+     * Determines which rows in the grid have missing required fields, which sets of rows have combinations
+     * of key fields that are duplicated, and, optionally, which sets of rows have duplicated values for a
+     * given field key.
+     *
+     * @param queryGridModel the model whose data we are validating
+     * @param uniqueFieldKey optional (non-key) field that should be unique.
+     */
+    validateData(queryGridModel: QueryGridModel, uniqueFieldKey?: string) : {
+        uniqueKeyViolations: Map<string, Map<string, List<number>>>, // map from the column captions (joined by ,) to a map from values that are duplicates to row numbers.
+        missingRequired: Map<string, List<number>> // map from column caption to row numbers with missing values
+    } {
         const columns = queryGridModel.getInsertColumns();
-        let missingData = false;
+        let uniqueFieldCol;
+        let keyColumns = columns.filter((column) => column.isKeyField);
+        let keyValues = Map<number, List<string>>(); // map from row number to list of key values on that row
+        let uniqueKeyMap = Map<string, List<number>>(); // map from value to rows with that value
+        let missingRequired = Map<string, List<number>>(); // map from column caption to list of rows missing a value for that column
         for (let rn = 0; rn < queryGridModel.data.size; rn++) {
             columns.forEach((col, cn) => {
+                const values = this.getValue(cn, rn);
                 if (col.required) {
-                    const values = this.getValue(cn, rn);
-                    if (values.isEmpty || values.find((value) => (value.raw !== undefined))) {
-                        missingData = true;
+                    if (values.isEmpty() || values.find((value) => this.hasRawValue(value)) == undefined) {
+                        if (missingRequired.has(col.caption)) {
+                            missingRequired = missingRequired.set(col.caption, missingRequired.get(col.caption).push(rn+1));
+                        }
+                        else {
+                            missingRequired = missingRequired.set(col.caption, List<number>([rn+1]));
+                        }
+                    }
+                }
+
+                if (col.isKeyField) {
+                    // there better be only one of these
+                    const valueDescriptor = values.get(0);
+                    if (this.hasRawValue(valueDescriptor)) {
+                        if (keyValues.has(rn+1)) {
+                            keyValues = keyValues.set(rn+1, keyValues.get(rn+1).push(valueDescriptor.raw.toString()));
+                        }
+                        else {
+                            keyValues = keyValues.set(rn+1, List<string>([valueDescriptor.raw.toString()]));
+                        }
+                    }
+                }
+                else if (uniqueFieldKey && col.fieldKey === uniqueFieldKey) {
+                    uniqueFieldCol = col;
+                    // there better be only one of these
+                    const valueDescriptor = values.get(0);
+                    if (valueDescriptor && this.hasRawValue(valueDescriptor)) {
+                        const stringVal = valueDescriptor.raw.toString();
+                        if (uniqueKeyMap.has(stringVal)) {
+                            uniqueKeyMap = uniqueKeyMap.set(stringVal, uniqueKeyMap.get(stringVal).push(rn+1));
+                        }
+                        else {
+                            uniqueKeyMap = uniqueKeyMap.set(stringVal, List<number>([rn+1]))
+                        }
                     }
                 }
             });
         }
-        return !missingData;
+
+        let uniqueKeyViolations = Map<string, Map<string, List<number>>>();
+        let duplicates = uniqueKeyMap.filter((rowNumbers => rowNumbers.size > 1)).toMap();
+        if (duplicates.size > 0 && uniqueFieldCol) {
+            uniqueKeyViolations = uniqueKeyViolations.set(uniqueFieldCol.caption, duplicates);
+        }
+
+        // Join all the keyValues together and put them in a map with a list of row
+        // numbers with that key.  Then filter to those lists with more than one item.
+        let keyViolations = keyValues.reduce((keyMap, values, rowNumber) => {
+              const key = values.join(", ");
+              if (keyMap.has(key))
+                  return keyMap.set(key, keyMap.get(key).push(rowNumber));
+              else
+                  return keyMap.set(key, List<number>([rowNumber]));
+        }, Map<string, List<number>>()).filter((rowNumbers => rowNumbers.size > 1)).toMap();
+        if (!keyViolations.isEmpty()) {
+            uniqueKeyViolations = uniqueKeyViolations.set(keyColumns.map(column => column.caption).join(", "), keyViolations)
+        }
+
+        // need to return a map from the column names/captions to the rows with duplicates.
+        // Message:
+        //   Duplicate values (val1, val2) for <column1, column2> on rows X, Y, Z.
+        return {
+            uniqueKeyViolations,
+            missingRequired,
+        };
     }
 
     getValue(colIdx: number, rowIdx: number): List<ValueDescriptor> {

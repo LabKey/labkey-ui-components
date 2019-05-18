@@ -1646,7 +1646,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
 
         return newCellValues;
     }, Map<string, List<ValueDescriptor>>());
-    for (var rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+    for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
         for (let c = 0; c < queryColumns.size; c++) {
             newCellValues = newCellValues.set(genCellKey(colIndex + c, rowIdx), List<ValueDescriptor>());
         }
@@ -1675,16 +1675,15 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
     let columns = OrderedMap<string, QueryColumn>();
     let index = 0;
     model.queryInfo.columns.forEach((column, key) => {
-        if (index == colIndex) {
+        if (index === colIndex) {
             columns = columns.merge(queryColumns);
+            index = index + queryColumns.size;
         }
-        else {
-            columns = columns.set(key, column);
-        }
+        columns = columns.set(key, column);
         index++;
     });
 
-    const updatedGridModel = updateQueryGridModel(model, {
+    updateQueryGridModel(model, {
         data,
         queryInfo: model.queryInfo.merge({columns}) as QueryInfo
     });

@@ -1670,16 +1670,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
         return rowData;
     }).toMap();
 
-    let columns = OrderedMap<string, QueryColumn>();
-    let index = 0;
-    model.queryInfo.columns.forEach((column, key) => {
-        if (index === colIndex) {
-            columns = columns.merge(queryColumns);
-            index = index + queryColumns.size;
-        }
-        columns = columns.set(key, column);
-        index++;
-    });
+    let columns = model.queryInfo.insertColumns(colIndex, queryColumns);
 
     updateQueryGridModel(model, {
         data,

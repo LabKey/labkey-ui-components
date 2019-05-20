@@ -403,9 +403,9 @@
       "displayFieldJsonType" : "string",
       "inputType" : "text",
       "cols" : 40,
-      "shortCaption" : "Lookupfield",
+      "shortCaption" : "Lookup Field Caption",
       "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Lookupfield",
+      "caption" : "Lookup Field Caption",
       "lookup" : {
         "keyColumn" : "Key",
         "public" : true,

@@ -1552,7 +1552,7 @@ function parsePaste(value: string): IParsePastePayload {
 export function changeColumn(model: QueryGridModel, existingFieldKey: string, newQueryColumn: QueryColumn) : EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    const colIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === existingFieldKey.toLowerCase());
+    const colIndex =  model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === existingFieldKey);
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
@@ -1589,7 +1589,7 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
     });
 
 
-    const currentCol = model.queryInfo.columns.get(model.queryInfo.columns.keySeq().get(colIndex));
+    const currentCol = model.queryInfo.columns.find((column) => column.fieldKey === existingFieldKey);
 
     // remove existing column and set new column in data
     let data = model.data;
@@ -1599,15 +1599,13 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
     }).toMap();
 
     let columns = OrderedMap<string, QueryColumn>();
-    let index = 0;
     model.queryInfo.columns.forEach((column, key) => {
-        if (index == colIndex) {
+        if (column.fieldKey === currentCol.fieldKey) {
             columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
         }
         else {
             columns = columns.set(key, column);
         }
-        index++;
     });
 
     updateQueryGridModel(model, {
@@ -1694,8 +1692,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
 export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    const lcFieldKey = fieldKey.toLowerCase();
-    let deleteIndex = model.queryInfo.columns.keySeq().findIndex((key) => key === lcFieldKey);
+    let deleteIndex = model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === fieldKey);
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
@@ -1741,7 +1738,7 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorMo
         return rowData.remove(fieldKey);
     }).toMap();
 
-    const columns = model.queryInfo.columns.remove(lcFieldKey);
+    const columns = model.queryInfo.columns.remove(fieldKey.toLowerCase());
 
     updateQueryGridModel(model, {
         data,

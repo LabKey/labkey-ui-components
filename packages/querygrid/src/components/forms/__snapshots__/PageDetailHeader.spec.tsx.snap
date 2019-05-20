@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PageDetailHeader/> default props 1`] = `
+<div
+  className="page-header"
+>
+  <div
+    className="col-md-6 detail__header--container"
+  >
+    <div
+      className="detail__header--image-container"
+    >
+      <img
+        alt="-icon"
+        className="detail__header-icon"
+        height="100%"
+        src="/labkey//images/default.svg"
+        width="100%"
+      />
+    </div>
+    <h2
+      className="no-margin-top detail__header--name"
+    >
+      Title
+    </h2>
+  </div>
+  <div
+    className="clearfix"
+  />
+</div>
+`;
+
+exports[`<PageDetailHeader/> with additional props 1`] = `
+<div
+  className="page-header"
+>
+  <div
+    className="col-md-5 detail__header--container"
+  >
+    <div
+      className="detail__header--image-container"
+    >
+      <img
+        alt="iconSrc-icon"
+        className="detail__header-icon"
+        height="100%"
+        src="/labkey/iconDir/images/iconsrc.svg"
+        width="100%"
+      />
+    </div>
+    <h2
+      className="no-margin-top detail__header--name"
+    >
+      Title
+    </h2>
+    <h4
+      className="test-loc-detail-subtitle"
+    >
+      Subtitle
+    </h4>
+    <span
+      className="detail__header--desc"
+    >
+      Description
+    </span>
+  </div>
+  <div
+    className="pull-right"
+  >
+    <div>
+      Someting off to the right
+    </div>
+  </div>
+  <div
+    className="clearfix"
+  />
+</div>
+`;

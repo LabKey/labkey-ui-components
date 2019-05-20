@@ -1684,6 +1684,9 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorMo
     let editorModel = getEditorModel(model.getId());
 
     let deleteIndex = model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === fieldKey);
+    // nothing to do if there is no such column
+    if (deleteIndex === -1)
+        return editorModel;
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;

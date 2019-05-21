@@ -38,10 +38,10 @@ export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
     processData() {
         const { data, xAxis, yAxis, measure, xSort, ySort, onCellClick } = this.props;
 
-        var rows = [];
-        var xLabels = Set().asMutable();
-        var yLabels = Set().asMutable();
-        var measureMap = Map<string, any>().asMutable();
+        let rows = [];
+        let xLabels = Set();
+        let yLabels = Set();
+        let measureMap = Map<string, any>();
 
         if (!data) {
             throw new Error('HeatMapDisplay requires a List for data');
@@ -51,12 +51,11 @@ export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
             var x = cell.get(xAxis);
             var y = cell.get(yAxis);
 
-            xLabels.add(x);
-            yLabels.add(y);
-            measureMap.set(x + '---' + y, cell);
+            xLabels = xLabels.add(x);
+            yLabels = yLabels.add(y);
+            measureMap = measureMap.set(x + '---' + y, cell);
         });
 
-        measureMap = measureMap.asImmutable();
         var max = measureMap.maxBy(cell => cell.get(measure));
         if (max) {
             max = max.get(measure);
@@ -69,11 +68,11 @@ export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
         var yLabelsSorted = HeatMapDisplay.applySort(ySort, yLabels);
 
         yLabelsSorted.map(yLabel => {
-            var row = List([{
+            let row = List([{
                 value: yLabel,
                 style: {},
                 onClick: undefined
-            }]).asMutable();
+            }]);
 
             xLabelsSorted.map(xLabel => {
 
@@ -100,9 +99,9 @@ export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
                     }
                 }
 
-                row.push(_cell);
+                row = row.push(_cell);
             });
-            rows.push(row.asImmutable());
+            rows.push(row);
         });
 
         return {

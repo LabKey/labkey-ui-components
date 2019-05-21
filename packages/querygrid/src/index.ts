@@ -34,7 +34,6 @@ import {
     selectRows,
     updateRows
 } from './query/api'
-import { SCHEMAS } from './query/schemas'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
@@ -62,9 +61,6 @@ import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
 
 export {
-    // constants
-    SCHEMAS,
-
     // global state functions
     initQueryGridState,
     getStateQueryGridModel,

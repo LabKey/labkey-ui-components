@@ -5,7 +5,6 @@
 import * as React from 'react'
 import { hasAllPermissions, PermissionTypes, SVGIcon, User } from "@glass/base";
 
-// import { SVGIcon } from '../../components/Image/SVGIcon'
 import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger'
 
 interface Props {

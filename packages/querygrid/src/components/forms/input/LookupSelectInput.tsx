@@ -44,7 +44,7 @@ interface OwnProps extends SelectInputProps {
     queryColumn: QueryColumn
 }
 
-export class SelectRowsSelect extends React.Component<OwnProps, StateProps> {
+export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
 
     _id: string;
 
@@ -64,10 +64,10 @@ export class SelectRowsSelect extends React.Component<OwnProps, StateProps> {
         const { options } = this.state;
 
         if (!queryColumn || !queryColumn.isLookup()) {
-            throw 'querygrid forms/input/<Select> only works with lookup columns.';
+            throw 'querygrid forms/input/<LookupSelectInput> only works with lookup columns.';
         }
         else if (queryColumn.displayAsLookup === false) {
-            console.warn('querygrid forms/input/<Select> received lookup column that is explicitly set displayAsLookup = false');
+            console.warn('querygrid forms/input/<LookupSelectInput> received lookup column that is explicitly set displayAsLookup = false');
         }
 
         const { schemaName, queryName } = queryColumn.lookup;

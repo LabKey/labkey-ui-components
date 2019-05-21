@@ -14,7 +14,7 @@ import { resolveRenderer } from "../renderers";
 import { MultiValueRenderer } from "../../../renderers/MultiValueRenderer";
 import { AliasRenderer } from "../../../renderers/AliasRenderer";
 import { AppendUnits } from "../../../renderers/AppendUnits";
-import { SelectRowsSelect } from "../input/SelectRowsSelect";
+import { LookupSelectInput } from "../input/LookupSelectInput";
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
@@ -91,7 +91,7 @@ export function resolveDetailEditRenderer(col: QueryColumn): React.ReactNode {
                 const multiple = col.isJunctionLookup(),
                     joinValues = multiple && !col.isDataInput();
                 return (
-                    <SelectRowsSelect
+                    <LookupSelectInput
                         containerClass="form-group row"
                         inputClass="col-sm-12"
                         joinValues={joinValues}

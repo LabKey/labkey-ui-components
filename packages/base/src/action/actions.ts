@@ -18,9 +18,12 @@ export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
     });
 }
 
-export function fetchAllAssays(): Promise<List<AssayDefinitionModel>> {
+export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {
         Assay.getAll({
+            parameters: {
+                type
+            },
             success: (rawModels: Array<any>) => {
                 let models = List<AssayDefinitionModel>().asMutable();
                 rawModels.forEach(rawModel => {

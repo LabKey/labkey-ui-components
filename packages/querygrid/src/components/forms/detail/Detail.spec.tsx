@@ -98,7 +98,7 @@ describe("<Detail/>", () => {
       );
 
       const wrapper = mount(component);
-      // expect out custom titleRenderer to use the column's fieldKey instead of caption
+      // expect custom titleRenderer to use the column's fieldKey instead of caption
       expect(wrapper.find('table').text().indexOf('lookupfield')).toBeGreaterThan(-1);
       wrapper.unmount();
    });

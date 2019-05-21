@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
+import { SCHEMAS, fetchSchemas, fetchGetQueries } from './models/schemas'
 import { fetchProtocol, fetchAllAssays } from './action/actions'
 import {
     AssayProtocolModel,
@@ -65,6 +66,7 @@ import { Progress } from './components/Progress'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
+import { Section } from './components/Section'
 import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
@@ -92,6 +94,7 @@ export {
     GRID_CHECKBOX_OPTIONS,
     PermissionTypes,
     Persistence,
+    SCHEMAS,
 
     // interfaces
     IQueryGridModel,
@@ -146,18 +149,21 @@ export {
     PermissionAllowed,
     PermissionNotAllowed,
     FormSection,
+    Section,
     FileAttachmentForm,
     CreatedModified,
 
     // actions
     fetchProtocol,
     fetchAllAssays,
+    fetchSchemas,
+    fetchGetQueries,
 
     // notification functions
     createNotification,
     initNotificationsState,
 
-    // date functions
+    // date and format functions
     datePlaceholder,
     getUnFormattedNumber,
 

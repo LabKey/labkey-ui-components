@@ -64,8 +64,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
         const { fieldKeys, queryModel } = props;
         if (queryModel.isLoaded) {
             const row = queryModel.getRow();
-            let fields = List<FieldEditProps>().asMutable();
-            let fieldData = Map<string, any>().asMutable();
+            let fields = List<FieldEditProps>();
             fieldKeys.forEach((key) => {
                 const column = queryModel.queryInfo.getColumn(key);
 
@@ -77,7 +76,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                         value = data.has('displayValue') ? data.get('displayValue') : data.get('value');
                     }
 
-                    fields.push(new FieldEditProps({
+                    fields = fields.push(new FieldEditProps({
                         caption: column.caption,
                         data,
                         fieldKey: column.fieldKey,
@@ -85,8 +84,6 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                         key,
                         value
                     }));
-
-                    fieldData.set(key, data);
                 }
                 else if (LABKEY.devMode) {
                     const sq = queryModel.queryInfo.schemaQuery;
@@ -95,7 +92,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
             });
 
             this.setState({
-                fields: fields.asImmutable()
+                fields: fields
             });
         }
     }
@@ -159,23 +156,23 @@ export class FieldEditTrigger extends React.Component<Props, State> {
         const iconField = this.props.iconField ? this.props.iconField : this.props.fieldKeys.get(0);
         const caption = this.props.caption ? this.props.caption : (fields && fields.size > 0 ? fields.get(0).caption  : 'Fields');
 
-        let overlayFields = List<FieldEditProps>().asMutable();
+        let overlayFields = List<FieldEditProps>();
         let haveValues = false;
-        let columnKeys = List<string>().asMutable();
+        let columnKeys = List<string>();
         let fieldValue = undefined;
         fields.forEach( (field) => {
-           overlayFields.push(new FieldEditProps({
-               caption: field.caption,
-               fieldKey: field.fieldKey,
-               inputPlaceholder: 'Enter a ' + field.caption.toLowerCase() + '...',
-               inputType: field.inputType,
-               value: field.value
-           }));
-           columnKeys.push(field.fieldKey);
-           haveValues = haveValues || (field.value !== undefined && field.value !== null &&  field.value.length != 0);
-           if (field.key === iconField) {
+            overlayFields = overlayFields.push(new FieldEditProps({
+                caption: field.caption,
+                fieldKey: field.fieldKey,
+                inputPlaceholder: 'Enter a ' + field.caption.toLowerCase() + '...',
+                inputType: field.inputType,
+                value: field.value
+            }));
+            columnKeys = columnKeys.push(field.fieldKey);
+            haveValues = haveValues || (field.value !== undefined && field.value !== null &&  field.value.length != 0);
+            if (field.key === iconField) {
                fieldValue = field.value;
-           }
+            }
         });
 
         return (

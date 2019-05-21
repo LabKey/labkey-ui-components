@@ -23,24 +23,28 @@ describe("QueryGridModel", () => {
 
 describe("AssayDefinitionModel", () => {
 
-   test("getSampleColumn()", () => {
+   test("with getSampleColumn()", () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         const sampleColumn = modelWithSampleId.getSampleColumn();
         expect(sampleColumn).toBeTruthy();
         expect(sampleColumn.domain).toBe('Result');
         expect(sampleColumn.column.isLookup()).toBeTruthy();
         expect(sampleColumn.column.fieldKey).toBe('SampleID');
+   });
 
+   test("without getSampleColumn()", () => {
         const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
         const nonSampleColumn = modelWithout.getSampleColumn();
         expect(nonSampleColumn).toBe(null);
    });
 
-   test("getSampleColumnLookup()", () => {
+   test("with getSampleColumnLookup()", () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
         const sampleColumn = modelWithSampleId.getSampleColumnLookup();
         expect(sampleColumn).toBe('SampleID');
+   });
 
+   test("without getSampleColumnLookup()", () => {
         const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
         const nonSampleColumn = modelWithout.getSampleColumnLookup();
         expect(nonSampleColumn).toBe(null);

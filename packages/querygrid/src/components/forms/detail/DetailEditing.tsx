@@ -45,9 +45,9 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
 
     arrayListIsEqual(valueArr: Array<string|number>, nestedModelList: List<Map<string, any>>): boolean {
         let matched = 0;
-        // Loop through the submitted array and the existing list and compare values
-        // If values match, add tally. If submitted values length is same as
-        // Should have checked against empty array and list before function
+        // Loop through the submitted array and the existing list and compare values.
+        // If values match, add tally. If submitted values length is same as existing list, consider them equal.
+        // Note: caller should have checked against empty array and list before function.
         nestedModelList.forEach(nestedField => {
             return valueArr.forEach(nestedVal => {
                 if (nestedField.get('value') === nestedVal || nestedField.get('displayValue') === nestedVal) {

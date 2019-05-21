@@ -53,21 +53,5 @@ export default [
             typescript(),
             sass()
         ]
-    },
-    {
-        external: external,
-        input: input,
-        output: {
-            file: 'dist/report-list.umd.js',
-            format: 'umd',
-            name: 'PACKAGE_NAME',
-            globals: globals
-        },
-        plugins: [
-            resolve(),
-            commonjs({namedExports}),
-            typescript(),
-            sass()
-        ]
     }
 ]

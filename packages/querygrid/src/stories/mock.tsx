@@ -115,5 +115,4 @@ initQueryGridState(fromJS({
     }
 }));
 
-initBrowserHistoryState();
 initNotificationsState();

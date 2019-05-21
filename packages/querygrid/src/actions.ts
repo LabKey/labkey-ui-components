@@ -1670,16 +1670,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
         return rowData;
     }).toMap();
 
-    let columns = OrderedMap<string, QueryColumn>();
-    let index = 0;
-    model.queryInfo.columns.forEach((column, key) => {
-        if (index === colIndex) {
-            columns = columns.merge(queryColumns);
-            index = index + queryColumns.size;
-        }
-        columns = columns.set(key, column);
-        index++;
-    });
+    let columns = model.queryInfo.insertColumns(colIndex, queryColumns);
 
     updateQueryGridModel(model, {
         data,
@@ -1693,6 +1684,9 @@ export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorMo
     let editorModel = getEditorModel(model.getId());
 
     let deleteIndex = model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === fieldKey);
+    // nothing to do if there is no such column
+    if (deleteIndex === -1)
+        return editorModel;
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;

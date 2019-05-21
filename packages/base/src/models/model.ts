@@ -985,6 +985,37 @@ export class QueryInfo extends Record({
 
         return this.views.get(_view);
     }
+
+    /**
+     * Insert a set of columns into this queryInfo's columns at a designated index.  If the given column index
+     * is outside the range of the existing columns, this queryInfo's columns will be returned.  An index that is equal to the
+     * current number of columns will cause the given queryColumns to be appended to the existing ones.
+     * @param queryInfo existing model with columns
+     * @param colIndex the index at which the new columns should start
+     * @param queryColumns the (ordered) set of columns
+     * @returns a new set of columns when the given columns inserted
+     */
+    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : OrderedMap<string, QueryColumn> {
+        if (colIndex < 0 || colIndex > this.columns.size)
+            return this.columns;
+
+        // put them at the end
+        if (colIndex == this.columns.size)
+            return this.columns.merge(queryColumns);
+
+        let columns = OrderedMap<string, QueryColumn>();
+        let index = 0;
+
+        this.columns.forEach((column, key) => {
+            if (index === colIndex) {
+                columns = columns.merge(queryColumns);
+                index = index + queryColumns.size;
+            }
+            columns = columns.set(key, column);
+            index++;
+        });
+        return columns;
+    }
 }
 
 export class QuerySort extends Record({

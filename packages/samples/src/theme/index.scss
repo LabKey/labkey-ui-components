@@ -1,0 +1,9 @@
+// Add your variables.scss and other scss files as siblings of this file
+// Then @import them here:
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_mixins";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_popovers";
+
+
+@import "~@glass/base/dist/base.css";
+@import "~@glass/querygrid/dist/querygrid.css";

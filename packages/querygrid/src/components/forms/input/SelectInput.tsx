@@ -291,7 +291,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
                         return arr;
                     }, []);
 
-                    if (!joinValues) { // consider removing all together?
+                    if (!joinValues) { // consider removing altogether?
                         formValue = formValue.join(delimiter);
                     }
                 }

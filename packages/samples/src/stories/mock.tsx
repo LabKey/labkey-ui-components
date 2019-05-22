@@ -4,7 +4,8 @@ import { fromJS } from 'immutable';
 
 import { initNotificationsState } from "@glass/base";
 
-import nameExpressionQuery from "../test/data/nameExpr-getQuery.json";
+import nameExpressionQueryInfo from "../test/data/nameExpressionSet-getQueryDetails.json";
+import sampleSet2QueryInfo from "../test/data/sampleSet2-getQueryDetails.json";
 import sampleSetsQuery from "../test/data/sampleSets-getQuery.json";
 import sampleSetsQueryInfo from "../test/data/sampleSets-getQueryDetails.json";
 import { initQueryGridState } from '@glass/querygrid';
@@ -17,7 +18,9 @@ mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
     if (queryParams.schemaName.toLowerCase() === 'exp' && queryParams.queryName.toLowerCase() === 'samplesets')
         responseBody = sampleSetsQueryInfo;
     else if (queryParams.schemaName.toLowerCase() === 'samples' && queryParams.queryName.toLowerCase() === 'name expression set')
-        responseBody = nameExpressionQuery;
+        responseBody = nameExpressionQueryInfo;
+    else if (queryParams.schemaName.toLowerCase() === 'samples' && queryParams.queryName.toLowerCase() === 'sample set 2')
+        responseBody = sampleSet2QueryInfo;
 
     return res
         .status(200)

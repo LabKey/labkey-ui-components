@@ -74,5 +74,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "d085abfdf44dd157e49a17a20cd84ee89d7b6212"
 }

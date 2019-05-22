@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "^0.2.0-fb-grid-bulk-edit.7",
+    "@glass/base": "0.2.0-fb-grid-bulk-edit.7",
     "@types/prop-types": "15.5.5",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
@@ -69,5 +69,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "d085abfdf44dd157e49a17a20cd84ee89d7b6212"
 }

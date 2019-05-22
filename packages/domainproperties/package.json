@@ -37,7 +37,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.17",
     "@fortawesome/free-solid-svg-icons": "5.8.1",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@glass/base": "^0.2.0-fb-grid-bulk-edit.7"
+    "@glass/base": "0.2.0-fb-grid-bulk-edit.7"
   },
   "jest": {
     "globals": {
@@ -61,5 +61,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "d085abfdf44dd157e49a17a20cd84ee89d7b6212"
 }

@@ -1,12 +1,12 @@
 {
   "name": "@glass/samples",
-  "version": "0.1.0-fb-grid-bulk-edit.1",
+  "version": "0.1.0-fb-grid-bulk-edit.2",
   "description": "Componets for creating and displaying data for samples and sample sets",
   "main": "dist/samples.cjs.js",
   "module": "dist/samples.es.js",
   "types": "dist/index.d.ts",
   "config": {
-    "application_dir": "/path/to/application/node_modules/\\@glass/querygrid/dist"
+    "application_dir": "/Users/susanhert/Development/labkey/trunk/server/optionalModules/sampleManagement/node_modules/\\@glass/samples/dist"
   },
   "files": [
     "dist/"
@@ -37,8 +37,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "^0.2.0-fb-grid-bulk-edit.7",
-    "@glass/querygrid": "^0.3.0-fb-grid-bulk-edit.17"
+    "@glass/base": "0.2.0-fb-grid-bulk-edit.7",
+    "@glass/querygrid": "0.3.0-fb-grid-bulk-edit.18"
   },
   "peerDependencies": {
     "immutable": "^3.8.2"
@@ -70,5 +70,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "d085abfdf44dd157e49a17a20cd84ee89d7b6212"
 }

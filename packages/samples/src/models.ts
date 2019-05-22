@@ -126,9 +126,7 @@ export class SampleIdCreationModel extends Record({
     initialSampleSet: undefined,
     isError: false,
     isInit: false,
-    isLoading: false,
     isSubmitting: false,
-    isValid: false,
     parents: Array<string>(),
     parentOptions: List<IParentOption>(),
     sampleParents: List<SampleSetParentType>(),
@@ -142,9 +140,7 @@ export class SampleIdCreationModel extends Record({
     initialSampleSet: any;
     isError: boolean;
     isInit: boolean;
-    isLoading: boolean;
     isSubmitting: boolean;
-    isValid: boolean;
     parents: Array<string>; // TODO should be 'originalParents'
     parentOptions: List<IParentOption>;
     sampleParents: List<SampleSetParentType>;

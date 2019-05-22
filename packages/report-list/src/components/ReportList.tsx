@@ -10,7 +10,7 @@ interface ReportItemModalProps {
 
 export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
     render() {
-        const { name, description, detailsUrl, type, thumbnail, createdBy } = this.props.report;
+        const { name, description, runUrl, type, thumbnail, createdBy } = this.props.report;
         const onClose = this.props.onClose;
 
         return (
@@ -22,7 +22,7 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
 
                     <Modal.Body>
                         <p>
-                            <a href={detailsUrl}>View report Definition <span className="fa fa-external-link"/></a>
+                            <a href={runUrl}>View report Definition <span className="fa fa-external-link"/></a>
                         </p>
 
                         <p>
@@ -60,7 +60,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
     };
 
     render() {
-        const { name, detailsUrl, icon, iconCls, createdBy } = this.props.report;
+        const { name, runUrl, icon, iconCls, createdBy } = this.props.report;
         let createdByEl;
         let iconEl = <Image className="report-list-item__icon" src={icon} />;
 
@@ -84,7 +84,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
                 </Media.Body>
 
                 <Media.Right align="middle">
-                    <a href={detailsUrl} className="report-list-item__external-link" onClick={this.onLinkClicked}>
+                    <a href={runUrl} className="report-list-item__external-link" onClick={this.onLinkClicked}>
                         <span className="fa fa-external-link" />
                     </a>
                 </Media.Right>
@@ -115,7 +115,7 @@ export class ReportList extends React.PureComponent<ReportListProps> {
             body = <div className="report-list__message">No reports.</div>;
         } else {
             const reportEls = reports.map((report: IReportItem) => {
-                return <ReportListItem key={report.detailsUrl} report={report} onClick={onReportClicked} />;
+                return <ReportListItem key={report.runUrl} report={report} onClick={onReportClicked} />;
             });
 
             body = (

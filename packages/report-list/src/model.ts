@@ -6,6 +6,7 @@ export interface IReportItem {
     name: string,
     description?: string,
     detailsUrl: string,
+    runUrl: string,
     type: string,
     visible: boolean,
     id: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?

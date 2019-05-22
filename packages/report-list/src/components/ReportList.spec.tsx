@@ -64,7 +64,7 @@ describe('<ReportListItem />', () => {
         expect(wrapper.text()).toContain(report.createdBy);
         expect(wrapper.text()).toContain(report.name);
         // Enzyme prefixes relative URLs with http://localhost
-        const expectedHref = `http://localhost${report.detailsUrl}`;
+        const expectedHref = `http://localhost${report.runUrl}`;
         expect(wrapper.find('a').getDOMNode()).toHaveProperty('href', expectedHref);
     });
 

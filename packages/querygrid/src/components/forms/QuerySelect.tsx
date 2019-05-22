@@ -13,7 +13,7 @@ import { initSelect } from './actions'
 import { FOCUS_FLAG } from './constants'
 import { QuerySelectModel, ReactSelectOption } from './model'
 
-function getValue(model: QuerySelectModel): any {
+function getValue(model: QuerySelectModel, props: any): any {
     const { rawSelectedValue } = model;
 
     if (rawSelectedValue !== undefined && !Utils.isString(rawSelectedValue)) {
@@ -28,6 +28,16 @@ function getValue(model: QuerySelectModel): any {
 
     if (rawSelectedValue === null) {
         return undefined;
+    }
+
+    // Issue 37352
+    // For reasons not entirely clear we cannot pass in an array of values to QuerySelect when we initialize it
+    // while multiple is also set to true. Instead we can only pass in one pre-populated value. We then need to
+    // convert that value to an array here, or Formsy will only return a single value if the input is never touched
+    // by the user. Converting it to an array right here gets us the best of both worlds: a pre-populated value that
+    // is returned as an array when the user hits submit.
+    if (rawSelectedValue !== undefined && rawSelectedValue !== '' && props.multiple && !Array.isArray(rawSelectedValue)) {
+        return [rawSelectedValue];
     }
 
     return rawSelectedValue;
@@ -285,7 +295,6 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             return <SelectInput {...inputProps}/>
         }
         else if (model && model.isInit) {
-
             const inputProps = Object.assign({
                 id: model.id,
                 label: label !== undefined ? label : model.queryInfo.title,
@@ -302,7 +311,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 options: undefined, // prevent override
                 optionRenderer: previewOptions ? this.optionRenderer.bind(this) : undefined,
                 selectedOptions: model.getSelectedOptions(),
-                value: getValue(model) // needed to initialize the Formsy "value" properly
+                value: getValue(model, this.props) // needed to initialize the Formsy "value" properly
             });
 
             return <SelectInput {...inputProps}/>

@@ -165,7 +165,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
-                            const joinValues = multiple && !col.isExpInput();
+                            const joinValues = multiple;
                             let id = col.fieldKey + i + (componentKey ? componentKey : '');
 
                             return (

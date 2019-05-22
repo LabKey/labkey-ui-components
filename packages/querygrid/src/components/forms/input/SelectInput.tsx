@@ -98,6 +98,8 @@ export interface SelectInputProps {
     ignoreCase?: boolean
     inputClass?: string
     isLoading?: boolean
+    // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
+    //   the values when false.
     joinValues?: boolean
     labelClass?: string
     labelKey?: string

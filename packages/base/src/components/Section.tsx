@@ -7,6 +7,7 @@ interface SectionProps {
     title: string
 }
 
+// FIXME: remove all of these inline styles, make actual CSS classes.
 export const Section: React.SFC<SectionProps> = (props) => (
     <>
         <div className="g-section">

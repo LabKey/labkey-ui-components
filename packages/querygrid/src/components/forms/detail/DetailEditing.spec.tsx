@@ -3,12 +3,12 @@ import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 import mock, { proxy } from "xhr-mock";
 import { fromJS } from 'immutable';
-import { SchemaQuery } from "@glass/base";
+import { SchemaQuery, SCHEMAS } from "@glass/base";
 
 import { DetailEditing } from "./DetailEditing";
 import { getStateQueryGridModel } from "../../../model";
 import { getQueryGridModel, initQueryGridState } from "../../../global";
-import { gridInit, SCHEMAS } from "../../..";
+import { gridInit } from "../../..";
 
 import sampleSetQueryInfo from '../../../test/data/samplesSet-getQueryDetails.json';
 import sampleDetailsQuery from '../../../test/data/sampleDetails-getQuery.json';

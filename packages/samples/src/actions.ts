@@ -1,8 +1,8 @@
 import { Filter } from '@labkey/api'
 import { fromJS, List, Map } from 'immutable'
 import { DisplayObject, ISampleSetOption, SampleIdCreationModel, SampleSetOption, SampleSetParentType } from './models';
-import { getSelected, SCHEMAS, selectRows } from '@glass/querygrid';
-import { naturalSort, SchemaQuery } from '@glass/base';
+import { getSelected, selectRows } from '@glass/querygrid';
+import { naturalSort, SchemaQuery, SCHEMAS } from '@glass/base';
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
     return new Promise((resolve) => {

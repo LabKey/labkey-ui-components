@@ -140,7 +140,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
                         insertModel: insertModel.merge({
                             isError: true,
                             isLoading: false,
-                            errors: "Problem retrieving data for the target sample set."
+                            errors: "Problem retrieving data for sample set '" + insertModel.getTargetSampleSetName() + "'."
                         }) as SampleIdCreationModel
                     }
                 })

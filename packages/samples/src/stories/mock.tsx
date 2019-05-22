@@ -35,7 +35,6 @@ mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
 
 mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
     const bodyParams = req.body().toLowerCase();
-    console.log("bodyParams", bodyParams);
     let responseBody;
     // dataregionname=query&query.queryname=name%2520expression%2520set&schemaname=samples&query.rowid~in=450&query.columns=*&apiversion=17.1
     if (bodyParams.indexOf("&query.queryname=samplesets&") > -1)

@@ -11,11 +11,12 @@ This repository defines all of the components available in the @glass scope. The
 <!--- keep these alphabetical --->
 | Package | Description |
 | --- | --- | 
-| [@glass/base](packages/base/README.md) | Base components, models, and utility functions for LabKey applications and pages 
+| [@glass/base](packages/base/README.md) | Base components, models, and utility functions for LabKey applications and pages
+| [@glass/domainproperties](packages/domainproperties/README.md) | Domain property related components for LabKey domains | 
 | [@glass/navigation](packages/navigation/README.md) | Application navigation elements and functions |
 | [@glass/omnibox](packages/omnibox/README.md) | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 
 | [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views 
-| [@glass/domainproperties](packages/domainproperties/README.md) | Domain property related components for LabKey domains |
+| [@glass/report-list](packages/report-list/README.md) | Query Grid for LabKey schema/query data views 
 | [template](packages/template/README.md) | A template for creating new packages
 
 ## Using @glass npm packages
@@ -176,13 +177,13 @@ Each package that is developed should create a set of stories that illustrate th
 conventions currently:
 * Each package as a `.storybook` directory that contains the configuration files for storybook.  See `packages/template/.storybook` for and example.
 * Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components
-* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a use can
+`* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a user can
 explore the different options available within a component.  See the `navigation` package for a few examples.
 
 You can start up Storybook via:
 
 ```sh
-cd packages/<you package>
+cd packages/<your package>
 yarn run storybook
 
 # The storybook instance is now available at http://localhost:9001

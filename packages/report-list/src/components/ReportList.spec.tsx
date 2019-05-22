@@ -93,7 +93,9 @@ describe('<ReportItemModal />', () => {
     test('ReportItemModal renders', () => {
         const report = flattenApiResponse(exampleData)[0];
         const component = <ReportItemModal report={report} onClose={noop} />;
-        const tree = renderer.create(component);
-        expect(tree).toMatchSnapshot();
+        const wrapper = mount(component);
+        // Have to use mount + wrapper.debug for snapshot here because react-test-renderer does not work with
+        // React portals, which react-bootstrap uses for their modal component.
+        expect(wrapper.debug()).toMatchSnapshot();
     });
 });

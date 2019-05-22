@@ -63,10 +63,12 @@ const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
 export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
-    if (!model || model.isLoaded || model.isLoading) {
+    // return quickly if we don't have a model or if it is already loading
+    if (!model || model.isLoading) {
         return;
     }
 
+    // call to updateQueryGridModel to make sure this model is in the global state, if it wasn't already
     let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
 
     if (!newModel.isLoaded) {

@@ -72,7 +72,6 @@ interface SampleInsertPageProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
     location?: Location
     onCancel?: () => void
-
 }
 
 interface StateProps {
@@ -80,7 +79,7 @@ interface StateProps {
     originalQueryInfo?: QueryInfo
 }
 
-export class SampleInsertPage extends React.Component<SampleInsertPageProps, StateProps> {
+export class SampleInsertPanel extends React.Component<SampleInsertPageProps, StateProps> {
 
     constructor(props: any) {
         super(props);
@@ -94,7 +93,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
         this.state = {
             insertModel: undefined
-        }
+        };
     }
 
     componentWillMount() {
@@ -133,7 +132,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
     init(props: SampleInsertPageProps) {
 
-        const queryParams = props.location ? SampleInsertPage.getQueryParameters(props.location.query) : {
+        const queryParams = props.location ? SampleInsertPanel.getQueryParameters(props.location.query) : {
             parents: undefined,
             selectionKey: undefined,
             target: undefined
@@ -221,7 +220,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
     }
 
     createParentColumnName(parent: SampleSetParentType) {
-        const parentInputType = SampleInsertPage.convertParentInputSchema(parent.schema);
+        const parentInputType = SampleInsertPanel.convertParentInputSchema(parent.schema);
         const formattedQueryName = capitalizeFirstChar(parent.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
@@ -230,7 +229,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
     // TODO: We should stop generating this on the client and retrieve the actual ColumnInfo from the server
     static generateParentColumn(parent: SampleSetParentType): QueryColumn {
-        const parentInputType = SampleInsertPage.convertParentInputSchema(parent.schema);
+        const parentInputType = SampleInsertPanel.convertParentInputSchema(parent.schema);
         const formattedQueryName = capitalizeFirstChar(parent.query);
         // Issue 33653: query name is case-sensitive for some data inputs (sample parents), so leave it
         // capitalized here and we lower it where needed
@@ -273,7 +272,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
         let columns = OrderedMap<string, QueryColumn>();
         insertModel.sampleParents.forEach((parent) => {
             if (parent.schema && parent.query) {
-                const column = SampleInsertPage.generateParentColumn(parent);
+                const column = SampleInsertPanel.generateParentColumn(parent);
                 // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
                 columns = columns.set(column.name.toLowerCase(), column);
             }
@@ -347,7 +346,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
                     'sampleParents',
                     existingParentKey
                 ], parentType) as SampleIdCreationModel;
-                column = SampleInsertPage.generateParentColumn(parentType);
+                column = SampleInsertPanel.generateParentColumn(parentType);
             }
             else {
                 let parentToResetKey = insertModel.sampleParents.findKey(parent => parent.get('index') === index);
@@ -692,36 +691,33 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
         const queryGridModel = this.getQueryGridModel();
 
         return (
-            <Page title="Create Samples">
-                <Panel>
-                    <Panel.Body>
-                        <Form>
-                            {this.renderHeader()}
-                            {queryGridModel && queryGridModel.isLoaded ?
-                                <EditableGridPanel
-                                    addControlProps={addControlProps}
-                                    allowBulkRemove={true}
-                                    allowBulkUpdate={true}
-                                    bulkUpdateText={"Bulk Insert"}
-                                    bulkUpdateProps={bulkUpdateProps}
-                                    columnMetadata={columnMetadata}
-                                    onRowCountChange={this.onRowCountChange}
-                                    model={queryGridModel}
-                                />
-                                :
-                                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
-                            }
-                            {this.renderButtons()}
-                        </Form>
-                    </Panel.Body>
-
-                </Panel>
+            <Panel>
+                <Panel.Body>
+                    <Form>
+                        {this.renderHeader()}
+                        {queryGridModel && queryGridModel.isLoaded ?
+                            <EditableGridPanel
+                                addControlProps={addControlProps}
+                                allowBulkRemove={true}
+                                allowBulkUpdate={true}
+                                bulkUpdateText={"Bulk Insert"}
+                                bulkUpdateProps={bulkUpdateProps}
+                                columnMetadata={columnMetadata}
+                                onRowCountChange={this.onRowCountChange}
+                                model={queryGridModel}
+                            />
+                            :
+                             !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
+                        }
+                        {this.renderButtons()}
+                    </Form>
+                </Panel.Body>
                 <Progress
                     estimate={insertModel.sampleCount * 20}
                     modal={true}
                     title="Generating samples"
                     toggle={insertModel.isSubmitting} />
-            </Page>
+            </Panel>
         )
     }
 }

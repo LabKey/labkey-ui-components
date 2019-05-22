@@ -4,10 +4,49 @@ import { Button, Form, Panel } from 'react-bootstrap';
 
 import { Map, OrderedMap } from 'immutable'
 
-import { AddEntityButton, Alert, capitalizeFirstChar, IGridLoader, IGridResponse, LoadingPage, LoadingSpinner, Page, Progress, QueryColumn, QueryGridModel, QueryInfo, RemoveEntityButton, SchemaQuery } from '@glass/base';
-import { addColumns, changeColumn, EditableColumnMetadata, EditableGridPanel, getEditorModel, getQueryDetails, getQueryGridModel, getStateQueryGridModel, gridInit, gridShowError, InsertRowsResponse, Location, removeColumn, removeQueryGridModel, SCHEMAS, SelectInput } from '@glass/querygrid';
+import {
+    AddEntityButton,
+    Alert,
+    capitalizeFirstChar,
+    IGridLoader,
+    IGridResponse,
+    LoadingPage,
+    LoadingSpinner,
+    Page,
+    Progress,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    RemoveEntityButton,
+    SchemaQuery
+} from '@glass/base';
+import {
+    addColumns,
+    changeColumn,
+    EditableColumnMetadata,
+    EditableGridPanel,
+    getEditorModel,
+    getQueryDetails,
+    getQueryGridModel,
+    getStateQueryGridModel,
+    gridInit,
+    gridShowError,
+    InsertRowsResponse,
+    Location,
+    removeColumn,
+    removeQueryGridModel,
+    SCHEMAS,
+    SelectInput
+} from '@glass/querygrid';
 
-import { GenerateSampleResponse, IParentOption, ISampleSetOption, SampleIdCreationModel, SampleSetOption, SampleSetParentType } from '../models';
+import {
+    GenerateSampleResponse,
+    IParentOption,
+    ISampleSetOption,
+    SampleIdCreationModel,
+    SampleSetOption,
+    SampleSetParentType
+} from '../models';
 import { initSampleSetInsert } from '../actions';
 
 
@@ -31,7 +70,6 @@ class SampleGridLoader implements IGridLoader {
 
 interface SampleInsertPageProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
-    insertModel: SampleIdCreationModel
     location?: Location
     onCancel?: () => void
 

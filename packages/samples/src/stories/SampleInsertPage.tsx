@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+import { Location } from "@glass/querygrid"
 
-import sampleIdCreationModel from "../test/data/sampleIdCreationModel.json";
-
-import { SampleIdCreationModel } from '../models';
 import { SampleInsertPage } from '..';
 
 import './stories.scss'
@@ -12,20 +10,29 @@ import './stories.scss'
 storiesOf('SampleInsertPage', module)
     .addDecorator(withKnobs)
     .add("No target sample set", () => {
-        const model = new SampleIdCreationModel(sampleIdCreationModel);
-
-        return <SampleInsertPage
-            insertModel={model}
-        />;
+        return <SampleInsertPage/>;
 
     })
-    .add("Target sample set, no parents", () => {
-        const model = new SampleIdCreationModel(sampleIdCreationModel);
-        // const location = new Location({
-        //
-        // });
+    .add("Target sample set without parent selections", () => {
+        const location : Location = {
+            query: {
+                target: "Sample Set 2"
+            }
+        };
         return <SampleInsertPage
-            insertModel={model}
+            location={location}
         />;
     })
+    // TODO Somehow not all the queries or data or something is right for the use of this selectionKey.
+    // .add("Target sample set with parent selection", () => {
+    //     const location : Location = {
+    //         query: {
+    //             target: "Sample Set 2",
+    //             selectionKey:"sample-set-name%20expression%20set|samples/name%20expression%20set"
+    //         }
+    //     };
+    //     return <SampleInsertPage
+    //         location={location}
+    //     />;
+    // })
 ;

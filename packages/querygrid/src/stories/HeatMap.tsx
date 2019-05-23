@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { AppURL } from "@glass/base";
+import { AppURL, SCHEMAS } from "@glass/base";
 
 import { HeatMap } from "../components/heatmap/HeatMap";
-import { EXP_TABLES } from "../query/schemas";
 import './stories.scss'
 
 storiesOf('HeatMap', module)
@@ -12,7 +11,7 @@ storiesOf('HeatMap', module)
     .add("samples with data", () => {
         return (
             <HeatMap
-                schemaQuery={EXP_TABLES.SAMPLE_SET_HEAT_MAP}
+                schemaQuery={SCHEMAS.EXP_TABLES.SAMPLE_SET_HEAT_MAP}
                 nounSingular={'sample'}
                 nounPlural={'samples'}
                 yAxis={'protocolName'}
@@ -31,7 +30,7 @@ storiesOf('HeatMap', module)
     .add("assays with data", () => {
         return (
             <HeatMap
-                schemaQuery={EXP_TABLES.ASSAY_HEAT_MAP}
+                schemaQuery={SCHEMAS.EXP_TABLES.ASSAY_HEAT_MAP}
                 nounSingular={'run'}
                 nounPlural={'runs'}
                 yAxis={'protocolName'}

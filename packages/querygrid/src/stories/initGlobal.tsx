@@ -1,9 +1,8 @@
 import { fromJS } from 'immutable';
-import { initNotificationsState } from "@glass/base";
+import { initNotificationsState, SCHEMAS } from "@glass/base";
 
 import { initQueryGridState } from "../global";
 import { initBrowserHistoryState } from "../util/global";
-import { SCHEMAS } from "../query/schemas";
 import { initMocks } from "./mock";
 
 initQueryGridState(fromJS({

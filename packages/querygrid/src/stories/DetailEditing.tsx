@@ -15,11 +15,18 @@ interface Props {
 
 class DetailEditingPage extends React.Component<Props, any> {
 
+    componentWillMount() {
+        this.initModel();
+    }
+
+    initModel() {
+        const sampleModel = this.getQueryGridModel();
+        gridInit(sampleModel, true, this);
+    }
+
     getQueryGridModel(): QueryGridModel {
         const model = getStateQueryGridModel('detailediting', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'), {}, 123);
-        gridInit(model, true, this);
-        const stateModel = getQueryGridModel(model.getId()) || model;
-        return stateModel;
+        return getQueryGridModel(model.getId()) || model;
     }
 
     onUpdate = () => {

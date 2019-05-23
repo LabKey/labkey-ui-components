@@ -159,8 +159,12 @@ export class SampleIdCreationModel extends Record({
         super(values);
     }
 
+    hasTargetSampleSet() : boolean {
+        return this.targetSampleSet && this.targetSampleSet.value
+    }
+
     getTargetSampleSetName() : string {
-        return this.targetSampleSet && this.targetSampleSet.value ? this.targetSampleSet.value : undefined;
+        return this.hasTargetSampleSet() ? this.targetSampleSet.value : undefined;
     }
 
     getSampleInputs(): {

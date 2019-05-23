@@ -320,8 +320,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         let column;
         let parentColumnName;
         let existingParent;
-        if (insertModel) {
-            const queryGridModel = this.getQueryGridModel();
+        const queryGridModel = this.getQueryGridModel();
+        if (queryGridModel) {
 
             let updatedModel = insertModel;
             if (parent) {
@@ -487,11 +487,11 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         onChange={this.changeTargetSampleSet}
                         options={insertModel.sampleSetOptions.toArray()}
                         required
-                        value={insertModel && insertModel.targetSampleSet ? insertModel.targetSampleSet.label : undefined}/>
+                        value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}/>
                 )}
-                {insertModel.isError ? this.renderError() : (insertModel.targetSampleSet? this.renderParentSelections()
+                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections()
                     : (
-                    <div className="col-md-offset-2 col-sm-offset-3">Select a Sample Set</div>
+                    <div className="col-sm-offset-3">Select a Sample Set</div>
                 ))}
             </>
         )

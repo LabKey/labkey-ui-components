@@ -1,6 +1,6 @@
 {
   "name": "@glass/samples",
-  "version": "0.0.1-fb-sample-details.2",
+  "version": "0.0.1-fb-sample-details.3",
   "description": "Componets for creating and displaying data for samples and sample sets",
   "main": "dist/samples.cjs.js",
   "module": "dist/samples.es.js",

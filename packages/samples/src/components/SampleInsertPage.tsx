@@ -161,10 +161,9 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
         if (insertModel) {
             const sampleSetName = insertModel ? insertModel.getTargetSampleSetName() : undefined;
-            const gridId = sampleSetName ? 'insert-sample-set-' + sampleSetName : undefined;
-            if (gridId) {
+            if (sampleSetName) {
                 const queryInfoWithParents = this.getGridQueryInfo();
-                const model = getStateQueryGridModel(gridId, SchemaQuery.create('samples', sampleSetName),
+                const model = getStateQueryGridModel('insert-sample-set', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSetName),
                     {
                         editable: true,
                         loader: new SampleGridLoader(insertModel),
@@ -173,9 +172,8 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
                 return getQueryGridModel(model.getId()) || model;
             }
-            else {
-                return undefined;
-            }
+
+            return undefined;
         }
     }
 

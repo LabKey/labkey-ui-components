@@ -14,28 +14,10 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
                 return selectRows({
                     schemaName: schemaQuery.schemaName,
                     queryName: schemaQuery.queryName,
+                    columns: 'LSID,Name,RowId',
                     filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]
                 }).then((samplesResponse) => {
-                    const { key, models, orderedModels } = samplesResponse;
-                    const rows = fromJS(models[key]);
-                    let data = List<DisplayObject>();
-
-                    // The transformation done here makes the samples compatible with the editable grid
-                    orderedModels[key].forEach((id) => {
-                        data = data.push({
-                            displayValue: rows.getIn([id, 'Name', 'value']),
-                            value: rows.getIn([id, 'RowId', 'value'])
-                        });
-                    });
-
-                    resolve(List<SampleSetParentType>([
-                        SampleSetParentType.create({
-                            index: 1,
-                            query: schemaQuery.queryName,
-                            schema: schemaQuery.schemaName,
-                            value: data
-                        })
-                    ]))
+                    resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
                 });
             }).catch(() => {
                 console.warn('Unable to parse selectionKey', selectionKey);
@@ -43,27 +25,46 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             });
         }
         else if (initialParents && initialParents.length > 0) {
+            const parent = initialParents[0];
+            const [ schema, query, value ] = parent.toLowerCase().split(':');
 
-            resolve(List<SampleSetParentType>(initialParents.map((parent, i) => {
-                const [ schema, query, id ] = parent.toLowerCase().split(':');
-
-                const value = List<DisplayObject> ( {
-                    displayValue: id,
-                    value: id
-                });
-
-                return SampleSetParentType.create({
-                    index: i + 1,
-                    query,
-                    schema,
-                    value: List<any>([value])
-                })
-            })));
+            return selectRows({
+                schemaName: schema,
+                queryName: query,
+                columns: 'LSID,Name,RowId',
+                filterArray: [Filter.create('RowId', value)]
+            }).then((samplesResponse) => {
+                resolve(resolveSampleSetParentTypeFromIds(SchemaQuery.create(schema, query), samplesResponse));
+            });
         }
         else {
             resolve(List<SampleSetParentType>());
         }
     });
+}
+
+function resolveSampleSetParentTypeFromIds(schemaQuery: SchemaQuery, response: any): List<SampleSetParentType> {
+    const { key, models, orderedModels } = response;
+    const rows = fromJS(models[key]);
+    let data = List<DisplayObject>();
+
+    // The transformation done here makes the samples compatible with the editable grid
+    orderedModels[key].forEach((id) => {
+        const row = extractFromRow(rows.get(id));
+        data = data.push({
+            displayValue: row.label,
+            value: row.rowId
+        });
+    });
+
+    return List<SampleSetParentType>([
+        SampleSetParentType.create({
+            index: 1,
+            schema: schemaQuery.getSchema(),
+            query: schemaQuery.getQuery(),
+            value: data
+        })
+    ]);
 }
 
 function extractFromRow(row: Map<string, any>): ISampleSetOption {

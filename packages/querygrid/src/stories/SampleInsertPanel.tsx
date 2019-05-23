@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { Location } from "@glass/querygrid"
 
-import { SampleInsertPanel } from '..';
+import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
 
 import './stories.scss'
 

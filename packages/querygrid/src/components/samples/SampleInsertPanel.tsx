@@ -10,9 +10,7 @@ import {
     capitalizeFirstChar,
     IGridLoader,
     IGridResponse,
-    LoadingPage,
     LoadingSpinner,
-    Page,
     Progress,
     QueryColumn,
     QueryGridModel,
@@ -20,24 +18,18 @@ import {
     RemoveEntityButton,
     SchemaQuery
 } from '@glass/base';
-import {
-    addColumns,
-    changeColumn,
-    EditableColumnMetadata,
-    EditableGridPanel,
-    getEditorModel,
-    getQueryDetails,
-    getQueryGridModel,
-    getStateQueryGridModel,
-    gridInit,
-    gridShowError,
-    InsertRowsResponse,
-    Location,
-    removeColumn,
-    removeQueryGridModel,
-    SCHEMAS,
-    SelectInput
-} from '@glass/querygrid';
+
+import { addColumns, changeColumn, gridInit, gridShowError, removeColumn, } from '../../actions';
+import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
+
+import { getStateQueryGridModel } from '../../model'
+
+import { EditableColumnMetadata } from "../editable/EditableGrid"
+import { EditableGridPanel } from '../editable/EditableGridPanel'
+import { getQueryDetails, InsertRowsResponse } from '../../query/api'
+import { Location } from '../../util/URL'
+import { SCHEMAS } from '../../query/schemas'
+import { SelectInput } from '../forms/SelectInput'
 
 import {
     GenerateSampleResponse,
@@ -46,8 +38,8 @@ import {
     SampleIdCreationModel,
     SampleSetOption,
     SampleSetParentType
-} from '../models';
-import { initSampleSetInsert } from '../actions';
+} from './models';
+import { initSampleSetInsert } from './actions';
 
 
 class SampleGridLoader implements IGridLoader {
@@ -667,7 +659,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const { insertModel } = this.state;
 
         if (!insertModel)
-            return <LoadingPage title={"Sample Creation Form"}/>;
+            return <LoadingSpinner wrapperClassName="loading-data-message"/>;
 
         const bulkUpdateProps = {
             title: "Bulk Creation of Samples",

@@ -3,14 +3,47 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { EditorModel, getStateQueryGridModel } from './model'
-import { addColumns, changeColumn, getSelected, gridIdInvalidate, gridInit, gridInvalidate, gridRefresh, gridShowError, queryGridInvalidate, removeColumn, schemaGridInvalidate } from './actions'
-import { getEditorModel, getQueryGridModel, initQueryGridState, removeQueryGridModel, setQueryColumnRenderers, setQueryMetadata } from './global'
-import { getQueryDetails, insertRows, InsertRowsResponse, invalidateQueryDetailsCacheKey, ISelectRowsResult, searchRows, selectRows } from './query/api'
+import {
+    addColumns,
+    changeColumn,
+    getSelected,
+    gridIdInvalidate,
+    gridInit,
+    gridInvalidate,
+    gridRefresh,
+    gridShowError,
+    queryGridInvalidate,
+    removeColumn,
+    schemaGridInvalidate
+} from './actions'
+import {
+    getEditorModel,
+    getQueryGridModel,
+    initQueryGridState,
+    removeQueryGridModel,
+    setQueryColumnRenderers,
+    setQueryMetadata
+} from './global'
+import {
+    getQueryDetails,
+    insertRows,
+    InsertRowsResponse,
+    invalidateQueryDetailsCacheKey,
+    ISelectRowsResult,
+    searchRows,
+    selectRows
+} from './query/api'
 import { SCHEMAS } from './query/schemas'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
+import {
+    AssayResolver,
+    AssayRunResolver,
+    ListResolver,
+    SampleSetResolver,
+    SamplesResolver
+} from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -27,6 +60,7 @@ import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
+import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 
 export {
     // constants
@@ -102,5 +136,8 @@ export {
     // types
     PlacementType,
     ReactSelectOption,
-    EditorModel
+    EditorModel,
+
+    // samples-relaed
+    SampleInsertPanel
 }

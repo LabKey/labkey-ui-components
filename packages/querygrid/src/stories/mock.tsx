@@ -2,7 +2,7 @@ import mock, { proxy } from 'xhr-mock';
 import { fromJS } from 'immutable';
 
 import { initQueryGridState } from "../global";
-import { initBrowserHistoryState } from "../util/global";
+
 import { initNotificationsState } from "@glass/base";
 
 import mixturesQueryInfo from "../test/data/mixtures-getQueryDetails.json";
@@ -17,17 +17,32 @@ import getSchemasJson from '../test/data/getSchemas.json';
 import assayGetSchemasJson from '../test/data/assay-getSchemas.json';
 import assayGetQueriesJson from '../test/data/assay-getQueries.json';
 
+import nameExpressionQueryInfo from "../test/data/nameExpressionSet-getQueryDetails.json";
+import nameExpressionSelected from "../test/data/nameExpressionSet-getSelected.json";
+import nameExpressionSelectedQuery from "../test/data/nameExpressionSet-selected-getQuery.json";
+import sampleSet2QueryInfo from "../test/data/sampleSet2-getQueryDetails.json";
+import sampleSetsQuery from "../test/data/sampleSets-getQuery.json";
+import sampleSetsQueryInfo from "../test/data/sampleSets-getQueryDetails.json";
+
 mock.setup();
 
 mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
     const queryParams = req.url().query;
     let responseBody;
-    if (queryParams.schemaName.toLowerCase() === 'exp.data' && queryParams.queryName.toLowerCase() === 'mixtures')
+    let lcSchemaName = queryParams.schemaName.toLowerCase();
+    let lcQueryName = queryParams.queryName.toLowerCase();
+    if (lcSchemaName === 'exp.data' && lcQueryName === 'mixtures')
         responseBody = mixturesQueryInfo;
-    else if (queryParams.schemaName.toLowerCase() === 'schema' && queryParams.queryName.toLowerCase() === 'gridwithoutdata')
+    else if (lcSchemaName === 'schema' && lcQueryName === 'gridwithoutdata')
         responseBody = mixturesQueryInfo;
-    else if (queryParams.schemaName.toLowerCase() === 'lists' && queryParams.queryName.toLowerCase() === 'mixturetypes')
+    else if (lcSchemaName === 'lists' && lcQueryName === 'mixturetypes')
         responseBody = mixtureTypesQueryInfo;
+    else if (lcSchemaName === 'exp' && lcQueryName === 'samplesets')
+        responseBody = sampleSetsQueryInfo;
+    else if (lcSchemaName === 'samples' && (lcQueryName === 'name expression set' || lcQueryName === 'name%20expression%20set'))
+        responseBody = nameExpressionQueryInfo;
+    else if (lcSchemaName === 'samples' && lcQueryName === 'sample set 2')
+        responseBody = sampleSet2QueryInfo;
 
     return res
         .status(200)
@@ -44,6 +59,10 @@ mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
         responseBody = mixtureTypesQuery;
     else if (bodyParams.indexOf("&query.queryname=gridwithoutdata&") > -1)
         responseBody = noDataQuery;
+    else if (bodyParams.indexOf("&query.queryname=samplesets&") > -1)
+        responseBody = sampleSetsQuery;
+    else if (bodyParams.indexOf("&query.queryname=name%2520expression%2520set") > -1 && bodyParams.indexOf("&query.rowid~in=459") > -1)
+        responseBody = nameExpressionSelectedQuery;
 
     return res
         .status(200)
@@ -77,6 +96,20 @@ mock.get(/.*\/query\/.*\/getQueries.*/, (req, res) => {
         .body(JSON.stringify(responseBody));
 });
 
+mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
+    const queryParams = req.url().query;
+    let responseBody;
+    if (queryParams.key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set")
+        responseBody = nameExpressionSelected;
+    else
+        responseBody = mixturesSelected;
+
+    return res
+        .status(200)
+        .headers({'Content-Type': 'application/json'})
+        .body(JSON.stringify(responseBody));
+});
+
 //TODO conditionalize based on queryName
 mock.post(/.*\/query\/.*\/insertRows.*/, {
     status: 200,
@@ -84,12 +117,6 @@ mock.post(/.*\/query\/.*\/insertRows.*/, {
     body: JSON.stringify(samplesInsert)
 });
 
-//TODO conditionalize based on queryName
-mock.get(/.*\/query\/.*\/getSelected.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(mixturesSelected)
-});
 
 //TODO conditionalize based on queryName
 mock.get(/.*\/study-reports\/.*\/getReportInfos.*/, {

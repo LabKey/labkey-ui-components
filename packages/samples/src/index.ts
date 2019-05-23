@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
-import { SampleInsertPanel } from './components/SampleInsertPanel'
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -15,5 +14,5 @@ export {
     // TODO
 
     // components
-    SampleInsertPanel
+    // TODO
 }

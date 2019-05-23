@@ -1,6 +1,6 @@
 {
   "name": "@glass/samples",
-  "version": "0.0.1-fb-sample-details.1",
+  "version": "0.0.1-fb-sample-details.2",
   "description": "Componets for creating and displaying data for samples and sample sets",
   "main": "dist/samples.cjs.js",
   "module": "dist/samples.es.js",
@@ -37,8 +37,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.2.0-fb-sample-details.6",
-    "@glass/querygrid": "0.3.0-fb-sample-details.10"
+    "@glass/base": "0.2.0-fb-sample-details.7",
+    "@glass/querygrid": "0.3.0-fb-sample-details.13"
   },
   "jest": {
     "globals": {

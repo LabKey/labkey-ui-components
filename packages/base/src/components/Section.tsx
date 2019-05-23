@@ -8,6 +8,7 @@ interface SectionProps {
 }
 
 // FIXME: remove all of these inline styles, make actual CSS classes.
+// FIXME: stop using React.SFC as it is deprecated (likely just convert to a PureComponent for now)
 export const Section: React.SFC<SectionProps> = (props) => (
     <>
         <div className="g-section">

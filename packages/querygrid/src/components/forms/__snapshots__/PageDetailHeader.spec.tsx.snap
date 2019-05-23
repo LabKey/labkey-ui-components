@@ -14,7 +14,7 @@ exports[`<PageDetailHeader/> default props 1`] = `
         alt="-icon"
         className="detail__header-icon"
         height="100%"
-        src="/labkey//images/default.svg"
+        src="/labkey//default.svg"
         width="100%"
       />
     </div>
@@ -44,7 +44,7 @@ exports[`<PageDetailHeader/> with additional props 1`] = `
         alt="iconSrc-icon"
         className="detail__header-icon"
         height="100%"
-        src="/labkey/iconDir/images/iconsrc.svg"
+        src="/labkey/iconDir/iconsrc.svg"
         width="100%"
       />
     </div>

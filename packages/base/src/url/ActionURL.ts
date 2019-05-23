@@ -137,7 +137,6 @@ export function imageURL(iconDir: string, src: string): string {
     return [
         ActionURL.getContextPath(),
         iconDir,
-        'images',
         src
     ].join('/');
 }

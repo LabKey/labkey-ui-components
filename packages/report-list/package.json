@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.2.0"
+    "@glass/base": "0.2.0-fb-grid-bulk-edit.8"
   },
   "jest": {
     "globals": {

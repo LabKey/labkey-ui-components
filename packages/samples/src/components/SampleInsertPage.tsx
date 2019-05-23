@@ -31,7 +31,6 @@ class SampleGridLoader implements IGridLoader {
 
 interface SampleInsertPageProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
-    insertModel: SampleIdCreationModel
     location?: Location
     onCancel?: () => void
 
@@ -139,8 +138,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
                     return {
                         insertModel: insertModel.merge({
                             isError: true,
-                            isLoading: false,
-                            errors: "Problem retrieving data for the target sample set."
+                            errors: "Problem retrieving data for sample set '" + insertModel.getTargetSampleSetName() + "'."
                         }) as SampleIdCreationModel
                     }
                 })
@@ -256,7 +254,11 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
     changeTargetSampleSet(fieldName: string, formValue: any, selectedOption: ISampleSetOption): void {
         const { insertModel } = this.state;
-        const updatedModel = insertModel.set('targetSampleSet', new SampleSetOption(selectedOption)) as SampleIdCreationModel;
+        const updatedModel = insertModel.merge({
+            targetSampleSet: new SampleSetOption(selectedOption),
+            isError: false,
+            errors: undefined
+        }) as SampleIdCreationModel;
         if (insertModel) {
             this.setState(() => {
                 return {
@@ -417,23 +419,28 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
 
         // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not
         // split at CamelCase boundary.
-        const headingSuffix = insertModel.targetSampleSet ? "for '" + insertModel.getTargetSampleSetName() +"'" : "";
+        const name = insertModel.getTargetSampleSetName();
+        const headingSuffix = name ? "for '" + name +"'" : "";
+        const textPrefix = name ? "Choose" : "Choose the target sample set, then choose";
         return (
             <>
                 <h3>Create Samples {headingSuffix}</h3>
-                <div style={{marginBottom: "10px"}}>
-                    Choose parent types for the samples to be generated.  Specific parents can be chosen in the grid or bulk insert area.
-                    <br/><br/>
-                    Directly create or edit samples using the grid below.&nbsp;
-                    {insertModel.targetSampleSet && this.isNameRequired() ?
+                <div className="sample-insert--header">
+                    {textPrefix} parent types for the samples to be generated and enter other data for the samples.&nbsp;
+                    {name &&
                         <>
-                            A sample ID is required for each new sample since this sample set has no name expression.
-                            You can provide a name expression by editing the sample set definition.
-                        </> :
-                        <>
-                            Sample IDs will be generated for any samples that have no sample ID provided in the grid.
-                        </>
-                    }
+                            Specific parents can be chosen in the grid or bulk insert area.
+                            <br/><br/>
+                        {this.isNameRequired() ?
+                            <>
+                                A sample ID is required for each new sample since this sample set has no name expression.
+                                You can provide a name expression by editing the sample set definition.
+                            </> :
+                            <>
+                                Sample IDs will be generated for any samples that have no sample ID provided in the grid.
+                            </>
+                        }
+                        </>}
                     <br/>
                     <br/>
                 </div>
@@ -450,7 +457,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
                         required
                         value={insertModel && insertModel.targetSampleSet ? insertModel.targetSampleSet.label : undefined}/>
                 )}
-                {insertModel.isError ? null : (insertModel.targetSampleSet? this.renderParentSelections()
+                {insertModel.isError ? this.renderError() : (insertModel.targetSampleSet? this.renderParentSelections()
                     : (
                     <div className="col-md-offset-2 col-sm-offset-3">Select a Sample Set</div>
                 ))}
@@ -472,6 +479,16 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
     }
 
     onCancel() {
+        const { insertModel } = this.state;
+        this.setState(() => {
+            return {
+                insertModel: insertModel.merge({
+                    isError: false,
+                    errors: undefined,
+                }) as SampleIdCreationModel
+            }
+        });
+
         this.removeQueryGridModel();
         if (this.props.onCancel)
             this.props.onCancel();
@@ -483,14 +500,6 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
         const editorModel = getEditorModel(queryGridModel.getId());
         const errors =  editorModel.getValidationErrors(queryGridModel, "Name");
         if (errors.length > 0) {
-            this.setState(() => {
-                return {
-                    insertModel: this.state.insertModel.merge({
-                        isError: true,
-                        errors
-                    }) as SampleIdCreationModel
-                }
-            });
             gridShowError(queryGridModel, {
                 message: errors.join("  ")
             });
@@ -527,8 +536,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
             this.setState(() => {
                 return {
                     insertModel: insertModel.merge({
-                        isSubmitting: false,
-                        isError: true
+                        isSubmitting: false
                     }) as SampleIdCreationModel
                 }
             });
@@ -563,8 +571,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
             this.setState(() => {
                 return {
                     insertModel: insertModel.merge({
-                        isSubmitting: false,
-                        isError: true
+                        isSubmitting: false
                     }) as SampleIdCreationModel
                 }
             })
@@ -598,7 +605,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
                             bsStyle="success"
                             disabled={insertModel.isSubmitting || insertModel.sampleCount === 0 || !editorModel }
                             onClick={this.insertRowsFromGrid}
-                            type="submit">
+                            >
                             {insertModel.isSubmitting ? "Creating..." : "Finish Creating " + insertModel.sampleCount + " " + noun}
                         </Button>
                     </div>
@@ -661,7 +668,7 @@ export class SampleInsertPage extends React.Component<SampleInsertPageProps, Sta
                                     model={queryGridModel}
                                 />
                                 :
-                                 !insertModel.isError && insertModel.targetSampleSet ? <LoadingSpinner wrapperClassName={"loading-page-message"}/> : this.renderError()
+                                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
                             }
                             {this.renderButtons()}
                         </Form>

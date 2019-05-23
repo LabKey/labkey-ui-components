@@ -134,8 +134,8 @@
         "value" : 110
       },
       "Name" : {
-        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=110",
-        "value" : "Name Expression Set"
+        "value" : "Name Expression Set",
+        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=110"
       }
     }
   }, {
@@ -147,10 +147,23 @@
         "value" : 111
       },
       "Name" : {
-        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=111",
-        "value" : "Sample Set 2"
+        "value" : "Sample Set 2",
+        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=111"
+      }
+    }
+  }, {
+    "data" : {
+      "LSID" : {
+        "value" : "urn:lsid:labkey.com:SampleSet.Folder-60:Sample+Set+Error"
+      },
+      "RowId" : {
+        "value" : 113
+      },
+      "Name" : {
+        "value" : "Sample Set Error",
+        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=113"
       }
     }
   } ],
-  "rowCount" : 2
+  "rowCount" : 3
 }

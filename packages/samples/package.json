@@ -6,7 +6,7 @@
   "module": "dist/samples.es.js",
   "types": "dist/index.d.ts",
   "config": {
-    "application_dir": "/path/to/application/node_modules/\\@glass/querygrid/dist"
+    "application_dir": "/Users/susanhert/Development/labkey/trunk/server/optionalModules/sampleManagement/node_modules/\\@glass/samples/dist"
   },
   "files": [
     "dist/"
@@ -39,6 +39,9 @@
   "dependencies": {
     "@glass/base": "0.2.0-fb-sample-details.7",
     "@glass/querygrid": "0.3.0-fb-sample-details.13"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.2"
   },
   "jest": {
     "globals": {

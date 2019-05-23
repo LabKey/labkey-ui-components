@@ -1,0 +1,11 @@
+.pagination-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+.pagination-buttons__info {
+  text-align: right;
+  padding: 0.5em 1em;
+}
+.pagination-buttons__buttons {
+  max-width: 75px;
+}

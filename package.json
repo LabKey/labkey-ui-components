@@ -64,6 +64,7 @@
     "packages/omnibox",
     "packages/querygrid",
     "packages/navigation",
-    "packages/domainproperties"
+    "packages/domainproperties",
+    "packages/report-list"
   ]
 }

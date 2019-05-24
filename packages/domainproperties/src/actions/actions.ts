@@ -106,7 +106,6 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
         let newField;
         if (i === index) {
             newField = field.set('updatedField', true); // Set for field details in DomainRow
-            newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
 
             switch (type) {
                 case DOMAIN_FIELD_TYPE:
@@ -123,7 +122,7 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
             }
         }
         else {
-            newField = field.set('renderUpdate', false); // Do not re-render
+            newField = field;
         }
 
         return newField;

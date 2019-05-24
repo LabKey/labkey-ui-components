@@ -25,7 +25,7 @@ interface IDomainFormState {
 /**
  * Form containing all properties of a domain
  */
-export default class DomainForm extends React.Component<IDomainFormInput, IDomainFormState> {
+export default class DomainForm extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'domain',
         helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
@@ -33,6 +33,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
     constructor(props)
     {
+        super(props);
         super(props);
 
         this.state = {
@@ -42,27 +43,26 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
     }
 
+    // static getDerivedStateFromError(error) {
+    //     // Update state so the next render will show the fallback UI.
+    //     return { hasError: true };
+    // }
+
     isValidDomain(domainDesign: DomainDesign): boolean {
         return !!(domainDesign);
     }
 
     onFieldExpandToggle = (evt: any) => {
         const { domain, onChange } = this.props;
-        const prevExpanded = this.state.expandedRowIndex;
 
         // Bit of a hack to work with fontawesome svg icon
         const id = evt.target.id || evt.target.parentElement.id || evt.target.parentElement.parentElement.id;
         let index = id ? parseInt(getIndexFromId(id)) : undefined;
 
         this.setState((state) => ({expandedRowIndex: state.expandedRowIndex === index ? undefined : index}));
-        const newFields = domain.fields.map((field, i) => {
-            return field.set("renderUpdate", (i === prevExpanded || i === index));
-        });
-
-        const newDomain = domain.merge({fields: newFields}) as DomainDesign;
 
         if (onChange) {
-            onChange(newDomain, false);
+            onChange(domain, false);
         }
     };
 
@@ -73,11 +73,6 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         // filter to the non-removed fields
         let newFields = domain.fields.filter((field, i) => {
             return i !== expandedRowIndex;
-        });
-
-        // make sure to force the domain renderUpdate
-        newFields = newFields.map((field) => {
-            return field.set("renderUpdate", true) as DomainField;
         });
 
         const newDomain = domain.merge({fields: newFields}) as DomainDesign;
@@ -94,8 +89,7 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
         const newDomain = domain.merge({
             fields: domain.fields.push(new DomainField({
-                newField: true,
-                renderUpdate: true
+                newField: true
             }))
         }) as DomainDesign;
 
@@ -140,28 +134,18 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
         this.setState(() => ({showConfirm: false}));
     };
 
-    onBeforeDragStart = (result) => {
+    onBeforeDragStart = () => {
         const { domain, onChange } = this.props;
-        const newFields = List<DomainField>().asMutable();
-
-        // Don't re-render all fields on drag start. Perf improvement.
-        domain.fields.forEach((field) => {
-            newFields.push(field.merge({"renderUpdate": false}) as DomainField)
-        });
-
-        const newDomain = domain.merge({
-            fields: newFields
-        }) as DomainDesign;
 
         if (onChange) {
-            onChange(newDomain, true);
+            onChange(domain, true);
         }
     };
 
     onDragEnd = (result) => {
         const { domain, onChange } = this.props;
 
-        let destIndex = 0;
+        let destIndex = result.source.index;  // default behavior go back to original spot if out of bounds
         let srcIndex = result.source.index;
         const id = result.draggableId;
         let idIndex = id ? parseInt(getIndexFromId(id)) : undefined;
@@ -180,11 +164,11 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
             // move down
             if (i !== idIndex && srcIndex < destIndex) {
-                newFields.push(field.merge({"renderUpdate": true}) as DomainField);
+                newFields.push(field);
             }
 
             if (i === destIndex) {
-                newFields.push(movedField.merge({"renderUpdate": true}) as DomainField);
+                newFields.push(movedField);
                 if (idIndex === this.state.expandedRowIndex) {
                     this.setState(() => ({expandedRowIndex: destIndex}));
                 }
@@ -192,9 +176,8 @@ export default class DomainForm extends React.Component<IDomainFormInput, IDomai
 
             // move up
             if (i !== idIndex && srcIndex > destIndex) {
-                newFields.push(field.merge({"renderUpdate": true}) as DomainField);
+                newFields.push(field);
             }
-
         });
 
         const newDomain = domain.merge({

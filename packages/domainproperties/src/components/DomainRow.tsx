@@ -27,18 +27,12 @@ interface IDomainRowDisplay {
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.Component<IDomainRowDisplay, any>
-{
+export class DomainRow extends React.PureComponent<IDomainRowDisplay, any> {
 
-    /**
-     *  Performance update to prevent unnecessary renders of domain rows on any state update
-     */
-    shouldComponentUpdate(nextProps: Readonly<IDomainRowDisplay>, nextState: Readonly<any>, nextContext: any): boolean
-    {
-        // Check first if this optimization is being used. See actions.updateDomainField for example where this is set.
-        // Not optimizing than just update every time
-        return (typeof nextProps.field.renderUpdate !== "undefined" ? nextProps.field.renderUpdate: true)
-    }
+    // static getDerivedStateFromError(error) {
+    //     // Update state so the next render will show the fallback UI.
+    //     return { hasError: true };
+    // }
 
     /**
      *  Details section of property row
@@ -154,15 +148,14 @@ export class DomainRow extends React.Component<IDomainRowDisplay, any>
                 <Tip caption={'Additional Settings'}>
                 <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
 
-                        <FontAwesomeIcon title={createFormInputId(DOMAIN_FIELD_ADV, index)} icon={faPencilAlt}/>
+                        <FontAwesomeIcon icon={faPencilAlt}/>
                 </div>
                 </Tip>
             </div>
         )
     }
 
-    render()
-    {
+    render() {
         const {index, field, expanded, onChange} = this.props;
 
         return (

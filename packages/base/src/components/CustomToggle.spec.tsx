@@ -11,13 +11,9 @@ describe("<CustomToggle />", () => {
    });
 
    test("with onClick", () => {
-      const onButtonClick = jest.fn(event => undefined);
+      const onButtonClick = jest.fn();
       const wrapper = shallow(<CustomToggle onClick={onButtonClick}/>);
-      const event = {
-         preventDefault: () => {}
-      } as MouseEvent;
-
-      wrapper.find("span").prop('onClick')(event);
+      wrapper.find("span").simulate('click', {preventDefault: () => {}});
       expect(onButtonClick).toHaveBeenCalledTimes(1);
    })
 });

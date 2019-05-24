@@ -1,0 +1,35 @@
+.report-list {
+  border: 1px solid $border-color;
+}
+.report-list-item {
+  cursor: pointer;
+}
+.report-list-item__icon {
+  width: 64px;
+  text-align: center;
+  margin: 0 auto;
+}
+img.report-list-item__icon {
+  padding: 0 10px;
+}
+.report-list-item {
+  border-top: 1px solid $border-color;
+  padding: 10px;
+  margin: 0;
+}
+.report-list-item:first-of-type {
+  border-top: none;
+}
+.report-list-item__name {
+  color: $brand-primary;
+}
+.report-list-item__person {
+  font-weight: bold;
+}
+.report-list-item__external-link {
+  display: inline-block;
+  padding: 0 10px;
+}
+.report-list__message {
+  padding: 1em;
+}

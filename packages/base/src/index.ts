@@ -79,6 +79,7 @@ import {
     PermissionAllowed,
     PermissionNotAllowed,
 } from "./components/Permissions"
+import { PaginationButtons, PaginationButtonsProps } from './components/PaginationButtons';
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
@@ -141,6 +142,8 @@ export {
     Grid,
     PermissionAllowed,
     PermissionNotAllowed,
+    PaginationButtons,
+    PaginationButtonsProps,
     FormSection,
     FileAttachmentForm,
     ConfirmModal,

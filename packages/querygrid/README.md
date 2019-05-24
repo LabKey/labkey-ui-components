@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Package patch update for changes to @glass/base v???
+
 ### version 0.2.0
 *Released*: 29 April 2019
 * Update EditableGrid to allow for bulk removal of rows in the grid

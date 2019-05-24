@@ -16,7 +16,8 @@ import {
     QueryGridModel,
     QueryInfo,
     RemoveEntityButton,
-    SchemaQuery
+    SchemaQuery,
+    SCHEMAS
 } from '@glass/base';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn, } from '../../actions';
@@ -28,8 +29,7 @@ import { EditableColumnMetadata } from "../editable/EditableGrid"
 import { EditableGridPanel } from '../editable/EditableGridPanel'
 import { getQueryDetails, InsertRowsResponse } from '../../query/api'
 import { Location } from '../../util/URL'
-import { SCHEMAS } from '../../query/schemas'
-import { SelectInput } from '../forms/SelectInput'
+import { SelectInput } from '../forms/input/SelectInput'
 
 import {
     GenerateSampleResponse,

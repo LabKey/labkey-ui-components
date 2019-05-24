@@ -19,7 +19,7 @@ import {
     SchemaQuery
 } from '@glass/base';
 
-import { addColumns, changeColumn, gridInit, gridShowError, removeColumn, } from '../../actions';
+import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn, } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
 
 import { getStateQueryGridModel } from '../../model'
@@ -133,7 +133,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         let { insertModel } = this.state;
 
         if (insertModel
-            && insertModel.targetSampleSet.value === queryParams.target
+            && (insertModel.targetSampleSet && insertModel.targetSampleSet.value === queryParams.target || !insertModel.targetSampleSet && !queryParams.target)
             && insertModel.selectionKey === queryParams.selectionKey
             && insertModel.parents === queryParams.parents
         )
@@ -511,19 +511,23 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     }
 
     onCancel() {
-        const { insertModel } = this.state;
-        this.setState(() => {
-            return {
-                insertModel: insertModel.merge({
-                    isError: false,
-                    errors: undefined,
-                }) as SampleIdCreationModel
-            }
-        });
-
-        this.removeQueryGridModel();
-        if (this.props.onCancel)
+        if (this.props.onCancel) {
+            this.removeQueryGridModel();
             this.props.onCancel();
+        } else { // FIXME this doesn't seem to clear errors from the grid
+            const { insertModel } = this.state;
+            const updatedModel = insertModel.merge({
+                isError: false,
+                errors: undefined,
+            }) as SampleIdCreationModel;
+            this.setState(() => {
+                return {
+                    insertModel: updatedModel
+                }
+            });
+            queryGridInvalidate(updatedModel.getSchemaQuery());
+            this.gridInit(updatedModel);
+        }
     }
 
     insertRowsFromGrid() {

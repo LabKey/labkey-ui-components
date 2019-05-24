@@ -514,7 +514,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         if (this.props.onCancel) {
             this.removeQueryGridModel();
             this.props.onCancel();
-        } else { // FIXME this doesn't seem to clear errors from the grid
+        } else {
             const { insertModel } = this.state;
             const updatedModel = insertModel.merge({
                 isError: false,

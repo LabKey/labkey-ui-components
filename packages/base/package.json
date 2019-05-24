@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.2.0-fb-sample-details.7",
+  "version": "0.3.0-fb-sample-details.1",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -74,5 +74,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
 }

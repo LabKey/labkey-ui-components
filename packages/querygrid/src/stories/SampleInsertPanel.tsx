@@ -3,14 +3,14 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { Location } from "@glass/querygrid"
 
-import { SampleInsertPage } from '..';
+import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
 
 import './stories.scss'
 
-storiesOf('SampleInsertPage', module)
+storiesOf('SampleInsertPanel', module)
     .addDecorator(withKnobs)
     .add("No target sample set", () => {
-        return <SampleInsertPage/>;
+        return <SampleInsertPanel/>;
 
     })
     .add("Target sample set without parent selections", () => {
@@ -19,7 +19,7 @@ storiesOf('SampleInsertPage', module)
                 target: "Sample Set 2"
             }
         };
-        return <SampleInsertPage
+        return <SampleInsertPanel
             location={location}
         />;
     })

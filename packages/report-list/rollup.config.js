@@ -5,8 +5,8 @@
  */
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
-import sass from "rollup-plugin-sass";
 import typescript from 'rollup-plugin-typescript2';
+import sass from "rollup-plugin-sass";
 
 const input = 'src/index.ts';
 
@@ -27,7 +27,7 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/samples.cjs.js',
+            file: 'dist/report-list.js',
             format: 'cjs'
         },
         plugins: [
@@ -35,7 +35,7 @@ export default [
             commonjs({namedExports}),
             typescript(),
             sass({
-                output: 'dist/querygrid.css'
+                output: 'dist/report-list.css'
             })
         ]
     },
@@ -43,15 +43,15 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/samples.es.js',
+            file: 'dist/report-list.es.js',
             format: 'es',
-            name: 'samples'
+            name: 'PACKAGE_NAME'
         },
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            sass(),
-            typescript()
+            typescript(),
+            sass()
         ]
     }
 ]

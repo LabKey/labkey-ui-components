@@ -19,6 +19,12 @@ import sampleDetailsQuery from '../test/data/sampleDetails-getQuery.json';
 import lookuplistQueryInfo from '../test/data/lookuplist-getQueryDetails.json';
 import lookuplistQuery from '../test/data/lookuplist-getQuery.json';
 import samplesUpdate from '../test/data/samples-updateRows.json';
+import nameExpressionQueryInfo from "../test/data/nameExpressionSet-getQueryDetails.json";
+import nameExpressionSelected from "../test/data/nameExpressionSet-getSelected.json";
+import nameExpressionSelectedQuery from "../test/data/nameExpressionSet-selected-getQuery.json";
+import sampleSet2QueryInfo from "../test/data/sampleSet2-getQueryDetails.json";
+import sampleSetsQuery from "../test/data/sampleSets-getQuery.json";
+import sampleSetsQueryInfo from "../test/data/sampleSets-getQueryDetails.json";
 
 export function initMocks() {
     mock.setup();
@@ -26,20 +32,28 @@ export function initMocks() {
     mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        if (queryParams.schemaName.toLowerCase() === 'exp.data' && queryParams.queryName.toLowerCase() === 'mixtures')
+        let lcSchemaName = queryParams.schemaName.toLowerCase();
+        let lcQueryName = queryParams.queryName.toLowerCase();
+        if (lcSchemaName === 'exp.data' && lcQueryName === 'mixtures')
             responseBody = mixturesQueryInfo;
-        else if (queryParams.schemaName.toLowerCase() === 'schema' && queryParams.queryName.toLowerCase() === 'gridwithoutdata')
+        else if (lcSchemaName === 'schema' && lcQueryName === 'gridwithoutdata')
             responseBody = mixturesQueryInfo;
-        else if (queryParams.schemaName.toLowerCase() === 'lists' && queryParams.queryName.toLowerCase() === 'mixturetypes')
+        else if (lcSchemaName === 'lists' && lcQueryName === 'mixturetypes')
             responseBody = mixtureTypesQueryInfo;
-        else if (queryParams.schemaName.toLowerCase() === 'exp' && queryParams.queryName.toLowerCase() === 'samplesetheatmap')
+        else if (lcSchemaName === 'exp' && lcQueryName === 'samplesetheatmap')
             responseBody = sampleSetHeatMapQueryInfo;
-        else if (queryParams.schemaName.toLowerCase() === 'exp' && queryParams.queryName.toLowerCase() === 'assaysheatmap')
+        else if (lcSchemaName === 'exp' && lcQueryName === 'assaysheatmap')
             responseBody = assaysHeatMapQueryInfo;
-        else if (queryParams.schemaName.toLowerCase() === 'samples' && queryParams.queryName.toLowerCase() === 'samples')
+        else if (lcSchemaName === 'samples' && lcQueryName === 'samples')
             responseBody = sampleSetQueryInfo;
-        else if (queryParams.schemaName.toLowerCase() === 'lists' && queryParams.queryName.toLowerCase() === 'lookuplist')
+        else if (lcSchemaName === 'lists' && lcQueryName === 'lookuplist')
             responseBody = lookuplistQueryInfo;
+        else if (lcSchemaName === 'exp' && lcQueryName === 'samplesets')
+            responseBody = sampleSetsQueryInfo;
+        else if (lcSchemaName === 'samples' && (lcQueryName === 'name expression set' || lcQueryName === 'name%20expression%20set'))
+            responseBody = nameExpressionQueryInfo;
+        else if (lcSchemaName === 'samples' && lcQueryName === 'sample set 2')
+            responseBody = sampleSet2QueryInfo;
 
         return res
             .status(200)
@@ -64,6 +78,10 @@ export function initMocks() {
             responseBody = sampleDetailsQuery;
         else if (bodyParams.indexOf("&query.queryname=lookuplist&") > -1)
             responseBody = lookuplistQuery;
+        else if (bodyParams.indexOf("&query.queryname=samplesets&") > -1)
+            responseBody = sampleSetsQuery;
+        else if (bodyParams.indexOf("&query.queryname=name%2520expression%2520set") > -1 && bodyParams.indexOf("&query.rowid~in=459") > -1)
+            responseBody = nameExpressionSelectedQuery;
 
         return res
             .status(200)
@@ -116,11 +134,18 @@ export function initMocks() {
         body: JSON.stringify(samplesInsert)
     });
 
-    //TODO conditionalize based on queryName
-    mock.get(/.*\/query\/.*\/getSelected.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesSelected)
+    mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+        if (queryParams.key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set")
+            responseBody = nameExpressionSelected;
+        else
+            responseBody = mixturesSelected;
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
     });
 
     //TODO conditionalize based on queryName

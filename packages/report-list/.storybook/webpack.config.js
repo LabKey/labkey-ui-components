@@ -1,4 +1,3 @@
-
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
     // `mode` has a value of 'DEVELOPMENT' or 'PRODUCTION'

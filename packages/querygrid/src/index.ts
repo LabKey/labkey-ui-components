@@ -59,6 +59,7 @@ import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
+import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 
 export {
     // global state functions
@@ -137,5 +138,8 @@ export {
     // types
     PlacementType,
     ReactSelectOption,
-    EditorModel
+    EditorModel,
+
+    // samples-related
+    SampleInsertPanel
 }

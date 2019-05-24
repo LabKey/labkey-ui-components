@@ -25,6 +25,7 @@ Query Grid for LabKey schema/query data views
 * add addColumns, changeColumn, and removeColumn for modifying an EditableGrid model (and the corresponding QueryGriModel)
 * change AddRowsControl to allow deletion of value in the input field (setting to undefined instead of min value)
 * add validateData method to EditorModel for validating required fields and uniqueness
+* Add SampleInsertPanel (with EditableGrid component)
 
 ### version 0.2.0
 *Released*: 29 April 2019

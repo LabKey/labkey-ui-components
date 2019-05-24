@@ -1,7 +1,12 @@
 import { Ajax, Filter, Utils } from "@labkey/api"
 import { List, Map, Record } from 'immutable';
-import { getEditorModel, gridShowError, insertRows, ReactSelectOption } from '@glass/querygrid';
-import { buildURL, generateId, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, SCHEMAS } from '@glass/base';
+import { buildURL, generateId, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '@glass/base';
+
+import { getEditorModel } from '../../global'
+import { insertRows } from '../../query/api'
+import { gridShowError } from '../../actions'
+import { SCHEMAS } from '../../query/schemas'
+import { ReactSelectOption } from '../forms/model'
 
 export interface SampleInputProps {
     role: string
@@ -154,8 +159,12 @@ export class SampleIdCreationModel extends Record({
         super(values);
     }
 
+    hasTargetSampleSet() : boolean {
+        return this.targetSampleSet && this.targetSampleSet.value
+    }
+
     getTargetSampleSetName() : string {
-        return this.targetSampleSet && this.targetSampleSet.value ? this.targetSampleSet.value : undefined;
+        return this.hasTargetSampleSet() ? this.targetSampleSet.value : undefined;
     }
 
     getSampleInputs(): {

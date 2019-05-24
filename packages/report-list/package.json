@@ -1,10 +1,9 @@
 {
-  "name": "@glass/omnibox",
-  "version": "0.1.12-fb-sample-details.1",
-  "description": "A LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.",
-  "main": "dist/omnibox.cjs.js",
-  "module": "dist/omnibox.es.js",
-  "style": "dist/omnibox.css",
+  "name": "@glass/report-list",
+  "version": "0.1.1-fb-grid-bulk-edit.1",
+  "description": "ReportList component and utility functions",
+  "main": "dist/report-list.js",
+  "module": "dist/report-list.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
@@ -13,15 +12,15 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "prepublish": "yarn build",
+    "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
+    "watch": "watch 'yarn build' ./src"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "Nick Kerr",
+  "author": "Alan Vezina",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
     "url": "https://github.com/LabKey/glass-components/issues"
@@ -31,16 +30,12 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.3.0-fb-sample-details.1",
-    "react-input-autosize": "2.2.1"
-  },
-  "peerDependencies": {
-    "immutable": "^3.8.2",
-    "jquery": "^3.0",
-    "react": "^16.0",
-    "react-dom": "^16.0"
+    "@glass/base": "0.3.0-fb-grid-bulk-edit.1"
   },
   "jest": {
+    "globals": {
+      "LABKEY": {}
+    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -59,6 +54,5 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  },
-  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
+  }
 }

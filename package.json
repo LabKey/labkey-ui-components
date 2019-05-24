@@ -65,6 +65,6 @@
     "packages/querygrid",
     "packages/navigation",
     "packages/domainproperties",
-    "packages/samples"
+    "packages/report-list"
   ]
 }

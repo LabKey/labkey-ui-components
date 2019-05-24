@@ -563,6 +563,11 @@ export class QueryGridModel extends Record({
         return undefined;
     }
 
+    isRequiredColumn(fieldKey: string): boolean {
+        const column = this.getColumn(fieldKey);
+        return column ? column.required : false;
+    }
+
     /**
      * Returns the set of display columns for this QueryGridModel based on its configuration.
      * @returns {List<QueryColumn>}
@@ -889,6 +894,11 @@ export class QueryInfo extends Record({
         }
 
         return undefined;
+    }
+
+    isRequiredColumn(fieldKey: string): boolean {
+        const column = this.getColumn(fieldKey);
+        return column ? column.required : false;
     }
 
     getDisplayColumns(view?: string): List<QueryColumn> {

@@ -147,7 +147,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         });
 
         initSampleSetInsert(insertModel).then((partialModel) => {
-            let updatedModel = insertModel.merge(partialModel) as SampleIdCreationModel;
+            const updatedModel = insertModel.merge(partialModel) as SampleIdCreationModel;
             this.gridInit(updatedModel);
         });
     }
@@ -156,9 +156,14 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
             getQueryDetails(schemaQuery.toJS()).then(originalQueryInfo => {
+                let updatedModel = insertModel;
+                if (insertModel.sampleCount === 0 && !originalQueryInfo.isRequiredColumn("Name"))
+                {
+                    updatedModel = updatedModel.set("sampleCount", 1) as SampleIdCreationModel;
+                }
                 this.setState(() => {
                     return {
-                        insertModel,
+                        insertModel: updatedModel,
                         originalQueryInfo,
                     }
                 });
@@ -189,10 +194,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
         if (insertModel) {
             const sampleSetName = insertModel ? insertModel.getTargetSampleSetName() : undefined;
-            const gridId = sampleSetName ? 'insert-sample-set-' + sampleSetName : undefined;
-            if (gridId) {
+            if (sampleSetName) {
                 const queryInfoWithParents = this.getGridQueryInfo();
-                const model = getStateQueryGridModel(gridId, SchemaQuery.create('samples', sampleSetName),
+                const model = getStateQueryGridModel('insert-samples', SchemaQuery.create('samples', sampleSetName),
                     {
                         editable: true,
                         loader: new SampleGridLoader(insertModel),
@@ -616,9 +620,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
     isNameRequired() {
         const queryGridModel = this.getQueryGridModel();
-        if (queryGridModel && queryGridModel.queryInfo) {
-            const nameColumn = queryGridModel.queryInfo.columns.find((column) => (column.fieldKey.toLowerCase() === "name"));
-            return nameColumn ? nameColumn.required : false;
+        if (queryGridModel) {
+            return queryGridModel.isRequiredColumn("Name");
         }
         return false;
     }

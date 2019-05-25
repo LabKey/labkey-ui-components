@@ -72,11 +72,10 @@ function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
 
         const schemaQuery = SchemaQuery.create(rawQueryInfo.schemaName, rawQueryInfo.name);
 
-        let columns = OrderedMap<string, QueryColumn>().asMutable();
+        let columns = OrderedMap<string, QueryColumn>();
         rawQueryInfo.columns.forEach((rawColumn) => {
-            columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn))
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn))
         });
-        columns = columns.asImmutable();
 
         let schemaMeta = metadata.getIn([
             'schema', rawQueryInfo.schemaName.toLowerCase(),

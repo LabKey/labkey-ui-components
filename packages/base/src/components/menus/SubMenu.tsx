@@ -36,7 +36,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         const currentOption = options.find(this.isCurrentMenuChoice);
 
         if (currentOption) {
-            return this.renderMenuItem(currentOption, 0);
+            return SubMenu.renderMenuItem(currentOption, 0);
         }
 
         return undefined;
@@ -59,7 +59,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         return items;
     }
 
-    renderMenuItem(option: MenuOption, key: any) {
+    static renderMenuItem(option: MenuOption, key: any) {
         let itemProps = Object.assign({}, option);
 
         // remove ISubItem specific props
@@ -93,7 +93,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         if (currentMenuChoice && options.size < 3) {
             options.forEach((option, i) => {
                 items.push(
-                    this.renderMenuItem(option, i)
+                    SubMenu.renderMenuItem(option, i)
                 )
             });
         }

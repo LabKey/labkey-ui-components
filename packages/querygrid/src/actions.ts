@@ -1313,7 +1313,15 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
     }
 }
 
-export function updateEditorData(gridModel: QueryGridModel, data: List<any>, count: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
+/**
+ * Updates data in the editable grid associated with the given grid mode.
+ * @param gridModel the model whose editable data is updated
+ * @param rowData the data for a single row
+ * @param rowCount the number of rows to be added
+ * @param rowMin the starting row for the new rows
+ * @param colMin the starting column
+ */
+export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
     const columns = gridModel.getInsertColumns();
     const editorModel = getEditorModel(gridModel.getId());
 
@@ -1325,7 +1333,7 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
 
-    data.forEach((value, cn) => {
+    rowData.forEach((value, cn) => {
 
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
@@ -1349,20 +1357,15 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
             }]);
         }
 
-        if (msg) {
-            messages = messages.push(msg);
-        } else {
-            messages = messages.push(undefined);
-        }
+        messages = messages.push(msg ? msg : undefined);
 
         values = values.push(cv);
     });
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + count; rowIdx++) {
-        data.forEach((value, cn) => {
+    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
+        rowData.forEach((value, cn) => {
 
             const colIdx = colMin + cn;
-            const col = columns.get(colIdx);
             const cellKey = genCellKey(colIdx, rowIdx);
 
             cellMessages = cellMessages.set(cellKey, messages.get(cn));
@@ -1375,7 +1378,7 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
         cellValues,
         cellMessages,
         selectionCells,
-        rowCount: editorModel.rowCount + Number(count)
+        rowCount: editorModel.rowCount + Number(rowCount)
     });
 }
 
@@ -1554,6 +1557,10 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
 
     const colIndex =  model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === existingFieldKey);
 
+    // nothing to do if there is no such column
+    if (colIndex === -1)
+        return editorModel;
+
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
@@ -1589,7 +1596,7 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
     });
 
 
-    const currentCol = model.queryInfo.columns.find((column) => column.fieldKey === existingFieldKey);
+    const currentCol = model.queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
     let data = model.data;

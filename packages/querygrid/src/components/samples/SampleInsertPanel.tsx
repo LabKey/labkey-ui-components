@@ -68,7 +68,8 @@ interface SampleInsertPageProps {
 
 interface StateProps {
     insertModel: SampleIdCreationModel
-    originalQueryInfo?: QueryInfo
+    originalQueryInfo: QueryInfo
+    isSubmitting: boolean
 }
 
 export class SampleInsertPanel extends React.Component<SampleInsertPageProps, StateProps> {
@@ -84,7 +85,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         this.onRowCountChange = this.onRowCountChange.bind(this);
 
         this.state = {
-            insertModel: undefined
+            insertModel: undefined,
+            originalQueryInfo: undefined,
+            isSubmitting: false
         };
     }
 
@@ -133,7 +136,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         let { insertModel } = this.state;
 
         if (insertModel
-            && (insertModel.targetSampleSet && insertModel.targetSampleSet.value === queryParams.target || !insertModel.targetSampleSet && !queryParams.target)
+            && insertModel.getTargetSampleSetName() === queryParams.target
             && insertModel.selectionKey === queryParams.selectionKey
             && insertModel.parents === queryParams.parents
         )
@@ -166,8 +169,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         insertModel: updatedModel,
                         originalQueryInfo,
                     }
+                }, () => {
+                    gridInit(this.getQueryGridModel(), true, this);
                 });
-                gridInit(this.getQueryGridModel(), true, this);
+
             }).catch((reason) => {
                 this.setState(() => {
                     return {
@@ -184,8 +189,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 return {
                     insertModel
                 }
+            }, () => {
+                gridInit(this.getQueryGridModel(), true, this);
             });
-            gridInit(this.getQueryGridModel(), true, this);
+
         }
     }
 
@@ -295,16 +302,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             isError: false,
             errors: undefined
         }) as SampleIdCreationModel;
-        if (insertModel) {
-            this.setState(() => {
-                return {
-                    originalQueryInfo: undefined,
-                    insertModel: updatedModel
-                }
-            }, () => {
-                this.gridInit(updatedModel);
-            });
-        }
+
+        this.setState(() => {
+            return {
+                originalQueryInfo: undefined,
+                insertModel: updatedModel
+            }
+        }, () => {
+            this.gridInit(updatedModel);
+        });
     }
 
     addParent() {
@@ -534,52 +540,40 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         }
     }
 
+    setSubmitting(isSubmitting: boolean) {
+        this.setState(() => ({isSubmitting}));
+    }
+
     insertRowsFromGrid() {
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
         const editorModel = getEditorModel(queryGridModel.getId());
         const errors =  editorModel.getValidationErrors(queryGridModel, "Name");
         if (errors.length > 0) {
+            this.setSubmitting(false);
             gridShowError(queryGridModel, {
                 message: errors.join("  ")
             });
             return;
         }
 
-        this.setState(() => {
-            return {
-                insertModel: insertModel.merge({
-                    isSubmitting: true
-                }) as SampleIdCreationModel
-            }
-        });
+        this.setSubmitting(true);
         insertModel.postSampleGrid(this.getQueryGridModel()).then((response: InsertRowsResponse) => {
             if (response && response.rows) {
 
-                this.setState(() => {
-                    return {
-                        insertModel: insertModel.merge({
-                            isSubmitting: false
-                        }) as SampleIdCreationModel
-                    }
-                });
+                this.setSubmitting(false);
                 if (this.props.afterSampleCreation) {
                     this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length);
                 }
             }
             else {
+                this.setSubmitting(false);
                 gridShowError(queryGridModel, {
                     message: 'Insert response has unexpected format. No "rows" available.'
                 });
             }
         }).catch((error: InsertRowsResponse) => {
-            this.setState(() => {
-                return {
-                    insertModel: insertModel.merge({
-                        isSubmitting: false
-                    }) as SampleIdCreationModel
-                }
-            });
+            this.setSubmitting(false);
             gridShowError(queryGridModel, {
                 message: error.error.exception
             });
@@ -588,33 +582,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
     deriveSampleIds(count: number) {
         const { insertModel } = this.state;
-        this.setState(() => {
-            return {
-                insertModel: insertModel.merge({
-                    isSubmitting: true
-                }) as SampleIdCreationModel
-            }
-        });
+        this.setSubmitting(true);
         insertModel.deriveSamples(count).then((result: GenerateSampleResponse) => {
-            this.setState(() => {
-                return {
-                    insertModel: insertModel.merge({
-                        isSubmitting: false
-                    }) as SampleIdCreationModel
-                }
-            });
+            this.setSubmitting(false);
             if (this.props.afterSampleCreation) {
                 this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), result.getFilter(), result.data.materialOutputs.length);
             }
         }).catch((reason) => {
+            this.setSubmitting(false);
             gridShowError(this.getQueryGridModel(), reason);
-            this.setState(() => {
-                return {
-                    insertModel: insertModel.merge({
-                        isSubmitting: false
-                    }) as SampleIdCreationModel
-                }
-            })
         });
     }
 
@@ -627,7 +603,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     }
 
     renderButtons() {
-        const { insertModel } = this.state;
+        const { insertModel, isSubmitting } = this.state;
         const queryModel = this.getQueryGridModel();
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel && insertModel.isInit) {
@@ -642,10 +618,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         <Button
                             className={"test-loc-submit-button"}
                             bsStyle="success"
-                            disabled={insertModel.isSubmitting || insertModel.sampleCount === 0 || !editorModel }
+                            disabled={isSubmitting || insertModel.sampleCount === 0 || !editorModel }
                             onClick={this.insertRowsFromGrid}
                             >
-                            {insertModel.isSubmitting ? "Creating..." : "Finish Creating " + insertModel.sampleCount + " " + noun}
+                            {isSubmitting ? "Creating..." : "Finish Creating " + insertModel.sampleCount + " " + noun}
                         </Button>
                     </div>
                 </div>
@@ -663,7 +639,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
     render() {
 
-        const { insertModel } = this.state;
+        const { insertModel, isSubmitting } = this.state;
 
         if (!insertModel)
             return <LoadingSpinner wrapperClassName="loading-data-message"/>;
@@ -676,12 +652,11 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             nounSingular: "sample",
             nounPlural: "samples"
         };
-        if (!this.isNameRequired()) {
-            addControlProps['quickAddText'] = "Bypass the grid";
-            addControlProps['onQuickAdd'] = this.deriveSampleIds
-        }
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
+            addControlProps['quickAddText'] = "Bypass the grid";
+            addControlProps['onQuickAdd'] = this.deriveSampleIds;
+
             columnMetadata = columnMetadata.set("Name", {
                 readOnly: false,
                 placeholder: "[generated id]"
@@ -715,7 +690,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     estimate={insertModel.sampleCount * 20}
                     modal={true}
                     title="Generating samples"
-                    toggle={insertModel.isSubmitting} />
+                    toggle={isSubmitting} />
             </Panel>
         )
     }

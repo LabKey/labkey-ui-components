@@ -1000,7 +1000,6 @@ export class QueryInfo extends Record({
      * Insert a set of columns into this queryInfo's columns at a designated index.  If the given column index
      * is outside the range of the existing columns, this queryInfo's columns will be returned.  An index that is equal to the
      * current number of columns will cause the given queryColumns to be appended to the existing ones.
-     * @param queryInfo existing model with columns
      * @param colIndex the index at which the new columns should start
      * @param queryColumns the (ordered) set of columns
      * @returns a new set of columns when the given columns inserted

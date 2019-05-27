@@ -587,6 +587,14 @@ export class QueryGridModel extends Record({
         return emptyColumns;
     }
 
+    getColumnIndex(fieldKey: string): number {
+        if (!fieldKey)
+            return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.queryInfo.columns.keySeq().findIndex((column) => (column.toLowerCase() === lcFieldKey));
+    }
+
     getAllColumns(): List<QueryColumn> {
         if (this.queryInfo) {
             return List<QueryColumn>(this.queryInfo.columns.values());
@@ -636,6 +644,15 @@ export class QueryGridModel extends Record({
 
     getId(): string {
         return this.id;
+    }
+
+    getInsertColumnIndex(fieldKey) : number {
+        if (!fieldKey)
+            return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.getInsertColumns()
+            .findIndex((column) => (column.fieldKey.toLowerCase() === lcFieldKey));
     }
 
     getInsertColumns(): List<QueryColumn> {
@@ -880,6 +897,30 @@ export class QueryInfo extends Record({
         }));
     }
 
+    /**
+     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object
+     * and columns map from a JSON object.
+     *
+     * @param queryInfoJson
+     */
+    static fromJSON(queryInfoJson: any) : QueryInfo {
+        let schemaQuery: SchemaQuery;
+
+        if (queryInfoJson.schemaName && queryInfoJson.name) {
+            schemaQuery = SchemaQuery.create(queryInfoJson.schemaName, queryInfoJson.name);
+        }
+        let columns = OrderedMap<string, QueryColumn>();
+        Object.keys(queryInfoJson.columns).forEach((columnKey) => {
+            let rawColumn = queryInfoJson.columns[columnKey];
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn))
+        });
+
+        return QueryInfo.create(Object.assign({}, queryInfoJson, {
+            columns,
+            schemaQuery
+        }))
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -1009,7 +1050,7 @@ export class QueryInfo extends Record({
             return this.columns;
 
         // put them at the end
-        if (colIndex == this.columns.size)
+        if (colIndex === this.columns.size)
             return this.columns.merge(queryColumns);
 
         let columns = OrderedMap<string, QueryColumn>();

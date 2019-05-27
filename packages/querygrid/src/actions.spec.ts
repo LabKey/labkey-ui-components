@@ -275,7 +275,6 @@ describe("addColumns", () => {
             OrderedMap<string, QueryColumn>([[queryColumn.fieldKey, queryColumn]]),
             lastInsertColKey);
         const updatedEditor = getEditorModel(queryGridModel.getId());
-        console.log("updatedEditor", updatedEditor.toJS());
         expect(updatedEditor.cellMessages.size).toBe(1);
         expect(updatedEditor.cellMessages.has("1-0")).toBe(true);
         expect(updatedEditor.cellValues.get("0-0").get(0).display).toBe("S-1");
@@ -303,7 +302,7 @@ describe("addColumns", () => {
         expect(updatedEditor.cellValues.get("0-1").get(0).display).toBe("S-2");
         expect(updatedEditor.cellValues.get("2-1").get(0).display).toBe("Description 2");
         const updatedGridModel = getQueryGridModel(queryGridModel.getId());
-        console.log("updatedGridModel", updatedGridModel.toJS());
+
         expect(updatedGridModel.getColumnIndex("name")).toBe(nameColIndex);
         expect(updatedGridModel.getColumnIndex("description")).toBe(queryGridModel.getColumnIndex("description")+1);
         expect(updatedGridModel.getColumnIndex(queryColumn.fieldKey)).toBe(nameColIndex+1);

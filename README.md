@@ -21,18 +21,23 @@ This repository defines all of the components available in the @glass scope. The
 
 ## Using @glass npm packages
 
-The easiest way to use `@glass` components is to install them from npm and bundle them with your app. Before you run install you'll want to make sure you set the appropriate registry for the `@glass` scope.
+The easiest way to use `@glass` components is to install them from npm and bundle them with your app. 
+Before you run install you'll want to make sure you set the appropriate registry for the `@glass` scope
+as well as the `@labkey` scope.
 
 #### Setting the Registry Scope
 
 This package is currently available on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
 ```
 npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
+npm config set @labkey:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
+
 ```
 or via a `.npmrc` file
 ```
 # .npmrc
 @glass:registry=https://artifactory.labkey.com/artifactory/api/npm/libs-client/
+@labkey:registry=https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 ```
 
 #### Installing
@@ -52,7 +57,7 @@ If you would like to contribute changes for LabKey Glass components you can take
 
 #### 1. Install yarn
 
-[Yarn](https://yarnpkg.com) is a package manager much like npm. We use it instead of npm due to it's support for [workspaces](https://yarnpkg.com/lang/en/docs/workspaces/). There a couple of different ways to install yarn. If you have npm you can do a global install:
+[Yarn](https://yarnpkg.com) is a package manager much like npm. We use it instead of npm due to its support for [workspaces](https://yarnpkg.com/lang/en/docs/workspaces/). There a couple of different ways to install yarn. If you have npm you can do a global install:
 
 ```sh
 npm install yarn -g
@@ -71,14 +76,14 @@ Yarn should now be available on the command line.
 [Lerna](https://lernajs.io/) is a tool for managing JavaScript projects with multiple packages. Our build is configured for a specific verison so you'll want to specify that when installing. Since yarn is already configured you can install globally:
 
 ```sh
-yarn global add lerna@2.11
+yarn global add lerna@3.14.1
 ```
 
-Lerna should now be availble on the command line.
+Lerna should now be available on the command line.
 
 #### 3. Clone and Build
 
-Now that yarn and lerna are setup you can go ahead and clone this repository to a local directory.
+Now that yarn and lerna are set up you can go ahead and clone this repository to a local directory.
 
 ```sh
 git clone https://github.com/LabKey/glass-components.git # or via ssh
@@ -220,7 +225,7 @@ When changes are made to the source code or .scss files for the components or th
 ## Publishing
 
 In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://internal.labkey.com/wiki/Handbook/Dev/page.view?name=npmrc) to create your .npmrc file.
-If you do not have permissions to publish to this repository, contact a local Artifactory administrator who can grant you those permissions.
+If you do not have permissions to publish to this repository, contact a LabKey Artifactory administrator who can grant you those permissions.
 
 To publish, update the package's `README.md` file with release notes for the
 changes included and commit. Then from the package root (not the repository root!) of the package you want to update (e.g. packages/omnibox) run:

@@ -173,28 +173,30 @@ export class SampleIdCreationModel extends Record({
             materialInputs: Array<SampleInputProps> = [];
 
         this.sampleParents.forEach((parent, index) => {
-            const isData = parent.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
-            const isSample = parent.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
+            if (parent.value) {
+                const isData = parent.schema === SCHEMAS.DATA_CLASSES.SCHEMA;
+                const isSample = parent.schema === SCHEMAS.SAMPLE_SETS.SCHEMA;
 
-            if (isData || isSample) {
-                const role = isData ? 'data' : 'sample';
+                if (isData || isSample) {
+                    const role = isData ? 'data' : 'sample';
 
-                parent.value.forEach((option) => {
-                    const rowId = parseInt(option.value);
-                    if (!isNaN(rowId)) {
-                        const input = {role, rowId};
+                    parent.value.forEach((option) => {
+                        const rowId = parseInt(option.value);
+                        if (!isNaN(rowId)) {
+                            const input = {role, rowId};
 
-                        if (isData) {
-                            dataInputs.push(input);
+                            if (isData) {
+                                dataInputs.push(input);
+                            }
+                            else {
+                                materialInputs.push(input);
+                            }
                         }
                         else {
-                            materialInputs.push(input);
+                            console.warn('SampleSet/actions/getSampleInputs -- Unable to parse rowId from "' + option.value + '" for ' + role + '.');
                         }
-                    }
-                    else {
-                        console.warn('SampleSet/actions/getSampleInputs -- Unable to parse rowId from "' + option.value + '" for ' + role + '.');
-                    }
-                });
+                    });
+                }
             }
         });
 

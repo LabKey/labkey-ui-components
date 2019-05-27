@@ -1,6 +1,6 @@
 {
   "name": "@glass/omnibox",
-  "version": "0.1.11-fb-issue-37379.1",
+  "version": "0.1.11",
   "description": "A LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.",
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",

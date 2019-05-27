@@ -5,7 +5,7 @@ Query Grid for LabKey schema/query data views
 ## Release Notes ##
 
 ### version 0.3.1
-*Released*: ???
+*Released*: 27 May 2019
 * Package patch update for fix in omnibox package (issue 37379)
 
 ### version 0.3.0

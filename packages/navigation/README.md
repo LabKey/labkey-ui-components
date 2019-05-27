@@ -7,7 +7,8 @@ Application navigation elements and functions
 ### version ???
 *Released*: ???
 * Update package for changes to @glass/base
-* Port Breadcrumb component from Biologics
+* Breadcrumb components from Biologics
+* Implementation for SearchBox component in header navigation bar
 
 ### version 0.1.8
 *Released*: 25 April 2019

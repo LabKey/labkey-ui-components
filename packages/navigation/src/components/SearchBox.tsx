@@ -1,11 +1,38 @@
 import * as React from 'react'
 
-// A simple input field as a placeholder for a field that does something.
-// Will require adding a parameter for the search action.
-export class SearchBox extends React.Component<any, any> {
+interface Props {
+    onSearch: (value: string) => any
+}
+
+interface State {
+    value?: string
+}
+
+export class SearchBox extends React.Component<Props, State> {
+
+    onSearch = (evt: any) => {
+        evt.preventDefault();
+        this.props.onSearch(this.state.value);
+    };
+
+    handleChange = (evt: any) => {
+        const value = evt.target.value;
+        this.setState(() => ({value}));
+    };
+
     render() {
         return (
-            <input placeholder=" &#xF002; Enter search terms" className="placeholder-with-icons"/>
+            <form className={'navbar__search-form'} onSubmit={this.onSearch}>
+                <div className={'form-group'}>
+                    <i className={'fa fa-search navbar__search-icon'}/>
+                    <input
+                        type={"text"}
+                        placeholder="Enter search terms"
+                        className="navbar__search-input"
+                        onChange={this.handleChange}
+                    />
+                </div>
+            </form>
         )
     }
 }

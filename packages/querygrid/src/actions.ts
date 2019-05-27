@@ -42,7 +42,7 @@ import {
     LookupStore,
     ValueDescriptor,
     VisualizationConfigModel
-} from './model'
+} from './models'
 import { bindColumnRenderers } from './renderers'
 import {
     getEditorModel,

@@ -22,7 +22,7 @@ import {
 
 import { QUERY_GRID_PREFIX } from '../constants'
 import { gridInit, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from '../actions'
-import { getStateQueryGridModel, getStateModelId } from '../model'
+import { getStateQueryGridModel, getStateModelId } from '../models'
 import { headerCell, headerSelectionCell } from '../renderers'
 import { getBrowserHistory } from "../util/global";
 

@@ -7,7 +7,7 @@ import {
     updateQueryGridModel
 } from "./global";
 import { QueryGridModel, SchemaQuery, QueryInfo, QueryColumn } from '@glass/base';
-import { CellMessage, EditorModel, ValueDescriptor } from './model';
+import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { addColumns, changeColumn, removeColumn, updateEditorData } from './actions';
 
 const sampleSet2QueryInfo = require( "./test/data/sampleSet2-getQueryDetails.json");

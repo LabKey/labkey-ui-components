@@ -1,7 +1,7 @@
 import { List, Map } from 'immutable';
 import { resetQueryGridState } from "./global";
 import { QueryGridModel, QueryInfo, SchemaQuery } from '@glass/base';
-import { CellMessage, EditorModel, ValueDescriptor } from './model';
+import { CellMessage, EditorModel, ValueDescriptor } from './models';
 
 const sampleSet2QueryInfo = require( "./test/data/sampleSet2-getQueryDetails.json");
 

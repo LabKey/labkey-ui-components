@@ -22,7 +22,7 @@ import {
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn, } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
 
-import { getStateQueryGridModel } from '../../model'
+import { getStateQueryGridModel } from '../../models'
 
 import { EditableColumnMetadata } from "../editable/EditableGrid"
 import { EditableGridPanel } from '../editable/EditableGridPanel'

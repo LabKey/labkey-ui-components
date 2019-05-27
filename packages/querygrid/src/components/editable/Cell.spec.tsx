@@ -5,7 +5,7 @@ import { Cell } from "./Cell";
 import { QueryColumn, SchemaQuery } from "@glass/base";
 import { initQueryGridState } from "../../global";
 import mock, { proxy } from "xhr-mock";
-import { getStateQueryGridModel } from "../../model";
+import { getStateQueryGridModel } from "../../models";
 import * as constants from "../../test/data/constants";
 import { gridInit } from "../../actions";
 import mixturesQueryInfo from "../../test/data/mixtures-getQueryDetails.json";

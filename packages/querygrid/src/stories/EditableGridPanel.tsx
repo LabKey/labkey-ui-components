@@ -5,7 +5,7 @@ import { Map } from 'immutable';
 import { SchemaQuery } from "@glass/base";
 
 import { gridInit } from "../actions";
-import { getStateQueryGridModel } from "../model";
+import { getStateQueryGridModel } from "../models";
 import { EditableGridPanel } from "../components/editable/EditableGridPanel";
 import * as constants from '../test/data/constants';
 

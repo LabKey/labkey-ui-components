@@ -4,7 +4,7 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { QueryGrid } from "../components/QueryGrid";
 import { QueryGridModel, SchemaQuery } from "@glass/base";
 import { updateQueryGridModel } from "../global";
-import { getStateQueryGridModel } from "../model";
+import { getStateQueryGridModel } from "../models";
 import './stories.scss'
 
 storiesOf('QueryGrid', module)

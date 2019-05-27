@@ -6,7 +6,7 @@ import * as React from 'react'
 import $ from 'jquery'
 import { QueryGridModel, LoadingSpinner, generateId, debounce } from '@glass/base'
 
-import { DataViewInfo, VisualizationConfigModel } from '../../model'
+import { DataViewInfo, VisualizationConfigModel } from '../../models'
 import { getVisualizationConfig } from '../../actions'
 
 interface Props {

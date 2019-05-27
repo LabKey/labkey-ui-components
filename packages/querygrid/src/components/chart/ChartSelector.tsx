@@ -7,7 +7,7 @@ import { List } from 'immutable'
 import { QueryGridModel, resolveSchemaQuery } from '@glass/base'
 
 import { fetchCharts } from '../../actions'
-import { DataViewInfo } from '../../model'
+import { DataViewInfo } from '../../models'
 import { getCharts, updateCharts } from '../../global'
 import { ChartMenu } from './ChartMenu'
 

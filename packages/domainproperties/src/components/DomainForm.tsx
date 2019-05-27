@@ -1,14 +1,14 @@
 import * as React from "react";
-import {List} from "immutable";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
-import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import {Alert, ConfirmModal} from '@glass/base';
+import { List} from "immutable";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { Alert, ConfirmModal } from "@glass/base";
 
-import {DomainRow} from "./DomainRow";
-import {DomainDesign, DomainField} from "../models";
-import {getIndexFromId, updateDomainField} from "../actions/actions";
+import { DomainRow } from "./DomainRow";
+import { DomainDesign, DomainField } from "../models";
+import { getIndexFromId, updateDomainField } from "../actions/actions";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -18,7 +18,7 @@ interface IDomainFormInput {
 }
 
 interface IDomainFormState {
-    expandedRowIndex: number,
+    expandedRowIndex: number
     showConfirm: boolean
 }
 
@@ -31,22 +31,14 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
     };
 
-    constructor(props)
-    {
-        super(props);
+    constructor(props) {
         super(props);
 
         this.state = {
             expandedRowIndex: undefined,
             showConfirm: false
         };
-
     }
-
-    // static getDerivedStateFromError(error) {
-    //     // Update state so the next render will show the fallback UI.
-    //     return { hasError: true };
-    // }
 
     isValidDomain(domainDesign: DomainDesign): boolean {
         return !!(domainDesign);
@@ -67,17 +59,18 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     };
 
     onDeleteConfirm = () => {
-        const {domain, onChange} = this.props;
-        const {expandedRowIndex} = this.state;
+        const { domain, onChange } = this.props;
+        const { expandedRowIndex } = this.state;
 
         // filter to the non-removed fields
-        let newFields = domain.fields.filter((field, i) => {
-            return i !== expandedRowIndex;
+        const newDomain = domain.merge({
+            fields: domain.fields.filter((field, i) => i !== expandedRowIndex)
+        }) as DomainDesign;
+
+        this.setState({
+            expandedRowIndex: undefined,
+            showConfirm: false
         });
-
-        const newDomain = domain.merge({fields: newFields}) as DomainDesign;
-
-        this.setState(() => ({showConfirm: false, expandedRowIndex: undefined}));
 
         if (onChange) {
             onChange(newDomain, true);
@@ -121,9 +114,13 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         const { domain } = this.props;
         const { expandedRowIndex } = this.state;
 
+        let field = domain.fields.get(expandedRowIndex);
+
         // only show the confirm delete for previously existing fields
-        if (domain.fields.get(expandedRowIndex).propertyId) {
-            this.setState(() => ({showConfirm: true}));
+        if (field && field.propertyId) {
+            this.setState({
+                showConfirm: true
+            });
         }
         else {
             this.onDeleteConfirm();
@@ -131,7 +128,9 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     };
 
     onConfirmCancel = () => {
-        this.setState(() => ({showConfirm: false}));
+        this.setState({
+            showConfirm: false
+        });
     };
 
     onBeforeDragStart = () => {
@@ -154,8 +153,9 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
             destIndex = result.destination.index;
         }
 
-        if (srcIndex === destIndex)
+        if (srcIndex === destIndex) {
             return;
+        }
 
         let movedField = domain.fields.find((field, i) => i === idIndex);
 
@@ -233,7 +233,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     }
 
     renderEmptyDomain() {
-        const {helpURL, helpNoun} = this.props;
+        const { helpURL, helpNoun } = this.props;
 
         return (
             <Panel className='domain-form-no-field-panel'>
@@ -265,8 +265,8 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     }
 
     render() {
-        const {domain} = this.props;
-        const {showConfirm, expandedRowIndex} = this.state;
+        const { domain } = this.props;
+        const { showConfirm, expandedRowIndex } = this.state;
 
         return (
             <>

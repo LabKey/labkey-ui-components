@@ -1,5 +1,10 @@
 import * as React from "react";
-import {Row, Col, FormControl, Checkbox, Button} from "react-bootstrap";
+import { Row, Col, FormControl, Checkbox, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { Draggable } from "react-beautiful-dnd";
+import { Tip } from "@glass/base";
+
 import {
     DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE,
     DOMAIN_FIELD_DETAILS,
@@ -7,57 +12,42 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import { Tip } from "@glass/base";
 import { DomainField, PROP_DESC_TYPES } from "../models";
 import { createFormInputId, getDataType } from "../actions/actions";
-import {DomainRowExpandedOptions} from "./DomainRowExpandedOptions";
-import {Draggable} from "react-beautiful-dnd";
+import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
-interface IDomainRowDisplay {
-    index: number,
-    field: DomainField,
-    onExpand: (any) => void,
-    onDelete: (any) => void,
-    onChange: (any) => any,
+interface IDomainRowProps {
     expanded: boolean
+    field: DomainField
+    index: number
+    onChange: (any) => any
+    onDelete: (any) => void
+    onExpand: (any) => void
 }
 
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.PureComponent<IDomainRowDisplay, any> {
-
-    // static getDerivedStateFromError(error) {
-    //     // Update state so the next render will show the fallback UI.
-    //     return { hasError: true };
-    // }
+export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
 
     /**
      *  Details section of property row
      */
-    getDetailsText = (): string =>
-    {
+    getDetailsText = (): string => {
         let details = '';
 
-        // Hack for now to display primary key. Waiting for api update
-        // if (this.props.field.name === 'Key') {
-        //     details += 'Primary Key, Locked';
-        // }
-
-        if (this.props.field.newField)
-        {
-            if (details.length > 0)
+        if (this.props.field.newField) {
+            if (details.length > 0) {
                 details += ', ';
+            }
 
             details += 'New Field';
         }
 
-        if (this.props.field.updatedField && !this.props.field.newField)
-        {
-            if (details.length > 0)
+        if (this.props.field.updatedField && !this.props.field.newField) {
+            if (details.length > 0) {
                 details += ', ';
+            }
 
             details += 'Updated';
         }
@@ -156,7 +146,7 @@ export class DomainRow extends React.PureComponent<IDomainRowDisplay, any> {
     }
 
     render() {
-        const {index, field, expanded, onChange} = this.props;
+        const { index, field, expanded, onChange } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>

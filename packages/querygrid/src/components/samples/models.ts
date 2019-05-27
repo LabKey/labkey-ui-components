@@ -130,7 +130,6 @@ export class SampleIdCreationModel extends Record({
     initialSampleSet: undefined,
     isError: false,
     isInit: false,
-    isSubmitting: false,
     parents: Array<string>(),
     parentOptions: List<IParentOption>(),
     sampleParents: List<SampleSetParentType>(),
@@ -144,7 +143,6 @@ export class SampleIdCreationModel extends Record({
     initialSampleSet: any;
     isError: boolean;
     isInit: boolean;
-    isSubmitting: boolean;
     parents: Array<string>; // TODO should be 'originalParents'
     parentOptions: List<IParentOption>;
     sampleParents: List<SampleSetParentType>;
@@ -233,10 +231,6 @@ export class SampleIdCreationModel extends Record({
 
     // Make the call to the Derive API
     deriveSamples(materialOutputCount: number): Promise<GenerateSampleResponse> {
-        if (this.isSubmitting) {
-            return;
-        }
-
         const { dataInputs, materialInputs, materialOutputs,  materialDefault, targetSampleSet } = this.getSaveValues();
 
         return new Promise((resolve, reject) => {
@@ -267,10 +261,6 @@ export class SampleIdCreationModel extends Record({
 
 
     postSampleGrid(queryGridModel: QueryGridModel) : Promise<any>  {
-        if (this.isSubmitting) {
-            return;
-        }
-
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {
@@ -302,16 +292,16 @@ export class SampleIdCreationModel extends Record({
                     schemaName = SCHEMAS.SAMPLE_SETS.SCHEMA;
                 }
                 else {
-                    throw new Error('SampleSets.model.revertParentInputSchema -- invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
+                    throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey. "' + fieldKey[0] + '"');
                 }
 
                 return SchemaQuery.create(schemaName, fieldKey[1]);
             }
 
-            throw new Error('SampleSets.model.revertParentInputSchema -- invalid inputColumn fieldKey length.');
+            throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn fieldKey length.');
         }
 
-        throw new Error('SampleSets.model.revertParentInputSchema -- invalid inputColumn.');
+        throw new Error('SampleIdCreationModel.models.revertParentInputSchema -- invalid inputColumn.');
     }
 
     getGridValues(queryInfo: QueryInfo): Map<any, any> {

@@ -10,7 +10,7 @@ import { QueryColumn } from '@glass/base'
 
 import { initLookup, modifyCell, searchLookup } from '../../actions'
 import { cancelEvent } from '../../events'
-import { LookupStore, ValueDescriptor } from '../../model'
+import { LookupStore, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES, LOOKUP_DEFAULT_SIZE } from '../../constants'
 
 const emptyList = List<ValueDescriptor>();

@@ -44,7 +44,7 @@ import {
     SearchIdData,
     ValueDescriptor,
     VisualizationConfigModel
-} from './model'
+} from './models'
 import { bindColumnRenderers } from './renderers'
 import {
     getEditorModel,
@@ -1318,7 +1318,15 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
     }
 }
 
-export function updateEditorData(gridModel: QueryGridModel, data: List<any>, count: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
+/**
+ * Updates data in the editable grid associated with the given grid model.
+ * @param gridModel the model whose editable data is updated
+ * @param rowData the data for a single row
+ * @param rowCount the number of rows to be added
+ * @param rowMin the starting row for the new rows
+ * @param colMin the starting column
+ */
+export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
     const columns = gridModel.getInsertColumns();
     const editorModel = getEditorModel(gridModel.getId());
 
@@ -1330,7 +1338,7 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
 
-    data.forEach((value, cn) => {
+    rowData.forEach((value, cn) => {
 
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
@@ -1354,20 +1362,15 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
             }]);
         }
 
-        if (msg) {
-            messages = messages.push(msg);
-        } else {
-            messages = messages.push(undefined);
-        }
+        messages = messages.push(msg ? msg : undefined);
 
         values = values.push(cv);
     });
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + count; rowIdx++) {
-        data.forEach((value, cn) => {
+    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
+        rowData.forEach((value, cn) => {
 
             const colIdx = colMin + cn;
-            const col = columns.get(colIdx);
             const cellKey = genCellKey(colIdx, rowIdx);
 
             cellMessages = cellMessages.set(cellKey, messages.get(cn));
@@ -1380,7 +1383,7 @@ export function updateEditorData(gridModel: QueryGridModel, data: List<any>, cou
         cellValues,
         cellMessages,
         selectionCells,
-        rowCount: editorModel.rowCount + Number(count)
+        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
     });
 }
 
@@ -1559,6 +1562,10 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
 
     const colIndex =  model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === existingFieldKey);
 
+    // nothing to do if there is no such column
+    if (colIndex === -1)
+        return editorModel;
+
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
@@ -1594,7 +1601,7 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
     });
 
 
-    const currentCol = model.queryInfo.columns.find((column) => column.fieldKey === existingFieldKey);
+    const currentCol = model.queryInfo.getColumn(existingFieldKey);
 
     // remove existing column and set new column in data
     let data = model.data;
@@ -1621,17 +1628,39 @@ export function changeColumn(model: QueryGridModel, existingFieldKey: string, ne
     return editorModel;
 }
 
-export function addColumns(model: QueryGridModel, colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : EditorModel {
+
+/**
+ * Adds columns to the editor model and the underlying QueryGridModel
+ * @param model the model to be updated
+ * @param queryColumns the ordered map of columns to be added
+ * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
+ * or the column is not found, columns will be added at the beginning.
+ */
+export function addColumns(model: QueryGridModel, queryColumns: OrderedMap<string, QueryColumn>, fieldKey?: string ) : EditorModel {
     let editorModel = getEditorModel(model.getId());
+
+    if (queryColumns.size === 0)
+        return editorModel;
+
+    let editorColIndex;
+    let queryColIndex;
+
+    // add one to these because we insert after the given field (or at the
+    // beginning if there is no such field)
+    editorColIndex =  model.getInsertColumnIndex(fieldKey) + 1;
+    queryColIndex = model.getColumnIndex(fieldKey) + 1;
+
+    if (editorColIndex < 0 || editorColIndex > model.queryInfo.columns.size)
+        return editorModel;
 
     let newCellMessages = editorModel.cellMessages;
     let newCellValues = editorModel.cellValues;
 
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
-        if (oldColIdx >= colIndex) {
+        if (oldColIdx >= editorColIndex) {
             return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
-        } else if (oldColIdx < colIndex) {
+        } else if (oldColIdx < editorColIndex) {
             return newCellMessages.set(cellKey, message);
         }
 
@@ -1641,9 +1670,9 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
         const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
 
-        if (oldColIdx >= colIndex) {
+        if (oldColIdx >= editorColIndex) {
             return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
-        } else if (oldColIdx < colIndex) {
+        } else if (oldColIdx < editorColIndex) {
             return newCellValues.set(cellKey, value);
         }
 
@@ -1651,7 +1680,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
     }, Map<string, List<ValueDescriptor>>());
     for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
         for (let c = 0; c < queryColumns.size; c++) {
-            newCellValues = newCellValues.set(genCellKey(colIndex + c, rowIdx), List<ValueDescriptor>());
+            newCellValues = newCellValues.set(genCellKey(editorColIndex + c, rowIdx), List<ValueDescriptor>());
         }
     }
 
@@ -1675,7 +1704,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
         return rowData;
     }).toMap();
 
-    let columns = model.queryInfo.insertColumns(colIndex, queryColumns);
+    let columns = model.queryInfo.insertColumns(queryColIndex, queryColumns);
 
     updateQueryGridModel(model, {
         data,
@@ -1688,7 +1717,7 @@ export function addColumns(model: QueryGridModel, colIndex: number, queryColumns
 export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorModel {
     let editorModel = getEditorModel(model.getId());
 
-    let deleteIndex = model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === fieldKey);
+    let deleteIndex = model.getInsertColumnIndex(fieldKey);
     // nothing to do if there is no such column
     if (deleteIndex === -1)
         return editorModel;

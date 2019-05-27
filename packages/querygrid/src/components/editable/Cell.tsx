@@ -11,7 +11,7 @@ import { QueryColumn } from '@glass/base'
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events'
 import { focusCell, inDrag, modifyCell, selectCell } from '../../actions'
-import { CellMessage, EditorModel, ValueDescriptor } from '../../model'
+import { CellMessage, EditorModel, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
 

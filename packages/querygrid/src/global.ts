@@ -7,7 +7,7 @@ import { List, Map } from 'immutable'
 import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
-import { DataViewInfo, EditorModel, LookupStore } from './model'
+import { DataViewInfo, EditorModel, LookupStore } from './models'
 
 /**
  * Initialize the global state object for this package.

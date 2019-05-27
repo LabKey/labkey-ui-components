@@ -28,6 +28,14 @@ Query Grid for LabKey schema/query data views
 * add validateData method to EditorModel for validating required fields and uniqueness
 * Add SampleInsertPanel (with EditableGrid component)
 
+### version 0.3.1
+*Released*: 27 May 2019
+* Package patch update for fix in omnibox package (issue 37379)
+
+### version 0.3.0
+*Released*: 22 May 2019
+* Package minor update for changes to @glass/base v0.2.0
+
 ### version 0.2.0
 *Released*: 29 April 2019
 * Update EditableGrid to allow for bulk removal of rows in the grid

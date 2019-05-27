@@ -1,0 +1,52 @@
+// #Search
+// Search fields.
+
+.search-result__card-icon {
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.search-result__card-icon--small {
+  max-width: 50px;
+  max-height: 50px;
+  margin-left: 10px;
+}
+
+.search-result__card-icon__container {
+  padding: 5px 8px;
+  line-height: 80px;
+}
+
+.search-result__card-container {
+  border: 1px solid #eee;
+  border-radius: 4px;
+  height: 105px;
+  margin: 0;
+  padding: 0 10px;
+}
+
+.search-result__container {
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 5px;
+  overflow: hidden;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+
+.search-results__margin-top {
+  margin-top: 10px;
+}
+
+.search-results__amount {
+  margin-bottom: 25px;
+  margin-top: 0;
+}
+
+.search-form__advanced-toggle {
+  cursor: pointer;
+}
+
+.search-form__advanced-title{
+  padding-left: 1px;
+}

@@ -9,6 +9,7 @@ Query Grid for LabKey schema/query data views
 * Port HeatMap components from Biologics
 * PageDetailHeader, DetailEditing, updateRows and related actions/models from Biologics
 * Select (now called LookupSelectInput) input from Biologics
+* SearchResultsPanel, SearchResultCard, SearchResultsModel, and searchUsingIndex from Biologics
 
 ### version ???
 *Released*: ???

@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { EditorModel, getStateQueryGridModel } from './model'
+import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './model'
 import {
     getSelected,
     gridIdInvalidate,
@@ -14,7 +14,8 @@ import {
     schemaGridInvalidate,
     addColumns,
     changeColumn,
-    removeColumn
+    removeColumn,
+    searchUsingIndex
 } from './actions'
 import {
     getEditorModel,
@@ -60,6 +61,8 @@ import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
+import { SearchResultCard } from './components/search/SearchResultCard'
+import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 
 export {
     // global state functions
@@ -141,5 +144,11 @@ export {
     EditorModel,
 
     // samples-related
-    SampleInsertPanel
+    SampleInsertPanel,
+
+    // search-related
+    SearchResultsModel,
+    SearchResultCard,
+    SearchResultsPanel,
+    searchUsingIndex
 }

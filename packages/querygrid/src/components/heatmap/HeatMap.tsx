@@ -10,7 +10,7 @@ import { AppURL, LoadingSpinner, naturalSort, QueryGridModel, SchemaQuery } from
 import { HeatMapDisplay } from './HeatMapDisplay'
 import { addDateRangeFilter, last12Months, monthSort } from './utils'
 import { gridInit } from "../../actions";
-import { getStateQueryGridModel } from "../../model";
+import { getStateQueryGridModel } from "../../models";
 import { getQueryGridModel } from "../../global";
 
 export interface HeatMapProps {

@@ -6,7 +6,7 @@ import { fromJS } from 'immutable';
 import { SchemaQuery } from "@glass/base";
 
 import { Detail } from "./Detail";
-import { getStateQueryGridModel } from "../../../model";
+import { getStateQueryGridModel } from "../../../models";
 import { getQueryGridModel, initQueryGridState } from "../../../global";
 import { gridInit } from "../../..";
 

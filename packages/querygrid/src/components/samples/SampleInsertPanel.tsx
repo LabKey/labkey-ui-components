@@ -374,13 +374,20 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     }
                     else {
                         let columnMap = OrderedMap<string, QueryColumn>();
-
-                        // if there is no "Name" column (may not happen? legacy?), we'll put the columns at the beginning
-                        // this is probably pretty expensive to create a list in order to find the index, but ...
-                        const nameIndex = Math.max(0, queryGridModel.queryInfo.columns.toList().findIndex((column) => (column.fieldKey === "Name")));
-
-                        const newColumnIndex = nameIndex + 1 + insertModel.sampleParents.filter((parent) => parent.query !== undefined).count();
-                        addColumns(queryGridModel, newColumnIndex, columnMap.set(column.fieldKey.toLowerCase(), column));
+                        let fieldKey;
+                        if (existingParent.index === 1)
+                            fieldKey = "Name";
+                        else {
+                            const definedParents = insertModel.sampleParents.filter((parent) => parent.query !== undefined);
+                            if (definedParents.size === 0)
+                                fieldKey = "Name";
+                            else {
+                                // want the first defined parent before the new parent's index
+                                const prevParent = definedParents.findLast((parent) => parent.index < existingParent.index);
+                                fieldKey = prevParent ? this.createParentColumnName(prevParent) : "Name";
+                            }
+                        }
+                        addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
                     }
                 }
                 else {

@@ -8,6 +8,7 @@ import { QueryColumn } from '@glass/base'
 import { Action, ActionOption, ActionValue, Value } from './Action'
 
 export class SearchAction implements Action {
+    isDefaultAction = true;
     iconCls = 'search';
     param = 'q';
     keyword = 'search';

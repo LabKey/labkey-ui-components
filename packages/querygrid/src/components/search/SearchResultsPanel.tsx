@@ -12,15 +12,18 @@ import { SearchResultCard } from "./SearchResultCard";
 
 interface Props {
     model: SearchResultsModel
+    iconUrl?: string
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
 
-    renderLoading() {
+    isLoading(): boolean {
         const { model } = this.props;
-        const isLoading = model ? model.get('isLoading') : false;
+        return model ? model.get('isLoading') : false;
+    }
 
-        if (isLoading) {
+    renderLoading() {
+        if (this.isLoading()) {
             return <LoadingSpinner wrapperClassName="search-results__margin-top"/>
         }
     }
@@ -29,16 +32,16 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const { model } = this.props;
         const error = model ? model.get('error') : undefined;
 
-        if (error) {
+        if (!this.isLoading() && error) {
             return <Alert>{error}</Alert>
         }
     }
 
     renderResults() {
-        const { model } = this.props;
+        const { model, iconUrl } = this.props;
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
-        if (results !== undefined) {
+        if (!this.isLoading() && results !== undefined) {
             const data = results.filter((result) => result.has('data'));
 
             if (data.size > 0) {
@@ -51,7 +54,9 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     title={item.get('title')}
                                     summary={item.get('summary')}
                                     url={item.get('url')}
-                                    data={item.get('data')}/>
+                                    data={item.get('data')}
+                                    iconUrl={iconUrl}
+                                />
                             </div>
                         ))}
                     </div>

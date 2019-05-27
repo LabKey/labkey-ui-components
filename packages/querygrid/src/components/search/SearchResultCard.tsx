@@ -10,6 +10,7 @@ interface SearchResultProps {
     summary: string
     url: string
     data?: any
+    iconUrl?: string
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
@@ -38,10 +39,13 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
     }
 
     resolveImage() {
-        const { data } = this.props;
+        const { data, iconUrl } = this.props;
+
+        if (iconUrl) {
+            return <img className="search-result__card-icon" src={iconUrl}/>
+        }
 
         let iconSrc = '';
-
         if (data) {
             if (data.getIn(['dataClass', 'name'])) {
                 iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();

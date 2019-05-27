@@ -22,23 +22,12 @@ describe("QueryGridModel", () => {
 
 });
 
-function createQueryInfo(rawQueryInfo: any) : QueryInfo {
-    let columns = OrderedMap<string, QueryColumn>();
-    Object.keys(rawQueryInfo.columns).forEach((columnKey) => {
-        let rawColumn = rawQueryInfo.columns[columnKey];
-        columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn))
-    });
-
-    return QueryInfo.create(Object.assign({}, rawQueryInfo, {columns}))
-
-}
-
 describe("QueryInfo", () => {
 
     const FIRST_COL_KEY = "Sample Set 3 Parents";
     const SECOND_COL_KEY = "NameExpr Parents";
 
-    let queryInfo = createQueryInfo(sampleSetQueryInfo);
+    let queryInfo = QueryInfo.fromJSON(sampleSetQueryInfo);
     let newColumns = OrderedMap<string, QueryColumn>();
     newColumns = newColumns.set(FIRST_COL_KEY, QueryColumn.create(sampleSet3QueryColumn));
     newColumns = newColumns.set(SECOND_COL_KEY, QueryColumn.create(nameExpSetQueryColumn));

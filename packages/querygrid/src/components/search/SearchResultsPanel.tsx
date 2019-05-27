@@ -33,7 +33,10 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const error = model ? model.get('error') : undefined;
 
         if (!this.isLoading() && error) {
-            return <Alert>{error}</Alert>
+            console.error(error);
+            return <Alert>
+                There was an error with your search term(s). See the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=luceneSearch" target="_blank">LabKey Search Documentation</a> page for more information on search terms and operators.
+            </Alert>
         }
     }
 

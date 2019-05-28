@@ -186,15 +186,16 @@ Though the above steps can be done manually, it is recommeneded that you take ad
 works according to plan, you should be able to do the following to update package versions and publish these new versions:
 
 ``
-lerna publish --prerelease --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+lerna publish prerelease --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
 ``
 
-While still doing development, use the `--prerelease` option.  When ready to make the release, you may be able to
+While still doing development, use the `prerelease` option.  When ready to make the release, you may be able to
 use the [appropriate option](https://github.com/lerna/lerna/tree/master/commands/version#readme) for the type of 
-update, but if there ar changes in more than one package, they may not all need the same kind of version update.  
+update, but if there are changes in more than one package, they may not all need the same kind of version update,
+so you'll want to go through the prompts provided if no semver bump keyword is provided.  
 We use the `--exact` option so that any transitive dependencies will use the exact version reference instead of 
-the ^ version reference.  This is important when there may be multiple branches open that are possibly targeting the 
-same next release version, and the last one alphabetically will match to the ^ version.
+the ^ version reference.  This is particularly important when there may be multiple branches open that are 
+possibly targeting the same next release version, and the last one alphabetically will match to the ^ version.
 
 You can however, do this with two commands
 ``

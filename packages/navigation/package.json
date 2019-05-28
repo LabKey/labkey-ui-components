@@ -34,10 +34,11 @@
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
     "@glass/base": "0.3.0-fb-sample-details.2",
-    "@types/prop-types": "15.5.5",
-    "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
     "react-router": "3.2.1"
+  },
+  "devDependencies": {
+    "@types/react-router": "3.0.13"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",

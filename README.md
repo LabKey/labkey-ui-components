@@ -269,7 +269,7 @@ This will prompt you for the new version.  Choose a version increment in accorda
 update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository. (Note,
 you could instead use `npm publish`, but you will have to update the `package.json` file manually before using that command.)
 
-##Troubleshooting
+## Troubleshooting
 
 Here we capture some tips on getting past some problems you may
 encounter while building and publishing.

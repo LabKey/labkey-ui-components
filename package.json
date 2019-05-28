@@ -44,7 +44,7 @@
     "rollup-plugin-commonjs": "10.0.0",
     "rollup-plugin-node-resolve": "5.0.0",
     "rollup-plugin-sass": "1.1.0",
-    "rollup-plugin-typescript2": "0.20.1",
+    "rollup-plugin-typescript2": "0.21.1",
     "rollup-plugin-copy": "2.0.1",
     "sass-loader": "7.1.0",
     "@storybook/addon-knobs": "5.0.11",

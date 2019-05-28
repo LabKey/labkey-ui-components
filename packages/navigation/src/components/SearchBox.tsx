@@ -10,9 +10,20 @@ interface State {
 
 export class SearchBox extends React.Component<Props, State> {
 
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            value: ''
+        }
+    }
+
     onSearch = (evt: any) => {
         evt.preventDefault();
         this.props.onSearch(this.state.value);
+
+        // reset the input value after it is has submitted
+        this.setState(() => ({value: ''}));
     };
 
     handleChange = (evt: any) => {
@@ -30,6 +41,7 @@ export class SearchBox extends React.Component<Props, State> {
                         placeholder="Enter search terms"
                         className="navbar__search-input"
                         onChange={this.handleChange}
+                        value={this.state.value}
                     />
                 </div>
             </form>

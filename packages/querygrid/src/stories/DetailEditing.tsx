@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { LoadingSpinner, QueryGridModel, SchemaQuery, SCHEMAS } from "@glass/base";
 
-import { getStateQueryGridModel } from "../model";
+import { getStateQueryGridModel } from "../models";
 import { gridInit } from "../actions";
 import { DetailEditing } from "../components/forms/detail/DetailEditing";
 import { getQueryGridModel } from "../global";

@@ -5,7 +5,7 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import { SearchResultCard } from "../components/search/SearchResultCard";
 import { SearchResultsPanel } from "../components/search/SearchResultsPanel";
-import { SearchResultsModel } from "../model";
+import { SearchResultsModel } from "../models";
 import entitiesJSON from "../test/data/searchResults.json";
 import './stories.scss'
 

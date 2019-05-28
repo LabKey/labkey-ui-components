@@ -69,6 +69,7 @@ exports[`<NavigationBar/> with search box 1`] = `
               onChange={[Function]}
               placeholder="Enter search terms"
               type="text"
+              value=""
             />
           </div>
         </form>

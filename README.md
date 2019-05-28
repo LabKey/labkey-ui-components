@@ -104,7 +104,8 @@ lerna run build
 #### Creating a New Package
 To create a new package:
 
-* Create a new directory in the `glass-components/packages` directory. Package naming convention: all lowercase names with no spaces in them, trying to keep the names to one or two words if possible.
+* Create a new directory in the `glass-components/packages` directory. Package naming convention: all lowercase names with no spaces in them, trying to keep the names to one or two words if possible. 
+Use hyphens to separate words.
 * Edit the root-level `package.json` and add the new directory to the `workspaces` array.
 * Follow the instructions in the `packages/template` `README.md` file to put necessary files in place
 * Run `yarn build`
@@ -150,7 +151,7 @@ For example, for the navigation package, you could do:
 * ``cd packages/navigation``
 * ``yarn watch``
 * edit files
-* wait for recompile trigged by the `watch` to happen
+* wait for recompile triggered by the `watch` to happen
 * ``cp -r dist /path/to/my_app/node_modules/\@glass/navigation``
 
 #### Feature branch package versioning
@@ -158,7 +159,7 @@ For example, for the navigation package, you could do:
 When updates are made to any @glass npm package, the version number updates will follow [SemVer](https://semver.org/). 
 The next version you go to for a package should be based on the following guidelines:
 1. Am I fixing a bug but not adding anything new - use the next patch version 
-1. Am I adding something new, but not changing anything that already existed - user the next minor version
+1. Am I adding something new, but not changing anything that already existed - use the next minor version
 1. Am I breaking something existing because of my changes - use the next major version
 
 With that in mind, we want to make use of “alpha” versioning while a feature / story is being developed 
@@ -178,6 +179,35 @@ the release notes in your package's `README.md` file for this version number. An
 package.json for this new version number (if that applies).
 1. Once merged and the "release" version has been pushed to Artifactory, you can then go to Artifactory and delete your
 alpha versions of that package for this feature branch.
+
+Though the above steps can be done manually, it is recommeneded that you take advantage of the 
+[`lerna version`](https://github.com/lerna/lerna/tree/master/commands/version#readme) and 
+[`lerna publish`](https://github.com/lerna/lerna/tree/master/commands/publish#readme) commands.  If everything
+works according to plan, you should be able to do the following to update package versions and publish these new versions:
+
+``
+lerna publish --prerelease --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+``
+
+While still doing development, use the `--prerelease` option.  When ready to make the release, you may be able to
+use the [appropriate option](https://github.com/lerna/lerna/tree/master/commands/version#readme) for the type of 
+update, but if there ar changes in more than one package, they may not all need the same kind of version update.  
+We use the `--exact` option so that any transitive dependencies will use the exact version reference instead of 
+the ^ version reference.  This is important when there may be multiple branches open that are possibly targeting the 
+same next release version, and the last one alphabetically will match to the ^ version.
+
+You can however, do this with two commands
+``
+lerna version --exact
+``
+This will prompt you for the kind of version change you want.  The one closest to our versioning scheme is prerelease.
+You can also choose `custom`.  This creates the version (including making a tag in git).  Then to publish, you run
+the command
+``
+lerna publish from-git --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+``
+The `--registry` option is necessary (currently, at least) because even though packages have the registry 
+specified in their `package.json` files, for some reason this is not found by the publish command.
  
  
 ### Documentation
@@ -237,3 +267,25 @@ yarn publish
 This will prompt you for the new version.  Choose a version increment in accordance with [SemVer](https://semver.org/).  This command will
 update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository. (Note,
 you could instead use `npm publish`, but you will have to update the `package.json` file manually before using that command.)
+
+##Troubleshooting
+
+Here we capture some tips on getting past some problems you may
+encounter while building and publishing.
+
+**Type is not assignable**
+
+*TS2322: Type 'import("/Development/labkey/trunk/server/optionalModules/sampleManagement/node_modules/@glass/querygrid/node_modules/@glass/base/dist/models/model").QueryGridModel' is not assignable to type 'import("/Development/labkey/trunk/server/optionalModules/sampleManagement/node_modules/@glass/base/dist/models/model").QueryGridModel'.*
+  
+This is usually an indication that in your glass package, you have a reference to another glass component that uses an inexact version (e.g., prefixed with ^).  
+To fix this, you'll need to publish a new version of the package that referenced
+the inexact version.  Since this will require no code changes, lerna may not recognize that 
+a new version should be published.  You can use the [--force-publish](https://github.com/lerna/lerna/tree/master/commands/version#--force-publish)
+option for lerna to make it create a new version.
+
+To prevent this problem in the future, you should pay attention to changes
+made to the `yarn.lock` file as you are doing development.  Generally, this
+file in the `glass-components` repository should not have references to any
+`@glass` packages.  If there are references, use `yarn list` to examine the full
+set of dependencies and find where differing versions of one of the `@glass` pacakges
+are being included.

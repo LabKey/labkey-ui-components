@@ -12226,10 +12226,10 @@ rollup-plugin-node-resolve@5.0.0:
     resolve "^1.10.1"
     rollup-pluginutils "^2.7.0"
 
-rollup-plugin-sass@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-sass/-/rollup-plugin-sass-1.1.0.tgz#49bb6ba0d997c8357ce4ee98cdcb6905668cad92"
-  integrity sha512-4KLhANaZ9gmzB+VicZzL0Y5saA7eDo/PUugJ3/H88zUEXci/CV/QXbYPR7ewOkpR0ng9StLtz9d94ncvsZ5JpA==
+rollup-plugin-sass@1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sass/-/rollup-plugin-sass-1.2.2.tgz#f03cd2b1bee497dc2cc845fae2c5749611fc008f"
+  integrity sha512-yvHQPg1JS4d23gwHTwTbokH+FV/0bPBVf5QmlvCOzfAhXe0luY0pUgVaWC2qfnoKetp2Oqh5lK7oW/4CXGWs1Q==
   dependencies:
     babel-runtime "^6.23.0"
     fs-extra "^0.30.0"

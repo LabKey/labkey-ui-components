@@ -35,7 +35,7 @@
     "lerna": "3.14.1",
     "mini-css-extract-plugin": "0.5.0",
     "node-sass": "4.9.4",
-    "nps": "5.9.3",
+    "nps": "5.9.5",
     "nps-utils": "1.7.0",
     "react-hot-loader": "4.6.5",
     "react-test-renderer": "16.8.6",

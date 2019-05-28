@@ -12199,14 +12199,14 @@ rollup-plugin-commonjs@10.0.0:
     resolve "^1.10.1"
     rollup-pluginutils "^2.7.0"
 
-rollup-plugin-copy@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-copy/-/rollup-plugin-copy-1.1.0.tgz#bfcbfd6894634be720bfad9d03644c40a70b3b16"
-  integrity sha512-4QjLhJFcOFHjozhChjuXRymFgLYDb2cqUSZuIXbfMQo83xCxgSxYXEFDhsSstD/3NTTQzAKaRK9JAoUH8B3FbA==
+rollup-plugin-copy@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-copy/-/rollup-plugin-copy-2.0.1.tgz#2a45e45be84a0d4054d1774604044e7f7581fdae"
+  integrity sha512-IE+Ob5k1Pi/DLi8SlFcf9jN1m2p0ovIwMuz0GM5NeQeV14puW/bCUpmXlqVtQVy+ErXOhZEeBaqinJ0xnJdxKg==
   dependencies:
     chalk "^2.4.2"
     fs-extra "^7.0.1"
-    is-plain-object "^2.0.4"
+    is-plain-object "^3.0.0"
 
 rollup-plugin-node-resolve@4.0.1:
   version "4.0.1"

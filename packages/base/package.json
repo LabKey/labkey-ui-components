@@ -41,8 +41,7 @@
     "bootstrap": "3.3.7",
     "moment": "2.24.0",
     "moment-jdateformatparser": "1.1.0",
-    "numeral": "2.0.6",
-    "react-bootstrap": "0.32.4"
+    "numeral": "2.0.6"
   },
   "devDependencies": {
     "@types/numeral": "0.0.25"

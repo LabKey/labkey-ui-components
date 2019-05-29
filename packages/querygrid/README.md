@@ -10,6 +10,7 @@ Query Grid for LabKey schema/query data views
 * PageDetailHeader, DetailEditing, updateRows, deleteRows, and related actions/models from Biologics
 * Select (now called LookupSelectInput) input from Biologics
 * SearchResultsPanel, SearchResultCard, SearchResultsModel, and searchUsingIndex from Biologics
+* SampleDeleteConfirmModal
 
 ### version ???
 *Released*: ???

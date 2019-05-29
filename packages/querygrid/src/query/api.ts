@@ -665,3 +665,29 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
         });
     });
 }
+
+interface DeleteRowsOptions {
+    schemaQuery: SchemaQuery
+    rows: Array<any>
+}
+
+export function deleteRows(options: DeleteRowsOptions): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Query.deleteRows({
+            schemaName: options.schemaQuery.schemaName,
+            queryName: options.schemaQuery.queryName,
+            rows: options.rows,
+            apiVersion: 13.2,
+            success: () => {
+                resolve(Object.assign({}, {
+                    schemaQuery: options.schemaQuery
+                }));
+            },
+            failure: (error) => {
+                reject(Object.assign({}, {
+                    schemaQuery: options.schemaQuery
+                }, error));
+            }
+        });
+    });
+}

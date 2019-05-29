@@ -6483,13 +6483,12 @@ format@^0.2.2:
   resolved "https://registry.yarnpkg.com/format/-/format-0.2.2.tgz#d6170107e9efdc4ed30c9dc39016df942b5cb58b"
   integrity sha1-1hcBB+nv3E7TDJ3DkBbflCtctYs=
 
-formsy-react-components@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/formsy-react-components/-/formsy-react-components-1.0.0.tgz#1ccbeea658957ee75df96a65795e8e4245eb1834"
-  integrity sha1-HMvupliVfudd+WpleV6OQkXrGDQ=
+formsy-react-components@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/formsy-react-components/-/formsy-react-components-1.1.0.tgz#8e131222dd6fdcb32598f5a8292fa48d3f9fafbe"
+  integrity sha512-GUgnIqXbXNPf7auP4nwk5PF6477r5UhdQoO1aNCvQajLarUu/Jj8PaxTCHu56tNGSlewACqRV44m8MrYOMzdTQ==
   dependencies:
     classnames "^2.2.5"
-    lodash.debounce "^4.0.6"
     prop-types "^15.5.10"
 
 formsy-react@1.1.5:
@@ -8659,7 +8658,7 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
-lodash.debounce@^4.0.6, lodash.debounce@^4.0.8:
+lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
 

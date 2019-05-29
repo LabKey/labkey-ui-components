@@ -33,7 +33,8 @@ import {
     insertRows,
     searchRows,
     selectRows,
-    updateRows
+    updateRows,
+    deleteRows
 } from './query/api'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
@@ -61,6 +62,7 @@ import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
+import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 
@@ -91,6 +93,7 @@ export {
     selectRows,
     searchRows,
     updateRows,
+    deleteRows,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
 
@@ -145,6 +148,7 @@ export {
 
     // samples-related
     SampleInsertPanel,
+    SampleDeleteConfirmModal,
 
     // search-related
     SearchResultsModel,

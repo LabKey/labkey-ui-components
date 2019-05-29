@@ -49,13 +49,14 @@ import {
     toLowerSafe
 } from './utils/utils'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
-import { AddEntityButton } from "./components/AddEntityButton"
+import { AddEntityButton } from "./components/buttons/AddEntityButton"
 import { RemoveEntityButton } from "./components/RemoveEntityButton"
 import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'
 import { MenuOption, SubMenu } from "./components/menus/SubMenu";
 import { SubMenuItem } from "./components/menus/SubMenuItem";
+import { SelectionMenuItem } from "./components/menus/SelectionMenuItem";
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { NotFound } from './components/NotFound'
@@ -71,6 +72,7 @@ import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
+import { ConfirmModal } from './components/ConfirmModal'
 import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
 import { Theme, SVGIcon } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
@@ -84,7 +86,9 @@ import {
     PermissionAllowed,
     PermissionNotAllowed,
 } from "./components/Permissions"
-import { PaginationButtons, PaginationButtonsProps } from './components/PaginationButtons';
+import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
+import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
+
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
@@ -157,7 +161,10 @@ export {
     FormSection,
     Section,
     FileAttachmentForm,
+    ConfirmModal,
     CreatedModified,
+    SelectionMenuItem,
+    ManageDropdownButton,
 
     // actions
     fetchProtocol,

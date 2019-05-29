@@ -804,6 +804,22 @@ export class QueryGridModel extends Record({
             })
         }).toList();
     }
+
+    getRowIdsList(useSelectedIds: boolean): List<Map<string, any>> {
+        let rows = List<Map<string, any>>();
+        if (!useSelectedIds) {
+            this.getData().forEach( (data) => {
+                rows = rows.push(Map(fromJS({rowId: data.getIn(['RowId', 'value'])})));
+            });
+        }
+        else {
+            this.selectedIds.forEach( (rowId) => {
+                rows = rows.push(Map(fromJS({rowId})));
+            });
+        }
+
+        return rows;
+    }
 }
 
 // commented out attributes are not used in app

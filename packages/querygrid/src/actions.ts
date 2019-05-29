@@ -263,18 +263,28 @@ export function gridIdInvalidate(gridId: string, remove: boolean = false) {
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
-    if (remove) {
-        removeQueryGridModel(model);
-    }
-    else {
-        gridInvalidate(model);
-    }
+    clearSelected(model.getId()).then(() => {
+        if (remove) {
+            removeQueryGridModel(model);
+        } else {
+            gridInvalidate(model);
+        }
+    });
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
+    // if the model doesn't exist in the global state, no need to invalidate it
+    if (!getQueryGridModel(model.getId())) {
+        return;
+    }
+
     const newModel = updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
+        selectedIds: List<string>(),
+        selectedQuantity: 0,
+        selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+        selectedLoaded: false,
         isError: false,
         isLoaded: false,
         isLoading: false,

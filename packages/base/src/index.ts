@@ -71,6 +71,7 @@ import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
+import { ConfirmModal } from './components/ConfirmModal'
 import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
 import { Theme, SVGIcon } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
@@ -157,6 +158,7 @@ export {
     FormSection,
     Section,
     FileAttachmentForm,
+    ConfirmModal,
     CreatedModified,
 
     // actions

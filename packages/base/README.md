@@ -8,6 +8,7 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * port SVGIcon and CreatedModified from Biologics
 * port AssayDefinitionModel and fetchAllAssays from Biologics
+* ManageDropdownButton and SelectionMenuItem
 
 ## version ???
 *Released*: ???

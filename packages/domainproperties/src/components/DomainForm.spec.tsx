@@ -190,11 +190,10 @@ describe('DomainFormDisplay', () => {
         domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 2), "ParticipantId");
         domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 3), "attachment");
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        const form = renderer.create(<DomainForm domain={domain} onChange={jest.fn()} />).toJSON();
 
-        const tree  = renderer.create(form).toJSON();
-        expect(tree).toMatchSnapshot();
-        form.unmount();
+        expect(form).toMatchSnapshot();
+        // form.unmount();
     });
 
     test('domain form updated field, cleared details', () => {
@@ -221,11 +220,10 @@ describe('DomainFormDisplay', () => {
         domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
         domain = clearFieldDetails(domain);
 
-        const form = mount(<DomainForm domain={domain} key='domainForm' onChange={jest.fn()} />);
+        const form = renderer.create(<DomainForm domain={domain} key='domainForm' onChange={jest.fn()} />);
 
-        const tree  = renderer.create(form).toJSON();
-        expect(tree).toMatchSnapshot();
-        form.unmount();
+        expect(form).toMatchSnapshot();
+        // form.unmount();
     });
 
 });

@@ -1459,10 +1459,10 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.16.tgz#d79f0a4fc0a5bb5a4cf1fefcda3e377d39cff29e"
   integrity sha1-158KT8Clu1pM8f782j43fTnP8p4=
 
-"@labkey/dependencies@0.0.4":
-  version "0.0.4"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.4.tgz#a4b07d2ffed7c82bc928ed253617e8ba1f26d012"
-  integrity sha1-pLB9L/7XyCvJKO0lNhfouh8m0BI=
+"@labkey/dependencies@0.0.5-fb-package-updates.1":
+  version "0.0.5-fb-package-updates.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.5-fb-package-updates.1.tgz#0d7e01ea8f548d2305d0545db60e9d1420643448"
+  integrity sha1-DX4B6o9UjSMF0FRdtg6dFCBkNEg=
   dependencies:
     "@labkey/api" "0.0.16"
     "@types/react" "16.8.15"
@@ -1470,7 +1470,7 @@
     "@types/react-dom" "16.8.4"
     font-awesome "4.7.0"
     immutable "3.8.2"
-    jquery "3.3.1"
+    jquery "3.4.1"
     react "16.8.6"
     react-bootstrap "0.32.4"
     react-dom "16.8.6"
@@ -8231,9 +8231,10 @@ jest@24.8.0:
     import-local "^2.0.0"
     jest-cli "^24.8.0"
 
-jquery@3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+jquery@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
+  integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
 
 js-base64@^2.1.8:
   version "2.5.1"

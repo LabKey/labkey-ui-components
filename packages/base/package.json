@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "bootstrap": "3.3.7",
+    "bootstrap": "3.4.1",
     "moment": "2.24.0",
     "moment-jdateformatparser": "1.1.0",
     "numeral": "2.0.6"

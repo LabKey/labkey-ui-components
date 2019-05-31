@@ -224,9 +224,7 @@ export class SampleIdCreationModel extends Record({
         return this.parentOptions
             .filter(o => (
                 this.sampleParents.every(parent => {
-                    // allow the current index
-                    // TODO where should this toLowerCase really happen?
-                    return (index === parent.index) || (!parent.query || parent.query.toLowerCase() !== o.value.toLowerCase());
+                    return (!parent.query || parent.query.toLowerCase() !== o.value.toLowerCase());
                 })
             ))
             .toArray();

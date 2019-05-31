@@ -429,7 +429,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const { insertModel } = this.state;
 
         if (insertModel) {
-            const {isInit, targetSampleSet, sampleParents} = insertModel;
+            const {isInit, targetSampleSet, parentOptions, sampleParents} = insertModel;
 
             if (isInit && targetSampleSet) {
                 return (
@@ -457,11 +457,16 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                 </div>
                             )
                         }).toArray()}
-                        <div className="col-sm-12">
-                            <AddEntityButton
-                                entity="Parent"
-                                onClick={this.addParent}/>
-                        </div>
+                        {parentOptions.size > sampleParents.size ?
+                            <div className="col-sm-12">
+                                <AddEntityButton
+                                    entity="Parent"
+                                    onClick={this.addParent}/>
+                            </div> :
+                            <div className="bottom-spacing">
+                                Only {parentOptions.size} parent {parentOptions.size === 1 ? 'sample set' : 'sample sets'} available.
+                            </div>
+                        }
                     </>
                 );
             }

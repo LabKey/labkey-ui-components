@@ -139,8 +139,9 @@
 }
 
 .editable-grid__container {
-  display: inline-block;
+  display: block;
   padding-right: 15px;
+  overflow: auto;
 }
 
 .editable-grid__bulk-header {

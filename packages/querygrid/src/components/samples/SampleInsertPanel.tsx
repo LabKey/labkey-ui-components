@@ -2,7 +2,7 @@ import React from 'reactn';
 
 import { Button, Form, Panel } from 'react-bootstrap';
 
-import { Map, OrderedMap } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 
 import {
     AddEntityButton,
@@ -271,7 +271,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     getParentColumns() : OrderedMap<string, QueryColumn> {
 
         const { insertModel } = this.state;
-
         let columns = OrderedMap<string, QueryColumn>();
         insertModel.sampleParents.forEach((parent) => {
             if (parent.schema && parent.query) {
@@ -297,11 +296,17 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
     changeTargetSampleSet(fieldName: string, formValue: any, selectedOption: ISampleSetOption): void {
         const { insertModel } = this.state;
-        const updatedModel = insertModel.merge({
+
+        let updatedModel = insertModel.merge({
             targetSampleSet: new SampleSetOption(selectedOption),
             isError: false,
             errors: undefined
         }) as SampleIdCreationModel;
+        if (!selectedOption) {
+            updatedModel = updatedModel.merge({
+                sampleParents: List<SampleSetParentType>()
+            }) as SampleIdCreationModel;
+        }
 
         this.setState(() => {
             return {
@@ -309,6 +314,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 insertModel: updatedModel
             }
         }, () => {
+            if (!selectedOption) {
+                queryGridInvalidate(insertModel.getSchemaQuery(), true);
+            }
             this.gridInit(updatedModel);
         });
     }

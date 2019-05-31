@@ -211,6 +211,11 @@ $table-cell-selection-bg-color: #EDF3FF;
       height: 24px;
       white-space: nowrap;
 
+      &.size-limited {
+        max-width: 200px;
+        text-overflow: ellipsis;
+      }
+
       &.cell-selection {
         border: $table-cell-border-width solid $table-cell-selection-bg-color;
         background-color: $table-cell-selection-bg-color;

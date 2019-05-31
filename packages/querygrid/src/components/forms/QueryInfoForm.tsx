@@ -6,7 +6,7 @@ import * as React from 'react'
 import { ReactNode } from 'react'
 
 import { Alert, Button, Modal } from 'react-bootstrap'
-import Formsy from 'formsy-react'
+import Formsy, { addValidationRule }  from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
 import { QueryInfo, SchemaQuery } from '@glass/base'
@@ -14,6 +14,17 @@ import { QueryInfo, SchemaQuery } from '@glass/base'
 import { selectRows } from '../../query/api'
 import { QueryFormInputs } from './QueryFormInputs'
 import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
+
+addValidationRule('isPositiveLt', (vs, v, smax) => {
+    if (v === '' || v === undefined || isNaN(v)) {
+        return true;
+    }
+
+    const max = parseInt(smax);
+    const i = parseInt(v);
+
+    return !isNaN(i) && i >= 1 && i <= max ? true : `Value must be between 1 and ${max}.`;
+});
 
 export interface QueryInfoFormProps {
     asModal?: boolean
@@ -237,8 +248,6 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             return null;
         }
 
-        const countError = count !== undefined && !this.isValid(count);
-
         const content = (
             <div>
                 {header}
@@ -258,16 +267,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 onChange={this.onCountChange}
                                 required={true}
                                 step={"1"}
-                                style={{width: '75px'}}
+                                style={{width: '125px'}}
                                 type={"number"}
-                                validations={"isInt"}
+                                validations={`isPositiveLt:${maxCount}`}
                                 value={count}
                             />
-                            {countError &&
-                                (<span style={{display: 'inline-block', padding: '6px 8px'}}>
-                                     <span className="text-danger">{`Must be <= ${maxCount}`}</span>
-                                </span>)
-                            }
                         </>)
                     }
                     <hr/>

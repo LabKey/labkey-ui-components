@@ -669,8 +669,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             header: "Choose parents, etc.",
         };
         let addControlProps = {
-            nounSingular: "sample",
-            nounPlural: "samples"
+            nounSingular: "row",
+            nounPlural: "rows"
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {

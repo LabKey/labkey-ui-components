@@ -8,6 +8,10 @@ Application navigation elements and functions
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.1.9
+*Released*: 22 May 2019
+* Package patch update for changes to @glass/base v0.2.0
+
 ### version 0.1.8
 *Released*: 25 April 2019
 * Add FileAttachmentForm and related components to @glass/base

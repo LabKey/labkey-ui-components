@@ -8,6 +8,14 @@ LabKey component that takes a set of actions (like filter, sort, search) and exp
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.1.11
+*Released*: 27 May 2019
+* Issue 37379: fix to allow omnibox to trigger Search function simply typing in search term
+
+### version 0.1.10
+*Released*: 22 May 2019
+* Package patch update for changes to @glass/base v0.2.0
+
 ### version 0.1.8
 *Released*: 25 April 2019
 * Add FileAttachmentForm and related components to @glass/base

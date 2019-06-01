@@ -11,6 +11,10 @@ Domain property related components for LabKey domains
     - including drag-n-drop to reorder fields
 * Epic 5716: Domain Designer, add expended field inputs for description, url, label, and import aliases
 
+### version 0.0.9
+*Released*: 22 May 2019
+* Package patch update for changes to @glass/base v0.2.0
+
 ### version 0.0.8
 *Released*: 26 April 2019
 * Epic 5419: Domain Designer, Edit standard settings name/type/required

@@ -23,9 +23,14 @@ import { QueryColumn } from '@glass/base'
  */
 export interface Action {
     /**
+     * Special case to allow an action to be the default if no keyword is provided. Note the first action with this
+     * set, if there are multiple, will be the default.
+     */
+    isDefaultAction?: boolean
+
+    /**
      * This is the keyword the user uses to activate this action. This should consist of one word
-     * with no spaces. A special case is the keyword can be the empty string '' which will result
-     * in that action being the default action.
+     * with no spaces.
      */
     keyword: string
 

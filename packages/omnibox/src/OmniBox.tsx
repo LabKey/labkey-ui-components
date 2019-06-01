@@ -356,7 +356,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                     options = [];
 
                 activeActions.forEach(action => {
-                    if (action.keyword !== '') {
+                    if (!action.isDefaultAction) {
                         options.push({
                             action,
                             isAction: true,
@@ -365,7 +365,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                             value: action.keyword
                         });
                     }
-                    else {
+                    else if (!defaultAction) {
                         defaultAction = action;
                     }
                 });
@@ -478,7 +478,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
             for (let a=0; a < actions.length; a++) {
                 let actionKeyword = actions[a].keyword.toLowerCase();
 
-                if (actionKeyword === '') {
+                if (!defaultAction && actions[a].isDefaultAction) {
                     defaultAction = actions[a];
                     matchingActions.push(actions[a]);
                 }

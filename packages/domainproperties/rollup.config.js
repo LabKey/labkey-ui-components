@@ -20,6 +20,8 @@ const external = Object.keys(globals);
 const namedExports = {
     // Could be utilized for named exports
     // 'immutable': [ 'fromJS', 'List', 'Map' ]
+    '../../node_modules/react-redux/node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer'],
+    '../../node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
 };
 
 export default [

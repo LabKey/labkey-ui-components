@@ -53,7 +53,9 @@ import { Grid } from '@glass/base';
 
 ## Development
 
-If you would like to contribute changes for LabKey Glass components you can take the following steps.
+
+### Getting Started
+If you are buidling the glass components locally, you will need to do the following to prepare your system.
 
 #### 1. Install yarn
 
@@ -101,7 +103,7 @@ This will install all dependencies for the component packages. Once this is comp
 lerna run build
 ```
 
-#### Creating a New Package
+### Creating a New Package
 To create a new package:
 
 * Create a new directory in the `glass-components/packages` directory. Package naming convention: all lowercase names with no spaces in them, trying to keep the names to one or two words if possible. 
@@ -116,7 +118,7 @@ Generally, when doing development, you should:
 * Place typing files in a `src/typings` subdirectory.
 * Add documentation a-plenty and update the package `README.md` release notes as you add/fix/update the package.
 
-#### Local Development
+### Local Development
 
 When making modifications to an existing package, you should:
 * Update the version number for the package to be `X.Y.Z-fb-my-branch-name.0`, which `X.Y.Z` is your best guess at the 
@@ -136,7 +138,7 @@ testing and iteration on display updates.  Again, we have several examples of st
 from the server for various Ajax calls that are required.  
 * Test within the application pnce display and functionality are as expected from within storybook.  
   
-##### Getting glass packages to the application
+#### Getting glass packages to the application
 
 While you can [publish](#publishing) a pre-release version of the glass packages and then update your application's `package.json`
 to reference the new pre-release version in order to view the changes within the application, you will likely want to 
@@ -178,7 +180,14 @@ For example, for the navigation package, you could do:
 * wait for recompile triggered by the `watch` to happen
 * ``cp -r dist /path/to/my_app/node_modules/\@glass/navigation``
 
-
+### Package Dependencies
+We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)
+in order to maintain notes about the cost of updating our various packages.  To do package updates, use the
+```
+yarn outdated
+```
+command to show which packages are out of date and then compare to the spreadsheet to determine if there has already
+been investigation into the cost of upgrading packages that are out of date.  
  
 ### Documentation
 We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/glass-components/), which is **publicly available on the internet**, 
@@ -221,6 +230,8 @@ yarn run storybook
 ```
 
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
+
+### Maintaining Dependencies
 
 ## Publishing
 

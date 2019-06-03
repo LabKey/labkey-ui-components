@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.1-fb-grid-bulk-edit.3",
+  "version": "0.1.2-fb-grid-bulk-edit.0",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",

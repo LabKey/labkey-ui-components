@@ -1283,19 +1283,21 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
     }
 }
 
-function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: any) {
+function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: any) : {
+    message?: CellMessage,
+    valueDescriptor: ValueDescriptor
+} {
 
     if (value === undefined || value === null || typeof(value) === 'string') {
         return {
-            values: List([{
+            valueDescriptor: {
                 display: value,
                 raw: value
-            }])
+            }
         };
     }
 
     let message: CellMessage;
-    let values = List<ValueDescriptor>();
 
     const valueDescriptor = lookup.descriptors.find(d => d.raw && d.raw === value);
     if (!valueDescriptor) {
@@ -1303,13 +1305,10 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
             message: 'Could not find data for ' + value
         }
     }
-    else {
-        values = values.push(valueDescriptor);
-    }
 
     return {
         message,
-        values
+        valueDescriptor
     }
 }
 
@@ -1333,31 +1332,33 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
 
-    rowData.forEach((value, cn) => {
+    rowData.forEach((data, cn) => {
 
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
 
-        let cv: List<ValueDescriptor>;
-        let msg: CellMessage;
+        let cv : List<ValueDescriptor>;
 
         if (col && col.isLookup()) {
-            // value had better be the rowId here.  If it's the display value, which
-            // happens to be a number, much confusion will arise.
-            const intVal = parseInt(value);
-            const {message, values} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? value : intVal);
-            cv = values;
-            if (message) {
-                msg = message;
-            }
+            cv =  List<ValueDescriptor>();
+            // value had better be the rowId here, but it may be several in a comma-separated list.
+            // If it's the display value, which happens to be a number, much confusion will arise.
+            const values = data.toString().split(",");
+            values.forEach((val) => {
+                const intVal = parseInt(val);
+                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                cv = cv.push(valueDescriptor);
+                if (message) {
+                    messages = messages.push(message);
+                }
+            });
+
         } else {
             cv = List([{
-                display: value,
-                raw: value
+                display: data,
+                raw: data
             }]);
         }
-
-        messages = messages.push(msg ? msg : undefined);
 
         values = values.push(cv);
     });

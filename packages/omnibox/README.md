@@ -4,9 +4,9 @@ LabKey component that takes a set of actions (like filter, sort, search) and exp
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
-* Package patch update for changes to @glass/base v???
+### version 0.1.12
+*Released*: 03 June 2019
+* Package patch update for changes to @glass/base v0.3.0
 
 ### version 0.1.11
 *Released*: 27 May 2019

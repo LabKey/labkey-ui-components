@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.3.0
+*Released*: 03 June 2019
 * Add ConfirmModal component
 
 ### version 0.2.0

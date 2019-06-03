@@ -8,8 +8,7 @@
   },
   "dependencies": {
     "@labkey/dependencies": "0.0.5-fb-package-updates.1",
-    "classnames": "2.2.6",
-    "watch": "1.0.2"
+    "classnames": "2.2.6"
   },
   "devDependencies": {
     "@types/enzyme": "3.9.3",
@@ -52,7 +51,8 @@
     "ts-jest": "24.0.2",
     "ts-loader": "6.0.2",
     "typedoc": "0.14.2",
-    "typescript": "3.1.6"
+    "typescript": "3.1.6",
+    "watch": "1.0.2"
   },
   "resolutions": {
     "**/event-stream": "^4.0.1"

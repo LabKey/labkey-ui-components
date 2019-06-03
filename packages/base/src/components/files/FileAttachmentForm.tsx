@@ -4,11 +4,14 @@
  */
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 
-import { FormSection } from './FormSection'
-import { Progress } from './Progress'
+import { FormSection } from '../FormSection'
+import { Progress } from '../Progress'
 import { FileAttachmentContainer } from './FileAttachmentContainer'
+import { FilePreviewGrid } from "./FilePreviewGrid";
+import { LoadingSpinner } from "../LoadingSpinner";
+import { convertRowDataIntoPreviewData, getContentFromExpData, uploadDataFileAsExpData } from "./actions";
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -27,10 +30,15 @@ interface FileAttachmentFormProps {
     showLabel?: boolean
     showProgressBar?: boolean
     submitText?: string
+    showPreviewGrid?: boolean
+    previewRowCount?: number
 }
 
 interface State {
     attachedFiles: Map<string, File>
+    errorMessage?: string
+    previewData?: List<Map<string, any>>
+    previewStatus?: string
 }
 
 export class FileAttachmentForm extends React.Component<FileAttachmentFormProps, State> {
@@ -48,18 +56,23 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         showButtons: false,
         showLabel: true,
         showProgressBar: false,
-        submitText: 'Upload'
+        submitText: 'Upload',
+        showPreviewGrid: false,
+        previewRowCount: 3
     };
 
     constructor(props?: FileAttachmentFormProps) {
         super(props);
 
-        this.handleFileChange = this.handleFileChange.bind(this);
-        this.handleFileRemoval = this.handleFileRemoval.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        if (props.allowMultiple && props.showPreviewGrid) {
+            console.warn('Showing the file preview grid is only supported for single file upload.')
+        }
 
         this.state = {
-            attachedFiles: Map<string, File>()
+            attachedFiles: Map<string, File>(),
+            errorMessage: undefined,
+            previewData: undefined,
+            previewStatus: undefined
         };
     }
 
@@ -69,31 +82,37 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return attachedFiles.reduce((total, file) =>( total += file.size), 0);
     }
 
-    handleFileChange(fileList: {[key: string]: File}) {
+    handleFileChange = (fileList: {[key: string]: File}) => {
         const { onFileChange } = this.props;
+        const attachedFiles = this.state.attachedFiles.merge(fileList);
 
-        this.setState({
-            attachedFiles: this.state.attachedFiles.merge(fileList)
-        }, () => {
+        this.setState(() => ({attachedFiles}), () => {
+
+            if (this.isShowPreviewGrid()) {
+                this.uploadDataFileForPreview();
+            }
+
             if (onFileChange) {
-                onFileChange(this.state.attachedFiles)
+                onFileChange(attachedFiles)
             }
         });
-    }
+    };
 
-    handleFileRemoval(attachmentName: string) {
+    handleFileRemoval = (attachmentName: string) => {
         const { onFileRemoval } = this.props;
 
         this.setState({
-            attachedFiles: this.state.attachedFiles.remove(attachmentName)
+            attachedFiles: this.state.attachedFiles.remove(attachmentName),
+            previewData: undefined,
+            errorMessage: undefined
         }, () => {
             if (onFileRemoval) {
                 onFileRemoval(attachmentName);
             }
         });
-    }
+    };
 
-    handleSubmit() {
+    handleSubmit = () => {
         const { onSubmit } = this.props;
 
         if (onSubmit)
@@ -102,7 +121,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.setState({
             attachedFiles: Map<string, File>()
         });
-    }
+    };
 
     renderButtons() {
         const { cancelText, onCancel, submitText } = this.props;
@@ -131,6 +150,80 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 </div>
             </div>
         )
+    }
+
+    isShowPreviewGrid() {
+        return !this.props.allowMultiple && this.props.showPreviewGrid;
+    }
+
+    shouldShowPreviewGrid() {
+        const { errorMessage, previewData, previewStatus } = this.state;
+        return errorMessage || previewStatus || previewData;
+    }
+
+    renderPreviewGrid() {
+        const { errorMessage, previewData, previewStatus } = this.state;
+
+        if (!this.shouldShowPreviewGrid()) {
+            return;
+        }
+
+        if (previewData || errorMessage) {
+            return (
+                <FilePreviewGrid data={previewData} errorMsg={errorMessage}/>
+            )
+        }
+        else if (previewStatus) {
+            return (
+                <div className={"margin-top"}>
+                    <LoadingSpinner msg={previewStatus}/>
+                </div>
+            )
+        }
+    }
+
+    updatePreviewStatus(previewStatus: string) {
+        this.setState(() => ({previewStatus}));
+    }
+
+    updateErrors(errorMessage: string) {
+        this.setState(() => ({errorMessage}));
+    }
+
+    uploadDataFileForPreview() {
+        this.updatePreviewStatus("Uploading file...");
+
+        // just take the first file, since we only support 1 file at this time
+        uploadDataFileAsExpData(this.state.attachedFiles.first())
+            .then((response) => {
+                this.getFileContentsForPreview(response);
+            })
+            .catch(reason => {
+                this.updatePreviewStatus(null);
+                this.updateErrors(reason);
+            });
+    }
+
+    getFileContentsForPreview(expData: any): void {
+        this.updatePreviewStatus("Fetching file preview...");
+
+        getContentFromExpData(expData)
+            .then((response) => {
+                this.updatePreviewStatus(null);
+
+                if (Array.isArray(response.sheets) && response.sheets.length > 0) {
+                    const previewData = convertRowDataIntoPreviewData(response.sheets[0].data, this.props.previewRowCount);
+                    this.setState(() => ({previewData}));
+                    this.updateErrors(null);
+                }
+                else {
+                    this.updateErrors('No data found in the file.');
+                }
+            })
+            .catch(reason => {
+                this.updatePreviewStatus(null);
+                this.updateErrors(reason);
+            });
     }
 
     render() {
@@ -163,6 +256,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             labelLong={labelLong}/>
                     </FormSection>
                 </span>
+                {this.renderPreviewGrid()}
                 {showProgressBar && (
                     <Progress
                         estimate={this.determineFileSize() * .1}
@@ -170,7 +264,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         title="Uploading"
                         toggle={isSubmitting}/>
                 )}
-                {acceptedFormats && showAcceptedFormats && (
+                {acceptedFormats && showAcceptedFormats && !this.shouldShowPreviewGrid() && (
                     <div className={"file-form-formats"}>
                         <strong>Supported formats include: </strong>{acceptedFormats}
                     </div>

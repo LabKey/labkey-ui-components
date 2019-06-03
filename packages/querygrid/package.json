@@ -1,10 +1,13 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
   "types": "dist/index.d.ts",
+  "config": {
+    "application_dir": "/path/to/application/node_modules/\\@glass/querygrid/dist"
+  },
   "files": [
     "dist/"
   ],
@@ -12,10 +15,14 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "prepublish": "yarn build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
-    "watch": "watch 'yarn build' ./src"
+    "watch:build": "watch 'yarn build' ./src",
+    "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
+    "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
+    "watch": "npm run watch:build"
   },
   "repository": {
     "type": "git",
@@ -31,11 +38,19 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.3.0",
-    "@glass/omnibox": "0.1.12",
+    "@glass/base": "0.4.0",
+    "@glass/omnibox": "0.1.13",
+    "@types/prop-types": "15.5.5",
+    "@types/react-router": "3.0.13",
+    "@types/react-select": "1.0.57",
     "bootstrap-sass": "3.4.0",
+    "formsy-react": "1.1.5",
+    "formsy-react-components": "1.0.0",
     "history": "4.7.2",
-    "normalizr": "3.3.0"
+    "normalizr": "3.3.0",
+    "prop-types": "15.7.2",
+    "react-router": "3.2.1",
+    "react-select": "1.0.0-rc.10"
   },
   "devDependencies": {
     "xhr-mock": "2.4.1"
@@ -49,7 +64,9 @@
   },
   "jest": {
     "globals": {
-      "LABKEY": {}
+      "LABKEY": {
+        "contextPath": "/labkey"
+      }
     },
     "moduleFileExtensions": [
       "ts",
@@ -69,5 +86,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
 }

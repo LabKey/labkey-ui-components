@@ -3,7 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { Filter } from '@labkey/api';
-import { AppURL, buildURL } from './ActionURL'
+import { buildURL } from './ActionURL'
+import { AppURL } from './AppURL'
 
 describe('AppURL', () => {
 

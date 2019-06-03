@@ -6,7 +6,7 @@ import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey, intersect, toLowerSafe } from '../utils/utils'
+import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -129,6 +129,13 @@ export class User extends Record(defaultUser) implements IUserProps {
     }
 }
 
+export interface IParsedSelectionKey {
+    keys: string
+    schemaQuery: SchemaQuery
+}
+
+const APP_SELECTION_PREFIX = 'appkey';
+
 export class SchemaQuery extends Record({
     schemaName: undefined,
     queryName: undefined,
@@ -173,6 +180,23 @@ export class SchemaQuery extends Record({
         }
 
         return false;
+    }
+
+    static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
+        const [ appkey /* not used */, schemaQueryKey, keys ] = selectionKey.split('|');
+
+        return {
+            keys,
+            schemaQuery: getSchemaQuery(schemaQueryKey)
+        };
+    }
+
+    static createAppSelectionKey(targetSQ: SchemaQuery, keys: Array<any>): string {
+        return [
+            APP_SELECTION_PREFIX,
+            resolveSchemaQuery(targetSQ),
+            keys.join(';')
+        ].join('|');
     }
 }
 
@@ -539,6 +563,11 @@ export class QueryGridModel extends Record({
         return undefined;
     }
 
+    isRequiredColumn(fieldKey: string): boolean {
+        const column = this.getColumn(fieldKey);
+        return column ? column.required : false;
+    }
+
     /**
      * Returns the set of display columns for this QueryGridModel based on its configuration.
      * @returns {List<QueryColumn>}
@@ -556,6 +585,14 @@ export class QueryGridModel extends Record({
         }
 
         return emptyColumns;
+    }
+
+    getColumnIndex(fieldKey: string): number {
+        if (!fieldKey)
+            return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.queryInfo.columns.keySeq().findIndex((column) => (column.toLowerCase() === lcFieldKey));
     }
 
     getAllColumns(): List<QueryColumn> {
@@ -607,6 +644,15 @@ export class QueryGridModel extends Record({
 
     getId(): string {
         return this.id;
+    }
+
+    getInsertColumnIndex(fieldKey) : number {
+        if (!fieldKey)
+            return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.getInsertColumns()
+            .findIndex((column) => (column.fieldKey.toLowerCase() === lcFieldKey));
     }
 
     getInsertColumns(): List<QueryColumn> {
@@ -851,6 +897,30 @@ export class QueryInfo extends Record({
         }));
     }
 
+    /**
+     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object
+     * and columns map from a JSON object.
+     *
+     * @param queryInfoJson
+     */
+    static fromJSON(queryInfoJson: any) : QueryInfo {
+        let schemaQuery: SchemaQuery;
+
+        if (queryInfoJson.schemaName && queryInfoJson.name) {
+            schemaQuery = SchemaQuery.create(queryInfoJson.schemaName, queryInfoJson.name);
+        }
+        let columns = OrderedMap<string, QueryColumn>();
+        Object.keys(queryInfoJson.columns).forEach((columnKey) => {
+            let rawColumn = queryInfoJson.columns[columnKey];
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn))
+        });
+
+        return QueryInfo.create(Object.assign({}, queryInfoJson, {
+            columns,
+            schemaQuery
+        }))
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -865,6 +935,11 @@ export class QueryInfo extends Record({
         }
 
         return undefined;
+    }
+
+    isRequiredColumn(fieldKey: string): boolean {
+        const column = this.getColumn(fieldKey);
+        return column ? column.required : false;
     }
 
     getDisplayColumns(view?: string): List<QueryColumn> {
@@ -960,6 +1035,36 @@ export class QueryInfo extends Record({
         }
 
         return this.views.get(_view);
+    }
+
+    /**
+     * Insert a set of columns into this queryInfo's columns at a designated index.  If the given column index
+     * is outside the range of the existing columns, this queryInfo's columns will be returned.  An index that is equal to the
+     * current number of columns will cause the given queryColumns to be appended to the existing ones.
+     * @param colIndex the index at which the new columns should start
+     * @param queryColumns the (ordered) set of columns
+     * @returns a new set of columns when the given columns inserted
+     */
+    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : OrderedMap<string, QueryColumn> {
+        if (colIndex < 0 || colIndex > this.columns.size)
+            return this.columns;
+
+        // put them at the end
+        if (colIndex === this.columns.size)
+            return this.columns.merge(queryColumns);
+
+        let columns = OrderedMap<string, QueryColumn>();
+        let index = 0;
+
+        this.columns.forEach((column, key) => {
+            if (index === colIndex) {
+                columns = columns.merge(queryColumns);
+                index = index + queryColumns.size;
+            }
+            columns = columns.set(key, column);
+            index++;
+        });
+        return columns;
     }
 }
 
@@ -1152,4 +1257,54 @@ export function insertColumnFilter(col: QueryColumn): boolean {
         col.userEditable === true &&
         col.fieldKeyArray.length === 1
     );
+}
+
+export class AssayProtocolModel extends Record({
+    allowTransformationScript: false,
+    autoCopyTargetContainer: undefined,
+    availableDetectionMethods: undefined,
+    availableMetadataInputFormats: undefined,
+    availablePlateTemplates: undefined,
+    backgroundUpload: false,
+    description: undefined,
+    // domains: undefined,
+    editableResults: false,
+    editableRuns: false,
+    metadataInputFormatHelp: undefined,
+    moduleTransformScripts: undefined,
+    name: undefined,
+    protocolId: undefined,
+    protocolParameters: undefined,
+    protocolTransformScripts: undefined,
+    providerName: undefined,
+    saveScriptFiles: false,
+    selectedDetectionMethod: undefined,
+    selectedMetadataInputFormat: undefined,
+    selectedPlateTemplate: undefined
+}) {
+    allowTransformationScript: boolean;
+    autoCopyTargetContainer: string;
+    availableDetectionMethods: any;
+    availableMetadataInputFormats: any;
+    availablePlateTemplates: any;
+    backgroundUpload: boolean;
+    description: string;
+    // domains: any;
+    editableResults: boolean;
+    editableRuns: boolean;
+    metadataInputFormatHelp: any;
+    moduleTransformScripts: Array<any>;
+    name: string;
+    protocolId: number;
+    protocolParameters: any;
+    protocolTransformScripts: any;
+    providerName: string;
+    saveScriptFiles: boolean;
+    selectedDetectionMethod: any;
+    selectedMetadataInputFormat: any;
+    selectedPlateTemplate: any;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
 }

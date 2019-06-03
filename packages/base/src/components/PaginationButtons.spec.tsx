@@ -11,10 +11,6 @@ const prevSelector = '.pagination-buttons__prev';
 const nextSelector = '.pagination-buttons__next';
 
 describe("<PaginationButtons />", () => {
-    test("Render without properties", () => {
-        const tree = renderer.create(<PaginationButtons />).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
 
     test("Render with properties", () => {
         const tree = renderer.create((

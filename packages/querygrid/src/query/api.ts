@@ -2,10 +2,10 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { fromJS, List, Map, OrderedMap } from 'immutable'
+import { fromJS, List, Map, OrderedMap, Record } from 'immutable'
 import { normalize, schema } from 'normalizr'
 import { Query, Filter } from '@labkey/api'
-import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery } from '@glass/base'
+import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery, caseInsensitive } from '@glass/base'
 
 import { URLResolver } from '../util/URLResolver'
 import { getQueryMetadata } from '../global'
@@ -72,11 +72,10 @@ function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
 
         const schemaQuery = SchemaQuery.create(rawQueryInfo.schemaName, rawQueryInfo.name);
 
-        let columns = OrderedMap<string, QueryColumn>().asMutable();
+        let columns = OrderedMap<string, QueryColumn>();
         rawQueryInfo.columns.forEach((rawColumn) => {
-            columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn))
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), applyColumnMetadata(schemaQuery, rawColumn))
         });
-        columns = columns.asImmutable();
 
         let schemaMeta = metadata.getIn([
             'schema', rawQueryInfo.schemaName.toLowerCase(),
@@ -517,4 +516,124 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
             resolve(finalResults);
         });
     });
+}
+
+interface ErrorMessage {
+    //msg: string // Duplicate
+    message: string
+}
+
+interface InsertRowError {
+    errors: Array<ErrorMessage>
+}
+
+export class InsertRowsErrorResponse extends Record ({
+    errors: undefined,
+    errorCount: 0,
+    exception: undefined,
+    extraContext: undefined,
+    success: false
+}) {
+
+    errors: Array<InsertRowError>;
+    errorCount: number;
+    exception: string;
+    extraContext: any;
+    success: boolean;
+
+    getErrorMessage() {
+        return this.exception; // TODO make this more user friendly by including row number and excluding techincal details
+    }
+}
+
+export interface InsertRowsOptions {
+    fillEmptyFields?: boolean
+    rows: List<any>
+    schemaQuery: SchemaQuery
+}
+
+export class InsertRowsResponse extends Record({
+    rows: Array<any>(),
+    schemaQuery: undefined,
+    error: undefined
+}){
+    rows: Array<any>;
+    schemaQuery: SchemaQuery;
+    error: InsertRowsErrorResponse;
+
+    getFilter(): Filter.IFilter {
+        const rowIds = [];
+
+        // insertRows returns properties with differing case
+        this.rows.map(row => caseInsensitive(row, 'rowId')).forEach(rowId => {
+            if (rowId !== undefined) {
+                rowIds.push(rowId);
+            }
+        });
+
+        return Filter.create('RowId', rowIds, Filter.Types.IN);
+    }
+}
+
+export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
+    return new Promise((resolve, reject) => {
+        const { fillEmptyFields, rows, schemaQuery } = options;
+
+        Query.insertRows({
+            schemaName: schemaQuery.schemaName,
+            queryName: schemaQuery.queryName,
+            rows: fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows,
+            apiVersion: 13.2,
+            success: (response) => {
+                resolve(new InsertRowsResponse( {
+                    schemaQuery,
+                    rows: response.rows
+                }));
+            },
+            failure: (error) => {
+                reject(new InsertRowsResponse({
+                    schemaQuery,
+                    error
+                }));
+            }
+        });
+    });
+}
+
+// Ensures that the List of row objects are fully (as opposed to sparsely) populated. This avoids the server
+// failing to map columns on sparsely populated data sets.
+// As an example:
+//
+// [
+//     {},
+//     {"columnA": "AA"},
+//     {"columnD": "DD"}
+// ]
+//
+// becomes:
+//
+// [
+//     {"columnA": null, "columnD": null},
+//     {"columnA": "AA", "columnD": null},
+//     {"columnA": null, "columnD": "DD"}
+// ]
+function ensureAllFieldsInAllRows(rows: List<any>): List<any> {
+    let masterRecord = Map<string, any>().asMutable();
+
+    rows.forEach((row) => {
+        row.keySeq().forEach((key) => {
+            masterRecord.set(key, null);
+        });
+    });
+
+    masterRecord = masterRecord.asImmutable();
+
+    return rows.reduce((allFieldRows, row) => (
+        allFieldRows.push(ensureNullForUndefined(masterRecord.merge(row)))
+    ), List<Map<string, any>>());
+}
+
+// undefined is not a valid JSON value so the values must be mapped to null.
+function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
+    return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }

@@ -7,7 +7,7 @@ import { List, Map } from 'immutable'
 import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
-import { DataViewInfo, EditorModel, LookupStore } from './model'
+import { DataViewInfo, EditorModel, LookupStore } from './models'
 
 /**
  * Initialize the global state object for this package.
@@ -107,7 +107,8 @@ export function updateQueryGridModel(model: QueryGridModel, updates: any, connec
  */
 export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component) {
     setGlobal({
-        QueryGrid_models: getGlobalState('models').delete(model.getId())
+        QueryGrid_models: getGlobalState('models').delete(model.getId()),
+        QueryGrid_editors: getGlobalState('editors').delete(model.getId())
     },
 
     (global) => {
@@ -183,7 +184,7 @@ function getSelectedState(
     if (
         maxRows === selectedOnPage ||
         totalRows === totalSelected && totalRows !== 0 ||
-        selectedOnPage === dataIds.size && selectedOnPage > 0
+        selectedOnPage === totalSelected && selectedOnPage === dataIds.size && selectedOnPage > 0
     ) {
         return GRID_CHECKBOX_OPTIONS.ALL;
     }

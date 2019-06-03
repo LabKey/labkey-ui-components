@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/// <reference types="@glass/base/dist/typings/react-bootstrap" />
+
 /**
  * This is maintained to give an idea of what "LABKEY" context the app utilizes. It is not meant
  * strictly for typing information and some objects are wrapped/consumed by the app with a more appropriate

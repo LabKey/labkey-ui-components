@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Include FilePreviewGrid functionality with FileAttachmentForm
+
 ### version 0.2.0
 *Released*: 22 May 2019
 * PaginationButtons component and PaginationButtonsProps

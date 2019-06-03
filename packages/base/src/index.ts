@@ -69,6 +69,7 @@ import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
 import { datePlaceholder } from './utils/Date';
+import { ConfirmModal } from './components/ConfirmModal'
 import {
     MessageFunction,
     NotificationItemModel,
@@ -149,6 +150,7 @@ export {
     PaginationButtonsProps,
     FormSection,
     FileAttachmentForm,
+    ConfirmModal,
 
     // actions
     fetchProtocol,

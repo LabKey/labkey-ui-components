@@ -8,6 +8,10 @@ Application navigation elements and functions
 *Released*: ???
 * Update package for changes to @glass/base
 
+### version 0.1.10
+*Released*: 03 June 2019
+* Package patch update for changes to @glass/base v0.3.0
+
 ### version 0.1.9
 *Released*: 22 May 2019
 * Package patch update for changes to @glass/base v0.2.0

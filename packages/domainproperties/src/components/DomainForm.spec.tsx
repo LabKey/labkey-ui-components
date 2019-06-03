@@ -21,18 +21,20 @@ import {
 } from "../constants";
 import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
+import toJson from "enzyme-to-json";
 
 
 describe('DomainFormDisplay', () => {
 
     test('with empty domain form', () => {
         const domain = new DomainDesign();
-        const tree  = renderer.create(<DomainForm
+        const form  = mount(<DomainForm
             domain={domain}
             onChange={jest.fn()}
-        />).toJSON();
+        />);
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form with no fields', () => {
@@ -44,12 +46,13 @@ describe('DomainFormDisplay', () => {
             fields: List<DomainField>(),
             indices: List<DomainIndex>()
         });
-        const tree  = renderer.create(<DomainForm
+        const form  = mount(<DomainForm
             domain={domain}
             onChange={jest.fn()}
-        />).toJSON();
+        />);
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form with all field types', () => {
@@ -136,12 +139,13 @@ describe('DomainFormDisplay', () => {
             fields: fields,
             indices: List<DomainIndex>()
         });
-        const tree  = renderer.create(<DomainForm
+        const form  = mount(<DomainForm
             domain={domain}
             onChange={jest.fn()}
-        />).toJSON();
+        />);
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form with updated fields', () => {
@@ -192,8 +196,7 @@ describe('DomainFormDisplay', () => {
 
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
 
-        const tree  = renderer.create(form).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
@@ -223,8 +226,7 @@ describe('DomainFormDisplay', () => {
 
         const form = mount(<DomainForm domain={domain} key='domainForm' onChange={jest.fn()} />);
 
-        const tree  = renderer.create(form).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 

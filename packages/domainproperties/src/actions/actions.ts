@@ -4,12 +4,7 @@
  */
 import {Domain} from "@labkey/api";
 import {List} from "immutable";
-import {
-    DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_PREFIX,
-    DOMAIN_FIELD_REQ,
-    DOMAIN_FIELD_TYPE
-} from "../constants";
+import {DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE} from "../constants";
 import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES} from "../models";
 
 /**
@@ -36,20 +31,38 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 
 /**
  * @param domain: DomainDesign to save
+ * @param kind: DomainKind if creating new Domain
+ * @param options: Options for creating new Domain
+ * @param name: Name of new Domain
  * @return Promise wrapped Domain API call.
  */
-export function saveDomain(domain: DomainDesign) : Promise<boolean> {
+export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        Domain.save({
-            domainDesign: domain,
-            domainId: domain.domainId,
-            success: (data) => {
-                resolve(data.success);
-            },
-            failure: (error) => {
-                reject(error);
-            }
-        })
+        if (domain.domainId) {
+            Domain.save({
+                domainDesign: domain,
+                domainId: domain.domainId,
+                success: (success) => {
+                    resolve(domain);
+                },
+                failure: (error) => {
+                    reject(error);
+                }
+            })
+        }
+        else {
+            Domain.create({
+                kind,
+                options,
+                domainDesign: domain.set('name', name),
+                success: (data) => {
+                    resolve(DomainDesign.create(data));
+                },
+                failure: (error) => {
+                    reject(error);
+                }
+            })
+        }
     })
 }
 
@@ -67,7 +80,7 @@ function getNameFromId(id: string) : string {
     }
 }
 
-function getIndexFromId(id: string): string {
+export function getIndexFromId(id: string): string {
     const parts = id.split('-');
     if (parts.length === 3) {
         return parts[2];
@@ -86,19 +99,15 @@ function getIndexFromId(id: string): string {
  */
 export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
     const type = getNameFromId(fieldId);
-    const index = getIndexFromId(fieldId);
+    const index = parseInt(getIndexFromId(fieldId));
 
     const newFields = domain.fields.map((field, i) => {
 
         let newField;
-        if (i.toString() === index) {
+        if (i === index) {
             newField = field.set('updatedField', true); // Set for field details in DomainRow
-            newField = newField.set('renderUpdate', true); // Set for render optimization in DomainRow
 
             switch (type) {
-                case DOMAIN_FIELD_NAME:
-                    newField = newField.set('name', value);
-                    break;
                 case DOMAIN_FIELD_TYPE:
                     PROP_DESC_TYPES.map((type) => {
                         if (type.name === value) {
@@ -107,13 +116,13 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
                         }
                     });
                     break;
-                case DOMAIN_FIELD_REQ:
-                    newField = newField.set('required', value);
+                default:
+                    newField = newField.set(type, value);
                     break;
             }
         }
         else {
-            newField = field.set('renderUpdate', false); // Do not re-render
+            newField = field;
         }
 
         return newField;

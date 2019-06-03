@@ -27,6 +27,7 @@ declare module "react-bootstrap" {
         navItem?: boolean;
         navDropdown?: boolean;
         onClick?: any;
+        id?: string;
 
         /**
          * You can use a custom element for this component
@@ -43,7 +44,6 @@ declare module "react-bootstrap" {
          * Defines HTML button type Attribute
          */
         type?: string;
-
         onMouseOver?: any
         onMouseOut?: any
     }
@@ -500,9 +500,11 @@ declare module "react-bootstrap" {
 
         expanded?: boolean;
 
-        id?: string | number
+        id?: string | number;
 
         onToggle?: Function;
+
+        className?: string;
     }
 
     export class Panel extends React.Component<PanelProps> {

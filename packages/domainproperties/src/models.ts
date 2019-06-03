@@ -141,6 +141,8 @@ interface IDomainField {
     lookupSchema?: string
     lookupQuery?: string
     scale?: number
+    importAliases?: string
+    URL?: string
     hidden?: boolean
     userEditable?: boolean
     shownInInsertView?: boolean
@@ -148,7 +150,6 @@ interface IDomainField {
 
     updatedField?: boolean
     newField?: boolean
-    renderUpdate?: boolean
 }
 
 export class DomainField extends Record({
@@ -164,10 +165,10 @@ export class DomainField extends Record({
     lookupSchema: undefined,
     lookupQuery: undefined,
     scale: undefined,
-
+    importAliases: undefined,
+    URL: undefined,
     updatedField: undefined,
     newField: undefined,
-    renderUpdate: undefined
 }) implements IDomainField {
     propertyId: number;
     propertyURI: string;
@@ -181,10 +182,10 @@ export class DomainField extends Record({
     lookupSchema: string;
     lookupQuery: string;
     scale: number;
-
+    importAliases: string;
+    URL: string;
     updatedField: boolean;
     newField: boolean;
-    renderUpdate: boolean;
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();

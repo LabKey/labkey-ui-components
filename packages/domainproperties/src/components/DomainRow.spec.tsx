@@ -3,6 +3,7 @@ import * as React from "react";
 import renderer from 'react-test-renderer'
 import {DomainField} from "../models";
 import {DomainRow} from "./DomainRow";
+import { mount } from "enzyme"
 import {
     ATTACHMENT_RANGE_URI,
     DATETIME_RANGE_URI,
@@ -10,18 +11,45 @@ import {
     PARTICIPANTID_CONCEPT_URI,
     STRING_RANGE_URI
 } from "../constants";
+import {DragDropContext, Droppable} from "react-beautiful-dnd";
+import toJson from "enzyme-to-json";
+
+const wrapDraggable = (element) => {
+    return (
+        <DragDropContext onDragEnd={jest.fn()}>
+            <Droppable droppableId='domain-form-droppable'>
+                {(provided) => (
+                    <div ref={provided.innerRef}
+                        {...provided.droppableProps}
+                    >
+                        {element}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        </DragDropContext>
+    )
+
+}
 
 describe('DomainRowDisplay', () => {
 
     test('with empty domain form', () => {
         const field = new DomainField();
-        const tree  = renderer.create(<DomainRow
-            index={1}
-            field={field}
-            onChange={jest.fn()}
-        />).toJSON();
+        const tree = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(tree)).toMatchSnapshot();
+        tree.unmount();
     });
 
     test('string field', () => {
@@ -32,13 +60,20 @@ describe('DomainRowDisplay', () => {
             propertyURI: 'test'
         });
 
-        const tree  = renderer.create(<DomainRow
-            index={1}
-            field={field}
-            onChange={jest.fn()}
-        />).toJSON();
+        const tree = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(tree)).toMatchSnapshot();
+        tree.unmount();
     });
 
     test('decimal field', () => {
@@ -49,13 +84,20 @@ describe('DomainRowDisplay', () => {
             propertyURI: 'test'
         });
 
-        const tree  = renderer.create(<DomainRow
-            index={1}
-            field={field}
-            onChange={jest.fn()}
-        />).toJSON();
+        const tree = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(tree)).toMatchSnapshot();
+        tree.unmount();
     });
 
     test('date time field', () => {
@@ -66,13 +108,20 @@ describe('DomainRowDisplay', () => {
             propertyURI: 'test'
         });
 
-        const tree  = renderer.create(<DomainRow
-            index={1}
-            field={field}
-            onChange={jest.fn()}
-        />).toJSON();
+        const tree = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(tree)).toMatchSnapshot();
+        tree.unmount();
     });
 
     test('participant id field', () => {
@@ -84,13 +133,20 @@ describe('DomainRowDisplay', () => {
             propertyURI: 'test'
         });
 
-        const tree  = renderer.create(<DomainRow
-            index={1}
-            field={field}
-            onChange={jest.fn()}
-        />).toJSON();
+        const tree = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(tree)).toMatchSnapshot();
+        tree.unmount();
     });
 
     test('attachment field', () => {
@@ -101,12 +157,19 @@ describe('DomainRowDisplay', () => {
             propertyURI: 'test'
         });
 
-        const tree  = renderer.create(<DomainRow
-            index={1}
-            field={field}
-            onChange={jest.fn()}
-        />).toJSON();
+        const tree = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
 
-        expect(tree).toMatchSnapshot();
+        expect(toJson(tree)).toMatchSnapshot();
+        tree.unmount();
     })
 });

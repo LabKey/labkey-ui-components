@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.4.0
+*Released*: 03 June 2019
 * Port QueryFormInputs and the various input fields from Biologics
 * Port QuerySelect, SelectInput and related actions/models from Biologics
 * Add optional remove parameter to the gridInvalidate methods

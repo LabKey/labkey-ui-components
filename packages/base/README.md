@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-## version ???
-*Released*: ???
+## version 0.4.0
+*Released*: 03 June 2019
 * port caseInsensitive, similaritySortFactory, spliceURL, and fetchProtocol functions from Biologics
 * port AssayProtocolModel model from Biologics
 * export datePlaceholder function

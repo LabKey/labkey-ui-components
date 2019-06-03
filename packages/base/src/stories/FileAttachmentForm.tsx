@@ -6,10 +6,27 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import mock, { proxy } from "xhr-mock";
 
-import { FileAttachmentForm } from "../components/FileAttachmentForm";
+import { FileAttachmentForm } from "../components/files/FileAttachmentForm";
+import assayDataJson from "../test/data/assay-assayFileUpload.json";
+import showFileJson from "../test/data/experiment-showFile.json";
+
 
 import './stories.css'
+
+mock.setup();
+mock.post(/.*\/assay\/assayFileUpload.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(assayDataJson)
+});
+mock.get(/.*\/experiment\/showFile.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(showFileJson)
+});
+mock.use(proxy);
 
 storiesOf("FileAttachmentForm", module)
     .addDecorator(withKnobs)
@@ -26,6 +43,8 @@ storiesOf("FileAttachmentForm", module)
                 showButtons={boolean("Show buttons?", true)}
                 cancelText={text("Cancel button text", "Cancel")}
                 submitText={text("Submit button text", "Upload")}
+                showPreviewGrid={boolean("Show file preview grid", false)}
+                previewRowCount={number("Preview grid row count", 3)}
             />
         )
     });

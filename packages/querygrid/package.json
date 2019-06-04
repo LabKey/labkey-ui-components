@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.4.0-fb-package-updates.4",
+  "version": "0.4.0-fb-package-updates.5",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.3.0-fb-package-updates.3",
-    "@glass/omnibox": "0.1.12-fb-package-updates.3",
+    "@glass/base": "0.3.0-fb-package-updates.4",
+    "@glass/omnibox": "0.1.12-fb-package-updates.4",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.9.0",

@@ -8,9 +8,14 @@ import {GridColumn} from "@glass/base";
 export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
 export const DOMAIN_FIELD_NAME = 'name';
 export const DOMAIN_FIELD_TYPE = 'type';
-export const DOMAIN_FIELD_REQ = 'req';
+export const DOMAIN_FIELD_REQUIRED = 'required';
 export const DOMAIN_FIELD_DETAILS = 'details';
 export const DOMAIN_FIELD_ADV = 'adv';
+export const DOMAIN_FIELD_DELETE = 'delete';
+export const DOMAIN_FIELD_DESCRIPTION = 'description';
+export const DOMAIN_FIELD_LABEL = 'label';
+export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
+export const DOMAIN_FIELD_URL = 'URL';
 
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';

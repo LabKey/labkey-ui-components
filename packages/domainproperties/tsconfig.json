@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [
-    "src/index.ts"
+    "src/index.ts",
+    "../base/src/typings/react-bootstrap.d.ts"
   ]
 }

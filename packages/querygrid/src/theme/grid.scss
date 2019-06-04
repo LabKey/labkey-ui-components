@@ -139,8 +139,9 @@
 }
 
 .editable-grid__container {
-  display: inline-block;
+  display: block;
   padding-right: 15px;
+  overflow: auto;
 }
 
 .editable-grid__bulk-header {
@@ -209,6 +210,11 @@ $table-cell-selection-bg-color: #EDF3FF;
       padding: 2px 1px 2px 2px;
       height: 24px;
       white-space: nowrap;
+
+      &.size-limited {
+        max-width: 200px;
+        text-overflow: ellipsis;
+      }
 
       &.cell-selection {
         border: $table-cell-border-width solid $table-cell-selection-bg-color;

@@ -236,6 +236,7 @@ export class Cell extends React.Component<Props, any> {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
                     'cell-selected': selected,
+                    'size-limited': col.isLookup(),
                     'cell-selection': this.selection(),
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),

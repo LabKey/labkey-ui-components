@@ -2,7 +2,7 @@ import React from 'reactn';
 
 import { Button, Form, Panel } from 'react-bootstrap';
 
-import { Map, OrderedMap } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 
 import {
     AddEntityButton,
@@ -270,7 +270,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     getParentColumns() : OrderedMap<string, QueryColumn> {
 
         const { insertModel } = this.state;
-
         let columns = OrderedMap<string, QueryColumn>();
         insertModel.sampleParents.forEach((parent) => {
             if (parent.schema && parent.query) {
@@ -296,11 +295,17 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
     changeTargetSampleSet(fieldName: string, formValue: any, selectedOption: ISampleSetOption): void {
         const { insertModel } = this.state;
-        const updatedModel = insertModel.merge({
+
+        let updatedModel = insertModel.merge({
             targetSampleSet: new SampleSetOption(selectedOption),
             isError: false,
             errors: undefined
         }) as SampleIdCreationModel;
+        if (!selectedOption) {
+            updatedModel = updatedModel.merge({
+                sampleParents: List<SampleSetParentType>()
+            }) as SampleIdCreationModel;
+        }
 
         this.setState(() => {
             return {
@@ -308,6 +313,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 insertModel: updatedModel
             }
         }, () => {
+            if (!selectedOption) {
+                queryGridInvalidate(insertModel.getSchemaQuery(), true);
+            }
             this.gridInit(updatedModel);
         });
     }
@@ -420,7 +428,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const { insertModel } = this.state;
 
         if (insertModel) {
-            const {isInit, targetSampleSet, sampleParents} = insertModel;
+            const {isInit, targetSampleSet, parentOptions, sampleParents} = insertModel;
 
             if (isInit && targetSampleSet) {
                 return (
@@ -448,11 +456,16 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                 </div>
                             )
                         }).toArray()}
-                        <div className="col-sm-12">
-                            <AddEntityButton
-                                entity="Parent"
-                                onClick={this.addParent}/>
-                        </div>
+                        {parentOptions.size > sampleParents.size ?
+                            <div className="col-sm-12">
+                                <AddEntityButton
+                                    entity="Parent"
+                                    onClick={this.addParent}/>
+                            </div> :
+                            <div className="bottom-spacing">
+                                Only {parentOptions.size} parent {parentOptions.size === 1 ? 'sample set' : 'sample sets'} available.
+                            </div>
+                        }
                     </>
                 );
             }
@@ -655,8 +668,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             header: "Choose parents, etc.",
         };
         let addControlProps = {
-            nounSingular: "sample",
-            nounPlural: "samples"
+            nounSingular: "row",
+            nounPlural: "rows"
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {

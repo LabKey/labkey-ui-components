@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.3.0-fb-sample-details.4",
+  "version": "0.4.0",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -22,7 +22,7 @@
     "watch:build": "watch 'yarn build' ./src",
     "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
     "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
-    "watch": "npm run watch"
+    "watch": "npm run watch:build"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.4.0-fb-sample-details.6",
+  "version": "0.4.0",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -22,7 +22,7 @@
     "watch:build": "watch 'yarn build' ./src",
     "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
     "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
-    "watch": "npm run watch"
+    "watch": "npm run watch:build"
   },
   "repository": {
     "type": "git",
@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.3.0-fb-sample-details.4",
-    "@glass/omnibox": "0.1.12-fb-sample-details.4",
+    "@glass/base": "0.4.0",
+    "@glass/omnibox": "0.1.13",
     "@types/prop-types": "15.5.5",
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",

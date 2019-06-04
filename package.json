@@ -6,10 +6,6 @@
     "clean:docs": "rimraf docs",
     "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
   },
-  "dependencies": {
-    "@labkey/dependencies": "0.0.5-fb-package-updates.1",
-    "classnames": "2.2.6"
-  },
   "devDependencies": {
     "@types/enzyme": "3.9.3",
     "@types/jest": "24.0.13",

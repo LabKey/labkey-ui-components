@@ -50,7 +50,7 @@ import {
 } from './utils/utils'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 import { AddEntityButton } from "./components/buttons/AddEntityButton"
-import { RemoveEntityButton } from "./components/RemoveEntityButton"
+import { RemoveEntityButton } from "./components/buttons/RemoveEntityButton"
 import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'

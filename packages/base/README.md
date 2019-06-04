@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-## version ???
-*Released*: ???
+## version 0.5.0
+*Released*: 04 June 2019
 * port SVGIcon and CreatedModified from Biologics
 * port AssayDefinitionModel and fetchAllAssays from Biologics
 * ManageDropdownButton and SelectionMenuItem

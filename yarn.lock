@@ -1263,12 +1263,13 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.16.tgz#d79f0a4fc0a5bb5a4cf1fefcda3e377d39cff29e"
   integrity sha1-158KT8Clu1pM8f782j43fTnP8p4=
 
-"@labkey/dependencies@0.0.5-fb-package-updates.2":
-  version "0.0.5-fb-package-updates.2"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.5-fb-package-updates.2.tgz#9220dfc0c03e954c890addf8f31447115bba37af"
-  integrity sha1-kiDfwMA+lUyJCt348xRHEVu6N68=
+"@labkey/dependencies@0.0.5-fb-package-updates.3":
+  version "0.0.5-fb-package-updates.3"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.5-fb-package-updates.3.tgz#4d770a720092825f52303953bb748f8b5c0da72c"
+  integrity sha1-TXcKcgCSgl9SMDlTu3SPi1wNpyw=
   dependencies:
     "@labkey/api" "0.0.16"
+    "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"
     "@types/react-dom" "16.8.4"
@@ -2486,6 +2487,11 @@
   integrity sha512-x0X3kPbholdJZng9wDMhb2swvUi3UYRNAuWAmIPIWlfgAJZp//cql/qblE7181Mg7SjWVwq6ldCPCLn5AY/e7w==
   dependencies:
     "@types/node" "*"
+
+"@types/classnames@2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.8.tgz#17139e1e1104203572caa4368f6796f6225b70b4"
+  integrity sha512-3UrLzPnz8u+MMXuJTF++389IfLSQUbl5F3ry9WCxva0BKG5H/oo5NuPRXk+HrpPU1+5pVHSWhnVWRzIaFQ7QuQ==
 
 "@types/enzyme@3.9.3":
   version "3.9.3"

@@ -2,10 +2,8 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { EditorModel, getStateQueryGridModel } from './models'
+import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models'
 import {
-    addColumns,
-    changeColumn,
     getSelected,
     gridIdInvalidate,
     gridInit,
@@ -13,8 +11,11 @@ import {
     gridRefresh,
     gridShowError,
     queryGridInvalidate,
+    schemaGridInvalidate,
+    addColumns,
+    changeColumn,
     removeColumn,
-    schemaGridInvalidate
+    searchUsingIndex
 } from './actions'
 import {
     getEditorModel,
@@ -26,24 +27,19 @@ import {
 } from './global'
 import {
     getQueryDetails,
-    insertRows,
-    InsertRowsResponse,
     invalidateQueryDetailsCacheKey,
+    InsertRowsResponse,
     ISelectRowsResult,
+    insertRows,
     searchRows,
-    selectRows
+    selectRows,
+    updateRows,
+    deleteRows
 } from './query/api'
-import { SCHEMAS } from './query/schemas'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import {
-    AssayResolver,
-    AssayRunResolver,
-    ListResolver,
-    SampleSetResolver,
-    SamplesResolver
-} from './util/AppURLResolver'
+import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -54,18 +50,23 @@ import { FileColumnRenderer } from './renderers/FileColumnRenderer'
 import { MultiValueRenderer } from './renderers/MultiValueRenderer'
 import { QueryInfoForm } from './components/forms/QueryInfoForm'
 import { LabelOverlay } from './components/forms/LabelOverlay'
-import { SelectInput } from './components/forms/SelectInput'
+import { SelectInput } from './components/forms/input/SelectInput'
 import { QuerySelect } from './components/forms/QuerySelect'
+import { PageDetailHeader } from './components/forms/PageDetailHeader'
+import { DetailEditing } from './components/forms/detail/DetailEditing'
+import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
+import { Detail } from './components/forms/detail/Detail'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
+import { HeatMap } from './components/heatmap/HeatMap'
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
+import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
+import { SearchResultCard } from './components/search/SearchResultCard'
+import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 
 export {
-    // constants
-    SCHEMAS,
-
     // global state functions
     initQueryGridState,
     getStateQueryGridModel,
@@ -91,6 +92,8 @@ export {
     insertRows,
     selectRows,
     searchRows,
+    updateRows,
+    deleteRows,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
 
@@ -119,6 +122,7 @@ export {
     DefaultRenderer,
     FileColumnRenderer,
     MultiValueRenderer,
+    resolveDetailRenderer,
 
     // components
     LabelOverlay,
@@ -127,8 +131,12 @@ export {
     QueryInfoForm,
     SelectInput,
     QuerySelect,
+    PageDetailHeader,
+    DetailEditing,
+    Detail,
     SchemaListing,
     QueriesListing,
+    HeatMap,
 
     // interfaces
     EditableColumnMetadata,
@@ -138,6 +146,13 @@ export {
     ReactSelectOption,
     EditorModel,
 
-    // samples-relaed
-    SampleInsertPanel
+    // samples-related
+    SampleInsertPanel,
+    SampleDeleteConfirmModal,
+
+    // search-related
+    SearchResultsModel,
+    SearchResultCard,
+    SearchResultsPanel,
+    searchUsingIndex
 }

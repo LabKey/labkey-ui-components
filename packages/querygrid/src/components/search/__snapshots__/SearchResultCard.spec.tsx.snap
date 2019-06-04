@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchResultCard/> default props 1`] = `
+<a
+  href="#card"
+>
+  <div
+    className="row search-result__card-container"
+  >
+    <div
+      className="col-md-2 hidden-sm hidden-xs search-result__card-icon__container"
+    >
+      <img
+        alt="-icon"
+        className="search-result__card-icon"
+        height="100%"
+        src="/labkey/_images/default.svg"
+        width="100%"
+      />
+    </div>
+    <div
+      className="col-md-10 col-sm-12"
+    >
+      <div>
+        <h4
+          className="text-capitalize"
+        >
+          Card Title
+        </h4>
+      </div>
+      <div
+        title="Card Summary"
+      >
+        <strong>
+          Summary: 
+        </strong>
+         
+        Card Summary
+      </div>
+    </div>
+  </div>
+</a>
+`;

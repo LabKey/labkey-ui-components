@@ -29,6 +29,7 @@ import {
     KEYS,
     LOOKUP_DEFAULT_SIZE,
     MODIFICATION_TYPES,
+    RELEVANT_SEARCH_RESULT_TYPES,
     SELECTION_TYPES
 } from "./constants";
 import { cancelEvent, getPasteValue, setCopyValue } from './events'
@@ -40,6 +41,7 @@ import {
     EditorModel,
     EditorModelProps,
     LookupStore,
+    SearchIdData,
     ValueDescriptor,
     VisualizationConfigModel
 } from './models'
@@ -58,15 +60,18 @@ import {
     updateSelections
 } from './global'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
+import { URLResolver } from "./util/URLResolver";
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
 export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
-    if (!model || model.isLoaded || model.isLoading) {
+    // return quickly if we don't have a model or if it is already loading
+    if (!model || model.isLoading) {
         return;
     }
 
+    // call to updateQueryGridModel to make sure this model is in the global state, if it wasn't already
     let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
 
     if (!newModel.isLoaded) {
@@ -258,18 +263,28 @@ export function gridIdInvalidate(gridId: string, remove: boolean = false) {
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
-    if (remove) {
-        removeQueryGridModel(model);
-    }
-    else {
-        gridInvalidate(model);
-    }
+    clearSelected(model.getId()).then(() => {
+        if (remove) {
+            removeQueryGridModel(model);
+        } else {
+            gridInvalidate(model);
+        }
+    });
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
+    // if the model doesn't exist in the global state, no need to invalidate it
+    if (!getQueryGridModel(model.getId())) {
+        return;
+    }
+
     const newModel = updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
+        selectedIds: List<string>(),
+        selectedQuantity: 0,
+        selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+        selectedLoaded: false,
         isError: false,
         isLoaded: false,
         isLoading: false,
@@ -2176,4 +2191,52 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
     removeRows(model, List<number>([rowIdx]));
+}
+
+export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('search', 'json.api'),
+            method: 'GET',
+            params: userConfig,
+            success: Utils.getCallbackWrapper((json) => {
+                addDataObjects(json);
+                const urlResolver = new URLResolver();
+                resolve(urlResolver.resolveSearchUsingIndex(json));
+            }),
+            failure: Utils.getCallbackWrapper((json) => {
+                reject(json);
+            }, null, false)
+        });
+    });
+}
+
+// Some search results will not have a data object.  Much of the display logic
+// relies on this, so for such results that we want to show the user, we add a
+// data element
+function addDataObjects(jsonResults) {
+    jsonResults.hits.forEach(hit => {
+
+        if (hit.data === undefined) {
+            let data = parseSearchIdToData(hit.id);
+            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0)
+                hit.data = data;
+        }
+    });
+}
+
+// Create a data object from the search id, which is assumed to be of the form:
+//      [group:][type:]rowId
+function parseSearchIdToData(idString): SearchIdData {
+    let idData = new SearchIdData();
+    if (idString) {
+        let idParts = idString.split(":");
+
+        idData.id = idParts[idParts.length - 1];
+        if (idParts.length > 1)
+            idData.type = idParts[idParts.length - 2];
+        if (idParts.length > 2)
+            idData.group = idParts[idParts.length - 3];
+    }
+    return idData;
 }

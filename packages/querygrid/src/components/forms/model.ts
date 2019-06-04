@@ -7,7 +7,7 @@ import { Filter } from '@labkey/api'
 import { QueryInfo, SchemaQuery } from '@glass/base'
 
 import { ISelectRowsResult } from '../../query/api'
-import { DELIMITER } from './SelectInput'
+import { DELIMITER } from './input/SelectInput'
 import * as actions from './actions'
 
 // This is the same as ReactSelect Option

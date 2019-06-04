@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { ReactNode } from "react";
 import { Map } from 'immutable'
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button } from 'react-bootstrap'
 import { User } from '@glass/base'
 
 import { ProductMenu } from "./ProductMenu";
@@ -15,7 +14,8 @@ interface NavigationBarProps {
     projectName?: string
     menuSectionConfigs?: Map<string, MenuSectionConfig>
     model: ProductMenuModel
-    showSearchBox?: boolean
+    showSearchBox: boolean
+    onSearch?: (form: any) => any
     user?: User
 }
 
@@ -25,11 +25,11 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
     };
 
     render() {
-        const { brand, menuSectionConfigs, model, projectName, showSearchBox, user } = this.props;
+        const { brand, menuSectionConfigs, model, projectName, showSearchBox, onSearch, user } = this.props;
 
         const productMenu = model ? <ProductMenu model={model} sectionConfigs={menuSectionConfigs}/> : null;
 
-        const searchBox = showSearchBox ? <SearchBox/> : null;
+        const searchBox = showSearchBox ? <SearchBox onSearch={onSearch}/> : null;
         const userMenu = user ? <UserMenu model={model} user={user}/> : null;
 
         return (

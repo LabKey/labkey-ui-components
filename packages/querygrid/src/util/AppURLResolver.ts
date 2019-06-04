@@ -4,10 +4,9 @@
  */
 import {List, Map} from 'immutable'
 import {Filter} from '@labkey/api'
-import {AppURL, AssayProtocolModel, spliceURL, fetchProtocol} from '@glass/base'
+import {AppURL, AssayProtocolModel, spliceURL, fetchProtocol, SCHEMAS} from '@glass/base'
 
 import { getQueryDetails, selectRows } from "../query/api";
-import {EXP_TABLES, SAMPLE_SETS} from '../query/schemas'
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean
@@ -95,8 +94,8 @@ export class AssayRunResolver implements AppRouteResolver {
             return new Promise((resolve) => {
 
                 return selectRows({
-                    schemaName: EXP_TABLES.ASSAY_RUNS.schemaName,
-                    queryName: EXP_TABLES.ASSAY_RUNS.queryName,
+                    schemaName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.schemaName,
+                    queryName: SCHEMAS.EXP_TABLES.ASSAY_RUNS.queryName,
                     columns: 'RowId,Protocol/RowId',
                     filterArray: [Filter.create('RowId', assayRunId)]
                 }).then((result) => {
@@ -230,8 +229,8 @@ export class SamplesResolver implements AppRouteResolver {
             // fetch it
             return new Promise((resolve) => {
                 return selectRows({
-                    schemaName: EXP_TABLES.MATERIALS.schemaName,
-                    queryName: EXP_TABLES.MATERIALS.queryName,
+                    schemaName: SCHEMAS.EXP_TABLES.MATERIALS.schemaName,
+                    queryName: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
                     columns: 'RowId,SampleSet',
                     filterArray: [
                         Filter.create('RowId', sampleRowId)
@@ -244,7 +243,7 @@ export class SamplesResolver implements AppRouteResolver {
                             sampleSetName = sample['SampleSet'].displayValue.toLowerCase();
 
                         return getQueryDetails({
-                            schemaName: SAMPLE_SETS.SCHEMA,
+                            schemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,
                             queryName: sampleSetName
                         }).then(info => {
 
@@ -254,12 +253,12 @@ export class SamplesResolver implements AppRouteResolver {
                                     this.samples = this.samples.set(
                                         sampleRowId, List([
                                             'media',
-                                            (info.name.toLowerCase() === SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase() ? 'batches' : info.name)
+                                            (info.name.toLowerCase() === SCHEMAS.SAMPLE_SETS.MIXTURE_BATCHES.queryName.toLowerCase() ? 'batches' : info.name)
                                         ])
                                     );
                                 }
                                 else {
-                                    this.samples = this.samples.set(sampleRowId, List([SAMPLE_SETS.SCHEMA.toLowerCase(), sampleSetName]));
+                                    this.samples = this.samples.set(sampleRowId, List([SCHEMAS.SAMPLE_SETS.SCHEMA.toLowerCase(), sampleSetName]));
                                 }
                             }
 
@@ -310,8 +309,8 @@ export class SampleSetResolver implements AppRouteResolver {
         else {
             return new Promise((resolve) => {
                 return selectRows({
-                    schemaName: EXP_TABLES.SCHEMA,
-                    queryName: EXP_TABLES.SAMPLE_SETS.queryName,
+                    schemaName: SCHEMAS.EXP_TABLES.SCHEMA,
+                    queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
                     columns: 'RowId,Name',
                     filterArray: [Filter.create('Name', sampleSetName)]
                 }).then((result) => {

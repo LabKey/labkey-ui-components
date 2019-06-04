@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { RefObject } from 'react';
 import classNames from 'classnames';
-import { LabelOverlay } from "./LabelOverlay";
-import { cancelEvent } from "../../events";
+import { LabelOverlay } from "../LabelOverlay";
+import { cancelEvent } from "../../../events";
 
 interface FileInputState {
     isHover: boolean,

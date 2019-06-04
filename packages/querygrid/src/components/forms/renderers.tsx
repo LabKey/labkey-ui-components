@@ -8,7 +8,7 @@ import { Input } from 'formsy-react-components'
 import { generateId, QueryColumn } from '@glass/base'
 
 import { LabelOverlay } from './LabelOverlay'
-import {SelectInput} from './SelectInput'
+import {SelectInput} from './input/SelectInput'
 
 interface AliasInputProps {
     col: QueryColumn

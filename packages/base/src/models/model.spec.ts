@@ -1,5 +1,8 @@
 import { OrderedMap } from 'immutable'
-import { QueryColumn, QueryGridModel, QueryInfo } from './model'
+import { AssayDefinitionModel, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from './model'
+
+import assayDefJSON from '../test/data/assayDefinitionModel.json';
+import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
 import sampleSetQueryInfo from "../test/data/sampleSet-getQueryDetails.json";
 import nameExpSetQueryColumn from "../test/data/NameExprParent-QueryColumn.json";
 import sampleSet3QueryColumn from "../test/data/SampleSet3Parent-QueryColumn.json";
@@ -33,8 +36,8 @@ describe("QueryInfo", () => {
     newColumns = newColumns.set(SECOND_COL_KEY, QueryColumn.create(nameExpSetQueryColumn));
 
     test("insertColumns negative columnIndex", () => {
-       const columns = queryInfo.insertColumns(-1, newColumns);
-       expect(columns).toBe(queryInfo.columns);
+        const columns = queryInfo.insertColumns(-1, newColumns);
+        expect(columns).toBe(queryInfo.columns);
     });
 
     test("insertColumns columnIndex just too large", () => {
@@ -76,4 +79,42 @@ describe("QueryInfo", () => {
         expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
         expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
     });
+});
+
+describe("AssayDefinitionModel", () => {
+
+   test("with getSampleColumn()", () => {
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        const sampleColumn = modelWithSampleId.getSampleColumn();
+        expect(sampleColumn).toBeTruthy();
+        expect(sampleColumn.domain).toBe('Result');
+        expect(sampleColumn.column.isLookup()).toBeTruthy();
+        expect(sampleColumn.column.fieldKey).toBe('SampleID');
+   });
+
+   test("without getSampleColumn()", () => {
+        const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
+        const nonSampleColumn = modelWithout.getSampleColumn();
+        expect(nonSampleColumn).toBe(null);
+   });
+
+   test("with getSampleColumnLookup()", () => {
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        const sampleColumn = modelWithSampleId.getSampleColumnLookup();
+        expect(sampleColumn).toBe('SampleID');
+   });
+
+   test("without getSampleColumnLookup()", () => {
+        const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
+        const nonSampleColumn = modelWithout.getSampleColumnLookup();
+        expect(nonSampleColumn).toBe(null);
+   });
+
+   test("hasLookup()", () => {
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        expect(modelWithSampleId.hasLookup(SchemaQuery.create('samples', 'Samples'))).toBeTruthy();
+        expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Study'))).toBeTruthy();
+        expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Other'))).toBeFalsy();
+   });
+
 });

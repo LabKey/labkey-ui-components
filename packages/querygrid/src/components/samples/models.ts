@@ -1,11 +1,10 @@
 import { Ajax, Filter, Utils } from "@labkey/api"
 import { List, Map, Record } from 'immutable';
+import { buildURL, generateId, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, SCHEMAS } from '@glass/base';
 
 import { getEditorModel } from '../../global'
 import { insertRows } from '../../query/api'
 import { gridShowError } from '../../actions'
-import { SCHEMAS } from '../../query/schemas'
-import { buildURL, generateId, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '@glass/base';
 import { ReactSelectOption } from '../forms/model'
 
 export interface SampleInputProps {

@@ -1,6 +1,7 @@
-import { Ajax, Utils } from '@labkey/api'
+import { List } from 'immutable'
+import { Ajax, Utils, Assay } from '@labkey/api'
 
-import { AssayProtocolModel } from "../models/model";
+import { AssayDefinitionModel, AssayProtocolModel } from "../models/model";
 import { buildURL } from "../url/ActionURL";
 
 export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
@@ -15,4 +16,24 @@ export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
             })
         })
     });
+}
+
+export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
+    return new Promise((res, rej) => {
+        Assay.getAll({
+            parameters: {
+                type
+            },
+            success: (rawModels: Array<any>) => {
+                let models = List<AssayDefinitionModel>().asMutable();
+                rawModels.forEach(rawModel => {
+                    models.push(AssayDefinitionModel.create(rawModel));
+                });
+                res(models.asImmutable());
+            },
+            failure: (error) => {
+                rej(error);
+            }
+        });
+    })
 }

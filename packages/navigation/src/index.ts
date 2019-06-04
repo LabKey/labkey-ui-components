@@ -9,6 +9,8 @@ import { NavigationBar } from './components/NavigationBar'
 import { NavItem } from './components/NavItem'
 import { MenuSectionConfig } from './components/ProductMenuSection'
 import { ITab, SubNav } from './components/SubNav'
+import { Breadcrumb } from './components/Breadcrumb'
+import { BreadcrumbCreate } from './components/BreadcrumbCreate'
 import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './model'
 
 // Import the scss file so it will be processed in the rollup scripts
@@ -28,5 +30,7 @@ export {
     ITab,
     NavItem,
     NavigationBar,
-    SubNav
+    SubNav,
+    Breadcrumb,
+    BreadcrumbCreate
 }

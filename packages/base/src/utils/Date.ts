@@ -6,7 +6,6 @@ import moment from 'moment-jdateformatparser'
 import numeral from 'numeral'
 import { QueryColumn } from "../models/model";
 
-
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;
 
@@ -34,24 +33,24 @@ export function getDateFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateFormat);
 }
 
-export function getDateTimeFormat(): string {
+function getDateTimeFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateTimeFormat);
 }
 
-export function getNumberFormat(): string {
+function getNumberFormat(): string {
     return LABKEY.container.formats.numberFormat;
 }
 
 // format input/value using look and feel settings
-export function getFormattedDate(d) {
+function getFormattedDate(d) {
     return d ? moment(d, getDateFormat()) : d;
 }
 
-export function getFormattedDateTime(d) {
+function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
 }
 
-export function getFormattedNumber(n) {
+function getFormattedNumber(n) {
     return n ? numeral(n).format(getNumberFormat()) : n;
 }
 

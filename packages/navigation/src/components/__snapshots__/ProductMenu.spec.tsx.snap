@@ -327,6 +327,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                             "iconCls": undefined,
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
+                            "seeAllURL": undefined,
                           }
                         }
                         maxColumns={1}
@@ -420,6 +421,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                             "iconCls": undefined,
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
+                            "seeAllURL": undefined,
                           }
                         }
                         maxColumns={1}
@@ -526,6 +528,7 @@ exports[`ProductMenu render multiple sections 1`] = `
                             "iconCls": undefined,
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
+                            "seeAllURL": undefined,
                           }
                         }
                         maxColumns={1}

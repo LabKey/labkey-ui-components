@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { Location } from "@glass/querygrid"
+import { Location } from "../util/URL"
 
 import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
 

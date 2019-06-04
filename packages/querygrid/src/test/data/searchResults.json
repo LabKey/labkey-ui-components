@@ -1,0 +1,1290 @@
+{
+  "hits" : [ {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "briakinumab\nPS-10, IgG1, PS-9, im:1302, MS-1",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afead88-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:13.550",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:Molecule",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.537",
+        "name" : "Molecule",
+        "modified" : "2019-02-27 12:43:37.537",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 73
+      },
+      "name" : "M-1",
+      "modified" : "2019-02-27 18:44:13.550",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41234
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/Molecule/41234",
+    "title" : "M-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41234&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FMolecule%2F41234"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "edited stuff, now Derive 6 samples from CV-1, HEK293, V-1 Sample Derivation Protocol - Core Sample Derivation Protocol Product Number AAAAProduct Amount 7 Manufacturer billy the manufacturer Lot Number AAAALot genId 149 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:V-1-20190227-292",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:46:10.893",
+      "name" : "V-1-20190227-292",
+      "modified" : "2019-02-27 18:46:10.893",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115498,
+      "properties" : {
+        "consumed" : null,
+        "ingredientId" : null,
+        "amount" : "7",
+        "name" : "V-1-20190227-292",
+        "productNumber" : "AAAAProduct",
+        "lotNumber" : "AAAALot",
+        "manufacturer" : "billy the manufacturer",
+        "expirationDate" : "2029-08-28 00:00:00.000"
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115498",
+    "title" : "Sample - V-1-20190227-292",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115498&_docid=material%3A115498"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "edited stuff, now Derive 6 samples from CV-1, HEK293, V-1 Sample Derivation Protocol - Core Sample Derivation Protocol Product Number 54321Product Amount 6 Manufacturer geoff the manufacturer Lot Number 54321Lot genId 144 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:V-1-20190227-287",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:46:10.890",
+      "name" : "V-1-20190227-287",
+      "modified" : "2019-02-27 18:46:10.890",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115493,
+      "properties" : {
+        "consumed" : false,
+        "ingredientId" : null,
+        "amount" : "6",
+        "name" : "V-1-20190227-287",
+        "productNumber" : "54321Product",
+        "lotNumber" : "54321Lot",
+        "manufacturer" : "geoff the manufacturer",
+        "expirationDate" : "2027-08-28 00:00:00.000"
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115493",
+    "title" : "Sample - V-1-20190227-287",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115493&_docid=material%3A115493"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "list of stuff to edit while pending Derive 6 samples from CV-1, HEK293, V-1 Sample Derivation Protocol - Core Sample Derivation Protocol Product Number 1234Product Amount 5 Manufacturer jeff the manufacturer Lot Number 456Lot genId 147 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:V-1-20190227-290",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:46:10.893",
+      "name" : "V-1-20190227-290",
+      "modified" : "2019-02-27 18:46:10.893",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115496,
+      "properties" : {
+        "consumed" : false,
+        "ingredientId" : null,
+        "amount" : "5",
+        "name" : "V-1-20190227-290",
+        "productNumber" : "1234Product",
+        "lotNumber" : "456Lot",
+        "manufacturer" : "jeff the manufacturer",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115496",
+    "title" : "Sample - V-1-20190227-290",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115496&_docid=material%3A115496"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "list of stuff to edit while pending Derive 6 samples from CV-1, HEK293, V-1 Sample Derivation Protocol - Core Sample Derivation Protocol Product Number 1234Product Amount 5 Manufacturer jeff the manufacturer Lot Number 456Lot genId 148 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:V-1-20190227-291",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:46:10.893",
+      "name" : "V-1-20190227-291",
+      "modified" : "2019-02-27 18:46:10.893",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115497,
+      "properties" : {
+        "consumed" : false,
+        "ingredientId" : null,
+        "amount" : "5",
+        "name" : "V-1-20190227-291",
+        "productNumber" : "1234Product",
+        "lotNumber" : "456Lot",
+        "manufacturer" : "jeff the manufacturer",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115497",
+    "title" : "Sample - V-1-20190227-291",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115497&_docid=material%3A115497"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "list of stuff to edit while pending Derive 6 samples from CV-1, HEK293, V-1 Sample Derivation Protocol - Core Sample Derivation Protocol Product Number 1234Product Amount 5 Manufacturer jeff the manufacturer Lot Number 456Lot genId 145 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:V-1-20190227-288",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:46:10.890",
+      "name" : "V-1-20190227-288",
+      "modified" : "2019-02-27 18:46:10.890",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115494,
+      "properties" : {
+        "consumed" : false,
+        "ingredientId" : null,
+        "amount" : "5",
+        "name" : "V-1-20190227-288",
+        "productNumber" : "1234Product",
+        "lotNumber" : "456Lot",
+        "manufacturer" : "jeff the manufacturer",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115494",
+    "title" : "Sample - V-1-20190227-288",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115494&_docid=material%3A115494"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "list of stuff to edit while pending Derive 6 samples from CV-1, HEK293, V-1 Sample Derivation Protocol - Core Sample Derivation Protocol Product Number 1234Product Amount 5 Manufacturer jeff the manufacturer Lot Number 456Lot genId 146 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:V-1-20190227-289",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:46:10.890",
+      "name" : "V-1-20190227-289",
+      "modified" : "2019-02-27 18:46:10.890",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115495,
+      "properties" : {
+        "consumed" : false,
+        "ingredientId" : null,
+        "amount" : "5",
+        "name" : "V-1-20190227-289",
+        "productNumber" : "1234Product",
+        "lotNumber" : "456Lot",
+        "manufacturer" : "jeff the manufacturer",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115495",
+    "title" : "Sample - V-1-20190227-289",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115495&_docid=material%3A115495"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Derive sample from 2015_07_24-C5-77-B6-01 Sample Derivation Protocol - Core Sample Derivation Protocol lookup 9 genId 119 Samples",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.Samples:S--1",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-05-09 21:14:45.200",
+      "name" : "S--1",
+      "modified" : "2019-05-15 15:37:17.040",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 123598,
+      "properties" : {
+        "lookup" : 9,
+        "sampleDate" : null,
+        "name" : "S--1"
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:Samples",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:47.190",
+        "name" : "Samples",
+        "modified" : "2019-02-27 12:43:47.190",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 398
+      }
+    },
+    "id" : "material:123598",
+    "title" : "Sample - S--1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=123598&_docid=material%3A123598"
+  }, {
+    "container" : "CBEC17AB-2187-1037-997D-12E5DDA8FAE6",
+    "summary" : "",
+    "id" : "labbook:experiment:1",
+    "title" : "Experiment - LB-1",
+    "url" : "/labkey/CBEC17AB-2187-1037-997D-12E5DDA8FAE6/labbook-experiment.view?labBookId=1&_docid=labbook%3Aexperiment%3A1"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "genId 26 ExpressionSystemSamples",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.ExpressionSystemSamples:ESS-20190502-1",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-05-03 20:45:29.160",
+      "name" : "ESS-20190502-1",
+      "modified" : "2019-05-03 20:45:29.160",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 123048,
+      "properties" : {
+        "lot" : null,
+        "sampleDate" : "2019-05-02 00:00:00.000",
+        "extraTestColumn" : null,
+        "name" : "ESS-20190502-1"
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:ExpressionSystemSamples",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:47.320",
+        "name" : "ExpressionSystemSamples",
+        "modified" : "2019-02-27 12:43:47.320",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 399
+      }
+    },
+    "id" : "material:123048",
+    "title" : "Sample - ESS-20190502-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=123048&_docid=material%3A123048"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Product Number M-109-6 Manufacturer Pfanstiehl Lot Number 35358A genId 9 Ingredient Name 41310 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:RM-20190227-152",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:27.413",
+      "name" : "RM-20190227-152",
+      "modified" : "2019-02-27 18:44:27.413",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115358,
+      "properties" : {
+        "consumed" : null,
+        "ingredientId" : 41310,
+        "amount" : null,
+        "name" : "RM-20190227-152",
+        "productNumber" : "M-109-6",
+        "lotNumber" : "35358A",
+        "manufacturer" : "Pfanstiehl",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115358",
+    "title" : "Sample - RM-20190227-152",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115358&_docid=material%3A115358"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Project Apollo - M-1 Target\nM-1, HEK293, C-1",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:99e8f84b-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:24.793",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ExpressionSystem",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:39.270",
+        "name" : "ExpressionSystem",
+        "modified" : "2019-02-27 12:43:39.270",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 78
+      },
+      "name" : "ES-2",
+      "modified" : "2019-02-27 18:44:24.793",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41302
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ExpressionSystem/41302",
+    "title" : "ES-2",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41302&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FExpressionSystem%2F41302"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Derive sample from ES-1 Sample Derivation Protocol - Core Sample Derivation Protocol genId 1 lot NA ExpressionSystemSamples",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.ExpressionSystemSamples:ES-1.1",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:25.227",
+      "name" : "ES-1.1",
+      "modified" : "2019-02-27 18:44:25.227",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115227,
+      "properties" : {
+        "lot" : "NA",
+        "sampleDate" : "2015-01-01 00:00:00.000",
+        "extraTestColumn" : null,
+        "name" : "ES-1.1"
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:ExpressionSystemSamples",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:47.320",
+        "name" : "ExpressionSystemSamples",
+        "modified" : "2019-02-27 12:43:47.320",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 399
+      }
+    },
+    "id" : "material:115227",
+    "title" : "Sample - ES-1.1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115227&_docid=material%3A115227"
+  }, {
+    "container" : "CBEC17AB-2187-1037-997D-12E5DDA8FAE6",
+    "summary" : "Lab book LB-1 in Project BiologicsAssayTest Project",
+    "id" : "link:CBEC17AB-2187-1037-997D-12E5DDA8FAE6",
+    "title" : "Lab book -- LB-1",
+    "url" : "/labkey/CBEC17AB-2187-1037-997D-12E5DDA8FAE6/project-start.view?&_docid=link%3ACBEC17AB-2187-1037-997D-12E5DDA8FAE6"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "M-1, urn:lsid:labkey.com:Data.Folde…, im:1305",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:99e8e5eb-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:13.543",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:MoleculeSet",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:36.497",
+        "name" : "MoleculeSet",
+        "modified" : "2019-02-27 12:43:36.497",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 70
+      },
+      "name" : "MS-1",
+      "modified" : "2019-02-27 18:44:13.543",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41233
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/MoleculeSet/41233",
+    "title" : "MS-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41233&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FMoleculeSet%2F41233"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Derive 2 samples from ES-1.3 Sample Derivation Protocol - Core Sample Derivation Protocol genId 1 Samples",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.Samples:2015_01_08_A001",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:25.863",
+      "name" : "2015_01_08_A001",
+      "modified" : "2019-02-27 18:44:25.863",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115245,
+      "properties" : {
+        "lookup" : null,
+        "sampleDate" : "2015-01-08 15:00:00.000",
+        "name" : "2015_01_08_A001"
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:Samples",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:47.190",
+        "name" : "Samples",
+        "modified" : "2019-02-27 12:43:47.190",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 398
+      }
+    },
+    "id" : "material:115245",
+    "title" : "Sample - 2015_01_08_A001",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115245&_docid=material%3A115245"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Product Number T1395-5G Amount 5g Manufacturer Sigma Lot Number SLBL8065V genId 1 Ingredient Name 41304 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:RM-20190227-144",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:27.377",
+      "name" : "RM-20190227-144",
+      "modified" : "2019-02-27 18:44:27.377",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115350,
+      "properties" : {
+        "consumed" : null,
+        "ingredientId" : 41304,
+        "amount" : "5g",
+        "name" : "RM-20190227-144",
+        "productNumber" : "T1395-5G",
+        "lotNumber" : "SLBL8065V",
+        "manufacturer" : "Sigma",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115350",
+    "title" : "Sample - RM-20190227-144",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115350&_docid=material%3A115350"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Product Number RES3156T-A702X Amount 1 kg Manufacturer SAFC Lot Number CdBB8286V genId 51 Ingredient Name 41346 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:RM-20190227-194",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:27.610",
+      "name" : "RM-20190227-194",
+      "modified" : "2019-02-27 18:44:27.610",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115400,
+      "properties" : {
+        "consumed" : null,
+        "ingredientId" : 41346,
+        "amount" : "1 kg",
+        "name" : "RM-20190227-194",
+        "productNumber" : "RES3156T-A702X",
+        "lotNumber" : "CdBB8286V",
+        "manufacturer" : "SAFC",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115400",
+    "title" : "Sample - RM-20190227-194",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115400&_docid=material%3A115400"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Product Number RES1520C-A702X Amount 1 kg Manufacturer SAFC Lot Number CDBB7826V genId 32 Ingredient Name 41332 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:RM-20190227-175",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:27.530",
+      "name" : "RM-20190227-175",
+      "modified" : "2019-02-27 18:44:27.530",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115381,
+      "properties" : {
+        "consumed" : null,
+        "ingredientId" : 41332,
+        "amount" : "1 kg",
+        "name" : "RM-20190227-175",
+        "productNumber" : "RES1520C-A702X",
+        "lotNumber" : "CDBB7826V",
+        "manufacturer" : "SAFC",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115381",
+    "title" : "Sample - RM-20190227-175",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115381&_docid=material%3A115381"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Product Number G-126-1 Amount 1kg Manufacturer Pfanstiehl Lot Number 35180A genId 8 Ingredient Name 41309 RawMaterials",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Sample.8914.RawMaterials:RM-20190227-151",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:27.407",
+      "name" : "RM-20190227-151",
+      "modified" : "2019-02-27 18:44:27.407",
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 115357,
+      "properties" : {
+        "consumed" : null,
+        "ingredientId" : 41309,
+        "amount" : "1kg",
+        "name" : "RM-20190227-151",
+        "productNumber" : "G-126-1",
+        "lotNumber" : "35180A",
+        "manufacturer" : "Pfanstiehl",
+        "expirationDate" : null
+      },
+      "sampleSet" : {
+        "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-8914:RawMaterials",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:44.057",
+        "name" : "RawMaterials",
+        "modified" : "2019-02-27 12:43:44.057",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 397
+      }
+    },
+    "id" : "material:115357",
+    "title" : "Sample - RM-20190227-151",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showMaterial.view?rowId=115357&_docid=material%3A115357"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Mature species\nM-1, PS-36, PS-37, urn:lsid:labkey.com:Data.Folde…, im:1305",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeaf66-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:12.747",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:MolecularSpecies",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.980",
+        "name" : "MolecularSpecies",
+        "modified" : "2019-02-27 12:43:37.980",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 74
+      },
+      "name" : "MSp-1",
+      "modified" : "2019-02-27 18:44:12.747",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41230
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/MolecularSpecies/41230",
+    "title" : "MSp-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41230&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FMolecularSpecies%2F41230"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Mature desK species\nM-1, PS-36, PS-38, urn:lsid:labkey.com:Data.Folde…, im:1307",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:99e8e5c0-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:13.467",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:MolecularSpecies",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.980",
+        "name" : "MolecularSpecies",
+        "modified" : "2019-02-27 12:43:37.980",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 74
+      },
+      "name" : "MSp-2",
+      "modified" : "2019-02-27 18:44:13.467",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41232
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/MolecularSpecies/41232",
+    "title" : "MSp-2",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41232&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FMolecularSpecies%2F41232"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "briakinumab_LC immunoglobulin G1-lambda, anti-[Homo sapiens interleukin 12 beta (IL12B, IL-12B, IL12 p40, NKSF2, CMLF p40)], Homo sapiens monoclonal antibody;\nM-1, NS-9, Lambda Light Chain, ips:1247, PS-9, human",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe97a4-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:00.450",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-9",
+      "modified" : "2019-02-27 18:44:00.450",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41173
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41173",
+    "title" : "PS-9",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41173&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41173"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "briakinumab_HC immunoglobulin G1-lambda, anti-[Homo sapiens interleukin 12 beta (IL12B, IL-12B, IL12 p40, NKSF2, CMLF p40)], Homo sapiens monoclonal antibody;\nM-1, PS-10, NS-10, ips:1248, human, IgG1 Heavy Chain",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9874-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:00.963",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-10",
+      "modified" : "2019-02-27 18:44:00.963",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41174
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41174",
+    "title" : "PS-10",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41174&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41174"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Anti_IGF-1\nPS-7, ips:1245, Heavy Variable, NS-7",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9685-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:43:59.947",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-7",
+      "modified" : "2019-02-27 18:43:59.947",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41171
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41171",
+    "title" : "PS-7",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41171&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41171"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Anti_IGF-1-derived\nNS-8, Heavy Variable, ips:1246, PS-8",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe970d-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:00.130",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-8",
+      "modified" : "2019-02-27 18:44:00.130",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41172
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41172",
+    "title" : "PS-8",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41172&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41172"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Project Icarus - M-3 Target\nM-3, CHO-K1, C-3, C-4",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:99e8f811-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:24.503",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ExpressionSystem",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:39.270",
+        "name" : "ExpressionSystem",
+        "modified" : "2019-02-27 12:43:39.270",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 78
+      },
+      "name" : "ES-1",
+      "modified" : "2019-02-27 18:44:24.503",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41301
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ExpressionSystem/41301",
+    "title" : "ES-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41301&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FExpressionSystem%2F41301"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Project Athena - M-2 Target\nM-2, CV-1, C-2",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:99e8f876-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:24.967",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ExpressionSystem",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:39.270",
+        "name" : "ExpressionSystem",
+        "modified" : "2019-02-27 12:43:39.270",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 78
+      },
+      "name" : "ES-3",
+      "modified" : "2019-02-27 18:44:24.967",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41303
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ExpressionSystem/41303",
+    "title" : "ES-3",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41303&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FExpressionSystem%2F41303"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "P01308-1: human insulin 1\nPS-1, ins:1269",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeaa34-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:08.477",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-1",
+      "modified" : "2019-02-27 18:44:08.477",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41195
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41195",
+    "title" : "NS-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41195&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41195"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "P01308-1: human insulin\nPS-1, Non-Antibody Chain, NS-1, human, ips:1239",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9332-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:43:58.260",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-1",
+      "modified" : "2019-02-27 18:43:58.260",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41165
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41165",
+    "title" : "PS-1",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41165&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41165"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "P01375-1: human TNF\nips:1241, Non-Antibody Chain, PS-3, NS-3",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe938f-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:43:58.767",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-3",
+      "modified" : "2019-02-27 18:43:58.767",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41167
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41167",
+    "title" : "PS-3",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41167&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41167"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Proj1 Mol - sig 1\nUnrecognized Antibody Format, im:1337, MS-12, PS-29, PS-28",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:99e8f4d7-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:21.150",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:Molecule",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.537",
+        "name" : "Molecule",
+        "modified" : "2019-02-27 12:43:37.537",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 73
+      },
+      "name" : "M-12",
+      "modified" : "2019-02-27 18:44:21.150",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41281
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/Molecule/41281",
+    "title" : "M-12",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41281&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FMolecule%2F41281"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "F8WCM5-1: human insulin isoform2\nips:1240, Non-Antibody Chain, PS-2, NS-2",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9382-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:43:58.607",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-2",
+      "modified" : "2019-02-27 18:43:58.607",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41166
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41166",
+    "title" : "PS-2",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41166&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41166"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Proj1 Full Length LC - Sig 1\nM-12, Unrecognized Antibody Chain, ips:1266, PS-28, MSp-15, human",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afea738-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:06.830",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-28",
+      "modified" : "2019-02-27 18:44:06.830",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41192
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41192",
+    "title" : "PS-28",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41192&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41192"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Proj1 Full Length HC - Sig 1\nM-13, M-12, MSp-16, Unrecognized Antibody Chain, ips:1267, PS-29, MSp-15, human",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afea7f9-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:07.360",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-29",
+      "modified" : "2019-02-27 18:44:07.360",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41193
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41193",
+    "title" : "PS-29",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41193&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41193"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "4-way junction - 1 - Wikipedia\nins:1297, M-8",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afead31-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:10.867",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-29",
+      "modified" : "2019-02-27 18:44:10.867",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41223
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41223",
+    "title" : "NS-29",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41223&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41223"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "P01375-1: human TNF\nins:1271, PS-3",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeaa7c-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:08.900",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-3",
+      "modified" : "2019-02-27 18:44:08.900",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41197
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41197",
+    "title" : "NS-3",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41197&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41197"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Anti_IGF-1: ab variable region\nins:1275, PS-7",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeab01-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:09.263",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-7",
+      "modified" : "2019-02-27 18:44:09.263",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41201
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41201",
+    "title" : "NS-7",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41201&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41201"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "F8WCM5-1: human insulin isoform2\nins:1270, PS-2",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeaa5f-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:08.763",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-2",
+      "modified" : "2019-02-27 18:44:08.763",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41196
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41196",
+    "title" : "NS-2",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41196&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41196"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "Anti_IGF-1: Alternate for ab variable region\nins:1276, PS-8",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeab1d-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:09.353",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-8",
+      "modified" : "2019-02-27 18:44:09.353",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41202
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41202",
+    "title" : "NS-8",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41202&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41202"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "glembatumumab_LC immunoglobulin G2-kappa, anti-[Homo sapiens GPNMB (glycoprotein transmembrane NMB, hematopoietic growth factor inducible neurokinin-1 type, HGFIN) extracellular domain], Homo sapiens monoclonal antibody;\nips:1251, PS-13, Kappa Light Chain, M-3, NS-13, human",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9bea-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:02.287",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-13",
+      "modified" : "2019-02-27 18:44:02.287",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41177
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41177",
+    "title" : "PS-13",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41177&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41177"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "glembatumumab_HC immunoglobulin G2-kappa, anti-[Homo sapiens GPNMB (glycoprotein transmembrane NMB, hematopoietic growth factor inducible neurokinin-1 type, HGFIN) extracellular domain], Homo sapiens monoclonal antibody;\nIgG2 Heavy Chain, PS-14, M-3, ips:1252, NS-14, human",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9cba-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:02.723",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-14",
+      "modified" : "2019-02-27 18:44:02.723",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41178
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41178",
+    "title" : "PS-14",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41178&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41178"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "glembatumumab_LC immunoglobulin G2-kappa, anti-[Homo sapiens GPNMB (glycoprotein transmembrane NMB, hematopoietic growth factor inducible neurokinin-1 type, HGFIN) extracellular domain], Homo sapiens monoclonal antibody;\nPS-13, ins:1281",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeaba9-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:09.753",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-13",
+      "modified" : "2019-02-27 18:44:09.753",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41207
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41207",
+    "title" : "NS-13",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41207&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41207"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "glembatumumab_HC immunoglobulin G2-kappa, anti-[Homo sapiens GPNMB (glycoprotein transmembrane NMB, hematopoietic growth factor inducible neurokinin-1 type, HGFIN) extracellular domain], Homo sapiens monoclonal antibody;\nPS-14, ins:1282",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeabc5-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:09.820",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-14",
+      "modified" : "2019-02-27 18:44:09.820",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41208
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41208",
+    "title" : "NS-14",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41208&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41208"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "fresolimumab_LC immunoglobulin G4-kappa, anti-[Homo sapiens transforming growth factor beta (TGFB or TGFbeta or TGF-beta, including TGF-beta-1 or TGFB1, TGF-beta-2 or TGFB2 or G-TsF and TGF-beta-3 or TGFB3)], Homo sapiens monoclonal antibody\nKappa Light Chain, M-2, PS-11, NS-11, human, ips:1249",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe99bc-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:01.357",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-11",
+      "modified" : "2019-02-27 18:44:01.357",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41175
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41175",
+    "title" : "PS-11",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41175&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41175"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "fresolimumab_HC immunoglobulin G4-kappa, anti-[Homo sapiens transforming growth factor beta (TGFB or TGFbeta or TGF-beta, including TGF-beta-1 or TGFB1, TGF-beta-2 or TGFB2 or G-TsF and TGF-beta-3 or TGFB3)], Homo sapiens monoclonal antibody\nips:1250, M-2, IgG4 Heavy Chain, PS-12, NS-12, human",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afe9a8c-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:01.893",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:ProtSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.080",
+        "name" : "ProtSequence",
+        "modified" : "2019-02-27 12:43:37.080",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 71
+      },
+      "name" : "PS-12",
+      "modified" : "2019-02-27 18:44:01.893",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41176
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/ProtSequence/41176",
+    "title" : "PS-12",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41176&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FProtSequence%2F41176"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "fresolimumab_LC immunoglobulin G4-kappa, anti-[Homo sapiens transforming growth factor beta (TGFB or TGFbeta or TGF-beta, including TGF-beta-1 or TGFB1, TGF-beta-2 or TGFB2 or G-TsF and TGF-beta-3 or TGFB3)], Homo sapiens monoclonal antibody\nins:1279, PS-11",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeab71-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:09.593",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-11",
+      "modified" : "2019-02-27 18:44:09.593",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41205
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41205",
+    "title" : "NS-11",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41205&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41205"
+  }, {
+    "container" : "261C2451-1CED-1037-8E6F-A4D8213615F8",
+    "summary" : "fresolimumab_HC immunoglobulin G4-kappa, anti-[Homo sapiens transforming growth factor beta (TGFB or TGFbeta or TGF-beta, including TGF-beta-1 or TGFB1, TGF-beta-2 or TGFB2 or G-TsF and TGF-beta-3 or TGFB3)], Homo sapiens monoclonal antibody\nPS-12, ins:1280",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:Data.Folder-8914:8afeab8d-1ced-1037-8e6f-a4d8213615f8",
+      "createdBy" : "cnathe@labkey.com",
+      "created" : "2019-02-27 18:44:09.677",
+      "dataClass" : {
+        "lsid" : "urn:lsid:labkey.com:DataClass.Folder-8914:NucSequence",
+        "createdBy" : "cnathe@labkey.com",
+        "created" : "2019-02-27 12:43:37.260",
+        "name" : "NucSequence",
+        "modified" : "2019-02-27 12:43:37.260",
+        "modifiedBy" : "cnathe@labkey.com",
+        "id" : 72
+      },
+      "name" : "NS-12",
+      "modified" : "2019-02-27 18:44:09.677",
+      "dataFileURL" : null,
+      "modifiedBy" : "cnathe@labkey.com",
+      "id" : 41206
+    },
+    "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41206",
+    "title" : "NS-12",
+    "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41206&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41206"
+  } ],
+  "metaData" : {
+    "successProperty" : "success",
+    "idProperty" : "id",
+    "root" : "hits"
+  },
+  "q" : "m-1",
+  "totalHits" : 48,
+  "success" : true
+}

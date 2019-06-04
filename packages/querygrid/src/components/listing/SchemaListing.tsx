@@ -5,9 +5,7 @@
 import * as React from 'react'
 import { Link } from 'react-router'
 import { List, Map } from 'immutable'
-import { AppURL, Grid, GridColumn, SchemaDetails, LoadingSpinner } from '@glass/base'
-
-import { fetchSchemas } from "../../query/schemas";
+import { AppURL, Grid, GridColumn, SchemaDetails, LoadingSpinner, fetchSchemas } from '@glass/base'
 
 const columns = List([
     new GridColumn({

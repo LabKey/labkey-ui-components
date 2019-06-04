@@ -4,10 +4,16 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+## version ???
+*Released*: ???
+* port SVGIcon and CreatedModified from Biologics
+* port AssayDefinitionModel and fetchAllAssays from Biologics
+* ManageDropdownButton and SelectionMenuItem
+
 ## version 0.4.0
 *Released*: 03 June 2019
-* port caseInsensitive, similaritySortFactory, spliceURL, and fetchProtocol functions from Biologics
-* port AssayProtocolModel model from Biologics
+* port caseInsensitive, similaritySortFactory, spliceURL functions from Biologics
+* port AssayProtocolModel and fetchProtocol model from Biologics
 * export datePlaceholder function
 * export capitalizeFirstChar utility method
 * Add method inserting columns into QueryInfo

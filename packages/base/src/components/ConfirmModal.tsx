@@ -4,7 +4,7 @@ import {Button, Modal} from "react-bootstrap";
 interface Props {
     show: boolean
     title: string
-    msg: string
+    msg: any
     onConfirm: (any) => void
     onCancel: (any) => void
     confirmButtonText: string
@@ -30,7 +30,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>{msg}</p>
+                    {msg}
                 </Modal.Body>
 
                 <Modal.Footer>
@@ -41,4 +41,3 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
         )
     }
 }
-

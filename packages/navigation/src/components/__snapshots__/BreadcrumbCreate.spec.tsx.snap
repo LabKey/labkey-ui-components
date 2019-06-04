@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BreadcrumbCreate/> with multiple links, no created row 1`] = `
+<div
+  className="row component-crumbcreate--container"
+>
+  <ol
+    className="breadcrumb col-xs-8 col-sm-8 col-md-8"
+  >
+    <li>
+      <a
+        href="/q"
+      >
+        First
+      </a>
+    </li>
+    <li>
+      <a
+        href="/q/two"
+      >
+        Second
+      </a>
+    </li>
+    <li>
+      <a
+        href="/q/two/three"
+      >
+        Third
+      </a>
+    </li>
+  </ol>
+</div>
+`;

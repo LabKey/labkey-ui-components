@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavigationBar/> default props 1`] = `
+<nav
+  className="navbar navbar-container test-loc-nav-header"
+>
+  <div
+    className="container"
+  >
+    <span
+      className="navbar-left"
+    >
+      <span
+        className="navbar-item pull-left"
+      />
+      <span
+        className="navbar-item"
+      />
+    </span>
+    <span
+      className="navbar-right pull-right"
+    >
+      <span
+        className="navbar-item"
+      />
+      <span
+        className="pull-right"
+      />
+    </span>
+  </div>
+</nav>
+`;
+
+exports[`<NavigationBar/> with search box 1`] = `
+<nav
+  className="navbar navbar-container test-loc-nav-header"
+>
+  <div
+    className="container"
+  >
+    <span
+      className="navbar-left"
+    >
+      <span
+        className="navbar-item pull-left"
+      />
+      <span
+        className="navbar-item"
+      />
+    </span>
+    <span
+      className="navbar-right pull-right"
+    >
+      <span
+        className="navbar-item"
+      >
+        <form
+          className="navbar__search-form"
+          onSubmit={[Function]}
+        >
+          <div
+            className="form-group"
+          >
+            <i
+              className="fa fa-search navbar__search-icon"
+            />
+            <input
+              className="navbar__search-input"
+              onChange={[Function]}
+              placeholder="Enter search terms"
+              type="text"
+              value=""
+            />
+          </div>
+        </form>
+      </span>
+      <span
+        className="pull-right"
+      />
+    </span>
+  </div>
+</nav>
+`;

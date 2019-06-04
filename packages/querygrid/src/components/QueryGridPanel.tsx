@@ -53,8 +53,8 @@ export class QueryGridPanel extends React.Component<Props, State> {
 
     initModel(props: Props) {
         // make sure each QueryGridModel is initialized
-        this.getModelsAsList(props).forEach((model, index) => {
-            if (model && !model.isLoaded && !model.isLoading) {
+        this.getModelsAsList(props).forEach((model) => {
+            if (model && !model.isLoading) {
                 gridInit(model);
             }
         });

@@ -1,6 +1,6 @@
 import React from "reactn";
 import { Record } from 'immutable';
-import { AppURL, imageURL } from '@glass/base'
+import { AppURL } from '@glass/base'
 
 import { MenuSectionModel } from '../model';
 
@@ -11,12 +11,14 @@ export class MenuSectionConfig extends Record({
     iconCls: undefined,
     maxItemsPerColumn: 12,
     maxColumns: 1,
+    seeAllURL: undefined
 }){
     emptyText?: string;
     iconURL?: string;
     iconCls?: string;
     maxItemsPerColumn: number;
     maxColumns: number;
+    seeAllURL?: AppURL;
 }
 
 
@@ -97,7 +99,8 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
             columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, false));
         }
         if (haveOverflow) {
-            columns.push(<span className="overflow-link" key="overflow"><a href={AppURL.create(section.key).toHref()}>See all {section.totalCount}</a></span>)
+            const seeAllUrl = config.seeAllURL || AppURL.create(section.key);
+            columns.push(<span className="overflow-link" key="overflow"><a href={seeAllUrl.toHref()}>See all {section.totalCount}</a></span>)
         }
 
         return (

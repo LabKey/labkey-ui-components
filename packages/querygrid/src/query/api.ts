@@ -637,3 +637,57 @@ function ensureAllFieldsInAllRows(rows: List<any>): List<any> {
 function ensureNullForUndefined(row: Map<string, any>): Map<string, any> {
     return row.reduce((map, v, k) => map.set(k, v === undefined ? null : v), Map<string, any>());
 }
+
+interface IUpdateRowsOptions {
+    containerPath?: string
+    schemaQuery: SchemaQuery
+    rows: Array<any>
+}
+
+export function updateRows(options: IUpdateRowsOptions): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Query.updateRows({
+            containerPath: options.containerPath ? options.containerPath : LABKEY.container.path,
+            schemaName: options.schemaQuery.schemaName,
+            queryName: options.schemaQuery.queryName,
+            rows: options.rows,
+            success: (response) => {
+                resolve(Object.assign({}, {
+                    schemaQuery: options.schemaQuery,
+                    rows: response.rows
+                }));
+            },
+            failure: (error) => {
+                reject(Object.assign({}, {
+                    schemaQuery: options.schemaQuery
+                }, error));
+            }
+        });
+    });
+}
+
+interface DeleteRowsOptions {
+    schemaQuery: SchemaQuery
+    rows: Array<any>
+}
+
+export function deleteRows(options: DeleteRowsOptions): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Query.deleteRows({
+            schemaName: options.schemaQuery.schemaName,
+            queryName: options.schemaQuery.queryName,
+            rows: options.rows,
+            apiVersion: 13.2,
+            success: () => {
+                resolve(Object.assign({}, {
+                    schemaQuery: options.schemaQuery
+                }));
+            },
+            failure: (error) => {
+                reject(Object.assign({}, {
+                    schemaQuery: options.schemaQuery
+                }, error));
+            }
+        });
+    });
+}

@@ -10,11 +10,11 @@ import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuer
 
 import { resolveRenderer } from './renderers'
 import { QuerySelect } from './QuerySelect'
-import { TextInput } from './TextInput'
-import { DateInput } from './DateInput'
-import { CheckboxInput } from './CheckboxInput'
-import { TextAreaInput } from './TextAreaInput'
-import { FileInput } from './FileInput'
+import { TextInput } from './input/TextInput'
+import { DateInput } from './input/DateInput'
+import { CheckboxInput } from './input/CheckboxInput'
+import { TextAreaInput } from './input/TextAreaInput'
+import { FileInput } from './input/FileInput'
 import { initLookup } from "../../actions";
 
 const LABEL_FIELD_SUFFIX = '::label';
@@ -165,7 +165,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         // Must be explicitly false to prevent drop-down.
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
-                            const joinValues = multiple && !col.isExpInput();
+                            const joinValues = multiple;
                             let id = col.fieldKey + i + (componentKey ? componentKey : '');
 
                             return (

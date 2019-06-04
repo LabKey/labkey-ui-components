@@ -1,4 +1,4 @@
-import React from 'reactn';
+import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { QueryGrid } from "../components/QueryGrid";

@@ -16,7 +16,8 @@ import {
     QueryGridModel,
     QueryInfo,
     RemoveEntityButton,
-    SchemaQuery
+    SchemaQuery,
+    SCHEMAS
 } from '@glass/base';
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn, } from '../../actions';
@@ -28,8 +29,7 @@ import { EditableColumnMetadata } from "../editable/EditableGrid"
 import { EditableGridPanel } from '../editable/EditableGridPanel'
 import { getQueryDetails, InsertRowsResponse } from '../../query/api'
 import { Location } from '../../util/URL'
-import { SCHEMAS } from '../../query/schemas'
-import { SelectInput } from '../forms/SelectInput'
+import { SelectInput } from '../forms/input/SelectInput'
 
 import {
     GenerateSampleResponse,
@@ -203,7 +203,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             const sampleSetName = insertModel ? insertModel.getTargetSampleSetName() : undefined;
             if (sampleSetName) {
                 const queryInfoWithParents = this.getGridQueryInfo();
-                const model = getStateQueryGridModel('insert-samples', SchemaQuery.create('samples', sampleSetName),
+                const model = getStateQueryGridModel('insert-samples', SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, sampleSetName),
                     {
                         editable: true,
                         loader: new SampleGridLoader(insertModel),
@@ -212,9 +212,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
                 return getQueryGridModel(model.getId()) || model;
             }
-            else {
-                return undefined;
-            }
+
+            return undefined;
         }
     }
 

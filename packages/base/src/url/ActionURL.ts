@@ -133,11 +133,10 @@ export function setParameter(parameterName: string, value: any): void {
     window.location.search = result;
 }
 
-export function imageURL(application: string, src: string): string {
+export function imageURL(iconDir: string, src: string): string {
     return [
         ActionURL.getContextPath(),
-        application, // TODO get this from global state somewhere?
-        'images',
+        iconDir,
         src
     ].join('/');
 }

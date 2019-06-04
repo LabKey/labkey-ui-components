@@ -1,0 +1,35 @@
+.form-group-collapsed {
+  margin-bottom: 0;
+}
+
+.form-group-expanded {
+  margin-bottom: 22px;
+}
+
+.insert--sequence-container {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.field-edit-container {
+  color: gray;
+}
+
+.field-edit--input-container {
+  float: left;
+  width: 70%;
+  padding: 0 15px;
+}
+
+.field-edit--btn-group {
+  float: left;
+  display: block;
+}
+
+// Truncate overflow
+.text__truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

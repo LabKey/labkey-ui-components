@@ -27,3 +27,18 @@
 .container--addition-icon {
   color: $brand-success;
 }
+
+// CreatedModified component
+
+.createdmodified {
+  color: grey;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.cbmb-inline {
+  display: inline-block;
+  margin-right: 10px;
+}

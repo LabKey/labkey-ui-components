@@ -1,0 +1,97 @@
+{
+  "schemaName" : "assay",
+  "queries" : [ {
+    "canEditSharedViews" : true,
+    "hidden" : false,
+    "columns" : [ {
+      "name" : "RowId",
+      "caption" : "Row Id",
+      "description" : "Contains the unique id for this protocol",
+      "shortCaption" : "Row Id"
+    }, {
+      "name" : "Name",
+      "caption" : "Name",
+      "description" : "Contains a short name for this protocol",
+      "shortCaption" : "Name"
+    }, {
+      "name" : "Description",
+      "caption" : "Description",
+      "description" : "Contains a description for this protocol",
+      "shortCaption" : "Description"
+    }, {
+      "name" : "Created",
+      "caption" : "Created",
+      "description" : "Contains the time at which this protocol was created",
+      "shortCaption" : "Created"
+    }, {
+      "name" : "CreatedBy",
+      "caption" : "Created By",
+      "description" : "Contains the user that created this protocol",
+      "shortCaption" : "Created By"
+    }, {
+      "name" : "Modified",
+      "caption" : "Modified",
+      "description" : "Contains the time at which this protocol was last modified",
+      "shortCaption" : "Modified"
+    }, {
+      "name" : "ModifiedBy",
+      "caption" : "Modified By",
+      "description" : "Contains the user that last modified this protocol",
+      "shortCaption" : "Modified By"
+    }, {
+      "name" : "Folder",
+      "caption" : "Folder",
+      "description" : "Contains the folder or project where this protocol is stored",
+      "shortCaption" : "Folder"
+    }, {
+      "name" : "LSID",
+      "caption" : "LSID",
+      "description" : "Contains a life sciences identifier for this protocol",
+      "shortCaption" : "LSID"
+    }, {
+      "name" : "Type",
+      "caption" : "Type",
+      "shortCaption" : "Type"
+    } ],
+    "canEdit" : true,
+    "description" : "Contains all of the assay definitions visible in this folder",
+    "isMetadataOverrideable" : true,
+    "title" : "Assay List",
+    "viewDataUrl" : "/labkey/BiologicsAssayTest%20Project/query-executeQuery.view?schemaName=assay&query.queryName=AssayList",
+    "inherit" : false,
+    "name" : "AssayList",
+    "isUserDefined" : false,
+    "isInherited" : false,
+    "snapshot" : false
+  }, {
+    "canEditSharedViews" : true,
+    "hidden" : false,
+    "columns" : [ {
+      "name" : "Name",
+      "caption" : "Name",
+      "shortCaption" : "Name"
+    }, {
+      "name" : "Description",
+      "caption" : "Description",
+      "shortCaption" : "Description"
+    }, {
+      "name" : "Module",
+      "caption" : "Module",
+      "shortCaption" : "Module"
+    }, {
+      "name" : "RunLSIDPrefix",
+      "caption" : "Run LSIDPrefix",
+      "shortCaption" : "Run LSIDPrefix"
+    } ],
+    "canEdit" : true,
+    "description" : "Contains one row per registered assay provider.",
+    "isMetadataOverrideable" : true,
+    "title" : "Assay Providers",
+    "viewDataUrl" : "/labkey/BiologicsAssayTest%20Project/query-executeQuery.view?schemaName=assay&query.queryName=AssayProviders",
+    "inherit" : false,
+    "name" : "AssayProviders",
+    "isUserDefined" : false,
+    "isInherited" : false,
+    "snapshot" : false
+  } ]
+}

@@ -55,21 +55,5 @@ export default [
             typescript(),
             sass()
         ]
-    },
-    {
-        external: external,
-        input: input,
-        output: {
-            file: 'dist/domainproperties.umd.js',
-            format: 'umd',
-            name: 'domainproperties',
-            globals: globals
-        },
-        plugins: [
-            resolve(),
-            commonjs({namedExports}),
-            typescript(),
-            sass()
-        ]
     }
 ]

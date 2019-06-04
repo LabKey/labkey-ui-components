@@ -1,0 +1,27 @@
+{
+  "caption": "Sample set 3 Parents",
+  "conceptURI": null,
+  "defaultValue": null,
+  "description": "Contains optional parent entity for this Sample set 3",
+  "fieldKey": "MaterialInputs\/Sample set 3",
+  "fieldKeyArray": [
+    "MaterialInputs\/Sample set 3"
+  ],
+  "lookup": {
+    "displayColumn": "Name",
+    "isPublic": true,
+    "keyColumn": "RowId",
+    "multiValued": "junction",
+    "queryName": "Sample set 3",
+    "schemaName": "samples",
+    "table": "MaterialInputs"
+  },
+  "multiValue": false,
+  "name": "MaterialInputs\/Sample set 3",
+  "required": false,
+  "shownInInsertView": true,
+  "sortable": true,
+  "type": "Text (String)",
+  "userEditable": true,
+  "removeFromViews": false
+}

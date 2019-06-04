@@ -2,49 +2,76 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, Set, fromJS } from 'immutable'
+import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
 import {
-    GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, QueryColumn, QueryInfo, SchemaQuery, ViewInfo, QueryGridModel,
-    buildURL, getSortFromUrl, naturalSort, not
+    buildURL,
+    getSortFromUrl,
+    GRID_CHECKBOX_OPTIONS,
+    GRID_EDIT_INDEX,
+    naturalSort,
+    not,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery,
+    ViewInfo
 } from '@glass/base'
 
 import { getQueryDetails, searchRows } from './query/api'
 import { isEqual } from './query/filter'
 import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
 import {
-    FASTA_EXPORT_CONTROLLER, GENBANK_EXPORT_CONTROLLER, EXPORT_TYPES, KEYS,
-    SELECTION_TYPES, MODIFICATION_TYPES, LOOKUP_DEFAULT_SIZE
+    EXPORT_TYPES,
+    FASTA_EXPORT_CONTROLLER,
+    GENBANK_EXPORT_CONTROLLER,
+    KEYS,
+    LOOKUP_DEFAULT_SIZE,
+    MODIFICATION_TYPES,
+    RELEVANT_SEARCH_RESULT_TYPES,
+    SELECTION_TYPES
 } from "./constants";
-import { cancelEvent, setCopyValue, getPasteValue } from './events'
+import { cancelEvent, getPasteValue, setCopyValue } from './events'
 import {
-    DataViewInfo, VisualizationConfigModel, ValueDescriptor, EditorModel, EditorModelProps,
-    LookupStore, CellMessages, CellValues, CellMessage
-} from './model'
+    CellMessage,
+    CellMessages,
+    CellValues,
+    DataViewInfo,
+    EditorModel,
+    EditorModelProps,
+    LookupStore,
+    SearchIdData,
+    ValueDescriptor,
+    VisualizationConfigModel
+} from './models'
 import { bindColumnRenderers } from './renderers'
 import {
+    getEditorModel,
+    getLookupStore,
     getQueryGridModel,
+    getQueryGridModelsForGridId,
     getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
-    getQueryGridModelsForGridId,
-    updateQueryGridModel,
-    updateSelections,
-    getEditorModel,
+    removeQueryGridModel,
     updateEditorModel,
-    getLookupStore,
-    updateLookupStore
+    updateLookupStore,
+    updateQueryGridModel,
+    updateSelections
 } from './global'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
+import { URLResolver } from "./util/URLResolver";
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
 export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, connectedComponent?: React.Component) {
-    if (!model || model.isLoaded || model.isLoading) {
+    // return quickly if we don't have a model or if it is already loading
+    if (!model || model.isLoading) {
         return;
     }
 
+    // call to updateQueryGridModel to make sure this model is in the global state, if it wasn't already
     let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
 
     if (!newModel.isLoaded) {
@@ -223,22 +250,41 @@ export function clearError(model: QueryGridModel) {
     }
 }
 
-export function schemaGridInvalidate(schemaName: string) {
-    getQueryGridModelsForSchema(schemaName).map((model) => gridInvalidate(model));
+export function schemaGridInvalidate(schemaName: string, remove: boolean = false) {
+    getQueryGridModelsForSchema(schemaName).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
-export function queryGridInvalidate(schemaQuery: SchemaQuery) {
-    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridInvalidate(model));
+export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = false) {
+    getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
-export function gridIdInvalidate(gridId: string) {
-    getQueryGridModelsForGridId(gridId).map((model) => gridInvalidate(model));
+export function gridIdInvalidate(gridId: string, remove: boolean = false) {
+    getQueryGridModelsForGridId(gridId).map((model) => gridRemoveOrInvalidate(model, remove));
+}
+
+function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
+    clearSelected(model.getId()).then(() => {
+        if (remove) {
+            removeQueryGridModel(model);
+        } else {
+            gridInvalidate(model);
+        }
+    });
 }
 
 export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = false, connectedComponent?: React.Component): QueryGridModel {
+    // if the model doesn't exist in the global state, no need to invalidate it
+    if (!getQueryGridModel(model.getId())) {
+        return;
+    }
+
     const newModel = updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
+        selectedIds: List<string>(),
+        selectedQuantity: 0,
+        selectedState: GRID_CHECKBOX_OPTIONS.NONE,
+        selectedLoaded: false,
         isError: false,
         isLoaded: false,
         isLoading: false,
@@ -359,7 +405,7 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     updateEditorModel(editorModel, {
         colCount: columns.size,
         cellValues: cellValues.asImmutable(),
-        rowCount: rows.size
+        rowCount: rows.size > 0 ? rows.size : editorModel.rowCount
     });
 }
 
@@ -742,6 +788,43 @@ function setGridUnselected(model: QueryGridModel) {
         const error = err ? err : {message: 'Something went wrong'};
         gridShowError(model, error);
     })
+}
+
+interface ISelectionResponse {
+    resolved: boolean
+    schemaQuery?: SchemaQuery
+    selected: Array<any>
+}
+
+export function getSelection(location: any): Promise<ISelectionResponse> {
+    if (location && location.query && location.query.selectionKey) {
+        const key = location.query.selectionKey;
+
+        return new Promise(resolve => {
+            const { keys, schemaQuery } = SchemaQuery.parseSelectionKey(key);
+
+            if (keys !== undefined) {
+                return resolve({
+                    resolved: true,
+                    schemaQuery,
+                    selected: keys.split(';')
+                });
+            }
+
+            return getSelected(key).then((response) => {
+                resolve({
+                    resolved: true,
+                    schemaQuery,
+                    selected: response.selected
+                });
+            });
+        });
+    }
+
+    return Promise.resolve({
+        resolved: false,
+        selected: []
+    });
 }
 
 function getFilterParameters(filters: List<any>, remove: boolean = false): Map<string, string> {
@@ -1215,6 +1298,106 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
     }
 }
 
+function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: any) : {
+    message?: CellMessage,
+    valueDescriptor: ValueDescriptor
+} {
+
+    if (value === undefined || value === null || typeof(value) === 'string') {
+        return {
+            valueDescriptor: {
+                display: value,
+                raw: value
+            }
+        };
+    }
+
+    let message: CellMessage;
+
+    const valueDescriptor = lookup.descriptors.find(d => d.raw && d.raw === value);
+    if (!valueDescriptor) {
+        message = {
+            message: 'Could not find data for ' + value
+        }
+    }
+
+    return {
+        message,
+        valueDescriptor
+    }
+}
+
+/**
+ * Updates data in the editable grid associated with the given grid model.
+ * @param gridModel the model whose editable data is updated
+ * @param rowData the data for a single row
+ * @param rowCount the number of rows to be added
+ * @param rowMin the starting row for the new rows
+ * @param colMin the starting column
+ */
+export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
+    const columns = gridModel.getInsertColumns();
+    const editorModel = getEditorModel(gridModel.getId());
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+    let selectionCells = Set<string>();
+
+    let values = List<List<ValueDescriptor>>();
+    let messages = List<CellMessage>();
+
+    rowData.forEach((data, cn) => {
+
+        const colIdx = colMin + cn;
+        const col = columns.get(colIdx);
+
+        let cv : List<ValueDescriptor>;
+
+        if (col && col.isLookup()) {
+            cv =  List<ValueDescriptor>();
+            // value had better be the rowId here, but it may be several in a comma-separated list.
+            // If it's the display value, which happens to be a number, much confusion will arise.
+            const values = data.toString().split(",");
+            values.forEach((val) => {
+                const intVal = parseInt(val);
+                const {message, valueDescriptor} = getLookupDisplayValue(col, getLookup(col), isNaN(intVal) ? val : intVal);
+                cv = cv.push(valueDescriptor);
+                if (message) {
+                    messages = messages.push(message);
+                }
+            });
+
+        } else {
+            cv = List([{
+                display: data,
+                raw: data
+            }]);
+        }
+
+        values = values.push(cv);
+    });
+
+    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
+        rowData.forEach((value, cn) => {
+
+            const colIdx = colMin + cn;
+            const cellKey = genCellKey(colIdx, rowIdx);
+
+            cellMessages = cellMessages.set(cellKey, messages.get(cn));
+            selectionCells = selectionCells.add(cellKey);
+            cellValues = cellValues.set(cellKey, values.get(cn));
+        });
+    }
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages,
+        selectionCells,
+        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
+    });
+}
+
 export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
     const model = getEditorModel(modelId);
 
@@ -1385,6 +1568,226 @@ function parsePaste(value: string): IParsePastePayload {
     }
 }
 
+export function changeColumn(model: QueryGridModel, existingFieldKey: string, newQueryColumn: QueryColumn) : EditorModel {
+    let editorModel = getEditorModel(model.getId());
+
+    const colIndex =  model.queryInfo.getInsertColumns().findIndex((column) => column.fieldKey === existingFieldKey);
+
+    // nothing to do if there is no such column
+    if (colIndex === -1)
+        return editorModel;
+
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
+
+    // get rid of existing messages and values at the designated index.
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx !== colIndex) {
+            return newCellMessages.set(cellKey, message);
+        }
+
+        return newCellMessages;
+    }, Map<string, CellMessage>());
+
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+
+        if (oldColIdx !== colIndex) {
+            return newCellValues.set(cellKey, value);
+        }
+
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
+
+
+    editorModel = updateEditorModel(editorModel, {
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues
+    });
+
+
+    const currentCol = model.queryInfo.getColumn(existingFieldKey);
+
+    // remove existing column and set new column in data
+    let data = model.data;
+    data = data.map((rowData) => {
+        rowData = rowData.remove(currentCol.fieldKey);
+        return rowData.set(newQueryColumn.fieldKey, undefined)
+    }).toMap();
+
+    let columns = OrderedMap<string, QueryColumn>();
+    model.queryInfo.columns.forEach((column, key) => {
+        if (column.fieldKey === currentCol.fieldKey) {
+            columns = columns.set(newQueryColumn.fieldKey.toLowerCase(), newQueryColumn);
+        }
+        else {
+            columns = columns.set(key, column);
+        }
+    });
+
+    updateQueryGridModel(model, {
+        data,
+        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+    });
+
+    return editorModel;
+}
+
+
+/**
+ * Adds columns to the editor model and the underlying QueryGridModel
+ * @param model the model to be updated
+ * @param queryColumns the ordered map of columns to be added
+ * @param fieldKey the fieldKey of the existing column after which the new columns should be inserted.  If undefined
+ * or the column is not found, columns will be added at the beginning.
+ */
+export function addColumns(model: QueryGridModel, queryColumns: OrderedMap<string, QueryColumn>, fieldKey?: string ) : EditorModel {
+    let editorModel = getEditorModel(model.getId());
+
+    if (queryColumns.size === 0)
+        return editorModel;
+
+    let editorColIndex;
+    let queryColIndex;
+
+    // add one to these because we insert after the given field (or at the
+    // beginning if there is no such field)
+    editorColIndex =  model.getInsertColumnIndex(fieldKey) + 1;
+    queryColIndex = model.getColumnIndex(fieldKey) + 1;
+
+    if (editorColIndex < 0 || editorColIndex > model.queryInfo.columns.size)
+        return editorModel;
+
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
+
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx >= editorColIndex) {
+            return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
+        } else if (oldColIdx < editorColIndex) {
+            return newCellMessages.set(cellKey, message);
+        }
+
+        return newCellMessages;
+    }, Map<string, CellMessage>());
+
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+
+        if (oldColIdx >= editorColIndex) {
+            return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
+        } else if (oldColIdx < editorColIndex) {
+            return newCellValues.set(cellKey, value);
+        }
+
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
+    for (let rowIdx = 0; rowIdx < editorModel.rowCount; rowIdx++) {
+        for (let c = 0; c < queryColumns.size; c++) {
+            newCellValues = newCellValues.set(genCellKey(editorColIndex + c, rowIdx), List<ValueDescriptor>());
+        }
+    }
+
+    editorModel = updateEditorModel(editorModel, {
+        colCount: editorModel.colCount + queryColumns.size,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues
+    });
+
+
+    let data = model.data;
+    data = data.map((rowData) => {
+        queryColumns.forEach(column => {
+            rowData = rowData.set(column.fieldKey, undefined)
+        });
+        return rowData;
+    }).toMap();
+
+    let columns = model.queryInfo.insertColumns(queryColIndex, queryColumns);
+
+    updateQueryGridModel(model, {
+        data,
+        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+    });
+
+    return editorModel;
+}
+
+export function removeColumn(model: QueryGridModel, fieldKey: string) : EditorModel {
+    let editorModel = getEditorModel(model.getId());
+
+    let deleteIndex = model.getInsertColumnIndex(fieldKey);
+    // nothing to do if there is no such column
+    if (deleteIndex === -1)
+        return editorModel;
+
+    let newCellMessages = editorModel.cellMessages;
+    let newCellValues = editorModel.cellValues;
+
+    newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+        if (oldColIdx > deleteIndex) {
+            return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
+        } else if (oldColIdx < deleteIndex) {
+            return newCellMessages.set(cellKey, message);
+        }
+
+        return newCellMessages;
+    }, Map<string, CellMessage>());
+
+    newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map((v) => parseInt(v));
+
+        if (oldColIdx > deleteIndex) {
+            return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
+        } else if (oldColIdx < deleteIndex) {
+            return newCellValues.set(cellKey, value);
+        }
+
+        return newCellValues;
+    }, Map<string, List<ValueDescriptor>>());
+
+    editorModel = updateEditorModel(editorModel, {
+        colCount: editorModel.colCount - 1,
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: newCellMessages,
+        cellValues: newCellValues
+    });
+
+
+    // remove column from all rows in queryGridModel.data
+    let data = model.data;
+    data = data.map((rowData) => {
+        return rowData.remove(fieldKey);
+    }).toMap();
+
+    const columns = model.queryInfo.columns.remove(fieldKey.toLowerCase());
+
+    updateQueryGridModel(model, {
+        data,
+        queryInfo: model.queryInfo.merge({columns}) as QueryInfo
+    });
+
+    return editorModel;
+
+}
+
 function beginPaste(model: EditorModel, numRows: number): EditorModel {
     return updateEditorModel(model, {
         isPasting: true,
@@ -1392,30 +1795,39 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
     });
 }
 
-export function addRows(model: QueryGridModel, count?: number): EditorModel {
+export function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): EditorModel {
     let editorModel = getEditorModel(model.getId());
-
+    let updatedModel = model;
     if (count > 0) {
         if (model.editable) {
-            editorModel = updateEditorModel(editorModel, {
-                rowCount: editorModel.rowCount + count
-            });
+            if (rowData) {
+                const hasData = editorModel.hasData();
+                if (!hasData) {
+                    updatedModel = removeAllRows(model);
+                }
+                editorModel = updateEditorData(updatedModel, rowData.toList(), count, hasData ? updatedModel.getData().size : 0);
+            }
+            else {
+                editorModel = updateEditorModel(editorModel, {
+                    rowCount: editorModel.rowCount + count
+                });
+            }
         }
 
-        let data = model.data.asMutable();
-        let dataIds = model.dataIds.asMutable();
+        let data = updatedModel.data;
+        let dataIds = updatedModel.dataIds;
 
         for (let i = 0; i < count; i++) {
             // ensure we don't step on another ID
             let id = GRID_EDIT_INDEX + ID_COUNTER++;
 
-            data.set(id, EMPTY_ROW);
-            dataIds.push(id);
+            data = data.set(id, rowData || EMPTY_ROW);
+            dataIds = dataIds.push(id);
         }
 
-        updateQueryGridModel(model, {
-            data: data.asImmutable(),
-            dataIds: dataIds.asImmutable()
+        updateQueryGridModel(updatedModel, {
+            data,
+            dataIds
         });
     }
 
@@ -1695,6 +2107,26 @@ export function select(modelId: string, event: React.KeyboardEvent<HTMLElement>)
     }
 }
 
+export function removeAllRows(model: QueryGridModel) : QueryGridModel {
+    const editorModel = getEditorModel(model.getId());
+
+    updateEditorModel(editorModel, {
+        focusColIdx: -1,
+        focusRowIdx: -1,
+        rowCount: 0,
+        selectedColIdx: -1,
+        selectedRowIdx: -1,
+        selectionCells: Set<string>(),
+        cellMessages: Map<string, CellMessage>(),
+        cellValues: Map<string, CellValues>()
+    });
+
+    return updateQueryGridModel(model, {
+        data: Map<any, Map<string, any>>(),
+        dataIds: List<any>()
+    });
+}
+
 
 export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     const editorModel = getEditorModel(model.getId());
@@ -1759,4 +2191,52 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
     removeRows(model, List<number>([rowIdx]));
+}
+
+export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('search', 'json.api'),
+            method: 'GET',
+            params: userConfig,
+            success: Utils.getCallbackWrapper((json) => {
+                addDataObjects(json);
+                const urlResolver = new URLResolver();
+                resolve(urlResolver.resolveSearchUsingIndex(json));
+            }),
+            failure: Utils.getCallbackWrapper((json) => {
+                reject(json);
+            }, null, false)
+        });
+    });
+}
+
+// Some search results will not have a data object.  Much of the display logic
+// relies on this, so for such results that we want to show the user, we add a
+// data element
+function addDataObjects(jsonResults) {
+    jsonResults.hits.forEach(hit => {
+
+        if (hit.data === undefined) {
+            let data = parseSearchIdToData(hit.id);
+            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0)
+                hit.data = data;
+        }
+    });
+}
+
+// Create a data object from the search id, which is assumed to be of the form:
+//      [group:][type:]rowId
+function parseSearchIdToData(idString): SearchIdData {
+    let idData = new SearchIdData();
+    if (idString) {
+        let idParts = idString.split(":");
+
+        idData.id = idParts[idParts.length - 1];
+        if (idParts.length > 1)
+            idData.type = idParts[idParts.length - 2];
+        if (idParts.length > 2)
+            idData.group = idParts[idParts.length - 3];
+    }
+    return idData;
 }

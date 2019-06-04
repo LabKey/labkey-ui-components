@@ -6,6 +6,7 @@ export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
 
+export const MAX_ADDED_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
 
 export enum EXPORT_TYPES {
@@ -158,3 +159,8 @@ export enum KEYS {
 
     FFLeftMetaKey = 224 // Firefox
 }
+
+// This is used for filtering search results.  Since we first check for search hits containing
+// a data object, which exp.data objects and materials have, the most important elements of this
+// array are the types that don't have that data object.
+export const RELEVANT_SEARCH_RESULT_TYPES = ['data', 'experiment', 'material'];

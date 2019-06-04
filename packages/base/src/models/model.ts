@@ -2,11 +2,11 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
+import { List, Map, OrderedMap, OrderedSet, Record, fromJS } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey, intersect, toLowerSafe } from '../utils/utils'
+import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery, decodePart } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -129,6 +129,13 @@ export class User extends Record(defaultUser) implements IUserProps {
     }
 }
 
+export interface IParsedSelectionKey {
+    keys: string
+    schemaQuery: SchemaQuery
+}
+
+const APP_SELECTION_PREFIX = 'appkey';
+
 export class SchemaQuery extends Record({
     schemaName: undefined,
     queryName: undefined,
@@ -173,6 +180,23 @@ export class SchemaQuery extends Record({
         }
 
         return false;
+    }
+
+    static parseSelectionKey(selectionKey: string): IParsedSelectionKey {
+        const [ appkey /* not used */, schemaQueryKey, keys ] = selectionKey.split('|');
+
+        return {
+            keys,
+            schemaQuery: getSchemaQuery(schemaQueryKey)
+        };
+    }
+
+    static createAppSelectionKey(targetSQ: SchemaQuery, keys: Array<any>): string {
+        return [
+            APP_SELECTION_PREFIX,
+            resolveSchemaQuery(targetSQ),
+            keys.join(';')
+        ].join('|');
     }
 }
 
@@ -539,6 +563,11 @@ export class QueryGridModel extends Record({
         return undefined;
     }
 
+    isRequiredColumn(fieldKey: string): boolean {
+        const column = this.getColumn(fieldKey);
+        return column ? column.required : false;
+    }
+
     /**
      * Returns the set of display columns for this QueryGridModel based on its configuration.
      * @returns {List<QueryColumn>}
@@ -556,6 +585,14 @@ export class QueryGridModel extends Record({
         }
 
         return emptyColumns;
+    }
+
+    getColumnIndex(fieldKey: string): number {
+        if (!fieldKey)
+            return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.queryInfo.columns.keySeq().findIndex((column) => (column.toLowerCase() === lcFieldKey));
     }
 
     getAllColumns(): List<QueryColumn> {
@@ -607,6 +644,15 @@ export class QueryGridModel extends Record({
 
     getId(): string {
         return this.id;
+    }
+
+    getInsertColumnIndex(fieldKey) : number {
+        if (!fieldKey)
+            return -1;
+
+        const lcFieldKey = fieldKey.toLowerCase();
+        return this.getInsertColumns()
+            .findIndex((column) => (column.fieldKey.toLowerCase() === lcFieldKey));
     }
 
     getInsertColumns(): List<QueryColumn> {
@@ -758,6 +804,22 @@ export class QueryGridModel extends Record({
             })
         }).toList();
     }
+
+    getRowIdsList(useSelectedIds: boolean): List<Map<string, any>> {
+        let rows = List<Map<string, any>>();
+        if (!useSelectedIds) {
+            this.getData().forEach( (data) => {
+                rows = rows.push(Map(fromJS({rowId: data.getIn(['RowId', 'value'])})));
+            });
+        }
+        else {
+            this.selectedIds.forEach( (rowId) => {
+                rows = rows.push(Map(fromJS({rowId})));
+            });
+        }
+
+        return rows;
+    }
 }
 
 // commented out attributes are not used in app
@@ -851,6 +913,30 @@ export class QueryInfo extends Record({
         }));
     }
 
+    /**
+     * Use this method for creating a basic QueryInfo object with a proper schemaQuery object
+     * and columns map from a JSON object.
+     *
+     * @param queryInfoJson
+     */
+    static fromJSON(queryInfoJson: any) : QueryInfo {
+        let schemaQuery: SchemaQuery;
+
+        if (queryInfoJson.schemaName && queryInfoJson.name) {
+            schemaQuery = SchemaQuery.create(queryInfoJson.schemaName, queryInfoJson.name);
+        }
+        let columns = OrderedMap<string, QueryColumn>();
+        Object.keys(queryInfoJson.columns).forEach((columnKey) => {
+            let rawColumn = queryInfoJson.columns[columnKey];
+            columns = columns.set(rawColumn.fieldKey.toLowerCase(), QueryColumn.create(rawColumn))
+        });
+
+        return QueryInfo.create(Object.assign({}, queryInfoJson, {
+            columns,
+            schemaQuery
+        }))
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -865,6 +951,11 @@ export class QueryInfo extends Record({
         }
 
         return undefined;
+    }
+
+    isRequiredColumn(fieldKey: string): boolean {
+        const column = this.getColumn(fieldKey);
+        return column ? column.required : false;
     }
 
     getDisplayColumns(view?: string): List<QueryColumn> {
@@ -960,6 +1051,36 @@ export class QueryInfo extends Record({
         }
 
         return this.views.get(_view);
+    }
+
+    /**
+     * Insert a set of columns into this queryInfo's columns at a designated index.  If the given column index
+     * is outside the range of the existing columns, this queryInfo's columns will be returned.  An index that is equal to the
+     * current number of columns will cause the given queryColumns to be appended to the existing ones.
+     * @param colIndex the index at which the new columns should start
+     * @param queryColumns the (ordered) set of columns
+     * @returns a new set of columns when the given columns inserted
+     */
+    insertColumns(colIndex: number, queryColumns: OrderedMap<string, QueryColumn>) : OrderedMap<string, QueryColumn> {
+        if (colIndex < 0 || colIndex > this.columns.size)
+            return this.columns;
+
+        // put them at the end
+        if (colIndex === this.columns.size)
+            return this.columns.merge(queryColumns);
+
+        let columns = OrderedMap<string, QueryColumn>();
+        let index = 0;
+
+        this.columns.forEach((column, key) => {
+            if (index === colIndex) {
+                columns = columns.merge(queryColumns);
+                index = index + queryColumns.size;
+            }
+            columns = columns.set(key, column);
+            index++;
+        });
+        return columns;
     }
 }
 
@@ -1152,4 +1273,259 @@ export function insertColumnFilter(col: QueryColumn): boolean {
         col.userEditable === true &&
         col.fieldKeyArray.length === 1
     );
+}
+
+export class AssayProtocolModel extends Record({
+    allowTransformationScript: false,
+    autoCopyTargetContainer: undefined,
+    availableDetectionMethods: undefined,
+    availableMetadataInputFormats: undefined,
+    availablePlateTemplates: undefined,
+    backgroundUpload: false,
+    description: undefined,
+    // domains: undefined,
+    editableResults: false,
+    editableRuns: false,
+    metadataInputFormatHelp: undefined,
+    moduleTransformScripts: undefined,
+    name: undefined,
+    protocolId: undefined,
+    protocolParameters: undefined,
+    protocolTransformScripts: undefined,
+    providerName: undefined,
+    saveScriptFiles: false,
+    selectedDetectionMethod: undefined,
+    selectedMetadataInputFormat: undefined,
+    selectedPlateTemplate: undefined
+}) {
+    allowTransformationScript: boolean;
+    autoCopyTargetContainer: string;
+    availableDetectionMethods: any;
+    availableMetadataInputFormats: any;
+    availablePlateTemplates: any;
+    backgroundUpload: boolean;
+    description: string;
+    // domains: any;
+    editableResults: boolean;
+    editableRuns: boolean;
+    metadataInputFormatHelp: any;
+    moduleTransformScripts: Array<any>;
+    name: string;
+    protocolId: number;
+    protocolParameters: any;
+    protocolTransformScripts: any;
+    providerName: string;
+    saveScriptFiles: boolean;
+    selectedDetectionMethod: any;
+    selectedMetadataInputFormat: any;
+    selectedPlateTemplate: any;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+enum AssayDomainTypes {
+    BATCH = 'Batch',
+    RUN = 'Run',
+    RESULT = 'Result',
+}
+
+enum AssayLink {
+    BATCHES = 'batches',
+    BEGIN = 'begin',
+    DESIGN_COPY = 'designCopy',
+    DESIGN_EDIT = 'designEdit',
+    IMPORT = 'import',
+    RESULT = 'result',
+    RESULTS = 'results',
+    RUNS = 'runs'
+}
+
+interface ScopedSampleColumn {
+    domain: AssayDomainTypes;
+    column: QueryColumn;
+}
+
+export class AssayDefinitionModel extends Record({
+    containerPath: undefined,
+    description: undefined,
+    domains: Map<string, List<QueryColumn>>(),
+    domainTypes: Map<string, string>(),
+    id: undefined,
+    importAction: undefined,
+    importController: undefined,
+    links: Map<AssayLink, string>(),
+    name: undefined,
+    projectLevel: undefined,
+    protocolSchemaName: undefined,
+    templateLink: undefined,
+    type: undefined
+}) {
+    containerPath: string;
+    description: string;
+    domains: Map<string, List<QueryColumn>>;
+    domainTypes: Map<string, string>;
+    id: number;
+    importAction: string;
+    importController: string;
+    links: Map<AssayLink, string>;
+    name: string;
+    projectLevel: boolean;
+    protocolSchemaName: string;
+    templateLink: string;
+    type: string;
+
+    static create(rawModel): AssayDefinitionModel {
+        let domains = Map<string, List<QueryColumn>>();
+        let domainTypes = Map<string, string>();
+        let links = Map<AssayLink, string>();
+
+        if (rawModel) {
+            if (rawModel.domainTypes) {
+                domainTypes = fromJS(rawModel.domainTypes);
+            }
+
+            if (rawModel.domains) {
+                const rawDomains = Object.keys(rawModel.domains).reduce((result, k) => {
+                    result[k] = List<QueryColumn>(rawModel.domains[k].map(rawColumn => QueryColumn.create(rawColumn)));
+                    return result;
+                }, {});
+                domains = Map<string, List<QueryColumn>>(rawDomains);
+            }
+
+            if (rawModel.links) {
+                links = fromJS(rawModel.links);
+            }
+        }
+
+        return new AssayDefinitionModel({
+            ...rawModel,
+            domains,
+            domainTypes,
+            links,
+            protocolSchemaName: decodePart(rawModel.protocolSchemaName),
+        });
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    getDomainByType(domainType: AssayDomainTypes): List<QueryColumn> {
+        if (this.domainTypes.has(domainType)) {
+            return this.domains.get(this.domainTypes.get(domainType));
+        }
+
+        return undefined;
+    }
+
+    // getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
+    //     let url;
+    //     // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
+    //     if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
+    //         url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
+    //         if (dataTab)
+    //             url = url.addParam('dataTab', dataTab);
+    //         if (selectionKey)
+    //             url = url.addParam('selectionKey', selectionKey);
+    //         url = url.toHref();
+    //     }
+    //     else {
+    //         url = this.links.get(AssayLink.IMPORT)
+    //     }
+    //     return url;
+    // }
+
+    hasLookup(targetSQ: SchemaQuery): boolean {
+        const isSampleSet = targetSQ.hasSchema('samples');
+        const findLookup = (col) => {
+            if (col.isLookup()) {
+                const lookupSQ = SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName);
+                const isMatch = targetSQ.isEqual(lookupSQ);
+
+                // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well
+                if (isSampleSet) {
+                    return isMatch || SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ);
+                }
+
+                return isMatch;
+            }
+
+            return false;
+        };
+
+        // Traditional for loop so we can short circuit.
+        for (const k of Object.keys(AssayDomainTypes)) {
+            const domainType = AssayDomainTypes[k];
+            const domainColumns = this.getDomainByType(domainType);
+
+            if (domainColumns && domainColumns.find(findLookup)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private getSampleColumnByDomain(domainType: AssayDomainTypes): QueryColumn {
+        const columns = this.getDomainByType(domainType);
+
+        if (columns) {
+            return columns.find(c => isSampleLookup(c));
+        }
+
+        return null;
+    }
+
+
+    getSampleColumn(): ScopedSampleColumn {
+        // The order matters here, we care about result, run, and batch in that order.
+        for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
+            const column = this.getSampleColumnByDomain(domain);
+
+            if (column) {
+                return {column, domain};
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * getSampleColumnLookup returns the string representation of the sample column relative from the Results table.
+     */
+    getSampleColumnLookup(): string {
+        const sampleCol = this.getSampleColumn();
+
+        if (sampleCol) {
+            if (sampleCol.domain == AssayDomainTypes.RESULT) {
+                return sampleCol.column.fieldKey;
+            } else if (sampleCol.domain == AssayDomainTypes.RUN) {
+                return `Run/${sampleCol.column.fieldKey}`;
+            } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
+                return `Run/Batch/${sampleCol.column.fieldKey}`;
+            }
+
+            throw new Error("Unexpected Assay Domain Type.");
+        }
+
+        return null;
+    }
+}
+
+function isSampleLookup(column: QueryColumn) {
+    /**
+     * 35881: Ensure that a column is a valid lookup to one of the following
+     * - exp.Materials
+     * - samples.* (any sample set)
+     */
+
+    if (!column.isLookup()) {
+        return false;
+    }
+
+    const lookupSQ = SchemaQuery.create(column.lookup.schemaName, column.lookup.queryName);
+
+    return SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
 }

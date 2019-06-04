@@ -1,10 +1,12 @@
 import * as React from "react";
-import { MenuItem } from 'react-bootstrap'
+import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap'
 import { List } from 'immutable'
 
 import { ISubItem, SubMenuItem } from './SubMenuItem'
 
 export interface MenuOption {
+    disabled?: boolean
+    disabledMsg?: string
     href: string
     name: string
     key: string
@@ -26,7 +28,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
 
     isCurrentMenuChoice(option: MenuOption): boolean {
         const { currentMenuChoice } = this.props;
-        return option.key === currentMenuChoice;
+        return currentMenuChoice && option.key.toLowerCase() === currentMenuChoice.toLowerCase();
     }
 
     getCurrentMenuChoiceItem() {
@@ -34,7 +36,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         const currentOption = options.find(this.isCurrentMenuChoice);
 
         if (currentOption) {
-            return <MenuItem href={currentOption.href} key={0}>{currentOption.name}</MenuItem>
+            return SubMenu.renderMenuItem(currentOption, 0);
         }
 
         return undefined;
@@ -47,12 +49,40 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         options.forEach(option => {
             if (!this.isCurrentMenuChoice(option)) {
                 items.push({
+                    disabled: option.disabled,
+                    disabledMsg: option.disabledMsg,
                     text: option.name,
                     href: option.href
                 });
             }
         });
         return items;
+    }
+
+    static renderMenuItem(option: MenuOption, key: any) {
+        let itemProps = Object.assign({}, option);
+
+        // remove ISubItem specific props
+        delete itemProps.name;
+        delete itemProps.disabledMsg;
+
+        const menuItem = (
+            <MenuItem
+                {...itemProps}
+                key={key}>
+                {option.name}
+            </MenuItem>
+        );
+
+        if (option.disabledMsg && option.disabled) {
+            const overlay = <Popover id="attach-submenu-warning">{option.disabledMsg}</Popover>;
+            return (
+                <OverlayTrigger overlay={overlay} placement={"right"}>
+                    {menuItem}
+                </OverlayTrigger>
+            );
+        }
+        return menuItem;
     }
 
     render() {
@@ -63,7 +93,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
         if (currentMenuChoice && options.size < 3) {
             options.forEach((option, i) => {
                 items.push(
-                    <MenuItem href={option.href} key={i}>{option.name}</MenuItem>
+                    SubMenu.renderMenuItem(option, i)
                 )
             });
         }

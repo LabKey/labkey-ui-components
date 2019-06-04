@@ -8,6 +8,20 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * Include FilePreviewGrid functionality with FileAttachmentForm
 
+## version 0.5.0
+*Released*: 04 June 2019
+* port SVGIcon and CreatedModified from Biologics
+* port AssayDefinitionModel and fetchAllAssays from Biologics
+* ManageDropdownButton and SelectionMenuItem
+
+## version 0.4.0
+*Released*: 03 June 2019
+* port caseInsensitive, similaritySortFactory, spliceURL functions from Biologics
+* port AssayProtocolModel and fetchProtocol model from Biologics
+* export datePlaceholder function
+* export capitalizeFirstChar utility method
+* Add method inserting columns into QueryInfo
+
 ### version 0.3.0
 *Released*: 03 June 2019
 * Add ConfirmModal component

@@ -9,7 +9,7 @@ import {
 import { QueryGridModel, SchemaQuery, GRID_CHECKBOX_OPTIONS, QueryColumn } from '@glass/base'
 import { List } from "immutable";
 
-import { DataViewInfo, EditorModel, LookupStore } from './model'
+import { DataViewInfo, EditorModel, LookupStore } from './models'
 
 beforeEach(() => {
     resetQueryGridState();

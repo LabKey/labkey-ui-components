@@ -7,7 +7,6 @@ import { ActionURL, Filter } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
 import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery, decodePart } from '../utils/utils'
-import { SCHEMAS } from "./schemas";
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -1439,7 +1438,7 @@ export class AssayDefinitionModel extends Record({
     // }
 
     hasLookup(targetSQ: SchemaQuery): boolean {
-        const isSampleSet = targetSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
+        const isSampleSet = targetSQ.hasSchema('samples');
         const findLookup = (col) => {
             if (col.isLookup()) {
                 const lookupSQ = SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName);
@@ -1447,7 +1446,7 @@ export class AssayDefinitionModel extends Record({
 
                 // 35881: If targetSQ is a Sample Set then allow targeting exp.materials table as well
                 if (isSampleSet) {
-                    return isMatch || SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ);
+                    return isMatch || SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ);
                 }
 
                 return isMatch;
@@ -1528,5 +1527,5 @@ function isSampleLookup(column: QueryColumn) {
 
     const lookupSQ = SchemaQuery.create(column.lookup.schemaName, column.lookup.queryName);
 
-    return SCHEMAS.EXP_TABLES.MATERIALS.isEqual(lookupSQ) || lookupSQ.hasSchema(SCHEMAS.SAMPLE_SETS.SCHEMA);
+    return SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
 }

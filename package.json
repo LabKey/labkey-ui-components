@@ -4,7 +4,8 @@
   "scripts": {
     "build:docs": "npm run clean:docs && typedoc --tsconfig tsconfig.base.json --options typedoc.js ./packages && touch docs/.nojekyll",
     "clean:docs": "rimraf docs",
-    "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
+    "deploy:docs": "npm run build:docs && gh-pages -t -d docs",
+    "publish:prerelease": "lerna publish prerelease --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client"
   },
   "devDependencies": {
     "@types/enzyme": "3.9.3",

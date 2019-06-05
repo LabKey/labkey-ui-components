@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.1-fb-package-updates.4",
+  "version": "0.1.4-fb-package-updates.1",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.3.0-fb-package-updates.4"
+    "@glass/base": "^0.5.1-fb-package-updates.1"
   },
   "jest": {
     "globals": {

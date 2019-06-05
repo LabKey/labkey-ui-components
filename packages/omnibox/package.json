@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.5.1-fb-package-updates.1",
+    "@glass/base": "0.5.1-fb-package-updates.2",
     "react-input-autosize": "2.2.1"
   },
   "peerDependencies": {

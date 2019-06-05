@@ -3,58 +3,48 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import {Map, List} from "immutable";
-import {Ajax, ActionURL} from "@labkey/api";
+import {Ajax, ActionURL, Utils} from "@labkey/api";
 
-export function getContentFromExpData(expData: any) : Promise<any> { //TODO define Exp.Data config interface
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: ActionURL.buildURL("experiment", "showFile"),
-            method: 'GET',
-            params: {rowId: expData.id, format: 'jsonTSV'},
-            success: (response) => {
-                resolve(JSON.parse(response.responseText));
-            },
-            failure: (response) => {
-                console.error(response);
-                reject("There was a problem getting preview information from the data file.");
-            }
-        });
-    });
-}
-
-export function uploadDataFileAsExpData(file: File) : Promise<any> {
-    return new Promise((resolve, reject) => {
-        let form = new FormData();
-        form.append('file', file);
-
-        Ajax.request({
-            url: ActionURL.buildURL('assay', 'assayFileUpload'),
-            method: 'POST',
-            form,
-            success: (response) => {
-                resolve(JSON.parse(response.responseText));
-            },
-            failure: (response) => {
-                reject("There was a problem uploading the data file for data preview.");
-                console.error(response);
-            }
-        });
-    })
-}
-
-// Converts the 2D array returned by Exp.ShowFile into a list of row maps that the grid understands
-export function convertRowDataIntoPreviewData(rowTsv: any, previewRowCount: number): List<Map<string, any>> {
-    const headerRow = rowTsv.shift();
+// Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
+export function convertRowDataIntoPreviewData(rowArray: any, previewRowCount: number): List<Map<string, any>> {
     let rows = List<Map<string, any>>();
 
-    for (let i = 0; i < Math.min(previewRowCount, rowTsv.length); i++) {
+    const headerRow = Utils.isArray(rowArray) && rowArray.length > 0 ? rowArray[0] : undefined;
+    if (!headerRow) {
+        return rows;
+    }
+
+    for (let i = 1; i < Math.min((previewRowCount + 1), rowArray.length); i++) {
+        const row = rowArray[i];
+
         let m = {};
         headerRow.forEach((column, j) => {
-            m[column] = rowTsv[i][j];
+            m[column] = row[j];
         });
 
         rows = rows.push(Map(m));
     }
 
     return rows;
+}
+
+export function inferDomainFromFile(file: File, numLinesToInclude: number) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        let form = new FormData();
+        form.append('file', file);
+        form.append('numLinesToInclude', numLinesToInclude ? (numLinesToInclude + 1).toString() : undefined);
+
+        Ajax.request({
+            url: ActionURL.buildURL('property', 'inferDomain'),
+            method: 'POST',
+            form,
+            success: (response) => {
+                resolve(JSON.parse(response.responseText));
+            },
+            failure: (response) => {
+                reject("There was a problem uploading the data file for inferring the domain.");
+                console.error(response);
+            }
+        });
+    })
 }

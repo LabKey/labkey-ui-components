@@ -9,22 +9,15 @@ import { boolean, button, number, radios, select, text, withKnobs } from '@story
 import mock, { proxy } from "xhr-mock";
 
 import { FileAttachmentForm } from "../components/files/FileAttachmentForm";
-import assayDataJson from "../test/data/assay-assayFileUpload.json";
-import showFileJson from "../test/data/experiment-showFile.json";
-
+import inferDomainJson from "../test/data/property-inferDomain.json";
 
 import './stories.css'
 
 mock.setup();
-mock.post(/.*\/assay\/assayFileUpload.*/, {
+mock.post(/.*\/property\/inferDomain.*/, {
     status: 200,
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(assayDataJson)
-});
-mock.get(/.*\/experiment\/showFile.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(showFileJson)
+    body: JSON.stringify(inferDomainJson)
 });
 mock.use(proxy);
 

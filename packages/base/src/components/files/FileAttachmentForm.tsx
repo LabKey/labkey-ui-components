@@ -5,13 +5,14 @@
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
 import { Map, List } from 'immutable'
+import { Utils } from '@labkey/api'
 
 import { FormSection } from '../FormSection'
 import { Progress } from '../Progress'
 import { FileAttachmentContainer } from './FileAttachmentContainer'
 import { FilePreviewGrid } from "./FilePreviewGrid";
 import { LoadingSpinner } from "../LoadingSpinner";
-import { convertRowDataIntoPreviewData, getContentFromExpData, uploadDataFileAsExpData } from "./actions";
+import { convertRowDataIntoPreviewData, inferDomainFromFile } from "./actions";
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -32,6 +33,8 @@ interface FileAttachmentFormProps {
     submitText?: string
     showPreviewGrid?: boolean
     previewRowCount?: number
+    previewHeader?: string
+    previewInfoMsg?: string
 }
 
 interface State {
@@ -162,6 +165,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     renderPreviewGrid() {
+        const { previewHeader, previewInfoMsg } = this.props;
         const { errorMessage, previewData, previewStatus } = this.state;
 
         if (!this.shouldShowPreviewGrid()) {
@@ -170,7 +174,12 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         if (previewData || errorMessage) {
             return (
-                <FilePreviewGrid data={previewData} errorMsg={errorMessage}/>
+                <FilePreviewGrid
+                    header={previewHeader}
+                    infoMsg={previewInfoMsg}
+                    data={previewData}
+                    errorMsg={errorMessage}
+                />
             )
         }
         else if (previewStatus) {
@@ -191,39 +200,25 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     uploadDataFileForPreview() {
+        const { previewRowCount } = this.props;
+        const { attachedFiles } = this.state;
+
         this.updatePreviewStatus("Uploading file...");
 
-        // just take the first file, since we only support 1 file at this time
-        uploadDataFileAsExpData(this.state.attachedFiles.first())
-            .then((response) => {
-                this.getFileContentsForPreview(response);
-            })
-            .catch(reason => {
-                this.updatePreviewStatus(null);
-                this.updateErrors(reason);
-            });
-    }
-
-    getFileContentsForPreview(expData: any): void {
-        this.updatePreviewStatus("Fetching file preview...");
-
-        getContentFromExpData(expData)
+        //just take the first file, since we only support 1 file at this time
+        inferDomainFromFile(attachedFiles.first(), previewRowCount)
             .then((response) => {
                 this.updatePreviewStatus(null);
 
-                if (Array.isArray(response.sheets) && response.sheets.length > 0) {
-                    const previewData = convertRowDataIntoPreviewData(response.sheets[0].data, this.props.previewRowCount);
+                if (Utils.isArray(response.data) && response.data.length > 1) {
+                    const previewData = convertRowDataIntoPreviewData(response.data, previewRowCount);
                     this.setState(() => ({previewData}));
                     this.updateErrors(null);
                 }
                 else {
-                    this.updateErrors('No data found in the file.');
+                    this.updateErrors('No data found in the attached file.');
                 }
             })
-            .catch(reason => {
-                this.updatePreviewStatus(null);
-                this.updateErrors(reason);
-            });
     }
 
     render() {

@@ -20,5 +20,8 @@ export const PermissionTypes = {
     Update: 'org.labkey.api.security.permissions.UpdatePermission',
 
     // Study
-    DesignAssay: 'org.labkey.api.study.permissions.DesignAssayPermission'
+    DesignAssay: 'org.labkey.api.study.permissions.DesignAssayPermission',
+
+    // Assay QC
+    QCAnalyst: 'org.labkey.api.security.permissions.QCAnalystPermission',
 };

@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.6",
+  "version": "0.1.7-fb-add-assay-qc-workflow.1",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.5.3"
+    "@glass/base": "0.6.0-fb-add-assay-qc-workflow.1"
   },
   "jest": {
     "globals": {

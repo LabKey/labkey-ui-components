@@ -1,6 +1,6 @@
 {
   "name": "@glass/navigation",
-  "version": "0.2.1-fb-package-updates.2",
+  "version": "0.2.1-fb-package-updates.3",
   "description": "Navigation elements and actions for an application and its pages",
   "main": "dist/navigation.cjs.js",
   "module": "dist/navigation.es.js",

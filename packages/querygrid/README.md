@@ -4,8 +4,12 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.5.1
+*Released*: 05 June 2019
+* Update external package versions
+
+### version 0.5.0
+*Released*: 04 June 2019
 * Port HeatMap components from Biologics
 * PageDetailHeader, DetailEditing, updateRows, deleteRows, and related actions/models from Biologics
 * Select (now called LookupSelectInput) input from Biologics

@@ -4,8 +4,12 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.2.1
+*Released*: 05 June 2019
+* Update external package versions
+
+### version 0.2.0
+*Released*: 04 June 2019
 * Breadcrumb components from Biologics
 * Implementation for SearchBox component in header navigation bar
 

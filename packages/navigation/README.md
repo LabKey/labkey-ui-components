@@ -6,9 +6,16 @@ Application navigation elements and functions
 
 ### version ???
 *Released*: ???
-* Update package for changes to @glass/base
 * Breadcrumb components from Biologics
 * Implementation for SearchBox component in header navigation bar
+
+### version 0.1.11
+*Released*: 03 June 2019
+* Update package for changes to @glass/base v0.4.0
+
+### version 0.1.10
+*Released*: 03 June 2019
+* Package patch update for changes to @glass/base v0.3.0
 
 ### version 0.1.9
 *Released*: 22 May 2019

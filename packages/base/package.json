@@ -22,7 +22,7 @@
     "watch:build": "watch 'yarn build' ./src",
     "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
     "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
-    "watch": "npm run watch"
+    "watch": "npm run watch:build"
   },
   "repository": {
     "type": "git",

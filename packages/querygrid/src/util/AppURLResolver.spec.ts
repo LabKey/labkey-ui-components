@@ -106,6 +106,8 @@ describe('URL Resolvers', () => {
 
     test('Should remap URLs within SelectRowsResult', () => {
 
+        LABKEY.contextPath = 'labkeyTest';
+
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
         // avoid false positives by defining number of assertions in a test
         expect.assertions(8);

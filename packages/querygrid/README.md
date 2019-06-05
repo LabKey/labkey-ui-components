@@ -12,8 +12,8 @@ Query Grid for LabKey schema/query data views
 * SearchResultsPanel, SearchResultCard, SearchResultsModel, and searchUsingIndex from Biologics
 * SampleDeleteConfirmModal
 
-### version ???
-*Released*: ???
+### version 0.4.0
+*Released*: 03 June 2019
 * Port QueryFormInputs and the various input fields from Biologics
 * Port QuerySelect, SelectInput and related actions/models from Biologics
 * Add optional remove parameter to the gridInvalidate methods
@@ -28,6 +28,10 @@ Query Grid for LabKey schema/query data views
 * change AddRowsControl to allow deletion of value in the input field (setting to undefined instead of min value)
 * add validateData method to EditorModel for validating required fields and uniqueness
 * Add SampleInsertPanel (with EditableGrid component)
+
+### version 0.3.2
+*Released*: 03 June 2019
+* Package patch update for changes to @glass/base v0.3.0
 
 ### version 0.3.1
 *Released*: 27 May 2019

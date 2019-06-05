@@ -4,11 +4,15 @@ import {Map, List} from 'immutable';
 import { Alert } from "../Alert";
 import { Grid, GridColumn } from "../Grid";
 
-interface Props {
-    data: List<Map<string, any>>
-    columns?: List<GridColumn>
+export interface FileGridPreviewProps {
+    previewCount: number
     header?: string
     infoMsg?: any
+}
+
+type Props = FileGridPreviewProps & {
+    data: List<Map<string, any>>
+    columns?: List<GridColumn>
     errorMsg?: string
 }
 

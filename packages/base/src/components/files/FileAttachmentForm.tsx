@@ -10,7 +10,7 @@ import { Utils } from '@labkey/api'
 import { FormSection } from '../FormSection'
 import { Progress } from '../Progress'
 import { FileAttachmentContainer } from './FileAttachmentContainer'
-import { FilePreviewGrid } from "./FilePreviewGrid";
+import { FileGridPreviewProps, FilePreviewGrid } from "./FilePreviewGrid";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { convertRowDataIntoPreviewData, inferDomainFromFile } from "./actions";
 
@@ -31,10 +31,7 @@ interface FileAttachmentFormProps {
     showLabel?: boolean
     showProgressBar?: boolean
     submitText?: string
-    showPreviewGrid?: boolean
-    previewRowCount?: number
-    previewHeader?: string
-    previewInfoMsg?: string
+    previewGridProps?: FileGridPreviewProps
 }
 
 interface State {
@@ -59,15 +56,13 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         showButtons: false,
         showLabel: true,
         showProgressBar: false,
-        submitText: 'Upload',
-        showPreviewGrid: false,
-        previewRowCount: 3
+        submitText: 'Upload'
     };
 
     constructor(props?: FileAttachmentFormProps) {
         super(props);
 
-        if (props.allowMultiple && props.showPreviewGrid) {
+        if (props.allowMultiple && props.previewGridProps) {
             console.warn('Showing the file preview grid is only supported for single file upload.')
         }
 
@@ -156,7 +151,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     isShowPreviewGrid() {
-        return !this.props.allowMultiple && this.props.showPreviewGrid;
+        return !this.props.allowMultiple && this.props.previewGridProps;
     }
 
     shouldShowPreviewGrid() {
@@ -165,7 +160,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     renderPreviewGrid() {
-        const { previewHeader, previewInfoMsg } = this.props;
+        const { previewGridProps } = this.props;
         const { errorMessage, previewData, previewStatus } = this.state;
 
         if (!this.shouldShowPreviewGrid()) {
@@ -175,8 +170,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         if (previewData || errorMessage) {
             return (
                 <FilePreviewGrid
-                    header={previewHeader}
-                    infoMsg={previewInfoMsg}
+                    {...previewGridProps}
                     data={previewData}
                     errorMsg={errorMessage}
                 />
@@ -200,18 +194,18 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     uploadDataFileForPreview() {
-        const { previewRowCount } = this.props;
+        const { previewCount } = this.props.previewGridProps;
         const { attachedFiles } = this.state;
 
         this.updatePreviewStatus("Uploading file...");
 
         //just take the first file, since we only support 1 file at this time
-        inferDomainFromFile(attachedFiles.first(), previewRowCount)
+        inferDomainFromFile(attachedFiles.first(), previewCount)
             .then((response) => {
                 this.updatePreviewStatus(null);
 
                 if (Utils.isArray(response.data) && response.data.length > 1) {
-                    const previewData = convertRowDataIntoPreviewData(response.data, previewRowCount);
+                    const previewData = convertRowDataIntoPreviewData(response.data, previewCount);
                     this.setState(() => ({previewData}));
                     this.updateErrors(null);
                 }

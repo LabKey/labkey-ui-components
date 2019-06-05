@@ -36,8 +36,9 @@ storiesOf("FileAttachmentForm", module)
                 showButtons={boolean("Show buttons?", true)}
                 cancelText={text("Cancel button text", "Cancel")}
                 submitText={text("Submit button text", "Upload")}
-                showPreviewGrid={boolean("Show file preview grid", false)}
-                previewRowCount={number("Preview grid row count", 3)}
+                previewGridProps={{
+                    previewCount: number('previewCount', 3)
+                }}
             />
         )
     });

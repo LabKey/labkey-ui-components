@@ -1275,10 +1275,10 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.16.tgz#d79f0a4fc0a5bb5a4cf1fefcda3e377d39cff29e"
   integrity sha1-158KT8Clu1pM8f782j43fTnP8p4=
 
-"@labkey/dependencies@0.0.5-fb-package-updates.3":
-  version "0.0.5-fb-package-updates.3"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.5-fb-package-updates.3.tgz#4d770a720092825f52303953bb748f8b5c0da72c"
-  integrity sha1-TXcKcgCSgl9SMDlTu3SPi1wNpyw=
+"@labkey/dependencies@0.0.5":
+  version "0.0.5"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.5.tgz#5d1fbb97970d490e29b9231cc22bb4c2acc02b9f"
+  integrity sha1-XR+7l5cNSQ4puSMcwiu0wqzAK58=
   dependencies:
     "@labkey/api" "0.0.16"
     "@types/classnames" "2.2.8"

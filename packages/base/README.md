@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.5.2
+*Released*: 05 June 2019
+* Use release version of @labkey/dependencies
+
 ### version 0.5.1
 *Released*: 05 June 2019
 * Update external package versions

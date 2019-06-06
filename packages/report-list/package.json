@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.4-fb-fileAttachmentWithPreview.1",
+  "version": "0.1.6",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -12,7 +12,7 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
-    "prepublish": "yarn build",
+    "prepare": "yarn build",
     "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.6.0-fb-fileAttachmentWithPreview.1"
+    "@glass/base": "0.5.3"
   },
   "jest": {
     "globals": {

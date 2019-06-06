@@ -8,6 +8,14 @@ Application navigation elements and functions
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.2.3
+*Released*: 05 June 2019
+*  Update package for changes to @glass/base v0.5.2
+
+### version 0.2.1
+*Released*: 05 June 2019
+* Update external package versions
+
 ### version 0.2.0
 *Released*: 04 June 2019
 * Breadcrumb components from Biologics

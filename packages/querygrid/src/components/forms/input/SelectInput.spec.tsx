@@ -5,7 +5,7 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 
-import { SelectInputImpl } from './SelectInput'
+import { SelectInputImpl, SelectInputState } from './SelectInput'
 
 describe('SelectInput', () => {
 
@@ -43,7 +43,8 @@ describe('SelectInput', () => {
             .simulate('blur');
 
         expect(setValue.mock.calls.length).toBe(1);
-        expect(component.state().selectedOptions).toHaveProperty('value', 'Hello');
+        const state : SelectInputState = component.state();
+        expect(state.selectedOptions).toHaveProperty('value', 'Hello');
     });
 
     test('Should saveOnBlur - async', () => {
@@ -73,6 +74,7 @@ describe('SelectInput', () => {
             .simulate('blur');
 
         expect(setValue.mock.calls.length).toBe(1);
-        expect(component.state().selectedOptions).toHaveLength(1);
+        const state: SelectInputState = component.state();
+        expect(state.selectedOptions).toHaveLength(1);
     });
 });

@@ -4,7 +4,7 @@
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
 import { SCHEMAS, fetchSchemas, fetchGetQueries } from './models/schemas'
-import { fetchProtocol, fetchAllAssays } from './action/actions'
+import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile } from './action/actions'
 import {
     AssayProtocolModel,
     AssayDefinitionModel,
@@ -25,7 +25,8 @@ import {
     SchemaDetails,
     SchemaQuery,
     User,
-    ViewInfo
+    ViewInfo,
+    InferDomainResponse
 } from './models/model'
 import {
     applyDevTools,
@@ -136,6 +137,7 @@ export {
     LastActionStatus,
     GridColumn,
     GridData,
+    InferDomainResponse,
 
     //components
     AddEntityButton,
@@ -173,6 +175,9 @@ export {
     fetchAllAssays,
     fetchSchemas,
     fetchGetQueries,
+    createGeneralAssayDesign,
+    importGeneralAssayRun,
+    inferDomainFromFile,
 
     // notification functions
     createNotification,

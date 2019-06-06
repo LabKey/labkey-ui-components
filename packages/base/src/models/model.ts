@@ -1529,3 +1529,31 @@ function isSampleLookup(column: QueryColumn) {
 
     return SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
 }
+
+export class InferDomainResponse extends Record({
+    data: List<any>(),
+    fields: List<QueryColumn>()
+}) {
+    data: List<any>;
+    fields: List<QueryColumn>;
+
+    static create(rawModel): InferDomainResponse {
+        let data = List<any>();
+        let fields = List<QueryColumn>();
+
+        if (rawModel) {
+            if (rawModel.data) {
+                data = fromJS(rawModel.data);
+            }
+
+            if (rawModel.fields) {
+                fields = rawModel.fields.map((field) => QueryColumn.create(field));
+            }
+        }
+
+        return new InferDomainResponse({
+            data,
+            fields
+        });
+    }
+}

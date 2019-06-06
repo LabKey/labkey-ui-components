@@ -3,11 +3,13 @@ import {Map, List} from 'immutable';
 
 import { Alert } from "../Alert";
 import { Grid, GridColumn } from "../Grid";
+import { InferDomainResponse } from "../../models/model";
 
 export interface FileGridPreviewProps {
     previewCount: number
     header?: string
     infoMsg?: any
+    onPreviewLoad?: (response: InferDomainResponse) => any
 }
 
 type Props = FileGridPreviewProps & {

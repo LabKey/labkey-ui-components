@@ -5,14 +5,15 @@
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
 import { Map, List } from 'immutable'
-import { Utils } from '@labkey/api'
 
 import { FormSection } from '../FormSection'
 import { Progress } from '../Progress'
 import { FileAttachmentContainer } from './FileAttachmentContainer'
 import { FileGridPreviewProps, FilePreviewGrid } from "./FilePreviewGrid";
 import { LoadingSpinner } from "../LoadingSpinner";
-import { convertRowDataIntoPreviewData, inferDomainFromFile } from "./actions";
+import { convertRowDataIntoPreviewData } from "./actions";
+import { InferDomainResponse } from "../../models/model";
+import { inferDomainFromFile } from "../../action/actions";
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -194,24 +195,31 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     uploadDataFileForPreview() {
-        const { previewCount } = this.props.previewGridProps;
+        const { previewGridProps } = this.props;
         const { attachedFiles } = this.state;
 
         this.updatePreviewStatus("Uploading file...");
 
         //just take the first file, since we only support 1 file at this time
-        inferDomainFromFile(attachedFiles.first(), previewCount)
-            .then((response) => {
+        inferDomainFromFile(attachedFiles.first(), previewGridProps.previewCount)
+            .then((response: InferDomainResponse) => {
                 this.updatePreviewStatus(null);
 
-                if (Utils.isArray(response.data) && response.data.length > 1) {
-                    const previewData = convertRowDataIntoPreviewData(response.data, previewCount);
+                if (response.data.size > 1) {
+                    const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount);
                     this.setState(() => ({previewData}));
                     this.updateErrors(null);
                 }
                 else {
                     this.updateErrors('No data found in the attached file.');
                 }
+
+                if (previewGridProps.onPreviewLoad) {
+                    previewGridProps.onPreviewLoad(response);
+                }
+            })
+            .catch((reason) => {
+                this.updateErrors(reason);
             })
     }
 

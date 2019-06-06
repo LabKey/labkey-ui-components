@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.6.0-fb-fileAttachmentWithPreview.0"
+    "@glass/base": "0.6.0-fb-fileAttachmentWithPreview.3"
   },
   "jest": {
     "globals": {

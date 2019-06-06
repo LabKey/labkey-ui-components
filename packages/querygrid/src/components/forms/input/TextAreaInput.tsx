@@ -53,6 +53,7 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, any> {
             id={queryColumn.name}
             label={showLabel ? (label ? label : <LabelOverlay column={queryColumn}/>) : null}
             labelClassName={labelClassName}
+            placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
             name={name ? name : queryColumn.name}
             rowClassName={rowClassName}
             rows={rows}

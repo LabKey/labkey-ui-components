@@ -103,7 +103,7 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
                 labelClassName={labelClassName}
                 name={name ? name : queryColumn.name}
                 onChange={onChange}
-                placeholder={placeholder}
+                placeholder={placeholder || `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}
                 rowClassName={rowClassName}
                 step={step}

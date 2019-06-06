@@ -78,10 +78,12 @@ export function createGeneralAssayDesign(name: string, description: string, fiel
     });
 }
 
-export function importGeneralAssayRun(assayId: number, file: File): Promise<any> {
+export function importGeneralAssayRun(assayId: number, file: File, name?: string, comment?: string): Promise<any> {
     return new Promise((resolve, reject) => {
         AssayDOM.importRun({
             assayId,
+            name,
+            comment,
             files: [file],
             success: (response) => {
                 resolve(response)

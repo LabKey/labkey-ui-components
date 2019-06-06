@@ -4,6 +4,14 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.5.3
+*Released*: 05 June 2019
+*  Update package for changes to @glass/base v0.5.2
+
+### version 0.5.1
+*Released*: 05 June 2019
+* Update external package versions
+
 ### version 0.5.0
 *Released*: 04 June 2019
 * Port HeatMap components from Biologics

@@ -132,7 +132,7 @@ export interface SelectInputProps {
     validations?: any
 }
 
-interface SelectInputState {
+export interface SelectInputState {
     selectedOptions?: any
 }
 

@@ -4,13 +4,21 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-## version 0.5.0
+### version 0.5.3
+*Released*: 05 June 2019
+* Use release version of @labkey/dependencies
+
+### version 0.5.1
+*Released*: 05 June 2019
+* Update external package versions
+
+### version 0.5.0
 *Released*: 04 June 2019
 * port SVGIcon and CreatedModified from Biologics
 * port AssayDefinitionModel and fetchAllAssays from Biologics
 * ManageDropdownButton and SelectionMenuItem
 
-## version 0.4.0
+### version 0.4.0
 *Released*: 03 June 2019
 * port caseInsensitive, similaritySortFactory, spliceURL functions from Biologics
 * port AssayProtocolModel and fetchProtocol model from Biologics

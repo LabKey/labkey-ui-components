@@ -17,7 +17,7 @@ import * as React from 'react'
 
 import { mount, shallow } from 'enzyme'
 
-import { OmniBox } from './OmniBox'
+import { OmniBox, OmniBoxState } from './OmniBox'
 import { Action, ActionOption, ActionValue, Value } from './actions/Action'
 
 export class HelloWorldAction implements Action {
@@ -83,18 +83,21 @@ describe('OmniBox component', () => {
         expect(openControlElement.length).toEqual(1);
 
         openControlElement.simulate('mousedown', {button: 0});
-        expect(openComponent.state().isOpen).toBe(true);
-        expect(openComponent.state().options.length).toBe(1);
+
+        const openState : OmniBoxState = openComponent.state();
+        expect(openState.isOpen).toBe(true);
+        expect(openState.options.length).toBe(1);
         // False
 
         const closedComponent = mount(<OmniBox actions={actions} openAfterFocus={false} />);
         const closedControlElement = closedComponent.find('.OmniBox-control');
 
         expect(closedControlElement.length).toEqual(1);
-
+        const closedState : OmniBoxState = closedComponent.state();
         closedControlElement.simulate('mousedown', {button: 0});
-        expect(closedComponent.state().isOpen).toBe(false);
-        expect(closedComponent.state().options.length).toBe(0);
+
+        expect(closedState.isOpen).toBe(false);
+        expect(closedState.options.length).toBe(0);
     });
 });
 

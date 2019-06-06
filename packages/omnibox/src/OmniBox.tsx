@@ -47,7 +47,7 @@ interface OmniBoxProps {
     values?: Array<ActionValue>
 }
 
-interface OmniBoxState {
+export interface OmniBoxState {
     actionValues?: Array<ActionValue>
     activeAction?: Action
     focusedIndex?: number

@@ -127,6 +127,19 @@ describe("QueryInfoForm", () => {
        })
    });
 
+    test("with footer", () => {
+        expect.hasAssertions();
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const footer = <span className={"footer-info"}>Footer info here</span>;
+            const formWrapper = shallow(
+                <QueryInfoForm footer={footer} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
+            );
+
+            expect(formWrapper.find('.footer-info')).toHaveLength(1);
+        })
+    });
+
+
 
     // TODO the following tests require being able to interact with the form in order to make it
     // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.

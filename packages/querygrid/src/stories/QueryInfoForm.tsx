@@ -15,6 +15,15 @@ function formSubmit(data: any) : Promise<any> {
     });
 }
 
+function formSubmitForEdit(data: any) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        resolve( console.log("resolved for edit"))
+    });
+}
+
+const SUBMIT_GROUP = "Submit";
+const TEXT_GROUP = "Text display";
+
 storiesOf('QueryInfoForm', module)
     .addDecorator(withKnobs)
     .add("default", () => {
@@ -47,7 +56,7 @@ storiesOf('QueryInfoForm', module)
                 schemaQuery={schemaQuery}/>
         )
     })
-    .add("with knobs", () => {
+    .add("check required fields", () => {
         const modelId = "customizableForm";
         const schemaQuery = new SchemaQuery({
             schemaName: "exp.data",
@@ -69,21 +78,93 @@ storiesOf('QueryInfoForm', module)
         gridInit(model, true);
         return (
             <QueryInfoForm
-                header={text("Form header", undefined)}
-                checkRequiredFields={boolean("Check required fields?", undefined)}
+                header={text("Form header", undefined, TEXT_GROUP)}
+                footer={text("Form footer", undefined, TEXT_GROUP)}
+                checkRequiredFields={true}
                 allowMultiple={boolean("Include count field?", true)}
                 maxCount={number("Max count", 100)}
-                countText={text("Count text", "Quantity")}
-                singularNoun={text("Singular noun", undefined)}
-                pluralNoun={text("Plural noun", undefined)}
-                cancelText={text("Cancel text", "Cancel")}
-                isSubmittedText={text("Is submitted text", "Submitted")}
-                isSubmittingText={text("Is submitting text", "Submitting...")}
+                countText={text("Count text", "Quantity", TEXT_GROUP)}
+                singularNoun={text("Singular noun", undefined, TEXT_GROUP)}
+                pluralNoun={text("Plural noun", undefined, TEXT_GROUP)}
+                cancelText={text("Cancel text", "Cancel", TEXT_GROUP)}
+                isSubmittedText={text("Is submitted text", "Submitted", SUBMIT_GROUP)}
+                isSubmittingText={text("Is submitting text", "Submitting...", SUBMIT_GROUP)}
                 asModal={boolean("As modal?", false)}
-                title={text("Modal title", "Title")}
+                submitForEditText={text("Submit for edit text", undefined, SUBMIT_GROUP)}
+                title={text("Modal title", "Title", TEXT_GROUP)}
                 queryInfo={model.queryInfo}
                 onSubmit={formSubmit}
+                onSubmitForEdit={boolean("Add submit for edit button?", false, "Submit") ?  formSubmitForEdit : undefined}
                 schemaQuery={schemaQuery}
                 />
         )
-    });
+    })
+    .add("don't check required fields", () => {
+        const modelId = "customizableForm";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+        gridInit(model, true);
+        return (
+            <QueryInfoForm
+                checkRequiredFields={false}
+                allowMultiple={boolean("Include count field?", true)}
+                maxCount={number("Max count", 100)}
+                queryInfo={model.queryInfo}
+                onSubmit={formSubmit}
+                schemaQuery={schemaQuery}
+            />
+        )
+    })
+    .add("with field values", () => {
+        const modelId = "formWithInitialValues";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+        const fieldValues = {
+            'description': 'How to describe it...',
+            'extratestcolumn': "Extra data"
+        };
+        gridInit(model, true);
+        return (
+            <QueryInfoForm
+                checkRequiredFields={false}
+                allowMultiple={boolean("Include count field?", true)}
+                maxCount={number("Max count", 100)}
+                queryInfo={model.queryInfo}
+                fieldValues={fieldValues}
+                onSubmit={formSubmit}
+                schemaQuery={schemaQuery}
+            />
+        )
+    })
+
+;

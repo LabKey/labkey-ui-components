@@ -40,15 +40,18 @@ export interface QueryInfoFormProps {
     maxCount?: number
     onCancel?: () => any
     onHide?: () => any
-    onSubmit: (data: any) => Promise<any>
+    onSubmitForEdit?: (data: any) => Promise<any>
+    onSubmit?: (data: any) => Promise<any>
     onSuccess?: (data: any) => any
     queryInfo: QueryInfo
     schemaQuery: SchemaQuery
     isSubmittedText?: string
     isSubmittingText?: string
+    submitForEditText?: string
     submitText?: string
-    title?: string,
+    title?: string
     header?: ReactNode
+    footer?: ReactNode
     singularNoun?: string
     pluralNoun?: string
 }
@@ -57,6 +60,7 @@ export interface QueryInfoFormProps {
 interface State {
     show: boolean
     canSubmit: boolean
+    submitForEdit: boolean
     isSubmitted: boolean
     isSubmitting: boolean
     errorMsg: string
@@ -70,6 +74,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         checkRequiredFields: true,
         countText: "Quantity",
         cancelText: "Cancel",
+        submitForEditText: "Edit with Grid",
         submitText: "Submit",
         isSubmittedText: "Submitted",
         isSubmittingText: "Submitting...",
@@ -87,6 +92,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         this.onHide = this.onHide.bind(this);
         this.onCountChange = this.onCountChange.bind(this);
         this.setSubmitting = this.setSubmitting.bind(this);
+        this.setSubmittingForEdit = this.setSubmittingForEdit.bind(this);
+        this.setSubmittingForSave = this.setSubmittingForSave.bind(this);
 
         this.state = {
             show: true,
@@ -94,7 +101,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             isSubmitted: false,
             isSubmitting: false,
             errorMsg: undefined,
-            count: undefined
+            count: undefined,
+            submitForEdit: false,
         };
     }
 
@@ -120,11 +128,6 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         if (Utils.isFunction(onCancel)) {
             onCancel();
         }
-        else {
-            // TODO: what do we want to do here? or should we require the application to implement this goBack() if they want to use it?
-            // dispatch(goBack());
-            console.log("goBack() action not yet implemented");
-        }
     }
 
     handleSubmitError(error: any) {
@@ -136,15 +139,17 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     handleValidSubmit(row: any) {
-        const { errorCallback, schemaQuery, onSubmit, onSuccess } = this.props;
-        const { count } = this.state;
+        const { errorCallback, onSubmit, onSubmitForEdit, onSuccess } = this.props;
+        const { submitForEdit } = this.state;
 
         this.setState({
             errorMsg: undefined,
             isSubmitting: true
         });
 
-        onSubmit(row).then((data) => {
+        const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
+
+        submitFn(row).then((data) => {
             this.setState({
                 errorMsg: undefined,
                 isSubmitted: true,
@@ -180,11 +185,20 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         return null;
     }
 
-    setSubmitting() {
+    setSubmittingForEdit() {
+        this.setSubmitting(true);
+    }
+
+    setSubmittingForSave() {
+        this.setSubmitting(false);
+    }
+
+    setSubmitting(submitForEdit: boolean) {
         this.setState(() => {
             return {
                 errorMsg: undefined,
-                isSubmitting: true
+                isSubmitting: true,
+                submitForEdit
             }
         });
     }
@@ -213,7 +227,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     renderButtons() {
 
-        const { cancelText, submitText, isSubmittedText, isSubmittingText, pluralNoun, singularNoun } = this.props;
+        const { cancelText, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
 
         const { count, canSubmit, isSubmitting, isSubmitted } = this.state;
 
@@ -225,14 +239,25 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <Button className={"test-loc-cancel-button"} onClick={this.onHide}>{cancelText}</Button>
                     </div>
                     <div className="btn-group pull-right">
+                        {submitForEditText && onSubmitForEdit &&
                         <Button
-                            className={"test-loc-submit-button"}
+                            className={"test-loc-submit-for-edit-button"}
                             bsStyle="success"
                             disabled={!canSubmit || count === 0}
-                            onClick={this.setSubmitting}
+                            onClick={this.setSubmittingForEdit}
                             type="submit">
-                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{suffix  ? ' ' + suffix : null}
+                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitForEditText)}
+                        </Button>}
+                        {submitText && onSubmit &&
+                        <Button
+                                className={"test-loc-submit-button"}
+                                bsStyle="success"
+                                disabled={!canSubmit || count === 0}
+                                onClick={this.setSubmittingForSave}
+                                type="submit">
+                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{suffix ? ' ' + suffix : null}
                         </Button>
+                        }
                     </div>
                 </div>
             </div>
@@ -240,7 +265,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { allowMultiple, asModal, countText, header, checkRequiredFields, maxCount, queryInfo, fieldValues, title } = this.props;
+        const { allowMultiple, asModal, countText, footer, header, checkRequiredFields, maxCount, queryInfo, fieldValues, title } = this.props;
         const { count } = this.state;
 
 
@@ -279,8 +304,10 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         checkRequiredFields={checkRequiredFields}
                         queryInfo={queryInfo}
                         fieldValues={fieldValues} />
+                    {footer}
                     {this.renderButtons()}
                 </Formsy>
+
             </div>
         );
 

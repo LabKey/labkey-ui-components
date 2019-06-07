@@ -48,6 +48,7 @@ export function createGeneralAssayDesign(name: string, description: string, fiel
         });
 
         // TODO: this API needs to handle checks for reserved fields for domains (ex. I was able to create a data domain with "RowId" as a field name but then data imports failed because of it)
+        // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api'),
             jsonData: {

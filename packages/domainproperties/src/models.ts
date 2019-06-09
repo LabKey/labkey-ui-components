@@ -45,6 +45,10 @@ export class PropDescType extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+
+    isLookup(): boolean {
+        return this.name === 'lookup';
+    }
 }
 
 export const PROP_DESC_TYPES = List([
@@ -206,6 +210,89 @@ export class DomainField extends Record({
         }
 
         return fields.asImmutable();
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    getDataType(): PropDescType {
+        const types = PROP_DESC_TYPES.filter((value) => {
+
+            // handle matching rangeURI and conceptURI
+            if (value.rangeURI === this.rangeURI) {
+                if (!this.lookupQuery &&
+                    ((!value.conceptURI && !this.conceptURI) || (value.conceptURI === this.conceptURI)))
+                {
+                    return true;
+                }
+            }
+            // handle selected lookup option
+            else if (value.name === 'lookup' && this.lookupQuery && this.lookupQuery !== 'users') {
+                return true;
+            }
+            // handle selected users option
+            else if (value.name === 'users' && this.lookupQuery && this.lookupQuery === 'users') {
+                return true;
+            }
+
+            return false;
+        });
+
+        // If found return type
+        if (types.size > 0) {
+            return types.get(0);
+        }
+
+        // default to the text type
+        return PROP_DESC_TYPES.get(0);
+    }
+}
+
+interface IQueryInfoLite {
+    canEdit?: boolean
+    canEditSharedViews?: boolean
+    description?: string
+    hidden?: boolean
+    inherit?: boolean
+    isInherited?: boolean
+    isMetadataOverrideable?: boolean
+    isUserDefined?: boolean
+    name?: string
+    snapshot?: false
+    title?: string
+    viewDataUrl?: string
+}
+
+export class QueryInfoLite extends Record({
+    canEdit: false,
+    canEditSharedViews: false,
+    description: undefined,
+    hidden: false,
+    inherit: false,
+    isInherited: false,
+    isMetadataOverrideable: false,
+    isUserDefined: false,
+    name: undefined,
+    snapshot: false,
+    title: undefined,
+    viewDataUrl: undefined
+}) implements IQueryInfoLite {
+    canEdit?: boolean;
+    canEditSharedViews?: boolean;
+    description?: string;
+    hidden?: boolean;
+    inherit?: boolean;
+    isInherited?: boolean;
+    isMetadataOverrideable?: boolean;
+    isUserDefined?: boolean;
+    name?: string;
+    snapshot?: false;
+    title?: string;
+    viewDataUrl?: string;
+
+    static create(raw: IQueryInfoLite): QueryInfoLite {
+        return new QueryInfoLite(raw);
     }
 
     constructor(values?: {[key:string]: any}) {

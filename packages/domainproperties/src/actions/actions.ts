@@ -13,10 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Domain} from "@labkey/api";
-import {List} from "immutable";
-import {DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE} from "../constants";
-import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES} from "../models";
+import { List } from "immutable";
+import { Domain, Query, Security } from "@labkey/api";
+import { Container, naturalSort, SchemaDetails } from "@glass/base";
+
+import { DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE } from "../constants";
+import { DomainDesign, DomainField, PROP_DESC_TYPES, PropDescType, QueryInfoLite } from "../models";
+
+export function fetchContainers(): Promise<List<Container>> {
+    return new Promise((resolve) => {
+        let success: any = (data) => {
+            resolve(processContainers(data));
+        };
+
+        Security.getContainers({
+            containerPath: '/',
+            includeSubfolders: true,
+            includeEffectivePermissions: false,
+            success
+        });
+    });
+}
+
+export function processContainers(payload: any): List<Container> {
+    // Depth first
+    const { children } = payload;
+    let containers = List<Container>();
+
+    for (let i=0; i < children.length; i++) {
+        processContainer(children[i]).forEach((c) => {
+            containers = containers.push(c);
+        });
+    }
+
+    return containers;
+}
+
+function processContainer(rawContainer: any): List<Container> {
+    let containers = List<Container>([
+        new Container(rawContainer)
+    ]);
+
+    let { children } = rawContainer;
+
+    for (let i=0; i < children.length; i++) {
+        processContainer(children[i]).forEach((c) => {
+            containers = containers.push(c);
+        });
+    }
+
+    return containers;
+}
 
 /**
  * @param domainId: Fetch domain by Id. Priority param over schema and query name.
@@ -38,6 +85,57 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             }
         })
     });
+}
+
+export function fetchQueries(containerPath: string, schemaName: string): Promise<List<QueryInfoLite>> {
+    return new Promise((resolve) => {
+        Query.getQueries({
+            containerPath,
+            includeColumns: false,
+            schemaName,
+            success: (data) => {
+                resolve(processQueries(data));
+            }
+        });
+    });
+}
+
+export function processQueries(payload: any): List<QueryInfoLite> {
+    let queries = List<QueryInfoLite>();
+
+    console.log('num queries', payload.queries.length);
+    payload.queries.forEach((qi) => {
+        queries = queries.push(QueryInfoLite.create(qi));
+    });
+
+    return queries;
+}
+
+export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>> {
+    return new Promise((resolve) => {
+        Query.getSchemas({
+            apiVersion: 17.1,
+            containerPath,
+            includeHidden: false,
+            success: (data) => {
+                resolve(processSchemas(data));
+            }
+        });
+    });
+}
+
+export function processSchemas(payload: any): List<SchemaDetails> {
+    let schemas = List<SchemaDetails>();
+
+    for (const k in payload) {
+        if (payload.hasOwnProperty(k)) {
+            schemas = schemas.push(SchemaDetails.create(payload[k]));
+        }
+    }
+
+    return schemas
+        .sort((a, b) => naturalSort(a.getLabel(), b.getLabel()))
+        .toList();
 }
 
 /**
@@ -161,41 +259,3 @@ export function clearFieldDetails(domain: DomainDesign): DomainDesign {
     }) as DomainDesign;
 }
 
-/**
- * Gets display datatype from rangeURI, conceptURI and lookup values
- */
-export function getDataType(field: DomainField): PropDescType {
-    const types = PROP_DESC_TYPES.filter((value) => {
-
-        // handle matching rangeURI and conceptURI
-        if (value.rangeURI === field.rangeURI)
-        {
-            if (!field.lookupQuery &&
-                ((!value.conceptURI && !field.conceptURI) || (value.conceptURI === field.conceptURI)))
-            {
-                return true;
-            }
-        }
-        // handle selected lookup option
-        else if (value.name === 'lookup' && field.lookupQuery && field.lookupQuery !== 'users')
-        {
-            return true;
-        }
-        // handle selected users option
-        else if (value.name === 'users' && field.lookupQuery && field.lookupQuery === 'users')
-        {
-            return true;
-        }
-
-        return false;
-    });
-
-    // If found return type
-    if (types.size > 0)
-    {
-        return types.get(0);
-    }
-
-    // default to the text type
-    return PROP_DESC_TYPES.get(0);
-}

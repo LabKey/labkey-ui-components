@@ -1,0 +1,50 @@
+{
+  "study" : {
+    "hidden" : false,
+    "description" : "Contains all data related to the study, including subjects, cohorts, visits, datasets, specimens, etc.",
+    "schemaName" : "study",
+    "fullyQualifiedName" : "study",
+    "menu" : {
+      "text" : null,
+      "items" : [ {
+        "text" : "Manage datasets",
+        "href" : "/labkey/StudyVerifyProject/My%20Study/study-manageTypes.view?",
+        "leaf" : true
+      } ]
+    }
+  },
+  "lists" : {
+    "hidden" : false,
+    "description" : "Contains a data table for each defined list",
+    "schemaName" : "lists",
+    "fullyQualifiedName" : "lists",
+    "menu" : {
+      "text" : null,
+      "items" : [ {
+        "text" : "Manage lists",
+        "href" : "/labkey/StudyVerifyProject/My%20Study/list-begin.view?",
+        "leaf" : true
+      } ]
+    }
+  },
+  "exp" : {
+    "hidden" : false,
+    "schemas" : {
+      "data" : {
+        "hidden" : false,
+        "description" : "Contains data about the registered datas",
+        "schemaName" : "data",
+        "fullyQualifiedName" : "exp.data"
+      },
+      "materials" : {
+        "hidden" : false,
+        "description" : "Contains data about the samples used in experiment runs.",
+        "schemaName" : "materials",
+        "fullyQualifiedName" : "exp.materials"
+      }
+    },
+    "description" : "Contains data about experiment runs, data files, materials, sample sets, etc.",
+    "schemaName" : "exp",
+    "fullyQualifiedName" : "exp"
+  }
+}

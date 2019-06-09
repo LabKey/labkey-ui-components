@@ -1,0 +1,67 @@
+{
+  "formats" : {
+    "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+    "numberFormat" : null,
+    "dateFormat" : "yyyy-MM-dd"
+  },
+  "parentPath" : null,
+  "type" : "folder",
+  "title" : "",
+  "folderType" : "None",
+  "parentId" : null,
+  "path" : "/",
+  "startUrl" : "/labkey/project-begin.view?",
+  "isWorkbook" : false,
+  "children" : [ {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
+    "title" : "StudyVerifyProject",
+    "folderType" : "None",
+    "parentId" : "d5cc1457-4057-1037-8466-1e81b2539697",
+    "path" : "/StudyVerifyProject",
+    "startUrl" : "/labkey/StudyVerifyProject/project-begin.view?",
+    "isWorkbook" : false,
+    "children" : [ {
+      "formats" : {
+        "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+        "numberFormat" : null,
+        "dateFormat" : "yyyy-MM-dd"
+      },
+      "parentPath" : "/StudyVerifyProject",
+      "type" : "folder",
+      "title" : "My Study",
+      "folderType" : "Study",
+      "parentId" : "a21a06e1-4058-1037-95c6-1e81b2533cfd",
+      "path" : "/StudyVerifyProject/My Study",
+      "startUrl" : "/labkey/StudyVerifyProject/My%20Study/project-begin.view?",
+      "isWorkbook" : false,
+      "children" : [ ],
+      "sortOrder" : 0,
+      "hasRestrictedActiveModule" : false,
+      "name" : "My Study",
+      "isContainerTab" : false,
+      "iconHref" : "/labkey/_icons/icon_folder2.png",
+      "id" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
+      "activeModules" : [ "Study", "Issues", "FileContent", "Announcements", "Wiki", "Search", "Experiment", "Query", "Pipeline", "Internal", "API", "Core" ]
+    } ],
+    "sortOrder" : 0,
+    "hasRestrictedActiveModule" : false,
+    "name" : "StudyVerifyProject",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "a21a06e1-4058-1037-95c6-1e81b2533cfd",
+    "activeModules" : [ "Core" ]
+  } ],
+  "sortOrder" : 0,
+  "hasRestrictedActiveModule" : false,
+  "name" : "",
+  "isContainerTab" : false,
+  "iconHref" : "/labkey/_icons/icon_folder2.png",
+  "id" : "d5cc1457-4057-1037-8466-1e81b2539697",
+  "activeModules" : [ ]
+}

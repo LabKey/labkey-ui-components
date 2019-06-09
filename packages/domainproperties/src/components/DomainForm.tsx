@@ -24,6 +24,7 @@ import { Alert, ConfirmModal } from "@glass/base";
 import { DomainRow } from "./DomainRow";
 import { DomainDesign, DomainField } from "../models";
 import { getIndexFromId, updateDomainField } from "../actions/actions";
+import { LookupProvider } from "./Lookup/Context";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -38,10 +39,21 @@ interface IDomainFormState {
     showConfirm: boolean
 }
 
+export default class DomainForm extends React.PureComponent<IDomainFormInput> {
+
+    render() {
+        return (
+            <LookupProvider>
+                <DomainFormImpl {...this.props} />
+            </LookupProvider>
+        )
+    }
+}
+
 /**
  * Form containing all properties of a domain
  */
-export default class DomainForm extends React.PureComponent<IDomainFormInput, IDomainFormState> {
+export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'domain',
         helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',

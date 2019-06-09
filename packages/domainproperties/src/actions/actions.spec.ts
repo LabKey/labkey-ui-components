@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {createFormInputId, getDataType} from "./actions";
+import { createFormInputId } from "./actions";
 import {DomainField} from "../models";
 import {DOMAIN_FIELD_PREFIX, FLAG_CONCEPT_URI, INT_RANGE_URI, STRING_RANGE_URI, USER_RANGE_URI} from "../constants";
 
@@ -30,7 +30,7 @@ describe("domain properties actions", () => {
             propertyId: 0,
             propertyURI: 'test'
         });
-        expect(getDataType(field1).rangeURI).toBe(INT_RANGE_URI);
+        expect(field1.getDataType().rangeURI).toBe(INT_RANGE_URI);
 
         const field2 = new DomainField({
             name: 'field2name',
@@ -39,7 +39,7 @@ describe("domain properties actions", () => {
             propertyId: 0,
             propertyURI: 'test'
         });
-        expect(getDataType(field2).name).toBe('flag');
+        expect(field2.getDataType().name).toBe('flag');
 
         const field3 = new DomainField({
             name: 'field3name',
@@ -47,7 +47,6 @@ describe("domain properties actions", () => {
             propertyId: 0,
             propertyURI: 'test'
         });
-        expect(getDataType(field3).name).toBe('users')
+        expect(field3.getDataType().name).toBe('users');
     });
-
 });

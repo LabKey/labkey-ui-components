@@ -28,7 +28,7 @@ import {
     DOMAIN_FIELD_TYPE
 } from "../constants";
 import { DomainField, PROP_DESC_TYPES } from "../models";
-import { createFormInputId, getDataType } from "../actions/actions";
+import { createFormInputId } from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -96,7 +96,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Data Type'}>
                         <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                                 key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                className={'form-control'} onChange={onChange} value={getDataType(field).name}
+                                className={'form-control'} onChange={onChange} value={field.getDataType().name}
                                 disabled={!!field.propertyId}>
                             {
                                 PROP_DESC_TYPES.map(function (type) {

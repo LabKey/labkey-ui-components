@@ -27,6 +27,9 @@ export const DOMAIN_FIELD_DESCRIPTION = 'description';
 export const DOMAIN_FIELD_LABEL = 'label';
 export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
 export const DOMAIN_FIELD_URL = 'URL';
+export const DOMAIN_FIELD_LOOKUP_CONTAINER = 'lookupContainer';
+export const DOMAIN_FIELD_LOOKUP_QUERY = 'lookupQuery';
+export const DOMAIN_FIELD_LOOKUP_SCHEMA = 'lookupSchema';
 
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';

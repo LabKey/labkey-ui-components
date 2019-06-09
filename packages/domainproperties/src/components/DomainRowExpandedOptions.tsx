@@ -23,8 +23,13 @@ import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
     DOMAIN_FIELD_LABEL,
-    DOMAIN_FIELD_URL
+    DOMAIN_FIELD_URL,
+    DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_QUERY,
+    DOMAIN_FIELD_LOOKUP_SCHEMA
 } from "../constants";
+import { LookupContextConsumer } from "./Lookup/Context";
+import { FolderSelect, SchemaSelect, QuerySelect } from "./Lookup/Fields";
 
 interface IDomainRowExpandedOptions {
     field: DomainField
@@ -39,6 +44,54 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         return(
             <>
+                {field.getDataType().isLookup() && (
+                    <>
+                        <Row className="domain-row-expanded">
+                            <Col xs={12}>
+                                <div className="domain-field-section-heading">Lookup Definition Options</div>
+                            </Col>
+                        </Row>
+                        <Row className="domain-row-expanded">
+                            <LookupContextConsumer>
+                                {(context) => (
+                                    <>
+                                        <Col xs={2}>
+                                            <div className="domain-field-label">From Folder</div>
+                                            <FolderSelect
+                                                container={context.activeContainer}
+                                                dataProvider={context.fetchContainers}
+                                                id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
+                                                key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
+                                                onChange={onChange}
+                                                value={field.lookupContainer ? field.lookupContainer : ''}/>
+                                        </Col>
+                                        <Col xs={2}>
+                                            <div className="domain-field-label">From Schema</div>
+                                            <SchemaSelect
+                                                containerPath={field.lookupContainer}
+                                                dataProvider={context.fetchSchemas}
+                                                id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
+                                                key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
+                                                onChange={onChange}
+                                                value={field.lookupSchema ? field.lookupSchema : ''}/>
+                                        </Col>
+                                        <Col xs={2}>
+                                            <div className="domain-field-label">Target Table</div>
+                                            <QuerySelect
+                                                containerPath={field.lookupContainer}
+                                                dataProvider={context.fetchQueries}
+                                                id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
+                                                key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
+                                                onChange={onChange}
+                                                schemaName={field.lookupSchema}
+                                                value={field.lookupQuery ? field.lookupQuery : ''}/>
+                                        </Col>
+                                    </>
+                                )}
+                            </LookupContextConsumer>
+                        </Row>
+                    </>
+                )}
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
                         <div className={'domain-field-section-heading'}>Name and Linking Options</div>

@@ -692,12 +692,12 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
     });
 }
 
-enum InsertFormats {
+export enum InsertFormats {
     tsv = 'tsv',
     csv = 'csv'
 }
 
-interface IImportData {
+export interface IImportData {
     schemaName: string
     queryName: string
     file?: File // must contain file or text but not both

@@ -30,6 +30,8 @@ import {
     invalidateQueryDetailsCacheKey,
     InsertRowsResponse,
     ISelectRowsResult,
+    IImportData,
+    InsertFormats,
     insertRows,
     searchRows,
     selectRows,
@@ -90,6 +92,8 @@ export {
     // query related items
     ISelectRowsResult,
     InsertRowsResponse,
+    IImportData,
+    InsertFormats,
     insertRows,
     selectRows,
     searchRows,

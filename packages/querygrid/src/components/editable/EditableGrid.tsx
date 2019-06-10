@@ -89,6 +89,7 @@ export interface EditableGridProps {
     allowAdd?: boolean
     allowBulkUpdate?: boolean
     allowBulkRemove?: boolean
+    allowFieldDisable?: boolean
     bulkUpdateProps?: Partial<QueryInfoFormProps>
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
@@ -495,7 +496,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return (
             showBulkUpdate &&
             <QueryInfoForm
-                allowFieldDisable={true}
+                allowFieldDisable={this.props.allowFieldDisable}
                 onSubmitForEdit={this.bulkAdd}
                 asModal={true}
                 checkRequiredFields={false}

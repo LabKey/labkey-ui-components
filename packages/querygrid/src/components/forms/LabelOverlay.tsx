@@ -24,7 +24,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
 
     static defaultProps = {
         isFormsy: true,
-        labelClass: 'control-label col-sm-3 text-left'
+        labelClass: 'control-label col-sm-3 col-xs-12 text-left'
     };
 
     _popoverId: string;
@@ -120,8 +120,8 @@ export class QueryColumnFieldLabel extends React.Component<QueryColumnFieldLabel
         // the columns since the toggle appears outside the label.
         let toggleClassName;
         if (allowDisable && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
-            labelOverlayProps.labelClass = "control-label col-sm-2 text-left";
-            toggleClassName = "col-sm-1";
+            labelOverlayProps.labelClass = "control-label col-sm-2 col-xs-11 text-left";
+            toggleClassName = "col-xs-1";
         }
 
         let labelBody;

@@ -28,7 +28,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
         allowDisable: false,
         changeDebounceInterval: 0,
         elementWrapperClassName: 'col-sm-9',
-        labelClassName: 'control-label text-left',
+        labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         validatePristine: false
     };

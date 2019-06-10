@@ -21,7 +21,6 @@ import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
 
 import {
-    DOMAIN_FIELD_DELETE,
     DOMAIN_FIELD_DETAILS,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
@@ -80,6 +79,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
+    onDelete = (): any => {
+        const { index, onDelete } = this.props;
+
+        if (onDelete) {
+            onDelete(index);
+        }
+    };
+
     onExpand = (): any => {
         const { index, onExpand } = this.props;
 
@@ -107,15 +114,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                                 className={'form-control'} onChange={onChange} value={field.getDataType().name}
                                 disabled={!!field.propertyId}>
                             {
-                                PROP_DESC_TYPES.map(function (type) {
-                                    if (type.display)
-                                    {
-                                        return <option
-                                            key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
-                                            value={type.name}>{type.display}</option>
-                                    }
-                                    return ''
-                                })
+                                PROP_DESC_TYPES.map((type) => (
+                                    <option
+                                        key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
+                                        value={type.name}>
+                                        {type.display}
+                                    </option>
+                                ))
                             }
                         </select>
                     </Tip>
@@ -135,25 +140,21 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     renderButtons() {
-        const { expanded, index, onDelete } = this.props;
+        const { expanded } = this.props;
 
         return (
-            <div className={'pull-right'}>
+            <div className="pull-right">
                 {expanded && (
                 <>
                     <Button
-                        bsClass='btn btn-danger'
-                        className='domain-row-button'
-                        onClick={onDelete}
-                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                    >
+                        bsStyle="danger"
+                        className="domain-row-button"
+                        onClick={this.onDelete}>
                         Remove Field
                     </Button>
                     <Button
                         disabled={true}
-                        bsClass='btn btn-light'
-                        className='domain-row-button'
-                    >
+                        className="domain-row-button">
                         Advanced Settings
                     </Button>
                 </>

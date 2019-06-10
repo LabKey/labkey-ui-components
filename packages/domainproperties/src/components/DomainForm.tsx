@@ -131,7 +131,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    onDeleteBtnHandler = (evt) => {
+    onDeleteField = (index: number): void => {
         const { domain } = this.props;
         const { expandedRowIndex } = this.state;
 
@@ -320,7 +320,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                                 expanded={expandedRowIndex === i}
                                                                 onChange={this.onFieldChange}
                                                                 onExpand={this.onFieldExpandToggle}
-                                                                onDelete={this.onDeleteBtnHandler}
+                                                                onDelete={this.onDeleteField}
                                                             />
                                                         }))}
                                                         {provided.placeholder}

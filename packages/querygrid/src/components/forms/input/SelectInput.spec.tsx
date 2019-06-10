@@ -43,7 +43,7 @@ describe('SelectInput', () => {
             .simulate('blur');
 
         expect(setValue.mock.calls.length).toBe(1);
-        const state : SelectInputState = component.state();
+        const state  = component.state() as any;
         expect(state.selectedOptions).toHaveProperty('value', 'Hello');
     });
 
@@ -74,7 +74,7 @@ describe('SelectInput', () => {
             .simulate('blur');
 
         expect(setValue.mock.calls.length).toBe(1);
-        const state: SelectInputState = component.state();
+        const state = component.state() as any;
         expect(state.selectedOptions).toHaveLength(1);
     });
 });

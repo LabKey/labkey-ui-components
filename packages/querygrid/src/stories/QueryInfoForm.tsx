@@ -10,12 +10,14 @@ import { gridInit } from "../actions";
 import './stories.scss'
 
 function formSubmit(data: any) : Promise<any> {
+    console.log(data);
     return new Promise((resolve, reject) => {
         resolve( console.log("resolved"))
     });
 }
 
 function formSubmitForEdit(data: any) : Promise<any> {
+    console.log(data);
     return new Promise((resolve, reject) => {
         resolve( console.log("resolved for edit"))
     });

@@ -79,7 +79,7 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
                     column={queryColumn}
                     isDisabled = {isDisabled}
                     onClick = {this.toggleDisabled}/>
-                <div className={"col-sm-9"}>
+                <div className={"col-sm-9 col-xs-12"}>
                     <input
                         disabled={this.state.isDisabled}
                         name={name ? name : queryColumn.name}

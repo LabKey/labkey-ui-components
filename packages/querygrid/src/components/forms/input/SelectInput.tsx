@@ -151,7 +151,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         clearCacheOnChange: true,
         containerClass: 'form-group row',
         delimiter: DELIMITER,
-        inputClass: 'col-sm-9',
+        inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left',
         labelKey: 'label',
         saveOnBlur: false,

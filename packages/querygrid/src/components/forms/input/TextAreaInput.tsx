@@ -31,7 +31,7 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, TextAreaI
 
     static defaultProps : Partial<TextAreaInputProps> = {
         cols: 50,
-        elementWrapperClassName: 'col-sm-9',
+        elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         rows: 5,
         showLabel: true,

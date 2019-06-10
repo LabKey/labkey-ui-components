@@ -27,7 +27,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
     static defaultProps = {
         allowDisable: false,
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9',
+        elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         validatePristine: false

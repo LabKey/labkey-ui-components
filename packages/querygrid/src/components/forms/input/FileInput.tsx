@@ -30,7 +30,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
     static defaultProps : Partial<FileInputProps> = {
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9',
+        elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left',
         showLabel: true,
         allowDisable: false
@@ -207,7 +207,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                     column={queryColumn}
                     isDisabled = {isDisabled}
                     onClick = {this.toggleDisabled}
-                    style={{marginLeft: "-20px"}} // adjust placement of toggle
                 />
                 <div className="col-sm-9">
                     {body}

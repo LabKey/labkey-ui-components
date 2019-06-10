@@ -9,6 +9,7 @@ import { Utils } from '@labkey/api'
 import { generateId } from '@glass/base'
 
 import { ReactSelectOption } from '../model'
+import { QueryColumnFieldLabel } from '../LabelOverlay';
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -82,6 +83,7 @@ function initOptions(props: SelectInputProps): any {
 }
 
 export interface SelectInputProps {
+    allowDisable?: boolean
     addLabelText?: string
     allowCreate?: boolean
     autoload?: boolean
@@ -92,6 +94,7 @@ export interface SelectInputProps {
     clearable?: boolean
     containerClass?: string
     delimiter?: string
+    description?: string
     disabled?: boolean
     filterOptions?: (options, filterString, values) => any // from ReactSelect
     formsy?: boolean
@@ -134,12 +137,13 @@ export interface SelectInputProps {
 
 export interface SelectInputState {
     selectedOptions?: any
+    isDisabled: boolean
 }
 
 // Implementation exported only for tests
 export class SelectInputImpl extends React.Component<SelectInputProps, SelectInputState> {
 
-    static defaultProps = {
+    static defaultProps : Partial<SelectInputProps> = {
         allowCreate: false,
         autoload: true,
         autoValue: true,
@@ -167,9 +171,11 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
+        this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.state = {
-            selectedOptions: props.autoValue === true ? initOptions(props): undefined
+            selectedOptions: props.autoValue === true ? initOptions(props): undefined,
+            isDisabled: false
         };
     }
 
@@ -331,21 +337,39 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         return null;
     }
 
+    toggleDisabled() {
+        this.setState(() => {
+            return {
+                isDisabled: !this.state.isDisabled
+            }
+        });
+    }
+
     renderLabel(inputProps: any) {
-        const { label, labelClass, required, showLabel } = this.props;
+        const { allowDisable, label, multiple, name, required, showLabel } = this.props;
+        const { isDisabled } = this.state;
+
 
         if (showLabel && label !== undefined) {
-
             if (Utils.isString(label)) {
-                // TODO: Get this and <LabelOverlay> to be consistent/same
-                return (
-                    <label
-                        className={labelClass}
-                        htmlFor={inputProps.id}>
-                        <span>{label}</span>
-                        {required ? <span> *</span> : null}
-                    </label>
-                )
+                let description = this.props.description;
+                if (!description) {
+                    description = "Select ";
+                    description = description + (multiple ? " one or more values for " : " a ") + label;
+                }
+                return <QueryColumnFieldLabel
+                    id={inputProps.id}
+                    fieldName={name}
+                    labelOverlayProps={{
+                        description,
+                        label: label,
+                        isFormsy: false,
+                        required: required
+                    }}
+                    showLabel={showLabel}
+                    allowDisable={allowDisable}
+                    isDisabled={isDisabled}
+                    onClick={this.toggleDisabled}/>
             }
 
             return label;
@@ -385,7 +409,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
             autoload,
             clearable,
             delimiter,
-            disabled,
+            disabled : disabled || this.state.isDisabled,
             filterOptions,
             ignoreCase,
             inputProps,
@@ -433,6 +457,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
 
         return <ReactSelect {...selectProps}/>;
     }
+
 
     render() {
         const {

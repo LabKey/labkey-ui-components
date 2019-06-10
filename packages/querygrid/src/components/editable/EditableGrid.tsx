@@ -495,6 +495,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return (
             showBulkUpdate &&
             <QueryInfoForm
+                allowFieldDisable={true}
                 onSubmitForEdit={this.bulkAdd}
                 asModal={true}
                 checkRequiredFields={false}

@@ -81,7 +81,7 @@ storiesOf('QueryInfoForm', module)
                 header={text("Form header", undefined, TEXT_GROUP)}
                 footer={text("Form footer", undefined, TEXT_GROUP)}
                 checkRequiredFields={true}
-                allowMultiple={boolean("Include count field?", true)}
+                includeCountField={boolean("Include count field?", true)}
                 maxCount={number("Max count", 100)}
                 countText={text("Count text", "Quantity", TEXT_GROUP)}
                 singularNoun={text("Singular noun", undefined, TEXT_GROUP)}
@@ -122,7 +122,7 @@ storiesOf('QueryInfoForm', module)
         return (
             <QueryInfoForm
                 checkRequiredFields={false}
-                allowMultiple={boolean("Include count field?", true)}
+                includeCountField={boolean("Include count field?", true)}
                 maxCount={number("Max count", 100)}
                 queryInfo={model.queryInfo}
                 onSubmit={formSubmit}
@@ -156,9 +156,45 @@ storiesOf('QueryInfoForm', module)
         gridInit(model, true);
         return (
             <QueryInfoForm
-                checkRequiredFields={false}
-                allowMultiple={boolean("Include count field?", true)}
+                allowFieldDisable={boolean("Allow disabling of fields?", false)}
+                includeCountField={boolean("Include count field?", true)}
                 maxCount={number("Max count", 100)}
+                queryInfo={model.queryInfo}
+                fieldValues={fieldValues}
+                onSubmit={formSubmit}
+                schemaQuery={schemaQuery}
+            />
+        )
+    })
+    .add("allow fields to be disabled", () => {
+        const modelId = "canDisableFieldsForm";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "samples",
+            queryName: "SampleSetWithAllFieldTypes"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+        const fieldValues = {
+            'description': 'How to describe it...',
+            'integer': "3",
+            'text': "The text goes here"
+        };
+        gridInit(model, true);
+        return (
+            <QueryInfoForm
+                allowFieldDisable={true}
+                renderFileInputs={boolean("Render file inputs?", false)}
                 queryInfo={model.queryInfo}
                 fieldValues={fieldValues}
                 onSubmit={formSubmit}

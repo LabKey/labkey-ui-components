@@ -6,9 +6,10 @@ import * as React from 'react'
 import { Input } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
-import { LabelOverlay } from '../LabelOverlay'
+import { QueryColumnFieldLabel } from '../LabelOverlay'
 
 export interface TextInputProps {
+    allowDisable?: boolean
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -26,10 +27,11 @@ export interface TextInputProps {
 
 interface TextInputState {
     didFocus?: boolean
+    isDisabled: boolean
 }
 
 export class TextInput extends React.Component<TextInputProps, TextInputState> {
-    static defaultProps = {
+    static defaultProps : Partial<TextInputProps> = {
         changeDebounceInterval: 0,
         elementWrapperClassName: 'col-sm-9',
         labelClassName: 'control-label text-left',
@@ -41,9 +43,21 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
 
     constructor(props: TextInputProps) {
         super(props);
+
+        this.toggleDisabled = this.toggleDisabled.bind(this);
+
         this.state = {
-            didFocus: false
+            didFocus: false,
+            isDisabled: false
         }
+    }
+
+    toggleDisabled() {
+        this.setState(() => {
+            return {
+                isDisabled: !this.state.isDisabled
+            }
+        });
     }
 
     componentDidMount() {
@@ -61,18 +75,29 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
         return this.state.didFocus === nextState.didFocus;
     }
 
+    renderLabel() {
+        const { label, queryColumn, showLabel, allowDisable } = this.props;
+        const { isDisabled } = this.state;
+
+        return <QueryColumnFieldLabel
+            label={label}
+            showLabel={showLabel}
+            allowDisable={allowDisable}
+            column={queryColumn}
+            isDisabled = {isDisabled}
+            onClick = {this.toggleDisabled}/>
+    }
+
     render() {
         const {
             changeDebounceInterval,
             elementWrapperClassName,
-            label,
             labelClassName,
             name,
             onChange,
             placeholder,
             queryColumn,
             rowClassName,
-            showLabel,
             validatePristine,
             value
         } = this.props;
@@ -96,10 +121,11 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
 
         return (
             <Input
+                disabled={this.state.isDisabled}
                 changeDebounceInterval={changeDebounceInterval}
                 elementWrapperClassName={elementWrapperClassName}
                 id={queryColumn.name}
-                label={showLabel ? (label ? label : <LabelOverlay column={queryColumn}/>) : null}
+                label={this.renderLabel()}
                 labelClassName={labelClassName}
                 name={name ? name : queryColumn.name}
                 onChange={onChange}

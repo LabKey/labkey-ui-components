@@ -99,7 +99,7 @@ describe("QueryInfoForm", () => {
        expect.hasAssertions();
        return getQueryDetails(schemaQuery).then((queryInfo) => {
            const formWrapper = shallow(
-               <QueryInfoForm allowMultiple={false} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
+               <QueryInfoForm includeCountField={false} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
            );
            expect(formWrapper.find("input#numItems")).toHaveLength(0);
        })

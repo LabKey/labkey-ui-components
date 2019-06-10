@@ -28,7 +28,7 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
 
 export interface QueryInfoFormProps {
     asModal?: boolean
-    allowMultiple?: boolean
+    allowFieldDisable?: boolean
     cancelText?: string
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
@@ -36,6 +36,7 @@ export interface QueryInfoFormProps {
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
+    includeCountField?: boolean
     countText?: string
     maxCount?: number
     onCancel?: () => any
@@ -44,6 +45,7 @@ export interface QueryInfoFormProps {
     onSubmit?: (data: any) => Promise<any>
     onSuccess?: (data: any) => any
     queryInfo: QueryInfo
+    renderFileInputs?: boolean
     schemaQuery: SchemaQuery
     isSubmittedText?: string
     isSubmittingText?: string
@@ -69,8 +71,8 @@ interface State {
 
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
-    static defaultProps = {
-        allowMultiple: true,
+    static defaultProps : Partial<QueryInfoFormProps> = {
+        includeCountField: true,
         checkRequiredFields: true,
         countText: "Quantity",
         cancelText: "Cancel",
@@ -78,7 +80,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         submitText: "Submit",
         isSubmittedText: "Submitted",
         isSubmittingText: "Submitting...",
-        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS
+        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS,
+        allowFieldDisable: false
     };
 
 
@@ -265,7 +268,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { allowMultiple, asModal, countText, footer, header, checkRequiredFields, maxCount, queryInfo, fieldValues, title } = this.props;
+        const { includeCountField, asModal, countText, footer, header, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable } = this.props;
         const { count } = this.state;
 
 
@@ -281,7 +284,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
                         onInvalid={this.disableSubmitButton}>
-                    {allowMultiple && (
+                    {includeCountField && (
                         <>
                             <Input
                                 id="numItems"
@@ -301,6 +304,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                     }
                     <hr/>
                     <QueryFormInputs
+                        renderFileInputs={renderFileInputs}
+                        allowFieldDisable={allowFieldDisable}
                         checkRequiredFields={checkRequiredFields}
                         queryInfo={queryInfo}
                         fieldValues={fieldValues} />

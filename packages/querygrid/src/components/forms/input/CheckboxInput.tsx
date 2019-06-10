@@ -3,13 +3,12 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import { Checkbox } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
+import { QueryColumnFieldLabel } from '../LabelOverlay';
 
 interface CheckboxInputProps {
-    elementWrapperClassName?: Array<any> | string
+    allowDisable?: boolean
     label?: any
-    labelClassName?: Array<any> | string
     name?: string
     queryColumn: QueryColumn
     rowClassName?: Array<any> | string
@@ -17,37 +16,80 @@ interface CheckboxInputProps {
     value?: any
 }
 
-export class CheckboxInput extends React.Component<CheckboxInputProps, any> {
+interface CheckboxInputState {
+    isDisabled: boolean
+    checked: boolean
+}
+
+export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxInputState> {
 
     static defaultProps = {
-        elementWrapperClassName: 'col-sm-9',
-        labelClassName: 'control-label text-left',
-        showLabel: true
+        showLabel: true,
+        allowDisable: false
     };
+
+    constructor(props: CheckboxInputProps) {
+        super(props);
+        this.toggleDisabled = this.toggleDisabled.bind(this);
+        this.onClick = this.onClick.bind(this);
+
+        this.state = {
+            isDisabled: false,
+            checked: props.value === true
+        }
+    }
+
+    toggleDisabled() {
+        this.setState(() => {
+            return {
+                isDisabled: !this.state.isDisabled
+            }
+        });
+    }
+
+    onClick() {
+        this.setState(() => {
+            return {
+                checked: !this.state.checked
+            }
+        })
+    }
 
     render() {
         const {
-            elementWrapperClassName,
+            allowDisable,
             label,
-            labelClassName,
             name,
             queryColumn,
-            rowClassName,
             showLabel,
-            value
         } = this.props;
+        const { isDisabled } = this.state;
 
+
+        // N.B.  We do not use the Checkbox component from Formsy because it does not support
+        // React.Nodes as labels.  Using a label that is anything but a string when using Checkbox
+        // produces a "Converting circular structure to JSON" error.
         return (
-            <Checkbox
-                elementWrapperClassName={elementWrapperClassName}
-                label={showLabel ? (label ? label : queryColumn.caption) : null}
-                labelClassName={labelClassName}
-                name={name ? name : queryColumn.name}
-                required={queryColumn.required}
-                rowClassName={rowClassName}
-                // rowLabel has been disabled due to construction warnings -- doesn't seem to do anything
-                // rowLabel={queryColumn.caption}
-                value={value === true}/>
+            <div className="form-gorup row">
+                <QueryColumnFieldLabel
+                    label={label}
+                    labelOverlayProps={{isFormsy: false}}
+                    showLabel={showLabel}
+                    allowDisable={allowDisable}
+                    column={queryColumn}
+                    isDisabled = {isDisabled}
+                    onClick = {this.toggleDisabled}/>
+                <div className={"col-sm-9"}>
+                    <input
+                        disabled={this.state.isDisabled}
+                        name={name ? name : queryColumn.name}
+                        required={queryColumn.required}
+                        type={"checkbox"}
+                        checked={this.state.checked}
+                        onClick={this.onClick}
+                    />
+                </div>
+            </div>
         );
     }
 }

@@ -5,6 +5,8 @@
 import * as React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { generateId, QueryColumn } from '@glass/base'
+import { ToggleWithInputField } from './input/ToggleWithInputField';
+import { getFieldEnabledFieldName } from './QueryFormInputs';
 
 interface LabelOverlayProps {
     inputId?: string
@@ -41,17 +43,17 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
         const type = this.props.type ? this.props.type : (column ? column.type : null);
 
         return (
-            <Popover id={this._popoverId} title={label} bsClass="registry-insert__field-label popover">
+            <Popover id={this._popoverId} title={label} bsClass="popover">
                 {description && <p><strong>Description: </strong>{description}</p>}
                 {type && <p><strong>Type: </strong>{type}</p>}
                 {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
-                {(typeof required === 'boolean' && required === true) && <p><small><i>This field is required.</i></small></p>}
+                {required && <p><small><i>This field is required.</i></small></p>}
             </Popover>
         );
     }
 
     render() {
-        const { column, inputId, isFormsy, labelClass, placement } = this.props;
+        const { column, inputId, isFormsy, labelClass, placement, required } = this.props;
         const label = this.props.label ? this.props.label : (column ? column.caption : null);
 
         if (isFormsy) {
@@ -77,8 +79,72 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                     overlay={this.overlayContent()}>
                     <i className="fa fa-question-circle"/>
                 </OverlayTrigger>
+                {required ? <span> *</span> : null}
             </label>
         );
     }
+}
 
+
+interface QueryColumnFieldLabelProps  {
+    id?: any
+    fieldName?: string
+    label?: React.ReactNode
+    column?: QueryColumn,
+    allowDisable?: boolean
+    isDisabled?: boolean
+    labelOverlayProps?: LabelOverlayProps
+    showLabel?: boolean
+    onClick?: any
+    style?: any
+    withLabelOverlay?: boolean
+}
+
+export class QueryColumnFieldLabel extends React.Component<QueryColumnFieldLabelProps, any> {
+
+    static defaultProps : Partial<QueryColumnFieldLabelProps> = {
+        showLabel: true,
+        withLabelOverlay: true
+    };
+
+
+    render() {
+        const { label, column, fieldName, id, showLabel, allowDisable, isDisabled, onClick, style, withLabelOverlay } = this.props;
+        let labelOverlayProps = this.props.labelOverlayProps;
+
+        if (!showLabel)
+            return null;
+
+
+        // when not displaying with Formsy and we are displaying the field toggle, we adjust
+        // the columns since the toggle appears outside the label.
+        let toggleClassName;
+        if (allowDisable && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
+            labelOverlayProps.labelClass = "control-label col-sm-2 text-left";
+            toggleClassName = "col-sm-1";
+        }
+
+        let labelBody;
+        if (withLabelOverlay)
+            labelBody = <LabelOverlay column={column} {...labelOverlayProps}/>;
+        else
+            labelBody = label ? label : (column ? column.caption : null);
+
+
+        return (
+            <>
+                {labelBody}
+                {allowDisable && <ToggleWithInputField
+                        active = {!isDisabled}
+                        onClick = {onClick}
+                        id = { id ? id : column.fieldKey}
+                        inputFieldName = {getFieldEnabledFieldName(fieldName ? fieldName : column.fieldKey)}
+                        on = {"Yes"}
+                        off = {"No"}
+                        style = {style ? style : {float: "right"}}
+                        containerClassName={toggleClassName}
+                />}
+            </>
+        );
+    }
 }

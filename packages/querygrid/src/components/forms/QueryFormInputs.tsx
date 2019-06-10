@@ -23,6 +23,10 @@ export function getLabelFieldName(name: string): string {
     return name + LABEL_FIELD_SUFFIX;
 }
 
+export function getFieldEnabledFieldName(name: string): string {
+    return name + "::enabled";
+}
+
 interface QueryFormInputsProps {
     columnFilter?: (col?: QueryColumn) => boolean
     componentKey?: string // unique key to add to QuerySelect to avoid duplication w/ transpose
@@ -37,6 +41,7 @@ interface QueryFormInputsProps {
     lookups?: Map<string, number>
     onChange?: Function
     renderFileInputs?: boolean
+    allowFieldDisable?: boolean
 }
 
 interface State {
@@ -45,10 +50,11 @@ interface State {
 
 export class QueryFormInputs extends React.Component<QueryFormInputsProps, State> {
 
-    static defaultProps = {
+    static defaultProps : Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
         includeLabelField: false,
         renderFileInputs: false,
+        allowFieldDisable: false
     };
 
     constructor(props: QueryFormInputsProps) {
@@ -125,6 +131,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             queryInfo,
             onChange,
             renderFileInputs,
+            allowFieldDisable,
         } = this.props;
         const filter = columnFilter ? columnFilter : insertColumnFilter;
 
@@ -153,7 +160,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputRenderer) {
                         const renderer = resolveRenderer(col);
                         if (renderer) {
-                            return renderer(col, i, value);
+                            return renderer(col, i, value, false, allowFieldDisable);
                         }
 
                         throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);
@@ -172,7 +179,9 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 <React.Fragment key={i}>
                                     {this.renderLabelField(col)}
                                     <QuerySelect
+                                        allowDisable={allowFieldDisable}
                                         componentId={id}
+                                        description={col.description}
                                         destroyOnDismount={destroyOnDismount}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         joinValues={joinValues}
@@ -196,18 +205,18 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.inputType === 'textarea') {
-                        return <TextAreaInput key={i} queryColumn={col} value={value} />;
+                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
                     } else if (col.inputType === 'file' && renderFileInputs) {
-                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} />;
+                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable}/>;
                     }
 
                     switch (col.jsonType) {
                         case 'date':
-                            return <DateInput key={i} queryColumn={col} value={value}/>;
+                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
                         case 'boolean':
-                            return <CheckboxInput key={i} queryColumn={col} value={value}/>;
+                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
                         default:
-                            return <TextInput key={i} queryColumn={col} value={value}/>;
+                            return <TextInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
                     }
                 })
                 .toArray();

@@ -128,6 +128,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     schemaQuery: SchemaQuery
 
     // optional
+    allowDisable?: boolean
     containerClass?: string
     displayColumn?: string
     fireQSChangeOnInit?: boolean
@@ -282,6 +283,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
 
         if ( error ) {
             const inputProps = {
+                allowDisable: false,
                 disabled: true,
                 formsy: this.props.formsy,
                 isLoading: false,
@@ -321,6 +323,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             // is initialized. The intent is to allow normal required validation to work
             // even while QuerySelects are being initialized
             const inputProps = {
+                allowDisable: false,
                 disabled: true,
                 formsy: this.props.formsy,
                 label,

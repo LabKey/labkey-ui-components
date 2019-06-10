@@ -8,6 +8,7 @@ import { datePlaceholder, QueryColumn } from '@glass/base'
 import { TextInput, TextInputProps } from './TextInput'
 
 interface DateInputProps {
+    allowDisable?: boolean
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -24,6 +25,7 @@ interface DateInputProps {
 export class DateInput extends React.Component<DateInputProps, any> {
 
     static defaultProps = {
+        allowDisable: false,
         changeDebounceInterval: 0,
         elementWrapperClassName: 'col-sm-9',
         labelClassName: 'control-label text-left',
@@ -33,6 +35,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
 
     render() {
         const {
+            allowDisable,
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,
@@ -46,6 +49,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
         } = this.props;
 
         const props: TextInputProps = {
+            allowDisable,
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,

@@ -34,7 +34,8 @@ import {
     searchRows,
     selectRows,
     updateRows,
-    deleteRows
+    deleteRows,
+    importData
 } from './query/api'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
@@ -94,6 +95,7 @@ export {
     searchRows,
     updateRows,
     deleteRows,
+    importData,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
 

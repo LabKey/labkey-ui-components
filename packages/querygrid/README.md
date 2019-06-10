@@ -6,7 +6,7 @@ Query Grid for LabKey schema/query data views
 
 ### version ???
 *Released*: ???
-* Package patch update for changes to @glass/base v???
+* Port importData function and related interfaces from Biologics
 
 ### version 0.5.3
 *Released*: 05 June 2019

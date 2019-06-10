@@ -79,7 +79,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                     overlay={this.overlayContent()}>
                     <i className="fa fa-question-circle"/>
                 </OverlayTrigger>
-                {required ? <span> *</span> : null}
+                {required ? <span className="required-symbol"> *</span> : null}
             </label>
         );
     }

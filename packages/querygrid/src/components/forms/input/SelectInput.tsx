@@ -9,7 +9,7 @@ import { Utils } from '@labkey/api'
 import { generateId } from '@glass/base'
 
 import { ReactSelectOption } from '../model'
-import { QueryColumnFieldLabel } from '../LabelOverlay';
+import { FieldLabel } from '../FieldLabel'
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -357,7 +357,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
                     description = "Select ";
                     description = description + (multiple ? " one or more values for " : " a ") + label;
                 }
-                return <QueryColumnFieldLabel
+                return <FieldLabel
                     id={inputProps.id}
                     fieldName={name}
                     labelOverlayProps={{

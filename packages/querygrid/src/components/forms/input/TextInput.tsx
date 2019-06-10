@@ -6,7 +6,7 @@ import * as React from 'react'
 import { Input } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
-import { QueryColumnFieldLabel } from '../LabelOverlay'
+import { FieldLabel } from '../FieldLabel'
 
 export interface TextInputProps {
     allowDisable?: boolean
@@ -79,7 +79,7 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
         const { label, queryColumn, showLabel, allowDisable } = this.props;
         const { isDisabled } = this.state;
 
-        return <QueryColumnFieldLabel
+        return <FieldLabel
             label={label}
             showLabel={showLabel}
             allowDisable={allowDisable}

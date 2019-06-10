@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { RefObject } from 'react';
 import classNames from 'classnames';
-import { QueryColumnFieldLabel } from "../LabelOverlay";
+import { FieldLabel } from '../FieldLabel'
 import { cancelEvent } from "../../../events";
 import { QueryColumn } from '@glass/base';
 
@@ -200,7 +200,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
 
         return (
             <div className="form-group row">
-                <QueryColumnFieldLabel
+                <FieldLabel
                     labelOverlayProps={labelOverlayProps}
                     showLabel={true}
                     allowDisable={allowDisable}

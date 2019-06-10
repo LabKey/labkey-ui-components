@@ -5,10 +5,8 @@
 import * as React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { generateId, QueryColumn } from '@glass/base'
-import { ToggleWithInputField } from './input/ToggleWithInputField';
-import { getFieldEnabledFieldName } from './QueryFormInputs';
 
-interface LabelOverlayProps {
+export interface LabelOverlayProps {
     inputId?: string
     isFormsy?: boolean
     label?: string
@@ -81,70 +79,6 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                 </OverlayTrigger>
                 {required ? <span className="required-symbol"> *</span> : null}
             </label>
-        );
-    }
-}
-
-
-interface QueryColumnFieldLabelProps  {
-    id?: any
-    fieldName?: string
-    label?: React.ReactNode
-    column?: QueryColumn,
-    allowDisable?: boolean
-    isDisabled?: boolean
-    labelOverlayProps?: LabelOverlayProps
-    showLabel?: boolean
-    onClick?: any
-    style?: any
-    withLabelOverlay?: boolean
-}
-
-export class QueryColumnFieldLabel extends React.Component<QueryColumnFieldLabelProps, any> {
-
-    static defaultProps : Partial<QueryColumnFieldLabelProps> = {
-        showLabel: true,
-        withLabelOverlay: true
-    };
-
-
-    render() {
-        const { label, column, fieldName, id, showLabel, allowDisable, isDisabled, onClick, style, withLabelOverlay } = this.props;
-        let labelOverlayProps = this.props.labelOverlayProps;
-
-        if (!showLabel)
-            return null;
-
-
-        // when not displaying with Formsy and we are displaying the field toggle, we adjust
-        // the columns since the toggle appears outside the label.
-        let toggleClassName;
-        if (allowDisable && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
-            labelOverlayProps.labelClass = "control-label col-sm-2 col-xs-11 text-left";
-            toggleClassName = "col-xs-1";
-        }
-
-        let labelBody;
-        if (withLabelOverlay)
-            labelBody = <LabelOverlay column={column} {...labelOverlayProps}/>;
-        else
-            labelBody = label ? label : (column ? column.caption : null);
-
-
-        return (
-            <>
-                {labelBody}
-                {allowDisable && <ToggleWithInputField
-                        active = {!isDisabled}
-                        onClick = {onClick}
-                        id = { id ? id : column.fieldKey}
-                        inputFieldName = {getFieldEnabledFieldName(fieldName ? fieldName : column.fieldKey)}
-                        on = {"Yes"}
-                        off = {"No"}
-                        style = {style ? style : {float: "right"}}
-                        containerClassName={toggleClassName}
-                />}
-            </>
         );
     }
 }

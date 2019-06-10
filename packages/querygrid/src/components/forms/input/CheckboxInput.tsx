@@ -4,7 +4,7 @@
  */
 import * as React from 'react'
 import { QueryColumn } from '@glass/base'
-import { QueryColumnFieldLabel } from '../LabelOverlay';
+import { FieldLabel } from '../FieldLabel'
 
 interface CheckboxInputProps {
     allowDisable?: boolean
@@ -71,7 +71,7 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
         // produces a "Converting circular structure to JSON" error.
         return (
             <div className="form-gorup row">
-                <QueryColumnFieldLabel
+                <FieldLabel
                     label={label}
                     labelOverlayProps={{isFormsy: false}}
                     showLabel={showLabel}

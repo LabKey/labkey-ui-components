@@ -176,28 +176,26 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
     })
 }
 
-export function createFormInputId(name: string, index: any) {
-    return DOMAIN_FIELD_PREFIX + '-' + name + '-' + index;
+export function createFormInputId(name: string, index: any): string {
+    return [DOMAIN_FIELD_PREFIX, name, index].join('-');
 }
 
-function getNameFromId(id: string) : string {
+function getNameFromId(id: string): string {
     const parts = id.split('-');
     if (parts.length === 3) {
         return parts[1];
     }
-    else {
-        return null;
-    }
+
+    return undefined;
 }
 
-export function getIndexFromId(id: string): string {
+export function getIndexFromId(id: string): number {
     const parts = id.split('-');
     if (parts.length === 3) {
-        return parts[2];
+        return parseInt(parts[2]);
     }
-    else {
-        return null;
-    }
+
+    return -1;
 }
 
 /**
@@ -209,7 +207,7 @@ export function getIndexFromId(id: string): string {
  */
 export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
     const type = getNameFromId(fieldId);
-    const index = parseInt(getIndexFromId(fieldId));
+    const index = getIndexFromId(fieldId);
 
     const newFields = domain.fields.map((field, i) => {
 

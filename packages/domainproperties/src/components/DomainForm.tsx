@@ -168,7 +168,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let destIndex = result.source.index;  // default behavior go back to original spot if out of bounds
         let srcIndex = result.source.index;
         const id = result.draggableId;
-        let idIndex = id ? parseInt(getIndexFromId(id)) : undefined;
+        let idIndex = id ? getIndexFromId(id) : undefined;
 
         if (result.destination) {
             destIndex = result.destination.index;

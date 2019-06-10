@@ -70,7 +70,7 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
         // React.Nodes as labels.  Using a label that is anything but a string when using Checkbox
         // produces a "Converting circular structure to JSON" error.
         return (
-            <div className="form-gorup row">
+            <div className="form-group row">
                 <FieldLabel
                     label={label}
                     labelOverlayProps={{isFormsy: false}}

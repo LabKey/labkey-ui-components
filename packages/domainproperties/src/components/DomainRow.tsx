@@ -48,25 +48,24 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
      *  Details section of property row
      */
     getDetailsText = (): string => {
-        let details = '';
+        const { field } = this.props;
+        let details = [];
 
-        if (this.props.field.newField) {
-            if (details.length > 0) {
-                details += ', ';
-            }
-
-            details += 'New Field';
+        if (field.getDataType().isLookup() && field.lookupSchema && field.lookupQuery) {
+            details.push([
+                field.lookupContainer || 'Current Folder',
+                field.lookupSchema,
+                field.lookupQuery
+            ].join(' > '));
+        }
+        else if (field.newField) {
+            details.push('New field');
+        }
+        else if (field.updatedField) {
+            details.push('Field was edited');
         }
 
-        if (this.props.field.updatedField && !this.props.field.newField) {
-            if (details.length > 0) {
-                details += ', ';
-            }
-
-            details += 'Updated';
-        }
-
-        return details;
+        return details.join(', ');
     };
 
     getDetails() {

@@ -16,16 +16,21 @@ export interface ToggleWithInputFieldProps {
 export class ToggleWithInputField extends React.Component<ToggleWithInputFieldProps, any> {
 
     static defaultProps = {
-        onText: "On",
-        offText: "Off"
+        on: "On",
+        off: "Off"
     };
 
     render = () => {
         const { active, containerClassName, inputFieldName } = this.props;
+
+        let toggleProps = {...this.props};
+        delete toggleProps.inputFieldName;
+        delete toggleProps.containerClassName;
+
         return (
             <span className={containerClassName}>
                 {inputFieldName && <Input name={inputFieldName}  type="hidden" value={active.toString()}/>}
-                <ReactBootstrapToggle {...this.props}/>
+                <ReactBootstrapToggle {...toggleProps}/>
             </span>
         );
     }

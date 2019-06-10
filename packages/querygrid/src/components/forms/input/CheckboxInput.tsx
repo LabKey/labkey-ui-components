@@ -86,7 +86,7 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
                         required={queryColumn.required}
                         type={"checkbox"}
                         checked={this.state.checked}
-                        onClick={this.onClick}
+                        onChange={this.onClick}
                     />
                 </div>
             </div>

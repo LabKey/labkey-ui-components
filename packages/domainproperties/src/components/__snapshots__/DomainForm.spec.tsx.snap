@@ -15,6 +15,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
   onChange={[MockFunction]}
+  showHeader={true}
 >
   <Uncontrolled(Panel)
     className="domain-form-panel"
@@ -460,6 +461,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
   onChange={[MockFunction]}
+  showHeader={true}
 >
   <Uncontrolled(Panel)
     className="domain-form-panel"
@@ -5556,6 +5558,7 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
   onChange={[MockFunction]}
+  showHeader={true}
 >
   <Uncontrolled(Panel)
     className="domain-form-panel"
@@ -5893,6 +5896,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
   onChange={[MockFunction]}
+  showHeader={true}
 >
   <Uncontrolled(Panel)
     className="domain-form-panel"
@@ -8177,6 +8181,7 @@ exports[`DomainFormDisplay with empty domain form 1`] = `
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
   onChange={[MockFunction]}
+  showHeader={true}
 >
   <Uncontrolled(Panel)
     className="domain-form-panel"

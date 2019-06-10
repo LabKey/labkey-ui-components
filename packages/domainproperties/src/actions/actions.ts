@@ -103,10 +103,11 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
 export function processQueries(payload: any): List<QueryInfoLite> {
     let queries = List<QueryInfoLite>();
 
-    console.log('num queries', payload.queries.length);
-    payload.queries.forEach((qi) => {
-        queries = queries.push(QueryInfoLite.create(qi));
-    });
+    if (payload) {
+        payload.queries.forEach((qi) => {
+            queries = queries.push(QueryInfoLite.create(qi));
+        });
+    }
 
     return queries;
 }

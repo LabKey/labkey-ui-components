@@ -48,21 +48,23 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
      *  Details section of property row
      */
     getDetailsText = (): string => {
-        const { field } = this.props;
+        const { expanded, field } = this.props;
         let details = [];
 
-        if (field.getDataType().isLookup() && field.lookupSchema && field.lookupQuery) {
-            details.push([
-                field.lookupContainer || 'Current Folder',
-                field.lookupSchema,
-                field.lookupQuery
-            ].join(' > '));
-        }
-        else if (field.newField) {
-            details.push('New field');
-        }
-        else if (field.updatedField) {
-            details.push('Field was edited');
+        if (!expanded) {
+            if (field.getDataType().isLookup() && field.lookupSchema && field.lookupQuery) {
+                details.push([
+                    field.lookupContainer || 'Current Folder',
+                    field.lookupSchema,
+                    field.lookupQuery
+                ].join(' > '));
+            }
+            else if (field.newField) {
+                details.push('New field');
+            }
+            else if (field.updatedField) {
+                details.push('Field was edited');
+            }
         }
 
         return details.join(', ');
@@ -108,20 +110,19 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 </Col>
                 <Col xs={2}>
                     <Tip caption={'Data Type'}>
-                        <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                className={'form-control'} onChange={onChange} value={field.getDataType().name}
-                                disabled={!!field.propertyId}>
+                        <FormControl
+                            componentClass="select"
+                            disabled={!!field.propertyId}
+                            id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                            key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                            onChange={onChange}
+                            value={field.getDataType().name}>
                             {
-                                PROP_DESC_TYPES.map((type) => (
-                                    <option
-                                        key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
-                                        value={type.name}>
-                                        {type.display}
-                                    </option>
+                                PROP_DESC_TYPES.map((type, i) => (
+                                    <option key={i} value={type.name}>{type.display}</option>
                                 ))
                             }
-                        </select>
+                        </FormControl>
                     </Tip>
                 </Col>
                 <Col xs={1}>

@@ -21,7 +21,6 @@ export const DOMAIN_FIELD_NAME = 'name';
 export const DOMAIN_FIELD_TYPE = 'type';
 export const DOMAIN_FIELD_REQUIRED = 'required';
 export const DOMAIN_FIELD_DETAILS = 'details';
-export const DOMAIN_FIELD_ADV = 'adv';
 export const DOMAIN_FIELD_DELETE = 'delete';
 export const DOMAIN_FIELD_DESCRIPTION = 'description';
 export const DOMAIN_FIELD_LABEL = 'label';

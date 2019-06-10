@@ -73,18 +73,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return !!(domainDesign);
     }
 
-    onFieldExpandToggle = (evt: any) => {
-        const { domain, onChange } = this.props;
-
-        // Bit of a hack to work with fontawesome svg icon
-        const id = evt.target.id || evt.target.parentElement.id || evt.target.parentElement.parentElement.id;
-        let index = id ? parseInt(getIndexFromId(id)) : undefined;
-
-        this.setState((state) => ({expandedRowIndex: state.expandedRowIndex === index ? undefined : index}));
-
-        if (onChange) {
-            onChange(domain, false);
-        }
+    onFieldExpandToggle = (index: number): void => {
+        this.setState((state) => ({
+            expandedRowIndex: state.expandedRowIndex === index ? undefined : index
+        }));
     };
 
     onDeleteConfirm = () => {

@@ -21,7 +21,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
 
 import {
-    DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_DELETE,
     DOMAIN_FIELD_DETAILS,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
@@ -37,7 +37,7 @@ interface IDomainRowProps {
     index: number
     onChange: (any) => any
     onDelete: (any) => void
-    onExpand: (any) => void
+    onExpand: (index?: number) => void
 }
 
 /**
@@ -79,6 +79,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             </span>
         )
     }
+
+    onExpand = (): any => {
+        const { index, onExpand } = this.props;
+
+        if (onExpand) {
+            onExpand(index);
+        }
+    };
 
     renderBaseFields() {
         const {index, field, onChange} = this.props;
@@ -127,11 +135,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     renderButtons() {
-        const {index, onDelete, onExpand, expanded} = this.props;
+        const { expanded, index, onDelete } = this.props;
 
         return (
             <div className={'pull-right'}>
-                {expanded &&
+                {expanded && (
                 <>
                     <Button
                         bsClass='btn btn-danger'
@@ -149,12 +157,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                         Advanced Settings
                     </Button>
                 </>
-                }
-                <Tip caption={'Additional Settings'}>
-                <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
-
+                )}
+                <Tip caption="Additional Settings">
+                    <div className="domain-field-icon" onClick={this.onExpand}>
                         <FontAwesomeIcon icon={faPencilAlt}/>
-                </div>
+                    </div>
                 </Tip>
             </div>
         )

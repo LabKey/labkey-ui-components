@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import {Map, List} from "immutable";
+import {Map, List, fromJS} from "immutable";
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
 export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: number): List<Map<string, any>> {
@@ -25,4 +25,16 @@ export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: 
     }
 
     return rows;
+}
+
+export function fileMatchesAcceptedFormat(file: File, formatExtensionStr: string): Map<string, any> {
+    const acceptedFormatArray: Array<string> = formatExtensionStr.replace(/\s/g, '').split(',');
+    const dotIndex = file.name.lastIndexOf('.');
+    const extension = file.name.slice(dotIndex);
+    const isMatch = acceptedFormatArray.indexOf(extension) >= 0;
+
+    return fromJS({
+        extension,
+        isMatch
+    });
 }

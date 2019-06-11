@@ -10,6 +10,7 @@ export interface FileGridPreviewProps {
     header?: string
     infoMsg?: any
     onPreviewLoad?: (response: InferDomainResponse) => any
+    acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
 }
 
 type Props = FileGridPreviewProps & {

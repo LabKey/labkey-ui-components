@@ -11,7 +11,7 @@ import { Progress } from '../Progress'
 import { FileAttachmentContainer } from './FileAttachmentContainer'
 import { FileGridPreviewProps, FilePreviewGrid } from "./FilePreviewGrid";
 import { LoadingSpinner } from "../LoadingSpinner";
-import { convertRowDataIntoPreviewData } from "./actions";
+import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from "./actions";
 import { InferDomainResponse } from "../../models/model";
 import { inferDomainFromFile } from "../../action/actions";
 
@@ -103,6 +103,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.setState({
             attachedFiles: this.state.attachedFiles.remove(attachmentName),
             previewData: undefined,
+            previewStatus: undefined,
             errorMessage: undefined
         }, () => {
             if (onFileRemoval) {
@@ -197,11 +198,21 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     uploadDataFileForPreview() {
         const { previewGridProps } = this.props;
         const { attachedFiles } = this.state;
+        const file = attachedFiles.first();
+
+        // check if this usage has a set of formats which are supported for preview
+        if (previewGridProps.acceptedFormats) {
+            const fileCheck = fileMatchesAcceptedFormat(file, previewGridProps.acceptedFormats);
+            // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
+            if (!fileCheck.get('isMatch')) {
+                return;
+            }
+        }
 
         this.updatePreviewStatus("Uploading file...");
 
         //just take the first file, since we only support 1 file at this time
-        inferDomainFromFile(attachedFiles.first(), previewGridProps.previewCount)
+        inferDomainFromFile(file, previewGridProps.previewCount)
             .then((response: InferDomainResponse) => {
                 this.updatePreviewStatus(null);
 

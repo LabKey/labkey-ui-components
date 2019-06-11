@@ -64,6 +64,7 @@ interface SampleInsertPageProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
     location?: Location
     onCancel?: () => void
+    onTargetSampleSetChange?: (name: string) => void
 }
 
 interface StateProps {
@@ -294,6 +295,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     }
 
     changeTargetSampleSet(fieldName: string, formValue: any, selectedOption: ISampleSetOption): void {
+        const { onTargetSampleSetChange } = this.props;
         const { insertModel } = this.state;
 
         let updatedModel = insertModel.merge({
@@ -317,6 +319,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 queryGridInvalidate(insertModel.getSchemaQuery(), true);
             }
             this.gridInit(updatedModel);
+
+            if (onTargetSampleSetChange) {
+                onTargetSampleSetChange(updatedModel.getTargetSampleSetName());
+            }
         });
     }
 
@@ -478,14 +484,11 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         if (!insertModel)
             return null;
 
-        // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not
-        // split at CamelCase boundary.
+        // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
-        const headingSuffix = name ? "for '" + name +"'" : "";
         const textPrefix = name ? "Choose" : "Choose the target sample set, then choose";
         return (
             <>
-                <h3>Create Samples {headingSuffix}</h3>
                 <div className="sample-insert--header">
                     {textPrefix} parent types for the samples to be generated and enter other data for the samples.&nbsp;
                     {name &&
@@ -684,33 +687,36 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const queryGridModel = this.getQueryGridModel();
 
         return (
-            <Panel>
-                <Panel.Body>
-                    <Form>
-                        {this.renderHeader()}
-                        {queryGridModel && queryGridModel.isLoaded ?
-                            <EditableGridPanel
-                                addControlProps={addControlProps}
-                                allowBulkRemove={true}
-                                allowBulkUpdate={true}
-                                bulkUpdateText={"Bulk Insert"}
-                                bulkUpdateProps={bulkUpdateProps}
-                                columnMetadata={columnMetadata}
-                                onRowCountChange={this.onRowCountChange}
-                                model={queryGridModel}
-                            />
-                            :
-                             !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
-                        }
-                        {this.renderButtons()}
-                    </Form>
-                </Panel.Body>
+            <>
+                <Panel>
+                    <Panel.Body>
+                        <Form>
+                            {this.renderHeader()}
+                            {queryGridModel && queryGridModel.isLoaded ?
+                                <EditableGridPanel
+                                    addControlProps={addControlProps}
+                                    allowBulkRemove={true}
+                                    allowBulkUpdate={true}
+                                    bulkUpdateText={"Bulk Insert"}
+                                    bulkUpdateProps={bulkUpdateProps}
+                                    columnMetadata={columnMetadata}
+                                    onRowCountChange={this.onRowCountChange}
+                                    model={queryGridModel}
+                                />
+                                :
+                                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
+                            }
+                        </Form>
+                    </Panel.Body>
+                </Panel>
+                {this.renderButtons()}
                 <Progress
                     estimate={insertModel.sampleCount * 20}
                     modal={true}
                     title="Generating samples"
-                    toggle={isSubmitting} />
-            </Panel>
+                    toggle={isSubmitting}
+                />
+            </>
         )
     }
 }

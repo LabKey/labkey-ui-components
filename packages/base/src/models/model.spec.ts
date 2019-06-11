@@ -1,4 +1,4 @@
-import { OrderedMap } from 'immutable'
+import { fromJS, List, OrderedMap } from 'immutable'
 import { AssayDefinitionModel, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from './model'
 
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
@@ -21,6 +21,189 @@ describe("QueryGridModel", () => {
        });
        expect(model.createParam('param')).toEqual("test.param");
        expect(model.createParam("param", "default")).toEqual("test.param");
+   });
+
+   describe("getCommonDataForSelection", () => {
+       test("nothing common", () => {
+           const model = new QueryGridModel({
+               data: fromJS({
+                   "1": {
+                       "field1": {
+                           value: "value1"
+                       },
+                       "field2": {
+                           value: "value2"
+                       }
+                   },
+                   "2": {
+                       "field1": {
+                           value: "value3"
+                       },
+                       "field2": {
+                           value: "value4"
+                       },
+                   }
+               }),
+               selectedIds: List(["1", "2"])
+           });
+           expect(model.getCommonDataForSelection()).toEqual({});
+       });
+
+       test("undefined and missing values", () => {
+
+           const model = new QueryGridModel({
+               data: fromJS({
+                   "1": {
+                       "field1": {
+                           "value": undefined
+                       },
+                       "field2": {
+                           "value": "value2"
+                       },
+                       "field3": {
+                           "value": null
+                       }
+                   },
+                   "2": {
+                       "field1": {
+                           value: "value1"
+                       },
+                       "field3": {
+                           value: "value3"
+                       },
+                   }
+               }),
+               selectedIds: List(["1", "2"])
+           });
+           expect(model.getCommonDataForSelection()).toEqual({
+               "field1": "value1",
+               "field2": "value2",
+               "field3": "value3"
+           });
+       });
+
+       test("same common values", () => {
+           const model = new QueryGridModel({
+               "data" : fromJS({
+                   "448": {
+                       "RowId" : {
+                           "value" : 448,
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+                       },
+                       "Value" : {
+                           "value" : null
+                       },
+                       "Data" : {
+                           "value" : "data1"
+                       },
+                       "AndAgain" : {
+                           "value" : "again"
+                       },
+                       "Name" : {
+                           "value" : "S-20190516-9042",
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+                       },
+                       "Other" : {
+                           "value" : "other1"
+                       }
+                   },
+                   "447": {
+                       "RowId" : {
+                           "value" : 447,
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+                       },
+                       "Value" : {
+                           "value" : null
+                       },
+                       "Data" : {
+                           "value" : "data1"
+                       },
+                       "AndAgain" : {
+                           "value" : "again"
+                       },
+                       "Name" : {
+                           "value" : "S-20190516-4622",
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+                       },
+                       "Other" : {
+                           "value" : "other2"
+                       }
+                   },
+                   "446": {
+                       "RowId" : {
+                           "value" : 446,
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+                       },
+                       "Value" : {
+                           "value" : "val"
+                       },
+                       "Data" : {
+                           "value" : "data1"
+                       },
+                       "AndAgain" : {
+                           "value" : "again"
+                       },
+                       "Name" : {
+                           "value" : "S-20190516-2368",
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+                       },
+                       "Other" : {
+                           "value" : "other3"
+                       }
+                   },
+                   "445":{
+                       "RowId" : {
+                           "value" : 445,
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+                       },
+                       "Value" : {
+                           "value" : "val"
+                       },
+                       "Data" : {
+                           "value" : "data1"
+                       },
+                       "AndAgain" : {
+                           "value" : "again"
+                       },
+                       "Name" : {
+                           "value" : "S-20190516-9512",
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+                       },
+                       "Other" : {
+                           "value" : null
+                       }
+                   },
+                   "367": {
+                       "RowId" : {
+                           "value" : 367,
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=367"
+                       },
+                       "Value" : {
+                           "value" : null
+                       },
+                       "Data" : {
+                           "value" : "data1"
+                       },
+                       "AndAgain" : {
+                           "value" : null
+                       },
+                       "Name" : {
+                           "value" : "S-20190508-5534",
+                           "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=367"
+                       },
+                       "Other" : {
+                           "value" : null
+                       }
+                   }
+               }),
+               selectedIds: List(["446", "447", "448"])
+           });
+           expect(model.getCommonDataForSelection()).toEqual({
+               "Value": "val",
+               "AndAgain": "again",
+               "Data": "data1"
+           });
+       });
    });
 
 });

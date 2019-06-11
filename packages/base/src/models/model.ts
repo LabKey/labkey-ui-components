@@ -2,11 +2,19 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, OrderedSet, Record, fromJS } from 'immutable'
+import { List, Map, OrderedMap, OrderedSet, Record, Set, fromJS } from 'immutable'
 import { ActionURL, Filter } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery, decodePart } from '../utils/utils'
+import {
+    resolveKey,
+    intersect,
+    toLowerSafe,
+    getSchemaQuery,
+    resolveSchemaQuery,
+    decodePart,
+    unorderedEqual
+} from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -618,6 +626,41 @@ export class QueryGridModel extends Record({
             return this.data.get(i);
 
         }).toList();
+    }
+
+    /**
+     * Creates a JS Object, suitable for use as a fieldValues object for QueryInfoForm,
+     * mapping between field keys and values that are shared by all selected
+     * ids for this model that have a value for the field key.  That is, If there are N selected rows and
+     * N-B rows have the same value but B rows have no value set, the map will contain the value
+     * common to the N-B rows.
+     */
+    getCommonDataForSelection() : any {
+        let valueMap = Map<string, any>();
+        let fieldsInConflict = Set<string>();
+        this.selectedIds.map((id) => {
+            const rowData = this.data.get(id);
+            rowData.forEach((data, key) => {
+                if (data && !fieldsInConflict.has(key)) {
+                    const value = data.get('value');
+                    if (value) {
+                        if (!valueMap.has(key)) {
+                            valueMap = valueMap.set(key, value);
+                        }
+                        else if (Array.isArray(value) &&
+                            (!Array.isArray(valueMap.get(key) || !unorderedEqual(valueMap.get(key), value)))) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                            valueMap = valueMap.delete(key);
+                        }
+                        else if (valueMap.get(key) !== value) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                            valueMap = valueMap.delete(key);
+                        }
+                    }
+                }
+            });
+        });
+        return valueMap.toObject();
     }
 
     getExportColumnsString(): string {

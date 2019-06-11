@@ -274,3 +274,23 @@ export function similaritySortFactory(token: string, caseSensitive?: boolean): (
         return naturalSort(rawA, rawB);
     };
 }
+
+/**
+ * Performs an equality check on two arrays, returning true of the arrays are the same size
+ *
+ * @param array1
+ * @param array2
+ */
+export function unorderedEqual(array1: Array<any>, array2: Array<any>) : boolean {
+    if (array1.length !== array2.length)
+        return false;
+
+    const sortedA1 = array1.sort();
+    const sortedA2 = array2.sort();
+    for (let i = 0; i < sortedA1.length; i++) {
+        if (sortedA1[i] !== sortedA2[i]) {
+            return false;
+        }
+    }
+    return true;
+}

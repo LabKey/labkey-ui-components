@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { SchemaQuery, User } from '../models/model'
 import {
     getSchemaQuery, resolveKey, resolveKeyFromJson, resolveSchemaQuery,
-    intersect, naturalSort, toLowerSafe
+    intersect, naturalSort, toLowerSafe, unorderedEqual
 } from './utils'
 import { hasAllPermissions } from './utils';
 import { PermissionTypes } from '../models/constants'
@@ -163,4 +163,26 @@ describe("hasAllPermissions", () => {
         }), [PermissionTypes.Insert])).toBe(false);
 
     });
+});
+
+describe("unorderedEqual", () => {
+    test("empty arrays", () => {
+        expect(unorderedEqual([], [])).toBe(true);
+    });
+
+    test("different size arrays", () => {
+        expect(unorderedEqual(["a"], ["b", "a"])).toBe(false);
+    });
+
+    test("same size but differnet elements", () => {
+        expect(unorderedEqual(["a", "b"], ["b", "c"])).toBe(false);
+    });
+
+    test("elements in different order", () => {
+        expect(unorderedEqual(["a", "b", "c", "d"], ["d", "c", "a", "b"])).toBe(true);
+    });
+
+    test("equal arrays, same order", () => {
+        expect(unorderedEqual(["a", "b", "c", "d"], ["a", "b", "c", "d"])).toBe(true);
+    })
 });

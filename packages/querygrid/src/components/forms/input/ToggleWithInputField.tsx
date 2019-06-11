@@ -23,14 +23,14 @@ export class ToggleWithInputField extends React.Component<ToggleWithInputFieldPr
     render = () => {
         const { active, containerClassName, inputFieldName } = this.props;
 
-        let toggleProps = {...this.props};
+        let toggleProps = {...this.props} as any;
         delete toggleProps.inputFieldName;
         delete toggleProps.containerClassName;
 
         return (
             <span className={containerClassName}>
-                {inputFieldName && <Input name={inputFieldName}  type="hidden" value={active.toString()}/>}
-                <ReactBootstrapToggle {...toggleProps}/>
+                {inputFieldName && <Input name={inputFieldName} type="hidden" value={active.toString()}/>}
+                 <ReactBootstrapToggle {...toggleProps}/>
             </span>
         );
     }

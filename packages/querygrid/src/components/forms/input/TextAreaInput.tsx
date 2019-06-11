@@ -20,6 +20,7 @@ interface TextAreaInputProps {
     rows?: number
     showLabel?: boolean
     allowDisable?: boolean
+    initiallyDisabled?: boolean
     value?: any
 }
 
@@ -35,7 +36,8 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, TextAreaI
         labelClassName: 'control-label text-left col-xs-12',
         rows: 5,
         showLabel: true,
-        allowDisable: true
+        allowDisable: false,
+        initiallyDisabled: false
     };
 
     constructor(props: TextAreaInputProps) {
@@ -44,7 +46,7 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, TextAreaI
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.state = {
-            isDisabled: false
+            isDisabled: props.allowDisable && props.initiallyDisabled
         }
     }
 
@@ -63,10 +65,14 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, TextAreaI
         return <FieldLabel
             label={label}
             showLabel={showLabel}
-            allowDisable={allowDisable}
+            showToggle={allowDisable}
             column={queryColumn}
             isDisabled = {isDisabled}
-            onClick = {this.toggleDisabled}/>
+            toggleProps = {{
+                onClick: this.toggleDisabled
+            }}
+        />
+
     }
 
     render() {

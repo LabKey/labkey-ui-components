@@ -8,6 +8,7 @@ import { FieldLabel } from '../FieldLabel'
 
 interface CheckboxInputProps {
     allowDisable?: boolean
+    initiallyDisabled?: boolean
     label?: any
     name?: string
     queryColumn: QueryColumn
@@ -25,7 +26,8 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
 
     static defaultProps = {
         showLabel: true,
-        allowDisable: false
+        allowDisable: false,
+        initiallyDisabled: false
     };
 
     constructor(props: CheckboxInputProps) {
@@ -34,7 +36,7 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
         this.onClick = this.onClick.bind(this);
 
         this.state = {
-            isDisabled: false,
+            isDisabled: props.allowDisable && props.initiallyDisabled,
             checked: props.value === true
         }
     }
@@ -75,16 +77,19 @@ export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxI
                     label={label}
                     labelOverlayProps={{isFormsy: false}}
                     showLabel={showLabel}
-                    allowDisable={allowDisable}
+                    showToggle={allowDisable}
                     column={queryColumn}
                     isDisabled = {isDisabled}
-                    onClick = {this.toggleDisabled}/>
+                    toggleProps = {{
+                        onClick: this.toggleDisabled,
+                    }}/>
                 <div className={"col-sm-9 col-xs-12"}>
                     <input
                         disabled={this.state.isDisabled}
                         name={name ? name : queryColumn.name}
                         required={queryColumn.required}
                         type={"checkbox"}
+                        value={this.state.checked.toString()}
                         checked={this.state.checked}
                         onChange={this.onClick}
                     />

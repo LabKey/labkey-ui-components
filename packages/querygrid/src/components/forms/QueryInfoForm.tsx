@@ -12,7 +12,7 @@ import { Utils } from '@labkey/api'
 import { QueryInfo, SchemaQuery } from '@glass/base'
 
 import { selectRows } from '../../query/api'
-import { QueryFormInputs } from './QueryFormInputs'
+import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
 import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
@@ -29,6 +29,7 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
 export interface QueryInfoFormProps {
     asModal?: boolean
     allowFieldDisable?: boolean
+    initiallyDisableFields?: boolean
     cancelText?: string
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
@@ -141,6 +142,23 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
+    filterDisabledFields(data: any) {
+        const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
+            const key = column.fieldKey;
+            const enabledKey = getFieldEnabledFieldName(key);
+            return (data[column.fieldKey] !== undefined &&  data[enabledKey] === 'true');
+        });
+        let filteredData = {};
+        for (let key in data) {
+            if (data.hasOwnProperty(key) ) {
+                if (fieldsToUpdate.has(key.toLowerCase())) {
+                    filteredData[key] = data[key];
+                }
+            }
+        }
+        return filteredData;
+    }
+
     handleValidSubmit(row: any) {
         const { errorCallback, onSubmit, onSubmitForEdit, onSuccess } = this.props;
         const { submitForEdit } = this.state;
@@ -149,10 +167,10 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             errorMsg: undefined,
             isSubmitting: true
         });
-
+        const updatedRow = this.filterDisabledFields(row);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
-        submitFn(row).then((data) => {
+        submitFn(updatedRow).then((data) => {
             this.setState({
                 errorMsg: undefined,
                 isSubmitted: true,
@@ -268,7 +286,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable } = this.props;
+        const { includeCountField, asModal, countText, footer, header, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields } = this.props;
         const { count } = this.state;
 
 
@@ -280,32 +298,32 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             <div>
                 {header}
                 {this.renderError()}
-                <Formsy className="form-horizontal"
-                        onValidSubmit={this.handleValidSubmit}
-                        onValid={this.enableSubmitButton}
-                        onInvalid={this.disableSubmitButton}>
+                <Formsy
+                    className="form-horizontal"
+                    onValidSubmit={this.handleValidSubmit}
+                    onValid={this.enableSubmitButton}
+                    onInvalid={this.disableSubmitButton}>
                     {includeCountField && (
-                        <>
-                            <Input
-                                id="numItems"
-                                label={countText}
-                                labelClassName={'control-label text-left'}
-                                name={"numItems"}
-                                max={maxCount}
-                                onChange={this.onCountChange}
-                                required={true}
-                                step={"1"}
-                                style={{width: '125px'}}
-                                type={"number"}
-                                validations={`isPositiveLt:${maxCount}`}
-                                value={count}
-                            />
-                        </>)
-                    }
+                        <Input
+                            id="numItems"
+                            label={countText}
+                            labelClassName={'control-label text-left'}
+                            name={"numItems"}
+                            max={maxCount}
+                            onChange={this.onCountChange}
+                            required={true}
+                            step={"1"}
+                            style={{width: '125px'}}
+                            type={"number"}
+                            validations={`isPositiveLt:${maxCount}`}
+                            value={count}
+                        />
+                    )}
                     <hr/>
                     <QueryFormInputs
                         renderFileInputs={renderFileInputs}
                         allowFieldDisable={allowFieldDisable}
+                        initiallyDisableFields={initiallyDisableFields}
                         checkRequiredFields={checkRequiredFields}
                         queryInfo={queryInfo}
                         fieldValues={fieldValues} />

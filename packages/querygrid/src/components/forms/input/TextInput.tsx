@@ -10,6 +10,7 @@ import { FieldLabel } from '../FieldLabel'
 
 export interface TextInputProps {
     allowDisable?: boolean
+    initiallyDisabled?: boolean
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -36,7 +37,9 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
         elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
-        startFocused: false
+        startFocused: false,
+        allowDisable: false,
+        initiallyDisabled: false
     };
 
     textInput: Input;
@@ -48,7 +51,7 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
 
         this.state = {
             didFocus: false,
-            isDisabled: false
+            isDisabled: props.allowDisable && props.initiallyDisabled
         }
     }
 
@@ -82,10 +85,13 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
         return <FieldLabel
             label={label}
             showLabel={showLabel}
-            allowDisable={allowDisable}
+            showToggle={allowDisable}
             column={queryColumn}
             isDisabled = {isDisabled}
-            onClick = {this.toggleDisabled}/>
+            toggleProps = {{
+                onClick: this.toggleDisabled
+            }}
+        />
     }
 
     render() {

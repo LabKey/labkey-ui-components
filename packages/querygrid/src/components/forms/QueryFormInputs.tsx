@@ -42,6 +42,7 @@ interface QueryFormInputsProps {
     onChange?: Function
     renderFileInputs?: boolean
     allowFieldDisable?: boolean
+    initiallyDisableFields?: boolean
 }
 
 interface State {
@@ -54,7 +55,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         checkRequiredFields: true,
         includeLabelField: false,
         renderFileInputs: false,
-        allowFieldDisable: false
+        allowFieldDisable: false,
+        initiallyDisableFields: false
     };
 
     constructor(props: QueryFormInputsProps) {
@@ -126,6 +128,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             fieldValues,
             fireQSChangeOnInit,
             checkRequiredFields,
+            initiallyDisableFields,
             lookups,
             queryColumns,
             queryInfo,
@@ -136,6 +139,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         const filter = columnFilter ? columnFilter : insertColumnFilter;
 
         const columns = queryInfo ? queryInfo.columns : queryColumns;
+
 
         // CONSIDER: separately establishing the set of columns and allow
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
@@ -180,6 +184,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         allowDisable={allowFieldDisable}
+                                        initiallyDisabled={initiallyDisableFields}
                                         componentId={id}
                                         description={col.description}
                                         destroyOnDismount={destroyOnDismount}
@@ -205,18 +210,18 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.inputType === 'textarea') {
-                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
+                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                     } else if (col.inputType === 'file' && renderFileInputs) {
-                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable}/>;
+                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                     }
 
                     switch (col.jsonType) {
                         case 'date':
-                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
+                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                         case 'boolean':
-                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
+                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                         default:
-                            return <TextInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable}/>;
+                            return <TextInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                     }
                 })
                 .toArray();

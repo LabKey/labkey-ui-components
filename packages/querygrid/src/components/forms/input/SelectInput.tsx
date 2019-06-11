@@ -84,6 +84,7 @@ function initOptions(props: SelectInputProps): any {
 
 export interface SelectInputProps {
     allowDisable?: boolean
+    initiallyDisabled?: boolean
     addLabelText?: string
     allowCreate?: boolean
     autoload?: boolean
@@ -145,6 +146,8 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
 
     static defaultProps : Partial<SelectInputProps> = {
         allowCreate: false,
+        allowDisable: false,
+        initiallyDisabled: false,
         autoload: true,
         autoValue: true,
         cache: false,
@@ -175,7 +178,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
 
         this.state = {
             selectedOptions: props.autoValue === true ? initOptions(props): undefined,
-            isDisabled: false
+            isDisabled: props.allowDisable && props.initiallyDisabled
         };
     }
 
@@ -349,7 +352,6 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         const { allowDisable, label, multiple, name, required, showLabel } = this.props;
         const { isDisabled } = this.state;
 
-
         if (showLabel && label !== undefined) {
             if (Utils.isString(label)) {
                 let description = this.props.description;
@@ -367,9 +369,12 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
                         required: required
                     }}
                     showLabel={showLabel}
-                    allowDisable={allowDisable}
+                    showToggle={allowDisable}
                     isDisabled={isDisabled}
-                    onClick={this.toggleDisabled}/>
+                    toggleProps = {{
+                        onClick: this.toggleDisabled
+                    }}
+                    />
             }
 
             return label;

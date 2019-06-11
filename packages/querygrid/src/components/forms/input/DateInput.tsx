@@ -26,6 +26,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
 
     static defaultProps = {
         allowDisable: false,
+        initiallyDisabled: false,
         changeDebounceInterval: 0,
         elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
@@ -36,6 +37,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
     render() {
         const {
             allowDisable,
+            initiallyDisabled,
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,
@@ -50,6 +52,7 @@ export class DateInput extends React.Component<DateInputProps, any> {
 
         const props: TextInputProps = {
             allowDisable,
+            initiallyDisabled,
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,

@@ -21,6 +21,7 @@ interface FileInputProps {
     value: any
     name?: string
     allowDisable?: boolean
+    initiallyDisabled?: boolean
     onChange: any
     queryColumn: QueryColumn
 }
@@ -33,7 +34,8 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left',
         showLabel: true,
-        allowDisable: false
+        allowDisable: false,
+        initiallyDisabled: false
     };
 
     constructor(props) {
@@ -51,7 +53,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
             isHover: false,
             file: null,
             error: '',
-            isDisabled: false
+            isDisabled: props.allowDisable && props.initiallyDisabled
         }
     }
 
@@ -203,10 +205,12 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
                 <FieldLabel
                     labelOverlayProps={labelOverlayProps}
                     showLabel={true}
-                    allowDisable={allowDisable}
+                    showToggle={allowDisable}
                     column={queryColumn}
                     isDisabled = {isDisabled}
-                    onClick = {this.toggleDisabled}
+                    toggleProps = {{
+                        onClick: this.toggleDisabled
+                    }}
                 />
                 <div className="col-sm-9">
                     {body}

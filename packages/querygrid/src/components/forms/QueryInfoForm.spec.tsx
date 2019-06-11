@@ -95,7 +95,7 @@ describe("QueryInfoForm", () => {
        });
    });
 
-   test("don't allowing multiple", () => {
+   test("don't include count field", () => {
        expect.hasAssertions();
        return getQueryDetails(schemaQuery).then((queryInfo) => {
            const formWrapper = shallow(
@@ -138,7 +138,6 @@ describe("QueryInfoForm", () => {
             expect(formWrapper.find('.footer-info')).toHaveLength(1);
         })
     });
-
 
 
     // TODO the following tests require being able to interact with the form in order to make it

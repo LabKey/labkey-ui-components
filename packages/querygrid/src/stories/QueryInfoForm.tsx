@@ -196,6 +196,9 @@ storiesOf('QueryInfoForm', module)
         return (
             <QueryInfoForm
                 allowFieldDisable={true}
+                initiallyDisableFields={true}
+                includeCountField={false}
+                checkRequiredFields={false}
                 renderFileInputs={boolean("Render file inputs?", false)}
                 queryInfo={model.queryInfo}
                 fieldValues={fieldValues}

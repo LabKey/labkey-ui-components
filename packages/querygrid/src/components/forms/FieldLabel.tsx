@@ -4,7 +4,7 @@
  */
 import * as React from 'react'
 import { QueryColumn } from '@glass/base'
-import { ToggleWithInputField } from './input/ToggleWithInputField';
+import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleWithInputField';
 import { getFieldEnabledFieldName } from './QueryFormInputs';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
 
@@ -13,13 +13,13 @@ interface FieldLabelProps  {
     fieldName?: string // required if column is not provided
     label?: React.ReactNode
     column?: QueryColumn,
-    allowDisable?: boolean
+    showToggle?: boolean
     isDisabled?: boolean
     labelOverlayProps?: LabelOverlayProps
     showLabel?: boolean
-    onClick?: any
     style?: any
-    withLabelOverlay?: boolean
+    withLabelOverlay?: boolean,
+    toggleProps?: Partial<ToggleWithInputFieldProps>
 }
 
 export class FieldLabel extends React.Component<FieldLabelProps, any> {
@@ -31,7 +31,17 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
 
 
     render() {
-        const { label, column, fieldName, id, showLabel, allowDisable, isDisabled, onClick, style, withLabelOverlay } = this.props;
+        const {
+            label,
+            column,
+            fieldName,
+            id,
+            showLabel,
+            showToggle,
+            isDisabled,
+            style,
+            toggleProps,
+            withLabelOverlay } = this.props;
         let labelOverlayProps = this.props.labelOverlayProps;
 
         if (!showLabel)
@@ -41,7 +51,7 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
         // when not displaying with Formsy and we are displaying the field toggle, we adjust
         // the columns since the toggle appears outside the label.
         let toggleClassName;
-        if (allowDisable && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
+        if (showToggle && labelOverlayProps && !labelOverlayProps.isFormsy && !labelOverlayProps.labelClass) {
             labelOverlayProps.labelClass = "control-label col-sm-2 col-xs-11 text-left";
             toggleClassName = "col-xs-1";
         }
@@ -56,13 +66,13 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
         return (
             <>
                 {labelBody}
-                {allowDisable && <ToggleWithInputField
+                {showToggle && <ToggleWithInputField
                         active = {!isDisabled}
-                        onClick = {onClick}
+                        onClick = {toggleProps && toggleProps.onClick}
                         id = { id ? id : (column ? column.fieldKey : undefined)}
                         inputFieldName = {getFieldEnabledFieldName(fieldName ? fieldName : (column ? column.fieldKey : undefined))}
-                        on = {"Yes"}
-                        off = {"No"}
+                        on = {toggleProps && toggleProps.on ? toggleProps.on : "Enabled"}
+                        off = {toggleProps && toggleProps.off ? toggleProps.off : "Disabled"}
                         style = {style ? style : {float: "right"}}
                         containerClassName={toggleClassName}
                 />}

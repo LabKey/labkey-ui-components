@@ -1270,17 +1270,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@labkey/api@0.0.16":
-  version "0.0.16"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.16.tgz#d79f0a4fc0a5bb5a4cf1fefcda3e377d39cff29e"
-  integrity sha1-158KT8Clu1pM8f782j43fTnP8p4=
+"@labkey/api@0.0.17-fb-importData-insertOption":
+  version "0.0.17-fb-importData-insertOption"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.17-fb-importData-insertOption.tgz#d06b1c7032d0cdd185b7d6f8bfd5d1db61e03cda"
+  integrity sha1-0GsccDLQzdGFt9b4v9XR22HgPNo=
 
-"@labkey/dependencies@0.0.5":
-  version "0.0.5"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.5.tgz#5d1fbb97970d490e29b9231cc22bb4c2acc02b9f"
-  integrity sha1-XR+7l5cNSQ4puSMcwiu0wqzAK58=
+"@labkey/dependencies@0.0.6-fb-importData-insertOption":
+  version "0.0.6-fb-importData-insertOption"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.6-fb-importData-insertOption.tgz#eb8612a044416acf3023e5a7e2b3e0ef156b3a6f"
+  integrity sha1-64YSoERBas8wI+Wn4rPg7xVrOm8=
   dependencies:
-    "@labkey/api" "0.0.16"
+    "@labkey/api" "0.0.17-fb-importData-insertOption"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

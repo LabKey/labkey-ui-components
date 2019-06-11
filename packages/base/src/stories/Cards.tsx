@@ -7,7 +7,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
 
-import { AppURL, Cards } from "..";
+import { Cards } from "../components/Cards";
 import './stories.css'
 
 const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';

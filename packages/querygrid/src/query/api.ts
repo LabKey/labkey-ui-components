@@ -692,6 +692,11 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
     });
 }
 
+export enum InsertOptions {
+    IMPORT,
+    MERGE
+}
+
 export enum InsertFormats {
     tsv = 'tsv',
     csv = 'csv'
@@ -703,6 +708,7 @@ export interface IImportData {
     file?: File // must contain file or text but not both
     format?: InsertFormats
     text?: string
+    insertOption?: string
     importLookupByAlternateKey?: boolean
     saveToPipeline?: boolean,
     importUrl?: string

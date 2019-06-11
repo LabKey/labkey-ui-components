@@ -16,6 +16,7 @@ interface LabelOverlayProps {
     type?: string
     column?: QueryColumn
     required?: boolean
+    content?: any // other content to render to the popover
 }
 
 export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
@@ -34,7 +35,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
     }
 
     overlayContent() {
-        const { column, required } = this.props;
+        const { column, required, content } = this.props;
 
         const label = this.props.label ? this.props.label : (column ? column.caption : null);
         const description = this.props.description ? this.props.description : (column ? column.description : null);
@@ -46,6 +47,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                 {type && <p><strong>Type: </strong>{type}</p>}
                 {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
                 {(typeof required === 'boolean' && required === true) && <p><small><i>This field is required.</i></small></p>}
+                {content}
             </Popover>
         );
     }

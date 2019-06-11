@@ -36,6 +36,7 @@ storiesOf("FileAttachmentForm", module)
                 showButtons={boolean("Show buttons?", true)}
                 cancelText={text("Cancel button text", "Cancel")}
                 submitText={text("Submit button text", "Upload")}
+                templateUrl={text("Download Template URL", '#downloadtemplate')}
                 previewGridProps={{
                     previewCount: number('Preview Grid Row Count', 3),
                     acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx')

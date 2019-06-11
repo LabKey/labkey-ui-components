@@ -33,6 +33,7 @@ interface FileAttachmentFormProps {
     showProgressBar?: boolean
     submitText?: string
     previewGridProps?: FileGridPreviewProps
+    templateUrl?: string
 }
 
 interface State {
@@ -234,10 +235,59 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             })
     }
 
+    shouldRenderAcceptedFormats(): boolean {
+        const { acceptedFormats, showAcceptedFormats } = this.props;
+        return acceptedFormats && showAcceptedFormats && !this.shouldShowPreviewGrid();
+    }
+
+    renderAcceptedFormats() {
+        return (
+            <div className={"file-form-formats"}>
+                <strong>Supported formats include: </strong>{this.props.acceptedFormats}
+            </div>
+        )
+    }
+
+    shouldRenderTemplateButton(): boolean {
+        const { templateUrl } = this.props;
+        return templateUrl && templateUrl.length > 0;
+    }
+
+    renderTemplateButton() {
+
+        return (
+            <Button
+                bsStyle={'info'}
+                title={'Download Template'}
+                href={this.props.templateUrl}
+            >
+                <span className="fa fa-download"/> Template
+            </Button>
+        )
+    }
+
+    renderFooter() {
+        if (!this.shouldRenderAcceptedFormats() && !this.shouldRenderTemplateButton()) {
+            return;
+        }
+
+        return (
+            <div className="row">
+                <div className="col-md-9">
+                    {this.shouldRenderAcceptedFormats() && this.renderAcceptedFormats()}
+                </div>
+                <div className="col-md-3">
+                    <div className={'pull-right'}>
+                        {this.shouldRenderTemplateButton() && this.renderTemplateButton()}
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     render() {
         const {
             acceptedFormats,
-            showAcceptedFormats,
             allowDirectories,
             allowMultiple,
             label,
@@ -272,11 +322,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         title="Uploading"
                         toggle={isSubmitting}/>
                 )}
-                {acceptedFormats && showAcceptedFormats && !this.shouldShowPreviewGrid() && (
-                    <div className={"file-form-formats"}>
-                        <strong>Supported formats include: </strong>{acceptedFormats}
-                    </div>
-                )}
+                {this.renderFooter()}
                 {showButtons && this.renderButtons()}
             </>
         )

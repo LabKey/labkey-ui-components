@@ -90,6 +90,7 @@ import {
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/Cards';
 
 // Import the scss file so it will be processed in the rollup scripts
@@ -170,6 +171,7 @@ export {
     SelectionMenuItem,
     ManageDropdownButton,
     WizardNavButtons,
+    ToggleButtons,
     Cards,
 
     // actions

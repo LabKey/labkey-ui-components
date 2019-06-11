@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.6.0-fb-fileAttachmentWithPreview.5",
+  "version": "0.6.0-fb-fileAttachmentWithPreview.6",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

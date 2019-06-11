@@ -9,6 +9,7 @@ import { TextInput, TextInputProps } from './TextInput'
 
 interface DateInputProps {
     allowDisable?: boolean
+    initiallyDisabled?: boolean
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any

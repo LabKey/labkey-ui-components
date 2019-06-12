@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "^0.5.4-fb_sample_update.0",
-    "@glass/omnibox": "^0.1.18-fb_sample_update.0",
+    "@glass/base": "0.5.4-fb_sample_update.0",
+    "@glass/omnibox": "0.1.18-fb_sample_update.0",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

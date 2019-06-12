@@ -15,7 +15,9 @@ describe("<FileAttachmentForm/>", () => {
             acceptedFormats={'.tsv, .xls, .xlsx'}
             allowDirectories={false}
             allowMultiple={false}
-            label={'file attachment'}/>);
+            label={'file attachment'}
+            templateUrl={'#downloadtemplateurl'}
+        />);
         expect(wrapper).toMatchSnapshot();
     });
 

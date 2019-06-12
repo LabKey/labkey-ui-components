@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable'
-import {convertRowDataIntoPreviewData} from "./actions";
+import {convertRowDataIntoPreviewData, fileMatchesAcceptedFormat} from "./actions";
 
 const DATA = fromJS([
     ['col1', 'col2', 'col3'],
@@ -29,6 +29,34 @@ describe("files actions", () => {
         expect(rows.get(0).get('col1')).toBe('abc');
         expect(rows.get(1).get('col2')).toBe(456);
         expect(rows.get(2).get('col3')).toBe('2019-01-03');
+    });
+
+    test("fileMatchesAcceptedFormat - not a match", () => {
+        const file = new File([], 'testing.txt');
+        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        expect(response.get('extension')).toBe('.txt');
+        expect(response.get('isMatch')).toBeFalsy();
+    });
+
+    test("fileMatchesAcceptedFormat - matches first", () => {
+        const file = new File([], 'testing.csv');
+        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        expect(response.get('extension')).toBe('.csv');
+        expect(response.get('isMatch')).toBeTruthy();
+    });
+
+    test("fileMatchesAcceptedFormat - matches middle", () => {
+        const file = new File([], 'testing.tsv');
+        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        expect(response.get('extension')).toBe('.tsv');
+        expect(response.get('isMatch')).toBeTruthy();
+    });
+
+    test("fileMatchesAcceptedFormat - matches last", () => {
+        const file = new File([], 'testing.xlsx');
+        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        expect(response.get('extension')).toBe('.xlsx');
+        expect(response.get('isMatch')).toBeTruthy();
     });
 
 });

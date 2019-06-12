@@ -4,15 +4,15 @@ import classNames from 'classnames';
 import { FieldLabel } from '../FieldLabel'
 import { cancelEvent } from "../../../events";
 import { QueryColumn } from '@glass/base';
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface FileInputState {
+interface FileInputState extends DisableableInputState {
     isHover: boolean,
     file?: File,
     error: string,
-    isDisabled: boolean
 }
 
-interface FileInputProps {
+interface FileInputProps extends DisableableInputProps {
     changeDebounceInterval: number,
     elementWrapperClassName: string,
     labelClassName: string,
@@ -20,23 +20,19 @@ interface FileInputProps {
     key: any
     value: any
     name?: string
-    allowDisable?: boolean
-    initiallyDisabled?: boolean
     onChange: any
     queryColumn: QueryColumn
 }
 
-export class FileInput extends React.Component<FileInputProps, FileInputState> {
+export class FileInput extends DisableableInput<FileInputProps, FileInputState> {
     fileInput: RefObject<HTMLInputElement>;
 
-    static defaultProps : Partial<FileInputProps> = {
+    static defaultProps = {...DisableableInput.defaultProps, ...{
         changeDebounceInterval: 0,
         elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left',
-        showLabel: true,
-        allowDisable: false,
-        initiallyDisabled: false
-    };
+        showLabel: true
+    }};
 
     constructor(props) {
         super(props);
@@ -53,7 +49,7 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
             isHover: false,
             file: null,
             error: '',
-            isDisabled: props.allowDisable && props.initiallyDisabled
+            isDisabled: props.initiallyDisabled
         }
     }
 
@@ -120,15 +116,6 @@ export class FileInput extends React.Component<FileInputProps, FileInputState> {
         this.setState({file: null});
         onChange({[name]: null});
     }
-
-    toggleDisabled() {
-        this.setState(() => {
-            return {
-                isDisabled: !this.state.isDisabled
-            }
-        });
-    }
-
 
     render() {
         const {

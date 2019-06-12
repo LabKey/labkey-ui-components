@@ -10,6 +10,7 @@ import { generateId } from '@glass/base'
 
 import { ReactSelectOption } from '../model'
 import { FieldLabel } from '../FieldLabel'
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -82,9 +83,7 @@ function initOptions(props: SelectInputProps): any {
     return options;
 }
 
-export interface SelectInputProps {
-    allowDisable?: boolean
-    initiallyDisabled?: boolean
+export interface SelectInputProps extends DisableableInputProps {
     addLabelText?: string
     allowCreate?: boolean
     autoload?: boolean
@@ -136,18 +135,15 @@ export interface SelectInputProps {
     validations?: any
 }
 
-export interface SelectInputState {
+export interface SelectInputState extends DisableableInputState {
     selectedOptions?: any
-    isDisabled: boolean
 }
 
 // Implementation exported only for tests
-export class SelectInputImpl extends React.Component<SelectInputProps, SelectInputState> {
+export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectInputState> {
 
-    static defaultProps : Partial<SelectInputProps> = {
+    static defaultProps  = {...DisableableInput.defaultProps, ...{
         allowCreate: false,
-        allowDisable: false,
-        initiallyDisabled: false,
         autoload: true,
         autoValue: true,
         cache: false,
@@ -160,7 +156,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         saveOnBlur: false,
         showLabel: true,
         valueKey: 'value'
-    };
+    }};
 
     _cache = {};
     _id: string;
@@ -178,7 +174,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
 
         this.state = {
             selectedOptions: props.autoValue === true ? initOptions(props): undefined,
-            isDisabled: props.allowDisable && props.initiallyDisabled
+            isDisabled: props.initiallyDisabled
         };
     }
 
@@ -338,14 +334,6 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         }
 
         return null;
-    }
-
-    toggleDisabled() {
-        this.setState(() => {
-            return {
-                isDisabled: !this.state.isDisabled
-            }
-        });
     }
 
     renderLabel(inputProps: any) {

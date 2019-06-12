@@ -7,9 +7,10 @@ import { Textarea } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
 import { FieldLabel } from '../FieldLabel'
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 
-interface TextAreaInputProps {
+interface TextAreaInputProps extends DisableableInputProps {
     cols?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -24,21 +25,16 @@ interface TextAreaInputProps {
     value?: any
 }
 
-interface TextAreaInputState {
-    isDisabled: boolean
-}
 
-export class TextAreaInput extends React.Component<TextAreaInputProps, TextAreaInputState> {
+export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {
 
-    static defaultProps : Partial<TextAreaInputProps> = {
+    static defaultProps = {...DisableableInput.defaultProps, ...{
         cols: 50,
         elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         rows: 5,
         showLabel: true,
-        allowDisable: false,
-        initiallyDisabled: false
-    };
+    }};
 
     constructor(props: TextAreaInputProps) {
         super(props);
@@ -48,14 +44,6 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, TextAreaI
         this.state = {
             isDisabled: props.allowDisable && props.initiallyDisabled
         }
-    }
-
-    toggleDisabled() {
-        this.setState(() => {
-            return {
-                isDisabled: !this.state.isDisabled
-            }
-        });
     }
 
     renderLabel() {

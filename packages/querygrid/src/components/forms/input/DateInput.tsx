@@ -6,10 +6,9 @@ import * as React from 'react';
 import { datePlaceholder, QueryColumn } from '@glass/base'
 
 import { TextInput, TextInputProps } from './TextInput'
+import { DisableableInput, DisableableInputProps } from './DisableableInput';
 
-interface DateInputProps {
-    allowDisable?: boolean
-    initiallyDisabled?: boolean
+interface DateInputProps extends DisableableInputProps {
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -23,7 +22,7 @@ interface DateInputProps {
     value?: string
 }
 
-export class DateInput extends React.Component<DateInputProps, any> {
+export class DateInput extends DisableableInput<DateInputProps, any> {
 
     static defaultProps = {
         allowDisable: false,

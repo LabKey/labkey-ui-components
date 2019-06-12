@@ -5,10 +5,9 @@
 import * as React from 'react'
 import { QueryColumn } from '@glass/base'
 import { FieldLabel } from '../FieldLabel'
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface CheckboxInputProps {
-    allowDisable?: boolean
-    initiallyDisabled?: boolean
+interface CheckboxInputProps extends DisableableInputProps {
     label?: any
     name?: string
     queryColumn: QueryColumn
@@ -17,36 +16,22 @@ interface CheckboxInputProps {
     value?: any
 }
 
-interface CheckboxInputState {
-    isDisabled: boolean
+interface CheckboxInputState extends DisableableInputState {
     checked: boolean
 }
 
-export class CheckboxInput extends React.Component<CheckboxInputProps, CheckboxInputState> {
+export class CheckboxInput extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
 
-    static defaultProps = {
-        showLabel: true,
-        allowDisable: false,
-        initiallyDisabled: false
-    };
+    static defaultProps = {...DisableableInput.defaultProps, showLabel: true};
 
     constructor(props: CheckboxInputProps) {
         super(props);
-        this.toggleDisabled = this.toggleDisabled.bind(this);
         this.onClick = this.onClick.bind(this);
 
         this.state = {
-            isDisabled: props.allowDisable && props.initiallyDisabled,
-            checked: props.value === true
+            checked: props.value === true,
+            isDisabled: props.initiallyDisabled
         }
-    }
-
-    toggleDisabled() {
-        this.setState(() => {
-            return {
-                isDisabled: !this.state.isDisabled
-            }
-        });
     }
 
     onClick() {

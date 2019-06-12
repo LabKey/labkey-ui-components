@@ -7,10 +7,9 @@ import { Input } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
 import { FieldLabel } from '../FieldLabel'
+import { DisableableInputState, DisableableInputProps, DisableableInput } from './DisableableInput';
 
-export interface TextInputProps {
-    allowDisable?: boolean
-    initiallyDisabled?: boolean
+export interface TextInputProps extends DisableableInputProps {
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -26,21 +25,18 @@ export interface TextInputProps {
     value?: string
 }
 
-interface TextInputState {
+interface TextInputState extends DisableableInputState {
     didFocus?: boolean
-    isDisabled: boolean
 }
 
-export class TextInput extends React.Component<TextInputProps, TextInputState> {
-    static defaultProps : Partial<TextInputProps> = {
+export class TextInput extends DisableableInput<TextInputProps, TextInputState> {
+    static defaultProps = {...DisableableInput.defaultProps, ...{
         changeDebounceInterval: 0,
         elementWrapperClassName: 'col-sm-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         startFocused: false,
-        allowDisable: false,
-        initiallyDisabled: false
-    };
+    }};
 
     textInput: Input;
 
@@ -53,14 +49,6 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
             didFocus: false,
             isDisabled: props.allowDisable && props.initiallyDisabled
         }
-    }
-
-    toggleDisabled() {
-        this.setState(() => {
-            return {
-                isDisabled: !this.state.isDisabled
-            }
-        });
     }
 
     componentDidMount() {

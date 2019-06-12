@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { SchemaQuery } from "@glass/base";
+import { LoadingSpinner, QueryGridModel, SchemaQuery } from "@glass/base";
 
 import { getStateQueryGridModel } from "../models";
 import { QueryInfoForm } from "../components/forms/QueryInfoForm";
 import * as constants from "../test/data/constants";
 import { gridInit } from "../actions";
 import './stories.scss'
+import { getQueryGridModel } from '../global';
 
 function formSubmit(data: any) : Promise<any> {
     console.log(data);
@@ -25,6 +26,66 @@ function formSubmitForEdit(data: any) : Promise<any> {
 
 const SUBMIT_GROUP = "Submit";
 const TEXT_GROUP = "Text display";
+
+interface Props {
+    schemaQuery: SchemaQuery
+    fieldValues?: any
+}
+
+class QueryInfoFormPage extends React.Component<Props, any> {
+
+    componentWillMount() {
+        this.initModel();
+    }
+
+    initModel() {
+        const sampleModel = this.getQueryGridModel();
+        gridInit(sampleModel, true, this);
+    }
+
+    getQueryGridModel(): QueryGridModel {
+        const model = getStateQueryGridModel('queryInfoForm', this.props.schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+        return getQueryGridModel(model.getId()) || model;
+    }
+
+    onUpdate = () => {
+        alert('Note: we did not actually save anything to the server (there is no server).');
+    };
+
+    render() {
+        const model = this.getQueryGridModel();
+        if (!model.isLoaded) {
+            return <LoadingSpinner/>
+        }
+
+        return (
+            <QueryInfoForm
+                allowFieldDisable={boolean("Allow fields to be disabled?", true)}
+                initiallyDisableFields={true}
+                includeCountField={false}
+                checkRequiredFields={false}
+                renderFileInputs={boolean("Render file inputs?", false)}
+                queryInfo={model.queryInfo}
+                fieldValues={this.props.fieldValues}
+                onSubmit={formSubmit}
+                schemaQuery={this.props.schemaQuery}
+            />
+        )
+    }
+}
+
 
 storiesOf('QueryInfoForm', module)
     .addDecorator(withKnobs)
@@ -174,35 +235,14 @@ storiesOf('QueryInfoForm', module)
             schemaName: "samples",
             queryName: "SampleSetWithAllFieldTypes"
         });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {
-            editable: true,
-            loader: {
-                fetch: () => {
-                    return new Promise((resolve) => {
-                        resolve({
-                            data: constants.GRID_DATA,
-                            dataIds: constants.GRID_DATA.keySeq().toList(),
-                        });
-                    });
-                }
-            }
-        });
         const fieldValues = {
             'description': 'How to describe it...',
             'integer': "3",
             'text': "The text goes here"
         };
-        gridInit(model, true);
         return (
-            <QueryInfoForm
-                allowFieldDisable={true}
-                initiallyDisableFields={true}
-                includeCountField={false}
-                checkRequiredFields={false}
-                renderFileInputs={boolean("Render file inputs?", false)}
-                queryInfo={model.queryInfo}
+            <QueryInfoFormPage
                 fieldValues={fieldValues}
-                onSubmit={formSubmit}
                 schemaQuery={schemaQuery}
             />
         )

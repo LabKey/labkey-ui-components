@@ -199,6 +199,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     uploadDataFileForPreview() {
         const { previewGridProps } = this.props;
         const { attachedFiles } = this.state;
+
+        //just take the first file, since we only support 1 file at this time
         const file = attachedFiles.first();
 
         // check if this usage has a set of formats which are supported for preview
@@ -212,7 +214,6 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         this.updatePreviewStatus("Uploading file...");
 
-        //just take the first file, since we only support 1 file at this time
         inferDomainFromFile(file, previewGridProps.previewCount)
             .then((response: InferDomainResponse) => {
                 this.updatePreviewStatus(null);

@@ -22,7 +22,7 @@ import {
 
 import { QUERY_GRID_PREFIX } from '../constants'
 import { gridInit, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from '../actions'
-import { getStateQueryGridModel, getStateModelId } from '../model'
+import { getStateQueryGridModel, getStateModelId } from '../models'
 import { headerCell, headerSelectionCell } from '../renderers'
 import { getBrowserHistory } from "../util/global";
 
@@ -112,7 +112,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const model = this.getModel(this.props);
 
         if (model.allowSelection && column.index.toLowerCase() === GRID_SELECTION_INDEX && !model.editable) {
-            return headerSelectionCell(this.selectAll, model.selectedState, !(model.isLoaded && model.totalRows !== 0));
+            return headerSelectionCell(this.selectAll, model.selectedState, !model.isLoaded || model.totalRows === 0);
         }
 
         return headerCell(this.sort, column, i, model.allowSelection, model.sortable);

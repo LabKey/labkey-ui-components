@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Breadcrumb/> with multiple links 1`] = `
+<ol
+  className="breadcrumb"
+>
+  <li>
+    <a
+      href="/q"
+    >
+      First
+    </a>
+  </li>
+  <li>
+    <a
+      href="/q/two"
+    >
+      Second
+    </a>
+  </li>
+  <li>
+    <a
+      href="/q/two/three"
+    >
+      Third
+    </a>
+  </li>
+</ol>
+`;
+
+exports[`<Breadcrumb/> with one link 1`] = `
+<ol
+  className="breadcrumb"
+>
+  <li>
+    <a
+      href="/q"
+    >
+      First
+    </a>
+  </li>
+</ol>
+`;

@@ -63,21 +63,5 @@ export default [
             typescript(),
             sass()
         ]
-    },
-    {
-        external: external,
-        input: input,
-        output: {
-            file: 'dist/base.umd.js',
-            format: 'umd',
-            name: 'base',
-            globals: globals
-        },
-        plugins: [
-            resolve(),
-            commonjs({namedExports}),
-            typescript(),
-            sass()
-        ]
     }
 ]

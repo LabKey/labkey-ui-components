@@ -1,10 +1,13 @@
 {
   "name": "@glass/base",
-  "version": "0.3.0",
+  "version": "0.5.3",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
   "types": "dist/index.d.ts",
+  "config": {
+    "application_dir": "/path/to/application/node_modules/\\@glass/base/dist"
+  },
   "files": [
     "dist/"
   ],
@@ -12,10 +15,14 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "prepare": "yarn build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
-    "watch": "watch 'yarn build' ./src"
+    "watch:build": "watch 'yarn build' ./src",
+    "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
+    "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
+    "watch": "npm run watch:build"
   },
   "repository": {
     "type": "git",
@@ -31,11 +38,15 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "bootstrap": "3.3.7",
-    "react-bootstrap": "0.32.4",
+    "@labkey/dependencies": "0.0.5",
+    "bootstrap": "3.4.1",
     "moment": "2.24.0",
     "moment-jdateformatparser": "1.1.0",
     "numeral": "2.0.6"
+  },
+  "devDependencies": {
+    "@types/numeral": "0.0.25",
+    "bootstrap-sass": "3.4.1"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",
@@ -67,5 +78,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
 }

@@ -11,7 +11,7 @@ import { QueryColumn } from '@glass/base'
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events'
 import { focusCell, inDrag, modifyCell, selectCell } from '../../actions'
-import { CellMessage, EditorModel, ValueDescriptor } from '../../model'
+import { CellMessage, EditorModel, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
 
@@ -236,6 +236,7 @@ export class Cell extends React.Component<Props, any> {
                 autoFocus: selected,
                 className: classNames('cellular-display', {
                     'cell-selected': selected,
+                    'size-limited': col.isLookup(),
                     'cell-selection': this.selection(),
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),

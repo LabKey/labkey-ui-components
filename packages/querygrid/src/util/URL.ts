@@ -13,7 +13,7 @@ export type Location = {
     hash?: string
     key?: string
     pathname?: string
-    query?: Map<string, any>
+    query?: any //{[key:string]: string}
     search?: string
     state?: any // {[key:string]: string}
 }

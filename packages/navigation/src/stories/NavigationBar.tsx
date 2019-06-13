@@ -83,6 +83,7 @@ storiesOf('NavigationBar', module)
             menuSectionConfigs={undefined}
             model={model}
             showSearchBox={boolean('showSearchBox', true)}
+            onSearch={(value: string) => console.log('Search term: ' + value)}
         />
     })
     .add("With empty section", () => {

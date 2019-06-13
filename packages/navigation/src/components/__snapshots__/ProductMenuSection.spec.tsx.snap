@@ -9,6 +9,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "iconCls": undefined,
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
+      "seeAllURL": undefined,
     }
   }
   maxColumns={1}
@@ -54,6 +55,7 @@ exports[`ProductMenuSection render empty section with empty text 1`] = `
       "iconCls": undefined,
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
+      "seeAllURL": undefined,
     }
   }
   maxColumns={1}
@@ -106,6 +108,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "iconCls": undefined,
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
+      "seeAllURL": undefined,
     }
   }
   maxColumns={1}
@@ -205,6 +208,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "iconCls": undefined,
       "maxItemsPerColumn": 2,
       "maxColumns": 2,
+      "seeAllURL": undefined,
     }
   }
   maxColumns={1}
@@ -308,6 +312,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "iconCls": undefined,
       "maxItemsPerColumn": 2,
       "maxColumns": 2,
+      "seeAllURL": undefined,
     }
   }
   maxColumns={1}

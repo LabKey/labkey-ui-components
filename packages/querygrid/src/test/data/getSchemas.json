@@ -1,0 +1,244 @@
+{
+  "study" : {
+    "hidden" : false,
+    "description" : "Contains all data related to the study, including subjects, cohorts, visits, datasets, specimens, etc.",
+    "schemaName" : "study",
+    "fullyQualifiedName" : "study",
+    "menu" : {
+      "text" : null,
+      "items" : [ {
+        "text" : "Manage datasets",
+        "href" : "/labkey/BiologicsAssayTest%20Project/study-manageTypes.view?",
+        "leaf" : true
+      } ]
+    }
+  },
+  "ListManager" : {
+    "hidden" : true,
+    "description" : "Contains list of lists",
+    "schemaName" : "ListManager",
+    "fullyQualifiedName" : "ListManager"
+  },
+  "auditLog" : {
+    "hidden" : false,
+    "description" : "Contains data about audit log events.",
+    "schemaName" : "auditLog",
+    "fullyQualifiedName" : "auditLog"
+  },
+  "qctrendreport" : {
+    "hidden" : false,
+    "description" : "Contains data about QC Trend Reports",
+    "schemaName" : "qctrendreport",
+    "fullyQualifiedName" : "qctrendreport"
+  },
+  "wiki" : {
+    "hidden" : false,
+    "description" : "Contains information about wiki pages",
+    "schemaName" : "wiki",
+    "fullyQualifiedName" : "wiki"
+  },
+  "CustomProteinAnnotations" : {
+    "hidden" : false,
+    "description" : "Contains data about custom protein annotations.",
+    "schemaName" : "CustomProteinAnnotations",
+    "fullyQualifiedName" : "CustomProteinAnnotations"
+  },
+  "labbook" : {
+    "hidden" : false,
+    "description" : "Contains data for associating experiments, samples (materials), assays, notes, etc. with a lab book",
+    "schemaName" : "labbook",
+    "fullyQualifiedName" : "labbook"
+  },
+  "issues" : {
+    "hidden" : false,
+    "description" : "Contains one data table containing all the issues.",
+    "schemaName" : "issues",
+    "fullyQualifiedName" : "issues"
+  },
+  "ms2" : {
+    "hidden" : false,
+    "description" : "Contains data about MS2 runs, including detected peptides and proteins",
+    "schemaName" : "ms2",
+    "fullyQualifiedName" : "ms2"
+  },
+  "samples" : {
+    "hidden" : false,
+    "description" : "Contains data about the samples used in experiment runs.",
+    "schemaName" : "samples",
+    "fullyQualifiedName" : "samples"
+  },
+  "pipeline" : {
+    "hidden" : false,
+    "description" : "Contains data about pipeline jobs",
+    "schemaName" : "pipeline",
+    "fullyQualifiedName" : "pipeline"
+  },
+  "core" : {
+    "hidden" : false,
+    "description" : "Contains data about the system users and groups.",
+    "schemaName" : "core",
+    "fullyQualifiedName" : "core"
+  },
+  "dataintegration" : {
+    "hidden" : false,
+    "description" : "Contains data for ETL Transformations",
+    "schemaName" : "dataintegration",
+    "fullyQualifiedName" : "dataintegration"
+  },
+  "assay" : {
+    "hidden" : false,
+    "schemas" : {
+      "General" : {
+        "hidden" : false,
+        "schemas" : {
+          "batch_sample_assay" : {
+            "hidden" : false,
+            "description" : "Contains data about the batch_sample_assay assay definition and its associated batches and runs.",
+            "schemaName" : "batch_sample_assay",
+            "fullyQualifiedName" : "assay.General.batch_sample_assay"
+          },
+          "SEC" : {
+            "hidden" : false,
+            "description" : "Contains data about the SEC assay definition and its associated batches and runs.",
+            "schemaName" : "SEC",
+            "fullyQualifiedName" : "assay.General.SEC"
+          },
+          "run_sample_assay" : {
+            "hidden" : false,
+            "description" : "Contains data about the run_sample_assay assay definition and its associated batches and runs.",
+            "schemaName" : "run_sample_assay",
+            "fullyQualifiedName" : "assay.General.run_sample_assay"
+          },
+          "AssayWithoutIDColumn" : {
+            "hidden" : false,
+            "description" : "Contains data about the AssayWithoutIDColumn assay definition and its associated batches and runs.",
+            "schemaName" : "AssayWithoutIDColumn",
+            "fullyQualifiedName" : "assay.General.AssayWithoutIDColumn"
+          },
+          "results_sample_assay" : {
+            "hidden" : false,
+            "description" : "Contains data about the results_sample_assay assay definition and its associated batches and runs.",
+            "schemaName" : "results_sample_assay",
+            "fullyQualifiedName" : "assay.General.results_sample_assay"
+          },
+          "GPATAssay><&/\\' \"1äöüÅ" : {
+            "hidden" : false,
+            "description" : "Contains data about the GPATAssay><&/\\' \"1äöüÅ assay definition and its associated batches and runs.",
+            "schemaName" : "GPATAssay><&/\\' \"1äöüÅ",
+            "fullyQualifiedName" : "assay.General.GPATAssay><$A$S\\' \"1äöüÅ"
+          },
+          "Titer" : {
+            "hidden" : false,
+            "description" : "Contains data about the Titer assay definition and its associated batches and runs.",
+            "schemaName" : "Titer",
+            "fullyQualifiedName" : "assay.General.Titer"
+          },
+          "Amino Acids" : {
+            "hidden" : false,
+            "description" : "Contains data about the Amino Acids assay definition and its associated batches and runs.",
+            "schemaName" : "Amino Acids",
+            "fullyQualifiedName" : "assay.General.Amino Acids"
+          }
+        },
+        "description" : "Contains data about all assay definitions of assay type General",
+        "schemaName" : "General",
+        "fullyQualifiedName" : "assay.General"
+      },
+      "simple" : {
+        "hidden" : false,
+        "schemas" : {
+          "FileBasedExample" : {
+            "hidden" : false,
+            "description" : "Contains data about the FileBasedExample assay definition and its associated batches and runs.",
+            "schemaName" : "FileBasedExample",
+            "fullyQualifiedName" : "assay.simple.FileBasedExample"
+          }
+        },
+        "description" : "Contains data about all assay definitions of assay type Noblis Simple",
+        "schemaName" : "simple",
+        "fullyQualifiedName" : "assay.simple"
+      },
+      "Luminex" : {
+        "hidden" : false,
+        "schemas" : {
+          "LuminexExample" : {
+            "hidden" : false,
+            "description" : "Contains data about the LuminexExample assay definition and its associated batches and runs.",
+            "schemaName" : "LuminexExample",
+            "fullyQualifiedName" : "assay.Luminex.LuminexExample"
+          }
+        },
+        "description" : "Contains data about all assay definitions of assay type Luminex",
+        "schemaName" : "Luminex",
+        "fullyQualifiedName" : "assay.Luminex"
+      }
+    },
+    "description" : "Contains data about the set of defined assays and their associated batches and runs.",
+    "schemaName" : "assay",
+    "fullyQualifiedName" : "assay"
+  },
+  "lists" : {
+    "hidden" : false,
+    "description" : "Contains a data table for each defined list",
+    "schemaName" : "lists",
+    "fullyQualifiedName" : "lists",
+    "menu" : {
+      "text" : null,
+      "items" : [ {
+        "text" : "Manage lists",
+        "href" : "/labkey/BiologicsAssayTest%20Project/list-begin.view?",
+        "leaf" : true
+      } ]
+    }
+  },
+  "protein" : {
+    "hidden" : false,
+    "description" : "Protein annotation, gene ontology, and sequence tables",
+    "schemaName" : "protein",
+    "fullyQualifiedName" : "protein"
+  },
+  "exp" : {
+    "hidden" : false,
+    "schemas" : {
+      "data" : {
+        "hidden" : false,
+        "description" : "Contains data about the registered datas",
+        "schemaName" : "data",
+        "fullyQualifiedName" : "exp.data"
+      },
+      "materials" : {
+        "hidden" : false,
+        "description" : "Contains data about the samples used in experiment runs.",
+        "schemaName" : "materials",
+        "fullyQualifiedName" : "exp.materials"
+      }
+    },
+    "description" : "Contains data about experiment runs, data files, materials, sample sets, etc.",
+    "schemaName" : "exp",
+    "fullyQualifiedName" : "exp"
+  },
+  "CustomProteinAnnotationsWithSequences" : {
+    "hidden" : false,
+    "description" : "Contains data about custom protein annotations.",
+    "schemaName" : "CustomProteinAnnotationsWithSequences",
+    "fullyQualifiedName" : "CustomProteinAnnotationsWithSequences"
+  },
+  "flow" : {
+    "hidden" : false,
+    "description" : "Contains data about flow cytometry experiment runs",
+    "schemaName" : "flow",
+    "fullyQualifiedName" : "flow"
+  },
+  "announcement" : {
+    "hidden" : false,
+    "description" : "Contains forums, announcements, and subscriptions",
+    "schemaName" : "announcement",
+    "fullyQualifiedName" : "announcement"
+  },
+  "assayExclusion" : {
+    "hidden" : false,
+    "description" : "Contains data for Assay Exclusions",
+    "schemaName" : "assayExclusion",
+    "fullyQualifiedName" : "assayExclusion"
+  }
+}

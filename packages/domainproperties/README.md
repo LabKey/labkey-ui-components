@@ -4,6 +4,22 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.15
+*Released*: 05 June 2019
+*  Update package for changes to @glass/base v0.5.2
+
+### version 0.0.13
+*Released*: 05 June 2019
+* Update external package versions
+
+### version 0.0.12
+*Released*: 04 June 2019
+* Update package for changes to @glass/base v0.5.0
+
+### version 0.0.11
+*Released*: 03 June 2019
+* Update package for changes to @glass/base v0.4.0
+
 ### version 0.0.10
 *Released*: 03 June 2019
 * Epic 5420: Domain Designer, allow add/remove of field rows in domain

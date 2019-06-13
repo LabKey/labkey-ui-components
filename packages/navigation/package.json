@@ -1,6 +1,6 @@
 {
   "name": "@glass/navigation",
-  "version": "0.1.10",
+  "version": "0.2.3",
   "description": "Navigation elements and actions for an application and its pages",
   "main": "dist/navigation.cjs.js",
   "module": "dist/navigation.es.js",
@@ -13,6 +13,7 @@
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
+    "prepublish": "yarn build",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
@@ -32,11 +33,13 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.3.0",
-    "@types/prop-types": "15.5.5",
+    "@glass/base": "0.5.3",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
     "react-router": "3.2.1"
+  },
+  "devDependencies": {
+    "@types/react-router": "3.0.13"
   },
   "peerDependencies": {
     "immutable": "^3.8.2",
@@ -68,5 +71,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
 }

@@ -7,7 +7,7 @@ import { DropdownButton, MenuItem, Modal } from 'react-bootstrap'
 import { List } from 'immutable'
 import { QueryGridModel, naturalSort, generateId } from '@glass/base'
 
-import { DataViewInfo } from '../../model'
+import { DataViewInfo } from '../../models'
 import { Chart } from './Chart'
 
 const emptyList = List<React.ReactNode>();

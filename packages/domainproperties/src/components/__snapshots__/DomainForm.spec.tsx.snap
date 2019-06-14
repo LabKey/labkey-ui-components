@@ -34,6 +34,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
   onChange={[Function]}
+  showHeader={true}
 >
   <Uncontrolled(Panel)
     className="domain-form-panel"

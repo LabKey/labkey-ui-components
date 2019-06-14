@@ -246,12 +246,14 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
+
     renderButtons() {
 
         const { cancelText, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
 
-        const { count, canSubmit, isSubmitting, isSubmitted } = this.state;
+        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit } = this.state;
 
+        const inProgressText = isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : undefined);
         const suffix = (count > 1) ? pluralNoun : singularNoun;
         return (
             <div className="form-group no-margin-bottom">
@@ -267,7 +269,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             disabled={!canSubmit || count === 0}
                             onClick={this.setSubmittingForEdit}
                             type="submit">
-                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitForEditText)}
+                            {submitForEdit && inProgressText ? inProgressText : submitForEditText}
                         </Button>}
                         {submitText && onSubmit &&
                         <Button
@@ -276,7 +278,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 disabled={!canSubmit || count === 0}
                                 onClick={this.setSubmittingForSave}
                                 type="submit">
-                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{suffix ? ' ' + suffix : null}
+                            {!submitForEdit && inProgressText ? inProgressText: submitText}{suffix ? ' ' + suffix : null}
                         </Button>
                         }
                     </div>

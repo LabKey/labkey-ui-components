@@ -244,7 +244,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
-                showHeader: true,
                 cell: (selected: boolean, row) => {
                     return <input
                         style={{margin: "0 8px"}}
@@ -258,9 +257,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         gridColumns = gridColumns.push(
             allowBulkRemove || allowRemove ? new GridColumn({
                 index: GRID_EDIT_INDEX,
-                showHeader: false,
                 tableCell: true,
-                title: '',
+                title: 'Row',
                 width: 45,
                 cell: (d,r,c,rn) => (
                     <Dropdown key={c.index} id={`row-context-${rn}`} className="cellular-count" componentClass="td">
@@ -271,7 +269,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             <MenuItem onSelect={() => {
                                 removeRow(model, d, rn);
                                 this.onRowCountChange();
-                            }}>Delete row</MenuItem>
+                            }}>Delete Row</MenuItem>
                         </Dropdown.Menu>
                     </Dropdown>
                 )
@@ -300,6 +298,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
             return [col.title, (qColumn.required ? '*': undefined)].join(' ');
+        }
+        if (col && col.showHeader) {
+            return col.title;
         }
     }
 
@@ -430,9 +431,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             <Button
                                 disabled={this.state.selected.size === 0 || (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData()) }
                                 onClick={this.removeSelectedRows}
-                                bsStyle="primary"
-                                title="Delete rows">
-                                Delete rows
+                                title="Delete Rows">
+                                Delete Rows
                             </Button>
                         )}
                         {showAddOnTop && (
@@ -537,7 +537,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                          onMouseUp={this.onMouseUp}
                          ref={this.wrapper}>
                         <Grid
-                            bordered={false}
                             calcWidths={true}
                             cellular={true}
                             columns={this.generateColumns()}

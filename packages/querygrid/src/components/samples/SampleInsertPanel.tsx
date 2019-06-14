@@ -1,9 +1,7 @@
 import React from 'reactn';
-
 import { Button, Form, Panel } from 'react-bootstrap';
-
 import { List, Map, OrderedMap } from 'immutable'
-
+import { Utils } from '@labkey/api'
 import {
     AddEntityButton,
     Alert,
@@ -64,7 +62,6 @@ interface SampleInsertPageProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
     location?: Location
     onCancel?: () => void
-    onTargetSampleSetChange?: (name: string) => void
 }
 
 interface StateProps {
@@ -295,7 +292,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     }
 
     changeTargetSampleSet(fieldName: string, formValue: any, selectedOption: ISampleSetOption): void {
-        const { onTargetSampleSetChange } = this.props;
         const { insertModel } = this.state;
 
         let updatedModel = insertModel.merge({
@@ -319,10 +315,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 queryGridInvalidate(insertModel.getSchemaQuery(), true);
             }
             this.gridInit(updatedModel);
-
-            if (onTargetSampleSetChange) {
-                onTargetSampleSetChange(updatedModel.getTargetSampleSetName());
-            }
         });
     }
 
@@ -348,9 +340,16 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
             let updatedModel = insertModel;
             if (parent) {
-
                 const existingParentKey = insertModel.sampleParents.findKey(parent => parent.get('index') === index);
                 existingParent = insertModel.sampleParents.get(existingParentKey);
+
+                // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
+                const schemaMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
+                const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
+                if (schemaMatch && queryMatch) {
+                    return;
+                }
+
                 const parentType = SampleSetParentType.create({
                     index,
                     key: existingParent.key,
@@ -375,6 +374,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     index,
                 })) as SampleIdCreationModel;
             }
+
             this.setState(() => {
                 return {
                     insertModel: updatedModel,
@@ -448,14 +448,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                         containerClass=''
                                         inputClass="col-sm-5"
                                         label={"Parent " + index + " Type"}
-                                        labelClass="col-sm-3"
+                                        labelClass="col-sm-3 sample-insert--parent-label"
                                         name={"parent-type-select-" + index}
                                         onChange={this.changeParent.bind(this, index)}
-                                        options={insertModel.getParentOptions(index)}
+                                        options={insertModel.getParentOptions(query)}
                                         value={query}
                                     />
 
                                     <RemoveEntityButton
+                                        labelClass={'sample-insert--remove-parent'}
                                         entity="Parent"
                                         index={index}
                                         onClick={this.removeParent.bind(this, index)}/>
@@ -463,12 +464,12 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                             )
                         }).toArray()}
                         {parentOptions.size > sampleParents.size ?
-                            <div className="col-sm-12">
+                            <div className="sample-insert--header">
                                 <AddEntityButton
                                     entity="Parent"
                                     onClick={this.addParent}/>
                             </div> :
-                            <div className="bottom-spacing">
+                            <div className="sample-insert--header">
                                 Only {parentOptions.size} parent {parentOptions.size === 1 ? 'sample set' : 'sample sets'} available.
                             </div>
                         }
@@ -490,23 +491,20 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         return (
             <>
                 <div className="sample-insert--header">
-                    {textPrefix} parent types for the samples to be generated and enter other data for the samples.&nbsp;
-                    {name &&
-                        <>
-                            Specific parents can be chosen in the grid or bulk insert area.
-                            <br/><br/>
-                        {this.isNameRequired() ?
-                            <>
+                    <p>
+                        {textPrefix} parent types and enter data below for the samples that will be generated.&nbsp;
+                        {name && <>Specific parents can be chosen in the grid or bulk insert area.</>}
+                    </p>
+                    {name && (
+                        this.isNameRequired() ?
+                            <p>
                                 A sample ID is required for each new sample since this sample set has no name expression.
                                 You can provide a name expression by editing the sample set definition.
-                            </> :
-                            <>
+                            </p> :
+                            <p>
                                 Sample IDs will be generated for any samples that have no sample ID provided in the grid.
-                            </>
-                        }
-                        </>}
-                    <br/>
-                    <br/>
+                            </p>
+                    )}
                 </div>
 
                 {insertModel.isInit && (
@@ -514,17 +512,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         formsy={false}
                         inputClass="col-md-5 col-sm-9"
                         label="Target Sample Set"
-                        labelClass="col-md-3 col-sm-3"
+                        labelClass="col-md-3 col-sm-3 sample-insert--parent-label"
                         name="targetSampleSet"
+                        placeholder={'Select a Sample Set...'}
                         onChange={this.changeTargetSampleSet}
                         options={insertModel.sampleSetOptions.toArray()}
                         required
                         value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}/>
                 )}
-                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections()
-                    : (
-                    <div className="col-sm-offset-3">Select a Sample Set</div>
-                ))}
+                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections() : '')}
             </>
         )
     }

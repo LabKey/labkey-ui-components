@@ -218,12 +218,14 @@ export class SampleIdCreationModel extends Record({
         };
     }
 
-    getParentOptions(index: number): Array<any> {
-        // exclude options that have already been selected
+    getParentOptions(currentSelection: string): Array<any> {
+        // exclude options that have already been selected, except the current selection for this input
         return this.parentOptions
             .filter(o => (
                 this.sampleParents.every(parent => {
-                    return (!parent.query || parent.query.toLowerCase() !== o.value.toLowerCase());
+                    const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
+                    const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
+                    return notParentMatch || matchesCurrent;
                 })
             ))
             .toArray();

@@ -105,7 +105,6 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     }
 
     onFilterChange(evt: React.ChangeEvent<HTMLInputElement>) {
-
         const filterInput = evt.target.value ? evt.target.value.toLowerCase() : undefined;
 
         const filterItems = [];
@@ -226,14 +225,17 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 {expanded && (
                     <ul className={itemsCls}>
                         {filterActive && (
-                            <MenuItem>
-                                <input
-                                    onChange={this.onFilterChange}
-                                    onKeyDown={this.onKeyDownInput}
-                                    placeholder={filterPlaceholder}
-                                    ref="filter"
-                                    type="text"/>
-                            </MenuItem>
+                            <li role={'presentation'}>
+                                <a role={'menuitem'}>
+                                    <input
+                                        onChange={this.onFilterChange}
+                                        onKeyDown={this.onKeyDownInput}
+                                        placeholder={filterPlaceholder}
+                                        ref="filter"
+                                        type="text"
+                                    />
+                                </a>
+                            </li>
                         )}
                         {this.renderItems(filterActive)}
                     </ul>

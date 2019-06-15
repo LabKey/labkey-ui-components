@@ -96,6 +96,8 @@ export interface EditableGridProps {
     bulkUpdateText?: string
     columnMetadata?: Map<string, EditableColumnMetadata>
     disabled?: boolean
+    forUpdate?: boolean
+    readOnlyColumns?: List<string>
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
@@ -236,6 +238,16 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }
     }
 
+    getColumns() : List<QueryColumn> {
+        const model = this.getModel(this.props);
+        if (this.props.forUpdate) {
+            return model.getUpdateColumns(this.props.readOnlyColumns);
+        }
+        else {
+            return model.getInsertColumns();
+        }
+    }
+
     generateColumns(): List<GridColumn> {
         const { allowBulkRemove, allowRemove, columnMetadata } = this.props;
         const model = this.getModel(this.props);
@@ -279,7 +291,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             }) : COUNT_COL
         );
 
-        model.getInsertColumns().forEach(qCol => {
+        this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
                 cell: inputCellFactory(model.getId(), allowBulkRemove, columnMetadata.get(qCol.fieldKey)),

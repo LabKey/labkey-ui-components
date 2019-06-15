@@ -2,11 +2,17 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedMap, Record, Set, fromJS } from 'immutable'
+import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable'
 import { Filter } from '@labkey/api'
 import {
-    QueryColumn, QueryInfo, QueryGridModel, SchemaQuery, ViewInfo,
-    IQueryGridModel, IGridLoader, resolveSchemaQuery
+    IGridLoader,
+    IQueryGridModel,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    resolveSchemaQuery,
+    SchemaQuery,
+    ViewInfo
 } from '@glass/base'
 
 import { genCellKey } from './actions'
@@ -430,19 +436,28 @@ export class EditorModel extends Record({
         return this.cellMessages.get(genCellKey(colIdx, rowIdx));
     }
 
-    getRawData(model: QueryGridModel): List<Map<string, any>> {
-        let data = List<Map<string, any>>().asMutable();
-        const columns = model.getInsertColumns();
+    getColumns(model: QueryGridModel, forUpdate?: boolean) {
+        if (forUpdate) {
+            return model.getUpdateColumns();
+        }
+        else {
+            return model.getInsertColumns();
+        }
+    }
+
+    getRawData(model: QueryGridModel, forUpdate: boolean = false): List<Map<string, any>> {
+        let data = List<Map<string, any>>();
+        const columns = this.getColumns(model, forUpdate);
 
         for (let rn = 0; rn < model.data.size; rn++) {
-            let row = Map<string, any>().asMutable();
+            let row = Map<string, any>();
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
 
                 if (col.isLookup()) {
                     if (col.isExpInput()) {
                         let sep = '';
-                        row.set(col.name, values.reduce((str, vd) => {
+                        row = row.set(col.name, values.reduce((str, vd) => {
                             if (vd.display !== undefined && vd.display !== null) {
                                 str += sep + vd.display;
                                 sep = ', ';
@@ -452,7 +467,7 @@ export class EditorModel extends Record({
                         return;
                     }
                     else if (col.isJunctionLookup()) {
-                        row.set(col.name, values.reduce((arr, vd) => {
+                        row = row.set(col.name, values.reduce((arr, vd) => {
                             if (vd.raw !== undefined && vd.raw !== null) {
                                 arr.push(vd.raw);
                             }
@@ -462,13 +477,13 @@ export class EditorModel extends Record({
                     }
                 }
 
-                row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+                row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
             });
 
-            data.push(row.asImmutable());
+            data = data.push(row);
         }
 
-        return data.asImmutable();
+        return data;
     }
 
     /**

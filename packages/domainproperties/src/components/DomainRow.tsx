@@ -52,7 +52,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         let details = [];
 
         if (!expanded) {
-            if (field.getDataType().isLookup() && field.lookupSchema && field.lookupQuery) {
+            if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
                 details.push([
                     field.lookupContainer || 'Current Folder',
                     field.lookupSchema,
@@ -120,7 +120,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             <>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl autoFocus
+                        <FormControl autoFocus={field.newField}
                                      id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
                                      onChange={this.onChange}/>
@@ -134,7 +134,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             onChange={this.onDataTypeChange}
-                            value={field.getDataType().name}>
+                            value={field.dataType.name}>
                             {
                                 PROP_DESC_TYPES.map((type, i) => (
                                     <option key={i} value={type.name}>{type.display}</option>

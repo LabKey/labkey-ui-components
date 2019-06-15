@@ -138,12 +138,18 @@ export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelect
         const { id, onChange, value } = this.props;
         const { queries } = this.state;
 
+        const isEmpty = queries.size === 0;
+        const hasValue = !!value;
+        const blankOption = !hasValue && !isEmpty;
+
         return (
             <FormControl componentClass="select"
                          value={value}
                          id={id}
                          onChange={onChange}>
+                {blankOption && <option key="_default" value={undefined}/>}
                 {queries.map((q) => <option key={q.name} value={q.name}>{q.name}</option>).toArray()}
+                {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>
         )
     }
@@ -218,13 +224,19 @@ export class SchemaSelect extends React.Component<ISchemaSelectProps, ISchemaSel
         const { id, onChange, value } = this.props;
         const { schemas } = this.state;
 
+        const isEmpty = schemas.size === 0;
+        const hasValue = !!value;
+        const blankOption = !hasValue && !isEmpty;
+
         return (
             <FormControl componentClass="select"
                          value={value}
                          id={id}
                          onChange={onChange}
                          placeholder="Select Schema">
+                {blankOption && <option key="_default" value={undefined}/>}
                 {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.getLabel()}</option>).toArray()}
+                {isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
             </FormControl>
         )
     }

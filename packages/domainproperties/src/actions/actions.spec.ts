@@ -24,29 +24,29 @@ describe("domain properties actions", () => {
     });
 
     test("test get field type", () => {
-        const field1 = new DomainField({
+        const field1 = DomainField.create({
             name: 'field1name',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
             propertyURI: 'test'
         });
-        expect(field1.getDataType().rangeURI).toBe(INT_RANGE_URI);
+        expect(field1.dataType.rangeURI).toBe(INT_RANGE_URI);
 
-        const field2 = new DomainField({
+        const field2 = DomainField.create({
             name: 'field2name',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 0,
             propertyURI: 'test'
         });
-        expect(field2.getDataType().name).toBe('flag');
+        expect(field2.dataType.name).toBe('flag');
 
-        const field3 = new DomainField({
+        const field3 = DomainField.create({
             name: 'field3name',
             rangeURI: USER_RANGE_URI,
             propertyId: 0,
             propertyURI: 'test'
         });
-        expect(field3.getDataType().name).toBe('users');
+        expect(field3.dataType.name).toBe('users');
     });
 });

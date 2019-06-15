@@ -44,7 +44,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         return(
             <>
-                {field.getDataType().isLookup() && (
+                {field.dataType.isLookup() && (
                     <>
                         <Row className="domain-row-expanded">
                             <Col xs={12}>

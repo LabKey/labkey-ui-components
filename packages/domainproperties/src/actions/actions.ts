@@ -17,8 +17,8 @@ import { List } from "immutable";
 import { Domain, Query, Security } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails } from "@glass/base";
 
-import { DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE } from "../constants";
-import { DomainDesign, DomainField, PROP_DESC_TYPES, PropDescType, QueryInfoLite } from "../models";
+import { DOMAIN_FIELD_LOOKUP_SCHEMA, DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE } from "../constants";
+import { DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
 
 export function fetchContainers(): Promise<List<Container>> {
     return new Promise((resolve) => {
@@ -200,7 +200,7 @@ export function getIndexFromId(id: string): number {
 
 export function addField(domain: DomainDesign): DomainDesign {
     return domain.merge({
-        fields: domain.fields.push(new DomainField({
+        fields: domain.fields.push(DomainField.create({
             newField: true
         }))
     }) as DomainDesign;
@@ -223,36 +223,40 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
     const type = getNameFromId(fieldId);
     const index = getIndexFromId(fieldId);
 
-    const newFields = domain.fields.map((field, i) => {
+    let field = domain.fields.get(index);
 
-        let newField;
-        if (i === index) {
-            newField = field.set('updatedField', true); // Set for field details in DomainRow
+    if (field) {
+        let newField = field.set('updatedField', true) as DomainField;
 
-            switch (type) {
-                case DOMAIN_FIELD_TYPE:
-                    PROP_DESC_TYPES.map((type) => {
-                        if (type.name === value) {
-                            newField = newField.set('rangeURI', type.rangeURI);
-                            newField = newField.set('conceptURI', type.conceptURI);
-                        }
-                    });
-                    break;
-                default:
-                    newField = newField.set(type, value);
-                    break;
-            }
+        switch (type) {
+            case DOMAIN_FIELD_TYPE:
+                PROP_DESC_TYPES.map((type) => {
+                    if (type.name === value) {
+                        newField = newField.merge({
+                            dataType: type,
+                            conceptURI: type.conceptURI,
+                            rangeURI: type.rangeURI
+                        }) as DomainField;
+                    }
+                });
+                break;
+            case DOMAIN_FIELD_LOOKUP_SCHEMA:
+                newField = newField.merge({
+                    lookupSchema: value,
+                    lookupQuery: undefined
+                }) as DomainField;
+                break;
+            default:
+                newField = newField.set(type, value) as DomainField;
+                break;
         }
-        else {
-            newField = field;
-        }
 
-        return newField;
-    });
+        domain = domain.merge({
+            fields: domain.fields.set(index, newField)
+        }) as DomainDesign;
+    }
 
-    return domain.merge({
-        fields: List<DomainField>(newFields)
-    }) as DomainDesign;
+    return domain;
 }
 
 /**

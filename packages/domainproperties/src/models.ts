@@ -148,10 +148,10 @@ export class DomainIndex extends Record({
 }
 
 interface IDomainField {
-    name: string
-    rangeURI: string
-    propertyId: number
-    propertyURI: string
+    name?: string
+    rangeURI?: string
+    propertyId?: number
+    propertyURI?: string
     description?: string
     label?: string
     conceptURI?: string
@@ -167,6 +167,7 @@ interface IDomainField {
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
 
+    dataType?: PropDescType
     updatedField?: boolean
     newField?: boolean
 }
@@ -186,6 +187,8 @@ export class DomainField extends Record({
     scale: undefined,
     importAliases: undefined,
     URL: undefined,
+
+    dataType: undefined,
     updatedField: undefined,
     newField: undefined,
 }) implements IDomainField {
@@ -203,14 +206,22 @@ export class DomainField extends Record({
     scale: number;
     importAliases: string;
     URL: string;
+
+    dataType: PropDescType;
     updatedField: boolean;
     newField: boolean;
+
+    static create(rawField: IDomainField): DomainField {
+        return new DomainField(Object.assign({}, {
+            dataType: resolveDataType(rawField)
+        }, rawField));
+    }
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();
 
         for (let i=0; i < rawFields.length; i++) {
-            fields.push(new DomainField(rawFields[i]));
+            fields.push(DomainField.create(rawFields[i]));
         }
 
         return fields.asImmutable();
@@ -219,38 +230,38 @@ export class DomainField extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+}
 
-    getDataType(): PropDescType {
-        const types = PROP_DESC_TYPES.filter((value) => {
+function resolveDataType(rawField: IDomainField): PropDescType {
+    const types = PROP_DESC_TYPES.filter((value) => {
 
-            // handle matching rangeURI and conceptURI
-            if (value.rangeURI === this.rangeURI) {
-                if (!this.lookupQuery &&
-                    ((!value.conceptURI && !this.conceptURI) || (value.conceptURI === this.conceptURI)))
-                {
-                    return true;
-                }
-            }
-            // handle selected lookup option
-            else if (value.name === 'lookup' && this.lookupQuery && this.lookupQuery !== 'users') {
+        // handle matching rangeURI and conceptURI
+        if (value.rangeURI === rawField.rangeURI) {
+            if (!rawField.lookupQuery &&
+                ((!value.conceptURI && !rawField.conceptURI) || (value.conceptURI === rawField.conceptURI)))
+            {
                 return true;
             }
-            // handle selected users option
-            else if (value.name === 'users' && this.lookupQuery && this.lookupQuery === 'users') {
-                return true;
-            }
-
-            return false;
-        });
-
-        // If found return type
-        if (types.size > 0) {
-            return types.get(0);
+        }
+        // handle selected lookup option
+        else if (value.name === 'lookup' && rawField.lookupQuery && rawField.lookupQuery !== 'users') {
+            return true;
+        }
+        // handle selected users option
+        else if (value.name === 'users' && rawField.lookupQuery && rawField.lookupQuery === 'users') {
+            return true;
         }
 
-        // default to the text type
-        return PROP_DESC_TYPES.get(0);
+        return false;
+    });
+
+    // If found return type
+    if (types.size > 0) {
+        return types.get(0);
     }
+
+    // default to the text type
+    return PROP_DESC_TYPES.get(0);
 }
 
 interface IQueryInfoLite {

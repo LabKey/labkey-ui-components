@@ -18,6 +18,7 @@ const emptyList = List<ValueDescriptor>();
 export interface LookupCellProps {
     col: QueryColumn
     colIdx: number
+    disabled?: boolean
     modelId: string
     rowIdx: number
     select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any
@@ -253,6 +254,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
                 <input
                    autoFocus
                    className="cell-lookup-input"
+                   disabled={this.props.disabled}
                    onBlur={this.onInputBlur}
                    onChange={this.onInputChange}
                    onKeyDown={this.onInputKeyDown}

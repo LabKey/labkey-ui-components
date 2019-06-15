@@ -73,7 +73,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                                 id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
                                                 key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
                                                 onChange={onChange}
-                                                value={field.lookupSchema ? field.lookupSchema : ''}/>
+                                                value={field.lookupSchema}/>
                                         </Col>
                                         <Col xs={2}>
                                             <div className="domain-field-label">Target Table</div>
@@ -84,7 +84,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                                 key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
                                                 onChange={onChange}
                                                 schemaName={field.lookupSchema}
-                                                value={field.lookupQuery ? field.lookupQuery : ''}/>
+                                                value={field.lookupQuery}/>
                                         </Col>
                                     </>
                                 )}

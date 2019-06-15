@@ -26,7 +26,7 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, PROP_DESC_TYPES } from "../models";
+import { DomainField, PropDescType, PROP_DESC_TYPES } from "../models";
 import { createFormInputId } from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
@@ -34,7 +34,7 @@ interface IDomainRowProps {
     expanded: boolean
     field: DomainField
     index: number
-    onChange: (any) => any
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     onDelete: (any) => void
     onExpand: (index?: number) => void
 }
@@ -80,6 +80,23 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
+    onChange = (evt: any, expand?: boolean): any => {
+        const { index, onChange } = this.props;
+
+        if (onChange) {
+            let value = evt.target.value;
+            if (evt.target.type === 'checkbox') {
+                value = evt.target.checked;
+            }
+
+            onChange(evt.target.id, value, index, expand === true);
+        }
+    };
+
+    onDataTypeChange = (evt: any): any => {
+        this.onChange(evt, PropDescType.isLookup(evt.target.value));
+    };
+
     onDelete = (): any => {
         const { index, onDelete } = this.props;
 
@@ -97,15 +114,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     };
 
     renderBaseFields() {
-        const {index, field, onChange} = this.props;
+        const { index, field } = this.props;
 
         return (
             <>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
+                        <FormControl autoFocus
+                                     id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                     onChange={onChange}/>
+                                     onChange={this.onChange}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
@@ -115,7 +133,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             disabled={!!field.propertyId}
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                            onChange={onChange}
+                            onChange={this.onDataTypeChange}
                             value={field.getDataType().name}>
                             {
                                 PROP_DESC_TYPES.map((type, i) => (
@@ -131,7 +149,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             <Checkbox className='domain-field-checkbox'
                                       id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      checked={field.required} onChange={onChange}/>
+                                      checked={field.required}
+                                      onChange={this.onChange}/>
                         </Tip>
                     </div>
                 </Col>
@@ -169,7 +188,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     render() {
-        const { index, field, expanded, onChange } = this.props;
+        const { index, field, expanded } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
@@ -187,7 +206,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             </Col>
                         </Row>
                         {expanded &&
-                            <DomainRowExpandedOptions field={field} index={index} onChange={onChange}/>
+                            <DomainRowExpandedOptions field={field} index={index} onChange={this.onChange}/>
                         }
                     </div>
                 )}

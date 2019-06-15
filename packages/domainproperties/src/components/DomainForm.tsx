@@ -23,7 +23,7 @@ import { Alert, ConfirmModal } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import { DomainDesign, DomainField } from "../models";
-import { getIndexFromId, updateDomainField } from "../actions/actions";
+import { addField, getIndexFromId, removeField, updateDomainField } from "../actions/actions";
 import { LookupProvider } from "./Lookup/Context";
 
 interface IDomainFormInput {
@@ -69,24 +69,44 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         };
     }
 
+    collapse = (): void => {
+        if (this.isExpanded()) {
+            this.setState({
+                expandedRowIndex: undefined
+            });
+        }
+    };
+
+    expand = (index: number): void => {
+        const { domain } = this.props;
+        const { expandedRowIndex } = this.state;
+
+        if (expandedRowIndex !== index && index < domain.fields.size) {
+            this.setState({
+                expandedRowIndex: index
+            })
+        }
+    };
+
+    isExpanded = (): boolean => {
+        return this.state.expandedRowIndex !== undefined;
+    };
+
     isValidDomain(domainDesign: DomainDesign): boolean {
         return !!(domainDesign);
     }
 
     onFieldExpandToggle = (index: number): void => {
-        this.setState((state) => ({
-            expandedRowIndex: state.expandedRowIndex === index ? undefined : index
-        }));
+        const { expandedRowIndex } = this.state;
+
+        expandedRowIndex === index ? this.collapse() : this.expand(index);
     };
 
     onDeleteConfirm = () => {
         const { domain, onChange } = this.props;
         const { expandedRowIndex } = this.state;
 
-        // filter to the non-removed fields
-        const newDomain = domain.merge({
-            fields: domain.fields.filter((field, i) => i !== expandedRowIndex)
-        }) as DomainDesign;
+        const newDomain = removeField(domain, expandedRowIndex);
 
         this.setState({
             expandedRowIndex: undefined,
@@ -101,41 +121,33 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     onAddField = () => {
         const {domain, onChange} = this.props;
 
-        const newDomain = domain.merge({
-            fields: domain.fields.push(new DomainField({
-                newField: true
-            }))
-        }) as DomainDesign;
+        const newDomain = addField(domain);
 
         if (onChange) {
             onChange(newDomain, true);
         }
 
-        this.setState(() => ({expandedRowIndex: undefined}));
-
-        // TODO give focus to the "Name" field for the newly added row
+        this.collapse();
     };
 
-    onFieldChange = (evt) => {
-        const {domain, onChange} = this.props;
+    onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
+        const { domain, onChange } = this.props;
 
-        let value = evt.target.value;
-        if (evt.target.type === "checkbox") {
-            value = evt.target.checked;
-        }
-
-        const newDomain = updateDomainField(domain, evt.target.id, value);
+        const newDomain = updateDomainField(domain, fieldId, value);
 
         if (onChange) {
             onChange(newDomain, true);
+        }
+
+        if (expand) {
+            this.expand(index);
         }
     };
 
     onDeleteField = (index: number): void => {
         const { domain } = this.props;
-        const { expandedRowIndex } = this.state;
 
-        let field = domain.fields.get(expandedRowIndex);
+        let field = domain.fields.get(index);
 
         // only show the confirm delete for previously existing fields
         if (field && field.propertyId) {
@@ -191,7 +203,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             if (i === destIndex) {
                 newFields.push(movedField);
                 if (idIndex === this.state.expandedRowIndex) {
-                    this.setState(() => ({expandedRowIndex: destIndex}));
+                    this.expand(destIndex);
                 }
             }
 

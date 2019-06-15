@@ -198,6 +198,20 @@ export function getIndexFromId(id: string): number {
     return -1;
 }
 
+export function addField(domain: DomainDesign): DomainDesign {
+    return domain.merge({
+        fields: domain.fields.push(new DomainField({
+            newField: true
+        }))
+    }) as DomainDesign;
+}
+
+export function removeField(domain: DomainDesign, index: number): DomainDesign {
+    return domain.merge({
+        fields: domain.fields.delete(index)
+    }) as DomainDesign
+}
+
 /**
  *
  * @param domain: DomainDesign to update

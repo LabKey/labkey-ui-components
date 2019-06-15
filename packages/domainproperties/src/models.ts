@@ -42,12 +42,16 @@ export class PropDescType extends Record({
     rangeURI: string;
     conceptURI: string;
 
+    static isLookup(name: string): boolean {
+        return name === 'lookup';
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
     isLookup(): boolean {
-        return this.name === 'lookup';
+        return PropDescType.isLookup(this.name);
     }
 }
 

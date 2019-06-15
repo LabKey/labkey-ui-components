@@ -34,7 +34,7 @@ import { FolderSelect, SchemaSelect, QuerySelect } from "./Lookup/Fields";
 interface IDomainRowExpandedOptions {
     field: DomainField
     index: number
-    onChange: (any) => any
+    onChange: (evt: React.FormEvent<FormControl>) => any
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptions, any> {
@@ -100,11 +100,15 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                 <Row className='domain-row-expanded'>
                     <Col xs={5}>
                         <div className={'domain-field-label'}>Description</div>
-                        <textarea className="form-control" rows={4} value={field.description ? field.description : ''}
+                        <FormControl
+                            className="form-control"
+                            componentClass="textarea"
                             id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                             key={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
-                            placeholder={'Add a description'}
-                            onChange={onChange}/>
+                            onChange={onChange}
+                            placeholder="Add a description"
+                            rows={4}
+                            value={field.description ? field.description : ''}/>
                     </Col>
                     <Col xs={3}>
                         <div className={'domain-field-label'}>Label</div>

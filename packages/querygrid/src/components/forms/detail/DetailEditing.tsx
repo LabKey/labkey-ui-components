@@ -189,14 +189,16 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     renderEditControls() {
         const { canSubmit } = this.state;
         return (
-            <div className="detail__edit-controls">
-                <div className="btn-group">
+            <div className="row detail__edit-controls" >
+                <div className="pull-left">
                     <Button
                         onClick={this.handleClick}>
                         Cancel
                     </Button>
+                </div>
+                <div className="btn-group pull-right">
                     <Button
-                        bsStyle={"primary"}
+                        bsStyle={"success"}
                         type="submit"
                         disabled={!canSubmit}>
                         Save

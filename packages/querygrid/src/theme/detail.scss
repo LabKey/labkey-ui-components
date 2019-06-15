@@ -120,9 +120,12 @@
   font-size: 14px;
 }
 
+.detail__edit-button {
+  float: right
+}
+
 .detail__edit-button,
 .detail__edit-controls {
-  float: right;
   cursor: pointer;
 
   &:hover {

@@ -595,6 +595,8 @@ export class QueryGridModel extends Record({
         return emptyColumns;
     }
 
+
+
     getColumnIndex(fieldKey: string): number {
         if (!fieldKey)
             return -1;
@@ -628,27 +630,53 @@ export class QueryGridModel extends Record({
         }).toList();
     }
 
+    getSelectedData(): Map<any, Map<string, any>> {
+        let dataMap = Map<any, Map<string, any>>();
+        this.selectedIds.forEach((id) => {
+            if (this.data.has(id)) {
+                dataMap = dataMap.set(id, this.data.get(id));
+            }
+        });
+        return dataMap;
+    }
+
+    // TODO is this avaialble somewhere else?  If not, perhaps move to utilities somewhere.
+    valueIsEmpty(value) {
+        if (!value)
+            return true;
+        if (typeof value === 'string' && value === '')
+            return true;
+        if (Array.isArray(value) && value.length === 0)
+            return true;
+    }
+
     /**
      * Creates a JS Object, suitable for use as a fieldValues object for QueryInfoForm,
      * mapping between field keys and values that are shared by all selected
-     * ids for this model that have a value for the field key.  That is, If there are N selected rows and
-     * N-B rows have the same value but B rows have no value set, the map will contain the value
-     * common to the N-B rows.
+     * ids for this model.
+     *
+     * It is assumed that the set of fields in each row is the same, though some fields
+     * may be empty or null.  If the field sets are different, the results returned will
+     * be as if the values were present and the same as in one of the other rows.
      */
     getCommonDataForSelection() : any {
         let valueMap = Map<string, any>();
         let fieldsInConflict = Set<string>();
+        let emptyFields = Set<string>();
         this.selectedIds.map((id) => {
             const rowData = this.data.get(id);
             rowData.forEach((data, key) => {
                 if (data && !fieldsInConflict.has(key)) {
                     const value = data.get('value');
-                    if (value) {
-                        if (!valueMap.has(key)) {
+                    if (!this.valueIsEmpty(value)) {
+                        if (emptyFields.contains(key)) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                        }
+                        else if (!valueMap.has(key)) {
                             valueMap = valueMap.set(key, value);
                         }
-                        else if (Array.isArray(value) &&
-                            (!Array.isArray(valueMap.get(key) || !unorderedEqual(valueMap.get(key), value)))) {
+                        if (Array.isArray(value) &&
+                            (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value))) {
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
                         }
@@ -656,6 +684,13 @@ export class QueryGridModel extends Record({
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
                         }
+                    }
+                    else if (valueMap.has(key)) { // some row had a value, but this row does not
+                        fieldsInConflict = fieldsInConflict.add(key);
+                        valueMap = valueMap.delete(key);
+                    }
+                    else {
+                        emptyFields = emptyFields.add(key);
                     }
                 }
             });
@@ -701,6 +736,13 @@ export class QueryGridModel extends Record({
     getInsertColumns(): List<QueryColumn> {
         if (this.queryInfo) {
             return this.queryInfo.getInsertColumns();
+        }
+        return emptyColumns;
+    }
+
+    getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
+        if (this.queryInfo) {
+            return this.queryInfo.getUpdateColumns(readOnlyColumns);
         }
         return emptyColumns;
     }
@@ -1040,6 +1082,23 @@ export class QueryInfo extends Record({
             .toList();
     }
 
+    getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
+
+        return this.columns
+            .filter((column) => {
+                return updateColumnFilter(column) || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
+            })
+            .map((column) => {
+                if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {
+                    return column.set('readOnly', true) as QueryColumn;
+                }
+                else {
+                    return column;
+                }
+            })
+            .toList();
+    }
+
     getFilters(view?: string): List<Filter.IFilter> {
         if (view) {
             let viewInfo = this.getView(view);
@@ -1313,6 +1372,16 @@ export function insertColumnFilter(col: QueryColumn): boolean {
         col &&
         col.removeFromViews !== true &&
         col.shownInInsertView === true &&
+        col.userEditable === true &&
+        col.fieldKeyArray.length === 1
+    );
+}
+
+export function updateColumnFilter(col: QueryColumn): boolean {
+    return (
+        col &&
+        col.removeFromViews !== true &&
+        col.shownInUpdateView === true &&
         col.userEditable === true &&
         col.fieldKeyArray.length === 1
     );

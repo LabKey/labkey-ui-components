@@ -237,16 +237,15 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                         <Panel.Heading>{header}</Panel.Heading>
                         <Panel.Body>
                             <div className="detail__editing">
-                                {this.renderEditControls()}
                                 {error && <Alert>{error}</Alert>}
                                 <Detail
                                     queryModel={queryModel}
                                     detailRenderer={resolveDetailEditRenderer}
                                     titleRenderer={titleRenderer}/>
-                                {this.renderEditControls()}
                             </div>
                         </Panel.Body>
                     </Panel>
+                    {this.renderEditControls()}
                 </Formsy>
             )
         }

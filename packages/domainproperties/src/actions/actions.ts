@@ -17,7 +17,12 @@ import { List } from "immutable";
 import { Domain, Query, Security } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails } from "@glass/base";
 
-import { DOMAIN_FIELD_LOOKUP_SCHEMA, DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE } from "../constants";
+import {
+    DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_PREFIX,
+    DOMAIN_FIELD_TYPE
+} from "../constants";
 import { DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
 
 export function fetchContainers(): Promise<List<Container>> {
@@ -239,6 +244,13 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
                         }) as DomainField;
                     }
                 });
+                break;
+            case DOMAIN_FIELD_LOOKUP_CONTAINER:
+                newField = newField.merge({
+                    lookupContainer: value,
+                    lookupSchema: undefined,
+                    lookupQuery: undefined
+                }) as DomainField;
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
                 newField = newField.merge({

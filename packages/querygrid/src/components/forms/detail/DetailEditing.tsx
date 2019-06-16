@@ -189,8 +189,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     renderEditControls() {
         const { canSubmit } = this.state;
         return (
-            <div className="row detail__edit-controls" >
-                <div className="pull-left">
+            <>
+                <div className="pull-left bottom-spacing">
                     <Button
                         onClick={this.handleClick}>
                         Cancel
@@ -204,7 +204,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                         Save
                     </Button>
                 </div>
-            </div>
+            </>
         )
     }
 

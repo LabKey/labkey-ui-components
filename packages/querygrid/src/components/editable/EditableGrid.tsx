@@ -90,14 +90,17 @@ export interface EditableGridProps {
     allowBulkUpdate?: boolean
     allowBulkRemove?: boolean
     allowFieldDisable?: boolean
+    bordered?: boolean
     bulkUpdateProps?: Partial<QueryInfoFormProps>
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
     bulkUpdateText?: string
+    cellular?: boolean
     columnMetadata?: Map<string, EditableColumnMetadata>
     disabled?: boolean
     forUpdate?: boolean
     readOnlyColumns?: List<string>
+    striped?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
@@ -121,11 +124,14 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             nounPlural: "Rows",
             nounSingular: "Row"
         },
+        bordered: false,
         bulkUpdateText: "Bulk Update",
+        cellular: true,
         columnMetadata: Map<string, EditableColumnMetadata>(),
         disabled: false,
         isSubmitting: false,
-        initialEmptyRowCount: 1
+        initialEmptyRowCount: 1,
+        striped: false
     };
 
     private maskDelay: number;
@@ -535,7 +541,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     render() {
-        const { addControlProps, allowAdd, isSubmitting } = this.props;
+        const { addControlProps, allowAdd, bordered, cellular, isSubmitting, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {
@@ -551,16 +557,16 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                          onMouseUp={this.onMouseUp}
                          ref={this.wrapper}>
                         <Grid
-                            bordered={false}
+                            bordered={bordered}
                             calcWidths={true}
-                            cellular={true}
+                            cellular={cellular}
                             columns={this.generateColumns()}
                             condensed={false}
                             data={model.getDataEdit()}
                             headerCell={this.headerCell}
                             responsive={false}
                             rowKey={GRID_EDIT_INDEX}
-                            striped={false}
+                            striped={striped}
                             tableRef={this.table} />
                     </div>
                     {allowAdd && (this.getControlsPlacement() != 'top') && (

@@ -282,7 +282,8 @@ export interface ISelectRowsResult {
     queries: {
         [key:string]: QueryInfo
     }
-    totalRows: number
+    totalRows: number,
+    messages: List<Map<string, string>>,
     caller?: any
 }
 
@@ -311,6 +312,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                         [key]: details
                     },
                     totalRows: result.rowCount,
+                    messages: result.messages,
                     caller
                 }));
             }
@@ -406,7 +408,6 @@ function handle132Response(json): Promise<any> {
                         }
                     }
                     row._id_ = count++;
-                    // row._id_ = metadataKey ? row[metadataKey].value : count++
                 });
 
                 const modelSchema = new schema.Entity(modelKey, {}, {
@@ -442,7 +443,10 @@ function handle132Response(json): Promise<any> {
                     orderedModels[modelKey] = List();
                 }
 
+                const messages = resolved.metaData.messages ? fromJS(resolved.metaData.messages) : List<Map<string, string>>();
+
                 resolve({
+                    messages,
                     models,
                     orderedModels,
                     rowCount

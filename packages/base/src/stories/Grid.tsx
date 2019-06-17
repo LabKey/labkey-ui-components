@@ -30,4 +30,5 @@ storiesOf('Grid', module)
             transpose={boolean('transpose', false)}
             data={constants.gridData}
             columns={constants.gridColumns}
-        />);
+        />)
+    .add('With messages', () => <Grid data={constants.gridData} messages={constants.gridMessages} />);

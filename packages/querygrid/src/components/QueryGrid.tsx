@@ -199,6 +199,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
             condensed: true,
             data: model.getData(),
             gridId: model.getId(),
+            messages: model.messages,
             headerCell: this.headerCell,
             isLoading: model.isLoading,
             loadingText: <LoadingSpinner/>

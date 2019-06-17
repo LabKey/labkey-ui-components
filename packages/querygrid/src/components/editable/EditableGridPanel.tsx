@@ -12,6 +12,7 @@ import { EditableGrid, EditableGridProps } from "./EditableGrid";
 interface Props extends EditableGridProps {
     title?: string
     bsStyle?: any
+    className?: string
 }
 
 export class EditableGridPanel extends React.Component<Props, any> {
@@ -49,7 +50,7 @@ export class EditableGridPanel extends React.Component<Props, any> {
     }
 
     render() {
-        const { bsStyle, title } = this.props;
+        const { bsStyle, className, title } = this.props;
         const model = this.getModel();
 
         if (!model) {
@@ -61,7 +62,7 @@ export class EditableGridPanel extends React.Component<Props, any> {
         }
 
         return (
-            <Panel bsStyle={bsStyle}>
+            <Panel bsStyle={bsStyle} className={className}>
                 <Panel.Heading>{title}</Panel.Heading>
                 <Panel.Body className={'table-responsive'}>
                     <EditableGrid {...this.props}/>

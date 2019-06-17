@@ -58,8 +58,6 @@ storiesOf('EditableGridPanel', module)
                 allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
                 allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
                 allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
-                bsStyle={text("bsStyle", undefined, PANEL_GROUP)}
-                bordered={boolean("Bordered?", false, PANEL_GROUP)}
                 disabled={boolean("Disabled?", false, PANEL_GROUP)}
                 initialEmptyRowCount={number("Initial empty rows", 1, {}, PANEL_GROUP)}
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
@@ -67,7 +65,9 @@ storiesOf('EditableGridPanel', module)
                 onRowCountChange={onRowCountChange}
                 model={model}
                 striped={boolean("Striped?", false, PANEL_GROUP)}
-                cellular={boolean("Cellular?", true, PANEL_GROUP)}
+                bsStyle={text("bsStyle", undefined, PANEL_GROUP)}
+                bordered={boolean("Bordered?", false, PANEL_GROUP)}
+                condensed={boolean("Condensed?", true, PANEL_GROUP)}
             />
         );
 

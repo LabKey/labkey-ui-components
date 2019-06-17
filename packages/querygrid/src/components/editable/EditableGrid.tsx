@@ -92,10 +92,10 @@ export interface EditableGridProps {
     allowFieldDisable?: boolean
     bordered?: boolean
     bulkUpdateProps?: Partial<QueryInfoFormProps>
+    condensed?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
     bulkUpdateText?: string
-    cellular?: boolean
     columnMetadata?: Map<string, EditableColumnMetadata>
     disabled?: boolean
     forUpdate?: boolean
@@ -126,8 +126,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         },
         bordered: false,
         bulkUpdateText: "Bulk Update",
-        cellular: true,
         columnMetadata: Map<string, EditableColumnMetadata>(),
+        condensed: false,
         disabled: false,
         isSubmitting: false,
         initialEmptyRowCount: 1,
@@ -541,7 +541,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     render() {
-        const { addControlProps, allowAdd, bordered, cellular, isSubmitting, striped } = this.props;
+        const { addControlProps, allowAdd, bordered, condensed, isSubmitting, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {
@@ -559,9 +559,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                         <Grid
                             bordered={bordered}
                             calcWidths={true}
-                            cellular={cellular}
+                            cellular={true}
                             columns={this.generateColumns()}
-                            condensed={false}
+                            condensed={condensed}
                             data={model.getDataEdit()}
                             headerCell={this.headerCell}
                             responsive={false}

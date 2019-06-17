@@ -5,11 +5,11 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, text, withKnobs } from '@storybook/addon-knobs'
 
 import { FileAttachmentForm } from "../components/FileAttachmentForm";
 
-import './stories.css'
+import './stories.scss';
 
 storiesOf("FileAttachmentForm", module)
     .addDecorator(withKnobs)

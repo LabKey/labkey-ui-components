@@ -1,11 +1,11 @@
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { withKnobs, text, boolean } from '@storybook/addon-knobs'
+import * as React from 'react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 
-import { Grid } from '../components/Grid'
-import * as constants from './constants'
+import { Grid } from '../components/Grid';
+import * as constants from './constants';
 
-import './stories.css'
+import './stories.scss';
 
 storiesOf('Grid', module)
     .addDecorator(withKnobs)

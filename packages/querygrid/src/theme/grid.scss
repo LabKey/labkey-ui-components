@@ -184,6 +184,10 @@ $table-cell-selection-bg-color: #EDF3FF;
 .table-cellular {
   border-collapse: collapse;
 
+  & > thead > tr > th {
+    padding: 5px;
+  }
+
   & > tbody > tr > td {
     border: 1px solid #dadada;
     line-height: 1;

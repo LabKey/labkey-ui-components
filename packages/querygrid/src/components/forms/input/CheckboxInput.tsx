@@ -3,30 +3,40 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
+import { withFormsy } from 'formsy-react'
+import { Utils } from '@labkey/api'
 import { QueryColumn } from '@glass/base'
 import { FieldLabel } from '../FieldLabel'
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 interface CheckboxInputProps extends DisableableInputProps {
+    formsy?: boolean
     label?: any
     name?: string
     queryColumn: QueryColumn
     rowClassName?: Array<any> | string
     showLabel?: boolean
     value?: any
+
+    // from formsy-react
+    getErrorMessage?: Function
+    getValue?: Function
+    setValue?: Function
+    showRequired?: Function
+    validations?: any
 }
 
 interface CheckboxInputState extends DisableableInputState {
     checked: boolean
 }
 
-export class CheckboxInput extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
+class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInputState> {
 
     static defaultProps = {...DisableableInput.defaultProps, showLabel: true};
 
     constructor(props: CheckboxInputProps) {
         super(props);
-        this.onClick = this.onClick.bind(this);
+        this.onChange = this.onChange.bind(this);
 
         this.state = {
             checked: props.value === true,
@@ -34,12 +44,15 @@ export class CheckboxInput extends DisableableInput<CheckboxInputProps, Checkbox
         }
     }
 
-    onClick() {
+    onChange(e) {
+        const checked = e.target.checked;
         this.setState(() => {
             return {
-                checked: !this.state.checked
+                checked
             }
-        })
+        });
+        if (this.props.formsy && Utils.isFunction(this.props.setValue))
+            this.props.setValue(checked === true);
     }
 
     render() {
@@ -48,7 +61,7 @@ export class CheckboxInput extends DisableableInput<CheckboxInputProps, Checkbox
             label,
             name,
             queryColumn,
-            showLabel,
+            showLabel
         } = this.props;
         const { isDisabled } = this.state;
 
@@ -74,12 +87,36 @@ export class CheckboxInput extends DisableableInput<CheckboxInputProps, Checkbox
                         name={name ? name : queryColumn.name}
                         required={queryColumn.required}
                         type={"checkbox"}
-                        value={this.state.checked.toString()}
+                        value={this.props.formsy ? this.props.getValue() : this.state.checked}
                         checked={this.state.checked}
-                        onChange={this.onClick}
+                        onChange={this.onChange}
                     />
                 </div>
             </div>
         );
+    }
+}
+
+/**
+ * This class is a wrapper around ReactSelect to be able to bind formsy-react. It uses
+ * the Formsy.Decorator to bind formsy-react so the element can be validated, submitted, etc.
+ */
+const CheckboxInputFormsy = withFormsy(CheckboxInputImpl);
+
+export class CheckboxInput extends React.Component<CheckboxInputProps, any> {
+
+    static defaultProps = {
+        formsy: true
+    };
+
+    constructor(props: CheckboxInputProps) {
+        super(props);
+    }
+
+    render() {
+        if (this.props.formsy) {
+            return <CheckboxInputFormsy name={this.props.name ? this.props.name : this.props.queryColumn.name} {...this.props}/>
+        }
+        return <CheckboxInputImpl {...this.props} />
     }
 }

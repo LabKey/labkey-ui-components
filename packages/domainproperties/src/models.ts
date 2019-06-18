@@ -115,6 +115,12 @@ export class DomainDesign extends Record({
         })
     }
 
+    static serialize(dd: DomainDesign): any {
+        let json = dd.toJS();
+        json.fields = dd.fields.map(DomainField.serialize).toArray();
+        return json;
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -225,6 +231,17 @@ export class DomainField extends Record({
         }
 
         return fields.asImmutable();
+    }
+
+    static serialize(df: DomainField): any {
+        let json = df.toJS();
+
+        // remove non-serializable fields
+        delete json.dataType;
+        delete json.newField;
+        delete json.updatedField;
+
+        return json;
     }
 
     constructor(values?: {[key:string]: any}) {

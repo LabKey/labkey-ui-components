@@ -126,7 +126,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
     return new Promise((resolve, reject) => {
         if (domain.domainId) {
             Domain.save({
-                domainDesign: domain,
+                domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
                 success: (success) => {
                     resolve(domain);

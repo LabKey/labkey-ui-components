@@ -40,32 +40,19 @@ export function fetchContainers(): Promise<List<Container>> {
     });
 }
 
-export function processContainers(payload: any): List<Container> {
-    // Depth first
-    const { children } = payload;
+export function processContainers(payload: any, container?: Container): List<Container> {
     let containers = List<Container>();
 
-    for (let i=0; i < children.length; i++) {
-        processContainer(children[i]).forEach((c) => {
-            containers = containers.push(c);
-        });
+    // Depth first
+    if (container) {
+        containers = containers.push(container);
     }
 
-    return containers;
-}
-
-function processContainer(rawContainer: any): List<Container> {
-    let containers = List<Container>([
-        new Container(rawContainer)
-    ]);
-
-    let { children } = rawContainer;
-
-    for (let i=0; i < children.length; i++) {
-        processContainer(children[i]).forEach((c) => {
-            containers = containers.push(c);
-        });
-    }
+    payload.children.forEach((c) => {
+        containers = containers
+            .concat(processContainers(c, new Container(c)))
+            .toList();
+    });
 
     return containers;
 }
@@ -106,15 +93,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
 }
 
 export function processQueries(payload: any): List<QueryInfoLite> {
-    let queries = List<QueryInfoLite>();
-
-    if (payload) {
-        payload.queries.forEach((qi) => {
-            queries = queries.push(QueryInfoLite.create(qi));
-        });
-    }
-
-    return queries;
+    return List<QueryInfoLite>(payload.queries.map((qi) => QueryInfoLite.create(qi)));
 }
 
 export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>> {
@@ -131,15 +110,7 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
 }
 
 export function processSchemas(payload: any): List<SchemaDetails> {
-    let schemas = List<SchemaDetails>();
-
-    for (const k in payload) {
-        if (payload.hasOwnProperty(k)) {
-            schemas = schemas.push(SchemaDetails.create(payload[k]));
-        }
-    }
-
-    return schemas
+    return List<SchemaDetails>(Object.keys(payload).map((k) => SchemaDetails.create(payload[k])))
         .sort((a, b) => naturalSort(a.getLabel(), b.getLabel()))
         .toList();
 }

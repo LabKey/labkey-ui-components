@@ -518,10 +518,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         required
                         value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}/>
                 )}
-                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections()
-                    : (
-                    <div className="col-sm-offset-3">Select a Sample Set</div>
-                ))}
+                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() && this.renderParentSelections())}
             </>
         )
     }

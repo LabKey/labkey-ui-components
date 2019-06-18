@@ -22,7 +22,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
 
     static defaultProps = {
         isFormsy: true,
-        labelClass: 'control-label col-sm-3 col-xs-12 text-left'
+        labelClass: 'control-label col-md-3 col-xs-12 text-left'
     };
 
     _popoverId: string;

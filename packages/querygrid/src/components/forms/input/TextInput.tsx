@@ -32,7 +32,7 @@ interface TextInputState extends DisableableInputState {
 export class TextInput extends DisableableInput<TextInputProps, TextInputState> {
     static defaultProps = {...DisableableInput.defaultProps, ...{
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9 col-xs-12',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         startFocused: false,

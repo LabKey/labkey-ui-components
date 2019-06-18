@@ -28,7 +28,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
         allowDisable: false,
         initiallyDisabled: false,
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9 col-xs-12',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         validatePristine: false

@@ -29,7 +29,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
 
     static defaultProps = {...DisableableInput.defaultProps, ...{
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9 col-xs-12',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
         labelClassName: 'control-label text-left',
         showLabel: true
     }};
@@ -199,7 +199,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
                         onClick: this.toggleDisabled
                     }}
                 />
-                <div className="col-sm-9">
+                <div className="col-md-9">
                     {body}
                 </div>
             </div>

@@ -71,6 +71,7 @@ import { Section } from './components/Section'
 import { FileAttachmentForm } from './components/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
+import { dismissNotifications } from './components/notifications/global'
 import { initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/ConfirmModal'
 import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
@@ -174,6 +175,7 @@ export {
 
     // notification functions
     createNotification,
+    dismissNotifications,
     initNotificationsState,
 
     // date and format functions

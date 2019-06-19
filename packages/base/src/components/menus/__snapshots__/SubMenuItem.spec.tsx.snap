@@ -143,19 +143,20 @@ exports[`<SubMenuItem /> allow filtering with more than enough items 1`] = `
   <ul
     className="well"
   >
-    <MenuItem
-      bsClass="dropdown"
-      disabled={false}
-      divider={false}
-      header={false}
+    <li
+      role="presentation"
     >
-      <input
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Custom placeholder..."
-        type="text"
-      />
-    </MenuItem>
+      <a
+        role="menuitem"
+      >
+        <input
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Custom placeholder..."
+          type="text"
+        />
+      </a>
+    </li>
     <MenuItem
       active={true}
       bsClass="dropdown"

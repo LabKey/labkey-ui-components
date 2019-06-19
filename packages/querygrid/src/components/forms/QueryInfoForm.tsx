@@ -6,7 +6,7 @@ import * as React from 'react'
 import { ReactNode } from 'react'
 
 import { Alert, Button, Modal } from 'react-bootstrap'
-import Formsy, { addValidationRule }  from 'formsy-react'
+import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
 import { QueryInfo, SchemaQuery } from '@glass/base'
@@ -142,7 +142,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
-    filterDisabledFields(data: any) {
+    filterDisabledFields(data: any, requiredFields?: Array<string>) {
         const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
             const key = column.fieldKey;
             const enabledKey = getFieldEnabledFieldName(key);
@@ -151,7 +151,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         let filteredData = {};
         for (let key in data) {
             if (data.hasOwnProperty(key) ) {
-                if (fieldsToUpdate.has(key.toLowerCase())) {
+                if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1 ) {
                     filteredData[key] = data[key];
                 }
             }
@@ -167,7 +167,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             errorMsg: undefined,
             isSubmitting: true
         });
-        const updatedRow = this.filterDisabledFields(row);
+        const updatedRow = this.filterDisabledFields(row, ['numItems']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
         submitFn(updatedRow).then((data) => {

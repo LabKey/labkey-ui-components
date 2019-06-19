@@ -41,11 +41,15 @@ import {
     invalidateQueryDetailsCacheKey,
     InsertRowsResponse,
     ISelectRowsResult,
+    IImportData,
+    InsertFormats,
+    InsertOptions,
     insertRows,
     searchRows,
     selectRows,
     updateRows,
-    deleteRows
+    deleteRows,
+    importData
 } from './query/api'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
@@ -100,11 +104,15 @@ export {
     // query related items
     ISelectRowsResult,
     InsertRowsResponse,
+    IImportData,
+    InsertFormats,
+    InsertOptions,
     insertRows,
     selectRows,
     searchRows,
     updateRows,
     deleteRows,
+    importData,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
 

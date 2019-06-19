@@ -17,6 +17,8 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { Utils } from '@labkey/api'
 
+import { fileMatchesAcceptedFormat } from "./actions";
+
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     allowMultiple: boolean
@@ -61,7 +63,6 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }
 
         let isValid: boolean = true;
-        const acceptedFormatArray: Array<string> = acceptedFormats.replace(/\s/g, '').split(',');
 
         Array.from(fileList).forEach((file, index) => {
             if (transferItems && transferItems[index].webkitGetAsEntry().isDirectory) {
@@ -75,12 +76,11 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 }
             }
             else if (acceptedFormats) {
-                const dotIndex = file.name.lastIndexOf('.');
-                let extension = file.name.slice(dotIndex);
-                if (acceptedFormatArray.indexOf(extension) < 0) {
+                const formatCheck = fileMatchesAcceptedFormat(file, acceptedFormats);
+                if (!formatCheck.get('isMatch')) {
                     isValid = false;
                     this.setState({
-                        errorMsg: 'Invalid file type: ' + extension + '. Valid types are ' + acceptedFormats,
+                        errorMsg: 'Invalid file type: ' + formatCheck.get('extension') + '. Valid types are ' + acceptedFormats,
                         isHover: false
                     });
                     return false;

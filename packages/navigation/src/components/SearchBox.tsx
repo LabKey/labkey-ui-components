@@ -17,6 +17,7 @@ import * as React from 'react'
 
 interface Props {
     onSearch: (value: string) => any
+    placeholder?: string
 }
 
 interface State {
@@ -53,10 +54,11 @@ export class SearchBox extends React.Component<Props, State> {
                     <i className={'fa fa-search navbar__search-icon'}/>
                     <input
                         type={"text"}
-                        placeholder="Enter search terms"
+                        placeholder={this.props.placeholder || 'Enter Search Terms'}
                         className="navbar__search-input"
                         onChange={this.handleChange}
                         value={this.state.value}
+                        size={34}
                     />
                 </div>
             </form>

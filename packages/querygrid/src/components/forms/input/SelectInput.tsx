@@ -151,7 +151,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         containerClass: 'form-group row',
         delimiter: DELIMITER,
         inputClass: 'col-sm-9 col-xs-12',
-        labelClass: 'control-label col-sm-3 text-left',
+        labelClass: 'control-label col-md-3 text-left',
         labelKey: 'label',
         saveOnBlur: false,
         showLabel: true,

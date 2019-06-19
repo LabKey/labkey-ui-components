@@ -21,7 +21,7 @@ describe("domain properties actions", () => {
 
     test("test create id", () => {
         return expect(createFormInputId("marty", 100)).toBe(DOMAIN_FIELD_PREFIX + "-marty-100");
-    })
+    });
 
     test("test get field type", () => {
         const field1 = new DomainField({
@@ -48,5 +48,6 @@ describe("domain properties actions", () => {
             propertyURI: 'test'
         });
         expect(getDataType(field3).name).toBe('users')
-    })
+    });
+
 });

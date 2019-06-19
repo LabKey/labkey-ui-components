@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable'
 import { normalize, schema } from 'normalizr'
-import { Query, Filter } from '@labkey/api'
+import { Query, QueryDOM, Filter } from '@labkey/api'
 import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery, caseInsensitive } from '@glass/base'
 
 import { URLResolver } from '../util/URLResolver'
@@ -700,5 +700,43 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
                 }, error));
             }
         });
+    });
+}
+
+export enum InsertOptions {
+    IMPORT,
+    MERGE
+}
+
+export enum InsertFormats {
+    tsv = 'tsv',
+    csv = 'csv'
+}
+
+export interface IImportData {
+    schemaName: string
+    queryName: string
+    file?: File // must contain file or text but not both
+    format?: InsertFormats
+    text?: string
+    insertOption?: string
+    importLookupByAlternateKey?: boolean
+    saveToPipeline?: boolean,
+    importUrl?: string
+}
+
+export function importData(config: IImportData): Promise<any> {
+    return new Promise((resolve, reject) => {
+        QueryDOM.importData(Object.assign({}, config, {
+            success: (response) => {
+                if (response && response.exception) {
+                    reject(response);
+                }
+                resolve(response);
+            },
+            failure: (error) => {
+                reject(error);
+            }
+        }));
     });
 }

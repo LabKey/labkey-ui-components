@@ -6,10 +6,20 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import mock, { proxy } from "xhr-mock";
 
-import { FileAttachmentForm } from "../components/FileAttachmentForm";
+import { FileAttachmentForm } from "../components/files/FileAttachmentForm";
+import inferDomainJson from "../test/data/property-inferDomain.json";
 
 import './stories.css'
+
+mock.setup();
+mock.post(/.*\/property\/inferDomain.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(inferDomainJson)
+});
+mock.use(proxy);
 
 storiesOf("FileAttachmentForm", module)
     .addDecorator(withKnobs)
@@ -26,6 +36,11 @@ storiesOf("FileAttachmentForm", module)
                 showButtons={boolean("Show buttons?", true)}
                 cancelText={text("Cancel button text", "Cancel")}
                 submitText={text("Submit button text", "Upload")}
+                templateUrl={text("Download Template URL", '#downloadtemplate')}
+                previewGridProps={{
+                    previewCount: number('Preview Grid Row Count', 3),
+                    acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx')
+                }}
             />
         )
     });

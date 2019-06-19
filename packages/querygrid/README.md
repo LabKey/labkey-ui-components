@@ -4,6 +4,12 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.6.0
+*Released*: 19 June 2019
+* Port importData function and related interfaces from Biologics
+* Add content prop to LabelOverlay
+* Add onTargetSampleSetChange prop to SampleInsertPanel
+
 ### version 0.5.3
 *Released*: 05 June 2019
 *  Update package for changes to @glass/base v0.5.2

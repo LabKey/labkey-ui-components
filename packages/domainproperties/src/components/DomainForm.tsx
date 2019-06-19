@@ -30,6 +30,7 @@ interface IDomainFormInput {
     onChange: (newDomain: DomainDesign, dirty: boolean) => any
     helpURL: string
     helpNoun: string
+    showHeader: boolean
 }
 
 interface IDomainFormState {
@@ -43,7 +44,8 @@ interface IDomainFormState {
 export default class DomainForm extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'domain',
-        helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+        helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',
+        showHeader: true
     };
 
     constructor(props) {
@@ -280,16 +282,16 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     }
 
     render() {
-        const { domain } = this.props;
+        const { domain, showHeader } = this.props;
         const { showConfirm, expandedRowIndex } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel"}>
-                    <Panel.Heading>
+                    {showHeader && <Panel.Heading>
                         <div className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
-                    </Panel.Heading>
+                    </Panel.Heading>}
                     <Panel.Body>
                         {this.isValidDomain(domain) ? (
                             <>

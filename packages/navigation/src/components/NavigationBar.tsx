@@ -31,6 +31,7 @@ interface NavigationBarProps {
     model: ProductMenuModel
     showSearchBox: boolean
     onSearch?: (form: any) => any
+    searchPlaceholder?: string
     user?: User
 }
 
@@ -40,11 +41,11 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
     };
 
     render() {
-        const { brand, menuSectionConfigs, model, projectName, showSearchBox, onSearch, user } = this.props;
+        const { brand, menuSectionConfigs, model, projectName, showSearchBox, onSearch, searchPlaceholder, user } = this.props;
 
         const productMenu = model ? <ProductMenu model={model} sectionConfigs={menuSectionConfigs}/> : null;
 
-        const searchBox = showSearchBox ? <SearchBox onSearch={onSearch}/> : null;
+        const searchBox = showSearchBox ? <SearchBox onSearch={onSearch} placeholder={searchPlaceholder}/> : null;
         const userMenu = user ? <UserMenu model={model} user={user}/> : null;
 
         return (

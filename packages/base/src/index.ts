@@ -15,7 +15,7 @@
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
 import { SCHEMAS, fetchSchemas, fetchGetQueries } from './models/schemas'
-import { fetchProtocol, fetchAllAssays } from './action/actions'
+import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile } from './action/actions'
 import {
     AssayProtocolModel,
     AssayDefinitionModel,
@@ -36,7 +36,8 @@ import {
     SchemaDetails,
     SchemaQuery,
     User,
-    ViewInfo
+    ViewInfo,
+    InferDomainResponse
 } from './models/model'
 import {
     applyDevTools,
@@ -79,7 +80,7 @@ import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
 import { Section } from './components/Section'
-import { FileAttachmentForm } from './components/FileAttachmentForm'
+import { FileAttachmentForm } from './components/files/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
@@ -99,6 +100,9 @@ import {
 } from "./components/Permissions"
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
+import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { ToggleButtons } from './components/buttons/ToggleButtons';
+import { Cards } from './components/Cards';
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -146,6 +150,7 @@ export {
     LastActionStatus,
     GridColumn,
     GridData,
+    InferDomainResponse,
 
     //components
     AddEntityButton,
@@ -176,12 +181,18 @@ export {
     CreatedModified,
     SelectionMenuItem,
     ManageDropdownButton,
+    WizardNavButtons,
+    ToggleButtons,
+    Cards,
 
     // actions
     fetchProtocol,
     fetchAllAssays,
     fetchSchemas,
     fetchGetQueries,
+    createGeneralAssayDesign,
+    importGeneralAssayRun,
+    inferDomainFromFile,
 
     // notification functions
     createNotification,

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { Ajax, Utils, Assay } from '@labkey/api'
+import { AssayDOM, Ajax, Utils, Assay } from '@labkey/api'
 
-import { AssayDefinitionModel, AssayProtocolModel } from "../models/model";
+import { AssayDefinitionModel, AssayProtocolModel, InferDomainResponse, QueryColumn } from "../models/model";
 import { buildURL } from "../url/ActionURL";
 
 export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
@@ -48,6 +48,86 @@ export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel
             },
             failure: (error) => {
                 rej(error);
+            }
+        });
+    })
+}
+
+export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
+    return new Promise((resolve, reject) => {
+        const dataFields = fields.map((field) => {
+            return {
+                name: field.name,
+                rangeURI: field.rangeURI
+            }
+        });
+
+        // TODO: this API needs to handle checks for reserved fields for domains (ex. I was able to create a data domain with "RowId" as a field name but then data imports failed because of it)
+        // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
+        Ajax.request({
+            url: buildURL('assay', 'saveProtocol.api'),
+            jsonData: {
+                providerName: 'General',
+                name,
+                description,
+                domains: [{
+                    name: 'Batch Fields',
+                    domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Batch.Folder-${Container.RowId}:${AssayName}',
+                    // fields: List<QueryColumn>()
+                },{
+                    name: 'Run Fields',
+                    domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Run.Folder-${Container.RowId}:${AssayName}',
+                    // fields: List<QueryColumn>()
+                },{
+                    name: 'Data Fields',
+                    domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Data.Folder-${Container.RowId}:${AssayName}',
+                    fields: dataFields
+                }]
+            },
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(new AssayProtocolModel(response.data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error.exception);
+            }, this, false)
+        });
+    });
+}
+
+export function importGeneralAssayRun(assayId: number, file: File, name?: string, comment?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        AssayDOM.importRun({
+            assayId,
+            name,
+            comment,
+            files: [file],
+            success: (response) => {
+                resolve(response)
+            },
+            failure: (error) => {
+                reject(error.exception);
+            }
+        });
+    });
+}
+
+export function inferDomainFromFile(file: File, numLinesToInclude: number) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        let form = new FormData();
+        form.append('file', file);
+        form.append('numLinesToInclude', numLinesToInclude ? (numLinesToInclude + 1).toString() : undefined);
+
+        Ajax.request({
+            url: buildURL('property', 'inferDomain'),
+            method: 'POST',
+            form,
+            success: (response) => {
+                const json = JSON.parse(response.responseText);
+                resolve(InferDomainResponse.create(json));
+            },
+            failure: (response) => {
+                reject("There was a problem uploading the data file for inferring the domain.");
+                console.error(response);
             }
         });
     })

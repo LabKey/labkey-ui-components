@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 
 import * as React from "react";
@@ -8,7 +23,7 @@ import {List} from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
-    DATETIME_RANGE_URI, DOMAIN_FIELD_NAME,
+    DATETIME_RANGE_URI, DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE, DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_TYPE,
     DOUBLE_RANGE_URI,
@@ -228,6 +243,75 @@ describe('DomainFormDisplay', () => {
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
+    });
+
+    test('domain form add, expand, and delete field', () => {
+        let fields = List<DomainField>().asMutable();
+        fields.push(new DomainField({
+            name: 'fieldname',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 0,
+            propertyURI: 'test',
+            key: 0
+        }));
+
+        const domain = new DomainDesign({
+            name: "Add/remove field",
+            description: 'Add field description',
+            domainURI: 'test',
+            domainId: 1,
+            fields: fields,
+            indices: List<DomainIndex>()
+        });
+
+        let updatedDomain;
+        const changeHandler = (newDomain, dirty) => {
+            updatedDomain = newDomain.merge({
+                name: 'updated'
+            }) as DomainDesign;
+        };
+
+        const form  = mount(<DomainForm
+            domain={domain}
+            onChange={changeHandler}
+
+        />);
+
+        // Add new row
+        let findButton = form.find({className: 'domain-form-add'});
+        expect(findButton.length).toEqual(1);
+        findButton.simulate('click');
+
+        // Update state.  This is controlled outside glass component so set it here.
+        form.setProps({domain: updatedDomain, onChange: changeHandler});
+
+        // Check new row is added
+        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 1)});
+        expect(expandButton.length).toEqual(1);
+
+        // Expand first row
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 0)});
+        expect(expandButton.length).toEqual(1);
+        expandButton.simulate('click');
+
+        // Delete first row
+        let deleteButton = form.find({id: createFormInputId(DOMAIN_FIELD_DELETE, 0), type: "button"});
+        expect(deleteButton.length).toEqual(1);
+        deleteButton.simulate('click');
+
+        // Update state.  This is controlled outside glass component so set it here.
+        form.setProps({domain: updatedDomain, onChange: changeHandler});
+
+        // Ensure only one row and expand it
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 1)});
+        expect(expandButton.length).toEqual(0);
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 0)});
+        expect(expandButton.length).toEqual(1);
+        expandButton.simulate('click');
+        
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
+
     });
 
 });

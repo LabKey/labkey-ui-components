@@ -504,6 +504,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 });
             });
         }
+        return new Promise((resolve, reject) => {
+            reject({
+                success: false,
+                message: "Quantity unknown.  No " + nounPlural + " added."
+            })
+        })
     }
 
     renderBulkUpdate() {

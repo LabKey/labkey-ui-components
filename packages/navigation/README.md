@@ -4,9 +4,10 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
-* Package patch update for changes to @glass/base v???
+### version 0.3.0
+*Released*: 19 June 2019
+* Add NavigationBar searchPlaceholder optional string property
+* Apply naturalSort for items in ProductMenuSection
 
 ### version 0.2.3
 *Released*: 05 June 2019

@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.6.0
+*Released*: 19 June 2019
 * Include FilePreviewGrid functionality with FileAttachmentForm
 * Add createGeneralAssayDesign, importGeneralAssayRun, and inferDomainFromFile actions and InferDomainResponse model
 * port Cards (renamed from Dashboard) and WizardNavButtons from Biologics

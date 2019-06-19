@@ -350,3 +350,9 @@ export class SampleIdCreationModel extends Record({
         return data.toOrderedMap();
     }
 }
+
+export interface ICreateSampleSet {
+    name: string
+    nameExpression?: string
+    description?: string
+}

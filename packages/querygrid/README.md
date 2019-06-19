@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Add createSampleSet and deleteSampleSet functions
+* Add SampleSetCreatePanel and SampleSetDeleteConfirmModal components 
+
 ### version 0.6.0
 *Released*: 19 June 2019
 * Port importData function and related interfaces from Biologics

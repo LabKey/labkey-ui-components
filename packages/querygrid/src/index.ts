@@ -80,6 +80,9 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
+import { createSampleSet, deleteSampleSet } from './components/samples/actions'
+import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
+import { SampleSetCreatePanel } from './components/samples/SampleSetCreatePanel'
 
 export {
     // global state functions
@@ -168,6 +171,10 @@ export {
     // samples-related
     SampleInsertPanel,
     SampleDeleteConfirmModal,
+    SampleSetCreatePanel,
+    SampleSetDeleteConfirmModal,
+    createSampleSet,
+    deleteSampleSet,
 
     // search-related
     SearchResultsModel,

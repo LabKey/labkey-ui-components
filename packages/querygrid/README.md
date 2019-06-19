@@ -9,6 +9,14 @@ Query Grid for LabKey schema/query data views
 * For QueryInfoForm, add placeholders using queryColumn captions
 * Add optional footer for QueryInfoForm
 * Add optional second type of submit button (either submit to grid or submit to save)
+* Expose more formatting properties for EditableGrid (bordered, condensed, striped)
+* Add readOnlyColumns property to EditableGrid so you can display a set of columns that are not editable
+* Add option to EditableGrid to show update columns instead of insert columns
+* Add styling properties to EditableGridPanel (bsStyle, className)
+* Add FieldLabel component for showing labels particularly in the QueryInfoForm
+* Add option to QueryInfoForm to show enable/disable toggle
+* Update styling of DetailEditing to be more consistent with other forms
+* Reimplement CheckboxInput to not use Checkbox from formsy-react-components
 
 ### version 0.5.3
 *Released*: 05 June 2019

@@ -4,6 +4,11 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Add unorderedEqual for checking of two arrays have the same elements in any order
+* export dismissNotifications
+
 ### version 0.5.3
 *Released*: 05 June 2019
 * Use release version of @labkey/dependencies

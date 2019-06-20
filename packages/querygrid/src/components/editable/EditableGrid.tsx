@@ -204,6 +204,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         if (onRowCountChange) {
             onRowCountChange();
         }
+        const editorModel = this.getEditorModel();
+        if (editorModel.rowCount === 0) {
+            addRows(this.getModel(this.props), this.props.initialEmptyRowCount);
+        }
     }
 
     componentDidMount() {

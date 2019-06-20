@@ -355,8 +355,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             if (Utils.isString(label)) {
                 let description = this.props.description;
                 if (!description) {
-                    description = "Select ";
-                    description = description + (multiple ? " one or more values for " : " a ") + label;
+                    description = "Select " + (multiple ? " one or more values for " : " a ") + label;
                 }
                 return <FieldLabel
                     id={inputProps.id}

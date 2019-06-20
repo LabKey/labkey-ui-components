@@ -9,8 +9,8 @@ import { getFieldEnabledFieldName } from './QueryFormInputs';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
 
 interface FieldLabelProps  {
-    id?: any  // required if column is not provided
-    fieldName?: string // required if column is not provided
+    id?: any  // required if column is not provided and showToggle is true
+    fieldName?: string // required if column is not provided and showToggle is true
     label?: React.ReactNode
     column?: QueryColumn,
     showToggle?: boolean
@@ -28,6 +28,14 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
         showLabel: true,
         withLabelOverlay: true
     };
+
+    constructor(props: FieldLabelProps) {
+        super(props);
+
+        if (props.showToggle && !props.column && (!props.id || !props.fieldName)) {
+            throw new Error('FieldLabel: when showing the toggle, either a column or an id and fieldName must be provided.');
+        }
+    }
 
 
     render() {
@@ -57,10 +65,11 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
         }
 
         let labelBody;
-        if (withLabelOverlay)
+        if (withLabelOverlay) {
             labelBody = <LabelOverlay column={column} {...labelOverlayProps}/>;
-        else
+        } else {
             labelBody = label ? label : (column ? column.caption : null);
+        }
 
 
         return (
@@ -70,7 +79,7 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
                         active = {!isDisabled}
                         onClick = {toggleProps && toggleProps.onClick}
                         id = { id ? id : (column ? column.fieldKey : undefined)}
-                        inputFieldName = {getFieldEnabledFieldName(fieldName ? fieldName : (column ? column.fieldKey : undefined))}
+                        inputFieldName = {getFieldEnabledFieldName(column, fieldName)}
                         on = {toggleProps && toggleProps.on ? toggleProps.on : "Enabled"}
                         off = {toggleProps && toggleProps.off ? toggleProps.off : "Disabled"}
                         style = {style ? style : {float: "right"}}

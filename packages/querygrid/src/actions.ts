@@ -1365,7 +1365,7 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
 
         let cv : List<ValueDescriptor>;
 
-        if (col && col.isLookup()) {
+        if (data && col && col.isLookup()) {
             cv =  List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.

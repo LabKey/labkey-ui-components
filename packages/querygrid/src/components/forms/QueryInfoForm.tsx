@@ -157,7 +157,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
             const key = column.fieldKey;
             const enabledKey = getFieldEnabledFieldName(key);
-            return (data[column.fieldKey] !== undefined &&  (data[enabledKey] === undefined || data[enabledKey] === 'true'));
+            return data[enabledKey] === undefined || data[enabledKey] === 'true';
         });
         let filteredData = {};
         for (let key in data) {

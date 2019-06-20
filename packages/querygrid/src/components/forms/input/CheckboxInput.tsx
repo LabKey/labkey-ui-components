@@ -63,7 +63,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
             }
         });
         if (this.props.formsy && Utils.isFunction(this.props.setValue))
-            this.props.setValue(checked === true);
+            this.props.setValue(checked);
     }
 
     render() {

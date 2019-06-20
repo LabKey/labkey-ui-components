@@ -124,17 +124,12 @@
   float: right
 }
 
-.detail__edit-button,
-.detail__edit-controls {
+.detail__edit-button {
   cursor: pointer;
 
   &:hover {
     color: #adabab;
   }
-}
-
-.detail__edit-controls {
-  margin-bottom: 15px;
 }
 
 .edit__warning {

@@ -708,6 +708,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     addControlProps={addControlProps}
                                     allowBulkRemove={true}
                                     allowBulkUpdate={true}
+                                    bordered={true}
+                                    condensed={false}
+                                    striped={true}
                                     bulkUpdateText={"Bulk Insert"}
                                     bulkUpdateProps={bulkUpdateProps}
                                     columnMetadata={columnMetadata}

@@ -28,7 +28,8 @@ import {
     GridColumn,
     LoadingSpinner,
     QueryColumn,
-    QueryGridModel
+    QueryGridModel,
+    capitalizeFirstChar
 } from '@glass/base'
 
 import {
@@ -538,7 +539,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 onSubmitForEdit={this.bulkAdd}
                 asModal={true}
                 checkRequiredFields={false}
-                submitForEditText={`Add ${this.props.addControlProps.nounPlural} to grid`}
+                submitForEditText={`Add ${capitalizeFirstChar(this.props.addControlProps.nounPlural)} to Grid`}
                 maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}

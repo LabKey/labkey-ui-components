@@ -34,7 +34,8 @@ export function getLabelFieldName(name: string): string {
     return name + LABEL_FIELD_SUFFIX;
 }
 
-export function getFieldEnabledFieldName(name: string): string {
+export function getFieldEnabledFieldName(column: QueryColumn, fieldName?: string): string {
+    const name = fieldName ? fieldName : (column ? column.fieldKey : 'unknownField');
     return name + "::enabled";
 }
 

@@ -155,8 +155,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     filterDisabledFields(data: any, requiredFields?: Array<string>) {
         const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
-            const key = column.fieldKey;
-            const enabledKey = getFieldEnabledFieldName(key);
+            const enabledKey = getFieldEnabledFieldName(column);
             return data[enabledKey] === undefined || data[enabledKey] === 'true';
         });
         let filteredData = {};

@@ -15,11 +15,6 @@ export interface ToggleWithInputFieldProps {
 
 export class ToggleWithInputField extends React.Component<ToggleWithInputFieldProps, any> {
 
-    static defaultProps = {
-        on: "On",
-        off: "Off"
-    };
-
     render = () => {
         const { active, containerClassName, inputFieldName } = this.props;
 

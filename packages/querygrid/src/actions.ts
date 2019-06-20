@@ -1838,7 +1838,9 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
 
         updateQueryGridModel(updatedModel, {
             data,
-            dataIds
+            dataIds,
+            isError: false,
+            message: undefined
         });
     }
 
@@ -2134,7 +2136,9 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
 
     return updateQueryGridModel(model, {
         data: Map<any, Map<string, any>>(),
-        dataIds: List<any>()
+        dataIds: List<any>(),
+        isError: false,
+        message: undefined
     });
 }
 
@@ -2196,7 +2200,9 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
 
     updateQueryGridModel(model, {
         data,
-        dataIds
+        dataIds,
+        isError: false,
+        message: undefined
     });
 }
 

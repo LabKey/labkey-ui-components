@@ -481,7 +481,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 {allowBulkUpdate && (
                     <div className={haveLeftControls? "col-sm-8" : "col-xs-12"}>
                         <div className="pull-right control-right">
-                            <Button onClick={this.toggleBulkUpdate} >
+                            <Button onClick={this.toggleBulkUpdate} bsStyle={"success"} >
                                 {bulkUpdateText}
                             </Button>
                         </div>

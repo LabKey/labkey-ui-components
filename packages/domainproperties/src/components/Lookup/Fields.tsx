@@ -5,20 +5,37 @@ import { Container, SchemaDetails } from "@glass/base";
 
 import { QueryInfoLite } from "../../models";
 
+import { ILookupContext, LookupContextConsumer } from "./Context";
+
+interface ILookupProps {
+    context: ILookupContext
+}
+
 interface IFolderSelectProps {
-    container?: Container
-    dataProvider: () => Promise<List<Container>>
     id: string
     onChange: (any) => any
     value?: any
 }
 
-interface IFolderSelectState {
+export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
+
+    render() {
+        return (
+            <LookupContextConsumer>
+                {(context) => <FolderSelectImpl {...this.props} context={context}/>}
+            </LookupContextConsumer>
+        );
+    }
+}
+
+interface IFolderSelectImplState {
     containers: List<Container>
     loading: boolean
 }
 
-export class FolderSelect extends React.Component<IFolderSelectProps, IFolderSelectState> {
+type FolderSelectProps = IFolderSelectProps & ILookupProps;
+
+class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectImplState> {
 
     constructor(props) {
         super(props);
@@ -30,11 +47,13 @@ export class FolderSelect extends React.Component<IFolderSelectProps, IFolderSel
     }
 
     componentDidMount(): void {
+        const { context } = this.props;
+
         this.setState({
             loading: true
         });
 
-        this.props.dataProvider().then((containers) => {
+        context.fetchContainers().then((containers) => {
             this.setState({
                 containers,
                 loading: false
@@ -43,16 +62,13 @@ export class FolderSelect extends React.Component<IFolderSelectProps, IFolderSel
     }
 
     render() {
-        const { container, id, onChange, value } = this.props;
+        const { context } = this.props;
         const { containers } = this.state;
 
         return (
-            <FormControl componentClass="select"
-                         value={value}
-                         id={id}
-                         onChange={onChange}>
-                {container && (
-                    <option value={null}>Current Folder</option>
+            <FormControl {...this.props} componentClass="select">
+                {context.activeContainer && (
+                    <option key="_current" value={context.activeContainer.path}>Current Folder</option>
                 )}
                 {containers.map((c) => <option key={c.id} value={c.path}>{c.path}</option>).toArray()}
             </FormControl>
@@ -62,14 +78,24 @@ export class FolderSelect extends React.Component<IFolderSelectProps, IFolderSel
 
 interface IQuerySelectProps {
     containerPath: string
-    dataProvider: (containerPath: string, schemaName: string) => Promise<List<QueryInfoLite>>
     id: string
     onChange: (any) => any
     schemaName: string
     value?: any
 }
 
-interface IQuerySelectState {
+export class QuerySelect extends React.PureComponent<IQuerySelectProps, any> {
+
+    render() {
+        return (
+            <LookupContextConsumer>
+                {(context) => <QuerySelectImpl {...this.props} context={context}/>}
+            </LookupContextConsumer>
+        );
+    }
+}
+
+interface IQuerySelectImplState {
     containerPath?: string
     loading?: boolean
     prevPath?: string
@@ -77,7 +103,9 @@ interface IQuerySelectState {
     queries?: List<QueryInfoLite>
 }
 
-export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelectState> {
+type QuerySelectProps = IQuerySelectProps & ILookupProps;
+
+class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImplState> {
 
     constructor(props) {
         super(props);
@@ -91,8 +119,8 @@ export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelect
         };
     }
 
-    static getDerivedStateFromProps(nextProps: IQuerySelectProps, prevState: IQuerySelectState): IQuerySelectState {
-        if (QuerySelect.isChanged(nextProps, prevState)) {
+    static getDerivedStateFromProps(nextProps: QuerySelectProps, prevState: IQuerySelectImplState): IQuerySelectImplState {
+        if (QuerySelectImpl.isChanged(nextProps, prevState)) {
             return {
                 prevPath: nextProps.containerPath,
                 prevSchemaName: nextProps.schemaName
@@ -103,7 +131,7 @@ export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelect
         return null;
     }
 
-    static isChanged(props: Readonly<IQuerySelectProps>, state: Readonly<IQuerySelectState>): boolean {
+    static isChanged(props: Readonly<QuerySelectProps>, state: Readonly<IQuerySelectImplState>): boolean {
         return (props.containerPath !== state.prevPath || props.schemaName !== state.prevSchemaName)
     }
 
@@ -111,14 +139,14 @@ export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelect
         this.loadData();
     }
 
-    componentDidUpdate(prevProps: Readonly<IQuerySelectProps>, prevState: Readonly<IQuerySelectState>, snapshot?: any): void {
-        if (QuerySelect.isChanged(prevProps, this.state)) {
+    componentDidUpdate(prevProps: Readonly<QuerySelectProps>, prevState: Readonly<IQuerySelectImplState>, snapshot?: any): void {
+        if (QuerySelectImpl.isChanged(prevProps, this.state)) {
             this.loadData();
         }
     }
 
     loadData(): void {
-        const { containerPath, dataProvider, schemaName } = this.props;
+        const { containerPath, context, schemaName } = this.props;
 
         this.setState({
             loading: true,
@@ -126,7 +154,7 @@ export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelect
             prevSchemaName: schemaName
         });
 
-        dataProvider(containerPath, schemaName).then((queries) => {
+        context.fetchQueries(containerPath, schemaName).then((queries) => {
             this.setState({
                 loading: false,
                 queries
@@ -157,33 +185,44 @@ export class QuerySelect extends React.Component<IQuerySelectProps, IQuerySelect
 
 interface ISchemaSelectProps {
     containerPath: string
-    dataProvider: (containerPath: string) => Promise<List<SchemaDetails>>
     id: string
     onChange: (any) => any
     value?: any
 }
 
-interface ISchemaSelectState {
+export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
+
+    render() {
+        return (
+            <LookupContextConsumer>
+                {(context) => <SchemaSelectImpl {...this.props} context={context}/>}
+            </LookupContextConsumer>
+        );
+    }
+}
+
+type SchemaSelectProps = ISchemaSelectProps & ILookupProps;
+
+interface ISchemaSelectImplState {
     containerPath?: string
     loading?: boolean
     prevPath?: string
     schemas?: List<SchemaDetails>
 }
 
-export class SchemaSelect extends React.Component<ISchemaSelectProps, ISchemaSelectState> {
+class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectImplState> {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            containerPath: null, // explicitly use "null" instead of "undefined" due to container API
             loading: false,
             prevPath: null,
             schemas: List()
         };
     }
 
-    static getDerivedStateFromProps(nextProps: ISchemaSelectProps, prevState: ISchemaSelectState): ISchemaSelectState {
+    static getDerivedStateFromProps(nextProps: SchemaSelectProps, prevState: ISchemaSelectImplState): ISchemaSelectImplState {
         if (nextProps.containerPath !== prevState.containerPath) {
             return {
                 prevPath: nextProps.containerPath
@@ -198,21 +237,21 @@ export class SchemaSelect extends React.Component<ISchemaSelectProps, ISchemaSel
         this.loadData();
     }
 
-    componentDidUpdate(prevProps: Readonly<ISchemaSelectProps>, prevState: Readonly<ISchemaSelectState>, snapshot?: any): void {
+    componentDidUpdate(prevProps: Readonly<SchemaSelectProps>, prevState: Readonly<ISchemaSelectImplState>, snapshot?: any): void {
         if (prevProps.containerPath !== this.state.prevPath) {
             this.loadData();
         }
     }
 
     loadData(): void {
-        const { containerPath, dataProvider } = this.props;
+        const { containerPath, context } = this.props;
 
         this.setState({
             loading: true,
             prevPath: containerPath
         });
 
-        dataProvider(containerPath).then((schemas) => {
+        context.fetchSchemas(containerPath).then((schemas) => {
             this.setState({
                 loading: false,
                 schemas

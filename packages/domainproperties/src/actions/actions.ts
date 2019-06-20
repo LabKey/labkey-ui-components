@@ -80,6 +80,10 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 }
 
 export function fetchQueries(containerPath: string, schemaName: string): Promise<List<QueryInfoLite>> {
+    if (!schemaName) {
+        return Promise.resolve(List());
+    }
+
     return new Promise((resolve) => {
         Query.getQueries({
             containerPath,
@@ -93,6 +97,10 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
 }
 
 export function processQueries(payload: any): List<QueryInfoLite> {
+    if (!payload || !payload.queries) {
+        return List();
+    }
+
     return List<QueryInfoLite>(payload.queries.map((qi) => QueryInfoLite.create(qi)));
 }
 

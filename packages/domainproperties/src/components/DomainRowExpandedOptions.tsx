@@ -17,7 +17,7 @@ import * as React from "react";
 import { Col, FormControl, Row } from "react-bootstrap";
 import {Alert} from "@glass/base";
 
-import {DomainField} from "../models";
+import { DomainField } from "../models";
 import { createFormInputId } from "../actions/actions";
 import {
     DOMAIN_FIELD_DESCRIPTION,
@@ -28,7 +28,6 @@ import {
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA
 } from "../constants";
-import { LookupContextConsumer } from "./Lookup/Context";
 import { FolderSelect, SchemaSelect, QuerySelect } from "./Lookup/Fields";
 
 interface IDomainRowExpandedOptions {
@@ -52,43 +51,33 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             </Col>
                         </Row>
                         <Row className="domain-row-expanded">
-                            <LookupContextConsumer>
-                                {(context) => (
-                                    <>
-                                        <Col xs={2}>
-                                            <div className="domain-field-label">From Folder</div>
-                                            <FolderSelect
-                                                container={context.activeContainer}
-                                                dataProvider={context.fetchContainers}
-                                                id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
-                                                key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
-                                                onChange={onChange}
-                                                value={field.lookupContainer ? field.lookupContainer : ''}/>
-                                        </Col>
-                                        <Col xs={2}>
-                                            <div className="domain-field-label">From Schema</div>
-                                            <SchemaSelect
-                                                containerPath={field.lookupContainer}
-                                                dataProvider={context.fetchSchemas}
-                                                id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
-                                                key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
-                                                onChange={onChange}
-                                                value={field.lookupSchema}/>
-                                        </Col>
-                                        <Col xs={2}>
-                                            <div className="domain-field-label">Target Table</div>
-                                            <QuerySelect
-                                                containerPath={field.lookupContainer}
-                                                dataProvider={context.fetchQueries}
-                                                id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
-                                                key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
-                                                onChange={onChange}
-                                                schemaName={field.lookupSchema}
-                                                value={field.lookupQuery}/>
-                                        </Col>
-                                    </>
-                                )}
-                            </LookupContextConsumer>
+                            <Col xs={2}>
+                                <div className="domain-field-label">From Folder</div>
+                                <FolderSelect
+                                    id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
+                                    key={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
+                                    onChange={onChange}
+                                    value={field.lookupContainer}/>
+                            </Col>
+                            <Col xs={2}>
+                                <div className="domain-field-label">From Schema</div>
+                                <SchemaSelect
+                                    containerPath={field.lookupContainer}
+                                    id={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
+                                    key={createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index)}
+                                    onChange={onChange}
+                                    value={field.lookupSchema}/>
+                            </Col>
+                            <Col xs={2}>
+                                <div className="domain-field-label">Target Table</div>
+                                <QuerySelect
+                                    containerPath={field.lookupContainer}
+                                    id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
+                                    key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
+                                    onChange={onChange}
+                                    schemaName={field.lookupSchema}
+                                    value={field.lookupQuery}/>
+                            </Col>
                         </Row>
                     </>
                 )}

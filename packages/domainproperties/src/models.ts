@@ -218,9 +218,10 @@ export class DomainField extends Record({
     newField: boolean;
 
     static create(rawField: IDomainField): DomainField {
-        return new DomainField(Object.assign({}, {
-            dataType: resolveDataType(rawField)
-        }, rawField));
+        return new DomainField(Object.assign({}, rawField, {
+            dataType: resolveDataType(rawField),
+            lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer
+        }));
     }
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
@@ -240,6 +241,10 @@ export class DomainField extends Record({
         delete json.dataType;
         delete json.newField;
         delete json.updatedField;
+
+        if (json.lookupContainer === undefined) {
+            json.lookupContainer = null;
+        }
 
         return json;
     }

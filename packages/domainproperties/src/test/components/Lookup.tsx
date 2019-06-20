@@ -27,7 +27,7 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
                 return Promise.resolve<List<QueryInfoLite>>(processQueries(data));
             },
             fetchSchemas: (containerPath: string) => {
-                const path = containerPath === null ? this.state.activeContainer.path : containerPath;
+                const path = containerPath ? containerPath : this.state.activeContainer.path;
                 const data = schemaData.schemasByContainerPath[path];
                 return Promise.resolve<List<SchemaDetails>>(processSchemas(data));
             }

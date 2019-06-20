@@ -24,7 +24,8 @@ import {
     getSchemaQuery,
     resolveSchemaQuery,
     decodePart,
-    unorderedEqual
+    unorderedEqual,
+    valueIsEmpty
 } from '../utils/utils'
 
 const emptyList = List<string>();
@@ -651,15 +652,6 @@ export class QueryGridModel extends Record({
         return dataMap;
     }
 
-    // TODO is this avaialble somewhere else?  If not, perhaps move to utilities somewhere.
-    valueIsEmpty(value) {
-        if (!value)
-            return true;
-        if (typeof value === 'string' && value === '')
-            return true;
-        if (Array.isArray(value) && value.length === 0)
-            return true;
-    }
 
     /**
      * Creates a JS Object, suitable for use as a fieldValues object for QueryInfoForm,
@@ -671,23 +663,26 @@ export class QueryGridModel extends Record({
      * be as if the values were present and the same as in one of the other rows.
      */
     getCommonDataForSelection() : any {
-        let valueMap = Map<string, any>();
+        let valueMap = Map<string, any>();  // map from fields to the value shared by all rows
         let fieldsInConflict = Set<string>();
-        let emptyFields = Set<string>();
+        let emptyFields = Set<string>(); // those fields that are empty
         this.selectedIds.map((id) => {
             const rowData = this.data.get(id);
             rowData.forEach((data, key) => {
-                if (data && !fieldsInConflict.has(key)) {
+                if (data && !fieldsInConflict.has(key)) { // skip fields that are already in conflict
                     const value = data.get('value');
-                    if (!this.valueIsEmpty(value)) {
+                    const currentValueEmpty = valueIsEmpty(value);
+                    const havePreviousValue = valueMap.has(key);
+                    const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
+
+                    if (!currentValueEmpty) { // non-empty value, so let's see if we have the same value
                         if (emptyFields.contains(key)) {
                             fieldsInConflict = fieldsInConflict.add(key);
                         }
-                        else if (!valueMap.has(key)) {
+                        else if (!havePreviousValue) {
                             valueMap = valueMap.set(key, value);
                         }
-                        if (Array.isArray(value) &&
-                            (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value))) {
+                        if (arrayNotEqual) {
                             fieldsInConflict = fieldsInConflict.add(key);
                             valueMap = valueMap.delete(key);
                         }
@@ -696,7 +691,7 @@ export class QueryGridModel extends Record({
                             valueMap = valueMap.delete(key);
                         }
                     }
-                    else if (valueMap.has(key)) { // some row had a value, but this row does not
+                    else if (havePreviousValue) { // some row had a value, but this row does not
                         fieldsInConflict = fieldsInConflict.add(key);
                         valueMap = valueMap.delete(key);
                     }

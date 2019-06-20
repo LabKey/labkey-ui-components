@@ -305,3 +305,15 @@ export function unorderedEqual(array1: Array<any>, array2: Array<any>) : boolean
     }
     return true;
 }
+
+/**
+ * Returns true if value is undefined, an empty string, or an empty array.  Otherwise returns false.
+ * @param value
+ */
+export function valueIsEmpty(value) : boolean {
+    if (!value)
+        return true;
+    if (typeof value === 'string' && value === '')
+        return true;
+    return Array.isArray(value) && value.length === 0;
+}

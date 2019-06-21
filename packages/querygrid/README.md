@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Issue 37773: querygrids have inconsistent padding on button groups
+
 ### version 0.6.0
 *Released*: 19 June 2019
 * Port importData function and related interfaces from Biologics

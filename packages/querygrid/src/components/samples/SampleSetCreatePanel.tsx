@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
-import { WizardNavButtons } from "@glass/base";
+import { Alert, WizardNavButtons } from "@glass/base";
 
 import { createSampleSet } from "./actions";
 import { ICreateSampleSet } from "./models";
@@ -20,6 +20,7 @@ interface Props {
 
 interface State {
     formValues: {}
+    error: string
     submitting: boolean
 }
 
@@ -30,6 +31,7 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
 
         this.state = {
             formValues: undefined,
+            error: undefined,
             submitting: false
         }
     }
@@ -57,17 +59,22 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
 
         createSampleSet(config)
             .then((response) => {
-                console.log(response);
+                this.setSubmitting(false);
                 this.props.onComplete(config.name);
             })
-            .catch((reason) => {
-                console.log(reason);
-                this.setSubmitting(false);
+            .catch((error) => {
+                this.setState(() => ({
+                    error: error.exception,
+                    submitting: false
+                }));
             });
     };
 
     setSubmitting(submitting: boolean) {
-        this.setState(() => ({submitting}));
+        this.setState(() => ({
+            error: undefined,
+            submitting
+        }));
     }
 
     isFormValid(): boolean {
@@ -77,10 +84,11 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
 
     render() {
         const { onCancel, nameExpressionInfoUrl } = this.props;
-        const { submitting } = this.state;
+        const { submitting, error } = this.state;
 
         return (
             <>
+                {error && <Alert>{error}</Alert>}
                 <Panel>
                     <Panel.Body>
                         <Form>
@@ -89,6 +97,7 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                                     <LabelOverlay
                                         label={'Name'}
                                         type={'Text (String)'}
+                                        description={'The name for this sample set. Note that this can\'t be changed after sample set creation.'}
                                         required={true}
                                     />
                                 </Col>
@@ -106,7 +115,7 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                                     <LabelOverlay
                                         label={'Name Expression'}
                                         type={'Text (String)'}
-                                        description={'Used for generating unique sample IDs'}
+                                        description={'Expression that will be used for generating unique sample IDs for this sample set.'}
                                     />
                                     {nameExpressionInfoUrl && <><br/>(<a target={'_blank'} href={nameExpressionInfoUrl}>more info</a>)</>}
                                 </Col>
@@ -120,7 +129,13 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                                 </Col>
                             </Row>
                             <Row className={'margin-top'}>
-                                <Col xs={3}>Description</Col>
+                                <Col xs={3}>
+                                    <LabelOverlay
+                                        label={'Description'}
+                                        type={'Text (String)'}
+                                        description={'A short description for this sample set.'}
+                                    />
+                                </Col>
                                 <Col xs={9}>
                                     <textarea
                                         className="form-control"
@@ -136,8 +151,6 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                     containerClassName=""
                     cancel={onCancel}
                     finish={true}
-                    finishText={'Create'}
-                    isFinishingText={'Creating...'}
                     canFinish={this.isFormValid()}
                     isFinishing={submitting}
                     nextStep={this.onFinish}

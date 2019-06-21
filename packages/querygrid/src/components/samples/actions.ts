@@ -155,8 +155,7 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
 export function createSampleSet(config: ICreateSampleSet): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            // TODO this API endpoint doesn't work because it doesn't return API responses with errors/success info, it is a FormViewAction
-            url: buildURL('experiment', 'createSampleSet.api'),
+            url: buildURL('experiment', 'createSampleSetApi.api'),
             method: 'POST',
             params: config,
             success: Utils.getCallbackWrapper((response) => {

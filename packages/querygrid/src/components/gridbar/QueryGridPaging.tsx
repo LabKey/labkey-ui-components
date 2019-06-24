@@ -77,7 +77,7 @@ export class QueryGridPaging extends React.Component<Props, any> {
         return (
             <>
                 {showCounts && total != 0 ?
-                    <span className="paging-counts" style={showButtons ? {paddingRight: '10px'} : {marginTop: '8px', display: 'inline-block'}}
+                    <span className="paging-counts" style={showButtons ? {paddingRight: '10px'} : {}}
                           data-min={min} data-max={max} data-total={total}>
                         {min === max ? <span>{max}</span> : <span>{max === 0 ? 0 : min}&nbsp;-&nbsp;{max}</span>} of {total}
                     </span> : null}

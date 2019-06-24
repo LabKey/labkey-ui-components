@@ -19,6 +19,10 @@ Query Grid for LabKey schema/query data views
 * Re-implement CheckboxInput to not use Checkbox from formsy-react-components
 * Add getSelectedData method for retrieving all data for the selectedIds in a QueryGridModel 
 
+### version 0.6.1
+*Released*: 24 June 2019
+* Issue 37773: QueryGridPanel has inconsistent padding on button groups with and without paging
+
 ### version 0.6.0
 *Released*: 19 June 2019
 * Port importData function and related interfaces from Biologics

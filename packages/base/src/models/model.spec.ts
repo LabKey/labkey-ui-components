@@ -200,7 +200,6 @@ describe("QueryInfo", () => {
     describe("getUpdateColumns", () => {
         test("without readOnly columns", () => {
             const columns = queryInfo.getUpdateColumns();
-            console.log(columns);
             expect(columns.size).toBe(3);
             expect(columns.get(0).fieldKey).toBe("Description");
             expect(columns.get(1).fieldKey).toBe("SampleSet");

@@ -447,18 +447,18 @@ export class EditorModel extends Record({
         return this.cellMessages.get(genCellKey(colIdx, rowIdx));
     }
 
-    getColumns(model: QueryGridModel, forUpdate?: boolean) {
+    getColumns(model: QueryGridModel, forUpdate?: boolean, readOnlyColumns?: List<string>) {
         if (forUpdate) {
-            return model.getUpdateColumns();
+            return model.getUpdateColumns(readOnlyColumns);
         }
         else {
             return model.getInsertColumns();
         }
     }
 
-    getRawData(model: QueryGridModel, forUpdate: boolean = false): List<Map<string, any>> {
+    getRawData(model: QueryGridModel, forUpdate: boolean = false, readOnlyColumns?: List<string>): List<Map<string, any>> {
         let data = List<Map<string, any>>();
-        const columns = this.getColumns(model, forUpdate);
+        const columns = this.getColumns(model, forUpdate, readOnlyColumns);
 
         for (let rn = 0; rn < model.data.size; rn++) {
             let row = Map<string, any>();
@@ -490,6 +490,9 @@ export class EditorModel extends Record({
 
                 row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
             });
+            if (forUpdate) {
+                row = row.merge(model.getPkData(model.dataIds.get(rn)));
+            }
 
             data = data.push(row);
         }

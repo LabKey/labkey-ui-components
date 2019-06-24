@@ -425,7 +425,7 @@ export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string,
         if (originalRow) {
             const row = originalRow.reduce((row, value, key) => {
                 if (editedRow.has(key) && editedRow.get(key) != value) {
-                    row[key] = editedRow.get(key);
+                    row[key] = editedRow.get(key) || null; // if the value is undefined, it will be removed from the updateRows query, so convert it to null to get rid of it.
                 }
                 return row;
             }, {});

@@ -707,7 +707,7 @@ describe("getUpdatedDataFromGrid", () => {
         ], "RowId"));
         expect(updatedData).toHaveLength(2);
         expect(updatedData[0]).toStrictEqual( {
-            "Data": undefined,
+            "Data": null,
             "RowId": "448"
         });
         expect(updatedData[1]).toStrictEqual( {
@@ -753,7 +753,7 @@ describe("getUpdatedDataFromGrid", () => {
         ], "RowId"));
         expect(updatedData).toHaveLength(4);
         expect(updatedData[0]).toStrictEqual( {
-            "Data": undefined,
+            "Data": null,
             "RowId": "448"
         });
         expect(updatedData[1]).toStrictEqual( {

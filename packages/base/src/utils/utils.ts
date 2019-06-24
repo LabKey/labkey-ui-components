@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Set } from 'immutable'
+import { List, Map, Set } from 'immutable'
 import { Utils } from '@labkey/api'
 
 import { SchemaQuery, User } from '../models/model'
@@ -316,4 +316,61 @@ export function valueIsEmpty(value) : boolean {
     if (typeof value === 'string' && value === '')
         return true;
     return Array.isArray(value) && value.length === 0;
+}
+
+/**
+ * Creates a JS Object, suitable for use as a fieldValues object for QueryInfoForm,
+ * mapping between field keys and values that are shared by all ids for the given data.
+ *
+ * It is assumed that the set of fields in each row of data is the same, though some fields
+ * may be empty or null.  If the field sets are different, the results returned will
+ * be as if the values were present and the same as in one of the other rows.
+ *
+ * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
+ */
+export function getCommonDataValues(data: Map<string, any>) : any {
+    let valueMap = Map<string, any>();  // map from fields to the value shared by all rows
+    let fieldsInConflict = Set<string>();
+    let emptyFields = Set<string>(); // those fields that are empty
+    data.map((rowData, id) => {
+        // const rowData = data.get(id);
+        if (rowData) {
+            rowData.forEach((data, key) => {
+                if (data && !fieldsInConflict.has(key)) { // skip fields that are already in conflict
+                    const value = data.get('value');
+                    const currentValueEmpty = valueIsEmpty(value);
+                    const havePreviousValue = valueMap.has(key);
+                    const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
+
+                    if (!currentValueEmpty) { // non-empty value, so let's see if we have the same value
+                        if (emptyFields.contains(key)) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                        }
+                        else if (!havePreviousValue) {
+                            valueMap = valueMap.set(key, value);
+                        }
+                        if (arrayNotEqual) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                            valueMap = valueMap.delete(key);
+                        }
+                        else if (valueMap.get(key) !== value) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                            valueMap = valueMap.delete(key);
+                        }
+                    }
+                    else if (havePreviousValue) { // some row had a value, but this row does not
+                        fieldsInConflict = fieldsInConflict.add(key);
+                        valueMap = valueMap.delete(key);
+                    }
+                    else {
+                        emptyFields = emptyFields.add(key);
+                    }
+                }
+            });
+        }
+        else {
+            console.error("Unable to find data for selection id " + id);
+        }
+    });
+    return valueMap.toObject();
 }

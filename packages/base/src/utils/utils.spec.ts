@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable'
+import { fromJS, List } from 'immutable'
 
 import { SchemaQuery, User } from '../models/model'
 import {
-    getSchemaQuery, resolveKey, resolveKeyFromJson, resolveSchemaQuery,
-    intersect, naturalSort, toLowerSafe, unorderedEqual
+    getCommonDataValues,
+    getSchemaQuery,
+    hasAllPermissions,
+    intersect,
+    naturalSort,
+    resolveKey,
+    resolveKeyFromJson,
+    resolveSchemaQuery,
+    toLowerSafe,
+    unorderedEqual
 } from './utils'
-import { hasAllPermissions } from './utils';
 import { PermissionTypes } from '../models/constants'
 
 const emptyList = List<string>();
@@ -200,4 +207,185 @@ describe("unorderedEqual", () => {
     test("equal arrays, same order", () => {
         expect(unorderedEqual(["a", "b", "c", "d"], ["a", "b", "c", "d"])).toBe(true);
     })
+});
+
+describe("getCommonDataForSelection", () => {
+    test("nothing common", () => {
+
+        const data = fromJS({
+            "1": {
+                "field1": {
+                    value: "value1"
+                },
+                "field2": {
+                    value: "value2"
+                }
+            },
+            "2": {
+                "field1": {
+                    value: "value3"
+                },
+                "field2": {
+                    value: "value4"
+                },
+            }
+        });
+        expect(getCommonDataValues(data)).toEqual({});
+    });
+
+    test("undefined and missing values", () => {
+
+        const data = fromJS({
+            "1": {
+                "field1": {
+                    "value": undefined
+                },
+                "field2": {
+                    "value": "value2"
+                },
+                "field3": {
+                    "value": "value3"
+                },
+                "field4": {
+                    "value": "same"
+                }
+            },
+            "2": {
+                "field1": {
+                    value: "value1"
+                },
+                "field2": {
+                    "value": "value2b"
+                },
+                "field3": {
+                    value: null
+                },
+                "field4": {
+                    "value": "same"
+                }
+            }
+        });
+        expect(getCommonDataValues(data)).toEqual({
+            "field4": "same"
+        });
+    });
+
+    test("same common values", () => {
+        const data = fromJS({
+            "448": {
+                "RowId" : {
+                    "value" : 448,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+                },
+                "Value" : {
+                    "value" : null
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-9042",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+                },
+                "Other" : {
+                    "value" : "other1"
+                }
+            },
+            "447": {
+                "RowId" : {
+                    "value" : 447,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+                },
+                "Value" : {
+                    "value" : null
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-4622",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+                },
+                "Other" : {
+                    "value" : "other2"
+                }
+            },
+            "446": {
+                "RowId" : {
+                    "value" : 446,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+                },
+                "Value" : {
+                    "value" : "val"
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-2368",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+                },
+                "Other" : {
+                    "value" : "other3"
+                }
+            },
+            "445":{
+                "RowId" : {
+                    "value" : 445,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+                },
+                "Value" : {
+                    "value" : "val"
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-9512",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+                },
+                "Other" : {
+                    "value" : null
+                }
+            },
+            "367": {
+                "RowId" : {
+                    "value" : 367,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=367"
+                },
+                "Value" : {
+                    "value" : null
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190508-5534",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=367"
+                },
+                "Other" : {
+                    "value" : null
+                }
+            }
+        });
+        expect(getCommonDataValues(data)).toEqual({
+            "AndAgain": "again",
+            "Data": "data1"
+        });
+    });
 });

@@ -13,20 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap, OrderedSet, Record, Set, fromJS } from 'immutable'
-import { ActionURL, Filter } from '@labkey/api'
+import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
+import { ActionURL, Filter, Utils } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import {
-    resolveKey,
-    intersect,
-    toLowerSafe,
-    getSchemaQuery,
-    resolveSchemaQuery,
-    decodePart,
-    unorderedEqual,
-    valueIsEmpty
-} from '../utils/utils'
+import { decodePart, getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -652,56 +643,34 @@ export class QueryGridModel extends Record({
         return dataMap;
     }
 
+    getPkData(id) : any {
+        let data = {};
+        const queryData = this.data.get(id);
+        this.queryInfo.getPkCols().forEach((pkCol) => {
+            let pkVal = queryData.getIn([pkCol.fieldKey]);
 
-    /**
-     * Creates a JS Object, suitable for use as a fieldValues object for QueryInfoForm,
-     * mapping between field keys and values that are shared by all selected
-     * ids for this model.
-     *
-     * It is assumed that the set of fields in each row is the same, though some fields
-     * may be empty or null.  If the field sets are different, the results returned will
-     * be as if the values were present and the same as in one of the other rows.
-     */
-    getCommonDataForSelection() : any {
-        let valueMap = Map<string, any>();  // map from fields to the value shared by all rows
-        let fieldsInConflict = Set<string>();
-        let emptyFields = Set<string>(); // those fields that are empty
-        this.selectedIds.map((id) => {
-            const rowData = this.data.get(id);
-            rowData.forEach((data, key) => {
-                if (data && !fieldsInConflict.has(key)) { // skip fields that are already in conflict
-                    const value = data.get('value');
-                    const currentValueEmpty = valueIsEmpty(value);
-                    const havePreviousValue = valueMap.has(key);
-                    const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
-
-                    if (!currentValueEmpty) { // non-empty value, so let's see if we have the same value
-                        if (emptyFields.contains(key)) {
-                            fieldsInConflict = fieldsInConflict.add(key);
-                        }
-                        else if (!havePreviousValue) {
-                            valueMap = valueMap.set(key, value);
-                        }
-                        if (arrayNotEqual) {
-                            fieldsInConflict = fieldsInConflict.add(key);
-                            valueMap = valueMap.delete(key);
-                        }
-                        else if (valueMap.get(key) !== value) {
-                            fieldsInConflict = fieldsInConflict.add(key);
-                            valueMap = valueMap.delete(key);
-                        }
-                    }
-                    else if (havePreviousValue) { // some row had a value, but this row does not
-                        fieldsInConflict = fieldsInConflict.add(key);
-                        valueMap = valueMap.delete(key);
-                    }
-                    else {
-                        emptyFields = emptyFields.add(key);
-                    }
-                }
-            });
+            if (pkVal !== undefined && pkVal !== null) {
+                // when backing an editable grid, the data is a simple value, but when
+                // backing a grid, it is a Map, which has type 'object'.
+                data[pkCol.fieldKey] = (typeof pkVal === 'object') ? pkVal.get('value') : pkVal;
+            }
+            else {
+                console.warn('Unable to find value for pkCol \"' + pkCol.fieldKey + '\"');
+            }
         });
-        return valueMap.toObject();
+        return data;
+    }
+
+    getSelectedDataWithKeys(data: any)  : Array<any> {
+        let rows = [];
+        if (!Utils.isEmptyObj(data)) {
+            // walk though all the selected rows and construct an update row for each
+            // using the primary keys from the original data
+            rows = this.selectedIds.map((id) => {
+                return {...this.getPkData(id), ...data};
+            }).toArray();
+        }
+        return rows;
     }
 
     getExportColumnsString(): string {

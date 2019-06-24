@@ -48,6 +48,7 @@ import {
     devToolsActive,
     encodePart,
     generateId,
+    getCommonDataValues,
     getSchemaQuery,
     hasAllPermissions,
     intersect,
@@ -58,7 +59,9 @@ import {
     resolveSchemaQuery,
     similaritySortFactory,
     toggleDevTools,
-    toLowerSafe
+    toLowerSafe,
+    unorderedEqual,
+    valueIsEmpty
 } from './utils/utils'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 import { AddEntityButton } from "./components/buttons/AddEntityButton"
@@ -213,6 +216,7 @@ export {
     capitalizeFirstChar,
     decodePart,
     encodePart,
+    getCommonDataValues,
     getSchemaQuery,
     resolveKey,
     resolveKeyFromJson,
@@ -226,6 +230,8 @@ export {
     generateId,
     debounce,
     similaritySortFactory,
+    unorderedEqual,
+    valueIsEmpty,
 
     // url functions
     buildURL,

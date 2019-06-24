@@ -452,12 +452,6 @@ export interface IGridSelectionResponse {
     selectedIds: List<any>
 }
 
-export interface GridMessage {
-    area: string,
-    type: string,
-    content: string,
-}
-
 export class QueryGridModel extends Record({
     id: undefined,
     schema: undefined,

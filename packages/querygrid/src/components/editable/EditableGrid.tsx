@@ -49,7 +49,7 @@ import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
 import { headerSelectionCell } from "../../renderers";
 import { QueryInfoForm, QueryInfoFormProps } from "../forms/QueryInfoForm";
-import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
+import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -540,7 +540,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 asModal={true}
                 checkRequiredFields={false}
                 submitForEditText={`Add ${capitalizeFirstChar(this.props.addControlProps.nounPlural)} to Grid`}
-                maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
+                maxCount={MAX_EDITABLE_GRID_ROWS - model.data.size}
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
                 onSuccess={this.toggleBulkUpdate}

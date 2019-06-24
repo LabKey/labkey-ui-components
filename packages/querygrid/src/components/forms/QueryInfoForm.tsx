@@ -24,7 +24,7 @@ import { LoadingSpinner, QueryInfo, SchemaQuery } from '@glass/base'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
-import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
+import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
     if (v === '' || v === undefined || isNaN(v)) {
@@ -93,7 +93,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         submitText: "Submit",
         isSubmittedText: "Submitted",
         isSubmittingText: "Submitting...",
-        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS,
+        maxCount: MAX_EDITABLE_GRID_ROWS,
         allowFieldDisable: false
     };
 
@@ -284,11 +284,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         </Button>}
                         {submitText && onSubmit &&
                         <Button
-                                className={"test-loc-submit-button"}
-                                bsStyle="success"
-                                disabled={!canSubmit || count === 0}
-                                onClick={this.setSubmittingForSave}
-                                type="submit">
+                            className={"test-loc-submit-button"}
+                            bsStyle="success"
+                            disabled={!canSubmit || count === 0}
+                            onClick={this.setSubmittingForSave}
+                            type="submit">
                             {!submitForEdit && inProgressText ? inProgressText: submitText}{suffix ? ' ' + suffix : null}
                         </Button>
                         }

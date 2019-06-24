@@ -9,6 +9,10 @@ Query Grid for LabKey schema/query data views
 * Add createSampleSet and deleteSampleSet functions
 * Add SampleSetCreatePanel and SampleSetDeleteConfirmModal components 
 
+### version 0.6.1
+*Released*: 24 June 2019
+* Issue 37773: QueryGridPanel has inconsistent padding on button groups with and without paging
+
 ### version 0.6.0
 *Released*: 19 June 2019
 * Port importData function and related interfaces from Biologics

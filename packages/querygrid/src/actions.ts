@@ -30,7 +30,7 @@ import {
     ViewInfo
 } from '@glass/base'
 
-import { getQueryDetails, searchRows } from './query/api'
+import { getQueryDetails, searchRows, selectRows } from './query/api'
 import { isEqual } from './query/filter'
 import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
 import {
@@ -836,6 +836,25 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
         resolved: false,
         selected: []
     });
+}
+
+export function getSelectedData(model: QueryGridModel) : Promise<Map<string, any>> {
+    let filters = model.getFilters();
+    filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
+
+    return new Promise((resolve, reject) => selectRows({
+        schemaName: model.schema,
+        queryName: model.query,
+        filterArray: filters.toJS(),
+        sort: model.getSorts(),
+        columns: model.getRequestColumnsString(),
+        offset: 0
+    }).then(response => {
+        const {models} = response;
+        resolve( fromJS(models[model.getModelName()]));
+    }).catch( reason => {
+        reject(reason);
+    }));
 }
 
 function getFilterParameters(filters: List<any>, remove: boolean = false): Map<string, string> {

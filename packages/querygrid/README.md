@@ -16,7 +16,8 @@ Query Grid for LabKey schema/query data views
 * Add FieldLabel component for showing labels particularly in the QueryInfoForm
 * Add option to QueryInfoForm to show enable/disable toggle
 * Update styling of DetailEditing to be more consistent with other forms
-* Reimplement CheckboxInput to not use Checkbox from formsy-react-components
+* Re-implement CheckboxInput to not use Checkbox from formsy-react-components
+* Add getSelectedData method for retrieving all data for the selectedIds in a QueryGridModel 
 
 ### version 0.6.0
 *Released*: 19 June 2019

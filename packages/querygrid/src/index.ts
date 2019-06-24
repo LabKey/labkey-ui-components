@@ -16,6 +16,7 @@
 import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models'
 import {
     getSelected,
+    getSelectedData,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -93,6 +94,7 @@ export {
 
     // grid functions
     getSelected,
+    getSelectedData,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,

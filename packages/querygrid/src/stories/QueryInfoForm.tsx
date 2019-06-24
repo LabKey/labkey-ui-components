@@ -168,6 +168,7 @@ storiesOf('QueryInfoForm', module)
                 isSubmittedText={text("Is submitted text", "Submitted", SUBMIT_GROUP)}
                 isSubmittingText={text("Is submitting text", "Submitting...", SUBMIT_GROUP)}
                 asModal={boolean("As modal?", false)}
+                isLoading={boolean("Is loading?", false)}
                 submitForEditText={text("Submit for edit text", undefined, SUBMIT_GROUP)}
                 title={text("Modal title", "Title", TEXT_GROUP)}
                 queryInfo={model.queryInfo}

@@ -20,7 +20,7 @@ import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { QueryInfo, SchemaQuery } from '@glass/base'
+import { LoadingSpinner, QueryInfo, SchemaQuery } from '@glass/base'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
@@ -39,6 +39,7 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
 
 export interface QueryInfoFormProps {
     asModal?: boolean
+    isLoading?: boolean
     allowFieldDisable?: boolean
     initiallyDisableFields?: boolean
     cancelText?: string
@@ -298,53 +299,59 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields } = this.props;
+        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields } = this.props;
         const { count } = this.state;
 
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
         }
+        let content;
 
-        const content = (
-            <div>
-                {header}
-                {this.renderError()}
-                <Formsy
-                    className="form-horizontal"
-                    onValidSubmit={this.handleValidSubmit}
-                    onValid={this.enableSubmitButton}
-                    onInvalid={this.disableSubmitButton}>
-                    {includeCountField && (
-                        <Input
-                            id="numItems"
-                            label={countText}
-                            labelClassName={'control-label text-left'}
-                            name={"numItems"}
-                            max={maxCount}
-                            onChange={this.onCountChange}
-                            required={true}
-                            step={"1"}
-                            style={{width: '125px'}}
-                            type={"number"}
-                            validations={`isPositiveLt:${maxCount}`}
-                            value={count}
-                        />
-                    )}
-                    <hr/>
-                    <QueryFormInputs
-                        renderFileInputs={renderFileInputs}
-                        allowFieldDisable={allowFieldDisable}
-                        initiallyDisableFields={initiallyDisableFields}
-                        checkRequiredFields={checkRequiredFields}
-                        queryInfo={queryInfo}
-                        fieldValues={fieldValues} />
-                    {footer}
-                    {this.renderButtons()}
-                </Formsy>
+        if (isLoading) {
+            content = <LoadingSpinner/>;
+        }
+        else {
+            content = (
+                <div>
+                    {header}
+                    {this.renderError()}
+                    <Formsy
+                        className="form-horizontal"
+                        onValidSubmit={this.handleValidSubmit}
+                        onValid={this.enableSubmitButton}
+                        onInvalid={this.disableSubmitButton}>
+                        {includeCountField && (
+                            <Input
+                                id="numItems"
+                                label={countText}
+                                labelClassName={'control-label text-left'}
+                                name={"numItems"}
+                                max={maxCount}
+                                onChange={this.onCountChange}
+                                required={true}
+                                step={"1"}
+                                style={{width: '125px'}}
+                                type={"number"}
+                                validations={`isPositiveLt:${maxCount}`}
+                                value={count}
+                            />
+                        )}
+                        <hr/>
+                        <QueryFormInputs
+                            renderFileInputs={renderFileInputs}
+                            allowFieldDisable={allowFieldDisable}
+                            initiallyDisableFields={initiallyDisableFields}
+                            checkRequiredFields={checkRequiredFields}
+                            queryInfo={queryInfo}
+                            fieldValues={fieldValues}/>
+                        {footer}
+                        {this.renderButtons()}
+                    </Formsy>
 
-            </div>
-        );
+                </div>
+            );
+        }
 
         if (asModal) {
             return (

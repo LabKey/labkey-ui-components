@@ -283,7 +283,7 @@ export interface ISelectRowsResult {
         [key:string]: QueryInfo
     }
     totalRows: number,
-    messages: List<Map<string, string>>,
+    messages?: List<Map<string, string>>,
     caller?: any
 }
 

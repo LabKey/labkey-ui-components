@@ -374,3 +374,69 @@ export function getCommonDataValues(data: Map<string, any>) : any {
     });
     return valueMap.toObject();
 }
+
+/**
+ * Constructs an array of objects (suitable for the rows parameter of updateRows) where each object contains the
+ * values that are different from the ones in originalData object as well as the primary key values for that row.
+ * If updatedValues is empty or all of the originalData values are the same as the updatedValues, returns an empty array.
+ *
+ * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
+ * @param updatedValues an object mapping fieldKeys to values that are being updated
+ * @param primaryKeys the list of primary fieldKey names
+ */
+export function getUpdatedData(originalData: Map<string, any>, updatedValues: any, primaryKeys: List<string>) : Array<any> {
+    let updateValuesMap = Map<any, any>(updatedValues);
+    let updatedData = originalData.map( (originalRowMap) => {
+        return originalRowMap.reduce((m, fieldValueMap, key) => {
+            if (fieldValueMap && fieldValueMap.has('value')) {
+                if (primaryKeys.indexOf(key) > -1) {
+                    return m.set(key, fieldValueMap.get('value'));
+                }
+                else if (updateValuesMap.has(key) && updateValuesMap.get(key) !== fieldValueMap.get('value')) {
+                    return m.set(key, updateValuesMap.get(key));
+                } else {
+                    return m;
+                }
+            }
+            else
+                return m;
+        }, Map<any, any>());
+    });
+    // we want the rows that contain more than just the primaryKeys
+    return updatedData
+        .filter((rowData) => rowData.size > primaryKeys.size)
+        .map(rowData => rowData.toJS() )
+        .toArray();
+}
+
+/**
+ * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
+ * values in editorRows that are different from the ones in originalGridData
+ *
+ * @param originalGridData a map from an id field to a Map from fieldKeys to values
+ * @param editorRows An array of Maps from field keys to values
+ * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
+ */
+export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string, any>>, editorRows: Array<Map<string, any>>, idField: string) : Array<any> {
+    let updatedRows = [];
+    editorRows.forEach((editedRow, index) => {
+        let id = editedRow.get(idField);
+        let originalRow = originalGridData.get(id.toString());
+        if (originalRow) {
+            const row = originalRow.reduce((row, value, key) => {
+                if (editedRow.has(key) && editedRow.get(key) != value) {
+                    row[key] = editedRow.get(key);
+                }
+                return row;
+            }, {});
+            if (!Utils.isEmptyObj(row)) {
+                row[idField] = id;
+                updatedRows.push(row)
+            }
+        }
+        else {
+            console.error("Unable to find original row for id " + id);
+        }
+    });
+    return updatedRows;
+}

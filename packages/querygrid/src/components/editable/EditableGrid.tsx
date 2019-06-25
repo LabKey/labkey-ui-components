@@ -1,6 +1,17 @@
 /*
- * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import * as OrigReact from 'react'
 import { ReactNode } from 'react'
@@ -244,7 +255,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             const selColumn = new GridColumn({
                 index: GRID_SELECTION_INDEX,
                 title: '&nbsp;',
-                showHeader: true,
                 cell: (selected: boolean, row) => {
                     return <input
                         style={{margin: "0 8px"}}
@@ -258,9 +268,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         gridColumns = gridColumns.push(
             allowBulkRemove || allowRemove ? new GridColumn({
                 index: GRID_EDIT_INDEX,
-                showHeader: false,
                 tableCell: true,
-                title: '',
+                title: 'Row',
                 width: 45,
                 cell: (d,r,c,rn) => (
                     <Dropdown key={c.index} id={`row-context-${rn}`} className="cellular-count" componentClass="td">
@@ -271,7 +280,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             <MenuItem onSelect={() => {
                                 removeRow(model, d, rn);
                                 this.onRowCountChange();
-                            }}>Delete row</MenuItem>
+                            }}>Delete Row</MenuItem>
                         </Dropdown.Menu>
                     </Dropdown>
                 )
@@ -300,6 +309,9 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
             return [col.title, (qColumn.required ? '*': undefined)].join(' ');
+        }
+        if (col && col.showHeader) {
+            return col.title;
         }
     }
 
@@ -430,9 +442,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             <Button
                                 disabled={this.state.selected.size === 0 || (initialEmptyRowCount === 1 && editorModel.rowCount === 1 && !editorModel.hasData()) }
                                 onClick={this.removeSelectedRows}
-                                bsStyle="primary"
-                                title="Delete rows">
-                                Delete rows
+                                title="Delete Rows">
+                                Delete Rows
                             </Button>
                         )}
                         {showAddOnTop && (
@@ -537,7 +548,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                          onMouseUp={this.onMouseUp}
                          ref={this.wrapper}>
                         <Grid
-                            bordered={false}
                             calcWidths={true}
                             cellular={true}
                             columns={this.generateColumns()}

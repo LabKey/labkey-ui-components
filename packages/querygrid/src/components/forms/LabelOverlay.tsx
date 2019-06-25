@@ -1,6 +1,17 @@
 /*
- * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import * as React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -16,6 +27,7 @@ interface LabelOverlayProps {
     type?: string
     column?: QueryColumn
     required?: boolean
+    content?: any // other content to render to the popover
 }
 
 export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
@@ -34,7 +46,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
     }
 
     overlayContent() {
-        const { column, required } = this.props;
+        const { column, required, content } = this.props;
 
         const label = this.props.label ? this.props.label : (column ? column.caption : null);
         const description = this.props.description ? this.props.description : (column ? column.description : null);
@@ -46,6 +58,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                 {type && <p><strong>Type: </strong>{type}</p>}
                 {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
                 {(typeof required === 'boolean' && required === true) && <p><small><i>This field is required.</i></small></p>}
+                {content}
             </Popover>
         );
     }

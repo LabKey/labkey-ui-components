@@ -1,10 +1,21 @@
 /*
- * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
 import { SCHEMAS, fetchSchemas, fetchGetQueries } from './models/schemas'
-import { fetchProtocol, fetchAllAssays } from './action/actions'
+import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile } from './action/actions'
 import {
     AssayProtocolModel,
     AssayDefinitionModel,
@@ -25,7 +36,8 @@ import {
     SchemaDetails,
     SchemaQuery,
     User,
-    ViewInfo
+    ViewInfo,
+    InferDomainResponse
 } from './models/model'
 import {
     applyDevTools,
@@ -68,7 +80,7 @@ import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
 import { Section } from './components/Section'
-import { FileAttachmentForm } from './components/FileAttachmentForm'
+import { FileAttachmentForm } from './components/files/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { initNotificationsState } from './components/notifications/global'
@@ -88,6 +100,9 @@ import {
 } from "./components/Permissions"
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
+import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { ToggleButtons } from './components/buttons/ToggleButtons';
+import { Cards } from './components/Cards';
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -135,6 +150,7 @@ export {
     LastActionStatus,
     GridColumn,
     GridData,
+    InferDomainResponse,
 
     //components
     AddEntityButton,
@@ -165,12 +181,18 @@ export {
     CreatedModified,
     SelectionMenuItem,
     ManageDropdownButton,
+    WizardNavButtons,
+    ToggleButtons,
+    Cards,
 
     // actions
     fetchProtocol,
     fetchAllAssays,
     fetchSchemas,
     fetchGetQueries,
+    createGeneralAssayDesign,
+    importGeneralAssayRun,
+    inferDomainFromFile,
 
     // notification functions
     createNotification,

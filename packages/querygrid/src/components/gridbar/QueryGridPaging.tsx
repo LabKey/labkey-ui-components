@@ -1,6 +1,17 @@
 /*
- * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import React from 'reactn'
 import { Button } from 'react-bootstrap'
@@ -66,7 +77,7 @@ export class QueryGridPaging extends React.Component<Props, any> {
         return (
             <>
                 {showCounts && total != 0 ?
-                    <span className="paging-counts" style={showButtons ? {paddingRight: '10px'} : {marginTop: '8px', display: 'inline-block'}}
+                    <span className="paging-counts" style={showButtons ? {paddingRight: '10px'} : {}}
                           data-min={min} data-max={max} data-total={total}>
                         {min === max ? <span>{max}</span> : <span>{max === 0 ? 0 : min}&nbsp;-&nbsp;{max}</span>} of {total}
                     </span> : null}

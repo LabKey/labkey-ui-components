@@ -67,7 +67,8 @@ exports[`<NavigationBar/> with search box 1`] = `
             <input
               className="navbar__search-input"
               onChange={[Function]}
-              placeholder="Enter search terms"
+              placeholder="Enter Search Terms"
+              size={34}
               type="text"
               value=""
             />

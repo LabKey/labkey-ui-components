@@ -1,10 +1,23 @@
 /*
- * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
- * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 import * as React from 'react'
 import classNames from 'classnames'
 import { Utils } from '@labkey/api'
+
+import { fileMatchesAcceptedFormat } from "./actions";
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -50,7 +63,6 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }
 
         let isValid: boolean = true;
-        const acceptedFormatArray: Array<string> = acceptedFormats.replace(/\s/g, '').split(',');
 
         Array.from(fileList).forEach((file, index) => {
             if (transferItems && transferItems[index].webkitGetAsEntry().isDirectory) {
@@ -64,12 +76,11 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 }
             }
             else if (acceptedFormats) {
-                const dotIndex = file.name.lastIndexOf('.');
-                let extension = file.name.slice(dotIndex);
-                if (acceptedFormatArray.indexOf(extension) < 0) {
+                const formatCheck = fileMatchesAcceptedFormat(file, acceptedFormats);
+                if (!formatCheck.get('isMatch')) {
                     isValid = false;
                     this.setState({
-                        errorMsg: 'Invalid file type: ' + extension + '. Valid types are ' + acceptedFormats,
+                        errorMsg: 'Invalid file type: ' + formatCheck.get('extension') + '. Valid types are ' + acceptedFormats,
                         isHover: false
                     });
                     return false;

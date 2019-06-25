@@ -1,9 +1,22 @@
+/*
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import React from 'reactn';
-
 import { Button, Form, Panel } from 'react-bootstrap';
-
 import { List, Map, OrderedMap } from 'immutable'
-
+import { Utils } from '@labkey/api'
 import {
     AddEntityButton,
     Alert,
@@ -342,9 +355,16 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
             let updatedModel = insertModel;
             if (parent) {
-
                 const existingParentKey = insertModel.sampleParents.findKey(parent => parent.get('index') === index);
                 existingParent = insertModel.sampleParents.get(existingParentKey);
+
+                // bail out if the selected parent is the same as the existingParent for this index, i.e. nothing changed
+                const schemaMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.schema, existingParent.schema);
+                const queryMatch = parent && existingParent && Utils.caseInsensitiveEquals(parent.query, existingParent.query);
+                if (schemaMatch && queryMatch) {
+                    return;
+                }
+
                 const parentType = SampleSetParentType.create({
                     index,
                     key: existingParent.key,
@@ -369,6 +389,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     index,
                 })) as SampleIdCreationModel;
             }
+
             this.setState(() => {
                 return {
                     insertModel: updatedModel,
@@ -442,14 +463,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                         containerClass=''
                                         inputClass="col-sm-5"
                                         label={"Parent " + index + " Type"}
-                                        labelClass="col-sm-3"
+                                        labelClass="col-sm-3 sample-insert--parent-label"
                                         name={"parent-type-select-" + index}
                                         onChange={this.changeParent.bind(this, index)}
-                                        options={insertModel.getParentOptions(index)}
+                                        options={insertModel.getParentOptions(query)}
                                         value={query}
                                     />
 
                                     <RemoveEntityButton
+                                        labelClass={'sample-insert--remove-parent'}
                                         entity="Parent"
                                         index={index}
                                         onClick={this.removeParent.bind(this, index)}/>
@@ -457,12 +479,12 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                             )
                         }).toArray()}
                         {parentOptions.size > sampleParents.size ?
-                            <div className="col-sm-12">
+                            <div className="sample-insert--header">
                                 <AddEntityButton
                                     entity="Parent"
                                     onClick={this.addParent}/>
                             </div> :
-                            <div className="bottom-spacing">
+                            <div className="sample-insert--header">
                                 Only {parentOptions.size} parent {parentOptions.size === 1 ? 'sample set' : 'sample sets'} available.
                             </div>
                         }
@@ -478,32 +500,26 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         if (!insertModel)
             return null;
 
-        // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not
-        // split at CamelCase boundary.
+        // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
-        const headingSuffix = name ? "for '" + name +"'" : "";
         const textPrefix = name ? "Choose" : "Choose the target sample set, then choose";
         return (
             <>
-                <h3>Create Samples {headingSuffix}</h3>
                 <div className="sample-insert--header">
-                    {textPrefix} parent types for the samples to be generated and enter other data for the samples.&nbsp;
-                    {name &&
-                        <>
-                            Specific parents can be chosen in the grid or bulk insert area.
-                            <br/><br/>
-                        {this.isNameRequired() ?
-                            <>
+                    <p>
+                        {textPrefix} parent types and enter data below for the samples that will be generated.&nbsp;
+                        {name && <>Specific parents can be chosen in the grid or bulk insert area.</>}
+                    </p>
+                    {name && (
+                        this.isNameRequired() ?
+                            <p>
                                 A sample ID is required for each new sample since this sample set has no name expression.
                                 You can provide a name expression by editing the sample set definition.
-                            </> :
-                            <>
+                            </p> :
+                            <p>
                                 Sample IDs will be generated for any samples that have no sample ID provided in the grid.
-                            </>
-                        }
-                        </>}
-                    <br/>
-                    <br/>
+                            </p>
+                    )}
                 </div>
 
                 {insertModel.isInit && (
@@ -511,17 +527,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         formsy={false}
                         inputClass="col-md-5 col-sm-9"
                         label="Target Sample Set"
-                        labelClass="col-md-3 col-sm-3"
+                        labelClass="col-md-3 col-sm-3 sample-insert--parent-label"
                         name="targetSampleSet"
+                        placeholder={'Select a Sample Set...'}
                         onChange={this.changeTargetSampleSet}
                         options={insertModel.sampleSetOptions.toArray()}
                         required
                         value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}/>
                 )}
-                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections()
-                    : (
-                    <div className="col-sm-offset-3">Select a Sample Set</div>
-                ))}
+                {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections() : '')}
             </>
         )
     }
@@ -684,33 +698,36 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const queryGridModel = this.getQueryGridModel();
 
         return (
-            <Panel>
-                <Panel.Body>
-                    <Form>
-                        {this.renderHeader()}
-                        {queryGridModel && queryGridModel.isLoaded ?
-                            <EditableGridPanel
-                                addControlProps={addControlProps}
-                                allowBulkRemove={true}
-                                allowBulkUpdate={true}
-                                bulkUpdateText={"Bulk Insert"}
-                                bulkUpdateProps={bulkUpdateProps}
-                                columnMetadata={columnMetadata}
-                                onRowCountChange={this.onRowCountChange}
-                                model={queryGridModel}
-                            />
-                            :
-                             !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
-                        }
-                        {this.renderButtons()}
-                    </Form>
-                </Panel.Body>
+            <>
+                <Panel>
+                    <Panel.Body>
+                        <Form>
+                            {this.renderHeader()}
+                            {queryGridModel && queryGridModel.isLoaded ?
+                                <EditableGridPanel
+                                    addControlProps={addControlProps}
+                                    allowBulkRemove={true}
+                                    allowBulkUpdate={true}
+                                    bulkUpdateText={"Bulk Insert"}
+                                    bulkUpdateProps={bulkUpdateProps}
+                                    columnMetadata={columnMetadata}
+                                    onRowCountChange={this.onRowCountChange}
+                                    model={queryGridModel}
+                                />
+                                :
+                                 !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null
+                            }
+                        </Form>
+                    </Panel.Body>
+                </Panel>
+                {this.renderButtons()}
                 <Progress
                     estimate={insertModel.sampleCount * 20}
                     modal={true}
                     title="Generating samples"
-                    toggle={isSubmitting} />
-            </Panel>
+                    toggle={isSubmitting}
+                />
+            </>
         )
     }
 }

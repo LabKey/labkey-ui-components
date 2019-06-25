@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import * as React from "react";
 import { List} from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -15,6 +30,7 @@ interface IDomainFormInput {
     onChange: (newDomain: DomainDesign, dirty: boolean) => any
     helpURL: string
     helpNoun: string
+    showHeader: boolean
 }
 
 interface IDomainFormState {
@@ -28,7 +44,8 @@ interface IDomainFormState {
 export default class DomainForm extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'domain',
-        helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+        helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',
+        showHeader: true
     };
 
     constructor(props) {
@@ -265,16 +282,16 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     }
 
     render() {
-        const { domain } = this.props;
+        const { domain, showHeader } = this.props;
         const { showConfirm, expandedRowIndex } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel"}>
-                    <Panel.Heading>
+                    {showHeader && <Panel.Heading>
                         <div className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
-                    </Panel.Heading>
+                    </Panel.Heading>}
                     <Panel.Body>
                         {this.isValidDomain(domain) ? (
                             <>

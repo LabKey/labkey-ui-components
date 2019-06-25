@@ -1,6 +1,21 @@
+/*
+ * Copyright (c) 2019 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import React from "reactn";
 import { Record } from 'immutable';
-import { AppURL } from '@glass/base'
+import { AppURL, naturalSort } from '@glass/base'
 
 import { MenuSectionModel } from '../model';
 
@@ -41,14 +56,14 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
 
         return (
             <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
-                {items.isEmpty() ?
-                    config.emptyText && <li key="empty" className="empty-section">{config.emptyText}</li>
-                    : items.map(item => {
-                    if (item.url) {
-                        let url = item.url instanceof AppURL ? item.url.toHref() : item.url;
-                        return <li key={item.label}><a href={url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</a></li>;
-                    }
-                    return <li key={item.label}>{item.label}</li>
+                {items.isEmpty()
+                    ? config.emptyText && <li key="empty" className="empty-section">{config.emptyText}</li>
+                    : items.sortBy(item => item.label, naturalSort).map(item => {
+                        if (item.url) {
+                            const url = item.url instanceof AppURL ? item.url.toHref() : item.url;
+                            return <li key={item.label}><a href={url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</a></li>;
+                        }
+                        return <li key={item.label}>{item.label}</li>
                     })
                 }
             </ul>

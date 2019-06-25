@@ -20,7 +20,7 @@ import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { LoadingSpinner, QueryInfo, SchemaQuery } from '@glass/base'
+import { LoadingSpinner, QueryInfo, SchemaQuery, Tip } from '@glass/base'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
@@ -54,6 +54,8 @@ export interface QueryInfoFormProps {
     maxCount?: number
     onCancel?: () => any
     onHide?: () => any
+    canSubmitForEdit?: boolean
+    disableSubmitForEditMsg?: string
     onSubmitForEdit?: (data: any) => Promise<any>
     onSubmit?: (data: any) => Promise<any>
     onSuccess?: (data: any) => any
@@ -260,12 +262,40 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     renderButtons() {
 
-        const { cancelText, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
+        const { cancelText, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
 
         const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit } = this.state;
 
         const inProgressText = isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : undefined);
         const suffix = (count > 1) ? pluralNoun : singularNoun;
+
+        let submitForEditBtn;
+
+        if (submitForEditText) {
+            const btnContent = (
+                <Button
+                    className={"test-loc-submit-for-edit-button"}
+                    bsStyle={onSubmit ? "default" : "success"}
+                    disabled={!canSubmitForEdit || !canSubmit || count === 0}
+                    onClick={this.setSubmittingForEdit}
+                    type="submit">
+                    {submitForEdit && inProgressText ? inProgressText : submitForEditText}
+                </Button>
+            );
+            if (!canSubmitForEdit && disableSubmitForEditMsg) {
+                submitForEditBtn = (
+                    <Tip caption={disableSubmitForEditMsg}>
+                        <div className={'disabled-button-with-tooltip'}>
+                            {btnContent}
+                        </div>
+                    </Tip>
+                );
+            }
+            else {
+                submitForEditBtn = btnContent;
+            }
+        }
+
         return (
             <div className="form-group no-margin-bottom">
                 <div className="col-sm-12">
@@ -273,15 +303,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <Button className={"test-loc-cancel-button"} onClick={this.onHide}>{cancelText}</Button>
                     </div>
                     <div className="btn-group pull-right">
-                        {submitForEditText && onSubmitForEdit &&
-                        <Button
-                            className={"test-loc-submit-for-edit-button"}
-                            bsStyle={onSubmit ? "default" : "success"}
-                            disabled={!canSubmit || count === 0}
-                            onClick={this.setSubmittingForEdit}
-                            type="submit">
-                            {submitForEdit && inProgressText ? inProgressText : submitForEditText}
-                        </Button>}
+                        {submitForEditBtn}
                         {submitText && onSubmit &&
                         <Button
                             className={"test-loc-submit-button"}

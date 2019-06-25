@@ -8,7 +8,7 @@ Query Grid for LabKey schema/query data views
 *Released*: ???
 * For QueryInfoForm, add placeholders using queryColumn captions
 * Add optional footer for QueryInfoForm
-* Add optional second type of submit button (either submit to grid or submit to save)
+* Add optional second type of submit button (either submit to grid or submit to save) for QueryInfoForm
 * Expose more formatting properties for EditableGrid (bordered, condensed, striped)
 * Add readOnlyColumns property to EditableGrid so you can display a set of columns that are not editable
 * Add option to EditableGrid to show update columns instead of insert columns

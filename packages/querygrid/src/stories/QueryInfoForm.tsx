@@ -174,8 +174,10 @@ storiesOf('QueryInfoForm', module)
                 queryInfo={model.queryInfo}
                 onSubmit={formSubmit}
                 onSubmitForEdit={boolean("Add submit for edit button?", false, "Submit") ?  formSubmitForEdit : undefined}
+                canSubmitForEdit={boolean("Can submit for edit?", true, "Submit")}
+                disableSubmitForEditMsg={text("Message tip for disable submit for edit", "Editing with grid not possible", "Submit")}
                 schemaQuery={schemaQuery}
-                />
+            />
         )
     })
     .add("don't check required fields", () => {

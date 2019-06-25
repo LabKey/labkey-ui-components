@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 import * as React from 'react';
+import { Map, fromJS } from "immutable";
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetCreatePanel } from "../components/samples/SampleSetCreatePanel";
+import { SampleSetDetailsPanel } from "../components/samples/SampleSetDetailsPanel";
 
 import './stories.scss'
 
-storiesOf('SampleSetCreatePanel', module)
+storiesOf('SampleSetDetailsPanel', module)
     .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        return <SampleSetCreatePanel
+    .add('for create', () => {
+        return <SampleSetDetailsPanel
+            onCancel={() => console.log('Cancel clicked')}
+            onComplete={() => console.log('Create clicked')}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+        />
+    })
+    .add('for update', () => {
+        const data = Map<string, any>(fromJS({
+            RowId: {value: 1},
+            Description: {value: 'The description for my existing sample set.'},
+            NameExpression: {value: 'S-${genId}-${randomId}'}
+        }));
+
+        return <SampleSetDetailsPanel
+            data={data}
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}

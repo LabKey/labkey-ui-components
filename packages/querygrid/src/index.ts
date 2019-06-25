@@ -82,7 +82,7 @@ import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 import { createSampleSet, deleteSampleSet } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
-import { SampleSetCreatePanel } from './components/samples/SampleSetCreatePanel'
+import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
 
 export {
     // global state functions
@@ -171,7 +171,7 @@ export {
     // samples-related
     SampleInsertPanel,
     SampleDeleteConfirmModal,
-    SampleSetCreatePanel,
+    SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     createSampleSet,
     deleteSampleSet,

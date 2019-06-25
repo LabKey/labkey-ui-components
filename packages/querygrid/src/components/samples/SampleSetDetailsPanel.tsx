@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
+import { Map } from 'immutable'
 import { Alert, WizardNavButtons } from "@glass/base";
 
-import { createSampleSet } from "./actions";
-import { ICreateSampleSet } from "./models";
+import { createSampleSet, updateSampleSet } from "./actions";
+import { ISampleSetDetails } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 
 const FORM_IDS = {
@@ -14,8 +15,9 @@ const FORM_IDS = {
 
 interface Props {
     onCancel: () => void
-    onComplete: (name: string) => void
+    onComplete: (response: any) => void
     nameExpressionInfoUrl?: string
+    data?: Map<string, any>
 }
 
 interface State {
@@ -24,7 +26,7 @@ interface State {
     submitting: boolean
 }
 
-export class SampleSetCreatePanel extends React.Component<Props, State> {
+export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
@@ -43,7 +45,7 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
             formValues: {
                 ...state.formValues,
                 [id]: value
-            } as ICreateSampleSet
+            } as ISampleSetDetails
         }));
     };
 
@@ -51,24 +53,41 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
         const { formValues } = this.state;
         this.setSubmitting(true);
 
-        const config = {
-            name: formValues[FORM_IDS.NAME],
-            nameExpression: formValues[FORM_IDS.NAME_EXPRESSION],
-            description: formValues[FORM_IDS.DESCRIPTION]
-        } as ICreateSampleSet;
+        if (this.isExistingSampleSet()) {
+            const config = {
+                rowId: this.props.data.getIn(['RowId', 'value']),
+                nameExpression: this.getNameExpressionValue(),
+                description: this.getDescriptionValue()
+            } as ISampleSetDetails;
 
-        createSampleSet(config)
-            .then((response) => {
-                this.setSubmitting(false);
-                this.props.onComplete(config.name);
-            })
-            .catch((error) => {
-                this.setState(() => ({
-                    error: error.exception,
-                    submitting: false
-                }));
-            });
+            updateSampleSet(config)
+                .then((response) => this.onFinishSuccess(config))
+                .catch((error) => this.onFinishFailure(error.exception));
+        }
+        else {
+            const config = {
+                name: formValues[FORM_IDS.NAME],
+                nameExpression: formValues[FORM_IDS.NAME_EXPRESSION],
+                description: formValues[FORM_IDS.DESCRIPTION]
+            } as ISampleSetDetails;
+
+            createSampleSet(config)
+                .then((response) => this.onFinishSuccess(config))
+                .catch((error) => this.onFinishFailure(error.exception));
+        }
     };
+
+    onFinishSuccess(response: any) {
+        this.setSubmitting(false);
+        this.props.onComplete(response);
+    }
+
+    onFinishFailure(error: string) {
+        this.setState(() => ({
+            error,
+            submitting: false
+        }));
+    }
 
     setSubmitting(submitting: boolean) {
         this.setState(() => ({
@@ -79,7 +98,34 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
 
     isFormValid(): boolean {
         const { formValues } = this.state;
-        return formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
+        const hasValidName = formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
+        return this.isExistingSampleSet() || hasValidName;
+    }
+
+    getDataValue(key: string, propName: string): any {
+        const { data } = this.props;
+        const { formValues } = this.state;
+
+        if (key && formValues && formValues[key] !== undefined) {
+            return formValues[key];
+        }
+        else if (data) {
+            return data.getIn([propName, 'value']);
+        }
+
+        return undefined;
+    }
+
+    isExistingSampleSet(): boolean {
+        return this.getDataValue(null, 'RowId') !== undefined;
+    }
+
+    getNameExpressionValue(): string {
+        return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'NameExpression');
+    }
+
+    getDescriptionValue(): string {
+        return this.getDataValue(FORM_IDS.DESCRIPTION, 'Description');
     }
 
     render() {
@@ -92,7 +138,7 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                 <Panel>
                     <Panel.Body>
                         <Form>
-                            <Row>
+                            {!this.isExistingSampleSet() && <Row className={'margin-bottom'}>
                                 <Col xs={3}>
                                     <LabelOverlay
                                         label={'Name'}
@@ -109,8 +155,8 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                                         onChange={this.onFormChange}
                                     />
                                 </Col>
-                            </Row>
-                            <Row className={'margin-top'}>
+                            </Row>}
+                            <Row className={'margin-bottom'}>
                                 <Col xs={3}>
                                     <LabelOverlay
                                         label={'Name Expression'}
@@ -125,10 +171,11 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                                         type="text"
                                         placeholder={'S-\${now:date}-\${batchRandomId}-\${randomId}'}
                                         onChange={this.onFormChange}
+                                        value={this.getNameExpressionValue()}
                                     />
                                 </Col>
                             </Row>
-                            <Row className={'margin-top'}>
+                            <Row>
                                 <Col xs={3}>
                                     <LabelOverlay
                                         label={'Description'}
@@ -141,6 +188,7 @@ export class SampleSetCreatePanel extends React.Component<Props, State> {
                                         className="form-control"
                                         id={FORM_IDS.DESCRIPTION}
                                         onChange={this.onFormChange}
+                                        value={this.getDescriptionValue()}
                                     />
                                 </Col>
                             </Row>

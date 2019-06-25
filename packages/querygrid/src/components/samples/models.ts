@@ -351,7 +351,8 @@ export class SampleIdCreationModel extends Record({
     }
 }
 
-export interface ICreateSampleSet {
+export interface ISampleSetDetails {
+    rowId?: number
     name: string
     nameExpression?: string
     description?: string

@@ -20,7 +20,7 @@ import { buildURL, naturalSort, SchemaQuery, SCHEMAS } from '@glass/base';
 
 import {
     DisplayObject,
-    ICreateSampleSet,
+    ISampleSetDetails,
     ISampleSetOption,
     SampleIdCreationModel,
     SampleSetOption,
@@ -152,10 +152,26 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
     });
 }
 
-export function createSampleSet(config: ICreateSampleSet): Promise<any> {
+export function createSampleSet(config: ISampleSetDetails): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('experiment', 'createSampleSetApi.api'),
+            method: 'POST',
+            params: config,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function updateSampleSet(config: ISampleSetDetails): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'updateMaterialSourceApi.api'),
             method: 'POST',
             params: config,
             success: Utils.getCallbackWrapper((response) => {

@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.6.0-fb-add-assay-qc-workflow.1",
+  "version": "0.6.0-fb-add-assay-qc-workflow.2",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",

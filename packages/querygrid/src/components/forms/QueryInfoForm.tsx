@@ -271,7 +271,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
         let submitForEditBtn;
 
-        if (submitForEditText) {
+        if (onSubmitForEdit && submitForEditText) {
             const btnContent = (
                 <Button
                     className={"test-loc-submit-for-edit-button"}

@@ -413,7 +413,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
  * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
  * values in editorRows that are different from the ones in originalGridData
  *
- * @param originalGridData a map from an id field to a Map from fieldKeys to values
+ * @param originalGridData a map from an id field to a Map from fieldKeys to an object with a value field
  * @param editorRows An array of Maps from field keys to values
  * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
  */
@@ -424,7 +424,7 @@ export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string,
         let originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
-                if ((value && !originalRow.has(key)) || originalRow.get(key) != value) {
+                if ((value && !originalRow.has(key)) || originalRow.getIn([key, 'value']) != value) {
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value, we set the value to null in our update data
                     row[key] = value || null;

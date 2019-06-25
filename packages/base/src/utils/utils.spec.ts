@@ -770,4 +770,17 @@ describe("getUpdatedDataFromGrid", () => {
             "RowId": "445"
         })
     });
+
+    test("edited row added field", () => {
+        const updatedData = (getUpdatedDataFromGrid(originalData, [
+            Map<string, any>({
+                "RowId":  "448",
+                "New Field": "new value"
+            })], "RowId"));
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual( {
+            "New Field": "new value",
+            "RowId": "448"
+        });
+    })
 });

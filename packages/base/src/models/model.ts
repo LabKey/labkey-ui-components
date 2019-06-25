@@ -633,6 +633,9 @@ export class QueryGridModel extends Record({
         }).toList();
     }
 
+    /**
+     * @returns the data for the current page that has been selected.
+     */
     getSelectedData(): Map<any, Map<string, any>> {
         let dataMap = Map<any, Map<string, any>>();
         this.selectedIds.forEach((id) => {

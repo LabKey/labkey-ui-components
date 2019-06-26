@@ -16,6 +16,7 @@ const FORM_IDS = {
 interface Props {
     onCancel: () => void
     onComplete: (response: any) => void
+    beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
     data?: Map<string, any>
 }
@@ -50,12 +51,17 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     };
 
     onFinish = () => {
+        const { beforeFinish, data } = this.props;
         const { formValues } = this.state;
         this.setSubmitting(true);
 
+        if (beforeFinish) {
+            beforeFinish(formValues);
+        }
+
         if (this.isExistingSampleSet()) {
             const config = {
-                rowId: this.props.data.getIn(['RowId', 'value']),
+                rowId: data.getIn(['RowId', 'value']),
                 nameExpression: this.getNameExpressionValue(),
                 description: this.getDescriptionValue()
             } as ISampleSetDetails;

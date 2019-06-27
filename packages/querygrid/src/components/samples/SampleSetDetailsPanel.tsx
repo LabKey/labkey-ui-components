@@ -7,7 +7,7 @@ import { createSampleSet, updateSampleSet } from "./actions";
 import { ISampleSetDetails } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 
-const FORM_IDS = {
+export const FORM_IDS = {
     NAME: 'sample-set-create-name',
     NAME_EXPRESSION: 'sample-set-create-name-expression',
     DESCRIPTION: 'sample-set-create-description',

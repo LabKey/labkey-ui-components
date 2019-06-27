@@ -73,8 +73,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         else {
             const config = {
                 name: formValues[FORM_IDS.NAME],
-                nameExpression: formValues[FORM_IDS.NAME_EXPRESSION],
-                description: formValues[FORM_IDS.DESCRIPTION]
+                nameExpression: this.getNameExpressionValue(),
+                description: this.getDescriptionValue()
             } as ISampleSetDetails;
 
             createSampleSet(config)

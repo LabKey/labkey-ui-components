@@ -108,30 +108,30 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         return this.isExistingSampleSet() || hasValidName;
     }
 
-    getDataValue(key: string, propName: string): any {
+    getDataValue(key: string, propName: string, defaultValue: any): any {
         const { data } = this.props;
         const { formValues } = this.state;
 
         if (key && formValues && formValues[key] !== undefined) {
-            return formValues[key];
+            return formValues[key] || defaultValue;
         }
         else if (data) {
-            return data.getIn([propName, 'value']);
+            return data.getIn([propName, 'value']) || defaultValue;
         }
 
-        return undefined;
+        return defaultValue;
     }
 
     isExistingSampleSet(): boolean {
-        return this.getDataValue(null, 'RowId') !== undefined;
+        return this.getDataValue(null, 'RowId', undefined) !== undefined;
     }
 
     getNameExpressionValue(): string {
-        return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'NameExpression');
+        return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'NameExpression', '');
     }
 
     getDescriptionValue(): string {
-        return this.getDataValue(FORM_IDS.DESCRIPTION, 'Description');
+        return this.getDataValue(FORM_IDS.DESCRIPTION, 'Description', '');
     }
 
     render() {

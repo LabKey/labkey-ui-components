@@ -454,7 +454,7 @@ function handle132Response(json): Promise<any> {
                     orderedModels[modelKey] = List();
                 }
 
-                const messages = resolved.metaData.messages ? fromJS(resolved.metaData.messages) : List<Map<string, string>>();
+                const messages = resolved.messages ? fromJS(resolved.messages) : List<Map<string, string>>();
 
                 resolve({
                     messages,

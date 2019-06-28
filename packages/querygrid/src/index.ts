@@ -54,7 +54,7 @@ import {
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
+import { AppRouteResolver, AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -128,6 +128,7 @@ export {
     Location,
     URLResolver,
     URLService,
+    AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,

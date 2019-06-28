@@ -591,130 +591,130 @@ describe("getUpdatedData", () => {
 });
 
 describe("getUpdatedDataFromGrid", () => {
-    const originalData = fromJS({
-        "448": {
-            "RowId": {
-                "value": 448,
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
-            },
-            "Value": {
-                "value": null
-            },
-            "Data": {
-                "value": "data1"
-            },
-            "AndAgain": {
-                "value": "again"
-            },
-            "Name": {
-                "value": "S-20190516-9042",
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
-            },
-            "Other": {
-                "value": "other1"
-            }
-        },
-        "447": {
-            "RowId": {
-                "value": 447,
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
-            },
-            "Value": {
-                "value": null
-            },
-            "Data": {
-                "value": "data1"
-            },
-            "AndAgain": {
-                "value": "again"
-            },
-            "Name": {
-                "value": "S-20190516-4622",
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
-            },
-            "Other": {
-                "value": "other2"
-            }
-        },
-        "446": {
-            "RowId": {
-                "value": 446,
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
-            },
-            "Value": {
-                "value": "val"
-            },
-            "Data": {
-                "value": "data1"
-            },
-            "AndAgain": {
-                "value": "again"
-            },
-            "Name": {
-                "value": "S-20190516-2368",
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
-            },
-            "Other": {
-                "value": "other3"
-            }
-        },
-        "445": {
-            "RowId": {
-                "value": 445,
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
-            },
-            "Value": {
-                "value": "val"
-            },
-            "Data": {
-                "value": "data1"
-            },
-            "AndAgain": {
-                "value": "again"
-            },
-            "Name": {
-                "value": "S-20190516-9512",
-                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
-            },
-            "Other": {
-                "value": null
-            }
-        },
-    });
     // const originalData = fromJS({
-    //     448: {
-    //         "RowId":  448,
-    //         "Value": null,
-    //         "Data": "data1",
-    //         "AndAgain":  "again",
-    //         "Name":  "S-20190516-9042",
-    //         "Other": "other1"
+    //     "448": {
+    //         "RowId": {
+    //             "value": 448,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+    //         },
+    //         "Value": {
+    //             "value": null
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-9042",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+    //         },
+    //         "Other": {
+    //             "value": "other1"
+    //         }
     //     },
-    //     447: {
-    //         "RowId":  447,
-    //         "Value":  null,
-    //         "Data":  "data1",
-    //         "AndAgain": "again",
-    //         "Name": "S-20190516-4622",
-    //         "Other": "other2"
+    //     "447": {
+    //         "RowId": {
+    //             "value": 447,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+    //         },
+    //         "Value": {
+    //             "value": null
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-4622",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+    //         },
+    //         "Other": {
+    //             "value": "other2"
+    //         }
     //     },
-    //     446: {
-    //         "RowId":  446,
-    //         "Value":  "val",
-    //         "Data":  "data1",
-    //         "AndAgain": "again",
-    //         "Name": "S-20190516-2368",
-    //         "Other":  "other3"
+    //     "446": {
+    //         "RowId": {
+    //             "value": 446,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+    //         },
+    //         "Value": {
+    //             "value": "val"
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-2368",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+    //         },
+    //         "Other": {
+    //             "value": "other3"
+    //         }
     //     },
-    //     445: {
-    //         "RowId":  445,
-    //         "Value": "val",
-    //         "Data": "data1",
-    //         "AndAgain":  "again",
-    //         "Name":  "S-20190516-9512",
-    //         "Other": null
+    //     "445": {
+    //         "RowId": {
+    //             "value": 445,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+    //         },
+    //         "Value": {
+    //             "value": "val"
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-9512",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+    //         },
+    //         "Other": {
+    //             "value": null
+    //         }
     //     },
     // });
+    const originalData = fromJS({
+        448: {
+            "RowId":  448,
+            "Value": null,
+            "Data": "data1",
+            "AndAgain":  "again",
+            "Name":  "S-20190516-9042",
+            "Other": "other1"
+        },
+        447: {
+            "RowId":  447,
+            "Value":  null,
+            "Data":  "data1",
+            "AndAgain": "again",
+            "Name": "S-20190516-4622",
+            "Other": "other2"
+        },
+        446: {
+            "RowId":  446,
+            "Value":  "val",
+            "Data":  "data1",
+            "AndAgain": "again",
+            "Name": "S-20190516-2368",
+            "Other":  "other3"
+        },
+        445: {
+            "RowId":  445,
+            "Value": "val",
+            "Data": "data1",
+            "AndAgain":  "again",
+            "Name":  "S-20190516-9512",
+            "Other": null
+        },
+    });
     test("no edited rows", () => {
         const updatedData = getUpdatedDataFromGrid(originalData, [], "RowId");
         expect(updatedData).toHaveLength(0);

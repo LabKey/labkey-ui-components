@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+*  Update package for changes to @glass/base v???
+
 ### version 0.0.16
 *Released*: 19 June 2019
 * Add DomainForm boolean property for showHeader, default true

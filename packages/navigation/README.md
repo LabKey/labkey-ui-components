@@ -4,6 +4,10 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+*  Update package for changes to @glass/base v???
+
 ### version 0.3.0
 *Released*: 19 June 2019
 * Add NavigationBar searchPlaceholder optional string property

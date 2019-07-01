@@ -7,6 +7,9 @@ import { createSampleSet, updateSampleSet } from "./actions";
 import { ISampleSetDetails } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 
+const UNKNOWN_ERROR_CREATE = 'An unknown error occurred creating the sample set.';
+const UNKNOWN_ERROR_UPDATE = 'An unknown error occurred updating the sample set.';
+
 export const FORM_IDS = {
     NAME: 'sample-set-create-name',
     NAME_EXPRESSION: 'sample-set-create-name-expression',
@@ -68,7 +71,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
             updateSampleSet(config)
                 .then((response) => this.onFinishSuccess(config))
-                .catch((error) => this.onFinishFailure(error.exception));
+                .catch((error) => this.onFinishFailure(error ? error.exception : UNKNOWN_ERROR_UPDATE));
         }
         else {
             const config = {
@@ -79,7 +82,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
             createSampleSet(config)
                 .then((response) => this.onFinishSuccess(config))
-                .catch((error) => this.onFinishFailure(error.exception));
+                .catch((error) => this.onFinishFailure(error ? error.exception : UNKNOWN_ERROR_CREATE));
         }
     };
 

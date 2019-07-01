@@ -386,6 +386,7 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
 function loadDataForEditor(model: QueryGridModel, response?: any) {
     const rows: List<Map<string, any>> = response ? response.data : List();
     const columns = model.getInsertColumns();
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
     // data is initialized in column order
@@ -403,10 +404,13 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
                 }), List<ValueDescriptor>()));
             }
             else {
-                cellValues.set(cellKey, List([{
-                    display: value,
-                    raw: value
-                }]));
+                // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
+                let valueDescriptor = {display: value, raw: value};
+                if (col.isLookup() && Utils.isNumber(value)) {
+                    valueDescriptor = getLookupDisplayValue(col, getLookup(col), value).valueDescriptor
+                }
+
+                cellValues.set(cellKey, List([valueDescriptor]));
             }
             rn++;
         });

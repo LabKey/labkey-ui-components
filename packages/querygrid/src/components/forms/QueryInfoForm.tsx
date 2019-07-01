@@ -356,7 +356,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 style={{width: '125px'}}
                                 type={"number"}
                                 validations={`isPositiveLt:${maxCount}`}
-                                value={count}
+                                value={count || count.toString()}
                             />
                         )}
                         <hr/>

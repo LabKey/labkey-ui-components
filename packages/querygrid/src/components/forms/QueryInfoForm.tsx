@@ -116,7 +116,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
         this.state = {
             show: true,
-            canSubmit: false,
+            canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
             errorMsg: undefined,

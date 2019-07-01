@@ -87,6 +87,7 @@ interface State {
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     static defaultProps : Partial<QueryInfoFormProps> = {
+        canSubmitForEdit: true,
         includeCountField: true,
         checkRequiredFields: true,
         countText: "Quantity",
@@ -356,7 +357,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 style={{width: '125px'}}
                                 type={"number"}
                                 validations={`isPositiveLt:${maxCount}`}
-                                value={count || count.toString()}
+                                value={count ? count.toString() : undefined}
                             />
                         )}
                         <hr/>

@@ -58,7 +58,7 @@ export interface QueryInfoFormProps {
     disableSubmitForEditMsg?: string
     onSubmitForEdit?: (data: any) => Promise<any>
     onSubmit?: (data: any) => Promise<any>
-    onSuccess?: (data: any) => any
+    onSuccess?: (data: any, submitForEdit: boolean) => any
     queryInfo: QueryInfo
     renderFileInputs?: boolean
     schemaQuery: SchemaQuery
@@ -191,7 +191,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                 isSubmitting: false
             });
             if (Utils.isFunction(onSuccess)) {
-                return onSuccess(data);
+                return onSuccess(data, submitForEdit);
             }
         }, (error) => {
             this.handleSubmitError(error);

@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.17-fb-sampleSetCRUD.2",
+  "version": "0.0.17-fb-sampleSetCRUD.3",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -37,7 +37,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.19",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@glass/base": "0.7.0-fb-sampleSetCRUD.2",
+    "@glass/base": "0.7.0-fb-sampleSetCRUD.3",
     "react-beautiful-dnd": "11.0.3"
   },
   "devDependencies": {

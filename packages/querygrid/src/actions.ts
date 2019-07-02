@@ -21,6 +21,7 @@ import {
     getSortFromUrl,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
+    IGridResponse,
     naturalSort,
     not,
     QueryColumn,
@@ -384,7 +385,8 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
 }
 
 function loadDataForEditor(model: QueryGridModel, response?: any) {
-    const rows: List<Map<string, any>> = response ? response.data : List();
+    const rows: Map<any, Map<string, any>> = response ? response.data : Map<string, Map<string, any>>();
+    const ids = response ? response.dataIds : List();
     const columns = model.getInsertColumns();
     const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellValues = Map<string, List<ValueDescriptor>>().asMutable();
@@ -392,7 +394,8 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     // data is initialized in column order
     columns.forEach((col, cn) => {
         let rn = 0; // restart index, cannot use index from "rows"
-        rows.forEach((row) => {
+        ids.forEach((id) => {
+            const row = rows.get(id);
             const cellKey = genCellKey(cn, rn);
             const value = row.get(col.fieldKey);
 
@@ -842,7 +845,7 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
     });
 }
 
-export function getSelectedData(model: QueryGridModel) : Promise<Map<string, any>> {
+export function getSelectedData(model: QueryGridModel) : Promise<IGridResponse> {
     let filters = model.getFilters();
     filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
 
@@ -850,12 +853,16 @@ export function getSelectedData(model: QueryGridModel) : Promise<Map<string, any
         schemaName: model.schema,
         queryName: model.query,
         filterArray: filters.toJS(),
-        sort: model.getSorts(),
+        sort: model.getSorts() || "-RowId",
         columns: model.getRequestColumnsString(),
         offset: 0
     }).then(response => {
-        const {models} = response;
-        resolve( fromJS(models[model.getModelName()]));
+        const {models, orderedModels, totalRows} = response;
+        resolve( {
+            data: fromJS(models[model.getModelName()]),
+            dataIds: List(orderedModels[model.getModelName()]),
+            totalRows
+        });
     }).catch( reason => {
         reject(reason);
     }));

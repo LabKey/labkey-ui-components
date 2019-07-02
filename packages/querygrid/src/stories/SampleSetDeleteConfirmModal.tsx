@@ -20,7 +20,7 @@ import { SampleSetDeleteConfirmModal } from "../components/samples/SampleSetDele
 
 import './stories.scss'
 
-storiesOf('SampleDeleteConfirmModal', module)
+storiesOf('SampleSetDeleteConfirmModal', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
         return <SampleSetDeleteConfirmModal

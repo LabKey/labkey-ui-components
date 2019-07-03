@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.6.2
+*Released*: 3 July 2019
+* EditableGrid updates to only use LookupCell and initLookups for lookup queries that are public
+
 ### version 0.6.1
 *Released*: 24 June 2019
 * Issue 37773: QueryGridPanel has inconsistent padding on button groups with and without paging

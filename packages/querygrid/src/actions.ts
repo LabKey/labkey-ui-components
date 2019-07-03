@@ -1234,7 +1234,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
 }
 
 function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
-    if (!col.isLookup()) {
+    if (!col.isLookup() || !col.lookup.isPublic) {
         return false;
     }
 

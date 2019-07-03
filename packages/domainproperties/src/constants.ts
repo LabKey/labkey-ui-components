@@ -28,6 +28,11 @@ export const DOMAIN_FIELD_LABEL = 'label';
 export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
 export const DOMAIN_FIELD_URL = 'URL';
 
+// TextFieldOptions
+export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
+export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
+export const DOMAIN_FIELD_SCALE = 'scale';
+
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';
 export const BOOLEAN_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#boolean';
@@ -40,6 +45,8 @@ export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
+
+export const MAX_TEXT_LENGTH = 4000;
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

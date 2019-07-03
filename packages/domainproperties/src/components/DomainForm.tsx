@@ -112,15 +112,10 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         // TODO give focus to the "Name" field for the newly added row
     };
 
-    onFieldChange = (evt) => {
+    onFieldChange = (id, value) => {
         const {domain, onChange} = this.props;
 
-        let value = evt.target.value;
-        if (evt.target.type === "checkbox") {
-            value = evt.target.checked;
-        }
-
-        const newDomain = updateDomainField(domain, evt.target.id, value);
+        const newDomain = updateDomainField(domain, id, value);
 
         if (onChange) {
             onChange(newDomain, true);

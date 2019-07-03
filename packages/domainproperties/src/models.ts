@@ -158,6 +158,9 @@ interface IDomainField {
     userEditable?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
+    format?: string
+    excludeFromShifting?: boolean
+    defaultScale?: string
 
     updatedField?: boolean
     newField?: boolean

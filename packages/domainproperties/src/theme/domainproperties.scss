@@ -48,6 +48,15 @@
   }
 }
 
+.domain-help-icon {
+  margin: 0 0 2px 0;
+  height: 10px;
+}
+
+.domain-help-icon:hover {
+  cursor: pointer;
+}
+
 .domain-form-add {
   color: $gray-dark;
   opacity: 0.5;
@@ -94,4 +103,24 @@
 .domain-field-label {
   color: $gray;
   padding: 5px 0;
+}
+
+/* Text Field Options */
+.domain-text-options-col {
+  margin-top: 5px;
+}
+
+.domain-text-options-radio1 {
+  float: left;
+  margin: 4px 5px 5px 5px !important;
+}
+
+.domain-text-options-radio2 {
+  float: left;
+  margin: 9px 5px 5px 5px !important;
+}
+
+.domain-text-options-length {
+  float: left;
+  margin: 6px 5px 0 0 !important;
 }

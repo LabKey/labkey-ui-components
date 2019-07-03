@@ -54,8 +54,9 @@ import { Grid } from '@glass/base';
 ## Development
 
 
+
 ### Getting Started
-If you are buidling the glass components locally, you will need to do the following to prepare your system.
+If you are building the glass components locally, you will need to do the following to prepare your system.
 
 #### 1. Install yarn
 
@@ -103,6 +104,26 @@ This will install all dependencies for the component packages. Once this is comp
 lerna run build
 ```
 
+### Technologies 
+For doing development of glass components, you should be familiar with the following technologies:
+* [React](https://reactjs.org/) - used for building the UI components
+* [Bootstrap](https://getbootstrap.com/docs/3.4/) - for consistent, responsive styling
+* [React-Bootstrap](https://5c507d49471426000887a6a7--react-bootstrap.netlify.com/) - bootstrap styling for react components
+* [Typescript](https://www.typescriptlang.org/docs/home.html) - for typing of javascript objects
+* [Jest](https://jestjs.io/docs/en/getting-started.html) - For unit testing of components
+* [Enzyme](https://airbnb.io/enzyme/) - Testing utility library
+* [Storybook](https://storybook.js.org/) - For use in manual testing and exploration of features outside of an application
+
+And, for building, we use
+* [Yarn](https://yarnpkg.com) - package manager and build tool
+* [Lerna](https://lernajs.io/) - for managing JavaScript projects with mutliple packages.
+
+### Best Practices
+You should do pretty well to follow the styles and practices currently represented in the code, but here are   
+some guides to best practices for doing front-end development:
+* [Alan's Guidelines](https://docs.google.com/presentation/d/1hW9gYbWhW6spr7uhAjpKBNl3hWPXUOPbmlwD6UkYWE8/edit?pli=1#slide=id.g5627a1f538_0_120)
+* [Airbnb Style Guide](https://github.com/airbnb/javascript)
+
 ### Creating a New Package
 To create a new package:
 
@@ -127,7 +148,7 @@ feature branch with underscores replaced by hyphens and the `.0` is just a start
 You can do this editing manually or by using `lerna version --exact`.  See [below](#version-numbering) for
  more on version numbering.
 * Update the README.md file for the package to document what is changing in this version.  
-* Write jest tests to test non-rendering functions and rendering of components with different sets of parameters.  Jest 
+* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test non-rendering functions and rendering of components with different sets of parameters.  Jest 
 tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood, 
 but they should generally not try to do a lot of interaction with the components. You can, however, validate that callbacks 
 passed to a component are called when expected.  See existing `.spec.ts` files for examples.  
@@ -231,7 +252,6 @@ yarn run storybook
 
 When changes are made to the source code or .scss files for the components or the stories, the storybook instance will automatically reload.
 
-### Maintaining Dependencies
 
 ## Publishing
 

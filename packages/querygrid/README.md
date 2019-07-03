@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.7.0
+*Released*: 3 July 2019
 * For QueryInfoForm, add placeholders using queryColumn captions
 * Add optional footer for QueryInfoForm
 * Add optional second type of submit button (either submit to grid or submit to save) for QueryInfoForm

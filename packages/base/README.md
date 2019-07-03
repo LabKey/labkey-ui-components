@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.7.0
+*Released*: 3 July 2019
 * Add unorderedEqual for checking of two arrays have the same elements in any order
 * export dismissNotifications
 * add optional parameters to SelectionMenuItem for maximum number of selected items and for specifying noun used in messages

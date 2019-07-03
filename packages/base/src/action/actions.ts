@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { AssayDOM, Ajax, Utils, Assay } from '@labkey/api'
+import { AssayDOM, Ajax, Utils, Assay, Query } from '@labkey/api'
 
-import { AssayDefinitionModel, AssayProtocolModel, InferDomainResponse, QueryColumn } from "../models/model";
+import { AssayDefinitionModel, AssayProtocolModel, InferDomainResponse, QueryColumn, VisualizationConfigModel } from "../models/model";
 import { buildURL } from "../url/ActionURL";
 
 export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
@@ -131,4 +131,19 @@ export function inferDomainFromFile(file: File, numLinesToInclude: number) : Pro
             }
         });
     })
+}
+
+export function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
+    return new Promise((resolve, reject) => {
+        Query.Visualization.get({
+            reportId,
+            name: undefined,
+            schemaName: undefined,
+            queryName: undefined,
+            success: (response) => {
+                resolve(VisualizationConfigModel.create(response.visualizationConfig));
+            },
+            failure: reject
+        });
+    });
 }

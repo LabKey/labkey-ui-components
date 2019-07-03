@@ -1,0 +1,16 @@
+{
+  "visualizationConfig" : "{\"chartConfig\":{\"measures\":{\"color\":{\"displayFieldJsonType\":\"string\",\"hidden\":false,\"fieldKey\":\"Run\",\"label\":\"Run\",\"schemaName\":\"assay.General.Amino Acids\",\"type\":\"int\",\"normalizedType\":\"string\",\"measure\":false,\"name\":\"Run\",\"queryName\":\"Data\",\"alias\":\"Run\",\"shortCaption\":\"Run\",\"dimension\":true},\"pointClickFn\":null,\"x\":{\"displayFieldJsonType\":\"\",\"hidden\":false,\"fieldKey\":\"Ala\",\"label\":\"Ala (pM/uL)\",\"schemaName\":\"assay.General.Amino Acids\",\"type\":\"float\",\"normalizedType\":\"float\",\"measure\":false,\"name\":\"Ala\",\"queryName\":\"Data\",\"alias\":\"Ala\",\"shortCaption\":\"Ala (pM/uL)\",\"dimension\":false},\"y\":{\"displayFieldJsonType\":\"\",\"hidden\":false,\"fieldKey\":\"Arg\",\"label\":\"Arg (pM/uL)\",\"schemaName\":\"assay.General.Amino Acids\",\"type\":\"float\",\"normalizedType\":\"float\",\"yAxis\":\"left\",\"measure\":false,\"name\":\"Arg\",\"queryName\":\"Data\",\"alias\":\"Arg\",\"shortCaption\":\"Arg (pM/uL)\",\"dimension\":false}},\"scales\":{\"x\":{\"type\":\"automatic\",\"trans\":\"linear\"},\"y\":{\"type\":\"automatic\",\"trans\":\"linear\"}},\"width\":null,\"geomOptions\":{\"binShape\":\"hex\",\"gradientColor\":\"FFFFFF\",\"pieInnerRadius\":0,\"colorRange\":\"BlueWhite\",\"colorPaletteScale\":\"ColorDiscrete\",\"lineWidth\":1,\"showPiePercentages\":true,\"pointFillColor\":\"3366FF\",\"pieOuterRadius\":80,\"binThreshold\":10000,\"hideTrendLine\":false,\"height\":null,\"binColorGroup\":\"BlueWhite\",\"chartLayout\":\"single\",\"chartSubjectSelection\":\"subjects\",\"lineColor\":\"000000\",\"binSingleColor\":\"000000\",\"label\":\"Data\",\"pointType\":\"outliers\",\"piePercentagesColor\":\"333333\",\"boxFillColor\":\"3366FF\",\"binShapeGroup\":\"hex\",\"showOutliers\":true,\"pointSize\":5,\"pieHideWhenLessThanPercentage\":5,\"hideDataPoints\":false,\"errorBars\":\"None\",\"subtitle\":\"\",\"width\":null,\"gradientPercentage\":95,\"position\":null,\"opacity\":0.5,\"displayIndividual\":true,\"displayAggregate\":false},\"pointType\":\"outliers\",\"renderType\":\"scatter_plot\",\"labels\":{\"subtitle\":\"\",\"x\":\"Ala (pM/uL)\",\"y\":\"Arg (pM/uL)\",\"main\":\"Data\"},\"height\":null},\"queryConfig\":{\"dataRegionName\":\"Data\",\"maxRows\":-1,\"viewName\":null,\"method\":\"POST\",\"columns\":[\"Ala\",\"Arg\",\"Asn\",\"Asp\",\"Run/assayRequest\",\"Cys\",\"Gln\",\"Glu\",\"Gly\",\"His\",\"Ile\",\"Inj\",\"Leu\",\"Lys\",\"Met\",\"Phe\",\"Pro\",\"ResultID\",\"Run\",\"SampleDate\",\"SampleDescription\",\"SampleID\",\"Ser\",\"Thr\",\"Trp\",\"Tyr\",\"Val\",\"Vial\"],\"requiredVersion\":13.2,\"queryName\":\"Data\",\"queryLabel\":\"Data\",\"sort\":\"lsid\",\"schemaName\":\"assay.General.Amino Acids\",\"filterArray\":[],\"parameters\":{}}}",
+  "shared" : true,
+  "reportId" : "db:7605",
+  "createdBy" : 1004,
+  "reportProps" : {
+    "thumbnailType" : "AUTO"
+  },
+  "name" : "Scatter: Arg vs Ala",
+  "description" : null,
+  "queryName" : "Data",
+  "schemaName" : "assay.General.Amino Acids",
+  "type" : "ReportService.GenericChartReport",
+  "ownerId" : null,
+  "thumbnailURL" : "/labkey/BiologicsReportTest%20Project/reports-thumbnail.view?reportId=db%3A7605&revision=0"
+}

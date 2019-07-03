@@ -85,7 +85,7 @@ describe('<ReportListItem />', () => {
 
     test('ReportListItem does not render non-existent createdBy', () => {
         const reports = flattenApiResponse(exampleData);
-        const report = reports.filter(r => !r.hasOwnProperty('createdBy'))[0];
+        const report = reports.filter(r => r.createdBy === undefined)[0];
         const component = <ReportListItem report={report} onClick={noop}/>;
         const wrapper = mount(component);
         expect(wrapper.find(createdBySelector)).toHaveLength(0);

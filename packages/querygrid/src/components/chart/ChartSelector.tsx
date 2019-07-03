@@ -15,10 +15,9 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { QueryGridModel, resolveSchemaQuery } from '@glass/base'
+import { QueryGridModel, resolveSchemaQuery, DataViewInfo } from '@glass/base'
 
 import { fetchCharts } from '../../actions'
-import { DataViewInfo } from '../../models'
 import { getCharts, updateCharts } from '../../global'
 import { ChartMenu } from './ChartMenu'
 

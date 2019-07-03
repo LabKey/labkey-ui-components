@@ -14,18 +14,69 @@
  * limitations under the License.
  */
 import * as React from "react";
+import $ from 'jquery'
 import { Media, Image, Panel, Modal } from 'react-bootstrap'
-import { IReportItem } from "../model";
-import { LoadingSpinner } from '@glass/base'
+import { generateId, LoadingSpinner, VisualizationConfigModel, getVisualizationConfig, DataViewInfo } from '@glass/base'
 
 interface ReportItemModalProps {
-    report: IReportItem,
+    report: DataViewInfo,
     onClose(): void,
 }
 
-export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
+interface State {
+    divId: string
+    config: VisualizationConfigModel
+}
+
+export class ReportItemModal extends React.PureComponent<ReportItemModalProps, State> {
+    constructor(props: ReportItemModalProps) {
+        super(props);
+
+        this.state = {
+            divId: generateId('chart-'),
+            config: undefined
+        };
+    }
+
+    componentDidMount() {
+        this.getChartConfig();
+    }
+
+    getChartConfig() {
+        if (this.props.report.isVisChartType()) {
+            getVisualizationConfig(this.props.report.reportId)
+                .then((config) => {
+                    this.setState({config});
+                    this.renderChart();
+                })
+                .catch(response => {
+                    // TODO this.renderError(response.exception);
+                });
+        }
+    }
+
+    getPlotElement() {
+        return $('#' + this.state.divId);
+    }
+
+    renderChart() {
+        let { config } = this.state;
+
+        if (config) {
+            let newConfig = config.toJS();
+
+            // set the size of the SVG based on the plot el width (i.e. the model width)
+            newConfig.chartConfig.width = this.getPlotElement().width();
+            newConfig.chartConfig.height = newConfig.chartConfig.width * 9 / 16; // 16:9 aspect ratio
+
+            this.getPlotElement().html('');
+            LABKEY.vis.GenericChartHelper.renderChartSVG(this.state.divId, newConfig.queryConfig, newConfig.chartConfig);
+        }
+    }
+
     render() {
-        const { name, description, runUrl, type, thumbnail, createdBy } = this.props.report;
+        const { report } = this.props;
+        const { name, description, runUrl, type, thumbnail, createdBy } = report;
         const onClose = this.props.onClose;
 
         return (
@@ -52,7 +103,10 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
                             <strong>Description:</strong> {description}
                         </p>
 
-                        <Image src={thumbnail}/>
+                        {report.isVisChartType()
+                            ? <div id={this.state.divId}><LoadingSpinner/></div>
+                            : <Image src={thumbnail}/>
+                        }
                     </Modal.Body>
                 </Modal>
             </div>
@@ -61,7 +115,7 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
 }
 
 interface ReportListItemProps {
-    report: IReportItem,
+    report: DataViewInfo,
     onClick(IReportItem): void,
 }
 
@@ -110,8 +164,8 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
 
 export interface ReportListProps {
     loading: boolean,
-    reports: Array<IReportItem>,
-    onReportClicked(report: IReportItem): void,
+    reports: Array<DataViewInfo>,
+    onReportClicked(report: DataViewInfo): void,
 }
 
 export class ReportList extends React.PureComponent<ReportListProps> {
@@ -129,7 +183,7 @@ export class ReportList extends React.PureComponent<ReportListProps> {
         } else if (reports.length === 0) {
             body = <div className="report-list__message">No reports.</div>;
         } else {
-            const reportEls = reports.map((report: IReportItem) => {
+            const reportEls = reports.map((report: DataViewInfo) => {
                 return <ReportListItem key={report.runUrl} report={report} onClick={onReportClicked} />;
             });
 

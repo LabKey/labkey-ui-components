@@ -15,10 +15,10 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/base'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery, DataViewInfo } from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
-import { DataViewInfo, EditorModel, LookupStore } from './models'
+import { EditorModel, LookupStore } from './models'
 
 /**
  * Initialize the global state object for this package.

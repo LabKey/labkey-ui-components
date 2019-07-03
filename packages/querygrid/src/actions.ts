@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
-import { Ajax, Filter, Query, Utils } from '@labkey/api'
+import { Ajax, Filter, Utils } from '@labkey/api'
 import $ from 'jquery'
 import {
     buildURL,
@@ -27,7 +27,8 @@ import {
     QueryGridModel,
     QueryInfo,
     SchemaQuery,
-    ViewInfo
+    ViewInfo,
+    DataViewInfo
 } from '@glass/base'
 
 import { getQueryDetails, searchRows } from './query/api'
@@ -48,13 +49,11 @@ import {
     CellMessage,
     CellMessages,
     CellValues,
-    DataViewInfo,
     EditorModel,
     EditorModelProps,
     LookupStore,
     SearchIdData,
-    ValueDescriptor,
-    VisualizationConfigModel
+    ValueDescriptor
 } from './models'
 import { bindColumnRenderers } from './renderers'
 import {
@@ -852,21 +851,6 @@ function getFilterParameters(filters: List<any>, remove: boolean = false): Map<s
     });
 
     return Map<string, string>(params);
-}
-
-export function getVisualizationConfig(reportId: string): Promise<VisualizationConfigModel> {
-    return new Promise((resolve, reject) => {
-        Query.Visualization.get({
-            reportId,
-            name: undefined,
-            schemaName: undefined,
-            queryName: undefined,
-            success: (response) => {
-                resolve(VisualizationConfigModel.create(response.visualizationConfig));
-            },
-            failure: reject
-        });
-    });
 }
 
 export function fetchCharts(schemaQuery: SchemaQuery): Promise<List<DataViewInfo>> {

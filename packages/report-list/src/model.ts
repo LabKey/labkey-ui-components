@@ -13,32 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/**
- * IReportItem is a type based on the leaf nodes returned from the browseDataTree API. I purposely left off many other
- * fields that are returned from the API because we simply don't need them right now, possibly ever.
- */
-export interface IReportItem {
-    name: string,
-    description?: string,
-    detailsUrl: string,
-    runUrl: string,
-    type: string,
-    visible: boolean,
-    id: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    created?: Date,
-    modified: Date,
-    createdBy?: string,
-    modifiedBy?: string,
-    thumbnail: string, // This is actually a URL, do we enforce that?
-    icon: string,
-    iconCls: string,
-}
+import { DataViewInfo } from "@glass/base";
 
 function _flattenApiResponse(all, item) {
     if (item.hasOwnProperty('children')) {
         return [...all, ...item.children.reduce(_flattenApiResponse, [])];
     } else {
-        return [...all, item];
+        return [...all, new DataViewInfo(item)];
     }
 }
 
@@ -48,6 +29,6 @@ function _flattenApiResponse(all, item) {
  *
  * @param response: the body from the browseDataTree API Action
  */
-export function flattenApiResponse(response): Array<IReportItem> {
+export function flattenApiResponse(response): Array<DataViewInfo> {
     return _flattenApiResponse([], response);
 }

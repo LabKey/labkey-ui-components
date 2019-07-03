@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-// Import the scss file so it will be processed in the rollup scripts
-import './theme/index.scss'
-import { flattenApiResponse } from "./model";
-import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from "./components/ReportList";
-// Add explicit export block for the classes and functions to be exported from this package
+/// <reference types="@glass/base/dist/typings/react-bootstrap" />
 
-export {
-    ReportListProps,
-    flattenApiResponse,
-
-    // components
-    ReportListItem,
-    ReportItemModal,
-    ReportList,
+/**
+ * This is maintained to give an idea of what "LABKEY" context the app utilizes. It is not meant
+ * strictly for typing information and some objects are wrapped/consumed by the app with a more appropriate
+ * app construct (e.g. container, user).
+ */
+type LabKey = {
+    defaultHeaders: any
+    devMode: boolean
+    container: any // use core/model/Container instead
+    contextPath: string
+    moduleContext: any
+    user: any // use core/model/User instead
+    vis: any
 };
+
+/* App globals */
+declare const LABKEY: LabKey;

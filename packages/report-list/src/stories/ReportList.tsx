@@ -14,12 +14,28 @@
  * limitations under the License.
  */
 import * as React from 'react'
+import mock, { proxy } from 'xhr-mock';
 import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import data from "../test_data/example_browse_data_tree_api.json";
 import { flattenApiResponse } from "../model";
 import { ReportList, ReportItemModal } from "../components/ReportList";
+import data from "../test_data/example_browse_data_tree_api.json";
+import visConfigJson from "../test_data/visualization_getVisualization.json";
 import "./stories.scss";
+
+mock.setup();
+mock.post(/.*\/visualization\/getVisualization.*/,  (req, res) => {
+    const bodyParams = req.body().toLowerCase();
+    let responseBody;
+    if (bodyParams.indexOf('"reportid":"db:953"') > -1)
+        responseBody = visConfigJson;
+
+    return res
+        .status(200)
+        .headers({'Content-Type': 'application/json'})
+        .body(JSON.stringify(responseBody));
+});
+mock.use(proxy);
 
 const exampleReports = flattenApiResponse(data);
 

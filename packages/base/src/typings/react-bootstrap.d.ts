@@ -186,6 +186,8 @@ declare module "react-bootstrap" {
 
         alt?: string;
 
+        className?: string;
+
         width?: number | string;
 
         height?: number | string;

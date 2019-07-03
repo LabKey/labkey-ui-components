@@ -16,7 +16,7 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 import { SchemaQuery } from "@glass/base";
 
 import { gridInit } from "../actions";
@@ -79,6 +79,10 @@ storiesOf('EditableGridPanel', module)
                 title={text("Title", "Grid title", PANEL_GROUP)}
                 onRowCountChange={onRowCountChange}
                 model={model}
+                striped={boolean("Striped?", false, PANEL_GROUP)}
+                bsStyle={text("bsStyle", undefined, PANEL_GROUP)}
+                bordered={boolean("Bordered?", false, PANEL_GROUP)}
+                condensed={boolean("Condensed?", true, PANEL_GROUP)}
             />
         );
 
@@ -248,6 +252,28 @@ storiesOf('EditableGridPanel', module)
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
                 title={text("Title", "Grid title", PANEL_GROUP)}
                 onRowCountChange={onRowCountChange}
+                model={model}
+            />
+        );
+    })
+    .add("for update", () => {
+        const modelId = "editableForUpdate";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true
+        });
+
+        return (
+            <EditableGridPanel
+                allowAdd={false}
+                allowBulkRemove={false}
+                allowRemove={true}
+                forUpdate={true}
+                readOnlyColumns={List<string>(["Name"])}
+                title={text("Title", "Grid title", PANEL_GROUP)}
                 model={model}
             />
         );

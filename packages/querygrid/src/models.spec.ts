@@ -18,9 +18,7 @@ import { resetQueryGridState } from "./global";
 import { QueryGridModel, QueryInfo, SchemaQuery } from '@glass/base';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 
-const sampleSet2QueryInfo = require( "./test/data/sampleSet2-getQueryDetails.json");
-
-
+import sampleSet2QueryInfo from "./test/data/sampleSet2-getQueryDetails.json";
 
 const editableGridWithData = {
     "cellMessages": Map<string, CellMessage>({

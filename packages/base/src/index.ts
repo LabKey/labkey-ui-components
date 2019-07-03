@@ -48,7 +48,10 @@ import {
     devToolsActive,
     encodePart,
     generateId,
+    getCommonDataValues,
     getSchemaQuery,
+    getUpdatedData,
+    getUpdatedDataFromGrid,
     hasAllPermissions,
     intersect,
     naturalSort,
@@ -58,7 +61,9 @@ import {
     resolveSchemaQuery,
     similaritySortFactory,
     toggleDevTools,
-    toLowerSafe
+    toLowerSafe,
+    unorderedEqual,
+    valueIsEmpty
 } from './utils/utils'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 import { AddEntityButton } from "./components/buttons/AddEntityButton"
@@ -83,6 +88,7 @@ import { Section } from './components/Section'
 import { FileAttachmentForm } from './components/files/FileAttachmentForm'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
+import { dismissNotifications } from './components/notifications/global'
 import { initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/ConfirmModal'
 import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
@@ -196,6 +202,7 @@ export {
 
     // notification functions
     createNotification,
+    dismissNotifications,
     initNotificationsState,
 
     // date and format functions
@@ -211,6 +218,9 @@ export {
     capitalizeFirstChar,
     decodePart,
     encodePart,
+    getCommonDataValues,
+    getUpdatedData,
+    getUpdatedDataFromGrid,
     getSchemaQuery,
     resolveKey,
     resolveKeyFromJson,
@@ -224,6 +234,8 @@ export {
     generateId,
     debounce,
     similaritySortFactory,
+    unorderedEqual,
+    valueIsEmpty,
 
     // url functions
     buildURL,

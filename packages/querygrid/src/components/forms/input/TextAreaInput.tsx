@@ -17,10 +17,11 @@ import * as React from 'react'
 import { Textarea } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
-import { LabelOverlay } from '../LabelOverlay'
+import { FieldLabel } from '../FieldLabel'
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 
-interface TextAreaInputProps {
+interface TextAreaInputProps extends DisableableInputProps {
     cols?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -30,18 +31,48 @@ interface TextAreaInputProps {
     rowClassName?: Array<any> | string
     rows?: number
     showLabel?: boolean
+    allowDisable?: boolean
+    initiallyDisabled?: boolean
     value?: any
 }
 
-export class TextAreaInput extends React.Component<TextAreaInputProps, any> {
 
-    static defaultProps = {
+export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {
+
+    static defaultProps = {...DisableableInput.defaultProps, ...{
         cols: 50,
-        elementWrapperClassName: 'col-sm-9',
-        labelClassName: 'control-label text-left',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
+        labelClassName: 'control-label text-left col-xs-12',
         rows: 5,
-        showLabel: true
-    };
+        showLabel: true,
+    }};
+
+    constructor(props: TextAreaInputProps) {
+        super(props);
+
+        this.toggleDisabled = this.toggleDisabled.bind(this);
+
+        this.state = {
+            isDisabled: props.allowDisable && props.initiallyDisabled
+        }
+    }
+
+    renderLabel() {
+        const { label, queryColumn, showLabel, allowDisable } = this.props;
+        const { isDisabled } = this.state;
+
+        return <FieldLabel
+            label={label}
+            showLabel={showLabel}
+            showToggle={allowDisable}
+            column={queryColumn}
+            isDisabled = {isDisabled}
+            toggleProps = {{
+                onClick: this.toggleDisabled
+            }}
+        />
+
+    }
 
     render() {
         const {
@@ -57,13 +88,17 @@ export class TextAreaInput extends React.Component<TextAreaInputProps, any> {
             value
         } = this.props;
 
+
+
         return <Textarea
             changeDebounceInterval={0}
+            disabled={this.state.isDisabled}
             cols={cols}
             elementWrapperClassName={elementWrapperClassName}
             id={queryColumn.name}
-            label={showLabel ? (label ? label : <LabelOverlay column={queryColumn}/>) : null}
+            label={this.renderLabel()}
             labelClassName={labelClassName}
+            placeholder={`Enter ${queryColumn.caption.toLowerCase()}`}
             name={name ? name : queryColumn.name}
             rowClassName={rowClassName}
             rows={rows}

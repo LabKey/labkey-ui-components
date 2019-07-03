@@ -23,21 +23,28 @@ interface Props {
     text: string
     onClick: () => any
     disabledMsg: string
+    maxSelection?: number
+    maxSelectionDisabledMsg? : string
+    nounPlural: string
 }
 
 export class SelectionMenuItem extends React.Component<Props, any> {
 
     static defaultProps = {
-        disabledMsg: 'Select one or more items'
+        disabledMsg: 'Select one or more',
+        nounPlural: 'items'
     };
 
     render() {
-        const { id, model, text, onClick, disabledMsg } = this.props;
-        const disabled = !model || model.totalRows === 0 || model.selectedIds.size === 0;
+        const { id, model, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
+        const tooManySelected = model && maxSelection && model.selectedIds.size > maxSelection;
+        const tooFewSelected = model && model.selectedIds.size === 0;
+        const disabled = !model || model.totalRows === 0 || tooFewSelected || tooManySelected;
         const item = <MenuItem onClick={onClick} disabled={disabled}>{text}</MenuItem>;
 
+        let message = tooFewSelected ? disabledMsg + ' ' + nounPlural: (maxSelectionDisabledMsg || "At most " + maxSelection + " " + nounPlural + " can be selected.");
         if (disabled) {
-            const overlay = <Popover id={id + "-disabled-warning"}>{disabledMsg}</Popover>;
+            const overlay = <Popover id={id + "-disabled-warning"}>{message}</Popover>;
 
             return (
                 <OverlayTrigger overlay={overlay} placement="right">

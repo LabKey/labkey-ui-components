@@ -8,6 +8,14 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * Add DesignSampleSetPermission to PermissionTypes
 
+### version 0.7.0
+*Released*: 3 July 2019
+* Add unorderedEqual for checking of two arrays have the same elements in any order
+* export dismissNotifications
+* add optional parameters to SelectionMenuItem for maximum number of selected items and for specifying noun used in messages
+* add method getCommonDataValues to create a map containing the data values shared across multiple rows of data (represented as a map)
+* add getPkData method to QueryGridModel
+
 ### version 0.6.0
 *Released*: 19 June 2019
 * Include FilePreviewGrid functionality with FileAttachmentForm

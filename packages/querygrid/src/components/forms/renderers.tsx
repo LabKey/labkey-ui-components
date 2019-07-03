@@ -19,12 +19,13 @@ import { Input } from 'formsy-react-components'
 import { generateId, QueryColumn } from '@glass/base'
 
 import { LabelOverlay } from './LabelOverlay'
-import {SelectInput} from './input/SelectInput'
+import { SelectInput } from './input/SelectInput'
 
 interface AliasInputProps {
     col: QueryColumn
     editing?: boolean
     value?: string
+    allowDisable?: boolean
 }
 
 class AliasInput extends React.Component<AliasInputProps, any> {
@@ -38,15 +39,18 @@ class AliasInput extends React.Component<AliasInputProps, any> {
     }
 
     render() {
-        const { col, editing, value } = this.props;
+        const { allowDisable, col, editing, value } = this.props;
 
         return <SelectInput
+            allowDisable={allowDisable}
+            showLabel={true}
             addLabelText="Press enter to add '{label}'"
             allowCreate={true}
             id={this._id}
             inputClass={editing ? 'col-sm-12' : undefined}
             joinValues={true}
-            label={<LabelOverlay column={col} inputId={this._id} isFormsy={false} />}
+            label={col.caption}
+            required={col.required}
             multiple={true}
             name={col.name}
             noResultsText="Enter alias name(s)"
@@ -65,13 +69,14 @@ export function resolveRenderer(column: QueryColumn) {
     if (column && column.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':
-                inputRenderer = (col: QueryColumn, key: any, value?: string, editing?: boolean) => {
-                    return <AliasInput col={col} editing={editing} key={key} value={value}/>;
+                inputRenderer = (col: QueryColumn, key: any, value?: string, editing?: boolean, allowFieldDisable: boolean = false) => {
+                    return <AliasInput col={col} editing={editing} key={key} value={value} allowDisable={allowFieldDisable}/>;
                 };
                 break;
             case 'appendunitsinput':
-                inputRenderer = (col: QueryColumn, key: any, val?: string, editing?: boolean) => {
+                inputRenderer = (col: QueryColumn, key: any, val?: string, editing?: boolean, allowFieldDisable: boolean = false) => {
                     return <Input
+                                allowDisable={allowFieldDisable}
                                 addonAfter={<span>{col.units}</span>}
                                 changeDebounceInterval={0}
                                 elementWrapperClassName={editing ? [{"col-sm-9": false}, "col-sm-12"] : undefined}

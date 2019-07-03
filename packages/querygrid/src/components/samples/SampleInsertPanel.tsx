@@ -679,7 +679,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
         const bulkUpdateProps = {
             title: "Bulk Creation of Samples",
-            header: "Choose parents, etc.",
+            header: "Add a batch of samples that will share the properties set below.",
         };
         let addControlProps = {
             nounSingular: "row",
@@ -708,6 +708,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     addControlProps={addControlProps}
                                     allowBulkRemove={true}
                                     allowBulkUpdate={true}
+                                    bordered={true}
+                                    condensed={false}
+                                    striped={true}
                                     bulkUpdateText={"Bulk Insert"}
                                     bulkUpdateProps={bulkUpdateProps}
                                     columnMetadata={columnMetadata}

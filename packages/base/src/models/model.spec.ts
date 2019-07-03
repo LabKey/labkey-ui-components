@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { OrderedMap } from 'immutable'
+import { fromJS, List, OrderedMap } from 'immutable'
 import { AssayDefinitionModel, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from './model'
 
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
@@ -38,6 +38,106 @@ describe("QueryGridModel", () => {
        expect(model.createParam("param", "default")).toEqual("test.param");
    });
 
+   describe("getSelectedData", () => {
+       test("nothing selected", () => {
+           const model = new QueryGridModel({
+               data: fromJS({
+                   "1": {
+                       "field1": {
+                           value: "value1"
+                       },
+                       "field2": {
+                           value: "value2"
+                       }
+                   },
+                   "2": {
+                       "field1": {
+                           value: "value3"
+                       },
+                       "field2": {
+                           value: "value4"
+                       },
+                   }
+               }),
+           });
+           expect(model.getSelectedData().size).toBe(0);
+       });
+
+       test("all selected", () => {
+           const model = new QueryGridModel({
+               data: fromJS({
+                   "123": {
+                       "field1": {
+                           value: "value1"
+                       },
+                       "field2": {
+                           value: "value2"
+                       }
+                   },
+                   "232": {
+                       "field1": {
+                           value: "value3"
+                       },
+                       "field2": {
+                           value: "value4"
+                       },
+                   }
+               }),
+               selectedIds: List(["123", "232"])
+           });
+           expect(model.getSelectedData()).toEqual(model.data);
+       });
+
+       test("some selected", () => {
+           const model = new QueryGridModel({
+               data: fromJS({
+                   "123": {
+                       "field1": {
+                           value: "value1"
+                       },
+                       "field2": {
+                           value: "value2"
+                       }
+                   },
+                   "234": {
+                       "field1": {
+                           value: "value3"
+                       },
+                       "field2": {
+                           value: "value4"
+                       },
+                   },
+                   "232": {
+                       "field1": {
+                           value: "value3"
+                       },
+                       "field2": {
+                           value: "value4"
+                       },
+                   }
+               }),
+               selectedIds: List(["123", "232", "nope"])
+           });
+           expect(model.getSelectedData()).toEqual(fromJS({
+               "123": {
+                   "field1": {
+                       value: "value1"
+                   },
+                   "field2": {
+                       value: "value2"
+                   }
+               },
+               "232": {
+                   "field1": {
+                       value: "value3"
+                   },
+                   "field2": {
+                       value: "value4"
+                   },
+               }
+           }));
+       })
+   });
 });
 
 describe("QueryInfo", () => {
@@ -50,49 +150,70 @@ describe("QueryInfo", () => {
     newColumns = newColumns.set(FIRST_COL_KEY, QueryColumn.create(sampleSet3QueryColumn));
     newColumns = newColumns.set(SECOND_COL_KEY, QueryColumn.create(nameExpSetQueryColumn));
 
-    test("insertColumns negative columnIndex", () => {
-        const columns = queryInfo.insertColumns(-1, newColumns);
-        expect(columns).toBe(queryInfo.columns);
+    describe("insertColumns", () => {
+        test("negative columnIndex", () => {
+            const columns = queryInfo.insertColumns(-1, newColumns);
+            expect(columns).toBe(queryInfo.columns);
+        });
+
+        test("columnIndex just too large", () => {
+            const columns = queryInfo.insertColumns(queryInfo.columns.size + 1, newColumns);
+            expect(columns).toBe(queryInfo.columns);
+        });
+
+        test("as first column", () => {
+            const columns = queryInfo.insertColumns(0, newColumns);
+            const firstColKey = queryInfo.columns.keySeq().first();
+            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(0);
+            expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(1);
+            expect(columns.keySeq().indexOf(firstColKey)).toBe(2);
+            expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
+        });
+
+        test("as last column", () => {
+            const columns = queryInfo.insertColumns(queryInfo.columns.size, newColumns);
+            const firstColKey = queryInfo.columns.keySeq().first();
+            expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
+            expect(columns.keySeq().indexOf(firstColKey)).toBe(0);
+            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(queryInfo.columns.size);
+            expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(queryInfo.columns.size + 1);
+        });
+
+        test("in middle", () => {
+            const nameIndex = queryInfo.columns.keySeq().findIndex((key) => (key.toLowerCase() === 'name'));
+            const columns = queryInfo.insertColumns(nameIndex + 1, newColumns);
+            expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
+            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
+            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
+            expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(nameIndex + 2);
+        });
+
+        test("single column", () => {
+            const nameIndex = queryInfo.columns.keySeq().findIndex((key) => (key.toLowerCase() === 'name'));
+            const columns = queryInfo.insertColumns(nameIndex + 1, newColumns.filter((queryColumn) => (queryColumn.caption.toLowerCase() === FIRST_COL_KEY.toLowerCase())).toOrderedMap());
+            expect(columns.size).toBe(queryInfo.columns.size + 1);
+            expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
+            expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
+        });
     });
 
-    test("insertColumns columnIndex just too large", () => {
-        const columns = queryInfo.insertColumns(queryInfo.columns.size+1, newColumns);
-        expect(columns).toBe(queryInfo.columns);
-    });
+    describe("getUpdateColumns", () => {
+        test("without readOnly columns", () => {
+            const columns = queryInfo.getUpdateColumns();
+            expect(columns.size).toBe(3);
+            expect(columns.get(0).fieldKey).toBe("Description");
+            expect(columns.get(1).fieldKey).toBe("SampleSet");
+            expect(columns.get(2).fieldKey).toBe("New");
+        });
 
-    test("insertColumns as first column", () => {
-        const columns = queryInfo.insertColumns(0, newColumns);
-        const firstColKey = queryInfo.columns.keySeq().first();
-        expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(0);
-        expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(1);
-        expect(columns.keySeq().indexOf(firstColKey)).toBe(2);
-        expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-    });
-
-    test("insertColumns as last column", () => {
-        const columns = queryInfo.insertColumns(queryInfo.columns.size, newColumns);
-        const firstColKey = queryInfo.columns.keySeq().first();
-        expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-        expect(columns.keySeq().indexOf(firstColKey)).toBe(0);
-        expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(queryInfo.columns.size);
-        expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(queryInfo.columns.size + 1);
-    });
-
-    test("insertColumns in middle", () => {
-        const nameIndex = queryInfo.columns.keySeq().findIndex((key) => (key.toLowerCase() === 'name'));
-        const columns = queryInfo.insertColumns(nameIndex+1, newColumns);
-        expect(columns.size).toBe(queryInfo.columns.size + newColumns.size);
-        expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
-        expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
-        expect(columns.keySeq().indexOf(SECOND_COL_KEY)).toBe(nameIndex + 2);
-    });
-
-    test("insertColumns, single column", () => {
-        const nameIndex = queryInfo.columns.keySeq().findIndex((key) => (key.toLowerCase() === 'name'));
-        const columns = queryInfo.insertColumns(nameIndex+1, newColumns.filter((queryColumn) => (queryColumn.caption.toLowerCase() === FIRST_COL_KEY.toLowerCase())).toOrderedMap());
-        expect(columns.size).toBe(queryInfo.columns.size + 1);
-        expect(columns.keySeq().get(nameIndex).toLowerCase()).toBe("name");
-        expect(columns.keySeq().indexOf(FIRST_COL_KEY)).toBe(nameIndex + 1);
+        test("with readOnly columns", () => {
+            const columns = queryInfo.getUpdateColumns(List<string>(["Name"]));
+            expect(columns.size).toBe(4);
+            expect(columns.get(0).fieldKey).toBe("Name");
+            expect(columns.get(1).fieldKey).toBe("Description");
+            expect(columns.get(2).fieldKey).toBe("SampleSet");
+            expect(columns.get(3).fieldKey).toBe("New");
+        });
     });
 });
 

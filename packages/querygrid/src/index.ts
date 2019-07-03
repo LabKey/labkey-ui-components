@@ -16,6 +16,7 @@
 import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models'
 import {
     getSelected,
+    getSelectedData,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -51,6 +52,7 @@ import {
     deleteRows,
     importData
 } from './query/api'
+import { MAX_EDITABLE_GRID_ROWS } from './constants'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
@@ -93,6 +95,7 @@ export {
 
     // grid functions
     getSelected,
+    getSelectedData,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -120,6 +123,7 @@ export {
     addColumns,
     changeColumn,
     removeColumn,
+    MAX_EDITABLE_GRID_ROWS,
 
     // location related items
     Location,

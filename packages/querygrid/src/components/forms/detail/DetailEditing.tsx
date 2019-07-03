@@ -200,20 +200,22 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     renderEditControls() {
         const { canSubmit } = this.state;
         return (
-            <div className="detail__edit-controls">
-                <div className="btn-group">
+            <>
+                <div className="pull-left bottom-spacing">
                     <Button
                         onClick={this.handleClick}>
                         Cancel
                     </Button>
+                </div>
+                <div className="btn-group pull-right">
                     <Button
-                        bsStyle={"primary"}
+                        bsStyle={"success"}
                         type="submit"
                         disabled={!canSubmit}>
                         Save
                     </Button>
                 </div>
-            </div>
+            </>
         )
     }
 
@@ -246,16 +248,15 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                         <Panel.Heading>{header}</Panel.Heading>
                         <Panel.Body>
                             <div className="detail__editing">
-                                {this.renderEditControls()}
                                 {error && <Alert>{error}</Alert>}
                                 <Detail
                                     queryModel={queryModel}
                                     detailRenderer={resolveDetailEditRenderer}
                                     titleRenderer={titleRenderer}/>
-                                {this.renderEditControls()}
                             </div>
                         </Panel.Body>
                     </Panel>
+                    {this.renderEditControls()}
                 </Formsy>
             )
         }

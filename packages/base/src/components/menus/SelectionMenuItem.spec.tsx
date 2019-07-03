@@ -59,4 +59,40 @@ describe("<SelectionMenuItem/>", () => {
         wrapper.unmount();
     });
 
+    test("with maxSelection but not too many", () => {
+        const text = 'Menu Item Text';
+        const model = new QueryGridModel({
+            totalRows: 5,
+            selectedIds: List(["1", "2", "3"])
+        });
+        const component = (
+            <SelectionMenuItem maxSelection={4} id={'jest-test-1'} model={model} text={text} onClick={jest.fn()}/>
+        );
+
+        const wrapper = mount(component);
+        expect(wrapper.find(MenuItem)).toHaveLength(1);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('');
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
+    test("with maxSelection too many", () => {
+        const text = 'Menu Item Text';
+        const model = new QueryGridModel({
+            totalRows: 5,
+            selectedIds: List(["1","2", "3"])
+        });
+        const component = (
+            <SelectionMenuItem maxSelection={2} id={'jest-test-1'} model={model} text={text} onClick={jest.fn()}/>
+        );
+
+        const wrapper = mount(component);
+        expect(wrapper.find(MenuItem)).toHaveLength(1);
+        expect(wrapper.find('li').getDOMNode().getAttribute('class')).toBe('disabled');
+        expect(wrapper.find(OverlayTrigger)).toHaveLength(1);
+        wrapper.unmount();
+    });
+
+
+
 });

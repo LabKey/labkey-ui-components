@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap, OrderedSet, Record, fromJS } from 'immutable'
-import { ActionURL, Filter } from '@labkey/api'
+import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
+import { ActionURL, Filter, Utils } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { resolveKey, intersect, toLowerSafe, getSchemaQuery, resolveSchemaQuery, decodePart } from '../utils/utils'
+import { decodePart, getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../utils/utils'
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -598,6 +598,8 @@ export class QueryGridModel extends Record({
         return emptyColumns;
     }
 
+
+
     getColumnIndex(fieldKey: string): number {
         if (!fieldKey)
             return -1;
@@ -629,6 +631,49 @@ export class QueryGridModel extends Record({
             return this.data.get(i);
 
         }).toList();
+    }
+
+    /**
+     * @returns the data for the current page that has been selected.
+     */
+    getSelectedData(): Map<any, Map<string, any>> {
+        let dataMap = Map<any, Map<string, any>>();
+        this.selectedIds.forEach((id) => {
+            if (this.data.has(id)) {
+                dataMap = dataMap.set(id, this.data.get(id));
+            }
+        });
+        return dataMap;
+    }
+
+    getPkData(id) : any {
+        let data = {};
+        const queryData = this.data.get(id);
+        this.queryInfo.getPkCols().forEach((pkCol) => {
+            let pkVal = queryData.getIn([pkCol.fieldKey]);
+
+            if (pkVal !== undefined && pkVal !== null) {
+                // when backing an editable grid, the data is a simple value, but when
+                // backing a grid, it is a Map, which has type 'object'.
+                data[pkCol.fieldKey] = (typeof pkVal === 'object') ? pkVal.get('value') : pkVal;
+            }
+            else {
+                console.warn('Unable to find value for pkCol \"' + pkCol.fieldKey + '\"');
+            }
+        });
+        return data;
+    }
+
+    getSelectedDataWithKeys(data: any)  : Array<any> {
+        let rows = [];
+        if (!Utils.isEmptyObj(data)) {
+            // walk though all the selected rows and construct an update row for each
+            // using the primary keys from the original data
+            rows = this.selectedIds.map((id) => {
+                return {...this.getPkData(id), ...data};
+            }).toArray();
+        }
+        return rows;
     }
 
     getExportColumnsString(): string {
@@ -669,6 +714,13 @@ export class QueryGridModel extends Record({
     getInsertColumns(): List<QueryColumn> {
         if (this.queryInfo) {
             return this.queryInfo.getInsertColumns();
+        }
+        return emptyColumns;
+    }
+
+    getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
+        if (this.queryInfo) {
+            return this.queryInfo.getUpdateColumns(readOnlyColumns);
         }
         return emptyColumns;
     }
@@ -1008,6 +1060,23 @@ export class QueryInfo extends Record({
             .toList();
     }
 
+    getUpdateColumns(readOnlyColumns?: List<string>): List<QueryColumn> {
+
+        return this.columns
+            .filter((column) => {
+                return updateColumnFilter(column) || (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1);
+            })
+            .map((column) => {
+                if (readOnlyColumns && readOnlyColumns.indexOf(column.fieldKey) > -1) {
+                    return column.set('readOnly', true) as QueryColumn;
+                }
+                else {
+                    return column;
+                }
+            })
+            .toList();
+    }
+
     getFilters(view?: string): List<Filter.IFilter> {
         if (view) {
             let viewInfo = this.getView(view);
@@ -1281,6 +1350,16 @@ export function insertColumnFilter(col: QueryColumn): boolean {
         col &&
         col.removeFromViews !== true &&
         col.shownInInsertView === true &&
+        col.userEditable === true &&
+        col.fieldKeyArray.length === 1
+    );
+}
+
+export function updateColumnFilter(col: QueryColumn): boolean {
+    return (
+        col &&
+        col.removeFromViews !== true &&
+        col.shownInUpdateView === true &&
         col.userEditable === true &&
         col.fieldKeyArray.length === 1
     );

@@ -114,6 +114,10 @@ For doing development of glass components, you should be familiar with the follo
 * [Enzyme](https://airbnb.io/enzyme/) - Testing utility library
 * [Storybook](https://storybook.js.org/) - For use in manual testing and exploration of features outside of an application
 
+Note that we are currently not using the latest versions of  Bootstrap, React-Bootstrap and Typescript because there
+have been some significant changes between our current version and the latest version of these libraries, so when looking for docs,
+be sure to look at the ones corresponding to the version we are using.
+ 
 And, for building, we use
 * [Yarn](https://yarnpkg.com) - package manager and build tool
 * [Lerna](https://lernajs.io/) - for managing JavaScript projects with mutliple packages.

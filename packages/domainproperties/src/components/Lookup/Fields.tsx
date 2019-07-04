@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { FormControl } from "react-bootstrap";
 import { Container, SchemaDetails } from "@glass/base";
 
-import { QueryInfoLite } from "../../models";
+import { PropDescType } from "../../models";
 
 import { ILookupContext, LookupContextConsumer } from "./Context";
 
@@ -100,7 +100,7 @@ interface IQuerySelectImplState {
     loading?: boolean
     prevPath?: string
     prevSchemaName?: string
-    queries?: List<QueryInfoLite>
+    queries?: List<{name: string, type: PropDescType}>
 }
 
 type QuerySelectProps = IQuerySelectProps & ILookupProps;
@@ -157,7 +157,10 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         context.fetchQueries(containerPath, schemaName).then((queries) => {
             this.setState({
                 loading: false,
-                queries
+                queries: queries
+                    .map(q => q.getLookupInfo()).
+                    filter(li => li !== undefined)
+                    .toList()
             });
         });
     }
@@ -176,7 +179,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
                          id={id}
                          onChange={onChange}>
                 {blankOption && <option key="_default" value={undefined}/>}
-                {queries.map((q) => <option key={q.name} value={q.name}>{q.name}</option>).toArray()}
+                {queries.map((q) => <option key={q.name} value={q.name}>{q.name} ({q.type.display})</option>).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>
         )

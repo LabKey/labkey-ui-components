@@ -87,8 +87,8 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
     return new Promise((resolve) => {
         Query.getQueries({
             containerPath,
-            includeColumns: false,
             schemaName,
+            queryDetailColumns: true,
             success: (data) => {
                 resolve(processQueries(data));
             }
@@ -101,7 +101,9 @@ export function processQueries(payload: any): List<QueryInfoLite> {
         return List();
     }
 
-    return List<QueryInfoLite>(payload.queries.map((qi) => QueryInfoLite.create(qi)));
+    return List<QueryInfoLite>(payload.queries.map((qi) => QueryInfoLite.create(qi)))
+        .sort((a, b) => naturalSort(a.name, b.name))
+        .toList();
 }
 
 export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>> {

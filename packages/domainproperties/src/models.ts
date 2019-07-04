@@ -286,9 +286,37 @@ function resolveDataType(rawField: IDomainField): PropDescType {
     return PROP_DESC_TYPES.get(0);
 }
 
+interface IColumnInfoLite {
+    friendlyType?: string
+    isKeyField?: boolean
+    jsonType?: string
+    name?: string
+}
+
+export class ColumnInfoLite extends Record({
+    friendlyType: undefined,
+    isKeyField: false,
+    jsonType: undefined,
+    name: undefined
+}) implements IColumnInfoLite {
+    friendlyType?: string;
+    isKeyField?: boolean;
+    jsonType?: string;
+    name?: string;
+
+    static create(raw: IColumnInfoLite): ColumnInfoLite {
+        return new ColumnInfoLite(raw);
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
 interface IQueryInfoLite {
     canEdit?: boolean
     canEditSharedViews?: boolean
+    columns?: List<ColumnInfoLite>
     description?: string
     hidden?: boolean
     inherit?: boolean
@@ -304,6 +332,7 @@ interface IQueryInfoLite {
 export class QueryInfoLite extends Record({
     canEdit: false,
     canEditSharedViews: false,
+    columns: List(),
     description: undefined,
     hidden: false,
     inherit: false,
@@ -317,6 +346,7 @@ export class QueryInfoLite extends Record({
 }) implements IQueryInfoLite {
     canEdit?: boolean;
     canEditSharedViews?: boolean;
+    columns?: List<ColumnInfoLite>;
     description?: string;
     hidden?: boolean;
     inherit?: boolean;
@@ -329,10 +359,44 @@ export class QueryInfoLite extends Record({
     viewDataUrl?: string;
 
     static create(raw: IQueryInfoLite): QueryInfoLite {
-        return new QueryInfoLite(raw);
+        return new QueryInfoLite(Object.assign({}, raw, {
+            columns: List((raw.columns as any).map(c => ColumnInfoLite.create(c)))
+        }));
     }
 
     constructor(values?: {[key:string]: any}) {
         super(values);
+    }
+
+    getLookupInfo(): {name: string, type: PropDescType} {
+        let pkCols = this.getPkColumns();
+
+        if (pkCols.size > 0 || pkCols.size <= 2) {
+            let pk: ColumnInfoLite;
+
+            pkCols.forEach(col => {
+                if (col.name.toLowerCase() !== 'container') {
+                    pk = col;
+                    return false;
+                }
+            });
+
+            if (pk) {
+                let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
+
+                if (type) {
+                    return {
+                        name: this.name,
+                        type
+                    }
+                }
+            }
+        }
+
+        return undefined;
+    }
+
+    getPkColumns(): List<ColumnInfoLite> {
+        return this.columns.filter(c => c.isKeyField).toList();
     }
 }

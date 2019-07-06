@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { FormControl } from "react-bootstrap";
 import { Container, SchemaDetails } from "@glass/base";
 
-import { PropDescType } from "../../models";
+import { encodeLookup, PropDescType } from "../../models";
 
 import { ILookupContext, LookupContextConsumer } from "./Context";
 
@@ -180,7 +180,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
                          id={id}
                          onChange={onChange}>
                 {blankOption && <option key="_default" value={undefined}/>}
-                {queries.map((q) => <option key={q.name} value={q.name}>{q.name} ({q.type.display})</option>).toArray()}
+                {queries.map((q) => <option key={q.name} value={encodeLookup(q.name, q.type)}>{q.name} ({q.type.display})</option>).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>
         )

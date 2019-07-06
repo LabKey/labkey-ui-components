@@ -77,7 +77,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                     lookupURI={field.original.rangeURI}
                                     onChange={onChange}
                                     schemaName={field.lookupSchema}
-                                    value={field.lookupQuery}/>
+                                    value={field.lookupQueryValue}/>
                             </Col>
                         </Row>
                     </>

@@ -19,11 +19,12 @@ import { Container, naturalSort, SchemaDetails } from "@glass/base";
 
 import {
     DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
+import { decodeLookup, DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -173,7 +174,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
             Domain.create({
                 kind,
                 options,
-                domainDesign: domain.set('name', name),
+                domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
                 success: (data) => {
                     resolve(DomainDesign.create(data));
                 },
@@ -237,21 +238,22 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:
-                PROP_DESC_TYPES.map((type) => {
-                    if (type.name === value) {
-                        newField = newField.merge({
-                            dataType: type,
-                            conceptURI: type.conceptURI,
-                            rangeURI: type.rangeURI
-                        }) as DomainField;
-                    }
-                });
+                newField = updateDataType(newField, value);
                 break;
             case DOMAIN_FIELD_LOOKUP_CONTAINER:
                 newField = updateLookup(newField, value);
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
                 newField = updateLookup(newField, newField.lookupContainer, value);
+                break;
+            case DOMAIN_FIELD_LOOKUP_QUERY:
+                const { queryName, rangeURI } = decodeLookup(value);
+                newField = newField.merge({
+                    lookupQuery: queryName,
+                    lookupQueryValue: value,
+                    lookupType: newField.lookupType.set('rangeURI', rangeURI),
+                    rangeURI
+                }) as DomainField;
                 break;
             default:
                 newField = newField.set(type, value) as DomainField;
@@ -266,10 +268,27 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
     return domain;
 }
 
-function updateLookup(field: DomainField, lookupContainer?: string, lookupSchema?: string, lookupQuery?: string): DomainField {
+function updateDataType(field: DomainField, value: any): DomainField {
+    let propType = PROP_DESC_TYPES.find(pt => pt.name === value);
+
+    if (propType) {
+        const dataType = propType.isLookup() ? field.lookupType : propType;
+
+        field = field.merge({
+            dataType,
+            conceptURI: dataType.conceptURI,
+            rangeURI: dataType.rangeURI
+        }) as DomainField;
+    }
+
+    return field;
+}
+
+function updateLookup(field: DomainField, lookupContainer?: string, lookupSchema?: string): DomainField {
     return field.merge({
         lookupContainer,
-        lookupQuery,
+        lookupQuery: undefined,
+        lookupQueryValue: undefined,
         lookupSchema
     }) as DomainField;
 }

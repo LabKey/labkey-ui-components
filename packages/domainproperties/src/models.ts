@@ -55,8 +55,11 @@ export class PropDescType extends Record({
     }
 }
 
+const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI});
+const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
+
 export const PROP_DESC_TYPES = List([
-    new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI}),
+    TEXT_TYPE,
     new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
     new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
     new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
@@ -67,7 +70,7 @@ export const PROP_DESC_TYPES = List([
     new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI}),
     new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI}),
     new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI}),
-    new PropDescType({name: 'lookup', display: 'Lookup'}),
+    LOOKUP_TYPE
 ]);
 
 interface IDomainDesign {
@@ -199,7 +202,9 @@ interface IDomainField {
     URL: string
 
     dataType: PropDescType
-    original: Partial<IDomainField>;
+    lookupQueryValue: string;
+    lookupType: PropDescType
+    original: Partial<IDomainField>
     updatedField: boolean
 }
 
@@ -222,6 +227,8 @@ export class DomainField extends Record({
     URL: undefined,
 
     dataType: undefined,
+    lookupQueryValue: undefined,
+    lookupType: undefined,
     original: undefined,
     updatedField: false
 }) implements IDomainField {
@@ -243,6 +250,8 @@ export class DomainField extends Record({
     URL: string;
 
     dataType: PropDescType;
+    lookupQueryValue: string;
+    lookupType: PropDescType;
     original: Partial<IDomainField>;
     updatedField: boolean;
 
@@ -252,6 +261,8 @@ export class DomainField extends Record({
         return new DomainField(Object.assign({}, rawField, {
             dataType,
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
+            lookupQueryValue: encodeLookup(rawField.lookupQuery, dataType),
+            lookupType: LOOKUP_TYPE.set('rangeURI', rawField.rangeURI),
             original: {
                 dataType,
                 rangeURI: rawField.rangeURI
@@ -277,12 +288,15 @@ export class DomainField extends Record({
             json.lookupQuery = null;
             json.lookupSchema = null;
         }
-        else if (json.lookupContainer === undefined) {
+
+        if (json.lookupContainer === undefined) {
             json.lookupContainer = null;
         }
 
         // remove non-serializable fields
         delete json.dataType;
+        delete json.lookupQueryValue;
+        delete json.lookupType;
         delete json.original;
         delete json.updatedField;
 
@@ -296,6 +310,23 @@ export class DomainField extends Record({
     isNew(): boolean {
         return isFieldNew(this);
     }
+}
+
+export function decodeLookup(value: string): {queryName: string, rangeURI: string} {
+    const [rangeURI, queryName] = value ? value.split('|') : [undefined, undefined];
+
+    return {
+        queryName,
+        rangeURI
+    };
+}
+
+export function encodeLookup(queryName: string, type: PropDescType): string {
+    if (queryName) {
+        return [type.rangeURI,queryName].join('|');
+    }
+
+    return undefined;
 }
 
 function isFieldNew(field: Partial<IDomainField>): boolean {
@@ -349,7 +380,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
         });
     }
 
-    return type ? type : PROP_DESC_TYPES.get(0);
+    return type ? type : TEXT_TYPE;
 }
 
 interface IColumnInfoLite {

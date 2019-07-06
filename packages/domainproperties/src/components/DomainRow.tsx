@@ -130,7 +130,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Data Type'}>
                         <FormControl
                             componentClass="select"
-                            disabled={!!field.propertyId}
+                            disabled={!!field.propertyId || field.primaryKey}
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             onChange={this.onDataTypeChange}

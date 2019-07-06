@@ -246,7 +246,7 @@ export class DomainField extends Record({
     newField: boolean;
     updatedField: boolean;
 
-    static create(rawField: IDomainField): DomainField {
+    static create(rawField: Partial<IDomainField>): DomainField {
         return new DomainField(Object.assign({}, rawField, {
             dataType: resolveDataType(rawField),
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer
@@ -283,7 +283,7 @@ export class DomainField extends Record({
     }
 }
 
-function resolveDataType(rawField: IDomainField): PropDescType {
+function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
     const types = PROP_DESC_TYPES.filter((value) => {
 
         // handle matching rangeURI and conceptURI

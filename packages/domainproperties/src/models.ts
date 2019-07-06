@@ -272,20 +272,19 @@ export class DomainField extends Record({
     static serialize(df: DomainField): any {
         let json = df.toJS();
 
-        if (!json.dataType.isLookup()) {
+        if (!df.dataType.isLookup()) {
             json.lookupContainer = null;
             json.lookupQuery = null;
             json.lookupSchema = null;
+        }
+        else if (json.lookupContainer === undefined) {
+            json.lookupContainer = null;
         }
 
         // remove non-serializable fields
         delete json.dataType;
         delete json.original;
         delete json.updatedField;
-
-        if (json.lookupContainer === undefined) {
-            json.lookupContainer = null;
-        }
 
         return json;
     }
@@ -295,8 +294,12 @@ export class DomainField extends Record({
     }
 
     isNew(): boolean {
-        return this.propertyId === undefined;
+        return isFieldNew(this);
     }
+}
+
+function isFieldNew(field: Partial<IDomainField>): boolean {
+    return field.propertyId === undefined;
 }
 
 export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
@@ -320,35 +323,33 @@ export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
 }
 
 function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
-    const types = PROP_DESC_TYPES.filter((value) => {
+    let type: PropDescType;
 
-        // handle matching rangeURI and conceptURI
-        if (value.rangeURI === rawField.rangeURI) {
-            if (!rawField.lookupQuery &&
-                ((!value.conceptURI && !rawField.conceptURI) || (value.conceptURI === rawField.conceptURI)))
-            {
+    if (!isFieldNew(rawField)) {
+        type = PROP_DESC_TYPES.find((type) => {
+
+            // handle matching rangeURI and conceptURI
+            if (type.rangeURI === rawField.rangeURI) {
+                if (!rawField.lookupQuery &&
+                    ((!type.conceptURI && !rawField.conceptURI) || (type.conceptURI === rawField.conceptURI)))
+                {
+                    return true;
+                }
+            }
+            // handle selected lookup option
+            else if (type.isLookup() && rawField.lookupQuery && rawField.lookupQuery !== 'users') {
                 return true;
             }
-        }
-        // handle selected lookup option
-        else if (value.name === 'lookup' && rawField.lookupQuery && rawField.lookupQuery !== 'users') {
-            return true;
-        }
-        // handle selected users option
-        else if (value.name === 'users' && rawField.lookupQuery && rawField.lookupQuery === 'users') {
-            return true;
-        }
+            // handle selected users option
+            else if (type.name === 'users' && rawField.lookupQuery && rawField.lookupQuery === 'users') {
+                return true;
+            }
 
-        return false;
-    });
-
-    // If found return type
-    if (types.size > 0) {
-        return types.get(0);
+            return false;
+        });
     }
 
-    // default to the text type
-    return PROP_DESC_TYPES.get(0);
+    return type ? type : PROP_DESC_TYPES.get(0);
 }
 
 interface IColumnInfoLite {

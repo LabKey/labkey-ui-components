@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from "immutable";
+import { List, Map } from "immutable";
 import { Domain, Query, Security } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails } from "@glass/base";
 
@@ -25,19 +25,35 @@ import {
 } from "../constants";
 import { DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
 
-export function fetchContainers(): Promise<List<Container>> {
-    return new Promise((resolve) => {
-        let success: any = (data) => {
-            resolve(processContainers(data));
-        };
+let sharedCache = Map<string, Promise<any>>();
 
-        Security.getContainers({
-            containerPath: '/',
-            includeSubfolders: true,
-            includeEffectivePermissions: false,
-            success
-        });
-    });
+function cache<T>(prefix: string, key: string, miss: () => Promise<T>): Promise<T> {
+    let cacheKey = [prefix, key].join('|');
+    let promise = sharedCache.get(cacheKey);
+
+    if (!promise) {
+        promise = miss();
+        sharedCache = sharedCache.set(cacheKey, promise);
+    }
+
+    return promise;
+}
+
+export function fetchContainers(): Promise<List<Container>> {
+    return cache<List<Container>>('container-cache', 'containers', () => (
+        new Promise((resolve) => {
+            let success: any = (data) => {
+                resolve(processContainers(data));
+            };
+
+            Security.getContainers({
+                containerPath: '/',
+                includeSubfolders: true,
+                includeEffectivePermissions: false,
+                success
+            });
+        })
+    ));
 }
 
 export function processContainers(payload: any, container?: Container): List<Container> {
@@ -80,20 +96,25 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
 }
 
 export function fetchQueries(containerPath: string, schemaName: string): Promise<List<QueryInfoLite>> {
-    if (!schemaName) {
-        return Promise.resolve(List());
-    }
+    const key = [containerPath, schemaName].join('|').toLowerCase();
 
-    return new Promise((resolve) => {
-        Query.getQueries({
-            containerPath,
-            schemaName,
-            queryDetailColumns: true,
-            success: (data) => {
-                resolve(processQueries(data));
+    return cache<List<QueryInfoLite>>('query-cache', key, () => (
+        new Promise((resolve) => {
+            if (schemaName) {
+                Query.getQueries({
+                    containerPath,
+                    schemaName,
+                    queryDetailColumns: true,
+                    success: (data) => {
+                        resolve(processQueries(data));
+                    }
+                });
             }
-        });
-    });
+            else {
+                resolve(List());
+            }
+        })
+    ));
 }
 
 export function processQueries(payload: any): List<QueryInfoLite> {
@@ -107,16 +128,18 @@ export function processQueries(payload: any): List<QueryInfoLite> {
 }
 
 export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>> {
-    return new Promise((resolve) => {
-        Query.getSchemas({
-            apiVersion: 17.1,
-            containerPath,
-            includeHidden: false,
-            success: (data) => {
-                resolve(processSchemas(data));
-            }
-        });
-    });
+    return cache<List<SchemaDetails>>('schema-cache', containerPath, () => (
+        new Promise((resolve) => {
+            Query.getSchemas({
+                apiVersion: 17.1,
+                containerPath,
+                includeHidden: false,
+                success: (data) => {
+                    resolve(processSchemas(data));
+                }
+            })
+        })
+    ));
 }
 
 export function processSchemas(payload: any): List<SchemaDetails> {
@@ -139,7 +162,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
                 success: (success) => {
-                    resolve(domain);
+                    resolve(clearFieldDetails(domain));
                 },
                 failure: (error) => {
                     reject(error);
@@ -251,11 +274,7 @@ function updateLookup(field: DomainField, lookupContainer?: string, lookupSchema
     }) as DomainField;
 }
 
-/**
- * @param domain: DomainDesign to clear
- * @return copy of domain with details cleared
- */
-export function clearFieldDetails(domain: DomainDesign): DomainDesign {
+function clearFieldDetails(domain: DomainDesign): DomainDesign {
     return domain.merge({
         fields: domain.fields.map(f => f.set('updatedField', false)).toList()
     }) as DomainDesign;

@@ -65,6 +65,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             else if (field.updatedField) {
                 details.push('Field was edited');
             }
+            else if (field.primaryKey) {
+                details.push('Primary Key');
+            }
         }
 
         return details.join(', ');

@@ -158,8 +158,8 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
             this.setState({
                 loading: false,
                 queries: queries
-                    .map(q => q.getLookupInfo()).
-                    filter(li => li !== undefined)
+                    .map(q => q.getLookupInfo())
+                    .filter(li => li !== undefined)
                     .toList()
             });
         });

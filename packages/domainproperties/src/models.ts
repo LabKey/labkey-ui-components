@@ -153,69 +153,98 @@ export class DomainIndex extends Record({
     }
 }
 
+// Commented out properties are unused
 interface IDomainField {
-    name?: string
-    rangeURI?: string
-    propertyId?: number
-    propertyURI?: string
-    description?: string
-    label?: string
-    conceptURI?: string
-    required?: boolean
-    lookupContainer?: string
-    lookupSchema?: string
-    lookupQuery?: string
-    scale?: number
-    importAliases?: string
-    URL?: string
-    hidden?: boolean
-    userEditable?: boolean
-    shownInInsertView?: boolean
-    shownInUpdateView?: boolean
+    conceptURI: string
+    // conditionalFormats: Array<string>
+    // container: string
+    // defaultDisplayValue: string
+    // defaultScale: string
+    // defaultValue: any?
+    // defaultValueType: string
+    description: string
+    // dimension: boolean
+    // disableEditing: boolean
+    // excludeFromShifting: boolean
+    // facetingBehaviorType: string
+    // format: string
+    hidden: boolean
+    importAliases: string
+    label: string
+    // lockType: string
+    lookupContainer: string
+    lookupQuery: string
+    lookupSchema: string
+    // measure: boolean
+    // mvEnabled: boolean
+    name: string
+    // ontologyURI: string
+    // PHI: string
+    // preventReordering: boolean
+    primaryKey: boolean
+    propertyId: number
+    propertyURI: string
+    // propertyValidators: Array<any>
+    rangeURI: string
+    // recommendedVariables: boolean
+    // redactedText: any?
+    required: boolean
+    scale: number
+    // searchTerms: any?
+    // semanticType: string?
+    // shownInDetailsView: boolean
+    // shownInInsertView: boolean
+    // shownInUpdateView: boolean
+    // typeEditable: boolean
+    URL: string
 
-    dataType?: PropDescType
-    updatedField?: boolean
-    newField?: boolean
+    dataType: PropDescType
+    newField: boolean
+    updatedField: boolean
 }
 
 export class DomainField extends Record({
+    conceptURI: undefined,
+    description: undefined,
+    hidden: false,
+    importAliases: undefined,
+    label: undefined,
+    lookupContainer: undefined,
+    lookupQuery: undefined,
+    lookupSchema: undefined,
+    name: undefined,
+    primaryKey: false,
     propertyId: undefined,
     propertyURI: undefined,
-    name: '',
-    description: undefined,
-    label: undefined,
     rangeURI: STRING_RANGE_URI,
-    conceptURI: undefined,
     required: false,
-    lookupContainer: undefined,
-    lookupSchema: undefined,
-    lookupQuery: undefined,
     scale: undefined,
-    importAliases: undefined,
     URL: undefined,
 
     dataType: undefined,
-    updatedField: undefined,
-    newField: undefined,
+    newField: false,
+    updatedField: false
 }) implements IDomainField {
+    conceptURI: string;
+    description: string;
+    hidden: boolean;
+    importAliases: string;
+    label: string;
+    lookupContainer: string;
+    lookupQuery: string;
+    lookupSchema: string;
+    name: string;
+    primaryKey: boolean;
     propertyId: number;
     propertyURI: string;
-    name: string;
-    description: string;
-    label: string;
     rangeURI: string;
-    conceptURI: string;
     required: boolean;
-    lookupContainer: string;
-    lookupSchema: string;
-    lookupQuery: string;
     scale: number;
-    importAliases: string;
     URL: string;
 
     dataType: PropDescType;
-    updatedField: boolean;
     newField: boolean;
+    updatedField: boolean;
 
     static create(rawField: IDomainField): DomainField {
         return new DomainField(Object.assign({}, rawField, {

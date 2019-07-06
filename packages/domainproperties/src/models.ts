@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {List, Record, fromJS} from "immutable";
+import { List, Record, fromJS } from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -24,23 +24,23 @@ import {
     USER_RANGE_URI
 } from "./constants";
 
-interface IPropDescType{
-    name: string,
-    display?: string,
-    rangeURI?: string,
-    conceptURI?: string
+interface IPropDescType {
+    conceptURI: string
+    display: string
+    name: string
+    rangeURI: string
 }
 
 export class PropDescType extends Record({
-    name: '',
-    display: '',
-    rangeURI: '',
-    conceptURI: ''
+    conceptURI: undefined,
+    display: undefined,
+    name: undefined,
+    rangeURI: undefined
 }) implements IPropDescType {
-    name: string;
-    display: string;
-    rangeURI: string;
     conceptURI: string;
+    display: string;
+    name: string;
+    rangeURI: string;
 
     static isLookup(name: string): boolean {
         return name === 'lookup';
@@ -199,7 +199,7 @@ interface IDomainField {
     URL: string
 
     dataType: PropDescType
-    newField: boolean
+    original: Partial<IDomainField>;
     updatedField: boolean
 }
 
@@ -222,7 +222,7 @@ export class DomainField extends Record({
     URL: undefined,
 
     dataType: undefined,
-    newField: false,
+    original: undefined,
     updatedField: false
 }) implements IDomainField {
     conceptURI: string;
@@ -243,13 +243,19 @@ export class DomainField extends Record({
     URL: string;
 
     dataType: PropDescType;
-    newField: boolean;
+    original: Partial<IDomainField>;
     updatedField: boolean;
 
     static create(rawField: Partial<IDomainField>): DomainField {
+        let dataType = resolveDataType(rawField);
+
         return new DomainField(Object.assign({}, rawField, {
-            dataType: resolveDataType(rawField),
-            lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer
+            dataType,
+            lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
+            original: {
+                dataType,
+                rangeURI: rawField.rangeURI
+            }
         }));
     }
 
@@ -266,9 +272,15 @@ export class DomainField extends Record({
     static serialize(df: DomainField): any {
         let json = df.toJS();
 
+        if (!json.dataType.isLookup()) {
+            json.lookupContainer = null;
+            json.lookupQuery = null;
+            json.lookupSchema = null;
+        }
+
         // remove non-serializable fields
         delete json.dataType;
-        delete json.newField;
+        delete json.original;
         delete json.updatedField;
 
         if (json.lookupContainer === undefined) {
@@ -281,6 +293,30 @@ export class DomainField extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+
+    isNew(): boolean {
+        return this.propertyId === undefined;
+    }
+}
+
+export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
+    // field has not been saved -- display all propTypes
+    if (field.isNew()) {
+        return PROP_DESC_TYPES;
+    }
+
+    // field has been saved -- display eligible propTypes
+    // compare against original types as the field's values are volatile
+    const { rangeURI } = field.original;
+
+    // field has been saved -- display eligible propTypes
+    return PROP_DESC_TYPES.filter((type) => {
+        if (type.isLookup()) {
+            return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
+        }
+
+        return rangeURI === type.rangeURI;
+    }).toList();
 }
 
 function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
@@ -397,7 +433,7 @@ export class QueryInfoLite extends Record({
         super(values);
     }
 
-    getLookupInfo(): {name: string, type: PropDescType} {
+    getLookupInfo(rangeURI?: string): {name: string, type: PropDescType} {
         let pkCols = this.getPkColumns();
 
         if (pkCols.size > 0 || pkCols.size <= 2) {
@@ -413,7 +449,8 @@ export class QueryInfoLite extends Record({
             if (pk) {
                 let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
 
-                if (type) {
+                // if supplied, apply rangeURI matching filter
+                if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
                     return {
                         name: this.name,
                         type

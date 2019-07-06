@@ -74,6 +74,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                     containerPath={field.lookupContainer}
                                     id={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
                                     key={createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index)}
+                                    lookupURI={field.original.rangeURI}
                                     onChange={onChange}
                                     schemaName={field.lookupSchema}
                                     value={field.lookupQuery}/>

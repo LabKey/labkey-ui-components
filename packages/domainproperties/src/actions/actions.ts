@@ -186,9 +186,7 @@ export function getIndexFromId(id: string): number {
 
 export function addField(domain: DomainDesign): DomainDesign {
     return domain.merge({
-        fields: domain.fields.push(DomainField.create({
-            newField: true
-        }))
+        fields: domain.fields.push(DomainField.create({}))
     }) as DomainDesign;
 }
 
@@ -227,17 +225,10 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
                 });
                 break;
             case DOMAIN_FIELD_LOOKUP_CONTAINER:
-                newField = newField.merge({
-                    lookupContainer: value,
-                    lookupSchema: undefined,
-                    lookupQuery: undefined
-                }) as DomainField;
+                newField = updateLookup(newField, value);
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
-                newField = newField.merge({
-                    lookupSchema: value,
-                    lookupQuery: undefined
-                }) as DomainField;
+                newField = updateLookup(newField, newField.lookupContainer, value);
                 break;
             default:
                 newField = newField.set(type, value) as DomainField;
@@ -252,20 +243,21 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
     return domain;
 }
 
+function updateLookup(field: DomainField, lookupContainer?: string, lookupSchema?: string, lookupQuery?: string): DomainField {
+    return field.merge({
+        lookupContainer,
+        lookupQuery,
+        lookupSchema
+    }) as DomainField;
+}
+
 /**
  * @param domain: DomainDesign to clear
  * @return copy of domain with details cleared
  */
 export function clearFieldDetails(domain: DomainDesign): DomainDesign {
-
-    const newFields = domain.fields.map((field) => {
-        let newField = field.set('updatedField', false);
-        newField = newField.set('newField', false);
-        return newField;
-    });
-
     return domain.merge({
-        fields: List<DomainField>(newFields)
+        fields: domain.fields.map(f => f.set('updatedField', false)).toList()
     }) as DomainDesign;
 }
 

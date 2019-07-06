@@ -26,7 +26,7 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, PropDescType, PROP_DESC_TYPES } from "../models";
+import { DomainField, PropDescType, resolveAvailableTypes } from "../models";
 import { createFormInputId } from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
@@ -59,7 +59,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     field.lookupQuery
                 ].join(' > '));
             }
-            else if (field.newField) {
+            else if (field.isNew()) {
                 details.push('New field');
             }
             else if (field.updatedField) {
@@ -123,7 +123,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             <>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl autoFocus={field.newField}
+                        <FormControl autoFocus={field.isNew()}
                                      id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
                                      onChange={this.onChange}/>
@@ -133,13 +133,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Data Type'}>
                         <FormControl
                             componentClass="select"
-                            disabled={!!field.propertyId || field.primaryKey}
+                            disabled={!field.isNew() && field.primaryKey}
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             onChange={this.onDataTypeChange}
                             value={field.dataType.name}>
                             {
-                                PROP_DESC_TYPES.map((type, i) => (
+                                resolveAvailableTypes(field).map((type, i) => (
                                     <option key={i} value={type.name}>{type.display}</option>
                                 ))
                             }

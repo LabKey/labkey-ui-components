@@ -79,6 +79,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 interface IQuerySelectProps {
     containerPath: string
     id: string
+    lookupURI?: string
     onChange: (any) => any
     schemaName: string
     value?: any
@@ -158,7 +159,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
             this.setState({
                 loading: false,
                 queries: queries
-                    .map(q => q.getLookupInfo())
+                    .map(q => q.getLookupInfo(this.props.lookupURI))
                     .filter(li => li !== undefined)
                     .toList()
             });

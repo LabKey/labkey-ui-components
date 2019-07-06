@@ -1270,17 +1270,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@labkey/api@0.0.17":
-  version "0.0.17"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.17.tgz#ad0f0ad2a9570f1a13e3eea402042c7fdc0847ee"
-  integrity sha1-rQ8K0qlXDxoT4+6kAgQsf9wIR+4=
+"@labkey/api@0.0.18-fb-domain-lookup-deux.2":
+  version "0.0.18-fb-domain-lookup-deux.2"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.18-fb-domain-lookup-deux.2.tgz#a70872f13cf1d37a86d3fc9b87b7b1268cd52b08"
+  integrity sha1-pwhy8Tzx03qG0/ybh7exJozVKwg=
 
-"@labkey/dependencies@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.6.tgz#f6b484411ee60833f5b8c47c28adbab9db9f4c6d"
-  integrity sha1-9rSEQR7mCDP1uMR8KK26udufTG0=
+"@labkey/dependencies@0.0.7-fb-domain-lookups-duex.3":
+  version "0.0.7-fb-domain-lookups-duex.3"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.7-fb-domain-lookups-duex.3.tgz#601db803facbd619376e56a7594ab6ffebe7daff"
+  integrity sha1-YB24A/rL1hk3blanWUq2/+vn2v8=
   dependencies:
-    "@labkey/api" "0.0.17"
+    "@labkey/api" "0.0.18-fb-domain-lookup-deux.2"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

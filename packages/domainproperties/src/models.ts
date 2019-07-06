@@ -179,6 +179,8 @@ export class DomainField extends Record({
     lookupSchema: undefined,
     lookupQuery: undefined,
     scale: undefined,
+    format: undefined,
+    defaultScale: undefined,
     importAliases: undefined,
     URL: undefined,
     updatedField: undefined,
@@ -196,6 +198,8 @@ export class DomainField extends Record({
     lookupSchema: string;
     lookupQuery: string;
     scale: number;
+    format: string;
+    defaultScale: string;
     importAliases: string;
     URL: string;
     updatedField: boolean;

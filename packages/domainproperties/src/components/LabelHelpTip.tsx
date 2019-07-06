@@ -13,7 +13,7 @@ interface Props {
 
 const labelStyle = {
     height: '12px',
-    marginBottom: '1px',
+    margin: '0 0 1px 2px',
     cursor: 'default'
 }
 

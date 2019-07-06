@@ -27,11 +27,17 @@ export const DOMAIN_FIELD_DESCRIPTION = 'description';
 export const DOMAIN_FIELD_LABEL = 'label';
 export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
 export const DOMAIN_FIELD_URL = 'URL';
+export const DOMAIN_FIELD_FORMAT = 'format';
+export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
 export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
 export const DOMAIN_FIELD_SCALE = 'scale';
+
+// Default scale types
+export const DEFAULT_SCALE_LINEAR = 'LINEAR';
+export const DEFAULT_SCALE_LOG = 'LOG';
 
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';

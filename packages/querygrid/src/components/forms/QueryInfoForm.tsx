@@ -17,14 +17,14 @@ import * as React from 'react'
 import { ReactNode } from 'react'
 
 import { Alert, Button, Modal } from 'react-bootstrap'
-import Formsy, { addValidationRule }  from 'formsy-react'
+import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { QueryInfo, SchemaQuery } from '@glass/base'
+import { LoadingSpinner, QueryInfo, SchemaQuery, Tip } from '@glass/base'
 
 import { selectRows } from '../../query/api'
-import { QueryFormInputs } from './QueryFormInputs'
-import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
+import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
+import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
     if (v === '' || v === undefined || isNaN(v)) {
@@ -39,7 +39,9 @@ addValidationRule('isPositiveLt', (vs, v, smax) => {
 
 export interface QueryInfoFormProps {
     asModal?: boolean
-    allowMultiple?: boolean
+    isLoading?: boolean
+    allowFieldDisable?: boolean
+    initiallyDisableFields?: boolean
     cancelText?: string
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
@@ -47,19 +49,26 @@ export interface QueryInfoFormProps {
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
+    includeCountField?: boolean
     countText?: string
     maxCount?: number
     onCancel?: () => any
     onHide?: () => any
-    onSubmit: (data: any) => Promise<any>
-    onSuccess?: (data: any) => any
+    canSubmitForEdit?: boolean
+    disableSubmitForEditMsg?: string
+    onSubmitForEdit?: (data: any) => Promise<any>
+    onSubmit?: (data: any) => Promise<any>
+    onSuccess?: (data: any, submitForEdit: boolean) => any
     queryInfo: QueryInfo
+    renderFileInputs?: boolean
     schemaQuery: SchemaQuery
     isSubmittedText?: string
     isSubmittingText?: string
+    submitForEditText?: string
     submitText?: string
-    title?: string,
+    title?: string
     header?: ReactNode
+    footer?: ReactNode
     singularNoun?: string
     pluralNoun?: string
 }
@@ -68,6 +77,7 @@ export interface QueryInfoFormProps {
 interface State {
     show: boolean
     canSubmit: boolean
+    submitForEdit: boolean
     isSubmitted: boolean
     isSubmitting: boolean
     errorMsg: string
@@ -76,15 +86,18 @@ interface State {
 
 export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
-    static defaultProps = {
-        allowMultiple: true,
+    static defaultProps : Partial<QueryInfoFormProps> = {
+        canSubmitForEdit: true,
+        includeCountField: true,
         checkRequiredFields: true,
         countText: "Quantity",
         cancelText: "Cancel",
+        submitForEditText: "Edit with Grid",
         submitText: "Submit",
         isSubmittedText: "Submitted",
         isSubmittingText: "Submitting...",
-        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS
+        maxCount: MAX_EDITABLE_GRID_ROWS,
+        allowFieldDisable: false
     };
 
 
@@ -98,14 +111,17 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         this.onHide = this.onHide.bind(this);
         this.onCountChange = this.onCountChange.bind(this);
         this.setSubmitting = this.setSubmitting.bind(this);
+        this.setSubmittingForEdit = this.setSubmittingForEdit.bind(this);
+        this.setSubmittingForSave = this.setSubmittingForSave.bind(this);
 
         this.state = {
             show: true,
-            canSubmit: false,
+            canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
             errorMsg: undefined,
-            count: undefined
+            count: undefined,
+            submitForEdit: false,
         };
     }
 
@@ -131,11 +147,6 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         if (Utils.isFunction(onCancel)) {
             onCancel();
         }
-        else {
-            // TODO: what do we want to do here? or should we require the application to implement this goBack() if they want to use it?
-            // dispatch(goBack());
-            console.log("goBack() action not yet implemented");
-        }
     }
 
     handleSubmitError(error: any) {
@@ -146,23 +157,41 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
+    filterDisabledFields(data: any, requiredFields?: Array<string>) {
+        const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
+            const enabledKey = getFieldEnabledFieldName(column);
+            return data[enabledKey] === undefined || data[enabledKey] === 'true';
+        });
+        let filteredData = {};
+        for (let key in data) {
+            if (data.hasOwnProperty(key) ) {
+                if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1 ) {
+                    filteredData[key] = data[key];
+                }
+            }
+        }
+        return filteredData;
+    }
+
     handleValidSubmit(row: any) {
-        const { errorCallback, schemaQuery, onSubmit, onSuccess } = this.props;
-        const { count } = this.state;
+        const { errorCallback, onSubmit, onSubmitForEdit, onSuccess } = this.props;
+        const { submitForEdit } = this.state;
 
         this.setState({
             errorMsg: undefined,
             isSubmitting: true
         });
+        const updatedRow = this.filterDisabledFields(row, ['numItems']);
+        const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
-        onSubmit(row).then((data) => {
+        submitFn(updatedRow).then((data) => {
             this.setState({
                 errorMsg: undefined,
                 isSubmitted: true,
                 isSubmitting: false
             });
             if (Utils.isFunction(onSuccess)) {
-                return onSuccess(data);
+                return onSuccess(data, submitForEdit);
             }
         }, (error) => {
             this.handleSubmitError(error);
@@ -191,11 +220,20 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         return null;
     }
 
-    setSubmitting() {
+    setSubmittingForEdit() {
+        this.setSubmitting(true);
+    }
+
+    setSubmittingForSave() {
+        this.setSubmitting(false);
+    }
+
+    setSubmitting(submitForEdit: boolean) {
         this.setState(() => {
             return {
                 errorMsg: undefined,
-                isSubmitting: true
+                isSubmitting: true,
+                submitForEdit
             }
         });
     }
@@ -222,13 +260,43 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
+
     renderButtons() {
 
-        const { cancelText, submitText, isSubmittedText, isSubmittingText, pluralNoun, singularNoun } = this.props;
+        const { cancelText, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
 
-        const { count, canSubmit, isSubmitting, isSubmitted } = this.state;
+        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit } = this.state;
 
+        const inProgressText = isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : undefined);
         const suffix = (count > 1) ? pluralNoun : singularNoun;
+
+        let submitForEditBtn;
+
+        if (onSubmitForEdit && submitForEditText) {
+            const btnContent = (
+                <Button
+                    className={"test-loc-submit-for-edit-button"}
+                    bsStyle={onSubmit ? "default" : "success"}
+                    disabled={!canSubmitForEdit || !canSubmit || count === 0}
+                    onClick={this.setSubmittingForEdit}
+                    type="submit">
+                    {submitForEdit && inProgressText ? inProgressText : submitForEditText}
+                </Button>
+            );
+            if (!canSubmitForEdit && disableSubmitForEditMsg) {
+                submitForEditBtn = (
+                    <Tip caption={disableSubmitForEditMsg}>
+                        <div className={'disabled-button-with-tooltip'}>
+                            {btnContent}
+                        </div>
+                    </Tip>
+                );
+            }
+            else {
+                submitForEditBtn = btnContent;
+            }
+        }
+
         return (
             <div className="form-group no-margin-bottom">
                 <div className="col-sm-12">
@@ -236,14 +304,17 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <Button className={"test-loc-cancel-button"} onClick={this.onHide}>{cancelText}</Button>
                     </div>
                     <div className="btn-group pull-right">
+                        {submitForEditBtn}
+                        {submitText && onSubmit &&
                         <Button
                             className={"test-loc-submit-button"}
                             bsStyle="success"
                             disabled={!canSubmit || count === 0}
-                            onClick={this.setSubmitting}
+                            onClick={this.setSubmittingForSave}
                             type="submit">
-                            {isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : submitText)}{suffix  ? ' ' + suffix : null}
+                            {!submitForEdit && inProgressText ? inProgressText: submitText}{suffix ? ' ' + suffix : null}
                         </Button>
+                        }
                     </div>
                 </div>
             </div>
@@ -251,24 +322,29 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { allowMultiple, asModal, countText, header, checkRequiredFields, maxCount, queryInfo, fieldValues, title } = this.props;
+        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields } = this.props;
         const { count } = this.state;
 
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
         }
+        let content;
 
-        const content = (
-            <div>
-                {header}
-                {this.renderError()}
-                <Formsy className="form-horizontal"
+        if (isLoading) {
+            content = <LoadingSpinner/>;
+        }
+        else {
+            content = (
+                <div>
+                    {header}
+                    {this.renderError()}
+                    <Formsy
+                        className="form-horizontal"
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
                         onInvalid={this.disableSubmitButton}>
-                    {allowMultiple && (
-                        <>
+                        {includeCountField && (
                             <Input
                                 id="numItems"
                                 label={countText}
@@ -281,19 +357,24 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 style={{width: '125px'}}
                                 type={"number"}
                                 validations={`isPositiveLt:${maxCount}`}
-                                value={count}
+                                value={count ? count.toString() : undefined}
                             />
-                        </>)
-                    }
-                    <hr/>
-                    <QueryFormInputs
-                        checkRequiredFields={checkRequiredFields}
-                        queryInfo={queryInfo}
-                        fieldValues={fieldValues} />
-                    {this.renderButtons()}
-                </Formsy>
-            </div>
-        );
+                        )}
+                        <hr/>
+                        <QueryFormInputs
+                            renderFileInputs={renderFileInputs}
+                            allowFieldDisable={allowFieldDisable}
+                            initiallyDisableFields={initiallyDisableFields}
+                            checkRequiredFields={checkRequiredFields}
+                            queryInfo={queryInfo}
+                            fieldValues={fieldValues}/>
+                        {footer}
+                        {this.renderButtons()}
+                    </Formsy>
+
+                </div>
+            );
+        }
 
         if (asModal) {
             return (

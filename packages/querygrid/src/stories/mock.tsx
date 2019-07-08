@@ -42,6 +42,7 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
+const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
 
 export function initMocks() {
     mock.setup();
@@ -63,6 +64,8 @@ export function initMocks() {
             responseBody = assaysHeatMapQueryInfo;
         else if (lcSchemaName === 'samples' && lcQueryName === 'samples')
             responseBody = sampleSetQueryInfo;
+        else if (lcSchemaName === 'samples' && lcQueryName === 'samplesetwithallfieldtypes')
+            responseBody = sampleSetAllFieldTypesQueryInfo;
         else if (lcSchemaName === 'lists' && lcQueryName === 'lookuplist')
             responseBody = lookuplistQueryInfo;
         else if (lcSchemaName === 'exp' && lcQueryName === 'samplesets')
@@ -100,6 +103,8 @@ export function initMocks() {
         else if (bodyParams.indexOf("&query.queryname=samplesets&") > -1)
             responseBody = sampleSetsQuery;
         else if (bodyParams.indexOf("&query.queryname=name%2520expression%2520set") > -1 && bodyParams.indexOf("&query.rowid~in=459") > -1)
+            responseBody = nameExpressionSelectedQuery;
+        else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
             responseBody = nameExpressionSelectedQuery;
         else if (bodyParams.indexOf("&query.queryname=runs") > -1)
             responseBody = assayRunsWithQCFlagsQuery;

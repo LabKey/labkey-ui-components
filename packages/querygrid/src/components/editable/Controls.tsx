@@ -16,7 +16,7 @@
 import * as React from 'react'
 import { Button, MenuItem, SplitButton } from 'react-bootstrap'
 import classNames from 'classnames'
-import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
+import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 export type PlacementType = 'top' | 'bottom' | 'both';
 
@@ -44,7 +44,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         addText: "Add",
         disable: false,
         initialCount: 1,
-        maxCount: MAX_ADDED_EDITABLE_GRID_ROWS,
+        maxCount: MAX_EDITABLE_GRID_ROWS,
         minCount: 1,
         nounPlural: 'rows',
         nounSingular: 'row',

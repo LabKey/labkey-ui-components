@@ -282,10 +282,11 @@ export class Cell extends React.Component<Props, any> {
             return cell;
         }
 
-        if (col.isLookup()) {
+        if (col.isLookup() && col.lookup.isPublic) {
             const lookupProps: LookupCellProps = {
                 col,
                 colIdx,
+                disabled: this.isReadOnly(),
                 modelId,
                 rowIdx: rowIdx,
                 select: selectCell,

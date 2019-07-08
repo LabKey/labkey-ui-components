@@ -17,8 +17,9 @@ import * as React from 'react';
 import { datePlaceholder, QueryColumn } from '@glass/base'
 
 import { TextInput, TextInputProps } from './TextInput'
+import { DisableableInput, DisableableInputProps } from './DisableableInput';
 
-interface DateInputProps {
+interface DateInputProps extends DisableableInputProps {
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -32,18 +33,22 @@ interface DateInputProps {
     value?: string
 }
 
-export class DateInput extends React.Component<DateInputProps, any> {
+export class DateInput extends DisableableInput<DateInputProps, any> {
 
     static defaultProps = {
+        allowDisable: false,
+        initiallyDisabled: false,
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9',
-        labelClassName: 'control-label text-left',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
+        labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
         validatePristine: false
     };
 
     render() {
         const {
+            allowDisable,
+            initiallyDisabled,
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,
@@ -57,6 +62,8 @@ export class DateInput extends React.Component<DateInputProps, any> {
         } = this.props;
 
         const props: TextInputProps = {
+            allowDisable,
+            initiallyDisabled,
             changeDebounceInterval,
             elementWrapperClassName,
             labelClassName,

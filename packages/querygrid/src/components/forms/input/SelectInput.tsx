@@ -20,6 +20,8 @@ import { Utils } from '@labkey/api'
 import { generateId } from '@glass/base'
 
 import { ReactSelectOption } from '../model'
+import { FieldLabel } from '../FieldLabel'
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -92,7 +94,7 @@ function initOptions(props: SelectInputProps): any {
     return options;
 }
 
-export interface SelectInputProps {
+export interface SelectInputProps extends DisableableInputProps {
     addLabelText?: string
     allowCreate?: boolean
     autoload?: boolean
@@ -103,6 +105,7 @@ export interface SelectInputProps {
     clearable?: boolean
     containerClass?: string
     delimiter?: string
+    description?: string
     disabled?: boolean
     filterOptions?: (options, filterString, values) => any // from ReactSelect
     formsy?: boolean
@@ -143,14 +146,14 @@ export interface SelectInputProps {
     validations?: any
 }
 
-export interface SelectInputState {
+export interface SelectInputState extends DisableableInputState {
     selectedOptions?: any
 }
 
 // Implementation exported only for tests
-export class SelectInputImpl extends React.Component<SelectInputProps, SelectInputState> {
+export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectInputState> {
 
-    static defaultProps = {
+    static defaultProps  = {...DisableableInput.defaultProps, ...{
         allowCreate: false,
         autoload: true,
         autoValue: true,
@@ -158,13 +161,13 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         clearCacheOnChange: true,
         containerClass: 'form-group row',
         delimiter: DELIMITER,
-        inputClass: 'col-sm-9',
+        inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left',
         labelKey: 'label',
         saveOnBlur: false,
         showLabel: true,
         valueKey: 'value'
-    };
+    }};
 
     _cache = {};
     _id: string;
@@ -178,9 +181,11 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleFocus = this.handleFocus.bind(this);
+        this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.state = {
-            selectedOptions: props.autoValue === true ? initOptions(props): undefined
+            selectedOptions: props.autoValue === true ? initOptions(props): undefined,
+            isDisabled: props.initiallyDisabled
         };
     }
 
@@ -343,20 +348,32 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
     }
 
     renderLabel(inputProps: any) {
-        const { label, labelClass, required, showLabel } = this.props;
+        const { allowDisable, label, multiple, name, required, showLabel } = this.props;
+        const { isDisabled } = this.state;
 
         if (showLabel && label !== undefined) {
-
             if (Utils.isString(label)) {
-                // TODO: Get this and <LabelOverlay> to be consistent/same
-                return (
-                    <label
-                        className={labelClass}
-                        htmlFor={inputProps.id}>
-                        <span>{label}</span>
-                        {required ? <span> *</span> : null}
-                    </label>
-                )
+                let description = this.props.description;
+                if (!description) {
+                    description = "Select " + (multiple ? " one or more values for " : " a ") + label;
+                }
+                return <FieldLabel
+                    id={inputProps.id}
+                    fieldName={name}
+                    labelOverlayProps={{
+                        description,
+                        label: label,
+                        isFormsy: false,
+                        required: required,
+                        labelClass: !allowDisable ? 'control-label text-left col-sm-3 col-xs-12' : undefined
+                    }}
+                    showLabel={showLabel}
+                    showToggle={allowDisable}
+                    isDisabled={isDisabled}
+                    toggleProps = {{
+                        onClick: this.toggleDisabled
+                    }}
+                    />
             }
 
             return label;
@@ -396,7 +413,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
             autoload,
             clearable,
             delimiter,
-            disabled,
+            disabled : disabled || this.state.isDisabled,
             filterOptions,
             ignoreCase,
             inputProps,
@@ -444,6 +461,7 @@ export class SelectInputImpl extends React.Component<SelectInputProps, SelectInp
 
         return <ReactSelect {...selectProps}/>;
     }
+
 
     render() {
         const {

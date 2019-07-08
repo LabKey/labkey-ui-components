@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
 import { SchemaQuery, User } from '../models/model'
 import {
-    getSchemaQuery, resolveKey, resolveKeyFromJson, resolveSchemaQuery,
-    intersect, naturalSort, toLowerSafe
+    getCommonDataValues,
+    getSchemaQuery, getUpdatedData, getUpdatedDataFromGrid,
+    hasAllPermissions,
+    intersect,
+    naturalSort,
+    resolveKey,
+    resolveKeyFromJson,
+    resolveSchemaQuery,
+    toLowerSafe,
+    unorderedEqual
 } from './utils'
-import { hasAllPermissions } from './utils';
 import { PermissionTypes } from '../models/constants'
 
 const emptyList = List<string>();
@@ -178,4 +185,692 @@ describe("hasAllPermissions", () => {
         }), [PermissionTypes.Insert])).toBe(false);
 
     });
+});
+
+describe("unorderedEqual", () => {
+    test("empty arrays", () => {
+        expect(unorderedEqual([], [])).toBe(true);
+    });
+
+    test("different size arrays", () => {
+        expect(unorderedEqual(["a"], ["b", "a"])).toBe(false);
+    });
+
+    test("same size but differnet elements", () => {
+        expect(unorderedEqual(["a", "b"], ["b", "c"])).toBe(false);
+    });
+
+    test("elements in different order", () => {
+        expect(unorderedEqual(["a", "b", "c", "d"], ["d", "c", "a", "b"])).toBe(true);
+    });
+
+    test("equal arrays, same order", () => {
+        expect(unorderedEqual(["a", "b", "c", "d"], ["a", "b", "c", "d"])).toBe(true);
+    })
+});
+
+describe("getCommonDataForSelection", () => {
+    test("nothing common", () => {
+
+        const data = fromJS({
+            "1": {
+                "field1": {
+                    value: "value1"
+                },
+                "field2": {
+                    value: "value2"
+                }
+            },
+            "2": {
+                "field1": {
+                    value: "value3"
+                },
+                "field2": {
+                    value: "value4"
+                },
+            }
+        });
+        expect(getCommonDataValues(data)).toEqual({});
+    });
+
+    test("undefined and missing values", () => {
+
+        const data = fromJS({
+            "1": {
+                "field1": {
+                    "value": undefined
+                },
+                "field2": {
+                    "value": "value2"
+                },
+                "field3": {
+                    "value": "value3"
+                },
+                "field4": {
+                    "value": "same"
+                }
+            },
+            "2": {
+                "field1": {
+                    value: "value1"
+                },
+                "field2": {
+                    "value": "value2b"
+                },
+                "field3": {
+                    value: null
+                },
+                "field4": {
+                    "value": "same"
+                }
+            }
+        });
+        expect(getCommonDataValues(data)).toEqual({
+            "field4": "same"
+        });
+    });
+
+    test("same common values", () => {
+        const data = fromJS({
+            "448": {
+                "RowId" : {
+                    "value" : 448,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+                },
+                "Value" : {
+                    "value" : null
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-9042",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+                },
+                "Other" : {
+                    "value" : "other1"
+                }
+            },
+            "447": {
+                "RowId" : {
+                    "value" : 447,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+                },
+                "Value" : {
+                    "value" : null
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-4622",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+                },
+                "Other" : {
+                    "value" : "other2"
+                }
+            },
+            "446": {
+                "RowId" : {
+                    "value" : 446,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+                },
+                "Value" : {
+                    "value" : "val"
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-2368",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+                },
+                "Other" : {
+                    "value" : "other3"
+                }
+            },
+            "445":{
+                "RowId" : {
+                    "value" : 445,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+                },
+                "Value" : {
+                    "value" : "val"
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190516-9512",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+                },
+                "Other" : {
+                    "value" : null
+                }
+            },
+            "367": {
+                "RowId" : {
+                    "value" : 367,
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=367"
+                },
+                "Value" : {
+                    "value" : null
+                },
+                "Data" : {
+                    "value" : "data1"
+                },
+                "AndAgain" : {
+                    "value" : "again"
+                },
+                "Name" : {
+                    "value" : "S-20190508-5534",
+                    "url" : "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=367"
+                },
+                "Other" : {
+                    "value" : null
+                }
+            }
+        });
+        expect(getCommonDataValues(data)).toEqual({
+            "AndAgain": "again",
+            "Data": "data1"
+        });
+    });
+});
+
+describe("getUpdatedData", () => {
+    const originalData = fromJS({
+        "448": {
+            "RowId": {
+                "value": 448,
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+            },
+            "Value": {
+                "value": null
+            },
+            "Data": {
+                "value": "data1"
+            },
+            "AndAgain": {
+                "value": "again"
+            },
+            "Name": {
+                "value": "S-20190516-9042",
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+            },
+            "Other": {
+                "value": "other1"
+            }
+        },
+        "447": {
+            "RowId": {
+                "value": 447,
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+            },
+            "Value": {
+                "value": null
+            },
+            "Data": {
+                "value": "data1"
+            },
+            "AndAgain": {
+                "value": "again"
+            },
+            "Name": {
+                "value": "S-20190516-4622",
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+            },
+            "Other": {
+                "value": "other2"
+            }
+        },
+        "446": {
+            "RowId": {
+                "value": 446,
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+            },
+            "Value": {
+                "value": "val"
+            },
+            "Data": {
+                "value": "data1"
+            },
+            "AndAgain": {
+                "value": "again"
+            },
+            "Name": {
+                "value": "S-20190516-2368",
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+            },
+            "Other": {
+                "value": "other3"
+            }
+        },
+        "445": {
+            "RowId": {
+                "value": 445,
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+            },
+            "Value": {
+                "value": "val"
+            },
+            "Data": {
+                "value": "data1"
+            },
+            "AndAgain": {
+                "value": "again"
+            },
+            "Name": {
+                "value": "S-20190516-9512",
+                "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+            },
+            "Other": {
+                "value": null
+            }
+        },
+    });
+
+    test("empty updates", () => {
+        const updatedData = getUpdatedData(originalData, {
+        }, List<string>(["RowId"]));
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test("updated values did not change", () => {
+        const updatedData = getUpdatedData(originalData, {
+            "Data": "data1",
+            "AndAgain": "again"
+        }, List<string>(["RowId"]));
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test("changed values for some", () => {
+        const updatedData = getUpdatedData(originalData, {
+            "Value": "val",
+            "Data": "data1",
+            "AndAgain": "again",
+            "Other": "other3"
+        }, List<string>(["RowId"]));
+        expect(updatedData).toHaveLength(3);
+        expect(updatedData[0]).toStrictEqual({
+            "RowId": 445,
+            "Other": "other3"
+        });
+        expect(updatedData[1]).toStrictEqual({
+            "RowId": 447,
+            "Value": "val",
+            "Other": "other3"
+        });
+        expect(updatedData[2]).toStrictEqual({
+            "RowId": 448,
+            "Value": "val",
+            "Other": "other3"
+        });
+    });
+
+    test("changed values for all", () => {
+        const updatedData = getUpdatedData(originalData, {
+            "Value": "val2",
+            "Data": "data2",
+            "AndAgain": "again2",
+            "Other": "not another"
+        }, List<string>(["RowId"]));
+        expect(updatedData).toHaveLength(4);
+        expect(updatedData[0]).toStrictEqual({
+            "RowId": 445,
+            "Value": "val2",
+            "Data": "data2",
+            "AndAgain": "again2",
+            "Other": "not another"
+        });
+        expect(updatedData[1]).toStrictEqual({
+            "RowId": 446,
+            "Value": "val2",
+            "Data": "data2",
+            "AndAgain": "again2",
+            "Other": "not another"
+        });
+        expect(updatedData[2]).toStrictEqual({
+            "RowId": 447,
+            "Value": "val2",
+            "Data": "data2",
+            "AndAgain": "again2",
+            "Other": "not another"
+        });
+        expect(updatedData[3]).toStrictEqual({
+            "RowId": 448,
+            "Value": "val2",
+            "Data": "data2",
+            "AndAgain": "again2",
+            "Other": "not another"
+        });
+    });
+
+    test("removed values", () => {
+        const updatedData = getUpdatedData(originalData, {
+            "Value": null,
+            "AndAgain": undefined,
+            "Other": "not another"
+        }, List<string>(["RowId"]));
+        expect(updatedData).toHaveLength(4);
+        expect(updatedData[0]).toStrictEqual({
+            "RowId": 445,
+            "Value": null,
+            "AndAgain": undefined,
+            "Other": "not another"
+        });
+        expect(updatedData[1]).toStrictEqual({
+            "RowId": 446,
+            "Value": null,
+            "AndAgain": undefined,
+            "Other": "not another"
+        });
+        expect(updatedData[2]).toStrictEqual({
+            "RowId": 447,
+            "AndAgain": undefined,
+            "Other": "not another"
+        });
+        expect(updatedData[3]).toStrictEqual({
+            "RowId": 448,
+            "AndAgain": undefined,
+            "Other": "not another"
+        });
+    });
+});
+
+describe("getUpdatedDataFromGrid", () => {
+    // const originalData = fromJS({
+    //     "448": {
+    //         "RowId": {
+    //             "value": 448,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+    //         },
+    //         "Value": {
+    //             "value": null
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-9042",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
+    //         },
+    //         "Other": {
+    //             "value": "other1"
+    //         }
+    //     },
+    //     "447": {
+    //         "RowId": {
+    //             "value": 447,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+    //         },
+    //         "Value": {
+    //             "value": null
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-4622",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
+    //         },
+    //         "Other": {
+    //             "value": "other2"
+    //         }
+    //     },
+    //     "446": {
+    //         "RowId": {
+    //             "value": 446,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+    //         },
+    //         "Value": {
+    //             "value": "val"
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-2368",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
+    //         },
+    //         "Other": {
+    //             "value": "other3"
+    //         }
+    //     },
+    //     "445": {
+    //         "RowId": {
+    //             "value": 445,
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+    //         },
+    //         "Value": {
+    //             "value": "val"
+    //         },
+    //         "Data": {
+    //             "value": "data1"
+    //         },
+    //         "AndAgain": {
+    //             "value": "again"
+    //         },
+    //         "Name": {
+    //             "value": "S-20190516-9512",
+    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
+    //         },
+    //         "Other": {
+    //             "value": null
+    //         }
+    //     },
+    // });
+    const originalData = fromJS({
+        448: {
+            "RowId":  448,
+            "Value": null,
+            "Data": "data1",
+            "AndAgain":  "again",
+            "Name":  "S-20190516-9042",
+            "Other": "other1"
+        },
+        447: {
+            "RowId":  447,
+            "Value":  null,
+            "Data":  "data1",
+            "AndAgain": "again",
+            "Name": "S-20190516-4622",
+            "Other": "other2"
+        },
+        446: {
+            "RowId":  446,
+            "Value":  "val",
+            "Data":  "data1",
+            "AndAgain": "again",
+            "Name": "S-20190516-2368",
+            "Other":  "other3"
+        },
+        445: {
+            "RowId":  445,
+            "Value": "val",
+            "Data": "data1",
+            "AndAgain":  "again",
+            "Name":  "S-20190516-9512",
+            "Other": null
+        },
+    });
+    test("no edited rows", () => {
+        const updatedData = getUpdatedDataFromGrid(originalData, [], "RowId");
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test("edited rows did not change", () => {
+        const updatedData = (getUpdatedDataFromGrid(originalData, [
+            Map<string, any>({
+                "RowId":  "448",
+                "Value": null,
+                "Data": "data1",
+                "AndAgain":  "again",
+                "Name":  "S-20190516-9042",
+                "Other": "other1"
+            }),
+            Map<string, any>({
+                "RowId":  "447",
+                "Value":  null,
+                "Data":  "data1",
+                "AndAgain": "again",
+                "Name": "S-20190516-4622",
+                "Other": "other2"
+            }),
+            Map<string, any>({
+                "RowId":  "446",
+                "Value":  "val",
+                "Data":  "data1",
+                "AndAgain": "again",
+                "Name": "S-20190516-2368",
+                "Other":  "other3"
+            }),
+            Map<string, any>({
+                "RowId":  "445",
+                "Value": "val",
+                "Data": "data1",
+                "AndAgain":  "again",
+                "Name":  "S-20190516-9512",
+                "Other": null
+            })
+
+        ], "RowId"));
+        expect(updatedData).toHaveLength(0);
+    });
+
+    test("edited row removed values", () => {
+        const updatedData = (getUpdatedDataFromGrid(originalData, [
+            Map<string, any>({
+                "RowId":  "448",
+                "Value": null,
+                "Data": undefined,
+                "AndAgain":  "again",
+                "Name":  "S-20190516-9042",
+                "Other": "other1"
+            }),
+            Map<string, any>({
+                "RowId":  "447",
+                "Value":  null,
+                "Data":  "data1",
+                "AndAgain": null,
+                "Name": "S-20190516-4622",
+                "Other": "other2"
+            }),
+            Map<string, any>({
+                "RowId":  "446",
+                "Value":  "val",
+                "Data":  "data1",
+                "AndAgain": "again",
+                "Name": "S-20190516-2368",
+                "Other":  "other3"
+            }),
+            Map<string, any>({
+                "RowId":  "445",
+                "Value": "val",
+                "Data": "data1",
+                "AndAgain":  "again",
+                "Name":  "S-20190516-9512",
+                "Other": null
+            })
+
+        ], "RowId"));
+        expect(updatedData).toHaveLength(2);
+        expect(updatedData[0]).toStrictEqual( {
+            "Data": null,
+            "RowId": "448"
+        });
+        expect(updatedData[1]).toStrictEqual( {
+            "AndAgain": null,
+            "RowId": "447"
+        })
+    });
+
+    test("edited row changed some values", () => {
+        const updatedData = (getUpdatedDataFromGrid(originalData, [
+            Map<string, any>({
+                "RowId":  "448",
+                "Value": null,
+                "Data": undefined,
+                "AndAgain":  "again",
+                "Name":  "S-20190516-9042",
+                "Other": "other1"
+            }),
+            Map<string, any>({
+                "RowId":  "447",
+                "Value":  null,
+                "Data":  "data1",
+                "AndAgain": null,
+                "Name": "S-20190516-4622",
+                "Other": "other2"
+            }),
+            Map<string, any>({
+                "RowId":  "446",
+                "Value":  "new val",
+                "Data":  "data1",
+                "AndAgain": "change me",
+                "Name": "S-20190516-2368",
+                "Other":  "other3"
+            }),
+            Map<string, any>({
+                "RowId":  "445",
+                "Value": "val",
+                "Data": "other data",
+                "AndAgain":  "again",
+                "Name":  "S-20190516-9512",
+                "Other": null
+            })
+        ], "RowId"));
+        expect(updatedData).toHaveLength(4);
+        expect(updatedData[0]).toStrictEqual( {
+            "Data": null,
+            "RowId": "448"
+        });
+        expect(updatedData[1]).toStrictEqual( {
+            "AndAgain": null,
+            "RowId": "447"
+        });
+        expect(updatedData[2]).toStrictEqual({
+            "Value": "new val",
+            "AndAgain": "change me",
+            "RowId": "446"
+        });
+        expect(updatedData[3]).toStrictEqual({
+            "Data": "other data",
+            "RowId": "445"
+        })
+    });
+
+    test("edited row added field", () => {
+        const updatedData = (getUpdatedDataFromGrid(originalData, [
+            Map<string, any>({
+                "RowId":  "448",
+                "New Field": "new value"
+            })], "RowId"));
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual( {
+            "New Field": "new value",
+            "RowId": "448"
+        });
+    })
 });

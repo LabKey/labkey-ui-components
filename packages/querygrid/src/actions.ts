@@ -21,6 +21,7 @@ import {
     getSortFromUrl,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
+    IGridResponse,
     naturalSort,
     not,
     QueryColumn,
@@ -30,7 +31,7 @@ import {
     ViewInfo
 } from '@glass/base'
 
-import { getQueryDetails, searchRows } from './query/api'
+import { getQueryDetails, searchRows, selectRows } from './query/api'
 import { isEqual } from './query/filter'
 import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
 import {
@@ -384,14 +385,17 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
 }
 
 function loadDataForEditor(model: QueryGridModel, response?: any) {
-    const rows: List<Map<string, any>> = response ? response.data : List();
+    const rows: Map<any, Map<string, any>> = response ? response.data : Map<string, Map<string, any>>();
+    const ids = response ? response.dataIds : List();
     const columns = model.getInsertColumns();
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellValues = Map<string, List<ValueDescriptor>>().asMutable();
 
     // data is initialized in column order
     columns.forEach((col, cn) => {
         let rn = 0; // restart index, cannot use index from "rows"
-        rows.forEach((row) => {
+        ids.forEach((id) => {
+            const row = rows.get(id);
             const cellKey = genCellKey(cn, rn);
             const value = row.get(col.fieldKey);
 
@@ -403,10 +407,13 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
                 }), List<ValueDescriptor>()));
             }
             else {
-                cellValues.set(cellKey, List([{
-                    display: value,
-                    raw: value
-                }]));
+                // Issue 37833: try resolving the value for the lookup to get the displayValue to show in the grid cell
+                let valueDescriptor = {display: value, raw: value};
+                if (col.isLookup() && Utils.isNumber(value)) {
+                    valueDescriptor = getLookupDisplayValue(col, getLookup(col), value).valueDescriptor
+                }
+
+                cellValues.set(cellKey, List([valueDescriptor]));
             }
             rn++;
         });
@@ -839,6 +846,29 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
     });
 }
 
+export function getSelectedData(model: QueryGridModel) : Promise<IGridResponse> {
+    let filters = model.getFilters();
+    filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
+
+    return new Promise((resolve, reject) => selectRows({
+        schemaName: model.schema,
+        queryName: model.query,
+        filterArray: filters.toJS(),
+        sort: model.getSorts() || "-RowId",
+        columns: model.getRequestColumnsString(),
+        offset: 0
+    }).then(response => {
+        const {models, orderedModels, totalRows} = response;
+        resolve( {
+            data: fromJS(models[model.getModelName()]),
+            dataIds: List(orderedModels[model.getModelName()]),
+            totalRows
+        });
+    }).catch( reason => {
+        reject(reason);
+    }));
+}
+
 function getFilterParameters(filters: List<any>, remove: boolean = false): Map<string, string> {
 
     const params = {};
@@ -1235,7 +1265,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
 }
 
 function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
-    if (!col.isLookup()) {
+    if (!col.isLookup() || !col.lookup.isPublic) {
         return false;
     }
 
@@ -1366,7 +1396,7 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
 
         let cv : List<ValueDescriptor>;
 
-        if (col && col.isLookup()) {
+        if (data && col && col.isLookup()) {
             cv =  List<ValueDescriptor>();
             // value had better be the rowId here, but it may be several in a comma-separated list.
             // If it's the display value, which happens to be a number, much confusion will arise.
@@ -1839,7 +1869,9 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
 
         updateQueryGridModel(updatedModel, {
             data,
-            dataIds
+            dataIds,
+            isError: false,
+            message: undefined
         });
     }
 
@@ -2135,7 +2167,9 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
 
     return updateQueryGridModel(model, {
         data: Map<any, Map<string, any>>(),
-        dataIds: List<any>()
+        dataIds: List<any>(),
+        isError: false,
+        message: undefined
     });
 }
 
@@ -2197,7 +2231,9 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
 
     updateQueryGridModel(model, {
         data,
-        dataIds
+        dataIds,
+        isError: false,
+        message: undefined
     });
 }
 

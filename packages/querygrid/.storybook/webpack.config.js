@@ -17,7 +17,7 @@ module.exports = async ({ config, mode }) => {
 
     config.module.rules.push({
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
     });
 
     config.resolve.extensions.push('.ts', '.tsx', ".scss");

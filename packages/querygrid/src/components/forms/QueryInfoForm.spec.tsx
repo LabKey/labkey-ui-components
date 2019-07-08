@@ -110,11 +110,11 @@ describe("QueryInfoForm", () => {
        });
    });
 
-   test("don't allowing multiple", () => {
+   test("don't include count field", () => {
        expect.hasAssertions();
        return getQueryDetails(schemaQuery).then((queryInfo) => {
            const formWrapper = shallow(
-               <QueryInfoForm allowMultiple={false} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
+               <QueryInfoForm includeCountField={false} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
            );
            expect(formWrapper.find("input#numItems")).toHaveLength(0);
        })
@@ -142,6 +142,76 @@ describe("QueryInfoForm", () => {
        })
    });
 
+    test("with footer", () => {
+        expect.hasAssertions();
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const footer = <span className={"footer-info"}>Footer info here</span>;
+            const formWrapper = shallow(
+                <QueryInfoForm footer={footer} schemaQuery={schemaQuery} queryInfo={queryInfo} onSubmit={jest.fn()}/>
+            );
+
+            expect(formWrapper.find('.footer-info')).toHaveLength(1);
+        })
+    });
+
+    test("with only submitForEdit", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const submitForEditText="Test Submit for Edit";
+            const formWrapper = shallow(
+                <QueryInfoForm
+                    includeCountField={false}
+                    checkRequiredFields={false}
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    submitForEditText={submitForEditText}
+                    onSubmitForEdit={jest.fn()}
+                />
+            );
+
+            const submitForEditButton = formWrapper.find(".test-loc-submit-for-edit-button");
+            expect(submitForEditButton.childAt(0).text()).toBe(submitForEditText);
+            expect(submitForEditButton.props().disabled).toBe(false);
+        })
+    });
+
+    test("with submitForEdit and submit enabled", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = shallow(
+                <QueryInfoForm
+                    includeCountField={false}
+                    checkRequiredFields={false}
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    onSubmitForEdit={jest.fn()}
+                    onSubmit={jest.fn()}
+                />
+            );
+
+            const submitForEditButton = formWrapper.find(".test-loc-submit-for-edit-button");
+            expect(submitForEditButton.props().disabled).toBe(false);
+            const submitButton = formWrapper.find(".test-loc-submit-button");
+            expect(submitButton.props().disabled).toBe(false);
+        });
+    });
+
+    test("with submitForEdit and submit disabled", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = shallow(
+                <QueryInfoForm
+                    includeCountField={true}
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    onSubmitForEdit={jest.fn()}
+                    onSubmit={jest.fn()}
+                />
+            );
+
+            const submitForEditButton = formWrapper.find(".test-loc-submit-for-edit-button");
+            expect(submitForEditButton.props().disabled).toBe(true);
+            const submitButton = formWrapper.find(".test-loc-submit-button");
+            expect(submitButton.props().disabled).toBe(true);
+        });
+    });
 
     // TODO the following tests require being able to interact with the form in order to make it
     // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.

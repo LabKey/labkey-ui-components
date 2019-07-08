@@ -125,8 +125,8 @@ describe("<DetailEditing/>", () => {
 
       // find the save button and click it
       expect(wrapper.find('.edit__warning')).toHaveLength(0);
-      const saveButton = wrapper.find('.btn-primary');
-      expect(saveButton).toHaveLength(2);
+      const saveButton = wrapper.find('.btn-success');
+      expect(saveButton).toHaveLength(1);
       saveButton.first().hostNodes().simulate('click');
       // expect(wrapper.find('.edit__warning')).toHaveLength(1);
 

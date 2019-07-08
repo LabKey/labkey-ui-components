@@ -17,7 +17,7 @@ import * as React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { generateId, QueryColumn } from '@glass/base'
 
-interface LabelOverlayProps {
+export interface LabelOverlayProps {
     inputId?: string
     isFormsy?: boolean
     label?: string
@@ -34,7 +34,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
 
     static defaultProps = {
         isFormsy: true,
-        labelClass: 'control-label col-sm-3 text-left'
+        labelClass: 'control-label col-md-3 col-xs-12 text-left'
     };
 
     _popoverId: string;
@@ -53,18 +53,18 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
         const type = this.props.type ? this.props.type : (column ? column.type : null);
 
         return (
-            <Popover id={this._popoverId} title={label} bsClass="registry-insert__field-label popover">
+            <Popover id={this._popoverId} title={label} bsClass="popover">
                 {description && <p><strong>Description: </strong>{description}</p>}
                 {type && <p><strong>Type: </strong>{type}</p>}
                 {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
-                {(typeof required === 'boolean' && required === true) && <p><small><i>This field is required.</i></small></p>}
+                {required && <p><small><i>This field is required.</i></small></p>}
                 {content}
             </Popover>
         );
     }
 
     render() {
-        const { column, inputId, isFormsy, labelClass, placement } = this.props;
+        const { column, inputId, isFormsy, labelClass, placement, required } = this.props;
         const label = this.props.label ? this.props.label : (column ? column.caption : null);
 
         if (isFormsy) {
@@ -90,8 +90,8 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                     overlay={this.overlayContent()}>
                     <i className="fa fa-question-circle"/>
                 </OverlayTrigger>
+                {required ? <span className="required-symbol"> *</span> : null}
             </label>
         );
     }
-
 }

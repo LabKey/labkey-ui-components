@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.8.0
+*Released*: 8 July 2019
+* Add createSampleSet, updateSampleSet, and deleteSampleSet functions
+* Add SampleSetDetailsPanel and SampleSetDeleteConfirmModal components 
+
 ### version 0.7.0
 *Released*: 3 July 2019
 * For QueryInfoForm, add placeholders using queryColumn captions

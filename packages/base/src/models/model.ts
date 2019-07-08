@@ -18,6 +18,7 @@ import { ActionURL, Filter, Utils } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
 import { decodePart, getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../utils/utils'
+import { AppURL } from "../url/AppURL";
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -597,8 +598,6 @@ export class QueryGridModel extends Record({
 
         return emptyColumns;
     }
-
-
 
     getColumnIndex(fieldKey: string): number {
         if (!fieldKey)
@@ -1437,6 +1436,12 @@ interface ScopedSampleColumn {
     column: QueryColumn;
 }
 
+export const enum AssayUploadTabs {
+    Files = 1,
+    Copy = 2,
+    Grid = 3
+}
+
 export class AssayDefinitionModel extends Record({
     containerPath: undefined,
     description: undefined,
@@ -1510,22 +1515,26 @@ export class AssayDefinitionModel extends Record({
         return undefined;
     }
 
-    // getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
-    //     let url;
-    //     // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
-    //     if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
-    //         url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
-    //         if (dataTab)
-    //             url = url.addParam('dataTab', dataTab);
-    //         if (selectionKey)
-    //             url = url.addParam('selectionKey', selectionKey);
-    //         url = url.toHref();
-    //     }
-    //     else {
-    //         url = this.links.get(AssayLink.IMPORT)
-    //     }
-    //     return url;
-    // }
+    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
+        let url;
+        // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
+        if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
+            url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
+            if (dataTab)
+                url = url.addParam('dataTab', dataTab);
+            if (selectionKey)
+                url = url.addParam('selectionKey', selectionKey);
+            url = url.toHref();
+        }
+        else {
+            url = this.links.get(AssayLink.IMPORT)
+        }
+        return url;
+    }
+
+    getRunsUrl() {
+        return AppURL.create('assays', this.type, this.name, 'runs');
+    }
 
     hasLookup(targetSQ: SchemaQuery): boolean {
         const isSampleSet = targetSQ.hasSchema('samples');

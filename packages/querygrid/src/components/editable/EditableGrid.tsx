@@ -53,15 +53,14 @@ import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
-    showHeader: false,
     tableCell: true,
-    title: '',
+    title: 'Row',
     width: 45,
     // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
     // "textAlign" property correctly for <td> elements.
     cell: (d,r,c,rn) => (
         <td className="cellular-count" key={c.index} style={{textAlign: c.align || 'left'} as any}>
-            <div className="cellular-count-content">{rn+1}</div>
+            <div className="cellular-count-static-content">{rn+1}</div>
         </td>
     )
 });
@@ -290,7 +289,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             gridColumns = gridColumns.push(selColumn);
         }
         gridColumns = gridColumns.push(
-            allowBulkRemove || allowRemove ? new GridColumn({
+            allowRemove ? new GridColumn({
                 index: GRID_EDIT_INDEX,
                 tableCell: true,
                 title: 'Row',

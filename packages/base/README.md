@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.8.0
+*Released*: 8 July 2019
+* Add DesignSampleSetPermission to PermissionTypes
+
 ### version 0.7.0
 *Released*: 3 July 2019
 * Add unorderedEqual for checking of two arrays have the same elements in any order

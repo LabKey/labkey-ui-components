@@ -51,7 +51,13 @@ export class SampleDeleteConfirmModal extends React.Component<Props, any> {
         return (
             <ConfirmModal
                 title={'Permanently delete ' + numSamples + ' sample' + (numSamples === 1 ? '' : 's') + '?'}
-                msg={<span>{msgPrefix} {dependencies} will be permanently deleted. <strong>Deletion cannot be undone.</strong></span>}
+                msg={
+                    <span>
+                        {msgPrefix} {dependencies} will be permanently deleted.&nbsp;
+                        <strong>Deletion cannot be undone.</strong>&nbsp;
+                        Do you want to proceed?
+                    </span>
+                }
                 onConfirm={onConfirm}
                 onCancel={onCancel}
                 confirmVariant='danger'

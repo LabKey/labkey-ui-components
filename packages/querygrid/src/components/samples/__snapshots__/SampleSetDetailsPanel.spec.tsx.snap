@@ -18,7 +18,7 @@ Array [
             className="col-xs-3"
           >
             <span>
-              Name
+              Name *
                
               <i
                 className="fa fa-question-circle"
@@ -160,7 +160,7 @@ Array [
             className="col-xs-3"
           >
             <span>
-              Name
+              Name *
                
               <i
                 className="fa fa-question-circle"

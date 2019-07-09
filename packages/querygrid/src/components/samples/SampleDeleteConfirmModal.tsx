@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { ConfirmModal, LoadingSpinner } from "@glass/base";
-import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
+import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actions';
 import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 
 interface Props {
@@ -63,7 +63,7 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     init(props: Props) {
-        getDeleteConfirmationData(props.selectionKey, props.rowId ? [props.rowId] : undefined)
+        getSampleDeleteConfirmationData(props.selectionKey, props.rowId ? [props.rowId] : undefined)
             .then((confirmationData) => {
                 if (this._mounted) {
                     this.setState(() => ({isLoading: false, confirmationData}));

@@ -208,7 +208,7 @@ export interface DeleteConfirmationData {
     cannotDelete: Array<any>
 }
 
-export function getDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
+export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
     return new Promise((resolve, reject) => {
        let params;
        if (selectionKey) {

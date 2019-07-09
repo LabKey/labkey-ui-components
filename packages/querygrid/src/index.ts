@@ -85,6 +85,7 @@ import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 import { deleteSampleSet } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
+import { getSampleDeleteConfirmationData } from './components/samples/actions'
 
 export {
     // global state functions
@@ -121,6 +122,7 @@ export {
     importData,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
+    getSampleDeleteConfirmationData,
 
     // editable grid related items
     addColumns,

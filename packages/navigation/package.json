@@ -1,6 +1,6 @@
 {
   "name": "@glass/navigation",
-  "version": "0.3.2",
+  "version": "0.3.3-fb-sampleDeleteRestriction.0",
   "description": "Navigation elements and actions for an application and its pages",
   "main": "dist/navigation.cjs.js",
   "module": "dist/navigation.es.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.8.0",
+    "@glass/base": "0.8.1-fb-sampleDeleteRestriction.0",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
     "react-router": "3.2.1"

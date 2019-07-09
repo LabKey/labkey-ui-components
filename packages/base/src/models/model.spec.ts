@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, OrderedMap } from 'immutable'
-import { AssayDefinitionModel, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from './model'
+import { AssayDefinitionModel, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, isSampleLookup } from './model'
 
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
@@ -252,5 +252,166 @@ describe("AssayDefinitionModel", () => {
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Study'))).toBeTruthy();
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Other'))).toBeFalsy();
    });
+
+});
+
+describe('Sample Lookup', () => {
+
+    // prepare stuff we need
+    const validColumn = QueryColumn.create({
+        "align": "left",
+        "caption": "Special Column",
+        "conceptURI": null,
+        "defaultValue": null,
+        "fieldKey": "special_column",
+        "fieldKeyArray": [
+            "special_column"
+        ],
+        "hidden": false,
+        "inputType": "text",
+        "isKeyField": false,
+        "jsonType": "string",
+        "lookup": {
+            "displayColumn": "Name",
+            "isPublic": true,
+            "keyColumn": "Name",
+            "queryName": "Samples",
+            "schemaName": "samples",
+            "table": "Samples"
+        },
+        "multiValue": false,
+        "name": "special_column",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "readOnly": false,
+        "required": false,
+        "shortCaption": "Special Column",
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "sortable": true,
+        "type": "Text (String)",
+        "userEditable": true,
+        "removeFromViews": false
+    });
+
+    const bogusColumn = QueryColumn.create({
+        "align": "left",
+        "caption": "Special Column",
+        "conceptURI": null,
+        "defaultValue": null,
+        "fieldKey": "special_column",
+        "fieldKeyArray": [
+            "special_column"
+        ],
+        "hidden": false,
+        "inputType": "text",
+        "isKeyField": false,
+        "jsonType": "string",
+        "lookup": {
+            "displayColumn": "Name",
+            "isPublic": true,
+            "keyColumn": "Name",
+            "queryName": "bogusQuery",
+            "schemaName": "bogusSchema",
+            "table": "WrongTable"
+        },
+        "multiValue": false,
+        "name": "special_column",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "readOnly": false,
+        "required": false,
+        "shortCaption": "Special Column",
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "sortable": true,
+        "type": "Text (String)",
+        "userEditable": true,
+        "removeFromViews": false
+    });
+
+    const materialSamplesColumn = QueryColumn.create({
+        "align": "left",
+        "caption": "Special Column",
+        "conceptURI": null,
+        "defaultValue": null,
+        "fieldKey": "special_column",
+        "fieldKeyArray": [
+            "special_column"
+        ],
+        "hidden": false,
+        "inputType": "text",
+        "isKeyField": false,
+        "jsonType": "string",
+        "lookup": {
+            "displayColumn": "Name",
+            "isPublic": true,
+            "keyColumn": "Name",
+            "queryName": "exp.Materials",
+            "schemaName": "samples",
+            "table": "Samples"
+        },
+        "multiValue": false,
+        "name": "special_column",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "readOnly": false,
+        "required": false,
+        "shortCaption": "Special Column",
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "sortable": true,
+        "type": "Text (String)",
+        "userEditable": true,
+        "removeFromViews": false
+    });
+
+    const materialSamplesWithAllCapsColumn = QueryColumn.create({
+        "align": "left",
+        "caption": "Special Column",
+        "conceptURI": null,
+        "defaultValue": null,
+        "fieldKey": "special_column",
+        "fieldKeyArray": [
+            "special_column"
+        ],
+        "hidden": false,
+        "inputType": "text",
+        "isKeyField": false,
+        "jsonType": "string",
+        "lookup": {
+            "displayColumn": "Name",
+            "isPublic": true,
+            "keyColumn": "Name",
+            "queryName": "EXP.MATERIALS",
+            "schemaName": "SAMPLES",
+            "table": "SAMPLES"
+        },
+        "multiValue": false,
+        "name": "special_column",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "readOnly": false,
+        "required": false,
+        "shortCaption": "Special Column",
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "sortable": true,
+        "type": "Text (String)",
+        "userEditable": true,
+        "removeFromViews": false
+    });
+
+    test('lookup to samples/Samples', () => {
+        expect(isSampleLookup(validColumn)).toBe(true);
+    });
+
+    test('verify invalid column (into bogus schema/table)', () => {
+        expect(isSampleLookup(bogusColumn)).toBe(false);
+    });
+
+    test('test lookup to exp.Materials/Samples', () => {
+        expect(isSampleLookup(materialSamplesColumn)).toBe(true);
+    });
+
+    test('test lookup with different casing for query, schema and table names', () => {
+        expect(isSampleLookup(materialSamplesWithAllCapsColumn)).toBe(true);
+    });
 
 });

@@ -19,7 +19,7 @@ import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
 import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 
 interface Props {
-    onConfirm: () => any
+    onConfirm: (confirmedRows: Array<any>) => any
     onCancel: () => any
     rowId?: string
     selectionKey?: string
@@ -36,6 +36,9 @@ interface State {
  */
 export class SampleDeleteConfirmModal extends React.Component<Props, State> {
 
+    // This is used because a user may cancel during the loading phase, in which case we don't want to update state
+    private _mounted : boolean;
+
     constructor(props: Props) {
         super(props);
 
@@ -51,17 +54,29 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     componentWillMount() {
+        this._mounted = true;
         this.init(this.props)
+    }
+
+    componentWillUnmount() {
+        this._mounted = false;
     }
 
     init(props: Props) {
         getDeleteConfirmationData(props.selectionKey, props.rowId ? [props.rowId] : undefined)
             .then((confirmationData) => {
-               this.setState(() => ({isLoading: false, confirmationData}));
+                if (this._mounted) {
+                    this.setState(() => ({isLoading: false, confirmationData}));
+                }
             })
             .catch((reason) => {
-                console.error("There was a problem retrieving the delete confirmation data", reason);
-                this.setState(() => ({error: "There was a problem retrieving the delete confirmation data."}))
+                console.error("There was a problem retrieving the delete confirmation data.", reason);
+                if (this._mounted) {
+                    this.setState(() => ({
+                        isLoading: false,
+                        error: "There was a problem retrieving the delete confirmation data."
+                    }));
+                }
             });
     }
 
@@ -74,6 +89,8 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
                 <ConfirmModal
                       title={"Loading confirmation data"}
                       msg={<LoadingSpinner/>}
+                      onCancel={onCancel}
+                      cancelButtonText="Cancel"
                 />
             )
         }

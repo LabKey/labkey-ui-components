@@ -18,7 +18,7 @@ import { ConfirmModal } from "@glass/base";
 import { DeleteConfirmationData } from './actions';
 
 interface Props {
-    onConfirm: () => any
+    onConfirm:  (confirmedRows: Array<any>) => any
     onCancel: () => any
     confirmationData: DeleteConfirmationData
 }
@@ -46,7 +46,6 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
         const totalNum = numCanDelete + numCannotDelete;
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
-        // let messages = [];
         let text;
         if (totalNum === 0) {
             text = "No " + nounPlural + " selected for deletion."
@@ -84,8 +83,15 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         };
     }
 
+    onConfirm = () => {
+        const { onConfirm } = this.props;
+        if (onConfirm) {
+            onConfirm(this.props.confirmationData.canDelete)
+        }
+    };
+
     render() {
-        const { onConfirm, onCancel } = this.props;
+        const {onCancel } = this.props;
         const confirmProps = this.getConfirmationProperties();
         return (
             <ConfirmModal
@@ -95,7 +101,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
                         {confirmProps.message}
                     </span>
                 }
-                onConfirm={confirmProps.canDelete ? onConfirm : undefined}
+                onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
                 onCancel={onCancel}
                 confirmVariant='danger'
                 confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}

@@ -16,42 +16,42 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { SampleDeleteConfirmModal } from "../components/samples/SampleDeleteConfirmModal";
+import { SampleDeleteConfirmModalDisplay } from "../components/samples/SampleDeleteConfirmModalDisplay";
 
 import './stories.scss'
-import { SampleDeleteConfirmation } from '..';
+import { SampleDeleteConfirmModal } from '..';
 
 storiesOf('SampleDeleteConfirmModal', module)
     .add("Loading", () => {
-        return <SampleDeleteConfirmation
+        return <SampleDeleteConfirmModal
             selectionKey={'nonesuch'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
         />
     })
     .add("Cannot delete any", () => {
-        return <SampleDeleteConfirmation
+        return <SampleDeleteConfirmModal
             selectionKey={'deleteNone'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
             />
     })
     .add("Can delete one", () => {
-        return <SampleDeleteConfirmation
+        return <SampleDeleteConfirmModal
             selectionKey={'deleteOne'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
         />
     })
     .add("Can delete all", () => {
-        return <SampleDeleteConfirmation
+        return <SampleDeleteConfirmModal
             selectionKey={'deleteAll'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
         />
     })
     .add("Can delete some", () => {
-        return <SampleDeleteConfirmation
+        return <SampleDeleteConfirmModal
             selectionKey={'deleteSome'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}

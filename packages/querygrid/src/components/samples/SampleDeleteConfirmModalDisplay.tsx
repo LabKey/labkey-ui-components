@@ -66,7 +66,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         else {
             text = "You've selected " + totalNum + " " + totalNoun + " but only " + numCanDelete + " can be deleted.  ";
             text += numCannotDelete + " " + cannotDeleteNoun + " cannot be deleted because ";
-            text += (numCannotDelete === 1 ? " it has ": " they have ") + "dependencies."
+            text += (numCannotDelete === 1 ? " it has ": " they have ") + "derived sample or assay data dependencies."
         }
         const message = (
             <span>

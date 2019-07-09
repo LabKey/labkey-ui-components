@@ -208,12 +208,21 @@ export interface DeleteConfirmationData {
     cannotDelete: Array<any>
 }
 
-export function getDeleteConfirmationData(selectionKey: string, rowIds: Array<string>) : Promise<DeleteConfirmationData> {
+export function getDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
     return new Promise((resolve, reject) => {
+       let params;
+       if (selectionKey) {
+           params = {
+               dataRegionSelectionKey: selectionKey
+           }
+       }
+       else {
+           params = {
+               rowIds
+           }
+       }
        return Ajax.request({
-           url: buildURL('experiment', "getMaterialDeleteConfirmationData.api", {
-                dataRegionSelectionKey: selectionKey
-           }),
+           url: buildURL('experiment', "getMaterialDeleteConfirmationData.api", params),
            method: "GET",
            success: Utils.getCallbackWrapper((response) => {
                if (response.success) {

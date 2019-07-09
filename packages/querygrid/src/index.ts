@@ -27,7 +27,8 @@ import {
     addColumns,
     changeColumn,
     removeColumn,
-    searchUsingIndex
+    searchUsingIndex,
+    createQueryGridModelFilteredBySample
 } from './actions'
 import {
     getEditorModel,
@@ -179,6 +180,7 @@ export {
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
+    createQueryGridModelFilteredBySample,
 
     // search-related
     SearchResultsModel,

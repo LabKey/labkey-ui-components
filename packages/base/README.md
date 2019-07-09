@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version ???
 *Released*: ???
-* Export misc assay models and date utility functions for Biologics usages (AssayDomainTypes, AssayLink, AssayUploadTabs, getDateFormat)
+* Export misc assay models and date utility functions for Biologics usages (AssayDomainTypes, AssayLink, AssayUploadTabs, getDateFormat, isSampleLookup)
 * Port recent changes to glass components from Biologics dev and bug fixes (SubMenuItem popover key, AssayDefinitionModel functions for getting sample columns, add WhereFilterType) 
 
 ### version 0.8.0

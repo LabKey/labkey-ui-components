@@ -1641,7 +1641,7 @@ export class AssayDefinitionModel extends Record({
     }
 }
 
-function isSampleLookup(column: QueryColumn) {
+export function isSampleLookup(column: QueryColumn) {
     /**
      * 35881: Ensure that a column is a valid lookup to one of the following
      * - exp.Materials

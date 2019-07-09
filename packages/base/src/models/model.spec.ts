@@ -234,15 +234,15 @@ describe("AssayDefinitionModel", () => {
         expect(nonSampleColumn).toBe(null);
    });
 
-   test("with getSampleColumnLookup()", () => {
+   test("with getSampleColumn()", () => {
         const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
-        const sampleColumn = modelWithSampleId.getSampleColumnLookup();
-        expect(sampleColumn).toBe('SampleID');
+        const sampleColumn = modelWithSampleId.getSampleColumn();
+        expect(sampleColumn.column.name).toBe('SampleID');
    });
 
-   test("without getSampleColumnLookup()", () => {
+   test("without getSampleColumn()", () => {
         const modelWithout = AssayDefinitionModel.create(assayDefNoSampleIdJSON);
-        const nonSampleColumn = modelWithout.getSampleColumnLookup();
+        const nonSampleColumn = modelWithout.getSampleColumn();
         expect(nonSampleColumn).toBe(null);
    });
 

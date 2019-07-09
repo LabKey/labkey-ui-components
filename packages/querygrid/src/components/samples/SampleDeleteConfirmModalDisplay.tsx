@@ -68,12 +68,12 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
             text += numCannotDelete + " " + cannotDeleteNoun + " cannot be deleted because ";
             text += (numCannotDelete === 1 ? " it has ": " they have ") + "dependencies."
         }
-        let message = (
-            <>
+        const message = (
+            <span>
                 {text}
                 {numCannotDelete > 0 && <>&nbsp;(<a target='_blank' href={LABKEY.helpLinkPrefix + "viewSampleSets"}>more info</a>)</>}
-                {numCanDelete > 0 && <><br/><br/><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</>}
-            </>
+                {numCanDelete > 0 && <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</p>}
+            </span>
         );
 
         return {
@@ -96,11 +96,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         return (
             <ConfirmModal
                 title={confirmProps.title}
-                msg={
-                    <span>
-                        {confirmProps.message}
-                    </span>
-                }
+                msg={confirmProps.message}
                 onConfirm={confirmProps.canDelete ? this.onConfirm : undefined}
                 onCancel={onCancel}
                 confirmVariant='danger'

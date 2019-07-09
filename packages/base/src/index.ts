@@ -94,7 +94,7 @@ import { createNotification } from './components/notifications/actions'
 import { dismissNotifications } from './components/notifications/global'
 import { initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/ConfirmModal'
-import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
+import { datePlaceholder, getUnFormattedNumber, getDateFormat } from './utils/Date';
 import { Theme, SVGIcon } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
 import {
@@ -213,6 +213,7 @@ export {
 
     // date and format functions
     datePlaceholder,
+    getDateFormat,
     getUnFormattedNumber,
 
     // images

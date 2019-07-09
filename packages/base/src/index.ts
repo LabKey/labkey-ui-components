@@ -40,8 +40,7 @@ import {
     SchemaQuery,
     User,
     ViewInfo,
-    InferDomainResponse,
-    isSampleLookup
+    InferDomainResponse
 } from './models/model'
 import {
     applyDevTools,
@@ -244,7 +243,6 @@ export {
     similaritySortFactory,
     unorderedEqual,
     valueIsEmpty,
-    isSampleLookup,
 
     // url functions
     buildURL,

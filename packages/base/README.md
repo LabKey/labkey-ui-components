@@ -4,6 +4,11 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Port recent changes to glass components from Biologics dev and bug fixes 
+* Export misc assay models and date utility functions for Biologics usages
+
 ### version 0.8.0
 *Released*: 8 July 2019
 * Add DesignSampleSetPermission to PermissionTypes

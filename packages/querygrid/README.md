@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Issue 37915: add asterisk to required Name field in sample set details panel
+* Port createQueryGridModelFilteredBySample from Biologics
+
 ### version 0.8.0
 *Released*: 8 July 2019
 * Add createSampleSet, updateSampleSet, and deleteSampleSet functions

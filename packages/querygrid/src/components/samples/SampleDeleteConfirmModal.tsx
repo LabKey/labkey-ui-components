@@ -14,55 +14,91 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Map } from 'immutable'
-import { buildURL, ConfirmModal } from "@glass/base";
+import { ConfirmModal } from "@glass/base";
+import { DeleteConfirmationData } from './actions';
 
 interface Props {
-    numSamples: number
     onConfirm: () => any
     onCancel: () => any
-    showDependenciesLink: boolean
-    rowId?: string
-    selectionKey?: string
+    confirmationData: DeleteConfirmationData
 }
 
+/**
+ * Displays the modal with a message about how many samples can and cannot be deleted.
+ * Note that the main reason this is a separate component is for testability.  When encompassed
+ * within SampleDeleteConfirmation, the jest tests do not render the component fully enough to test
+ * different confirmation data scenarios.
+ */
 export class SampleDeleteConfirmModal extends React.Component<Props, any> {
 
-    static defaultProps = {
-        showDependenciesLink: false
-    };
+    getConfirmationProperties() : {message: any, title: string, canDelete: boolean}{
+
+        const { confirmationData } = this.props;
+
+        if (!confirmationData)
+            return undefined;
+
+        const nounSingular = "sample";
+        const nounPlural = "samples";
+        const numCanDelete = confirmationData.canDelete.length;
+        const numCannotDelete = confirmationData.cannotDelete.length;
+        const canDeleteNoun = numCanDelete === 1 ? nounSingular : nounPlural;
+        const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
+        const totalNum = numCanDelete + numCannotDelete;
+        const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
+        // let messages = [];
+        let text;
+        if (totalNum === 0) {
+            text = "No " + nounPlural + " selected for deletion."
+        }
+        else if (numCannotDelete === 0)  {
+            text = totalNum === 1 ? "The selected "  : (totalNum === 2 ? "Both " : "All " + totalNum + " ");
+            text += totalNoun + " will be permanently deleted."
+        }
+        else if (numCanDelete === 0) {
+            if (totalNum === 1) {
+                text = "The " + totalNoun + " you've selected cannot be deleted because it has dependencies.  ";
+            } else {
+                text = (numCannotDelete === 2) ? "Neither of" : "None of";
+                text += " the " + totalNum + " " + totalNoun + " you've selected can be deleted";
+                text += " because they have dependencies.";
+            }
+        }
+        else {
+            text = "You've selected " + totalNum + " " + totalNoun + " but only " + numCanDelete + " can be deleted.  ";
+            text += numCannotDelete + " " + cannotDeleteNoun + " cannot be deleted because ";
+            text += (numCannotDelete === 1 ? " it has ": " they have ") + "dependencies."
+        }
+        let message = (
+            <>
+                {text}
+                {numCannotDelete > 0 && <>&nbsp;(<a target='_blank' href={LABKEY.helpLinkPrefix + "viewSampleSets"}>more info</a>)</>}
+                {numCanDelete > 0 && <><br/><br/><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</>}
+            </>
+        );
+        return {
+            message: message,
+            title: numCanDelete > 0 ? "Permanently delete " + numCanDelete + " " + canDeleteNoun + "?" : "No " + nounPlural + " can be deleted",
+            canDelete: numCanDelete > 0
+        };
+    }
 
     render() {
-        const { numSamples, onConfirm, onCancel, showDependenciesLink, rowId, selectionKey } = this.props;
-        const msgPrefix = numSamples === 1 ? 'The sample and its' : 'All ' + numSamples + ' samples and their';
-
-        let dependencies = <>dependencies</>;
-        if (showDependenciesLink) {
-            let params = Map<string, string>();
-            if (rowId) {
-                params = params.set('singleObjectRowId', rowId);
-            }
-            if (selectionKey) {
-                params = params.set('dataRegionSelectionKey', selectionKey);
-            }
-            dependencies = <a href={buildURL('experiment', 'deleteMaterialByRowId', params.toJS())}>dependencies</a>;
-        }
-
+        const { onConfirm, onCancel } = this.props;
+        const confirmProps = this.getConfirmationProperties();
         return (
             <ConfirmModal
-                title={'Permanently delete ' + numSamples + ' sample' + (numSamples === 1 ? '' : 's') + '?'}
+                title={confirmProps.title}
                 msg={
                     <span>
-                        {msgPrefix} {dependencies} will be permanently deleted.&nbsp;
-                        <strong>Deletion cannot be undone.</strong>&nbsp;
-                        Do you want to proceed?
+                        {confirmProps.message}
                     </span>
                 }
-                onConfirm={onConfirm}
+                onConfirm={confirmProps.canDelete ? onConfirm : undefined}
                 onCancel={onCancel}
                 confirmVariant='danger'
-                confirmButtonText='Yes, Delete'
-                cancelButtonText='Cancel'
+                confirmButtonText={confirmProps.canDelete ? 'Yes, Delete' : undefined}
+                cancelButtonText={confirmProps.canDelete ? 'Cancel' : 'Dismiss'}
             />
         )
     }

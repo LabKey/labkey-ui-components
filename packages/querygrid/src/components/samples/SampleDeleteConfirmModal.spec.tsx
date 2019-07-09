@@ -20,54 +20,141 @@ import { SampleDeleteConfirmModal } from "./SampleDeleteConfirmModal";
 
 describe("<SampleDeleteConfirmModal/>", () => {
 
-    test("numSamples of 1", () => {
+    test("Can delete 1", () => {
         const component = (
             <SampleDeleteConfirmModal
-                numSamples={1}
+                confirmationData = {{
+                    "canDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                     } ],
+                    "cannotDelete" : [  ]
+                }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
             />
         );
-
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-content').text().indexOf('samples')).toBe(-1);
-        expect(wrapper.find('.modal-title').text().indexOf('1 sample')).toBeGreaterThan(-1);
-        expect(wrapper.find('.modal-body').text().indexOf('The sample and its')).toBeGreaterThan(-1);
-        expect(wrapper.find('.modal-body').find('a')).toHaveLength(0);
-        expect(wrapper.find('.modal-footer').find('button')).toHaveLength(2);
-        wrapper.unmount();
+        expect(wrapper.find(".modal-title").text()).toBe("Permanently delete 1 sample?");
+        expect(wrapper.find(".modal-body").text().indexOf("The selected sample will be permanently deleted.")).toBeGreaterThan(-1);
     });
 
-    test("numSamples of > 1", () => {
+    test ("Can delete all", () => {
         const component = (
             <SampleDeleteConfirmModal
-                numSamples={2}
+                confirmationData={{
+                    "canDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                    }, {
+                        "Name" : "D-3",
+                        "RowId" : 352
+                    }, {
+                        "Name" : "D-4",
+                        "RowId": 5
+                    }],
+                    "cannotDelete" : [  ]
+                }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
             />
         );
-
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text().indexOf('2 samples')).toBeGreaterThan(-1);
-        expect(wrapper.find('.modal-body').text().indexOf('All 2 samples and their')).toBeGreaterThan(-1);
-        expect(wrapper.find('.modal-body').find('a')).toHaveLength(0);
-        expect(wrapper.find('.modal-footer').find('button')).toHaveLength(2);
-        wrapper.unmount();
+        expect(wrapper.find('.modal-title').text()).toBe("Permanently delete 3 samples?");
+        expect(wrapper.find('.modal-body').text().indexOf("All 3 samples will be permanently deleted.")).toBeGreaterThan(-1);
     });
 
-    test("showDependenciesLink prop", () => {
+    test("Can delete some", () => {
         const component = (
             <SampleDeleteConfirmModal
-                numSamples={1}
-                showDependenciesLink={true}
+                confirmationData={{
+                    "canDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                    }, {
+                        "Name" : "D-3",
+                        "RowId" : 352
+                    }, ],
+                    "cannotDelete" : [ {
+                        "Name" : "D-4",
+                        "RowId": 5
+                    } ]
+                }}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
             />
         );
-
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-body').find('a')).toHaveLength(1);
-        wrapper.unmount();
+
+        expect(wrapper.find('.modal-title').text()).toBe("Permanently delete 2 samples?");
+        expect(wrapper.find('.modal-body').text().indexOf("selected 3 samples but only 2 can be deleted.")).toBeGreaterThan(-1);
+        expect(wrapper.find('.modal-body').text().indexOf("1 sample cannot be deleted")).toBeGreaterThan(-1);
+    });
+
+    test("Cannot delete any", () => {
+        const component = (
+            <SampleDeleteConfirmModal
+                confirmationData={ {
+                    "canDelete" : [  ],
+                    "cannotDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                    }, {
+                        "Name" : "D-3",
+                        "RowId" : 352
+                    }, {
+                        "Name" : "D-4",
+                        "RowId": 5
+                    } ]
+                }}
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+            />
+        );
+        const wrapper = mount(component);
+        expect(wrapper.find('.modal-title').text()).toBe("No samples can be deleted");
+        expect(wrapper.find('.modal-body').text().indexOf("None of the 3 samples you've selected can be deleted")).toBeGreaterThan(-1);
+    });
+
+    test("Cannot delete two", () => {
+        const component = (
+            <SampleDeleteConfirmModal
+                confirmationData={ {
+                    "canDelete" : [  ],
+                    "cannotDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                    }, {
+                        "Name" : "D-3",
+                        "RowId": 44
+                    } ]
+                }}
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+            />
+        );
+        const wrapper = mount(component);
+        expect(wrapper.find('.modal-title').text()).toBe("No samples can be deleted");
+        expect(wrapper.find('.modal-body').text().indexOf("Neither of the 2 samples you've selected can be deleted")).toBeGreaterThan(-1);
+    });
+
+    test("Cannot delete one", () => {
+        const component = (
+            <SampleDeleteConfirmModal
+                confirmationData={ {
+                    "canDelete" : [  ],
+                    "cannotDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                    } ]
+                }}
+                onCancel={jest.fn()}
+                onConfirm={jest.fn()}
+            />
+        );
+        const wrapper = mount(component);
+        expect(wrapper.find('.modal-title').text()).toBe("No samples can be deleted");
+        expect(wrapper.find('.modal-body').text().indexOf("The sample you've selected cannot be deleted")).toBeGreaterThan(-1);
     });
 
     test("button clicks", () => {
@@ -75,7 +162,22 @@ describe("<SampleDeleteConfirmModal/>", () => {
         const onCancelFn = jest.fn();
         const component = (
             <SampleDeleteConfirmModal
-                numSamples={1}
+                confirmationData={ {
+                    "canDelete" : [ {
+                        "Name": "D-4",
+                        "RowId": 441
+                    } ],
+                    "cannotDelete" : [ {
+                        "Name" : "D-2.3.1",
+                        "RowId" : 351
+                    }, {
+                        "Name" : "D-3",
+                        "RowId" : 352
+                    }, {
+                        "Name" : "D-4",
+                        "RowId": 5
+                    } ]
+                }}
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
             />

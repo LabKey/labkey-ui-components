@@ -79,7 +79,7 @@ import { QueriesListing } from './components/listing/QueriesListing'
 import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
-import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
+import { SampleDeleteConfirmation } from './components/samples/SampleDeleteConfirmation'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 import { deleteSampleSet } from './components/samples/actions'
@@ -175,7 +175,7 @@ export {
 
     // samples-related
     SampleInsertPanel,
-    SampleDeleteConfirmModal,
+    SampleDeleteConfirmation,
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,

@@ -202,3 +202,30 @@ export function deleteSampleSet(rowId: number): Promise<any> {
         });
     });
 }
+
+export interface DeleteConfirmationData {
+    canDelete: Array<any>
+    cannotDelete: Array<any>
+}
+
+export function getDeleteConfirmationData(selectionKey: string, rowIds: Array<string>) : Promise<DeleteConfirmationData> {
+    return new Promise((resolve, reject) => {
+       return Ajax.request({
+           url: buildURL('experiment', "getMaterialDeleteConfirmationData.api", {
+                dataRegionSelectionKey: selectionKey
+           }),
+           method: "GET",
+           success: Utils.getCallbackWrapper((response) => {
+               if (response.success) {
+                   resolve(response.data);
+               }
+               else {
+                   reject(response.exception);
+               }
+           }),
+           failure: Utils.getCallbackWrapper((response) => {
+               reject(response.exception);
+           })
+       })
+    });
+}

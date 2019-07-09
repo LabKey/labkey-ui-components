@@ -1415,13 +1415,13 @@ export class AssayProtocolModel extends Record({
     }
 }
 
-enum AssayDomainTypes {
+export enum AssayDomainTypes {
     BATCH = 'Batch',
     RUN = 'Run',
     RESULT = 'Result',
 }
 
-enum AssayLink {
+export enum AssayLink {
     BATCHES = 'batches',
     BEGIN = 'begin',
     DESIGN_COPY = 'designCopy',

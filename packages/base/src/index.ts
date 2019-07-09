@@ -19,6 +19,9 @@ import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralA
 import {
     AssayProtocolModel,
     AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayLink,
+    AssayUploadTabs,
     Container,
     IGridLoader,
     IGridResponse,
@@ -138,6 +141,9 @@ export {
     AppURL,
     AssayProtocolModel,
     AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayLink,
+    AssayUploadTabs,
     Container,
     User,
     QueryColumn,
@@ -250,5 +256,4 @@ export {
     applyDevTools,
     devToolsActive,
     toggleDevTools
-
 }

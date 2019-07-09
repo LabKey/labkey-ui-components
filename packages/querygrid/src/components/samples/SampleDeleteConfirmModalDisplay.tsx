@@ -46,6 +46,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         const cannotDeleteNoun = numCannotDelete === 1 ? nounSingular : nounPlural;
         const totalNum = numCanDelete + numCannotDelete;
         const totalNoun = totalNum === 1 ? nounSingular : nounPlural;
+        const dependencyText = "derived sample or assay data dependencies";
         let text;
         if (totalNum === 0) {
             text = "No " + nounPlural + " selected for deletion."
@@ -56,17 +57,17 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         }
         else if (numCanDelete === 0) {
             if (totalNum === 1) {
-                text = "The " + totalNoun + " you've selected cannot be deleted because it has dependencies.  ";
+                text = "The " + totalNoun + " you've selected cannot be deleted because it has " + dependencyText + ".  ";
             } else {
                 text = (numCannotDelete === 2) ? "Neither of" : "None of";
                 text += " the " + totalNum + " " + totalNoun + " you've selected can be deleted";
-                text += " because they have dependencies.";
+                text += " because they have " + dependencyText + ".";
             }
         }
         else {
             text = "You've selected " + totalNum + " " + totalNoun + " but only " + numCanDelete + " can be deleted.  ";
             text += numCannotDelete + " " + cannotDeleteNoun + " cannot be deleted because ";
-            text += (numCannotDelete === 1 ? " it has ": " they have ") + "derived sample or assay data dependencies."
+            text += (numCannotDelete === 1 ? " it has ": " they have ") + dependencyText + "."
         }
         const message = (
             <span>

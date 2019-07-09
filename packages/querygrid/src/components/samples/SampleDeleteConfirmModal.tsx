@@ -19,7 +19,7 @@ import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actio
 import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 
 interface Props {
-    onConfirm: (confirmedRows: Array<any>) => any
+    onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
     rowId?: string
     selectionKey?: string

@@ -18,7 +18,7 @@ import { ConfirmModal } from "@glass/base";
 import { DeleteConfirmationData } from './actions';
 
 interface Props {
-    onConfirm:  (confirmedRows: Array<any>) => any
+    onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
     confirmationData: DeleteConfirmationData
 }
@@ -87,7 +87,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
     onConfirm = () => {
         const { onConfirm } = this.props;
         if (onConfirm) {
-            onConfirm(this.props.confirmationData.canDelete)
+            onConfirm(this.props.confirmationData.canDelete, this.props.confirmationData.cannotDelete)
         }
     };
 

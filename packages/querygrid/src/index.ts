@@ -27,7 +27,8 @@ import {
     addColumns,
     changeColumn,
     removeColumn,
-    searchUsingIndex
+    searchUsingIndex,
+    setSelected
 } from './actions'
 import {
     getEditorModel,
@@ -82,10 +83,9 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
-import { deleteSampleSet } from './components/samples/actions'
+import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
-import { getSampleDeleteConfirmationData } from './components/samples/actions'
 
 export {
     // global state functions
@@ -123,6 +123,7 @@ export {
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
     getSampleDeleteConfirmationData,
+    setSelected,
 
     // editable grid related items
     addColumns,

@@ -753,7 +753,7 @@ function clearSelected(key: string): Promise<ISelectResponse> {
     });
 }
 
-function setSelected(key: string, checked: boolean, ids: Array<string> | string): Promise<ISelectResponse> {
+export function setSelected(key: string, checked: boolean, ids: Array<string> | string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'setSelected.api', {

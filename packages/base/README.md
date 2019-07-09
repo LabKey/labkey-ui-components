@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.8.1
+*Released*: ???
+* Modify ConfirmModal properties so most are optional
+
 ### version 0.8.0
 *Released*: 8 July 2019
 * Add DesignSampleSetPermission to PermissionTypes

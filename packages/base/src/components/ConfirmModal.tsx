@@ -20,11 +20,11 @@ interface Props {
     show: boolean
     title: string
     msg: any
-    onConfirm: (any) => void
-    onCancel: (any) => void
-    confirmButtonText: string
-    cancelButtonText: string
-    confirmVariant: string
+    onConfirm?: (any) => void
+    onCancel?: (any) => void
+    confirmButtonText?: string
+    cancelButtonText?: string
+    confirmVariant?: string
 }
 
 export class ConfirmModal extends React.PureComponent<Props, any> {
@@ -32,7 +32,8 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
         show: true,
         title: 'Confirm',
         confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
+        cancelButtonText: 'No',
+        confirmVariant: 'danger'
     };
 
     render() {
@@ -49,8 +50,8 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button bsClass='btn btn-light' onClick={onCancel}>{cancelButtonText}</Button>
-                    <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>
+                    {onCancel && <Button bsClass='pull-left btn btn-light' onClick={onCancel}>{cancelButtonText}</Button>}
+                    {onConfirm && <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>}
                 </Modal.Footer>
             </Modal>
         )

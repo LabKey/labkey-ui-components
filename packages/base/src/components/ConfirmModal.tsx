@@ -15,6 +15,7 @@
  */
 import * as React from "react";
 import {Button, Modal} from "react-bootstrap";
+import classNames from 'classnames';
 
 interface Props {
     show: boolean
@@ -38,6 +39,11 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
 
     render() {
         const { show, title, msg, onConfirm, onCancel, confirmButtonText, cancelButtonText, confirmVariant } = this.props;
+        let cancelBtnClass = classNames(
+            'btn btn-default', {
+                'pull-left': onConfirm !== undefined
+            }
+        );
 
         return (
             <Modal show={show} onHide={onCancel}>
@@ -50,7 +56,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {onCancel && <Button bsClass='pull-left btn btn-default' onClick={onCancel}>{cancelButtonText}</Button>}
+                    {onCancel && <Button bsClass={cancelBtnClass} onClick={onCancel}>{cancelButtonText}</Button>}
                     {onConfirm && <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>}
                 </Modal.Footer>
             </Modal>

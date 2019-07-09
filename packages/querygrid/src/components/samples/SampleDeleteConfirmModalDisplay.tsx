@@ -76,9 +76,10 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
                 {numCanDelete > 0 && <><br/><br/><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</>}
             </>
         );
+
         return {
             message: message,
-            title: numCanDelete > 0 ? "Permanently delete " + numCanDelete + " " + canDeleteNoun + "?" : "No " + nounPlural + " can be deleted",
+            title: numCanDelete > 0 ? "Permanently delete " + numCanDelete + " " + canDeleteNoun + "?" : (totalNum === 1 ? "Cannot delete " + nounSingular : "No " + nounPlural + " can be deleted"),
             canDelete: numCanDelete > 0
         };
     }

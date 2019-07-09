@@ -153,7 +153,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
             />
         );
         const wrapper = mount(component);
-        expect(wrapper.find('.modal-title').text()).toBe("No samples can be deleted");
+        expect(wrapper.find('.modal-title').text()).toBe("Cannot delete sample");
         expect(wrapper.find('.modal-body').text().indexOf("The sample you've selected cannot be deleted")).toBeGreaterThan(-1);
     });
 

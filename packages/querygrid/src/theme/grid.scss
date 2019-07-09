@@ -184,6 +184,10 @@ $table-cell-selection-bg-color: #EDF3FF;
 .table-cellular {
   border-collapse: collapse;
 
+  & > thead > tr > th {
+    padding: 5px;
+  }
+
   & > tbody > tr > td {
     border: 1px solid #dadada;
     line-height: 1;
@@ -199,6 +203,10 @@ $table-cell-selection-bg-color: #EDF3FF;
         position: absolute;
         top: 0; bottom: 0; right: 0; left: 0;
         margin-top: 6px;
+      }
+
+      .cellular-count-static-content {
+        text-align: center;
       }
     }
 

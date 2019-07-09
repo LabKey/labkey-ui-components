@@ -28,7 +28,8 @@ import {
     GridColumn,
     LoadingSpinner,
     QueryColumn,
-    QueryGridModel
+    QueryGridModel,
+    capitalizeFirstChar
 } from '@glass/base'
 
 import {
@@ -48,19 +49,18 @@ import { Cell } from './Cell'
 import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
 import { headerSelectionCell } from "../../renderers";
 import { QueryInfoForm, QueryInfoFormProps } from "../forms/QueryInfoForm";
-import { MAX_ADDED_EDITABLE_GRID_ROWS } from "../../constants";
+import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
-    showHeader: false,
     tableCell: true,
-    title: '',
+    title: 'Row',
     width: 45,
     // style cast to "any" type due to @types/react@16.3.14 switch to csstype package usage which does not declare
     // "textAlign" property correctly for <td> elements.
     cell: (d,r,c,rn) => (
         <td className="cellular-count" key={c.index} style={{textAlign: c.align || 'left'} as any}>
-            <div className="cellular-count-content">{rn+1}</div>
+            <div className="cellular-count-static-content">{rn+1}</div>
         </td>
     )
 });
@@ -100,12 +100,18 @@ export interface EditableGridProps {
     allowAdd?: boolean
     allowBulkUpdate?: boolean
     allowBulkRemove?: boolean
+    allowFieldDisable?: boolean
+    bordered?: boolean
     bulkUpdateProps?: Partial<QueryInfoFormProps>
+    condensed?: boolean
     addControlProps?: Partial<AddRowsControlProps>
     allowRemove?: boolean
     bulkUpdateText?: string
     columnMetadata?: Map<string, EditableColumnMetadata>
     disabled?: boolean
+    forUpdate?: boolean
+    readOnlyColumns?: List<string>
+    striped?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
     isSubmitting?: boolean
@@ -129,11 +135,14 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             nounPlural: "Rows",
             nounSingular: "Row"
         },
+        bordered: false,
         bulkUpdateText: "Bulk Update",
         columnMetadata: Map<string, EditableColumnMetadata>(),
+        condensed: false,
         disabled: false,
         isSubmitting: false,
-        initialEmptyRowCount: 1
+        initialEmptyRowCount: 1,
+        striped: false
     };
 
     private maskDelay: number;
@@ -195,6 +204,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         if (onRowCountChange) {
             onRowCountChange();
         }
+        const editorModel = this.getEditorModel();
+        if (editorModel.rowCount === 0) {
+            addRows(this.getModel(this.props), this.props.initialEmptyRowCount);
+        }
     }
 
     componentDidMount() {
@@ -246,6 +259,16 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }
     }
 
+    getColumns() : List<QueryColumn> {
+        const model = this.getModel(this.props);
+        if (this.props.forUpdate) {
+            return model.getUpdateColumns(this.props.readOnlyColumns);
+        }
+        else {
+            return model.getInsertColumns();
+        }
+    }
+
     generateColumns(): List<GridColumn> {
         const { allowBulkRemove, allowRemove, columnMetadata } = this.props;
         const model = this.getModel(this.props);
@@ -266,7 +289,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             gridColumns = gridColumns.push(selColumn);
         }
         gridColumns = gridColumns.push(
-            allowBulkRemove || allowRemove ? new GridColumn({
+            allowRemove ? new GridColumn({
                 index: GRID_EDIT_INDEX,
                 tableCell: true,
                 title: 'Row',
@@ -287,7 +310,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             }) : COUNT_COL
         );
 
-        model.getInsertColumns().forEach(qCol => {
+        this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
                 align: qCol.align,
                 cell: inputCellFactory(model.getId(), allowBulkRemove, columnMetadata.get(qCol.fieldKey)),
@@ -458,7 +481,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 {allowBulkUpdate && (
                     <div className={haveLeftControls? "col-sm-8" : "col-xs-12"}>
                         <div className="pull-right control-right">
-                            <Button onClick={this.toggleBulkUpdate} >
+                            <Button onClick={this.toggleBulkUpdate}>
                                 {bulkUpdateText}
                             </Button>
                         </div>
@@ -496,6 +519,11 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 });
             });
         }
+        return new Promise((resolve, reject) => {
+            reject({
+                exception: "Quantity unknown.  No " + nounPlural + " added."
+            })
+        })
     }
 
     renderBulkUpdate() {
@@ -506,11 +534,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return (
             showBulkUpdate &&
             <QueryInfoForm
-                onSubmit={this.bulkAdd}
+                allowFieldDisable={this.props.allowFieldDisable}
+                onSubmitForEdit={this.bulkAdd}
                 asModal={true}
                 checkRequiredFields={false}
-                submitText={`Add ${this.props.addControlProps.nounPlural} to grid`}
-                maxCount={MAX_ADDED_EDITABLE_GRID_ROWS - model.data.size}
+                submitForEditText={`Add ${capitalizeFirstChar(this.props.addControlProps.nounPlural)} to Grid`}
+                maxCount={MAX_EDITABLE_GRID_ROWS - model.data.size}
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
                 onSuccess={this.toggleBulkUpdate}
@@ -532,7 +561,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     render() {
-        const { addControlProps, allowAdd, isSubmitting } = this.props;
+        const { addControlProps, allowAdd, bordered, condensed, isSubmitting, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {
@@ -548,15 +577,16 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                          onMouseUp={this.onMouseUp}
                          ref={this.wrapper}>
                         <Grid
+                            bordered={bordered}
                             calcWidths={true}
                             cellular={true}
                             columns={this.generateColumns()}
-                            condensed={false}
+                            condensed={condensed}
                             data={model.getDataEdit()}
                             headerCell={this.headerCell}
                             responsive={false}
                             rowKey={GRID_EDIT_INDEX}
-                            striped={false}
+                            striped={striped}
                             tableRef={this.table} />
                     </div>
                     {allowAdd && (this.getControlsPlacement() != 'top') && (

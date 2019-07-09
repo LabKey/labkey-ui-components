@@ -16,25 +16,38 @@
 import * as React from 'react';
 import { RefObject } from 'react';
 import classNames from 'classnames';
-import { LabelOverlay } from "../LabelOverlay";
+import { FieldLabel } from '../FieldLabel'
 import { cancelEvent } from "../../../events";
+import { QueryColumn } from '@glass/base';
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
-interface FileInputState {
+interface FileInputState extends DisableableInputState {
     isHover: boolean,
     file?: File,
     error: string,
 }
 
-// TODO: fix props types to be anything other than any.
-export class FileInput extends React.Component<any, FileInputState> {
+interface FileInputProps extends DisableableInputProps {
+    changeDebounceInterval: number,
+    elementWrapperClassName: string,
+    labelClassName: string,
+    showLabel: boolean,
+    key: any
+    value: any
+    name?: string
+    onChange: any
+    queryColumn: QueryColumn
+}
+
+export class FileInput extends DisableableInput<FileInputProps, FileInputState> {
     fileInput: RefObject<HTMLInputElement>;
 
-    static defaultProps = {
+    static defaultProps = {...DisableableInput.defaultProps, ...{
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
         labelClassName: 'control-label text-left',
-        showLabel: true,
-    };
+        showLabel: true
+    }};
 
     constructor(props) {
         super(props);
@@ -44,11 +57,14 @@ export class FileInput extends React.Component<any, FileInputState> {
         this.onDragLeave = this.onDragLeave.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.onRemove = this.onRemove.bind(this);
+        this.toggleDisabled = this.toggleDisabled.bind(this);
+
         this.fileInput = React.createRef<HTMLInputElement>();
         this.state = {
             isHover: false,
             file: null,
             error: '',
+            isDisabled: props.initiallyDisabled
         }
     }
 
@@ -119,9 +135,11 @@ export class FileInput extends React.Component<any, FileInputState> {
     render() {
         const {
             queryColumn,
+            allowDisable
         } = this.props;
         const {
             isHover,
+            isDisabled,
             file,
         } = this.state;
 
@@ -134,6 +152,7 @@ export class FileInput extends React.Component<any, FileInputState> {
             body = (
                 <>
                     <input
+                        disabled={this.state.isDisabled}
                         type="file"
                         className="file-upload--input" // This class makes the file input hidden
                         name={name}
@@ -142,6 +161,7 @@ export class FileInput extends React.Component<any, FileInputState> {
                         onChange={this.onChange}
                         ref={this.fileInput}
                     />
+
 
                     {/* We render a label here so click and drag events propagate to the input above */}
                     <label
@@ -157,6 +177,7 @@ export class FileInput extends React.Component<any, FileInputState> {
                         <span>Select file or drag and drop here</span>
                         <span className="file-upload--error-message">{this.state.error}</span>
                     </label>
+
                 </>
             );
         } else {
@@ -176,10 +197,24 @@ export class FileInput extends React.Component<any, FileInputState> {
             );
         }
 
+        const labelOverlayProps = {
+            isFormsy: false,
+            inputId: inputId
+        };
+
         return (
             <div className="form-group row">
-                <LabelOverlay column={queryColumn} isFormsy={false} inputId={inputId}/>
-                <div className="col-sm-9">
+                <FieldLabel
+                    labelOverlayProps={labelOverlayProps}
+                    showLabel={true}
+                    showToggle={allowDisable}
+                    column={queryColumn}
+                    isDisabled = {isDisabled}
+                    toggleProps = {{
+                        onClick: this.toggleDisabled
+                    }}
+                />
+                <div className="col-md-9">
                     {body}
                 </div>
             </div>

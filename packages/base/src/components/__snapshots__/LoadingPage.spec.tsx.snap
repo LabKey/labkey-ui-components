@@ -28,7 +28,7 @@ exports[`<LoadingPage/> no props 1`] = `
   notFound={false}
 >
   <PageHeader
-    showNotifications={true}
+    showNotifications={false}
   />
   <LoadingSpinner
     msg="Loading..."

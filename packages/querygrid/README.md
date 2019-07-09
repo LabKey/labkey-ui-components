@@ -4,6 +4,31 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.8.0
+*Released*: 8 July 2019
+* Add createSampleSet, updateSampleSet, and deleteSampleSet functions
+* Add SampleSetDetailsPanel and SampleSetDeleteConfirmModal components 
+
+### version 0.7.0
+*Released*: 3 July 2019
+* For QueryInfoForm, add placeholders using queryColumn captions
+* Add optional footer for QueryInfoForm
+* Add optional second type of submit button (either submit to grid or submit to save) for QueryInfoForm
+* Expose more formatting properties for EditableGrid (bordered, condensed, striped)
+* Add readOnlyColumns property to EditableGrid so you can display a set of columns that are not editable
+* Add option to EditableGrid to show update columns instead of insert columns
+* Add styling properties to EditableGridPanel (bsStyle, className)
+* Add FieldLabel component for showing labels particularly in the QueryInfoForm
+* Add option to QueryInfoForm to show enable/disable toggle
+* Update styling of DetailEditing to be more consistent with other forms
+* Re-implement CheckboxInput to not use Checkbox from formsy-react-components
+* Add getSelectedData method for retrieving all data for the selectedIds in a QueryGridModel 
+
+
+### version 0.6.2
+*Released*: 3 July 2019
+* EditableGrid updates to only use LookupCell and initLookups for lookup queries that are public
+
 ### version 0.6.1
 *Released*: 24 June 2019
 * Issue 37773: QueryGridPanel has inconsistent padding on button groups with and without paging

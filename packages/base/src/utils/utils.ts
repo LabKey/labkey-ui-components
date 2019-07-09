@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Set } from 'immutable'
+import { List, Map, Set } from 'immutable'
 import { Utils } from '@labkey/api'
 
 import { SchemaQuery, User } from '../models/model'
@@ -284,4 +284,161 @@ export function similaritySortFactory(token: string, caseSensitive?: boolean): (
 
         return naturalSort(rawA, rawB);
     };
+}
+
+/**
+ * Performs an equality check on two arrays, returning true of the arrays are the same size
+ *
+ * @param array1
+ * @param array2
+ */
+export function unorderedEqual(array1: Array<any>, array2: Array<any>) : boolean {
+    if (array1.length !== array2.length)
+        return false;
+
+    const sortedA1 = array1.sort();
+    const sortedA2 = array2.sort();
+    for (let i = 0; i < sortedA1.length; i++) {
+        if (sortedA1[i] !== sortedA2[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Returns true if value is undefined, an empty string, or an empty array.  Otherwise returns false.
+ * @param value
+ */
+export function valueIsEmpty(value) : boolean {
+    if (!value)
+        return true;
+    if (typeof value === 'string' && value === '')
+        return true;
+    return Array.isArray(value) && value.length === 0;
+}
+
+/**
+ * Creates a JS Object, suitable for use as a fieldValues object for QueryInfoForm,
+ * mapping between field keys and values that are shared by all ids for the given data.
+ *
+ * It is assumed that the set of fields in each row of data is the same, though some fields
+ * may be empty or null.  If the field sets are different, the results returned will
+ * be as if the values were present and the same as in one of the other rows.
+ *
+ * @param data Map between ids and a map of data for the ids (i.e, a row of data for that id)
+ */
+export function getCommonDataValues(data: Map<string, any>) : any {
+    let valueMap = Map<string, any>();  // map from fields to the value shared by all rows
+    let fieldsInConflict = Set<string>();
+    let emptyFields = Set<string>(); // those fields that are empty
+    data.map((rowData, id) => {
+        // const rowData = data.get(id);
+        if (rowData) {
+            rowData.forEach((data, key) => {
+                if (data && !fieldsInConflict.has(key)) { // skip fields that are already in conflict
+                    const value = data.get('value');
+                    const currentValueEmpty = valueIsEmpty(value);
+                    const havePreviousValue = valueMap.has(key);
+                    const arrayNotEqual = Array.isArray(value) && (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
+
+                    if (!currentValueEmpty) { // non-empty value, so let's see if we have the same value
+                        if (emptyFields.contains(key)) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                        }
+                        else if (!havePreviousValue) {
+                            valueMap = valueMap.set(key, value);
+                        }
+                        if (arrayNotEqual) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                            valueMap = valueMap.delete(key);
+                        }
+                        else if (valueMap.get(key) !== value) {
+                            fieldsInConflict = fieldsInConflict.add(key);
+                            valueMap = valueMap.delete(key);
+                        }
+                    }
+                    else if (havePreviousValue) { // some row had a value, but this row does not
+                        fieldsInConflict = fieldsInConflict.add(key);
+                        valueMap = valueMap.delete(key);
+                    }
+                    else {
+                        emptyFields = emptyFields.add(key);
+                    }
+                }
+            });
+        }
+        else {
+            console.error("Unable to find data for selection id " + id);
+        }
+    });
+    return valueMap.toObject();
+}
+
+/**
+ * Constructs an array of objects (suitable for the rows parameter of updateRows) where each object contains the
+ * values that are different from the ones in originalData object as well as the primary key values for that row.
+ * If updatedValues is empty or all of the originalData values are the same as the updatedValues, returns an empty array.
+ *
+ * @param originalData a map from an id field to a Map from fieldKeys to an object with a 'value' field
+ * @param updatedValues an object mapping fieldKeys to values that are being updated
+ * @param primaryKeys the list of primary fieldKey names
+ */
+export function getUpdatedData(originalData: Map<string, any>, updatedValues: any, primaryKeys: List<string>) : Array<any> {
+    let updateValuesMap = Map<any, any>(updatedValues);
+    let updatedData = originalData.map( (originalRowMap) => {
+        return originalRowMap.reduce((m, fieldValueMap, key) => {
+            if (fieldValueMap && fieldValueMap.has('value')) {
+                if (primaryKeys.indexOf(key) > -1) {
+                    return m.set(key, fieldValueMap.get('value'));
+                }
+                else if (updateValuesMap.has(key) && updateValuesMap.get(key) !== fieldValueMap.get('value')) {
+                    return m.set(key, updateValuesMap.get(key));
+                } else {
+                    return m;
+                }
+            }
+            else
+                return m;
+        }, Map<any, any>());
+    });
+    // we want the rows that contain more than just the primaryKeys
+    return updatedData
+        .filter((rowData) => rowData.size > primaryKeys.size)
+        .map(rowData => rowData.toJS() )
+        .toArray();
+}
+
+/**
+ * Constructs an array of objects (suitable for the rows parameter of updateRows), where each object contains the
+ * values in editorRows that are different from the ones in originalGridData
+ *
+ * @param originalGridData a map from an id field to a Map from fieldKeys to values
+ * @param editorRows An array of Maps from field keys to values
+ * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
+ */
+export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string, any>>, editorRows: Array<Map<string, any>>, idField: string) : Array<any> {
+    let updatedRows = [];
+    editorRows.forEach((editedRow, index) => {
+        let id = editedRow.get(idField);
+        let originalRow = originalGridData.get(id.toString());
+        if (originalRow) {
+            const row = editedRow.reduce((row, value, key) => {
+                if ((value && !originalRow.has(key)) || originalRow.get(key) != value) {
+                    // if the value is 'undefined', it will be removed from the update rows, so in order to
+                    // erase an existing value, we set the value to null in our update data
+                    row[key] = value || null;
+                }
+                return row;
+            }, {});
+            if (!Utils.isEmptyObj(row)) {
+                row[idField] = id;
+                updatedRows.push(row)
+            }
+        }
+        else {
+            console.error("Unable to find original row for id " + id);
+        }
+    });
+    return updatedRows;
 }

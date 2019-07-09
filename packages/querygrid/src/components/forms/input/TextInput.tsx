@@ -17,9 +17,10 @@ import * as React from 'react'
 import { Input } from 'formsy-react-components'
 import { QueryColumn } from '@glass/base'
 
-import { LabelOverlay } from '../LabelOverlay'
+import { FieldLabel } from '../FieldLabel'
+import { DisableableInputState, DisableableInputProps, DisableableInput } from './DisableableInput';
 
-export interface TextInputProps {
+export interface TextInputProps extends DisableableInputProps {
     changeDebounceInterval?: number
     elementWrapperClassName?: Array<any> | string
     label?: any
@@ -35,25 +36,29 @@ export interface TextInputProps {
     value?: string
 }
 
-interface TextInputState {
+interface TextInputState extends DisableableInputState {
     didFocus?: boolean
 }
 
-export class TextInput extends React.Component<TextInputProps, TextInputState> {
-    static defaultProps = {
+export class TextInput extends DisableableInput<TextInputProps, TextInputState> {
+    static defaultProps = {...DisableableInput.defaultProps, ...{
         changeDebounceInterval: 0,
-        elementWrapperClassName: 'col-sm-9',
-        labelClassName: 'control-label text-left',
+        elementWrapperClassName: 'col-md-9 col-xs-12',
+        labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
-        startFocused: false
-    };
+        startFocused: false,
+    }};
 
     textInput: Input;
 
     constructor(props: TextInputProps) {
         super(props);
+
+        this.toggleDisabled = this.toggleDisabled.bind(this);
+
         this.state = {
-            didFocus: false
+            didFocus: false,
+            isDisabled: props.allowDisable && props.initiallyDisabled
         }
     }
 
@@ -72,18 +77,32 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
         return this.state.didFocus === nextState.didFocus;
     }
 
+    renderLabel() {
+        const { label, queryColumn, showLabel, allowDisable } = this.props;
+        const { isDisabled } = this.state;
+
+        return <FieldLabel
+            label={label}
+            showLabel={showLabel}
+            showToggle={allowDisable}
+            column={queryColumn}
+            isDisabled = {isDisabled}
+            toggleProps = {{
+                onClick: this.toggleDisabled
+            }}
+        />
+    }
+
     render() {
         const {
             changeDebounceInterval,
             elementWrapperClassName,
-            label,
             labelClassName,
             name,
             onChange,
             placeholder,
             queryColumn,
             rowClassName,
-            showLabel,
             validatePristine,
             value
         } = this.props;
@@ -107,14 +126,15 @@ export class TextInput extends React.Component<TextInputProps, TextInputState> {
 
         return (
             <Input
+                disabled={this.state.isDisabled}
                 changeDebounceInterval={changeDebounceInterval}
                 elementWrapperClassName={elementWrapperClassName}
                 id={queryColumn.name}
-                label={showLabel ? (label ? label : <LabelOverlay column={queryColumn}/>) : null}
+                label={this.renderLabel()}
                 labelClassName={labelClassName}
                 name={name ? name : queryColumn.name}
                 onChange={onChange}
-                placeholder={placeholder}
+                placeholder={placeholder || `Enter ${queryColumn.caption.toLowerCase()}`}
                 required={queryColumn.required}
                 rowClassName={rowClassName}
                 step={step}

@@ -16,6 +16,7 @@
 import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models'
 import {
     getSelected,
+    getSelectedData,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -51,10 +52,11 @@ import {
     deleteRows,
     importData
 } from './query/api'
+import { MAX_EDITABLE_GRID_ROWS } from './constants'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
+import { AppRouteResolver, AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -80,6 +82,9 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
+import { deleteSampleSet } from './components/samples/actions'
+import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
+import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
 
 export {
     // global state functions
@@ -93,6 +98,7 @@ export {
 
     // grid functions
     getSelected,
+    getSelectedData,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -120,11 +126,13 @@ export {
     addColumns,
     changeColumn,
     removeColumn,
+    MAX_EDITABLE_GRID_ROWS,
 
     // location related items
     Location,
     URLResolver,
     URLService,
+    AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,
@@ -168,6 +176,9 @@ export {
     // samples-related
     SampleInsertPanel,
     SampleDeleteConfirmModal,
+    SampleSetDetailsPanel,
+    SampleSetDeleteConfirmModal,
+    deleteSampleSet,
 
     // search-related
     SearchResultsModel,

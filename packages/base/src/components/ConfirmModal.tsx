@@ -50,7 +50,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {onCancel && <Button bsClass='pull-left btn btn-light' onClick={onCancel}>{cancelButtonText}</Button>}
+                    {onCancel && <Button bsClass='pull-left btn btn-default' onClick={onCancel}>{cancelButtonText}</Button>}
                     {onConfirm && <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>}
                 </Modal.Footer>
             </Modal>

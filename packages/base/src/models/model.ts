@@ -19,6 +19,7 @@ import { ActionURL, Filter, Utils } from '@labkey/api'
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
 import { decodePart, getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../utils/utils'
 import { AppURL } from "../url/AppURL";
+import { WHERE_FILTER_TYPE } from "../url/WhereFilterType";
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -1414,13 +1415,13 @@ export class AssayProtocolModel extends Record({
     }
 }
 
-enum AssayDomainTypes {
+export enum AssayDomainTypes {
     BATCH = 'Batch',
     RUN = 'Run',
     RESULT = 'Result',
 }
 
-enum AssayLink {
+export enum AssayLink {
     BATCHES = 'batches',
     BEGIN = 'begin',
     DESIGN_COPY = 'designCopy',
@@ -1577,43 +1578,70 @@ export class AssayDefinitionModel extends Record({
         return null;
     }
 
-
-    getSampleColumn(): ScopedSampleColumn {
+    /**
+     * get all sample lookup columns found in the result, run, and batch domains.
+     */
+    getSampleColumns(): List<ScopedSampleColumn> {
+        let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
         for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
             const column = this.getSampleColumnByDomain(domain);
 
             if (column) {
-                return {column, domain};
+                ret.push({column, domain});
             }
         }
 
-        return null;
+        return List(ret);
     }
 
     /**
-     * getSampleColumnLookup returns the string representation of the sample column relative from the Results table.
+     * get the first sample lookup column found in the result, run, or batch domain.
      */
-    getSampleColumnLookup(): string {
-        const sampleCol = this.getSampleColumn();
+    getSampleColumn(): ScopedSampleColumn {
+        const sampleColumns = this.getSampleColumns();
+        return !sampleColumns.isEmpty() ? sampleColumns.first() : null;
+    }
 
-        if (sampleCol) {
-            if (sampleCol.domain == AssayDomainTypes.RESULT) {
-                return sampleCol.column.fieldKey;
-            } else if (sampleCol.domain == AssayDomainTypes.RUN) {
-                return `Run/${sampleCol.column.fieldKey}`;
-            } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
-                return `Run/Batch/${sampleCol.column.fieldKey}`;
-            }
-
-            throw new Error("Unexpected Assay Domain Type.");
+    /**
+     * returns the FieldKey string of the sample column relative from the assay Results table.
+     */
+    sampleColumnFieldKey(sampleCol: ScopedSampleColumn): string {
+        if (sampleCol.domain == AssayDomainTypes.RESULT) {
+            return sampleCol.column.fieldKey;
+        } else if (sampleCol.domain == AssayDomainTypes.RUN) {
+            return `Run/${sampleCol.column.fieldKey}`;
+        } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
+            return `Run/Batch/${sampleCol.column.fieldKey}`;
         }
+        throw new Error("Unexpected assay domain type: " + sampleCol.domain);
+    }
 
-        return null;
+    /**
+     * returns the FieldKey string of the sample columns relative from the assay Results table.
+     */
+    getSampleColumnFieldKeys(): List<string> {
+        const sampleCols = this.getSampleColumns();
+        return List(sampleCols.map(this.sampleColumnFieldKey));
+    }
+
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string) {
+        if (sampleColumns.size == 1) {
+            // generate simple equals filter
+            let sampleColumn = sampleColumns.get(0);
+            return Filter.create(`${sampleColumn}/RowId`, value, singleFilter);
+        } else {
+            // generate an OR filter to include all sample columns
+            let whereClause = '(' + sampleColumns.map(sampleCol => {
+                let fieldKey = (sampleCol + '/RowId').replace(/\//g, '.');
+                return whereClausePart(fieldKey, value);
+            }).join(' OR ') + ')';
+            return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
+        }
     }
 }
 
-function isSampleLookup(column: QueryColumn) {
+export function isSampleLookup(column: QueryColumn) {
     /**
      * 35881: Ensure that a column is a valid lookup to one of the following
      * - exp.Materials

@@ -238,11 +238,11 @@ export function hasAllPermissions(user: User, perms: Array<string>): boolean {
     return allow;
 }
 
-function contains(s: string, token: string, caseSensitive?: boolean): boolean {
+export function contains(s: string, token: string, caseSensitive?: boolean): boolean {
     return indexOf(s, token, caseSensitive) > -1;
 }
 
-function hasPrefix(s: string, prefix: string, caseSensitive?: boolean): boolean {
+export function hasPrefix(s: string, prefix: string, caseSensitive?: boolean): boolean {
     return indexOf(s, prefix, caseSensitive) === 0;
 }
 

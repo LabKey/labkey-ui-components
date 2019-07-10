@@ -8,6 +8,11 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * Modify ConfirmModal properties so most are optional
 
+### version 0.8.1
+*Released*: 10 July 2019
+* Export misc assay models and date utility functions for Biologics usages (AssayDomainTypes, AssayLink, AssayUploadTabs, getDateFormat, isSampleLookup)
+* Port recent changes to glass components from Biologics dev and bug fixes (SubMenuItem popover key, AssayDefinitionModel functions for getting sample columns, add WhereFilterType) 
+
 ### version 0.8.0
 *Released*: 8 July 2019
 * Add DesignSampleSetPermission to PermissionTypes

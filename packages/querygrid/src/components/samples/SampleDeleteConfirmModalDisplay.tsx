@@ -49,7 +49,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         const dependencyText = "derived sample or assay data dependencies";
         let text;
         if (totalNum === 0) {
-            text = "No " + nounPlural + " selected for deletion."
+            text = "Either no " + nounPlural + " are selected for deletion or the selected " + nounPlural + " are no longer valid."
         }
         else if (numCannotDelete === 0)  {
             text = totalNum === 1 ? "The selected "  : (totalNum === 2 ? "Both " : "All " + totalNum + " ");

@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version 0.8.1
-*Released*: ???
+### version 0.8.2
+*Released*: 10 July 2019
 * Modify ConfirmModal properties so most are optional
 
 ### version 0.8.1

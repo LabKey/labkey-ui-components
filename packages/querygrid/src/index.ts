@@ -28,7 +28,7 @@ import {
     changeColumn,
     removeColumn,
     searchUsingIndex,
-    createQueryGridModelFilteredBySample
+    createQueryGridModelFilteredBySample,
     setSelected
 } from './actions'
 import {

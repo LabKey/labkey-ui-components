@@ -15,16 +15,17 @@
  */
 import * as React from "react";
 import {Button, Modal} from "react-bootstrap";
+import classNames from 'classnames';
 
 interface Props {
     show: boolean
     title: string
     msg: any
-    onConfirm: (any) => void
-    onCancel: (any) => void
-    confirmButtonText: string
-    cancelButtonText: string
-    confirmVariant: string
+    onConfirm?: (any) => void
+    onCancel?: (any) => void
+    confirmButtonText?: string
+    cancelButtonText?: string
+    confirmVariant?: string
 }
 
 export class ConfirmModal extends React.PureComponent<Props, any> {
@@ -32,11 +33,17 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
         show: true,
         title: 'Confirm',
         confirmButtonText: 'Yes',
-        cancelButtonText: 'No'
+        cancelButtonText: 'No',
+        confirmVariant: 'danger'
     };
 
     render() {
         const { show, title, msg, onConfirm, onCancel, confirmButtonText, cancelButtonText, confirmVariant } = this.props;
+        let cancelBtnClass = classNames(
+            'btn btn-default', {
+                'pull-left': onConfirm !== undefined
+            }
+        );
 
         return (
             <Modal show={show} onHide={onCancel}>
@@ -49,8 +56,8 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button bsClass='btn btn-light' onClick={onCancel}>{cancelButtonText}</Button>
-                    <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>
+                    {onCancel && <Button bsClass={cancelBtnClass} onClick={onCancel}>{cancelButtonText}</Button>}
+                    {onConfirm && <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>}
                 </Modal.Footer>
             </Modal>
         )

@@ -3,6 +3,10 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+### version 0.9.0
+*Released*: 10 July 2019
+* Update SampleDeleteConfirmModal to account for restrictions on deleting samples
+* Add getSampleDeleteConfirmationData method for use in delete confirmations
 
 ### version 0.8.1
 *Released*: 10 July 2019

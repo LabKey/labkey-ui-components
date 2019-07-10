@@ -16,17 +16,45 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { SampleDeleteConfirmModal } from "../components/samples/SampleDeleteConfirmModal";
+import { SampleDeleteConfirmModalDisplay } from "../components/samples/SampleDeleteConfirmModalDisplay";
 
 import './stories.scss'
+import { SampleDeleteConfirmModal } from '..';
 
 storiesOf('SampleDeleteConfirmModal', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
+    .add("Loading", () => {
         return <SampleDeleteConfirmModal
-            numSamples={number('numSamples', 1)}
-            showDependenciesLink={boolean('showDependenciesLink', false)}
+            selectionKey={'nonesuch'}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
         />
-    });
+    })
+    .add("Cannot delete any", () => {
+        return <SampleDeleteConfirmModal
+            selectionKey={'deleteNone'}
+            onConfirm={() => console.log('confirm')}
+            onCancel={() => console.log('cancel')}
+            />
+    })
+    .add("Can delete one", () => {
+        return <SampleDeleteConfirmModal
+            selectionKey={'deleteOne'}
+            onConfirm={() => console.log('confirm')}
+            onCancel={() => console.log('cancel')}
+        />
+    })
+    .add("Can delete all", () => {
+        return <SampleDeleteConfirmModal
+            selectionKey={'deleteAll'}
+            onConfirm={() => console.log('confirm')}
+            onCancel={() => console.log('cancel')}
+        />
+    })
+    .add("Can delete some", () => {
+        return <SampleDeleteConfirmModal
+            selectionKey={'deleteSome'}
+            onConfirm={() => console.log('confirm')}
+            onCancel={() => console.log('cancel')}
+        />
+    })
+;

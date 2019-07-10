@@ -193,7 +193,7 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 if (item.disabledMsg && item.disabled) {
                     const overlay = <Popover id="attach-submenu-warning">{item.disabledMsg}</Popover>;
                     return (
-                        <OverlayTrigger overlay={overlay} placement={item.disabledOverlayPlacement || "right"}>
+                        <OverlayTrigger overlay={overlay} placement={item.disabledOverlayPlacement || "right"} key={i}>
                             {menuItem}
                         </OverlayTrigger>
                     );

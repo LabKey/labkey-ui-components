@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.9.0-fb-sampleDeleteRestriction.7",
+  "version": "0.9.0-fb-sampleDeleteRestriction.8",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",

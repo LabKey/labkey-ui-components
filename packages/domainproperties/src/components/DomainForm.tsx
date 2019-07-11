@@ -128,8 +128,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
 
         let field = domain.fields.get(expandedRowIndex);
 
-        // only show the confirm delete for previously existing fields
-        if (field && field.propertyId) {
+        if (field) {
             this.setState({
                 showConfirm: true
             });

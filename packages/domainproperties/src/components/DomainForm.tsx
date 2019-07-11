@@ -183,6 +183,10 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
                 newFields.push(movedField);
                 if (idIndex === this.state.expandedRowIndex) {
                     this.setState(() => ({expandedRowIndex: destIndex}));
+                } else if (idIndex + 1 === this.state.expandedRowIndex) {
+                    this.setState(() => ({expandedRowIndex: destIndex - 1}));
+                } else if (idIndex - 1 === this.state.expandedRowIndex) {
+                    this.setState(() => ({expandedRowIndex: destIndex + 1}));
                 }
             }
 

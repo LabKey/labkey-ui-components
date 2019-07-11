@@ -20,6 +20,7 @@ import {TextFieldOptions} from "./TextFieldOptions";
 import {getTypeName} from "../actions/actions";
 import {BooleanFieldOptions} from "./BooleanFieldOptions";
 import {NumericFieldOptions} from "./NumericFieldOptions";
+import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 
 interface IDomainRowExpandedOptions {
     field: DomainField
@@ -35,10 +36,14 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
         switch(getTypeName(field)) {
             case 'string':
                 return <TextFieldOptions index={index} label='Text Field Options' scale={field.scale} onChange={onChange} />
+            case 'flag':
+                return <TextFieldOptions index={index} label='Text Field Options' scale={field.scale} onChange={onChange} />
             case 'multiLine':
                 return <TextFieldOptions index={index} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} />
             case 'boolean':
                 return <BooleanFieldOptions index={index} label='Boolean Field Options' format={field.format} onChange={onChange} />
+            case 'dateTime':
+                return <DateTimeFieldOptions index={index} label='Boolean Field Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} />
             case 'int':
                 return <NumericFieldOptions index={index} label='Numeric Field Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} />
             case 'double':

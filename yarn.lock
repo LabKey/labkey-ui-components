@@ -1119,6 +1119,17 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
+"@glass/base@0.8.0":
+  version "0.8.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.8.0.tgz#7a2ff3f2b69ab602dae67822ae1f4e5021a31202"
+  integrity sha1-ei/z8raatgLa5ngirh9OUCGjEgI=
+  dependencies:
+    "@labkey/dependencies" "0.0.6"
+    bootstrap "3.4.1"
+    moment "2.24.0"
+    moment-jdateformatparser "1.1.0"
+    numeral "2.0.6"
+
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"

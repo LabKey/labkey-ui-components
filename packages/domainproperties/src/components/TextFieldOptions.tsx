@@ -7,7 +7,7 @@ import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
     DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH
 } from "../constants";
-import {LabelHelpTip} from "./LabelHelpTip";
+import {LabelHelpTip} from "@glass/base"
 
 interface TextFieldProps {
     index: number,
@@ -65,6 +65,14 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
         }
     }
 
+    getMaxCountHelpText = () => {
+        return (
+            <div>
+                Sets the maximum character count for a text field.
+            </div>
+        )
+    }
+
     render() {
         const { index, label, scale, onChange } = this.props;
         const { radio } = this.state;
@@ -76,37 +84,37 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                         <div className={'domain-field-section-heading'}>{label}</div>
                     </Col>
                 </Row>
-                <Row className='domain-row-expanded'>
+                <Row className='domain-row-expanded '>
                     <Col xs={12}>
-                        <div className={'domain-field-label'}>Max Text Character Count {LabelHelpTip({
-                            title: 'Test Title',
-                            body: 'Test body.'
-                        })}</div>
+                        <div className={'domain-field-label'}>
+                            Max Text Character Count<LabelHelpTip
+                                title="Max Text Length"
+                                body={this.getMaxCountHelpText} />
+                        </div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12} className='domain-text-options-col'>
                         <input type='radio'
                                name='TextLengthOptions'
-                               className='domain-text-options-radio1'
+                               className='domain-text-options-radio1 domain-field-float-left'
                                value={DOMAIN_FIELD_MAX_LENGTH}
                                checked={radio === DOMAIN_FIELD_MAX_LENGTH}
                                onChange={this.handleChange}
                                id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, index)}
                                key={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, index)}/>
-                        <div>Allow max character count</div>
+                        <div className='domain-text-label'>Allow max character count</div>
                     </Col>
                     <Col xs={12}>
                         <input type='radio'
                                name='TextLengthOptions'
-                               className='domain-text-options-radio2'
-                               // className='form-check-input'
+                               className='domain-text-options-radio2 domain-field-float-left'
                                value={DOMAIN_FIELD_CUSTOM_LENGTH}
                                checked={radio === DOMAIN_FIELD_CUSTOM_LENGTH}
                                onChange={this.handleChange}
                                id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, index)}
                                key={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, index)}/>
-                        <span className='domain-text-options-length'>Set character count to</span>
+                        <span className='domain-text-options-length domain-field-float-left domain-text-label'>Set character count to</span>
                         <FormControl type="text"
                                      id={createFormInputId(DOMAIN_FIELD_SCALE, index)}
                                      key={createFormInputId(DOMAIN_FIELD_SCALE, index)}

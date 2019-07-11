@@ -29,6 +29,7 @@ export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
 export const DOMAIN_FIELD_URL = 'URL';
 export const DOMAIN_FIELD_FORMAT = 'format';
 export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
+export const DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING = 'excludeFromShifting';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -39,6 +40,7 @@ export const DOMAIN_FIELD_SCALE = 'scale';
 export const DEFAULT_SCALE_LINEAR = 'LINEAR';
 export const DEFAULT_SCALE_LOG = 'LOG';
 
+// URIs for data types
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';
 export const BOOLEAN_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#boolean';
@@ -53,6 +55,11 @@ export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
 
 export const MAX_TEXT_LENGTH = 4000;
+
+export const JDK_JAVADOC_BASE_URL = "https://docs.oracle.com/en/java/javase/12/docs/api/java.base/";
+export const JDK_JAVADOC_DECIMAL = JDK_JAVADOC_BASE_URL + "DecimalFormat.html";
+
+export const LK_URL_ENCODING_DOC = "https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding";
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

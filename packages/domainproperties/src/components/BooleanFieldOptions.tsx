@@ -2,11 +2,11 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, getIndexFromId, getNameFromId} from "../actions/actions";
+import {createFormInputId} from "../actions/actions";
 import {
     DOMAIN_FIELD_FORMAT
 } from "../constants";
-import {LabelHelpTip} from "./LabelHelpTip";
+import {LabelHelpTip} from "@glass/base";
 
 interface BooleanFieldProps {
     index: number,
@@ -28,6 +28,16 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
         }
     }
 
+    getFormatHelpText = () => {
+        return (
+            <div>
+                Use boolean formatting to specify the text to show when a value is true and false. Text can optionally be shown for null values.
+                <br/><br/>
+                For example, "Yes;No;Blank" would output "Yes" if the value istrue, "No" if false, and "Blank" for a null value.
+            </div>
+        );
+    }
+
     render() {
         const { index, label, format } = this.props;
 
@@ -40,10 +50,10 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-label'}>Format Boolean Strings{LabelHelpTip({
-                            title: 'Format Strings',
-                            body: 'Booleans can be formatted by specifying the text to show when the value istrue followed by a semicolon and the text for when the value is false, optionally followed by a semicolon and the text to show for null values. Example: \'Yes;No;Blank\''
-                        })}</div>
+                        <div className={'domain-field-label'}>
+                            Format for Boolean Values
+                            <LabelHelpTip title='Format Strings' body={this.getFormatHelpText} />
+                        </div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

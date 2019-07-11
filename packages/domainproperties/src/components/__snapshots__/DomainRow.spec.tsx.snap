@@ -86,10 +86,13 @@ exports[`DomainRowDisplay attachment field 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                     "scale": undefined,
+                    "format": undefined,
+                    "defaultScale": undefined,
                     "importAliases": undefined,
                     "URL": undefined,
                     "updatedField": undefined,
                     "newField": undefined,
+                    "excludeFromShifting": false,
                   }
                 }
                 index={1}
@@ -208,7 +211,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     id="domainpropertiesrow-name-1"
                                     key="domainpropertiesrow-name-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -220,7 +223,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                       className="form-control"
                                       id="domainpropertiesrow-name-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -271,7 +274,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     id="domainpropertiesrow-type-1"
                                     key="domainpropertiesrow-type-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -306,7 +309,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                       key="domainpropertiesrow-typeoption-double-1"
                                       value="double"
                                     >
-                                      Number (Double)
+                                      Decimal
                                     </option>
                                     <option
                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -399,7 +402,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                       inline={false}
                                       key="domainpropertiesrow-required-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -417,7 +420,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                             disabled={false}
                                             id="domainpropertiesrow-required-1"
                                             onBlur={[Function]}
-                                            onChange={[MockFunction]}
+                                            onChange={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
                                             onMouseOut={[Function]}
@@ -639,10 +642,13 @@ exports[`DomainRowDisplay date time field 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                     "scale": undefined,
+                    "format": undefined,
+                    "defaultScale": undefined,
                     "importAliases": undefined,
                     "URL": undefined,
                     "updatedField": undefined,
                     "newField": undefined,
+                    "excludeFromShifting": false,
                   }
                 }
                 index={1}
@@ -761,7 +767,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     id="domainpropertiesrow-name-1"
                                     key="domainpropertiesrow-name-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -773,7 +779,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       className="form-control"
                                       id="domainpropertiesrow-name-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -824,7 +830,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     id="domainpropertiesrow-type-1"
                                     key="domainpropertiesrow-type-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -859,7 +865,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       key="domainpropertiesrow-typeoption-double-1"
                                       value="double"
                                     >
-                                      Number (Double)
+                                      Decimal
                                     </option>
                                     <option
                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -952,7 +958,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       inline={false}
                                       key="domainpropertiesrow-required-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -970,7 +976,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             disabled={false}
                                             id="domainpropertiesrow-required-1"
                                             onBlur={[Function]}
-                                            onChange={[MockFunction]}
+                                            onChange={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
                                             onMouseOut={[Function]}
@@ -1192,10 +1198,13 @@ exports[`DomainRowDisplay decimal field 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                     "scale": undefined,
+                    "format": undefined,
+                    "defaultScale": undefined,
                     "importAliases": undefined,
                     "URL": undefined,
                     "updatedField": undefined,
                     "newField": undefined,
+                    "excludeFromShifting": false,
                   }
                 }
                 index={1}
@@ -1314,7 +1323,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     id="domainpropertiesrow-name-1"
                                     key="domainpropertiesrow-name-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -1326,7 +1335,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       className="form-control"
                                       id="domainpropertiesrow-name-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -1377,7 +1386,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     id="domainpropertiesrow-type-1"
                                     key="domainpropertiesrow-type-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -1412,7 +1421,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       key="domainpropertiesrow-typeoption-double-1"
                                       value="double"
                                     >
-                                      Number (Double)
+                                      Decimal
                                     </option>
                                     <option
                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -1505,7 +1514,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       inline={false}
                                       key="domainpropertiesrow-required-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -1523,7 +1532,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                             disabled={false}
                                             id="domainpropertiesrow-required-1"
                                             onBlur={[Function]}
-                                            onChange={[MockFunction]}
+                                            onChange={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
                                             onMouseOut={[Function]}
@@ -1745,10 +1754,13 @@ exports[`DomainRowDisplay participant id field 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                     "scale": undefined,
+                    "format": undefined,
+                    "defaultScale": undefined,
                     "importAliases": undefined,
                     "URL": undefined,
                     "updatedField": undefined,
                     "newField": undefined,
+                    "excludeFromShifting": false,
                   }
                 }
                 index={1}
@@ -1867,7 +1879,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     id="domainpropertiesrow-name-1"
                                     key="domainpropertiesrow-name-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -1879,7 +1891,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       className="form-control"
                                       id="domainpropertiesrow-name-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -1930,7 +1942,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     id="domainpropertiesrow-type-1"
                                     key="domainpropertiesrow-type-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -1965,7 +1977,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       key="domainpropertiesrow-typeoption-double-1"
                                       value="double"
                                     >
-                                      Number (Double)
+                                      Decimal
                                     </option>
                                     <option
                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -2058,7 +2070,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       inline={false}
                                       key="domainpropertiesrow-required-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -2076,7 +2088,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                             disabled={false}
                                             id="domainpropertiesrow-required-1"
                                             onBlur={[Function]}
-                                            onChange={[MockFunction]}
+                                            onChange={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
                                             onMouseOut={[Function]}
@@ -2298,10 +2310,13 @@ exports[`DomainRowDisplay string field 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                     "scale": undefined,
+                    "format": undefined,
+                    "defaultScale": undefined,
                     "importAliases": undefined,
                     "URL": undefined,
                     "updatedField": undefined,
                     "newField": undefined,
+                    "excludeFromShifting": false,
                   }
                 }
                 index={1}
@@ -2420,7 +2435,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     id="domainpropertiesrow-name-1"
                                     key="domainpropertiesrow-name-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -2432,7 +2447,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                       className="form-control"
                                       id="domainpropertiesrow-name-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -2483,7 +2498,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     id="domainpropertiesrow-type-1"
                                     key="domainpropertiesrow-type-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -2518,7 +2533,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                       key="domainpropertiesrow-typeoption-double-1"
                                       value="double"
                                     >
-                                      Number (Double)
+                                      Decimal
                                     </option>
                                     <option
                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -2611,7 +2626,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                       inline={false}
                                       key="domainpropertiesrow-required-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -2629,7 +2644,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                             disabled={false}
                                             id="domainpropertiesrow-required-1"
                                             onBlur={[Function]}
-                                            onChange={[MockFunction]}
+                                            onChange={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
                                             onMouseOut={[Function]}
@@ -2851,10 +2866,13 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                     "lookupSchema": undefined,
                     "lookupQuery": undefined,
                     "scale": undefined,
+                    "format": undefined,
+                    "defaultScale": undefined,
                     "importAliases": undefined,
                     "URL": undefined,
                     "updatedField": undefined,
                     "newField": undefined,
+                    "excludeFromShifting": false,
                   }
                 }
                 index={1}
@@ -2973,7 +2991,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     id="domainpropertiesrow-name-1"
                                     key="domainpropertiesrow-name-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -2985,7 +3003,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       className="form-control"
                                       id="domainpropertiesrow-name-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -3036,7 +3054,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     id="domainpropertiesrow-type-1"
                                     key="domainpropertiesrow-type-1"
                                     onBlur={[Function]}
-                                    onChange={[MockFunction]}
+                                    onChange={[Function]}
                                     onClick={[Function]}
                                     onFocus={[Function]}
                                     onMouseOut={[Function]}
@@ -3071,7 +3089,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       key="domainpropertiesrow-typeoption-double-1"
                                       value="double"
                                     >
-                                      Number (Double)
+                                      Decimal
                                     </option>
                                     <option
                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -3164,7 +3182,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       inline={false}
                                       key="domainpropertiesrow-required-1"
                                       onBlur={[Function]}
-                                      onChange={[MockFunction]}
+                                      onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
@@ -3182,7 +3200,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                             disabled={false}
                                             id="domainpropertiesrow-required-1"
                                             onBlur={[Function]}
-                                            onChange={[MockFunction]}
+                                            onChange={[Function]}
                                             onClick={[Function]}
                                             onFocus={[Function]}
                                             onMouseOut={[Function]}

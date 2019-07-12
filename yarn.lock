@@ -1119,10 +1119,10 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@glass/base@0.8.0":
-  version "0.8.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.8.0.tgz#7a2ff3f2b69ab602dae67822ae1f4e5021a31202"
-  integrity sha1-ei/z8raatgLa5ngirh9OUCGjEgI=
+"@glass/base@0.8.2":
+  version "0.8.2"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.8.2.tgz#376de8b62ada1c6632680787d562b44bbbb10616"
+  integrity sha1-N23otiraHGYyaAeH1WK0S7uxBhY=
   dependencies:
     "@labkey/dependencies" "0.0.6"
     bootstrap "3.4.1"

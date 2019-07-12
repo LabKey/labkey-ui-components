@@ -192,7 +192,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
                   setOnError={[Function]}
-                  uniqueId={0}
+                  uniqueId={2}
                 >
                   <Provider
                     context={
@@ -314,7 +314,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                         updateViewportMaxScroll={[Function]}
                       >
                         <div
-                          data-react-beautiful-dnd-droppable="0"
+                          data-react-beautiful-dnd-droppable="2"
                         >
                           <Form
                             bsClass="form"
@@ -402,8 +402,8 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                     <div
                                       aria-roledescription="Draggable item. Press space bar to lift"
                                       className="domain-field-row domain-row-expanded "
-                                      data-react-beautiful-dnd-drag-handle="0"
-                                      data-react-beautiful-dnd-draggable="0"
+                                      data-react-beautiful-dnd-drag-handle="2"
+                                      data-react-beautiful-dnd-draggable="2"
                                       draggable={false}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}

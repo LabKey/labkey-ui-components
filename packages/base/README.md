@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version ???
 *Released*: ???
-* port FileAttachmentFormModel from Biologics
+* port FileAttachmentFormModel and Footer from Biologics
 * add getDomainColumns() to AssayDefinitionModel
 
 ### version 0.8.2

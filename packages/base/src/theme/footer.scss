@@ -1,0 +1,32 @@
+// #Footer
+// The page footer.
+
+.my-footer-block {
+  padding: 8px 20px;
+  width: 100%;
+  border-top: 1px solid #ddd;
+
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+
+  color: $brand-primary;
+
+  .footer-tagline-left, .footer-tagline-right {
+    flex-basis: 50%;
+  }
+
+  .footer-tagline-left {
+    text-align: right;
+  }
+
+  .footer-tagline-center {
+    text-align: center;
+
+    img {
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+  }
+}

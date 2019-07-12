@@ -150,7 +150,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                             {!this.isExistingSampleSet() && <Row className={'margin-bottom'}>
                                 <Col xs={3}>
                                     <LabelOverlay
-                                        label={'Name'}
+                                        label={'Name *'}
                                         type={'Text (String)'}
                                         description={'The name for this sample set. Note that this can\'t be changed after sample set creation.'}
                                         required={true}

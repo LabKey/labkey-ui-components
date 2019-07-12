@@ -17,6 +17,7 @@ import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
 import {
+    AssayDefinitionModel,
     buildURL,
     getSortFromUrl,
     GRID_CHECKBOX_OPTIONS,
@@ -55,7 +56,8 @@ import {
     LookupStore,
     SearchIdData,
     ValueDescriptor,
-    VisualizationConfigModel
+    VisualizationConfigModel,
+    getStateQueryGridModel
 } from './models'
 import { bindColumnRenderers } from './renderers'
 import {
@@ -753,7 +755,7 @@ function clearSelected(key: string): Promise<ISelectResponse> {
     });
 }
 
-function setSelected(key: string, checked: boolean, ids: Array<string> | string): Promise<ISelectResponse> {
+export function setSelected(key: string, checked: boolean, ids: Array<string> | string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'setSelected.api', {
@@ -2286,4 +2288,26 @@ function parseSearchIdToData(idString): SearchIdData {
             idData.group = idParts[idParts.length - 3];
     }
     return idData;
+}
+
+/**
+ * Create a query grid model for this assay's Data grid, filtered to samples for the provided `value`
+ * iff the assay design has one or more sample lookup columns.
+ *
+ * The `value` may be a sample id or a labook id and the `singleFilter` or `whereClausePart` should
+ * provide a filter for the sample column or columns defined in the assay design.
+ */
+export function createQueryGridModelFilteredBySample(model: AssayDefinitionModel, gridId: string, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string): QueryGridModel {
+    const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
+    const sampleColumns = model.getSampleColumnFieldKeys();
+
+    if (sampleColumns && !sampleColumns.isEmpty()) {
+        let filter = model.createSampleFilter(sampleColumns, value, singleFilter, whereClausePart);
+        return getStateQueryGridModel(gridId, schemaQuery, () => ({
+            baseFilters: List([filter]),
+            isPaged: true,
+            title: model.name,
+            urlPrefix: model.name
+        }));
+    }
 }

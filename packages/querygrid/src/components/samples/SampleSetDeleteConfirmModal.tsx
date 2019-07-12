@@ -31,8 +31,8 @@ export class SampleSetDeleteConfirmModal extends React.Component<Props, any> {
                 msg={
                     <span>
                         The sample set and all of its {dependencies} will be permanently deleted.&nbsp;
-                        <strong>Deletion cannot be undone.</strong>&nbsp;
-                        Do you want to proceed?
+                        <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>&nbsp;
+                            Do you want to proceed?</p>
                     </span>
                 }
                 onConfirm={onConfirm}

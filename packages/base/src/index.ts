@@ -89,6 +89,7 @@ import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
 import { Section } from './components/Section'
 import { FileAttachmentForm } from './components/files/FileAttachmentForm'
+import { FileAttachmentFormModel } from './components/files/models'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { dismissNotifications } from './components/notifications/global'
@@ -163,6 +164,7 @@ export {
     GridColumn,
     GridData,
     InferDomainResponse,
+    FileAttachmentFormModel,
 
     //components
     AddEntityButton,

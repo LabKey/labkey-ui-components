@@ -24,7 +24,7 @@ import { EditableGridPanel } from "../../components/editable/EditableGridPanel";
 import { handleTabKeyOnTextArea } from "../../components/forms/actions";
 import { FormStep, FormTabs } from "../forms/FormStep";
 
-const TABS = ['Upload Files', 'Copy-and-paste Data', 'Enter Data Into Grid'];
+const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 
 interface Props {
     currentStep: number

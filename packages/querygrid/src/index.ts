@@ -92,7 +92,9 @@ import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPane
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
 import { RunDataPanel } from './components/assay/RunDataPanel'
-import { AssayWizardModel, IAssayURLContext } from './components/assay/models'
+import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
+import { AssayWizardModel, IAssayURLContext, IAssayUploadOptions, AssayUploadResultModel } from './components/assay/models'
+import { importAssayRun, uploadAssayRunFiles } from './components/assay/actions'
 
 export {
     // global state functions
@@ -198,11 +200,16 @@ export {
     searchUsingIndex,
 
     // assay
+    AssayUploadResultModel,
     AssayWizardModel,
     IAssayURLContext,
+    IAssayUploadOptions,
+    AssayUploadGridLoader,
     BatchPropertiesPanel,
     RunPropertiesPanel,
     RunDataPanel,
+    importAssayRun,
+    uploadAssayRunFiles,
 
     // forms
     handleInputTab,

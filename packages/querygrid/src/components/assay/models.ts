@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 import { List, OrderedMap, Map, Record } from 'immutable'
-import { AppURL, AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryInfo, FileAttachmentFormModel } from "@glass/base";
+import { AssayDOM } from '@labkey/api'
+import {
+    AppURL,
+    AssayDefinitionModel,
+    AssayUploadTabs,
+    QueryColumn,
+    QueryInfo,
+    FileAttachmentFormModel,
+    QueryGridModel
+} from "@glass/base";
+import { getEditorModel } from "../../global";
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel
@@ -128,5 +138,99 @@ export class AssayWizardModel extends Record({
         let timeStr = date.toTimeString().split(' ')[0];
         timeStr = timeStr.replace(/:/g, '-');
         return this.assayDef.name + '_' + dateStr + '_' + timeStr;
+    }
+
+    prepareFormData(currentStep: number, gridModel: QueryGridModel): IAssayUploadOptions {
+        const { batchId, batchProperties, comment, dataText, assayDef, runProperties, runId } = this;
+
+        let assayData: any = {
+            assayId: assayDef.id,
+            batchId,
+            batchProperties: batchProperties.toObject(),
+            comment,
+            name: this.getRunName(currentStep),
+            properties: runProperties.toObject(),
+            reRunId: runId,
+        };
+
+        Object.keys(assayData).forEach(k => {
+            if (assayData[k] === undefined) {
+                delete assayData[k];
+            }
+        });
+
+        if (currentStep === AssayUploadTabs.Files) {
+            assayData.files = this.getAttachedFiles().toArray();
+        }
+        else if (currentStep === AssayUploadTabs.Copy) {
+            assayData.dataRows = parseDataTextToRunRows(dataText);
+        }
+        else if (currentStep === AssayUploadTabs.Grid) {
+            // need to get the EditorModel for the data to use in the import
+            const editorModel = getEditorModel(gridModel.getId());
+
+            assayData.dataRows = editorModel.getRawData(gridModel).valueSeq()
+                .map(row => row.filter(v => v !== undefined && v !== null && (''+v).trim() !== ''))
+                .toList()
+                .toJS();
+        }
+        else {
+            throw new Error('Unsupported upload step! Current step: "' + currentStep + '"');
+        }
+
+        return assayData;
+    }
+}
+
+export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
+    dataRows?: any // Array<any> | QueryGridModel
+}
+
+function parseDataTextToRunRows(rawData: string): Array<any> {
+    if (!rawData || !rawData.length) {
+        return null;
+    }
+
+    let rows = [];
+    let columns = [];
+
+    rawData.split('\n')
+        .filter(row => row.trim().length > 0)
+        .forEach((row) => {
+            let parts = row.split('\t');
+            if (parts.length === 0)
+                return;
+
+            if (columns.length === 0)
+                columns = parts;
+            else {
+                let row = {};
+                parts.forEach((part, index) => {
+                    if (part.trim() !== '') {
+                        row[columns[index]] = part;
+                    }
+                });
+                rows.push(row);
+            }
+        });
+
+    return rows.length > 0 ? rows : null;
+}
+
+export class AssayUploadResultModel extends Record({
+    assayId: undefined,
+    batchId: undefined,
+    runId: undefined,
+    success: undefined,
+    successurl: undefined,
+}) {
+    assayId: number;
+    batchId: number;
+    runId: number;
+    success: boolean;
+    successurl?: string;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
     }
 }

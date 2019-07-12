@@ -75,5 +75,30 @@
   .btn-group .btn+&, .btn-group &+.btn, .btn-group &+&, .btn-group &+.btn-group, .btn-group .btn-group+& {
     margin-left: -1px;
   }
+}
 
+.form-step {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.form-step-tab {
+  float: left;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 0;
+  margin-right: 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eeeeee;
+  }
+
+  &.list-group-item, &.list-group-item:last-child, &.list-group-item:first-child {
+    margin-bottom: 0;
+    border-radius: 4px 4px 0 0;
+  }
 }

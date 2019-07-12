@@ -34,16 +34,21 @@ interface Props {
     onFileRemoval: (attachmentName: string) => any
     onTextChange: (inputName: string, value: any) => any
     acceptedPreviewFileFormats?: string
+    fullWidth?: boolean
 }
 
 export class RunDataPanel extends React.Component<Props, any> {
 
+    static defaultProps = {
+        fullWidth: true
+    };
+
     render() {
-        const { currentStep, gridModel, wizardModel, onFileChange, onFileRemoval, onTextChange, acceptedPreviewFileFormats } = this.props;
+        const { currentStep, gridModel, wizardModel, onFileChange, onFileRemoval, onTextChange, acceptedPreviewFileFormats, fullWidth } = this.props;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
 
         return (
-            <div className="panel panel-default full-width">
+            <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
                 <div className="panel-heading">
                     Run Data
                 </div>

@@ -113,6 +113,7 @@ import { ManageDropdownButton } from './components/buttons/ManageDropdownButton'
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
 import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/Cards';
+import { Footer } from './components/Footer';
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -198,6 +199,7 @@ export {
     WizardNavButtons,
     ToggleButtons,
     Cards,
+    Footer,
 
     // actions
     fetchProtocol,

@@ -75,10 +75,12 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader'
 import { DetailEditing } from './components/forms/detail/DetailEditing'
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
 import { Detail } from './components/forms/detail/Detail'
+import { handleTabKeyOnTextArea, handleInputTab } from './components/forms/actions'
+import { WithFormStepsProps, withFormSteps } from './components/forms/FormStep'
+import { ReactSelectOption } from './components/forms/model'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
-import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
@@ -87,6 +89,10 @@ import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
+import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
+import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
+import { RunDataPanel } from './components/assay/RunDataPanel'
+import { AssayWizardModel, IAssayURLContext } from './components/assay/models'
 
 export {
     // global state functions
@@ -189,5 +195,18 @@ export {
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
-    searchUsingIndex
+    searchUsingIndex,
+
+    // assay
+    AssayWizardModel,
+    IAssayURLContext,
+    BatchPropertiesPanel,
+    RunPropertiesPanel,
+    RunDataPanel,
+
+    // forms
+    handleInputTab,
+    handleTabKeyOnTextArea,
+    WithFormStepsProps,
+    withFormSteps
 }

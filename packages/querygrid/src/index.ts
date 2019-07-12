@@ -76,7 +76,7 @@ import { DetailEditing } from './components/forms/detail/DetailEditing'
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
 import { Detail } from './components/forms/detail/Detail'
 import { handleTabKeyOnTextArea, handleInputTab } from './components/forms/actions'
-import { WithFormStepsProps, withFormSteps } from './components/forms/FormStep'
+import { FormStep, FormTabs, WithFormStepsProps, withFormSteps } from './components/forms/FormStep'
 import { ReactSelectOption } from './components/forms/model'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
@@ -214,6 +214,8 @@ export {
     // forms
     handleInputTab,
     handleTabKeyOnTextArea,
+    withFormSteps,
     WithFormStepsProps,
-    withFormSteps
+    FormStep,
+    FormTabs
 }

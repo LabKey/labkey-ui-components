@@ -16,6 +16,7 @@
 import { ActionURL, Ajax, Utils, AssayDOM } from '@labkey/api'
 
 import { AssayUploadResultModel, IAssayUploadOptions } from "./models";
+import { buildURL } from '@glass/base';
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
@@ -134,4 +135,22 @@ function collectFiles(source): FileMap {
 
         return files;
     }, {} as FileMap);
+}
+
+
+export function deleteAssayRuns(selectionKey?: string, rowId?: string) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        const params = selectionKey ? {'dataRegionSelectionKey': selectionKey} : {singleObjectRowId: rowId};
+        return Ajax.request({
+            url: buildURL('experiment', 'deleteRuns.api'),
+            method: 'POST',
+            params,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
 }

@@ -93,8 +93,9 @@ import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
 import { RunDataPanel } from './components/assay/RunDataPanel'
 import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
+import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
 import { AssayWizardModel, IAssayURLContext, IAssayUploadOptions, AssayUploadResultModel } from './components/assay/models'
-import { importAssayRun, uploadAssayRunFiles } from './components/assay/actions'
+import { importAssayRun, uploadAssayRunFiles, deleteAssayRuns } from './components/assay/actions'
 
 export {
     // global state functions
@@ -201,6 +202,7 @@ export {
 
     // assay
     AssayUploadResultModel,
+    AssayRunDeleteConfirmModal,
     AssayWizardModel,
     IAssayURLContext,
     IAssayUploadOptions,
@@ -210,6 +212,7 @@ export {
     RunDataPanel,
     importAssayRun,
     uploadAssayRunFiles,
+    deleteAssayRuns,
 
     // forms
     handleInputTab,

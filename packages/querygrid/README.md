@@ -10,6 +10,7 @@ Query Grid for LabKey schema/query data views
 * port handleInputTab and handleTabKeyOnTextArea from Biologics
 * add AssayWizardModel, BatchPropertiesPanel, RunPropertiesPanel, and RunDataPanel from Biologics
 * port AssayUploadGridLoader, AssayUploadResultModel, uploadAssayRunFiles and importAssayRun from Biologics
+* add deleteAssayRuns method and AssayRunDeleteConfirmModal
 
 ### version 0.9.0
 *Released*: 10 July 2019

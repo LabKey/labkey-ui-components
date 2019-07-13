@@ -26,7 +26,7 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, PropDescType, resolveAvailableTypes } from "../models";
+import { DomainField, FieldErrors, PropDescType, resolveAvailableTypes } from "../models";
 import { createFormInputId } from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
@@ -47,12 +47,24 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     /**
      *  Details section of property row
      */
-    getDetailsText = (): string => {
+    getDetailsText = (): React.ReactNode => {
         const { expanded, field } = this.props;
         let details = [];
 
         if (!expanded) {
-            if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
+            if (field.hasErrors()) {
+                switch (field.getErrors()) {
+                    case FieldErrors.MISSING_SCHEMA_QUERY:
+                        details.push(
+                            <span key={details.length} style={{color: 'red'}}>
+                                A lookup requires a schema and table!
+                            </span>);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
                 details.push([
                     field.lookupContainer || 'Current Folder',
                     field.lookupSchema,
@@ -70,7 +82,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             }
         }
 
-        return details.join(', ');
+        return details;
     };
 
     getDetails() {

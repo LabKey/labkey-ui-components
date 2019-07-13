@@ -127,6 +127,10 @@ export class DomainDesign extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+
+    hasErrors(): boolean {
+        return this.fields !== undefined;
+    }
 }
 
 interface IDomainIndex {
@@ -154,6 +158,11 @@ export class DomainIndex extends Record({
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
+}
+
+export enum FieldErrors {
+    NONE,
+    MISSING_SCHEMA_QUERY
 }
 
 // Commented out properties are unused
@@ -307,6 +316,18 @@ export class DomainField extends Record({
 
     constructor(values?: {[key:string]: any}) {
         super(values);
+    }
+
+    getErrors(): FieldErrors {
+        if (this.dataType.isLookup() && (!this.lookupSchema || !this.lookupQuery)) {
+            return FieldErrors.MISSING_SCHEMA_QUERY;
+        }
+
+        return FieldErrors.NONE;
+    }
+
+    hasErrors(): boolean {
+        return this.getErrors() !== FieldErrors.NONE;
     }
 
     isNew(): boolean {

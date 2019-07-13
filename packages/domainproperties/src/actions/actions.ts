@@ -158,7 +158,10 @@ export function processSchemas(payload: any): List<SchemaDetails> {
  */
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        if (domain.domainId) {
+        if (domain.hasErrors()) {
+            reject('Unable to save domain. Fix fields before saving.');
+        }
+        else if (domain.domainId) {
             Domain.save({
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,

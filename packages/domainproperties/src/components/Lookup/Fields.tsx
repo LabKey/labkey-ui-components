@@ -168,7 +168,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
 
     render() {
         const { id, onChange, value } = this.props;
-        const { queries } = this.state;
+        const { loading, queries } = this.state;
 
         const isEmpty = queries.size === 0;
         const hasValue = !!value;
@@ -176,10 +176,12 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
 
         return (
             <FormControl componentClass="select"
+                         disabled={loading}
                          value={value}
                          id={id}
                          onChange={onChange}>
                 {blankOption && <option key="_default" value={undefined}/>}
+                {loading && <option disabled key="_loading" value={value}>Loading...</option>}
                 {queries.map((q) => <option key={q.name} value={encodeLookup(q.name, q.type)}>{q.name} ({q.type.display})</option>).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>

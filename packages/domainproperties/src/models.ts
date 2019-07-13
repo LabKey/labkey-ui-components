@@ -257,12 +257,14 @@ export class DomainField extends Record({
 
     static create(rawField: Partial<IDomainField>): DomainField {
         let dataType = resolveDataType(rawField);
+        let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
         return new DomainField(Object.assign({}, rawField, {
             dataType,
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
-            lookupQueryValue: encodeLookup(rawField.lookupQuery, dataType),
-            lookupType: LOOKUP_TYPE.set('rangeURI', rawField.rangeURI),
+            lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
+            lookupSchema: rawField.lookupSchema === null ? undefined : rawField.lookupSchema,
+            lookupType,
             original: {
                 dataType,
                 rangeURI: rawField.rangeURI

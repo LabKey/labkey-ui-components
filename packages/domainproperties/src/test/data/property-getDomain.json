@@ -66,6 +66,7 @@
     "label" : null,
     "searchTerms" : null,
     "semanticType" : null,
+    "primaryKey" : true,
     "format" : null,
     "required" : false,
     "hidden" : false,

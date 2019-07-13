@@ -129,7 +129,7 @@ export class DomainDesign extends Record({
     }
 
     hasErrors(): boolean {
-        return this.fields !== undefined;
+        return this.fields.find((f) => f.hasErrors()) !== undefined;
     }
 }
 

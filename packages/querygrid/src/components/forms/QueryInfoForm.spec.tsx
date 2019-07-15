@@ -213,6 +213,24 @@ describe("QueryInfoForm", () => {
         });
     });
 
+    test("don't allow canSubmitNotDirty", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = shallow(
+                <QueryInfoForm
+                    includeCountField={false}
+                    checkRequiredFields={false}
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    onSubmit={jest.fn()}
+                    canSubmitNotDirty={false}
+                />
+            );
+
+            const submitButton = formWrapper.find(".test-loc-submit-button");
+            expect(submitButton.props().disabled).toBe(true);
+        });
+    });
+
     // TODO the following tests require being able to interact with the form in order to make it
     // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.
     // test("with error", () => {

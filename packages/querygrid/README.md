@@ -3,6 +3,11 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+### version ???
+*Released*: ???
+* For QueryInfoForm, add ability to disable Submit until change is made
+* For QueryInfoForm, add onFormChange handler 
+
 ### version 0.9.0
 *Released*: 10 July 2019
 * Update SampleDeleteConfirmModal to account for restrictions on deleting samples

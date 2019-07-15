@@ -162,7 +162,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         }
 
         if (!this.state.isDirty)
-            this.setState({isDirty: true});
+            this.setState(() => {
+                return {
+                    isDirty: true
+                }
+            });
     }
 
     handleSubmitError(error: any) {

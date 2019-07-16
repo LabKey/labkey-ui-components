@@ -13,10 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { List, OrderedMap } from 'immutable'
 import { ActionURL, Ajax, Utils, AssayDOM } from '@labkey/api'
+import {
+    AssayDefinitionModel,
+    AssayUploadTabs,
+    buildURL,
+    naturalSort,
+    QueryGridModel,
+    resolveSchemaQuery,
+    SchemaQuery
+} from '@glass/base'
 
-import { AssayUploadResultModel, IAssayUploadOptions } from "./models";
-import { buildURL } from '@glass/base';
+import { AssayUploadResultModel, IAssayUploadOptions } from './models'
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
@@ -153,4 +162,35 @@ export function deleteAssayRuns(selectionKey?: string, rowId?: string) : Promise
             }),
         });
     });
+}
+
+export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefinitionModel>, sampleModel: QueryGridModel): OrderedMap<AssayDefinitionModel, string> {
+    let items = OrderedMap<AssayDefinitionModel, string>();
+    let targetSQ = undefined;
+
+    let selectionKey = undefined;
+    if (sampleModel && sampleModel.queryInfo) {
+        const singleSelect = sampleModel.keyValue !== undefined;
+        targetSQ = sampleModel.queryInfo.schemaQuery;
+        selectionKey = singleSelect ? createAppSelectionKey(targetSQ, [sampleModel.keyValue]) : sampleModel.getId()
+    }
+
+    assayDefModels
+        .sortBy(a => a.name, naturalSort)
+        .filter((assay) => !targetSQ || assay.hasLookup(targetSQ))
+        .forEach((assay, i) => {
+            const href = assay.getImportUrl(selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files, selectionKey);
+            items = items.set(assay, href);
+        });
+
+    return items;
+}
+
+const APP_SELECTION_PREFIX = 'appkey';
+function createAppSelectionKey(targetSQ: SchemaQuery, keys: Array<any>): string {
+    return [
+        APP_SELECTION_PREFIX,
+        resolveSchemaQuery(targetSQ),
+        keys.join(';')
+    ].join('|');
 }

@@ -15,13 +15,12 @@ describe("<AssayResultDeleteConfirmModal/>", () => {
         );
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        console.log("text is", confirmModal.text());
         expect(confirmModal.text().indexOf("selected assay result")).toBeGreaterThan(-1);
     });
 
     test("Delete many", () => {
         const component = (
-            <AssayRunDeleteConfirmModal
+            <AssayResultDeleteConfirmModal
                 numToDelete={10}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}

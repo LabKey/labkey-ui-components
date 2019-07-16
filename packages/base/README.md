@@ -8,6 +8,7 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * port FileAttachmentFormModel and Footer from Biologics
 * add getDomainColumns() to AssayDefinitionModel
+* export SubMenuItemProps and ISubItem for Biologics use cases
 
 ### version 0.8.2
 *Released*: 10 July 2019

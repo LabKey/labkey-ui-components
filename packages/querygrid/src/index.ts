@@ -17,6 +17,7 @@ import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './model
 import {
     getSelected,
     getSelectedData,
+    getSelection,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -86,7 +87,7 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
-import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
+import { deleteSampleSet, getSampleDeleteConfirmationData, loadSelectedSamples } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
@@ -95,8 +96,9 @@ import { RunDataPanel } from './components/assay/RunDataPanel'
 import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal'
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
+import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem'
 import { AssayWizardModel, IAssayURLContext, IAssayUploadOptions, AssayUploadResultModel } from './components/assay/models'
-import { importAssayRun, uploadAssayRunFiles, deleteAssayRuns } from './components/assay/actions'
+import { importAssayRun, uploadAssayRunFiles, deleteAssayRuns, getImportItemsForAssayDefinitions } from './components/assay/actions'
 
 export {
     // global state functions
@@ -111,6 +113,7 @@ export {
     // grid functions
     getSelected,
     getSelectedData,
+    getSelection,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -194,6 +197,7 @@ export {
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     createQueryGridModelFilteredBySample,
+    loadSelectedSamples,
 
     // search-related
     SearchResultsModel,
@@ -212,9 +216,11 @@ export {
     BatchPropertiesPanel,
     RunPropertiesPanel,
     RunDataPanel,
+    AssayImportSubMenuItem,
     importAssayRun,
     uploadAssayRunFiles,
     deleteAssayRuns,
+    getImportItemsForAssayDefinitions,
 
     // forms
     handleInputTab,

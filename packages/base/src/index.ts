@@ -75,7 +75,7 @@ import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'
 import { MenuOption, SubMenu } from "./components/menus/SubMenu";
-import { SubMenuItem } from "./components/menus/SubMenuItem";
+import { SubMenuItem, SubMenuItemProps, ISubItem } from "./components/menus/SubMenuItem";
 import { SelectionMenuItem } from "./components/menus/SelectionMenuItem";
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
@@ -138,6 +138,8 @@ export {
     GridProps,
     LoadingPageProps,
     PageProps,
+    SubMenuItemProps,
+    ISubItem,
 
     //models
     AppURL,

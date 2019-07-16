@@ -58,7 +58,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 details += ', ';
             }
 
-            details += 'Primary Key';
+            details += 'Key';
         }
 
         if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {

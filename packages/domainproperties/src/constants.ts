@@ -56,9 +56,6 @@ export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#Participa
 
 export const MAX_TEXT_LENGTH = 4000;
 
-export const JDK_JAVADOC_BASE_URL = "https://docs.oracle.com/en/java/javase/12/docs/api/java.base/";
-export const JDK_JAVADOC_DECIMAL = JDK_JAVADOC_BASE_URL + "DecimalFormat.html";
-
 export const LK_URL_ENCODING_DOC = "https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding";
 
 export const DOMAIN_FIELD_COLS = List([

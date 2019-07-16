@@ -7,13 +7,11 @@ import {
     DOMAIN_FIELD_FORMAT
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
+import {ITypeDependentProps} from "../models";
 
-interface DateTimeFieldProps {
-    index: number,
-    label: string,
+interface DateTimeFieldProps extends ITypeDependentProps {
     format: string,
     excludeFromShifting: boolean,
-    onChange: (string, any) => any
 }
 
 export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps, any> {
@@ -34,11 +32,17 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
     }
 
     getFormatHelpText = () => {
+        let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";
+
+        if (LABKEY && LABKEY.helpLinkPrefix) {
+            helpPrefix = LABKEY.helpLinkPrefix;
+        }
+
         return (
             <>
                 To control how a date or time value is displayed, provide a string format compatible with the java data class SimpleDateFormat.
                 <br/><br/>
-                Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#date'>Date and Time formats</a> in LabKey.
+                Learn more about using <a target='_blank' href={helpPrefix + 'dateFormats#date'}>Date and Time formats</a> in LabKey.
             </>
         )
     }

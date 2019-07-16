@@ -10,14 +10,13 @@ import {
     DOMAIN_FIELD_URL,
     LK_URL_ENCODING_DOC
 } from "../constants";
-import {Alert, LabelHelpTip} from "@glass/base";
+import {LabelHelpTip} from "@glass/base";
 import {DomainField} from "../models";
 
 interface NameAndLinkingProps {
     index: number,
     field: DomainField,
     onChange: (string, any) => any
-
 }
 
 export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingProps, any> {
@@ -25,15 +24,9 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
     handleChange = (evt: any) => {
         const { onChange } = this.props;
 
-        let value = evt.target.value;
-        if (evt.target.type === "checkbox")
-        {
-            value = evt.target.checked;
-        }
-
         if (onChange)
         {
-            onChange(evt.target.id, value);
+            onChange(evt.target.id, evt.target.value);
         }
     };
 
@@ -94,9 +87,6 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                      key={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, index)}
                                      onChange={this.handleChange}/>
                     </Col>
-                    {/*<Col xs={4}>*/}
-                        {/*<Alert bsStyle={'info'}>Default value options coming soon...</Alert>*/}
-                    {/*</Col>*/}
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={5}>

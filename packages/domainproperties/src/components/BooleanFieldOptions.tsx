@@ -7,12 +7,10 @@ import {
     DOMAIN_FIELD_FORMAT
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
+import {ITypeDependentProps} from "../models";
 
-interface BooleanFieldProps {
-    index: number,
-    label: string,
-    format: string,
-    onChange: (string, any) => any
+interface BooleanFieldProps extends ITypeDependentProps {
+    format: string
 }
 
 export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, any> {
@@ -33,7 +31,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
             <div>
                 Use boolean formatting to specify the text to show when a value is true and false. Text can optionally be shown for null values.
                 <br/><br/>
-                For example, "Yes;No;Blank" would output "Yes" if the value istrue, "No" if false, and "Blank" for a null value.
+                For example, "Yes;No;Blank" would output "Yes" if the value is true, "No" if false, and "Blank" for a null value.
             </div>
         );
     }

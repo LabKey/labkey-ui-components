@@ -8,12 +8,10 @@ import {
     DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH
 } from "../constants";
 import {LabelHelpTip} from "@glass/base"
+import {ITypeDependentProps} from "../models";
 
-interface TextFieldProps {
-    index: number,
-    label: string,
-    scale: number,
-    onChange: (string, any) => any
+interface TextFieldProps extends ITypeDependentProps {
+    scale: number
 }
 
 interface TextFieldState {
@@ -105,6 +103,8 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                key={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, index)}/>
                         <div className='domain-text-label'>Allow max character count</div>
                     </Col>
+                </Row>
+                <Row className='domain-row-expanded'>
                     <Col xs={12}>
                         <input type='radio'
                                name='TextLengthOptions'

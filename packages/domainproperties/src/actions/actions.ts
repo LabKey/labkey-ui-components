@@ -212,3 +212,12 @@ export function getDataType(field: DomainField): PropDescType {
     // default to the text type
     return PROP_DESC_TYPES.get(0);
 }
+
+export function getCheckedValue(evt) {
+    if (evt.target.type === "checkbox")
+    {
+        return evt.target.checked;
+    }
+
+    return undefined;
+}

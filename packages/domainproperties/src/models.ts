@@ -24,6 +24,12 @@ import {
     USER_RANGE_URI
 } from "./constants";
 
+export interface ITypeDependentProps {
+    index: number,
+    label: string,
+    onChange: (string, any) => any
+}
+
 interface IPropDescType{
     name: string,
     display?: string,

@@ -7,20 +7,17 @@ import {
     DEFAULT_SCALE_LINEAR,
     DEFAULT_SCALE_LOG,
     DOMAIN_FIELD_DEFAULT_SCALE,
-    DOMAIN_FIELD_FORMAT, JDK_JAVADOC_DECIMAL
+    DOMAIN_FIELD_FORMAT
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
+import {ITypeDependentProps} from "../models";
 
-interface NumericFieldProps {
-    index: number,
-    label: string,
+interface NumericFieldProps extends ITypeDependentProps {
     format: string,
-    defaultScale: string,
-    onChange: (string, any) => any
+    defaultScale: string
 }
 
 export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, any> {
-
 
     onFieldChange = (evt) => {
         const { onChange } = this.props;
@@ -33,12 +30,18 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
     }
 
     getFormatHelpText = () => {
+        let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";
+
+        if (LABKEY && LABKEY.helpLinkPrefix) {
+            helpPrefix = LABKEY.helpLinkPrefix;
+        }
+
         return (
             <>
                 To control how a number value is displayed, provide a string format compatible with the java data class DecimalFormat.
                 <br/><br/>
                 Learn more about using <a target='_blank'
-                                          href='https://www.labkey.org/Documentation/wiki-page.view?name=dateFormats#number'>Number formats</a> in LabKey.
+                                          href={helpPrefix + 'dateFormats#number'}>Number formats</a> in LabKey.
             </>
         )
     }

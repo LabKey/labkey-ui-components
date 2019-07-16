@@ -28,7 +28,7 @@ import {
     DOMAIN_FIELD_TYPE
 } from "../constants";
 import { DomainField, PROP_DESC_TYPES } from "../models";
-import {createFormInputId, getDataType, updateDomainField} from "../actions/actions";
+import {createFormInputId, getCheckedValue, getDataType} from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -83,10 +83,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     onFieldChange = (evt) => {
         const { onChange } = this.props;
 
-        let value = evt.target.value;
-        if (evt.target.type === "checkbox")
-        {
-            value = evt.target.checked;
+        let value = getCheckedValue(evt);
+        if (value === undefined) {
+            value = evt.target.value;
         }
 
         if (onChange) {

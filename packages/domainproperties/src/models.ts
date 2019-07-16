@@ -69,6 +69,7 @@ interface IDomainDesign {
     domainId: number
     fields?: List<DomainField>
     indices?: List<DomainIndex>
+    exception?: DomainException
 }
 
 export class DomainDesign extends Record({
@@ -77,7 +78,8 @@ export class DomainDesign extends Record({
     domainURI: undefined,
     domainId: null,
     fields: List<DomainField>(),
-    indices: List<DomainIndex>()
+    indices: List<DomainIndex>(),
+    domainException: undefined
 }) implements IDomainDesign {
     name: string;
     description: string;
@@ -85,10 +87,12 @@ export class DomainDesign extends Record({
     domainId: number;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
+    domainException: DomainException;
 
     static create(rawModel): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
+        let domainException = DomainException.create(rawModel);
 
         if (rawModel) {
             if (rawModel.fields) {
@@ -103,7 +107,8 @@ export class DomainDesign extends Record({
         return new DomainDesign({
             ...rawModel,
             fields,
-            indices
+            indices,
+            domainException
         })
     }
 
@@ -206,6 +211,76 @@ export class DomainField extends Record({
         }
 
         return fields.asImmutable();
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+interface IDomainException {
+    exception: string;
+    success: boolean;
+    errors?: List<DomainFieldError>;
+}
+
+export class DomainException extends Record({
+    exception: undefined,
+    success: undefined,
+    fieldErrors: List<DomainFieldError>()
+}) implements IDomainException{
+    exception: string;
+    success: boolean;
+    fieldErrors?: List<DomainFieldError>;
+
+    static create(rawModel): DomainException
+    {
+        if (rawModel)
+        {
+            let fieldErrors = List<DomainFieldError>();
+
+            if (rawModel.domainException)
+            {
+                fieldErrors = DomainFieldError.fromJS(rawModel.domainException.fieldErrors);
+            }
+
+            return new DomainException({
+                ...rawModel,
+                fieldErrors
+            })
+        }
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+}
+
+interface IDomainFieldError {
+    message: string;
+    fieldName: string;
+    propertyId?: number;
+}
+
+export class DomainFieldError extends Record({
+    message: undefined,
+    fieldName: undefined,
+    propertyId: undefined
+
+}) implements IDomainFieldError {
+    message: string;
+    fieldName: string;
+    propertyId?: number;
+
+    static fromJS(rawFields: Array<IDomainFieldError>): List<DomainFieldError> {
+
+        let fieldErrors = List<DomainFieldError>().asMutable();
+
+        for (let i=0; i < rawFields.length; i++) {
+            fieldErrors.push(new DomainFieldError(rawFields[i]));
+        }
+
+        return fieldErrors.asImmutable();
     }
 
     constructor(values?: {[key:string]: any}) {

@@ -22,7 +22,7 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Alert, ConfirmModal } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import { DomainDesign, DomainField } from "../models";
+import { DomainDesign, DomainField, DomainException, DomainFieldError} from "../models";
 import { getIndexFromId, updateDomainField } from "../actions/actions";
 
 interface IDomainFormInput {
@@ -312,6 +312,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
                                                             return <DomainRow
                                                                 key={'domain-row-key-' + i}
                                                                 field={field}
+                                                                fieldError={this.getFieldError(field, domain.domainException)}
                                                                 index={i}
                                                                 expanded={expandedRowIndex === i}
                                                                 onChange={this.onFieldChange}
@@ -336,4 +337,22 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
             </>
         );
     }
+
+
+    private getFieldError(field: DomainField, domainException: DomainException) : DomainFieldError
+    {
+        if (domainException && domainException.fieldErrors)
+        {
+            for (let i = 0; i < domainException.fieldErrors.size; i++)
+            {
+                if (domainException.fieldErrors.get(i) && (field.newField || field.updatedField) &&
+                    (domainException.fieldErrors.get(i).get("propertyId") == field.propertyId || domainException.fieldErrors.get(i).get("fieldName") == field.name))
+                {
+                    return domainException.fieldErrors.get(i);
+                }
+            }
+        }
+
+        return undefined;
+    };
 }

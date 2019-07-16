@@ -10,6 +10,7 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import DomainForm from "../components/DomainForm";
 import { DomainDesign } from "../models";
 import data from "../test/data/property-getDomain.json";
+import errorData from "../test/data/property-saveDomainErrors.json";
 import './stories.scss'
 
 interface Props {
@@ -61,6 +62,13 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={data}
+            />
+        )
+    })
+    .add("with domain property errors", () => {
+        return (
+            <DomainFormContainer
+                data={errorData}
             />
         )
     });

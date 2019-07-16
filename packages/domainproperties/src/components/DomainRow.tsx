@@ -27,7 +27,7 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, PROP_DESC_TYPES } from "../models";
+import { DomainField, PROP_DESC_TYPES, DomainFieldError} from "../models";
 import { createFormInputId, getDataType } from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
@@ -35,6 +35,7 @@ interface IDomainRowProps {
     expanded: boolean
     field: DomainField
     index: number
+    fieldError?: DomainFieldError
     onChange: (any) => any
     onDelete: (any) => void
     onExpand: (any) => void
@@ -65,6 +66,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             }
 
             details += 'Updated';
+        }
+
+        if (this.props.fieldError){
+
+            if (this.props.field.propertyId == this.props.fieldError.propertyId || this.props.field.name == this.props.fieldError.fieldName)
+            {
+                if (details.length > 0)
+                {
+                    details += ', ';
+                }
+                details += this.props.fieldError.message
+            }
         }
 
         return details;

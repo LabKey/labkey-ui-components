@@ -12,6 +12,7 @@ Query Grid for LabKey schema/query data views
 * port AssayUploadGridLoader, AssayUploadResultModel, uploadAssayRunFiles and importAssayRun from Biologics
 * add deleteAssayRuns method and AssayRunDeleteConfirmModal
 * factor out AssayImportSubMenuItem and getImportItemsForAssayDefinitions and port from Biologics
+* port loadSelectedSamples from Biologics and export getSelection
 
 ### version 0.9.0
 *Released*: 10 July 2019

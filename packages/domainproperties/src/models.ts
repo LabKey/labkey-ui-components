@@ -18,10 +18,16 @@ import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
     DATETIME_RANGE_URI,
-    DOUBLE_RANGE_URI, FILELINK_RANGE_URI, FLAG_CONCEPT_URI,
+    DOUBLE_RANGE_URI,
+    FILELINK_RANGE_URI,
+    FLAG_CONCEPT_URI,
     INT_RANGE_URI,
-    MULTILINE_RANGE_URI, PARTICIPANTID_CONCEPT_URI, STRING_RANGE_URI,
-    USER_RANGE_URI
+    MULTILINE_RANGE_URI,
+    PARTICIPANTID_CONCEPT_URI,
+    STRING_RANGE_URI,
+    USER_RANGE_URI,
+    DOMAIN_FIELD_NOT_LOCKED,
+    SEVERITY_LEVEL_ERROR
 } from "./constants";
 
 interface IPropDescType{
@@ -166,6 +172,9 @@ interface IDomainField {
 
     updatedField?: boolean
     newField?: boolean
+
+    isPrimaryKey: boolean
+    lockType: string
 }
 
 export class DomainField extends Record({
@@ -185,6 +194,9 @@ export class DomainField extends Record({
     URL: undefined,
     updatedField: undefined,
     newField: undefined,
+    isPrimaryKey: false,
+    lockType: DOMAIN_FIELD_NOT_LOCKED
+
 }) implements IDomainField {
     propertyId: number;
     propertyURI: string;
@@ -202,6 +214,8 @@ export class DomainField extends Record({
     URL: string;
     updatedField: boolean;
     newField: boolean;
+    isPrimaryKey: boolean;
+    lockType: string;
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();
@@ -221,16 +235,20 @@ export class DomainField extends Record({
 interface IDomainException {
     exception: string;
     success: boolean;
+    severity: string;
     errors?: List<DomainFieldError>;
 }
 
 export class DomainException extends Record({
     exception: undefined,
     success: undefined,
+    severity: SEVERITY_LEVEL_ERROR,
     fieldErrors: List<DomainFieldError>()
+
 }) implements IDomainException{
     exception: string;
     success: boolean;
+    severity: string;
     fieldErrors?: List<DomainFieldError>;
 
     static create(rawModel): DomainException
@@ -260,17 +278,20 @@ interface IDomainFieldError {
     message: string;
     fieldName: string;
     propertyId?: number;
+    severity?: string
 }
 
 export class DomainFieldError extends Record({
     message: undefined,
     fieldName: undefined,
-    propertyId: undefined
+    propertyId: undefined,
+    severity: undefined
 
 }) implements IDomainFieldError {
     message: string;
     fieldName: string;
     propertyId?: number;
+    severity?: string;
 
     static fromJS(rawFields: Array<IDomainFieldError>): List<DomainFieldError> {
 

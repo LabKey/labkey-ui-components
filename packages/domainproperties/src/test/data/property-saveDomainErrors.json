@@ -5,12 +5,13 @@
   "description" : null,
   "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
   "domainException" : {
-    "exception" : "All property names must be unique. Duplicate found: FieldText.",
+    "exception" : "The field name 'FieldText' is already taken. Please provide a unique name for each field.",
     "success" : false,
+    "severity" : "Error",
     "fieldErrors": [{
       "fieldName" : "FieldText",
       "propertyId" : "0",
-      "message" : "All property names must be unique. Duplicate found: FieldText."
+      "message" : "The field name 'FieldText' is already taken. Please provide a unique name for each field."
     }]
   },
   "fields" : [ {
@@ -120,10 +121,12 @@
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "ontologyURI" : null,
     "name" : "FieldInteger",
+    "isPrimaryKey" : true,
+    "lockType" : "FullyLocked",
     "description" : null,
     "rangeURI" : "http://www.w3.org/2001/XMLSchema#int",
     "conceptURI" : null,
-    "label" : null,
+    "label" : "Id",
     "searchTerms" : null,
     "semanticType" : null,
     "format" : null,

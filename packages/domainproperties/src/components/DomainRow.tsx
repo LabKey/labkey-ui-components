@@ -25,7 +25,8 @@ import {
     DOMAIN_FIELD_DETAILS,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
-    DOMAIN_FIELD_TYPE
+    DOMAIN_FIELD_TYPE,
+    DOMAIN_FIELD_FULLY_LOCKED
 } from "../constants";
 import { DomainField, PROP_DESC_TYPES, DomainFieldError} from "../models";
 import { createFormInputId, getDataType } from "../actions/actions";
@@ -51,6 +52,22 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
      */
     getDetailsText = (): string => {
         let details = '';
+
+        if (this.props.field.isPrimaryKey) {
+            if (details.length > 0) {
+                details += ', ';
+            }
+
+            details += 'Primary Key';
+        }
+
+        if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+            if (details.length > 0) {
+                details += ', ';
+            }
+
+            details += 'Locked';
+        }
 
         if (this.props.field.newField) {
             if (details.length > 0) {

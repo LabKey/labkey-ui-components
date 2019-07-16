@@ -28,6 +28,13 @@ export const DOMAIN_FIELD_LABEL = 'label';
 export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
 export const DOMAIN_FIELD_URL = 'URL';
 
+export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
+export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
+export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties
+
+export const SEVERITY_LEVEL_ERROR = "Error";
+export const SEVERITY_LEVEL_WARN = "Warning";
+
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';
 export const BOOLEAN_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#boolean';

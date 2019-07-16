@@ -17,6 +17,7 @@ import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './model
 import {
     getSelected,
     getSelectedData,
+    getSelection,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -86,7 +87,7 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
-import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
+import { deleteSampleSet, getSampleDeleteConfirmationData, loadSelectedSamples } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
@@ -111,6 +112,7 @@ export {
     // grid functions
     getSelected,
     getSelectedData,
+    getSelection,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -194,6 +196,7 @@ export {
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     createQueryGridModelFilteredBySample,
+    loadSelectedSamples,
 
     // search-related
     SearchResultsModel,

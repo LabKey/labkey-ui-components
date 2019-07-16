@@ -97,25 +97,6 @@ export class AssayWizardModel extends Record({
         super(values);
     }
 
-    // TODO shouldn't this move to actions.ts? or put just in Biologics somewhere
-    static parseURLContext(location: any, params: any): IAssayURLContext {
-        const { protocol, provider } = params;
-
-        let context: IAssayURLContext = {
-            location,
-            protocol,
-            provider
-        };
-
-        if (location && location.query) {
-            const { assayRequest, runId } = location.query;
-            context.assayRequest = assayRequest;
-            context.runId = runId;
-        }
-
-        return context;
-    }
-
     getAttachedFiles(): List<File> {
         return this.attachedFiles.valueSeq().toList();
     }

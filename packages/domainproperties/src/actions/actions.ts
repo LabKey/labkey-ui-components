@@ -81,7 +81,7 @@ export function createFormInputId(name: string, index: any) {
     return DOMAIN_FIELD_PREFIX + '-' + name + '-' + index;
 }
 
-function getNameFromId(id: string) : string {
+export function getNameFromId(id: string) : string {
     const parts = id.split('-');
     if (parts.length === 3) {
         return parts[1];
@@ -99,6 +99,19 @@ export function getIndexFromId(id: string): string {
     else {
         return null;
     }
+}
+
+export function getTypeName(field: DomainField): string {
+    const matches = PROP_DESC_TYPES.filter(type => {
+        // Check rangeURI and conceptURI if its defined for either the field or type
+        return field.rangeURI === type.rangeURI && (field.conceptURI ? field.conceptURI === type.conceptURI : !type.conceptURI);
+
+    })
+
+    if (matches.size > 0)
+        return matches.get(0).name;
+
+    return null;
 }
 
 /**
@@ -198,4 +211,13 @@ export function getDataType(field: DomainField): PropDescType {
 
     // default to the text type
     return PROP_DESC_TYPES.get(0);
+}
+
+export function getCheckedValue(evt) {
+    if (evt.target.type === "checkbox")
+    {
+        return evt.target.checked;
+    }
+
+    return undefined;
 }

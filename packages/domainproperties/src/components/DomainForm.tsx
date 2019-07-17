@@ -112,15 +112,10 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         // TODO give focus to the "Name" field for the newly added row
     };
 
-    onFieldChange = (evt) => {
+    onFieldChange = (id, value) => {
         const {domain, onChange} = this.props;
 
-        let value = evt.target.value;
-        if (evt.target.type === "checkbox") {
-            value = evt.target.checked;
-        }
-
-        const newDomain = updateDomainField(domain, evt.target.id, value);
+        const newDomain = updateDomainField(domain, id, value);
 
         if (onChange) {
             onChange(newDomain, true);
@@ -133,8 +128,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
 
         let field = domain.fields.get(expandedRowIndex);
 
-        // only show the confirm delete for previously existing fields
-        if (field && field.propertyId) {
+        if (field) {
             this.setState({
                 showConfirm: true
             });
@@ -188,6 +182,10 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
                 newFields.push(movedField);
                 if (idIndex === this.state.expandedRowIndex) {
                     this.setState(() => ({expandedRowIndex: destIndex}));
+                } else if (idIndex + 1 === this.state.expandedRowIndex) {
+                    this.setState(() => ({expandedRowIndex: destIndex - 1}));
+                } else if (idIndex - 1 === this.state.expandedRowIndex) {
+                    this.setState(() => ({expandedRowIndex: destIndex + 1}));
                 }
             }
 
@@ -237,7 +235,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
                     <b>Field Name</b>
                 </Col>
                 <Col xs={2}>
-                    <b>Date Type</b>
+                    <b>Data Type</b>
                 </Col>
                 <Col xs={1}>
                     <b>Required?</b>

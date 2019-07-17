@@ -21,7 +21,6 @@ import {
     buildURL,
     naturalSort,
     QueryGridModel,
-    resolveSchemaQuery,
     SchemaQuery
 } from '@glass/base'
 
@@ -58,6 +57,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         const formData = new FormData();
         const fileNameMap = {}; // Maps the file name "fileN" to the run/batch property it belongs to.
 
+        // TODO factor this out so the code isn't duplicate below for the runFiles case
         Object.keys(batchFiles).forEach((columnName) => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = batchFiles[columnName];
@@ -172,25 +172,16 @@ export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefi
     if (sampleModel && sampleModel.queryInfo) {
         const singleSelect = sampleModel.keyValue !== undefined;
         targetSQ = sampleModel.queryInfo.schemaQuery;
-        selectionKey = singleSelect ? createAppSelectionKey(targetSQ, [sampleModel.keyValue]) : sampleModel.getId()
+        selectionKey = singleSelect ? SchemaQuery.createAppSelectionKey(targetSQ, [sampleModel.keyValue]) : sampleModel.getId()
     }
 
     assayDefModels
         .sortBy(a => a.name, naturalSort)
         .filter((assay) => !targetSQ || assay.hasLookup(targetSQ))
-        .forEach((assay, i) => {
+        .forEach((assay) => {
             const href = assay.getImportUrl(selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files, selectionKey);
             items = items.set(assay, href);
         });
 
     return items;
-}
-
-const APP_SELECTION_PREFIX = 'appkey';
-function createAppSelectionKey(targetSQ: SchemaQuery, keys: Array<any>): string {
-    return [
-        APP_SELECTION_PREFIX,
-        resolveSchemaQuery(targetSQ),
-        keys.join(';')
-    ].join('|');
 }

@@ -4,6 +4,7 @@ import { List } from 'immutable'
 import { AssayDefinitionModel, ISubItem, QueryGridModel, SubMenuItem, SubMenuItemProps } from "@glass/base";
 
 import { getImportItemsForAssayDefinitions } from "./actions";
+import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
 
 interface Props extends SubMenuItemProps {
     isLoaded: boolean
@@ -45,7 +46,8 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
         // only display menu if valid items are available
         if (items.length) {
             const selectedCount = model ? model.selectedIds.size : -1;
-            const overlayMessage = (requireSelection && selectedCount == 0) ? "Select one or more items" : (selectedCount > 1000 ? "Too many items selected (Limit 1000)" : "");
+            const overlayMessage = (requireSelection && selectedCount == 0) ? "Select one or more items"
+                : (selectedCount > MAX_EDITABLE_GRID_ROWS ? "Too many items selected (Limit " + MAX_EDITABLE_GRID_ROWS + ")" : "");
             let menuProps: Props = Object.assign({}, this.props, {
                 disabled: overlayMessage.length > 0,
                 items

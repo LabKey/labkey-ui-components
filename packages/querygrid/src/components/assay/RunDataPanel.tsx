@@ -74,19 +74,20 @@ export class RunDataPanel extends React.Component<Props, any> {
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Copy}>
                                         <Formsy>
-                                    <Textarea
-                                        changeDebounceInterval={0}
-                                        cols={-1}
-                                        elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-12']}
-                                        label=''
-                                        labelClassName={[{'col-sm-3': false}, 'hidden']}
-                                        name="rundata"
-                                        onChange={(field, value) => onTextChange('text', value)}
-                                        onKeyDown={handleTabKeyOnTextArea}
-                                        placeholder="Paste in a tab-separated set of values"
-                                        rows={10}
-                                        style={{whiteSpace: 'nowrap'}}
-                                        value={wizardModel.dataText}/>
+                                            <Textarea
+                                                changeDebounceInterval={0}
+                                                cols={-1}
+                                                elementWrapperClassName={[{'col-sm-9': false}, 'col-sm-12']}
+                                                label=''
+                                                labelClassName={[{'col-sm-3': false}, 'hidden']}
+                                                name="rundata"
+                                                onChange={(field, value) => onTextChange('text', value)}
+                                                onKeyDown={handleTabKeyOnTextArea}
+                                                placeholder="Paste in a tab-separated set of values"
+                                                rows={10}
+                                                style={{whiteSpace: 'nowrap'}}
+                                                value={wizardModel.dataText}
+                                            />
                                         </Formsy>
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>

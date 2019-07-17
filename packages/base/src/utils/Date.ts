@@ -68,3 +68,11 @@ function getFormattedNumber(n) {
 export function getUnFormattedNumber(n) {
     return n ? numeral(n).value() : n;
 }
+
+export function generateNameWithTimestamp(name: string) {
+    const date = new Date();
+    const dateStr = date.toISOString().split('T')[0];
+    let timeStr = date.toTimeString().split(' ')[0];
+    timeStr = timeStr.replace(/:/g, '-');
+    return name + '_' + dateStr + '_' + timeStr;
+}

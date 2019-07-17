@@ -22,8 +22,10 @@ import {
     QueryColumn,
     QueryInfo,
     FileAttachmentFormModel,
-    QueryGridModel
+    QueryGridModel,
+    generateNameWithTimestamp
 } from "@glass/base";
+
 import { getEditorModel } from "../../global";
 
 export interface AssayPropertiesPanelProps {
@@ -114,11 +116,7 @@ export class AssayWizardModel extends Record({
             }
         }
 
-        const date = new Date();
-        const dateStr = date.toISOString().split('T')[0];
-        let timeStr = date.toTimeString().split(' ')[0];
-        timeStr = timeStr.replace(/:/g, '-');
-        return this.assayDef.name + '_' + dateStr + '_' + timeStr;
+        return generateNameWithTimestamp(this.assayDef.name);
     }
 
     prepareFormData(currentStep: number, gridModel: QueryGridModel): IAssayUploadOptions {

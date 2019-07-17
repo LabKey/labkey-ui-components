@@ -87,7 +87,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
 
         if (this.props.fieldError){
 
-            if (this.props.field.propertyId == this.props.fieldError.propertyId || this.props.field.name == this.props.fieldError.fieldName)
+            if (this.props.field.propertyId == this.props.fieldError.id || this.props.field.name == this.props.fieldError.field)
             {
                 if (details.length > 0)
                 {

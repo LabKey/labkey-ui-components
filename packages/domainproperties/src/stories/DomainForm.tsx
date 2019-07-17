@@ -10,11 +10,13 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import DomainForm from "../components/DomainForm";
 import { DomainDesign } from "../models";
 import data from "../test/data/property-getDomain.json";
-import errorData from "../test/data/property-saveDomainErrors.json";
+import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
+import exceptionData from "../test/data/property-domainException.json";
 import './stories.scss'
 
 interface Props {
     data: {}
+    exception?: {}
     helpNoun?: any
     helpURL?: any
 }
@@ -24,7 +26,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         super(props);
 
         this.state = {
-            domain: DomainDesign.create(props.data),
+            domain: DomainDesign.create(props.data, props.exception)
         };
     }
 
@@ -69,6 +71,7 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={errorData}
+                exception={exceptionData}
             />
         )
     });

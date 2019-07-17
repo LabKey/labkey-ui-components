@@ -4,16 +4,6 @@
   "domainURI" : "urn:lsid:labkey.com:Study.Project-556:Study",
   "description" : null,
   "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
-  "domainException" : {
-    "exception" : "The field name 'FieldText' is already taken. Please provide a unique name for each field.",
-    "success" : false,
-    "severity" : "Error",
-    "fieldErrors": [{
-      "fieldName" : "FieldText",
-      "propertyId" : "0",
-      "message" : "The field name 'FieldText' is already taken. Please provide a unique name for each field."
-    }]
-  },
   "fields" : [ {
     "propertyId" : 392739,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldText",

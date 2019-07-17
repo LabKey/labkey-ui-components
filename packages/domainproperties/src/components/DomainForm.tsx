@@ -341,16 +341,15 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
 
     private getFieldError(field: DomainField, domainException: DomainException) : DomainFieldError
     {
-        if (domainException && domainException.fieldErrors)
+        if (domainException && domainException.errors)
         {
-            for (let i = 0; i < domainException.fieldErrors.size; i++)
-            {
-                if (domainException.fieldErrors.get(i) && (field.newField || field.updatedField) &&
-                    (domainException.fieldErrors.get(i).get("propertyId") == field.propertyId || domainException.fieldErrors.get(i).get("fieldName") == field.name))
-                {
-                    return domainException.fieldErrors.get(i);
-                }
-            }
+            let fieldError = domainException.errors.filter( e => {
+
+                return e && (field.newField || field.updatedField) &&
+                    (e.get("id") == field.propertyId || e.get("field") == field.name);
+            });
+
+            return fieldError.get(0);
         }
 
         return undefined;

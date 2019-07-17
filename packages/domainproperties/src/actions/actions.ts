@@ -15,8 +15,8 @@
  */
 import {Domain} from "@labkey/api";
 import {List} from "immutable";
-import {DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE} from "../constants";
-import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES} from "../models";
+import {DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE, SEVERITY_LEVEL_ERROR} from "../constants";
+import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES, DomainException, DomainFieldError} from "../models";
 
 /**
  * @param domainId: Fetch domain by Id. Priority param over schema and query name.
@@ -31,7 +31,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             schemaName,
             queryName,
             success: (data) => {
-                resolve(DomainDesign.create(data));
+                resolve(DomainDesign.create(data, undefined));
             },
             failure: (error) => {
                 reject(error);
@@ -53,11 +53,13 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
             Domain.save({
                 domainDesign: domain,
                 domainId: domain.domainId,
-                success: (success) => {
-                    resolve(domain);
+                success: (data) => {
+                    resolve(DomainDesign.create(data, undefined));
                 },
                 failure: (error) => {
-                    reject(error);
+                    let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    let badDomain = domain.set('domainException', domainException);
+                    reject(badDomain);
                 }
             })
         }
@@ -67,10 +69,12 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 options,
                 domainDesign: domain.set('name', name),
                 success: (data) => {
-                    resolve(DomainDesign.create(data));
+                    resolve(DomainDesign.create(data, undefined));
                 },
                 failure: (error) => {
-                    reject(error);
+                    let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    let badDomain = domain.set('domainException', domainException);
+                    reject(badDomain);
                 }
             })
         }

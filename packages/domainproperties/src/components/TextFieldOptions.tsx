@@ -14,7 +14,7 @@ interface TextFieldProps extends ITypeDependentProps {
     scale: number
 }
 
-interface TextFieldState {
+export interface TextFieldState {
     radio: string
 }
 

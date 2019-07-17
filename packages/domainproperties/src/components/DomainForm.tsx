@@ -235,7 +235,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
                     <b>Field Name</b>
                 </Col>
                 <Col xs={2}>
-                    <b>Date Type</b>
+                    <b>Data Type</b>
                 </Col>
                 <Col xs={1}>
                     <b>Required?</b>

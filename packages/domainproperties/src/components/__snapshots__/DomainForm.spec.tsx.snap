@@ -255,7 +255,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                             className="col-xs-2"
                           >
                             <b>
-                              Date Type
+                              Data Type
                             </b>
                           </div>
                         </Col>
@@ -404,7 +404,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                       className="domain-field-row domain-row-expanded "
                                       data-react-beautiful-dnd-drag-handle="2"
                                       data-react-beautiful-dnd-draggable="2"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -915,17 +915,13 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                         title="Max Text Length"
                                                       >
                                                         <span
+                                                          className="label-help-target"
                                                           onMouseOut={[Function]}
                                                           onMouseOver={[Function]}
-                                                          style={
-                                                            Object {
-                                                              "width": "14px",
-                                                            }
-                                                          }
                                                         >
                                                           <FontAwesomeIcon
                                                             border={false}
-                                                            className=""
+                                                            className="label-help-icon"
                                                             fixedWidth={false}
                                                             flip={null}
                                                             icon={
@@ -949,31 +945,18 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             rotation={null}
                                                             size={null}
                                                             spin={false}
-                                                            style={
-                                                              Object {
-                                                                "cursor": "default",
-                                                                "height": "12px",
-                                                                "margin": "0px 2px 1px",
-                                                              }
-                                                            }
                                                             symbol={false}
                                                             title=""
                                                             transform={null}
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              className="svg-inline--fa fa-question-circle fa-w-16 "
+                                                              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
                                                               role="img"
-                                                              style={
-                                                                Object {
-                                                                  "cursor": "default",
-                                                                  "height": "12px",
-                                                                  "margin": "0px 2px 1px",
-                                                                }
-                                                              }
+                                                              style={Object {}}
                                                               viewBox="0 0 512 512"
                                                               xmlns="http://www.w3.org/2000/svg"
                                                             >
@@ -991,16 +974,15 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             show={false}
                                                             target={
                                                               <span
-                                                                style="width: 14px;"
+                                                                class="label-help-target"
                                                               >
                                                                 <svg
                                                                   aria-hidden="true"
-                                                                  class="svg-inline--fa fa-question-circle fa-w-16 "
+                                                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                                   data-icon="question-circle"
                                                                   data-prefix="fas"
                                                                   focusable="false"
                                                                   role="img"
-                                                                  style="height: 12px; margin: 0px 2px 1px; cursor: default;"
                                                                   viewBox="0 0 512 512"
                                                                   xmlns="http://www.w3.org/2000/svg"
                                                                 >
@@ -1018,16 +1000,15 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                               show={false}
                                                               target={
                                                                 <span
-                                                                  style="width: 14px;"
+                                                                  class="label-help-target"
                                                                 >
                                                                   <svg
                                                                     aria-hidden="true"
-                                                                    class="svg-inline--fa fa-question-circle fa-w-16 "
+                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                                     data-icon="question-circle"
                                                                     data-prefix="fas"
                                                                     focusable="false"
                                                                     role="img"
-                                                                    style="height: 12px; margin: 0px 2px 1px; cursor: default;"
                                                                     viewBox="0 0 512 512"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                   >
@@ -1082,6 +1063,16 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                     </div>
                                                   </div>
                                                 </Col>
+                                              </div>
+                                            </Row>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
+                                              componentClass="div"
+                                            >
+                                              <div
+                                                className="domain-row-expanded row"
+                                              >
                                                 <Col
                                                   bsClass="col"
                                                   componentClass="div"
@@ -1264,17 +1255,13 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                         title="Import Aliases"
                                                       >
                                                         <span
+                                                          className="label-help-target"
                                                           onMouseOut={[Function]}
                                                           onMouseOver={[Function]}
-                                                          style={
-                                                            Object {
-                                                              "width": "14px",
-                                                            }
-                                                          }
                                                         >
                                                           <FontAwesomeIcon
                                                             border={false}
-                                                            className=""
+                                                            className="label-help-icon"
                                                             fixedWidth={false}
                                                             flip={null}
                                                             icon={
@@ -1298,31 +1285,18 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             rotation={null}
                                                             size={null}
                                                             spin={false}
-                                                            style={
-                                                              Object {
-                                                                "cursor": "default",
-                                                                "height": "12px",
-                                                                "margin": "0px 2px 1px",
-                                                              }
-                                                            }
                                                             symbol={false}
                                                             title=""
                                                             transform={null}
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              className="svg-inline--fa fa-question-circle fa-w-16 "
+                                                              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
                                                               role="img"
-                                                              style={
-                                                                Object {
-                                                                  "cursor": "default",
-                                                                  "height": "12px",
-                                                                  "margin": "0px 2px 1px",
-                                                                }
-                                                              }
+                                                              style={Object {}}
                                                               viewBox="0 0 512 512"
                                                               xmlns="http://www.w3.org/2000/svg"
                                                             >
@@ -1340,16 +1314,15 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             show={false}
                                                             target={
                                                               <span
-                                                                style="width: 14px;"
+                                                                class="label-help-target"
                                                               >
                                                                 <svg
                                                                   aria-hidden="true"
-                                                                  class="svg-inline--fa fa-question-circle fa-w-16 "
+                                                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                                   data-icon="question-circle"
                                                                   data-prefix="fas"
                                                                   focusable="false"
                                                                   role="img"
-                                                                  style="height: 12px; margin: 0px 2px 1px; cursor: default;"
                                                                   viewBox="0 0 512 512"
                                                                   xmlns="http://www.w3.org/2000/svg"
                                                                 >
@@ -1367,16 +1340,15 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                               show={false}
                                                               target={
                                                                 <span
-                                                                  style="width: 14px;"
+                                                                  class="label-help-target"
                                                                 >
                                                                   <svg
                                                                     aria-hidden="true"
-                                                                    class="svg-inline--fa fa-question-circle fa-w-16 "
+                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                                     data-icon="question-circle"
                                                                     data-prefix="fas"
                                                                     focusable="false"
                                                                     role="img"
-                                                                    style="height: 12px; margin: 0px 2px 1px; cursor: default;"
                                                                     viewBox="0 0 512 512"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                   >
@@ -1439,17 +1411,13 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                         title="URL"
                                                       >
                                                         <span
+                                                          className="label-help-target"
                                                           onMouseOut={[Function]}
                                                           onMouseOver={[Function]}
-                                                          style={
-                                                            Object {
-                                                              "width": "14px",
-                                                            }
-                                                          }
                                                         >
                                                           <FontAwesomeIcon
                                                             border={false}
-                                                            className=""
+                                                            className="label-help-icon"
                                                             fixedWidth={false}
                                                             flip={null}
                                                             icon={
@@ -1473,31 +1441,18 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             rotation={null}
                                                             size={null}
                                                             spin={false}
-                                                            style={
-                                                              Object {
-                                                                "cursor": "default",
-                                                                "height": "12px",
-                                                                "margin": "0px 2px 1px",
-                                                              }
-                                                            }
                                                             symbol={false}
                                                             title=""
                                                             transform={null}
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              className="svg-inline--fa fa-question-circle fa-w-16 "
+                                                              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
                                                               role="img"
-                                                              style={
-                                                                Object {
-                                                                  "cursor": "default",
-                                                                  "height": "12px",
-                                                                  "margin": "0px 2px 1px",
-                                                                }
-                                                              }
+                                                              style={Object {}}
                                                               viewBox="0 0 512 512"
                                                               xmlns="http://www.w3.org/2000/svg"
                                                             >
@@ -1515,16 +1470,15 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             show={false}
                                                             target={
                                                               <span
-                                                                style="width: 14px;"
+                                                                class="label-help-target"
                                                               >
                                                                 <svg
                                                                   aria-hidden="true"
-                                                                  class="svg-inline--fa fa-question-circle fa-w-16 "
+                                                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                                   data-icon="question-circle"
                                                                   data-prefix="fas"
                                                                   focusable="false"
                                                                   role="img"
-                                                                  style="height: 12px; margin: 0px 2px 1px; cursor: default;"
                                                                   viewBox="0 0 512 512"
                                                                   xmlns="http://www.w3.org/2000/svg"
                                                                 >
@@ -1542,16 +1496,15 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                               show={false}
                                                               target={
                                                                 <span
-                                                                  style="width: 14px;"
+                                                                  class="label-help-target"
                                                                 >
                                                                   <svg
                                                                     aria-hidden="true"
-                                                                    class="svg-inline--fa fa-question-circle fa-w-16 "
+                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
                                                                     data-icon="question-circle"
                                                                     data-prefix="fas"
                                                                     focusable="false"
                                                                     role="img"
-                                                                    style="height: 12px; margin: 0px 2px 1px; cursor: default;"
                                                                     viewBox="0 0 512 512"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                   >
@@ -2399,7 +2352,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                             className="col-xs-2"
                           >
                             <b>
-                              Date Type
+                              Data Type
                             </b>
                           </div>
                         </Col>
@@ -2548,7 +2501,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -3021,7 +2974,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -3035,7 +2988,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={1}
                                     >
                                       <Row
                                         bsClass="row"
@@ -3494,7 +3447,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -3508,7 +3461,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={2}
                                     >
                                       <Row
                                         bsClass="row"
@@ -3967,7 +3920,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -3981,7 +3934,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={3}
                                     >
                                       <Row
                                         bsClass="row"
@@ -4440,7 +4393,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -4454,7 +4407,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={4}
                                     >
                                       <Row
                                         bsClass="row"
@@ -4913,7 +4866,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -4927,7 +4880,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={5}
                                     >
                                       <Row
                                         bsClass="row"
@@ -5386,7 +5339,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -5400,7 +5353,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={6}
                                     >
                                       <Row
                                         bsClass="row"
@@ -5859,7 +5812,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -5873,7 +5826,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={7}
                                     >
                                       <Row
                                         bsClass="row"
@@ -6332,7 +6285,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -6346,7 +6299,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={8}
                                     >
                                       <Row
                                         bsClass="row"
@@ -6805,7 +6758,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -6819,7 +6772,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={9}
                                     >
                                       <Row
                                         bsClass="row"
@@ -7876,7 +7829,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                             className="col-xs-2"
                           >
                             <b>
-                              Date Type
+                              Data Type
                             </b>
                           </div>
                         </Col>
@@ -8025,7 +7978,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -8500,7 +8453,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -8514,7 +8467,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={1}
                                     >
                                       <Row
                                         bsClass="row"
@@ -8975,7 +8928,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -8989,7 +8942,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={2}
                                     >
                                       <Row
                                         bsClass="row"
@@ -9450,7 +9403,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -9464,7 +9417,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={3}
                                     >
                                       <Row
                                         bsClass="row"

@@ -149,7 +149,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                       className="domain-field-row "
                       data-react-beautiful-dnd-drag-handle="5"
                       data-react-beautiful-dnd-draggable="5"
-                      draggable={false}
+                      draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
                       onFocus={[Function]}
@@ -163,7 +163,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={0}
+                      tabIndex={1}
                     >
                       <Row
                         bsClass="row"
@@ -705,7 +705,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                       className="domain-field-row "
                       data-react-beautiful-dnd-drag-handle="3"
                       data-react-beautiful-dnd-draggable="3"
-                      draggable={false}
+                      draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
                       onFocus={[Function]}
@@ -719,7 +719,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={0}
+                      tabIndex={1}
                     >
                       <Row
                         bsClass="row"
@@ -1261,7 +1261,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                       className="domain-field-row "
                       data-react-beautiful-dnd-drag-handle="2"
                       data-react-beautiful-dnd-draggable="2"
-                      draggable={false}
+                      draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
                       onFocus={[Function]}
@@ -1275,7 +1275,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={0}
+                      tabIndex={1}
                     >
                       <Row
                         bsClass="row"
@@ -1817,7 +1817,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                       className="domain-field-row "
                       data-react-beautiful-dnd-drag-handle="4"
                       data-react-beautiful-dnd-draggable="4"
-                      draggable={false}
+                      draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
                       onFocus={[Function]}
@@ -1831,7 +1831,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={0}
+                      tabIndex={1}
                     >
                       <Row
                         bsClass="row"
@@ -2373,7 +2373,7 @@ exports[`DomainRowDisplay string field 1`] = `
                       className="domain-field-row "
                       data-react-beautiful-dnd-drag-handle="1"
                       data-react-beautiful-dnd-draggable="1"
-                      draggable={false}
+                      draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
                       onFocus={[Function]}
@@ -2387,7 +2387,7 @@ exports[`DomainRowDisplay string field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={0}
+                      tabIndex={1}
                     >
                       <Row
                         bsClass="row"
@@ -2929,7 +2929,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                       className="domain-field-row "
                       data-react-beautiful-dnd-drag-handle="0"
                       data-react-beautiful-dnd-draggable="0"
-                      draggable={false}
+                      draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
                       onFocus={[Function]}
@@ -2943,7 +2943,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={0}
+                      tabIndex={1}
                     >
                       <Row
                         bsClass="row"

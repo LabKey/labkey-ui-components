@@ -183,6 +183,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
+                         tabIndex={index}
+                         draggable={true}
                     >
                         <Row key={createFormInputId("domainrow", index)}>
                             {this.renderBaseFields()}

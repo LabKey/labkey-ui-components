@@ -42,6 +42,10 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
+const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
+const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDeleteConfirmationData.json");
+const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
+const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
 const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
 
 export function initMocks() {
@@ -179,6 +183,25 @@ export function initMocks() {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(mixturesReportInfos)
+    });
+
+    mock.get(/.*ConfirmationData.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+        let selectionKey = queryParams.dataRegionSelectionKey;
+        if (selectionKey === 'deleteNone')
+            responseBody = deleteNoneConfirmation;
+        else if (selectionKey === 'deleteOne')
+            responseBody = deleteOneConfirmation;
+        else if (selectionKey === 'deleteSome')
+            responseBody = deleteSomeConfirmation;
+        else if (selectionKey === 'deleteAll')
+            responseBody = deleteAllConfirmation;
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
     });
 
     mock.use(proxy);

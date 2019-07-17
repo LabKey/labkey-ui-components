@@ -15,7 +15,7 @@ describe("<AssayResultDeleteConfirmModal/>", () => {
         );
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.text().indexOf("selected assay result")).toBeGreaterThan(-1);
+        expect(confirmModal.text().indexOf("The  selected assay result will")).toBeGreaterThan(-1);
     });
 
     test("Delete many", () => {

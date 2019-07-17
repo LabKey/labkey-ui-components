@@ -15,7 +15,7 @@ describe("<AssayRunDeleteConfirmModal/>", () => {
         );
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.text().indexOf("assay run and all of its")).toBeGreaterThan(-1);
+        expect(confirmModal.text().indexOf("assay run and any of its")).toBeGreaterThan(-1);
     });
 
     test("Delete many", () => {
@@ -28,6 +28,6 @@ describe("<AssayRunDeleteConfirmModal/>", () => {
         );
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.text().indexOf("assay runs and all of their")).toBeGreaterThan(-1);
+        expect(confirmModal.text().indexOf("assay runs and any of their")).toBeGreaterThan(-1);
     })
 });

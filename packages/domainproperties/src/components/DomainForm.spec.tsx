@@ -298,6 +298,8 @@ describe('DomainFormDisplay', () => {
         let deleteButton = form.find({id: createFormInputId(DOMAIN_FIELD_DELETE, 0), type: "button"});
         expect(deleteButton.length).toEqual(1);
         deleteButton.simulate('click');
+        let confirmButton = form.find('.btn-danger[children="Yes"]');
+        confirmButton.simulate('click');
 
         // Update state.  This is controlled outside glass component so set it here.
         form.setProps({domain: updatedDomain, onChange: changeHandler});

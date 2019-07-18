@@ -97,12 +97,6 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
                     <Media.Heading className="report-list-item__name">{name}</Media.Heading>
                     {createdByEl}
                 </Media.Body>
-
-                <Media.Right align="middle">
-                    <a href={runUrl} className="report-list-item__external-link" onClick={this.onLinkClicked}>
-                        <span className="fa fa-external-link" />
-                    </a>
-                </Media.Right>
             </Media.ListItem>
         );
     }

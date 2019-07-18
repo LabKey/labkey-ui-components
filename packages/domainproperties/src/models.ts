@@ -29,18 +29,21 @@ interface IPropDescType {
     display: string
     name: string
     rangeURI: string
+    shortDisplay?: string
 }
 
 export class PropDescType extends Record({
     conceptURI: undefined,
     display: undefined,
     name: undefined,
-    rangeURI: undefined
+    rangeURI: undefined,
+    shortDisplay: undefined
 }) implements IPropDescType {
     conceptURI: string;
     display: string;
     name: string;
     rangeURI: string;
+    shortDisplay: string;
 
     static isLookup(name: string): boolean {
         return name === 'lookup';
@@ -55,7 +58,7 @@ export class PropDescType extends Record({
     }
 }
 
-const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI});
+const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, shortDisplay: 'String'});
 const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
 
 export const PROP_DESC_TYPES = List([

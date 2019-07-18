@@ -188,7 +188,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
                 {queries.map((q) => {
                     let encoded = encodeLookup(q.name, q.type);
                     return (
-                        <option key={encoded} value={encoded}>{q.name} ({q.type.display})</option>
+                        <option key={encoded} value={encoded}>{q.name} ({q.type.shortDisplay || q.type.display})</option>
                     )
                 }).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}

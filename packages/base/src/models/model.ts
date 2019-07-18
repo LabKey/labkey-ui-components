@@ -1393,7 +1393,8 @@ export class AssayProtocolModel extends Record({
     saveScriptFiles: false,
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
-    selectedPlateTemplate: undefined
+    selectedPlateTemplate: undefined,
+    qcEnabled: undefined
 }) {
     allowTransformationScript: boolean;
     autoCopyTargetContainer: string;
@@ -1416,6 +1417,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: any;
     selectedMetadataInputFormat: any;
     selectedPlateTemplate: any;
+    qcEnabled: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);

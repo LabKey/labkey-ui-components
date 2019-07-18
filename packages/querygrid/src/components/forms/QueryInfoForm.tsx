@@ -20,7 +20,7 @@ import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { LoadingSpinner, QueryInfo, SchemaQuery, Tip } from '@glass/base'
+import {LoadingSpinner, QueryColumn, QueryInfo, SchemaQuery, Tip} from '@glass/base'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
@@ -59,6 +59,7 @@ export interface QueryInfoFormProps {
     onSubmitForEdit?: (data: any) => Promise<any>
     onSubmit?: (data: any) => Promise<any>
     onSuccess?: (data: any, submitForEdit: boolean) => any
+    columnFilter?: (col?: QueryColumn) => boolean
     queryInfo: QueryInfo
     renderFileInputs?: boolean
     schemaQuery: SchemaQuery
@@ -322,7 +323,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields } = this.props;
+        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields, columnFilter } = this.props;
         const { count } = this.state;
 
 
@@ -367,6 +368,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             initiallyDisableFields={initiallyDisableFields}
                             checkRequiredFields={checkRequiredFields}
                             queryInfo={queryInfo}
+                            columnFilter={columnFilter}
                             fieldValues={fieldValues}/>
                         {footer}
                         {this.renderButtons()}

@@ -543,6 +543,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
                 onSuccess={this.toggleBulkUpdate}
+                columnFilter={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.columnFilter : null}
                 queryInfo={model.queryInfo}
                 schemaQuery={model.queryInfo.schemaQuery}
                 title={this.props.bulkUpdateProps && this.props.bulkUpdateProps.title}

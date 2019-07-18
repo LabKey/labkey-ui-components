@@ -123,7 +123,7 @@ export function processQueries(payload: any): List<QueryInfoLite> {
         return List();
     }
 
-    return List<QueryInfoLite>(payload.queries.map((qi) => QueryInfoLite.create(qi)))
+    return List<QueryInfoLite>(payload.queries.map((qi) => QueryInfoLite.create(qi, payload.schemaName)))
         .sort((a, b) => naturalSort(a.name, b.name))
         .toList();
 }

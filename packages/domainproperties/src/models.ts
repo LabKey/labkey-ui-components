@@ -444,6 +444,7 @@ interface IQueryInfoLite {
     isMetadataOverrideable?: boolean
     isUserDefined?: boolean
     name?: string
+    schemaName?: string
     snapshot?: false
     title?: string
     viewDataUrl?: string
@@ -460,6 +461,7 @@ export class QueryInfoLite extends Record({
     isMetadataOverrideable: false,
     isUserDefined: false,
     name: undefined,
+    schemaName: undefined,
     snapshot: false,
     title: undefined,
     viewDataUrl: undefined
@@ -474,13 +476,15 @@ export class QueryInfoLite extends Record({
     isMetadataOverrideable?: boolean;
     isUserDefined?: boolean;
     name?: string;
+    schemaName?: string;
     snapshot?: false;
     title?: string;
     viewDataUrl?: string;
 
-    static create(raw: IQueryInfoLite): QueryInfoLite {
+    static create(raw: IQueryInfoLite, schemaName: string): QueryInfoLite {
         return new QueryInfoLite(Object.assign({}, raw, {
-            columns: List((raw.columns as any).map(c => ColumnInfoLite.create(c)))
+            columns: List((raw.columns as any).map(c => ColumnInfoLite.create(c))),
+            schemaName
         }));
     }
 
@@ -488,33 +492,37 @@ export class QueryInfoLite extends Record({
         super(values);
     }
 
-    getLookupInfo(rangeURI?: string): {name: string, type: PropDescType} {
+    getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
+        let infos = List<{name: string, type: PropDescType}>().asMutable();
         let pkCols = this.getPkColumns();
 
         if (pkCols.size > 0 || pkCols.size <= 2) {
-            let pk: ColumnInfoLite;
 
-            pkCols.forEach(col => {
-                if (col.name.toLowerCase() !== 'container') {
-                    pk = col;
-                    return false;
-                }
-            });
+            // Sample Set hack (ported from DomainEditorServiceBase.java)
+            if (this.schemaName.toLowerCase() === 'samples') {
+                let nameCol = this.columns.find(c => c.name.toLowerCase() === 'name');
 
-            if (pk) {
-                let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
-
-                // if supplied, apply rangeURI matching filter
-                if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
-                    return {
-                        name: this.name,
-                        type
-                    }
+                if (nameCol) {
+                    pkCols = pkCols.push(nameCol);
                 }
             }
+
+            pkCols
+                .filter(col => col.name.toLowerCase() !== 'container')
+                .forEach((pk) => {
+                    let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
+
+                    // if supplied, apply rangeURI matching filter
+                    if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
+                        infos.push({
+                            name: this.name,
+                            type
+                        });
+                    }
+                });
         }
 
-        return undefined;
+        return infos.asImmutable();
     }
 
     getPkColumns(): List<ColumnInfoLite> {

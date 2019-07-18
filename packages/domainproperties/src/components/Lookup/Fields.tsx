@@ -156,12 +156,15 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         });
 
         context.fetchQueries(containerPath, schemaName).then((queries) => {
+            let infos = List<{name: string, type: PropDescType}>();
+
+            queries.forEach((q) => {
+                infos = infos.concat(q.getLookupInfo(this.props.lookupURI)).toList();
+            });
+
             this.setState({
                 loading: false,
-                queries: queries
-                    .map(q => q.getLookupInfo(this.props.lookupURI))
-                    .filter(li => li !== undefined)
-                    .toList()
+                queries: infos
             });
         });
     }
@@ -182,7 +185,12 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
                          onChange={onChange}>
                 {blankOption && <option key="_default" value={undefined}/>}
                 {loading && <option disabled key="_loading" value={value}>Loading...</option>}
-                {queries.map((q) => <option key={q.name} value={encodeLookup(q.name, q.type)}>{q.name} ({q.type.display})</option>).toArray()}
+                {queries.map((q) => {
+                    let encoded = encodeLookup(q.name, q.type);
+                    return (
+                        <option key={encoded} value={encoded}>{q.name} ({q.type.display})</option>
+                    )
+                }).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>
         )

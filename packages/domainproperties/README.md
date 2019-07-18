@@ -8,6 +8,10 @@ Domain property related components for LabKey domains
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.0.22
+*Released*: 17 July 2019
+* Package patch update for changes to @glass/base v0.10.0
+
 ### version 0.0.21
 *Released*: 17 July 2019
 * Epic 5862: Domain designer type dependent fields.
@@ -16,7 +20,7 @@ Domain property related components for LabKey domains
 
 ### version 0.0.20
 *Released*: 10 July 2019
-* Package patch update for changes to @glass/base v???
+* Package patch update for changes to @glass/base v0.8.2
 
 ### version 0.0.19
 *Released*: 10 July 2019

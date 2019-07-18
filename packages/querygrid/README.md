@@ -14,6 +14,15 @@ Query Grid for LabKey schema/query data views
 * factor out AssayImportSubMenuItem and getImportItemsForAssayDefinitions and port from Biologics
 * port loadSelectedSamples from Biologics and export getSelection
 
+### version 0.10.1
+*Released*: 17 July 2019
+* Fix @glass/base dependencies for omnibox package
+
+### version 0.10.0
+*Released*: 17 July 2019
+* add support for messages to QueryGrid
+* enables hot reloading of CSS in Storybook for all packages
+
 ### version 0.9.1
 *Released*: 17 June 2019
 *  Update package for changes to @glass/base v0.9.0

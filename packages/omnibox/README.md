@@ -8,6 +8,14 @@ LabKey component that takes a set of actions (like filter, sort, search) and exp
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.1.25
+*Released*: 17 July 2019
+* Fix @glass/base dependencies for omnibox package
+
+### version 0.1.24
+*Released*: 17 July 2019
+* Package patch update for changes to @glass/base v0.10.0
+
 ### version 0.1.23
 *Released*: 17 July 2019
 * Package patch update for changes to @glass/base v0.9.0

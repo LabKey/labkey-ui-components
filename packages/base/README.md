@@ -10,6 +10,12 @@ Base components, models, and utility functions for LabKey applications and pages
 * add getDomainColumns() to AssayDefinitionModel
 * export SubMenuItemProps and ISubItem for Biologics use cases
 
+### version 0.10.0
+*Released*: 17 July 2019
+* add GridMessages to Grid component
+* add QCAnalyst permission and add qcEnabled flag to AssayProtocolModel
+* enables hot reloading of CSS in Storybook for all packages
+
 ### version 0.9.0
 *Released*: 17 July 2019
 * Add LabelHelpTip as a general component for adding help tips and popovers next to a form label

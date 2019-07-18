@@ -84,6 +84,7 @@ import { Page, PageProps } from './components/Page'
 import { LoadingPage, LoadingPageProps } from './components/LoadingPage'
 import { PageHeader } from './components/PageHeader'
 import { Progress } from './components/Progress'
+import { LabelHelpTip } from './components/LabelHelpTip'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
@@ -180,6 +181,7 @@ export {
     Page,
     PageHeader,
     Progress,
+    LabelHelpTip,
     MenuOption,
     MultiMenuButton,
     Notification,

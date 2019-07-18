@@ -8,6 +8,12 @@ Domain property related components for LabKey domains
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.0.21
+*Released*: 17 July 2019
+* Epic 5862: Domain designer type dependent fields.
+    - Add data type dependent section to expanded row fields.
+    - Numeric, boolean, text and date/time sections added.
+
 ### version 0.0.20
 *Released*: 10 July 2019
 * Package patch update for changes to @glass/base v???

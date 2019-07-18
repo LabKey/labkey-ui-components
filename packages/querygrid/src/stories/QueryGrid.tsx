@@ -63,4 +63,13 @@ storiesOf('QueryGrid', module)
         const model = getStateQueryGridModel(modelId, schemaQuery, {});
 
         return <QueryGrid model={model}/>
+    })
+    .add("with message", () => {
+        const modelId = "gridWithMessage";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "assay.General.Amino Acids",
+            queryName: "Runs"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {});
+        return <QueryGrid model={model}/>
     });

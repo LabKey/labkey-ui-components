@@ -6,10 +6,10 @@
 import * as React from 'react'
 import { MenuItem } from "react-bootstrap";
 import { storiesOf } from '@storybook/react'
-import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, withKnobs } from '@storybook/addon-knobs'
 
 import { ManageDropdownButton } from "../components/buttons/ManageDropdownButton";
-import './stories.css'
+import './stories.scss';
 
 storiesOf("ManageDropdownButton", module)
     .addDecorator(withKnobs)

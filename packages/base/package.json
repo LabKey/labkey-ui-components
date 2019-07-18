@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.10.0-fb-add-assay-qc-workflow.1",
+  "version": "0.10.0-fb-add-assay-qc-workflow.2",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

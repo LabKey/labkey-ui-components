@@ -9,6 +9,8 @@ Base components, models, and utility functions for LabKey applications and pages
 * port FileAttachmentFormModel and Footer from Biologics
 * add getDomainColumns() to AssayDefinitionModel
 * export SubMenuItemProps and ISubItem for Biologics use cases
+* Fix [issue 38011](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=38011) - properly detect 
+when a lookup field has not changed when editing values in the grid.
 
 ### version 0.10.0
 *Released*: 17 July 2019

@@ -424,7 +424,11 @@ export function getUpdatedDataFromGrid(originalGridData: Map<string, Map<string,
         let originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
-                if ((value && !originalRow.has(key)) || originalRow.get(key) != value) {
+                let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
+                if (List.isList(originalValue)) {
+                    originalValue = originalValue.get(0).value;
+                }
+                if ((value && !originalValue) || originalValue != value) {
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value, we set the value to null in our update data
                     row[key] = value || null;

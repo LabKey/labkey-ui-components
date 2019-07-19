@@ -95,6 +95,7 @@ export class RunDataPanel extends React.Component<Props, any> {
                                             model={gridModel}
                                             isSubmitting={wizardModel.isSubmitting}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
+                                            allowBulkRemove={true}
                                             bordered={true}
                                             striped={true}
                                             addControlProps={{placement: 'bottom'}}

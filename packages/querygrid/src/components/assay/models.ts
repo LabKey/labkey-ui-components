@@ -55,7 +55,6 @@ export class AssayWizardModel extends Record({
     errorMsg: undefined,
 
     attachedFiles: Map<string, File>(),
-
     batchColumns: OrderedMap<string, QueryColumn>(),
     batchProperties: Map<string, any>(),
     runColumns: OrderedMap<string, QueryColumn>(),
@@ -64,7 +63,7 @@ export class AssayWizardModel extends Record({
     runName: undefined,
     comment: undefined,
     dataText: undefined,
-    queryInfo: QueryInfo,
+    queryInfo: undefined,
     toDelete: undefined,
     selectedSamples: undefined,
 }) implements FileAttachmentFormModel {
@@ -81,7 +80,6 @@ export class AssayWizardModel extends Record({
     errorMsg?: string;
 
     attachedFiles: Map<string, File>;
-
     batchColumns: OrderedMap<string, QueryColumn>;
     batchProperties: Map<string, any>;
     runColumns: OrderedMap<string, QueryColumn>;
@@ -89,7 +87,6 @@ export class AssayWizardModel extends Record({
     runProperties?: Map<string, any>;
     runName?: string;
     comment?: string;
-
     dataText: string;
     queryInfo: QueryInfo;
     toDelete?: string;

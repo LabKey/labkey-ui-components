@@ -126,7 +126,7 @@ export class FormTabs extends React.Component<FormTabsProps, any> {
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 type Subtract<T, K> = Omit<T, keyof K>;
 
-interface WithFormStepsState {
+export interface WithFormStepsState {
     currentStep?: number
     furthestStep?: number
     hasDependentSteps?: boolean

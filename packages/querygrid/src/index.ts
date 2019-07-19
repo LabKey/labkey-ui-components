@@ -90,6 +90,7 @@ import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 import { deleteSampleSet, getSampleDeleteConfirmationData, loadSelectedSamples } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
+import { AssayImportPanels } from './components/assay/AssayImportPanels'
 import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
 import { RunDataPanel } from './components/assay/RunDataPanel'
@@ -213,6 +214,7 @@ export {
     IAssayURLContext,
     IAssayUploadOptions,
     AssayUploadGridLoader,
+    AssayImportPanels,
     BatchPropertiesPanel,
     RunPropertiesPanel,
     RunDataPanel,

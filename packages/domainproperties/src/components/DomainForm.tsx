@@ -132,7 +132,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
         const { domain, onChange } = this.props;
-
         const newDomain = updateDomainField(domain, fieldId, value);
 
         if (onChange) {
@@ -149,8 +148,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         let field = domain.fields.get(index);
 
-        // only show the confirm delete for previously existing fields
-        if (field && field.propertyId) {
+        if (field) {
             this.setState({
                 showConfirm: true
             });
@@ -204,6 +202,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 newFields.push(movedField);
                 if (idIndex === this.state.expandedRowIndex) {
                     this.expand(destIndex);
+                } else if (idIndex + 1 === this.state.expandedRowIndex) {
+                    this.expand(destIndex - 1);
+                } else if (idIndex - 1 === this.state.expandedRowIndex) {
+                    this.expand(destIndex + 1);
                 }
             }
 
@@ -253,7 +255,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <b>Field Name</b>
                 </Col>
                 <Col xs={2}>
-                    <b>Date Type</b>
+                    <b>Data Type</b>
                 </Col>
                 <Col xs={1}>
                     <b>Required?</b>

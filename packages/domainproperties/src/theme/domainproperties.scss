@@ -4,7 +4,7 @@
 }
 
 .domain-form-hdr-row {
-  margin: 0 0 5px 5px;
+  margin: 0 0 5px 5px !important;
   color: $gray;
 };
 
@@ -48,14 +48,18 @@
   }
 }
 
+.domain-help-icon {
+  margin: 0 0 2px 0;
+  height: 10px;
+}
+
+.domain-help-icon:hover {
+  cursor: pointer;
+}
+
 .domain-form-add {
   color: $gray-dark;
-  opacity: 0.5;
   cursor: pointer;
-
-  &:hover {
-    opacity: 1;
-  }
 }
 
 .domain-form-add-btn {
@@ -93,5 +97,49 @@
 
 .domain-field-label {
   color: $gray;
-  padding: 5px 0;
+  padding: 7px 0 5px 0;
+}
+
+/* Text Field Options */
+.domain-text-options-col {
+  margin-top: 3px;
+}
+
+.domain-text-options-radio1 {
+  margin: 4px 5px 5px 5px !important;
+}
+
+.domain-text-options-radio2 {
+  margin: 9px 5px 5px 5px !important;
+}
+
+.domain-text-options-length {
+  margin: 6px 5px 0 0 !important;
+}
+
+.domain-text-label {
+  color: gray;
+}
+
+.domain-field-checkbox-label {
+  margin: 3px 5px 0 0 !important;
+  color: gray;
+}
+
+.domain-field-checkbox {
+  margin: 7px 5px 0 0 !important;
+}
+
+.domain-field-float-left {
+  float: left;
+}
+
+.domain-field-description {
+  height: 85px !important;
+  resize: none;
+  margin-bottom: 2px;
+}
+
+.domain-help-table {
+  border: 1px solid black;
 }

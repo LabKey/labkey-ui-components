@@ -24,6 +24,12 @@ import {
     USER_RANGE_URI
 } from "./constants";
 
+export interface ITypeDependentProps {
+    index: number,
+    label: string,
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
+}
+
 interface IPropDescType {
     conceptURI: string
     display: string
@@ -66,7 +72,7 @@ export const PROP_DESC_TYPES = List([
     new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
     new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
     new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
-    new PropDescType({name: 'double', display: 'Number (Double)', rangeURI: DOUBLE_RANGE_URI}),
+    new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI}),
     new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI}),
     new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI}),
     new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI}),
@@ -169,49 +175,28 @@ export enum FieldErrors {
 }
 
 // Commented out properties are unused
-interface IDomainField {
-    conceptURI: string
-    // conditionalFormats: Array<string>
-    // container: string
-    // defaultDisplayValue: string
-    // defaultScale: string
-    // defaultValue: any?
-    // defaultValueType: string
-    description: string
-    // dimension: boolean
-    // disableEditing: boolean
-    // excludeFromShifting: boolean
-    // facetingBehaviorType: string
-    // format: string
-    hidden: boolean
-    importAliases: string
-    label: string
-    // lockType: string
-    lookupContainer: string
-    lookupQuery: string
-    lookupSchema: string
-    // measure: boolean
-    // mvEnabled: boolean
+export interface IDomainField {
+    conceptURI?: string
+    defaultScale?: string
+    description?: string
+    excludeFromShifting?: boolean
+    format?: string
+    hidden?: boolean
+    importAliases?: string
+    label?: string
+    lookupContainer?: string
+    lookupQuery?: string
+    lookupSchema?: string
     name: string
-    // ontologyURI: string
-    // PHI: string
-    // preventReordering: boolean
-    primaryKey: boolean
-    propertyId: number
+    primaryKey?: boolean
+    propertyId?: number
     propertyURI: string
-    // propertyValidators: Array<any>
     rangeURI: string
-    // recommendedVariables: boolean
-    // redactedText: any?
-    required: boolean
-    scale: number
-    // searchTerms: any?
-    // semanticType: string?
-    // shownInDetailsView: boolean
-    // shownInInsertView: boolean
-    // shownInUpdateView: boolean
-    // typeEditable: boolean
-    URL: string
+    required?: boolean
+    scale?: number
+    URL?: string
+    shownInInsertView?: boolean
+    shownInUpdateView?: boolean
 
     dataType: PropDescType
     lookupQueryValue: string;
@@ -222,7 +207,10 @@ interface IDomainField {
 
 export class DomainField extends Record({
     conceptURI: undefined,
+    defaultScale: undefined,
     description: undefined,
+    excludeFromShifting: false,
+    format: undefined,
     hidden: false,
     importAliases: undefined,
     label: undefined,
@@ -230,36 +218,43 @@ export class DomainField extends Record({
     lookupQuery: undefined,
     lookupSchema: undefined,
     name: undefined,
-    primaryKey: false,
+    primaryKey: undefined,
     propertyId: undefined,
     propertyURI: undefined,
-    rangeURI: STRING_RANGE_URI,
+    rangeURI: undefined,
     required: false,
     scale: undefined,
     URL: undefined,
+    shownInInsertView: true,
+    shownInUpdateView: true,
 
     dataType: undefined,
     lookupQueryValue: undefined,
     lookupType: undefined,
     original: undefined,
-    updatedField: false
+    updatedField: false,
 }) implements IDomainField {
-    conceptURI: string;
-    description: string;
-    hidden: boolean;
-    importAliases: string;
-    label: string;
-    lookupContainer: string;
-    lookupQuery: string;
-    lookupSchema: string;
+    conceptURI?: string;
+    defaultScale?: string;
+    description?: string;
+    excludeFromShifting?: boolean;
+    format?: string;
+    hidden?: boolean;
+    importAliases?: string;
+    label?: string;
+    lookupContainer?: string;
+    lookupQuery?: string;
+    lookupSchema?: string;
     name: string;
-    primaryKey: boolean;
-    propertyId: number;
+    primaryKey?: boolean;
+    propertyId?: number;
     propertyURI: string;
     rangeURI: string;
-    required: boolean;
-    scale: number;
-    URL: string;
+    required?: boolean;
+    scale?: number;
+    URL?: string;
+    shownInInsertView?: boolean;
+    shownInUpdateView?: boolean;
 
     dataType: PropDescType;
     lookupQueryValue: string;

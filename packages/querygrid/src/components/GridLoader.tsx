@@ -34,12 +34,13 @@ class GridLoader implements IGridLoader {
                 offset: model.getOffset(),
                 maxRows: model.getMaxRows()
             }).then(response => {
-                const { models, orderedModels, totalRows } = response;
+                const { models, orderedModels, totalRows, messages } = response;
 
                 resolve({
                     data: fromJS(models[model.getModelName()]),
                     dataIds: List(orderedModels[model.getModelName()]),
-                    totalRows
+                    totalRows,
+                    messages,
                 });
             }).catch(error => {
                 reject({

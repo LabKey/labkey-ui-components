@@ -5,9 +5,9 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs'
 
-import './stories.css'
+import './stories.scss';
 import { User } from "../models/model"
 import { Notification } from '../components/notifications/Notification';
 import { createNotification } from "../components/notifications/actions";

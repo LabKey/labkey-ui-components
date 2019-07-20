@@ -19,6 +19,9 @@ import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralA
 import {
     AssayProtocolModel,
     AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayLink,
+    AssayUploadTabs,
     Container,
     IGridLoader,
     IGridResponse,
@@ -81,6 +84,7 @@ import { Page, PageProps } from './components/Page'
 import { LoadingPage, LoadingPageProps } from './components/LoadingPage'
 import { PageHeader } from './components/PageHeader'
 import { Progress } from './components/Progress'
+import { LabelHelpTip } from './components/LabelHelpTip'
 import { Tip } from './components/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
@@ -91,7 +95,7 @@ import { createNotification } from './components/notifications/actions'
 import { dismissNotifications } from './components/notifications/global'
 import { initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/ConfirmModal'
-import { datePlaceholder, getUnFormattedNumber } from './utils/Date';
+import { datePlaceholder, getUnFormattedNumber, getDateFormat } from './utils/Date';
 import { Theme, SVGIcon } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
 import {
@@ -138,6 +142,9 @@ export {
     AppURL,
     AssayProtocolModel,
     AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayLink,
+    AssayUploadTabs,
     Container,
     User,
     QueryColumn,
@@ -169,6 +176,7 @@ export {
     Page,
     PageHeader,
     Progress,
+    LabelHelpTip,
     MenuOption,
     MultiMenuButton,
     Notification,
@@ -207,6 +215,7 @@ export {
 
     // date and format functions
     datePlaceholder,
+    getDateFormat,
     getUnFormattedNumber,
 
     // images
@@ -250,5 +259,4 @@ export {
     applyDevTools,
     devToolsActive,
     toggleDevTools
-
 }

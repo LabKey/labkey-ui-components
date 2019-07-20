@@ -14,49 +14,104 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Map } from 'immutable'
-import { buildURL, ConfirmModal } from "@glass/base";
+import { ConfirmModal, LoadingSpinner } from "@glass/base";
+import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actions';
+import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 
 interface Props {
-    numSamples: number
-    onConfirm: () => any
+    onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
-    showDependenciesLink: boolean
     rowId?: string
     selectionKey?: string
 }
 
-export class SampleDeleteConfirmModal extends React.Component<Props, any> {
+interface State {
+    error: string
+    isLoading: boolean
+    confirmationData: DeleteConfirmationData
+}
 
-    static defaultProps = {
-        showDependenciesLink: false
-    };
+/**
+ * The higher-order component that wraps SampleDeleteConfirmModal or displays a loading modal or eror modal.
+ */
+export class SampleDeleteConfirmModal extends React.Component<Props, State> {
+
+    // This is used because a user may cancel during the loading phase, in which case we don't want to update state
+    private _mounted : boolean;
+
+    constructor(props: Props) {
+        super(props);
+
+        if (props.rowId === undefined && props.selectionKey === undefined) {
+            throw new Error("Either rowId or selectionKey must be provided in order to confirm deletion.");
+        }
+
+        this.state = {
+            error: undefined,
+            isLoading: true,
+            confirmationData: undefined
+        }
+    }
+
+    componentWillMount() {
+        this._mounted = true;
+        this.init(this.props)
+    }
+
+    componentWillUnmount() {
+        this._mounted = false;
+    }
+
+    init(props: Props) {
+        getSampleDeleteConfirmationData(props.selectionKey, props.rowId ? [props.rowId] : undefined)
+            .then((confirmationData) => {
+                if (this._mounted) {
+                    this.setState(() => ({isLoading: false, confirmationData}));
+                }
+            })
+            .catch((reason) => {
+                console.error("There was a problem retrieving the delete confirmation data.", reason);
+                if (this._mounted) {
+                    this.setState(() => ({
+                        isLoading: false,
+                        error: "There was a problem retrieving the delete confirmation data."
+                    }));
+                }
+            });
+    }
 
     render() {
-        const { numSamples, onConfirm, onCancel, showDependenciesLink, rowId, selectionKey } = this.props;
-        const msgPrefix = numSamples === 1 ? 'The sample and its' : 'All ' + numSamples + ' samples and their';
+        const { onConfirm, onCancel } = this.props;
 
-        let dependencies = <>dependencies</>;
-        if (showDependenciesLink) {
-            let params = Map<string, string>();
-            if (rowId) {
-                params = params.set('singleObjectRowId', rowId);
-            }
-            if (selectionKey) {
-                params = params.set('dataRegionSelectionKey', selectionKey);
-            }
-            dependencies = <a href={buildURL('experiment', 'deleteMaterialByRowId', params.toJS())}>dependencies</a>;
+
+        if (this.state.isLoading) {
+            return (
+                <ConfirmModal
+                      title={"Loading confirmation data"}
+                      msg={<LoadingSpinner/>}
+                      onCancel={onCancel}
+                      cancelButtonText="Cancel"
+                />
+            )
+        }
+
+        if (this.state.error) {
+            return (
+                <ConfirmModal
+                    title={"Deletion Error"}
+                    onCancel={onCancel}
+                    msg={this.state.error}
+                    onConfirm={undefined}
+                    cancelButtonText={"Dismiss"}
+                />
+            )
         }
 
         return (
-            <ConfirmModal
-                title={'Permanently delete ' + numSamples + ' sample' + (numSamples === 1 ? '' : 's') + '?'}
-                msg={<span>{msgPrefix} {dependencies} will be permanently deleted. <strong>Deletion cannot be undone.</strong></span>}
+            <SampleDeleteConfirmModalDisplay
+                confirmationData={this.state.confirmationData}
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                confirmVariant='danger'
-                confirmButtonText='Yes, Delete'
-                cancelButtonText='Cancel'
             />
         )
     }

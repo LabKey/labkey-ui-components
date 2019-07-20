@@ -21,13 +21,15 @@ import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
 
 import {
-    DOMAIN_FIELD_DETAILS,
+    DOMAIN_FIELD_ADV,
+    DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_DETAILS, DOMAIN_FIELD_EXPAND,
     DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_ROW,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, FieldErrors, PropDescType, resolveAvailableTypes } from "../models";
-import { createFormInputId } from "../actions/actions";
+import { DomainField, FieldErrors, PropDescType, resolveAvailableTypes, PROP_DESC_TYPES } from "../models";
+import {createFormInputId, getCheckedValue} from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -95,13 +97,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
-    onChange = (evt: any, expand?: boolean): any => {
+    onFieldChange = (evt: any, expand?: boolean): any => {
         const { index, onChange } = this.props;
 
         if (onChange) {
-            let value = evt.target.value;
-            if (evt.target.type === 'checkbox') {
-                value = evt.target.checked;
+            let value = getCheckedValue(evt);
+            if (value === undefined) {
+                value = evt.target.value;
             }
 
             onChange(evt.target.id, value, index, expand === true);
@@ -109,7 +111,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     };
 
     onDataTypeChange = (evt: any): any => {
-        this.onChange(evt, PropDescType.isLookup(evt.target.value));
+        this.onFieldChange(evt, PropDescType.isLookup(evt.target.value));
     };
 
     onDelete = (): any => {
@@ -132,13 +134,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         const { index, field } = this.props;
 
         return (
-            <>
+            <div id={createFormInputId(DOMAIN_FIELD_ROW, index)}>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
                         <FormControl autoFocus={field.isNew()}
                                      id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                     onChange={this.onChange}/>
+                                     onChange={this.onFieldChange}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
@@ -165,16 +167,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                                       id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       checked={field.required}
-                                      onChange={this.onChange}/>
+                                      onChange={this.onFieldChange}/>
                         </Tip>
                     </div>
                 </Col>
-            </>
+            </div>
         )
     }
 
     renderButtons() {
-        const { expanded } = this.props;
+        const { expanded, index } = this.props;
 
         return (
             <div className="pull-right">
@@ -183,18 +185,20 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Button
                         bsStyle="danger"
                         className="domain-row-button"
+                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
                         onClick={this.onDelete}>
                         Remove Field
                     </Button>
                     <Button
                         disabled={true}
+                        id={createFormInputId(DOMAIN_FIELD_ADV, index)}
                         className="domain-row-button">
                         Advanced Settings
                     </Button>
                 </>
                 )}
                 <Tip caption="Additional Settings">
-                    <div className="domain-field-icon" onClick={this.onExpand}>
+                    <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
                         <FontAwesomeIcon icon={faPencilAlt}/>
                     </div>
                 </Tip>
@@ -203,7 +207,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     render() {
-        const { index, field, expanded } = this.props;
+        const { index, field, expanded, onChange } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
@@ -212,6 +216,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
+                         tabIndex={index}
+                         draggable={true}
                     >
                         <Row key={createFormInputId("domainrow", index)}>
                             {this.renderBaseFields()}
@@ -221,7 +227,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             </Col>
                         </Row>
                         {expanded &&
-                            <DomainRowExpandedOptions field={field} index={index} onChange={this.onChange}/>
+                            <DomainRowExpandedOptions field={field} index={index} onChange={onChange}/>
                         }
                     </div>
                 )}

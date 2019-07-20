@@ -4,6 +4,25 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.9.1
+*Released*: 17 June 2019
+*  Update package for changes to @glass/base v0.9.0
+
+### version 0.9.0
+*Released*: 10 July 2019
+* Update SampleDeleteConfirmModal to account for restrictions on deleting samples
+* Add getSampleDeleteConfirmationData method for use in delete confirmations
+
+### version 0.8.1
+*Released*: 10 July 2019
+* Issue 37915: add asterisk to required Name field in sample set details panel
+* Port createQueryGridModelFilteredBySample from Biologics
+
+### version 0.8.0
+*Released*: 8 July 2019
+* Add createSampleSet, updateSampleSet, and deleteSampleSet functions
+* Add SampleSetDetailsPanel and SampleSetDeleteConfirmModal components 
+
 ### version 0.7.0
 *Released*: 3 July 2019
 * For QueryInfoForm, add placeholders using queryColumn captions

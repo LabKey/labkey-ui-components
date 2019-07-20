@@ -18,7 +18,7 @@
 // Definitions by: Nick Arnold <https://github.com/labkey-nicka>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 import * as React from 'react';
-import {AppURL} from "../url/ActionURL";
+import {AppURL} from "..";
 
 
 declare module "react-bootstrap" {
@@ -381,7 +381,7 @@ declare module "react-bootstrap" {
 
     interface OverlayProps extends BaseOverlayProps {
 
-        container: any
+        container?: any
 
         /**
          * A callback invoked by the overlay when it wishes to be hidden. Required if `rootClose` is specified.

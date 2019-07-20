@@ -193,7 +193,7 @@ export function createFormInputId(name: string, index: any): string {
     return [DOMAIN_FIELD_PREFIX, name, index].join('-');
 }
 
-function getNameFromId(id: string): string {
+export function getNameFromId(id: string) : string {
     const parts = id.split('-');
     if (parts.length === 3) {
         return parts[1];
@@ -296,9 +296,17 @@ function updateLookup(field: DomainField, lookupContainer?: string, lookupSchema
     }) as DomainField;
 }
 
-function clearFieldDetails(domain: DomainDesign): DomainDesign {
+export function clearFieldDetails(domain: DomainDesign): DomainDesign {
     return domain.merge({
         fields: domain.fields.map(f => f.set('updatedField', false)).toList()
     }) as DomainDesign;
 }
 
+export function getCheckedValue(evt) {
+    if (evt.target.type === "checkbox")
+    {
+        return evt.target.checked;
+    }
+
+    return undefined;
+}

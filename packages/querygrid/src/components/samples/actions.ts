@@ -15,8 +15,17 @@
  */
 import { Filter } from '@labkey/api'
 import { fromJS, List, Map } from 'immutable'
-import { DisplayObject, ISampleSetOption, SampleIdCreationModel, SampleSetOption, SampleSetParentType } from './models';
-import { naturalSort, SchemaQuery, SCHEMAS } from '@glass/base';
+import { Ajax, Utils } from '@labkey/api';
+import { buildURL, naturalSort, SchemaQuery, SCHEMAS } from '@glass/base';
+
+import {
+    DisplayObject,
+    ISampleSetDetails,
+    ISampleSetOption,
+    SampleIdCreationModel,
+    SampleSetOption,
+    SampleSetParentType
+} from './models';
 import { getSelected } from "../../actions";
 import { selectRows } from "../..";
 
@@ -92,7 +101,6 @@ function extractFromRow(row: Map<string, any>): ISampleSetOption {
     }
 }
 
-
 export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Partial<SampleIdCreationModel>> {
     return new Promise( (resolve) => {
 
@@ -141,5 +149,92 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
             })
         })
 
+    });
+}
+
+export function createSampleSet(config: ISampleSetDetails): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'createSampleSetApi.api'),
+            method: 'POST',
+            params: config,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function updateSampleSet(config: ISampleSetDetails): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'updateMaterialSourceApi.api'),
+            method: 'POST',
+            params: config,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function deleteSampleSet(rowId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'deleteMaterialSource.api'),
+            method: 'POST',
+            params: {
+                singleObjectRowId: rowId,
+                forceDelete: true
+            },
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export interface DeleteConfirmationData {
+    canDelete: Array<any>
+    cannotDelete: Array<any>
+}
+
+export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: Array<string>) : Promise<DeleteConfirmationData> {
+    return new Promise((resolve, reject) => {
+       let params;
+       if (selectionKey) {
+           params = {
+               dataRegionSelectionKey: selectionKey
+           }
+       }
+       else {
+           params = {
+               rowIds
+           }
+       }
+       return Ajax.request({
+           url: buildURL('experiment', "getMaterialDeleteConfirmationData.api", params),
+           method: "GET",
+           success: Utils.getCallbackWrapper((response) => {
+               if (response.success) {
+                   resolve(response.data);
+               }
+               else {
+                   reject(response.exception);
+               }
+           }),
+           failure: Utils.getCallbackWrapper((response) => {
+               reject(response.exception);
+           })
+       })
     });
 }

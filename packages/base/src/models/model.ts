@@ -18,6 +18,8 @@ import { ActionURL, Filter, Utils } from '@labkey/api'
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
 import { decodePart, getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../utils/utils'
+import { AppURL } from "../url/AppURL";
+import { WHERE_FILTER_TYPE } from "../url/WhereFilterType";
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -455,7 +457,8 @@ export interface IGridLoader {
 export interface IGridResponse {
     data: Map<any, any>,
     dataIds: List<any>,
-    totalRows?: number
+    totalRows?: number,
+    messages?: List<Map<string, string>>,
 }
 
 export interface IGridSelectionResponse {
@@ -483,7 +486,12 @@ export class QueryGridModel extends Record({
     keyValue: undefined,
     loader: undefined,
     maxRows: 20,
+    // message is a client-only attribute used to store error messages encountered when trying to load a model. It does
+    // not come from a LK server response.
     message: undefined,
+    // messages comes from LK Server via the metadata object in the selectRows response. At the moment it is only used
+    // to notify users that they are looking at a subset of rows due to QC Flags State.
+    messages: undefined,
     offset: 0,
     omittedColumns: emptyList,
     pageNumber: 1,
@@ -525,6 +533,7 @@ export class QueryGridModel extends Record({
     loader?: IGridLoader;
     maxRows: number;
     message: string;
+    messages?: List<Map<string, string>>;
     offset: number;
     omittedColumns: List<string>;
     pageNumber: number;
@@ -597,8 +606,6 @@ export class QueryGridModel extends Record({
 
         return emptyColumns;
     }
-
-
 
     getColumnIndex(fieldKey: string): number {
         if (!fieldKey)
@@ -1386,7 +1393,8 @@ export class AssayProtocolModel extends Record({
     saveScriptFiles: false,
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
-    selectedPlateTemplate: undefined
+    selectedPlateTemplate: undefined,
+    qcEnabled: undefined
 }) {
     allowTransformationScript: boolean;
     autoCopyTargetContainer: string;
@@ -1409,19 +1417,20 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: any;
     selectedMetadataInputFormat: any;
     selectedPlateTemplate: any;
+    qcEnabled: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
 }
 
-enum AssayDomainTypes {
+export enum AssayDomainTypes {
     BATCH = 'Batch',
     RUN = 'Run',
     RESULT = 'Result',
 }
 
-enum AssayLink {
+export enum AssayLink {
     BATCHES = 'batches',
     BEGIN = 'begin',
     DESIGN_COPY = 'designCopy',
@@ -1435,6 +1444,12 @@ enum AssayLink {
 interface ScopedSampleColumn {
     domain: AssayDomainTypes;
     column: QueryColumn;
+}
+
+export const enum AssayUploadTabs {
+    Files = 1,
+    Copy = 2,
+    Grid = 3
 }
 
 export class AssayDefinitionModel extends Record({
@@ -1510,22 +1525,26 @@ export class AssayDefinitionModel extends Record({
         return undefined;
     }
 
-    // getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
-    //     let url;
-    //     // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
-    //     if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
-    //         url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
-    //         if (dataTab)
-    //             url = url.addParam('dataTab', dataTab);
-    //         if (selectionKey)
-    //             url = url.addParam('selectionKey', selectionKey);
-    //         url = url.toHref();
-    //     }
-    //     else {
-    //         url = this.links.get(AssayLink.IMPORT)
-    //     }
-    //     return url;
-    // }
+    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
+        let url;
+        // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
+        if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
+            url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
+            if (dataTab)
+                url = url.addParam('dataTab', dataTab);
+            if (selectionKey)
+                url = url.addParam('selectionKey', selectionKey);
+            url = url.toHref();
+        }
+        else {
+            url = this.links.get(AssayLink.IMPORT)
+        }
+        return url;
+    }
+
+    getRunsUrl() {
+        return AppURL.create('assays', this.type, this.name, 'runs');
+    }
 
     hasLookup(targetSQ: SchemaQuery): boolean {
         const isSampleSet = targetSQ.hasSchema('samples');
@@ -1568,43 +1587,70 @@ export class AssayDefinitionModel extends Record({
         return null;
     }
 
-
-    getSampleColumn(): ScopedSampleColumn {
+    /**
+     * get all sample lookup columns found in the result, run, and batch domains.
+     */
+    getSampleColumns(): List<ScopedSampleColumn> {
+        let ret = [];
         // The order matters here, we care about result, run, and batch in that order.
         for (const domain of [AssayDomainTypes.RESULT, AssayDomainTypes.RUN, AssayDomainTypes.BATCH]) {
             const column = this.getSampleColumnByDomain(domain);
 
             if (column) {
-                return {column, domain};
+                ret.push({column, domain});
             }
         }
 
-        return null;
+        return List(ret);
     }
 
     /**
-     * getSampleColumnLookup returns the string representation of the sample column relative from the Results table.
+     * get the first sample lookup column found in the result, run, or batch domain.
      */
-    getSampleColumnLookup(): string {
-        const sampleCol = this.getSampleColumn();
+    getSampleColumn(): ScopedSampleColumn {
+        const sampleColumns = this.getSampleColumns();
+        return !sampleColumns.isEmpty() ? sampleColumns.first() : null;
+    }
 
-        if (sampleCol) {
-            if (sampleCol.domain == AssayDomainTypes.RESULT) {
-                return sampleCol.column.fieldKey;
-            } else if (sampleCol.domain == AssayDomainTypes.RUN) {
-                return `Run/${sampleCol.column.fieldKey}`;
-            } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
-                return `Run/Batch/${sampleCol.column.fieldKey}`;
-            }
-
-            throw new Error("Unexpected Assay Domain Type.");
+    /**
+     * returns the FieldKey string of the sample column relative from the assay Results table.
+     */
+    sampleColumnFieldKey(sampleCol: ScopedSampleColumn): string {
+        if (sampleCol.domain == AssayDomainTypes.RESULT) {
+            return sampleCol.column.fieldKey;
+        } else if (sampleCol.domain == AssayDomainTypes.RUN) {
+            return `Run/${sampleCol.column.fieldKey}`;
+        } else if (sampleCol.domain == AssayDomainTypes.BATCH) {
+            return `Run/Batch/${sampleCol.column.fieldKey}`;
         }
+        throw new Error("Unexpected assay domain type: " + sampleCol.domain);
+    }
 
-        return null;
+    /**
+     * returns the FieldKey string of the sample columns relative from the assay Results table.
+     */
+    getSampleColumnFieldKeys(): List<string> {
+        const sampleCols = this.getSampleColumns();
+        return List(sampleCols.map(this.sampleColumnFieldKey));
+    }
+
+    createSampleFilter(sampleColumns: List<string>, value, singleFilter: Filter.IFilterType, whereClausePart: (fieldKey, value) => string) {
+        if (sampleColumns.size == 1) {
+            // generate simple equals filter
+            let sampleColumn = sampleColumns.get(0);
+            return Filter.create(`${sampleColumn}/RowId`, value, singleFilter);
+        } else {
+            // generate an OR filter to include all sample columns
+            let whereClause = '(' + sampleColumns.map(sampleCol => {
+                let fieldKey = (sampleCol + '/RowId').replace(/\//g, '.');
+                return whereClausePart(fieldKey, value);
+            }).join(' OR ') + ')';
+            return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
+        }
     }
 }
 
-function isSampleLookup(column: QueryColumn) {
+export function isSampleLookup(column: QueryColumn) {
     /**
      * 35881: Ensure that a column is a valid lookup to one of the following
      * - exp.Materials

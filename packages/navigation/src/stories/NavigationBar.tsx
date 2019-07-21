@@ -13,7 +13,7 @@ import { MenuSectionConfig } from '../components/ProductMenuSection'
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../model'
 import { NavigationBar } from '../components/NavigationBar'
 
-import './stories.css'
+import './stories.scss'
 
 const fruitTree = [
     "Apple",

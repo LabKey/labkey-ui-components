@@ -6,9 +6,9 @@
 import * as React from 'react'
 import { List, Map } from 'immutable'
 import { storiesOf } from '@storybook/react'
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs'
+import { select, text, withKnobs } from '@storybook/addon-knobs'
 
-import './stories.css'
+import './stories.scss';
 import { MultiMenuButton } from "../components/menus/MultiMenuButton";
 import { MenuOption, SubMenu } from "../components/menus/SubMenu";
 

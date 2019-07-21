@@ -32,5 +32,8 @@ export const PermissionTypes = {
 
     // Other
     DesignAssay: 'org.labkey.api.study.permissions.DesignAssayPermission',
-    DesignSampleSet: 'org.labkey.api.security.permissions.DesignSampleSetPermission'
+    DesignSampleSet: 'org.labkey.api.security.permissions.DesignSampleSetPermission',
+
+    // Assay QC
+    QCAnalyst: 'org.labkey.api.security.permissions.QCAnalystPermission',
 };

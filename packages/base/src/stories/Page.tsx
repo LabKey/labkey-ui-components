@@ -6,9 +6,9 @@
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
 import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, withKnobs } from '@storybook/addon-knobs'
 
-import './stories.css'
+import './stories.scss';
 import { Page } from "../components/Page";
 import { PageHeader } from "../components/PageHeader";
 

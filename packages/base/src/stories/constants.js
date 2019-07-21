@@ -21,6 +21,13 @@ export const gridData = fromJS([{
     position: 5
 }]);
 
+
+export const gridMessages = fromJS([{
+    area: 'view',
+    type: 'WARNING',
+    content: 'There are 1 rows not shown due to unapproved QC state',
+}]);
+
 export const gridColumns = List([
     {
         index: 'name',

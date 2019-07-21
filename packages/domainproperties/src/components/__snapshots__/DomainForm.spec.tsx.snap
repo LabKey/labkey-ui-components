@@ -22,10 +22,13 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": true,
+          "excludeFromShifting": false,
         },
       ],
       "indices": Immutable.List [],
@@ -252,7 +255,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                             className="col-xs-2"
                           >
                             <b>
-                              Date Type
+                              Data Type
                             </b>
                           </div>
                         </Col>
@@ -338,10 +341,13 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": true,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={0}
@@ -398,7 +404,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                       className="domain-field-row domain-row-expanded "
                                       data-react-beautiful-dnd-drag-handle="2"
                                       data-react-beautiful-dnd-draggable="2"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -558,7 +564,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-0"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-0"
@@ -841,196 +847,703 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                             "lookupSchema": undefined,
                                             "lookupQuery": undefined,
                                             "scale": undefined,
+                                            "format": undefined,
+                                            "defaultScale": undefined,
                                             "importAliases": undefined,
                                             "URL": undefined,
                                             "updatedField": undefined,
                                             "newField": true,
+                                            "excludeFromShifting": false,
                                           }
                                         }
                                         index={0}
                                         onChange={[Function]}
                                       >
-                                        <Row
-                                          bsClass="row"
-                                          className="domain-row-expanded"
-                                          componentClass="div"
+                                        <TextFieldOptions
+                                          index={0}
+                                          label="Text Field Options"
+                                          onChange={[Function]}
                                         >
-                                          <div
-                                            className="domain-row-expanded row"
-                                          >
-                                            <Col
-                                              bsClass="col"
+                                          <div>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
                                               componentClass="div"
-                                              xs={12}
                                             >
                                               <div
-                                                className="col-xs-12"
+                                                className="domain-row-expanded row"
                                               >
-                                                <div
-                                                  className="domain-field-section-heading"
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={12}
                                                 >
-                                                  Name and Linking Options
-                                                </div>
-                                              </div>
-                                            </Col>
-                                          </div>
-                                        </Row>
-                                        <Row
-                                          bsClass="row"
-                                          className="domain-row-expanded"
-                                          componentClass="div"
-                                        >
-                                          <div
-                                            className="domain-row-expanded row"
-                                          >
-                                            <Col
-                                              bsClass="col"
-                                              componentClass="div"
-                                              xs={5}
-                                            >
-                                              <div
-                                                className="col-xs-5"
-                                              >
-                                                <div
-                                                  className="domain-field-label"
-                                                >
-                                                  Description
-                                                </div>
-                                                <textarea
-                                                  className="form-control"
-                                                  id="domainpropertiesrow-description-0"
-                                                  key="domainpropertiesrow-description-0"
-                                                  onChange={[Function]}
-                                                  placeholder="Add a description"
-                                                  rows={4}
-                                                  value=""
-                                                />
-                                              </div>
-                                            </Col>
-                                            <Col
-                                              bsClass="col"
-                                              componentClass="div"
-                                              xs={3}
-                                            >
-                                              <div
-                                                className="col-xs-3"
-                                              >
-                                                <div
-                                                  className="domain-field-label"
-                                                >
-                                                  Label
-                                                </div>
-                                                <FormControl
-                                                  bsClass="form-control"
-                                                  componentClass="input"
-                                                  id="domainpropertiesrow-label-0"
-                                                  key="domainpropertiesrow-label-0"
-                                                  onChange={[Function]}
-                                                  type="text"
-                                                  value=""
-                                                >
-                                                  <input
-                                                    className="form-control"
-                                                    id="domainpropertiesrow-label-0"
-                                                    onChange={[Function]}
-                                                    type="text"
-                                                    value=""
-                                                  />
-                                                </FormControl>
-                                                <div
-                                                  className="domain-field-label"
-                                                >
-                                                  Import Aliases
-                                                </div>
-                                                <FormControl
-                                                  bsClass="form-control"
-                                                  componentClass="input"
-                                                  id="domainpropertiesrow-importAliases-0"
-                                                  key="domainpropertiesrow-importAliases-0"
-                                                  onChange={[Function]}
-                                                  type="text"
-                                                  value=""
-                                                >
-                                                  <input
-                                                    className="form-control"
-                                                    id="domainpropertiesrow-importAliases-0"
-                                                    onChange={[Function]}
-                                                    type="text"
-                                                    value=""
-                                                  />
-                                                </FormControl>
-                                              </div>
-                                            </Col>
-                                            <Col
-                                              bsClass="col"
-                                              componentClass="div"
-                                              xs={4}
-                                            >
-                                              <div
-                                                className="col-xs-4"
-                                              >
-                                                <Alert
-                                                  bsStyle="info"
-                                                >
-                                                  <Alert
-                                                    bsClass="alert"
-                                                    bsStyle="info"
-                                                    closeLabel="Close alert"
+                                                  <div
+                                                    className="col-xs-12"
                                                   >
                                                     <div
-                                                      className="alert alert-info"
-                                                      role="alert"
+                                                      className="domain-field-section-heading"
                                                     >
-                                                      Default value options coming soon...
+                                                      Text Field Options
                                                     </div>
-                                                  </Alert>
-                                                </Alert>
+                                                  </div>
+                                                </Col>
                                               </div>
-                                            </Col>
-                                          </div>
-                                        </Row>
-                                        <Row
-                                          bsClass="row"
-                                          className="domain-row-expanded"
-                                          componentClass="div"
-                                        >
-                                          <div
-                                            className="domain-row-expanded row"
-                                          >
-                                            <Col
-                                              bsClass="col"
+                                            </Row>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded "
                                               componentClass="div"
-                                              xs={5}
                                             >
                                               <div
-                                                className="col-xs-5"
+                                                className="domain-row-expanded  row"
                                               >
-                                                <div
-                                                  className="domain-field-label"
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={12}
                                                 >
-                                                  URL
-                                                </div>
-                                                <FormControl
-                                                  bsClass="form-control"
-                                                  componentClass="input"
-                                                  id="domainpropertiesrow-URL-0"
-                                                  key="domainpropertiesrow-URL-0"
-                                                  onChange={[Function]}
-                                                  type="text"
-                                                  value=""
-                                                >
-                                                  <input
-                                                    className="form-control"
-                                                    id="domainpropertiesrow-URL-0"
-                                                    onChange={[Function]}
-                                                    type="text"
-                                                    value=""
-                                                  />
-                                                </FormControl>
+                                                  <div
+                                                    className="col-xs-12"
+                                                  >
+                                                    <div
+                                                      className="domain-field-label"
+                                                    >
+                                                      Max Text Character Count
+                                                      <LabelHelpTip
+                                                        body={[Function]}
+                                                        title="Max Text Length"
+                                                      >
+                                                        <span
+                                                          className="label-help-target"
+                                                          onMouseOut={[Function]}
+                                                          onMouseOver={[Function]}
+                                                        >
+                                                          <FontAwesomeIcon
+                                                            border={false}
+                                                            className="label-help-icon"
+                                                            fixedWidth={false}
+                                                            flip={null}
+                                                            icon={
+                                                              Object {
+                                                                "icon": Array [
+                                                                  512,
+                                                                  512,
+                                                                  Array [],
+                                                                  "f059",
+                                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                ],
+                                                                "iconName": "question-circle",
+                                                                "prefix": "fas",
+                                                              }
+                                                            }
+                                                            inverse={false}
+                                                            listItem={false}
+                                                            mask={null}
+                                                            pull={null}
+                                                            pulse={false}
+                                                            rotation={null}
+                                                            size={null}
+                                                            spin={false}
+                                                            symbol={false}
+                                                            title=""
+                                                            transform={null}
+                                                          >
+                                                            <svg
+                                                              aria-hidden="true"
+                                                              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              data-icon="question-circle"
+                                                              data-prefix="fas"
+                                                              focusable="false"
+                                                              role="img"
+                                                              style={Object {}}
+                                                              viewBox="0 0 512 512"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                              <path
+                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                fill="currentColor"
+                                                                style={Object {}}
+                                                              />
+                                                            </svg>
+                                                          </FontAwesomeIcon>
+                                                          <Overlay
+                                                            animation={[Function]}
+                                                            placement="right"
+                                                            rootClose={false}
+                                                            show={false}
+                                                            target={
+                                                              <span
+                                                                class="label-help-target"
+                                                              >
+                                                                <svg
+                                                                  aria-hidden="true"
+                                                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                  data-icon="question-circle"
+                                                                  data-prefix="fas"
+                                                                  focusable="false"
+                                                                  role="img"
+                                                                  viewBox="0 0 512 512"
+                                                                  xmlns="http://www.w3.org/2000/svg"
+                                                                >
+                                                                  <path
+                                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                    fill="currentColor"
+                                                                  />
+                                                                </svg>
+                                                              </span>
+                                                            }
+                                                          >
+                                                            <Overlay
+                                                              placement="right"
+                                                              rootClose={false}
+                                                              show={false}
+                                                              target={
+                                                                <span
+                                                                  class="label-help-target"
+                                                                >
+                                                                  <svg
+                                                                    aria-hidden="true"
+                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                    data-icon="question-circle"
+                                                                    data-prefix="fas"
+                                                                    focusable="false"
+                                                                    role="img"
+                                                                    viewBox="0 0 512 512"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                  >
+                                                                    <path
+                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                      fill="currentColor"
+                                                                    />
+                                                                  </svg>
+                                                                </span>
+                                                              }
+                                                              transition={[Function]}
+                                                            />
+                                                          </Overlay>
+                                                        </span>
+                                                      </LabelHelpTip>
+                                                    </div>
+                                                  </div>
+                                                </Col>
                                               </div>
-                                            </Col>
+                                            </Row>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
+                                              componentClass="div"
+                                            >
+                                              <div
+                                                className="domain-row-expanded row"
+                                              >
+                                                <Col
+                                                  bsClass="col"
+                                                  className="domain-text-options-col"
+                                                  componentClass="div"
+                                                  xs={12}
+                                                >
+                                                  <div
+                                                    className="domain-text-options-col col-xs-12"
+                                                  >
+                                                    <input
+                                                      checked={true}
+                                                      className="domain-text-options-radio1 domain-field-float-left"
+                                                      id="domainpropertiesrow-maxLength-0"
+                                                      key="domainpropertiesrow-maxLength-0"
+                                                      name="TextLengthOptions"
+                                                      onChange={[Function]}
+                                                      type="radio"
+                                                      value="maxLength"
+                                                    />
+                                                    <div
+                                                      className="domain-text-label"
+                                                    >
+                                                      Allow max character count
+                                                    </div>
+                                                  </div>
+                                                </Col>
+                                              </div>
+                                            </Row>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
+                                              componentClass="div"
+                                            >
+                                              <div
+                                                className="domain-row-expanded row"
+                                              >
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={12}
+                                                >
+                                                  <div
+                                                    className="col-xs-12"
+                                                  >
+                                                    <input
+                                                      checked={false}
+                                                      className="domain-text-options-radio2 domain-field-float-left"
+                                                      id="domainpropertiesrow-customLength-0"
+                                                      key="domainpropertiesrow-customLength-0"
+                                                      name="TextLengthOptions"
+                                                      onChange={[Function]}
+                                                      type="radio"
+                                                      value="customLength"
+                                                    />
+                                                    <span
+                                                      className="domain-text-options-length domain-field-float-left domain-text-label"
+                                                    >
+                                                      Set character count to
+                                                    </span>
+                                                    <FormControl
+                                                      bsClass="form-control"
+                                                      componentClass="input"
+                                                      disabled={true}
+                                                      id="domainpropertiesrow-scale-0"
+                                                      key="domainpropertiesrow-scale-0"
+                                                      onChange={[Function]}
+                                                      style={
+                                                        Object {
+                                                          "width": "60px",
+                                                        }
+                                                      }
+                                                      type="text"
+                                                      value={4000}
+                                                    >
+                                                      <input
+                                                        className="form-control"
+                                                        disabled={true}
+                                                        id="domainpropertiesrow-scale-0"
+                                                        onChange={[Function]}
+                                                        style={
+                                                          Object {
+                                                            "width": "60px",
+                                                          }
+                                                        }
+                                                        type="text"
+                                                        value={4000}
+                                                      />
+                                                    </FormControl>
+                                                  </div>
+                                                </Col>
+                                              </div>
+                                            </Row>
                                           </div>
-                                        </Row>
+                                        </TextFieldOptions>
+                                        <NameAndLinkingOptions
+                                          field={
+                                            Immutable.Record {
+                                              "propertyId": undefined,
+                                              "propertyURI": undefined,
+                                              "name": "",
+                                              "description": undefined,
+                                              "label": undefined,
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "conceptURI": undefined,
+                                              "required": false,
+                                              "lookupContainer": undefined,
+                                              "lookupSchema": undefined,
+                                              "lookupQuery": undefined,
+                                              "scale": undefined,
+                                              "format": undefined,
+                                              "defaultScale": undefined,
+                                              "importAliases": undefined,
+                                              "URL": undefined,
+                                              "updatedField": undefined,
+                                              "newField": true,
+                                              "excludeFromShifting": false,
+                                            }
+                                          }
+                                          index={0}
+                                          onChange={[Function]}
+                                        >
+                                          <div>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
+                                              componentClass="div"
+                                            >
+                                              <div
+                                                className="domain-row-expanded row"
+                                              >
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={12}
+                                                >
+                                                  <div
+                                                    className="col-xs-12"
+                                                  >
+                                                    <div
+                                                      className="domain-field-section-heading"
+                                                    >
+                                                      Name and Linking Options
+                                                    </div>
+                                                  </div>
+                                                </Col>
+                                              </div>
+                                            </Row>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
+                                              componentClass="div"
+                                            >
+                                              <div
+                                                className="domain-row-expanded row"
+                                              >
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={5}
+                                                >
+                                                  <div
+                                                    className="col-xs-5"
+                                                  >
+                                                    <div
+                                                      className="domain-field-label"
+                                                    >
+                                                      Description
+                                                    </div>
+                                                    <textarea
+                                                      className="form-control domain-field-description"
+                                                      id="domainpropertiesrow-description-0"
+                                                      key="domainpropertiesrow-description-0"
+                                                      onChange={[Function]}
+                                                      placeholder="Add a description"
+                                                      rows={4}
+                                                      value=""
+                                                    />
+                                                  </div>
+                                                </Col>
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={3}
+                                                >
+                                                  <div
+                                                    className="col-xs-3"
+                                                  >
+                                                    <div
+                                                      className="domain-field-label"
+                                                    >
+                                                      Label
+                                                    </div>
+                                                    <FormControl
+                                                      bsClass="form-control"
+                                                      componentClass="input"
+                                                      id="domainpropertiesrow-label-0"
+                                                      key="domainpropertiesrow-label-0"
+                                                      onChange={[Function]}
+                                                      type="text"
+                                                      value=""
+                                                    >
+                                                      <input
+                                                        className="form-control"
+                                                        id="domainpropertiesrow-label-0"
+                                                        onChange={[Function]}
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </FormControl>
+                                                    <div
+                                                      className="domain-field-label"
+                                                    >
+                                                      Import Aliases
+                                                      <LabelHelpTip
+                                                        body={[Function]}
+                                                        title="Import Aliases"
+                                                      >
+                                                        <span
+                                                          className="label-help-target"
+                                                          onMouseOut={[Function]}
+                                                          onMouseOver={[Function]}
+                                                        >
+                                                          <FontAwesomeIcon
+                                                            border={false}
+                                                            className="label-help-icon"
+                                                            fixedWidth={false}
+                                                            flip={null}
+                                                            icon={
+                                                              Object {
+                                                                "icon": Array [
+                                                                  512,
+                                                                  512,
+                                                                  Array [],
+                                                                  "f059",
+                                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                ],
+                                                                "iconName": "question-circle",
+                                                                "prefix": "fas",
+                                                              }
+                                                            }
+                                                            inverse={false}
+                                                            listItem={false}
+                                                            mask={null}
+                                                            pull={null}
+                                                            pulse={false}
+                                                            rotation={null}
+                                                            size={null}
+                                                            spin={false}
+                                                            symbol={false}
+                                                            title=""
+                                                            transform={null}
+                                                          >
+                                                            <svg
+                                                              aria-hidden="true"
+                                                              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              data-icon="question-circle"
+                                                              data-prefix="fas"
+                                                              focusable="false"
+                                                              role="img"
+                                                              style={Object {}}
+                                                              viewBox="0 0 512 512"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                              <path
+                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                fill="currentColor"
+                                                                style={Object {}}
+                                                              />
+                                                            </svg>
+                                                          </FontAwesomeIcon>
+                                                          <Overlay
+                                                            animation={[Function]}
+                                                            placement="right"
+                                                            rootClose={false}
+                                                            show={false}
+                                                            target={
+                                                              <span
+                                                                class="label-help-target"
+                                                              >
+                                                                <svg
+                                                                  aria-hidden="true"
+                                                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                  data-icon="question-circle"
+                                                                  data-prefix="fas"
+                                                                  focusable="false"
+                                                                  role="img"
+                                                                  viewBox="0 0 512 512"
+                                                                  xmlns="http://www.w3.org/2000/svg"
+                                                                >
+                                                                  <path
+                                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                    fill="currentColor"
+                                                                  />
+                                                                </svg>
+                                                              </span>
+                                                            }
+                                                          >
+                                                            <Overlay
+                                                              placement="right"
+                                                              rootClose={false}
+                                                              show={false}
+                                                              target={
+                                                                <span
+                                                                  class="label-help-target"
+                                                                >
+                                                                  <svg
+                                                                    aria-hidden="true"
+                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                    data-icon="question-circle"
+                                                                    data-prefix="fas"
+                                                                    focusable="false"
+                                                                    role="img"
+                                                                    viewBox="0 0 512 512"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                  >
+                                                                    <path
+                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                      fill="currentColor"
+                                                                    />
+                                                                  </svg>
+                                                                </span>
+                                                              }
+                                                              transition={[Function]}
+                                                            />
+                                                          </Overlay>
+                                                        </span>
+                                                      </LabelHelpTip>
+                                                    </div>
+                                                    <FormControl
+                                                      bsClass="form-control"
+                                                      componentClass="input"
+                                                      id="domainpropertiesrow-importAliases-0"
+                                                      key="domainpropertiesrow-importAliases-0"
+                                                      onChange={[Function]}
+                                                      type="text"
+                                                      value=""
+                                                    >
+                                                      <input
+                                                        className="form-control"
+                                                        id="domainpropertiesrow-importAliases-0"
+                                                        onChange={[Function]}
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </FormControl>
+                                                  </div>
+                                                </Col>
+                                              </div>
+                                            </Row>
+                                            <Row
+                                              bsClass="row"
+                                              className="domain-row-expanded"
+                                              componentClass="div"
+                                            >
+                                              <div
+                                                className="domain-row-expanded row"
+                                              >
+                                                <Col
+                                                  bsClass="col"
+                                                  componentClass="div"
+                                                  xs={5}
+                                                >
+                                                  <div
+                                                    className="col-xs-5"
+                                                  >
+                                                    <div
+                                                      className="domain-field-label"
+                                                    >
+                                                      URL
+                                                      <LabelHelpTip
+                                                        body={[Function]}
+                                                        title="URL"
+                                                      >
+                                                        <span
+                                                          className="label-help-target"
+                                                          onMouseOut={[Function]}
+                                                          onMouseOver={[Function]}
+                                                        >
+                                                          <FontAwesomeIcon
+                                                            border={false}
+                                                            className="label-help-icon"
+                                                            fixedWidth={false}
+                                                            flip={null}
+                                                            icon={
+                                                              Object {
+                                                                "icon": Array [
+                                                                  512,
+                                                                  512,
+                                                                  Array [],
+                                                                  "f059",
+                                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                ],
+                                                                "iconName": "question-circle",
+                                                                "prefix": "fas",
+                                                              }
+                                                            }
+                                                            inverse={false}
+                                                            listItem={false}
+                                                            mask={null}
+                                                            pull={null}
+                                                            pulse={false}
+                                                            rotation={null}
+                                                            size={null}
+                                                            spin={false}
+                                                            symbol={false}
+                                                            title=""
+                                                            transform={null}
+                                                          >
+                                                            <svg
+                                                              aria-hidden="true"
+                                                              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              data-icon="question-circle"
+                                                              data-prefix="fas"
+                                                              focusable="false"
+                                                              role="img"
+                                                              style={Object {}}
+                                                              viewBox="0 0 512 512"
+                                                              xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                              <path
+                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                fill="currentColor"
+                                                                style={Object {}}
+                                                              />
+                                                            </svg>
+                                                          </FontAwesomeIcon>
+                                                          <Overlay
+                                                            animation={[Function]}
+                                                            placement="right"
+                                                            rootClose={false}
+                                                            show={false}
+                                                            target={
+                                                              <span
+                                                                class="label-help-target"
+                                                              >
+                                                                <svg
+                                                                  aria-hidden="true"
+                                                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                  data-icon="question-circle"
+                                                                  data-prefix="fas"
+                                                                  focusable="false"
+                                                                  role="img"
+                                                                  viewBox="0 0 512 512"
+                                                                  xmlns="http://www.w3.org/2000/svg"
+                                                                >
+                                                                  <path
+                                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                    fill="currentColor"
+                                                                  />
+                                                                </svg>
+                                                              </span>
+                                                            }
+                                                          >
+                                                            <Overlay
+                                                              placement="right"
+                                                              rootClose={false}
+                                                              show={false}
+                                                              target={
+                                                                <span
+                                                                  class="label-help-target"
+                                                                >
+                                                                  <svg
+                                                                    aria-hidden="true"
+                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                    data-icon="question-circle"
+                                                                    data-prefix="fas"
+                                                                    focusable="false"
+                                                                    role="img"
+                                                                    viewBox="0 0 512 512"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                  >
+                                                                    <path
+                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                      fill="currentColor"
+                                                                    />
+                                                                  </svg>
+                                                                </span>
+                                                              }
+                                                              transition={[Function]}
+                                                            />
+                                                          </Overlay>
+                                                        </span>
+                                                      </LabelHelpTip>
+                                                    </div>
+                                                    <FormControl
+                                                      bsClass="form-control"
+                                                      componentClass="input"
+                                                      id="domainpropertiesrow-URL-0"
+                                                      key="domainpropertiesrow-URL-0"
+                                                      onChange={[Function]}
+                                                      type="text"
+                                                      value=""
+                                                    >
+                                                      <input
+                                                        className="form-control"
+                                                        id="domainpropertiesrow-URL-0"
+                                                        onChange={[Function]}
+                                                        type="text"
+                                                        value=""
+                                                      />
+                                                    </FormControl>
+                                                  </div>
+                                                </Col>
+                                              </div>
+                                            </Row>
+                                          </div>
+                                        </NameAndLinkingOptions>
                                       </DomainRowExpandedOptions>
                                     </div>
                                   </Draggable>
@@ -1417,10 +1930,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 2,
@@ -1435,10 +1951,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 3,
@@ -1453,10 +1972,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 4,
@@ -1471,10 +1993,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 5,
@@ -1489,10 +2014,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 6,
@@ -1507,10 +2035,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 7,
@@ -1525,10 +2056,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 8,
@@ -1543,10 +2077,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 9,
@@ -1561,10 +2098,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 10,
@@ -1579,10 +2119,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": undefined,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
       ],
       "indices": Immutable.List [],
@@ -1809,7 +2352,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                             className="col-xs-2"
                           >
                             <b>
-                              Date Type
+                              Data Type
                             </b>
                           </div>
                         </Col>
@@ -1895,10 +2438,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={0}
@@ -1955,7 +2501,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -2115,7 +2661,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-0"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-0"
@@ -2365,10 +2911,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={1}
@@ -2425,7 +2974,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -2439,7 +2988,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={1}
                                     >
                                       <Row
                                         bsClass="row"
@@ -2585,7 +3134,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-1"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -2835,10 +3384,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={2}
@@ -2895,7 +3447,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -2909,7 +3461,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={2}
                                     >
                                       <Row
                                         bsClass="row"
@@ -3055,7 +3607,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-2"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-2"
@@ -3305,10 +3857,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={3}
@@ -3365,7 +3920,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -3379,7 +3934,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={3}
                                     >
                                       <Row
                                         bsClass="row"
@@ -3525,7 +4080,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-3"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-3"
@@ -3775,10 +4330,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={4}
@@ -3835,7 +4393,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -3849,7 +4407,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={4}
                                     >
                                       <Row
                                         bsClass="row"
@@ -3995,7 +4553,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-4"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-4"
@@ -4245,10 +4803,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={5}
@@ -4305,7 +4866,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -4319,7 +4880,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={5}
                                     >
                                       <Row
                                         bsClass="row"
@@ -4465,7 +5026,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-5"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-5"
@@ -4715,10 +5276,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={6}
@@ -4775,7 +5339,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -4789,7 +5353,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={6}
                                     >
                                       <Row
                                         bsClass="row"
@@ -4935,7 +5499,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-6"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-6"
@@ -5185,10 +5749,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={7}
@@ -5245,7 +5812,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -5259,7 +5826,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={7}
                                     >
                                       <Row
                                         bsClass="row"
@@ -5405,7 +5972,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-7"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-7"
@@ -5655,10 +6222,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={8}
@@ -5715,7 +6285,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -5729,7 +6299,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={8}
                                     >
                                       <Row
                                         bsClass="row"
@@ -5875,7 +6445,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-8"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-8"
@@ -6125,10 +6695,13 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": undefined,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={9}
@@ -6185,7 +6758,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="0"
                                       data-react-beautiful-dnd-draggable="0"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -6199,7 +6772,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={9}
                                     >
                                       <Row
                                         bsClass="row"
@@ -6345,7 +6918,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-9"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-9"
@@ -6960,10 +7533,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": true,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 1,
@@ -6978,10 +7554,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": true,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 2,
@@ -6996,10 +7575,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": true,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
         Immutable.Record {
           "propertyId": 3,
@@ -7014,10 +7596,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
           "lookupSchema": undefined,
           "lookupQuery": undefined,
           "scale": undefined,
+          "format": undefined,
+          "defaultScale": undefined,
           "importAliases": undefined,
           "URL": undefined,
           "updatedField": true,
           "newField": undefined,
+          "excludeFromShifting": false,
         },
       ],
       "indices": Immutable.List [],
@@ -7244,7 +7829,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                             className="col-xs-2"
                           >
                             <b>
-                              Date Type
+                              Data Type
                             </b>
                           </div>
                         </Col>
@@ -7330,10 +7915,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": true,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={0}
@@ -7390,7 +7978,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -7550,7 +8138,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-0"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-0"
@@ -7802,10 +8390,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": true,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={1}
@@ -7862,7 +8453,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -7876,7 +8467,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={1}
                                     >
                                       <Row
                                         bsClass="row"
@@ -8022,7 +8613,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-1"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-1"
@@ -8274,10 +8865,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": true,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={2}
@@ -8334,7 +8928,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -8348,7 +8942,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={2}
                                     >
                                       <Row
                                         bsClass="row"
@@ -8494,7 +9088,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-2"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-2"
@@ -8746,10 +9340,13 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     "lookupSchema": undefined,
                                     "lookupQuery": undefined,
                                     "scale": undefined,
+                                    "format": undefined,
+                                    "defaultScale": undefined,
                                     "importAliases": undefined,
                                     "URL": undefined,
                                     "updatedField": true,
                                     "newField": undefined,
+                                    "excludeFromShifting": false,
                                   }
                                 }
                                 index={3}
@@ -8806,7 +9403,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                       className="domain-field-row "
                                       data-react-beautiful-dnd-drag-handle="1"
                                       data-react-beautiful-dnd-draggable="1"
-                                      draggable={false}
+                                      draggable={true}
                                       onBlur={[Function]}
                                       onDragStart={[Function]}
                                       onFocus={[Function]}
@@ -8820,7 +9417,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                           "transition": null,
                                         }
                                       }
-                                      tabIndex={0}
+                                      tabIndex={3}
                                     >
                                       <Row
                                         bsClass="row"
@@ -8966,7 +9563,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                                       key="domainpropertiesrow-typeoption-double-3"
                                                       value="double"
                                                     >
-                                                      Number (Double)
+                                                      Decimal
                                                     </option>
                                                     <option
                                                       key="domainpropertiesrow-typeoption-dateTime-3"

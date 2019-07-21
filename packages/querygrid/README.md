@@ -3,10 +3,15 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+
 ### version ???
-*Released*: ???
-* For QueryInfoForm, add ability to disable Submit until change is made
-* For QueryInfoForm, add onFormChange handler 
+ *Released*: ???
+ * For QueryInfoForm, add ability to disable Submit until change is made
+ * For QueryInfoForm, add onFormChange handler 
+ 
+ ### version 0.9.1
+*Released*: 17 June 2019
+*  Update package for changes to @glass/base v0.9.0
 
 ### version 0.9.0
 *Released*: 10 July 2019

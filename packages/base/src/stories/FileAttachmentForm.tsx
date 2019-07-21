@@ -5,13 +5,13 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
-import mock, { proxy } from "xhr-mock";
+import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import mock, { proxy } from 'xhr-mock';
 
-import { FileAttachmentForm } from "../components/files/FileAttachmentForm";
-import inferDomainJson from "../test/data/property-inferDomain.json";
+import { FileAttachmentForm } from '../components/files/FileAttachmentForm';
+import inferDomainJson from '../test/data/property-inferDomain.json';
 
-import './stories.css'
+import './stories.scss';
 
 mock.setup();
 mock.post(/.*\/property\/inferDomain.*/, {
@@ -21,22 +21,22 @@ mock.post(/.*\/property\/inferDomain.*/, {
 });
 mock.use(proxy);
 
-storiesOf("FileAttachmentForm", module)
+storiesOf('FileAttachmentForm', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add('with knobs', () => {
         return (
             <FileAttachmentForm
-                showLabel={boolean("Show label?", true)}
-                label={text('Label', "Attachments")}
-                labelLong={text('Long label (inside of file attachment drop zone)', "Select file or drag and drop here")}
-                acceptedFormats={text('Accepted formats', ".tsv,.txt,.csv,.xls,.xlsx")}
-                showAcceptedFormats={boolean("Show accepted formats?", true)}
-                allowDirectories={boolean("Allow directories?", true)}
-                allowMultiple={boolean("Allow multiple?", true)}
-                showButtons={boolean("Show buttons?", true)}
-                cancelText={text("Cancel button text", "Cancel")}
-                submitText={text("Submit button text", "Upload")}
-                templateUrl={text("Download Template URL", '#downloadtemplate')}
+                showLabel={boolean('Show label?', true)}
+                label={text('Label', 'Attachments')}
+                labelLong={text('Long label (inside of file attachment drop zone)', 'Select file or drag and drop here')}
+                acceptedFormats={text('Accepted formats', '.tsv,.txt,.csv,.xls,.xlsx')}
+                showAcceptedFormats={boolean('Show accepted formats?', true)}
+                allowDirectories={boolean('Allow directories?', true)}
+                allowMultiple={boolean('Allow multiple?', true)}
+                showButtons={boolean('Show buttons?', true)}
+                cancelText={text('Cancel button text', 'Cancel')}
+                submitText={text('Submit button text', 'Upload')}
+                templateUrl={text('Download Template URL', '#downloadtemplate')}
                 previewGridProps={{
                     previewCount: number('Preview Grid Row Count', 3),
                     acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx')

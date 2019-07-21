@@ -457,7 +457,8 @@ export interface IGridLoader {
 export interface IGridResponse {
     data: Map<any, any>,
     dataIds: List<any>,
-    totalRows?: number
+    totalRows?: number,
+    messages?: List<Map<string, string>>,
 }
 
 export interface IGridSelectionResponse {
@@ -485,7 +486,12 @@ export class QueryGridModel extends Record({
     keyValue: undefined,
     loader: undefined,
     maxRows: 20,
+    // message is a client-only attribute used to store error messages encountered when trying to load a model. It does
+    // not come from a LK server response.
     message: undefined,
+    // messages comes from LK Server via the metadata object in the selectRows response. At the moment it is only used
+    // to notify users that they are looking at a subset of rows due to QC Flags State.
+    messages: undefined,
     offset: 0,
     omittedColumns: emptyList,
     pageNumber: 1,
@@ -527,6 +533,7 @@ export class QueryGridModel extends Record({
     loader?: IGridLoader;
     maxRows: number;
     message: string;
+    messages?: List<Map<string, string>>;
     offset: number;
     omittedColumns: List<string>;
     pageNumber: number;
@@ -1386,7 +1393,8 @@ export class AssayProtocolModel extends Record({
     saveScriptFiles: false,
     selectedDetectionMethod: undefined,
     selectedMetadataInputFormat: undefined,
-    selectedPlateTemplate: undefined
+    selectedPlateTemplate: undefined,
+    qcEnabled: undefined
 }) {
     allowTransformationScript: boolean;
     autoCopyTargetContainer: string;
@@ -1409,6 +1417,7 @@ export class AssayProtocolModel extends Record({
     selectedDetectionMethod: any;
     selectedMetadataInputFormat: any;
     selectedPlateTemplate: any;
+    qcEnabled: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);

@@ -27,7 +27,20 @@ export const DOMAIN_FIELD_DESCRIPTION = 'description';
 export const DOMAIN_FIELD_LABEL = 'label';
 export const DOMAIN_FIELD_IMPORTALIASES = 'importAliases';
 export const DOMAIN_FIELD_URL = 'URL';
+export const DOMAIN_FIELD_FORMAT = 'format';
+export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
+export const DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING = 'excludeFromShifting';
 
+// TextFieldOptions
+export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
+export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
+export const DOMAIN_FIELD_SCALE = 'scale';
+
+// Default scale types
+export const DEFAULT_SCALE_LINEAR = 'LINEAR';
+export const DEFAULT_SCALE_LOG = 'LOG';
+
+// URIs for data types
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';
 export const BOOLEAN_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#boolean';
@@ -40,6 +53,10 @@ export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
+
+export const MAX_TEXT_LENGTH = 4000;
+
+export const LK_URL_ENCODING_DOC = "https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding";
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

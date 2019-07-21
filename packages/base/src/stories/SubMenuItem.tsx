@@ -5,9 +5,9 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
-import './stories.css'
+import './stories.scss';
 import { SubMenuItem } from "../components/menus/SubMenuItem";
 
 let allItems = [

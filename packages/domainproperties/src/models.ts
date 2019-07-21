@@ -24,6 +24,12 @@ import {
     USER_RANGE_URI
 } from "./constants";
 
+export interface ITypeDependentProps {
+    index: number,
+    label: string,
+    onChange: (string, any) => any
+}
+
 interface IPropDescType{
     name: string,
     display?: string,
@@ -52,7 +58,7 @@ export const PROP_DESC_TYPES = List([
     new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
     new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
     new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
-    new PropDescType({name: 'double', display: 'Number (Double)', rangeURI: DOUBLE_RANGE_URI}),
+    new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI}),
     new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI}),
     new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI}),
     new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI}),
@@ -158,6 +164,9 @@ interface IDomainField {
     userEditable?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
+    format?: string
+    excludeFromShifting?: boolean
+    defaultScale?: string
 
     updatedField?: boolean
     newField?: boolean
@@ -176,10 +185,13 @@ export class DomainField extends Record({
     lookupSchema: undefined,
     lookupQuery: undefined,
     scale: undefined,
+    format: undefined,
+    defaultScale: undefined,
     importAliases: undefined,
     URL: undefined,
     updatedField: undefined,
     newField: undefined,
+    excludeFromShifting: false
 }) implements IDomainField {
     propertyId: number;
     propertyURI: string;
@@ -193,10 +205,13 @@ export class DomainField extends Record({
     lookupSchema: string;
     lookupQuery: string;
     scale: number;
+    format: string;
+    defaultScale: string;
     importAliases: string;
     URL: string;
     updatedField: boolean;
     newField: boolean;
+    excludeFromShifting: boolean;
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();

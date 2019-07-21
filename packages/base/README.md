@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.9.0
+*Released*: 17 July 2019
+* Add LabelHelpTip as a general component for adding help tips and popovers next to a form label
+
 ### version 0.8.2
 *Released*: 10 July 2019
 * Modify ConfirmModal properties so most are optional

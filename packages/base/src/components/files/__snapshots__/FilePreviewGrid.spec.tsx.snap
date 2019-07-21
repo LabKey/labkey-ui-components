@@ -20,6 +20,9 @@ Array [
   <div
     className="table-responsive"
   >
+    <div
+      className="grid-messages"
+    />
     <table
       className="table table-striped table-bordered"
     >
@@ -175,6 +178,9 @@ Array [
   <div
     className="table-responsive"
   >
+    <div
+      className="grid-messages"
+    />
     <table
       className="table table-striped table-bordered"
     >
@@ -338,6 +344,9 @@ Array [
   <div
     className="table-responsive"
   >
+    <div
+      className="grid-messages"
+    />
     <table
       className="table table-striped table-bordered"
     >
@@ -380,6 +389,9 @@ Array [
   <div
     className="table-responsive"
   >
+    <div
+      className="grid-messages"
+    />
     <table
       className="table table-striped table-bordered"
     >
@@ -436,6 +448,9 @@ Array [
   <div
     className="table-responsive"
   >
+    <div
+      className="grid-messages"
+    />
     <table
       className="table table-striped table-bordered"
     >

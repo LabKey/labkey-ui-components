@@ -501,8 +501,14 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         )
     }
 
+    restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>) : Map<string, any> {
+        let allInsertCols = Map<string, any>().asMutable();
+        model.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
+        return allInsertCols.merge(data).asImmutable();
+    }
+
     bulkAdd(data: any) : Promise<any> {
-        const addControlProps = this.props.addControlProps;
+        const {addControlProps, bulkUpdateProps} = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
@@ -510,6 +516,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         delete data.numItems;
 
         if (numItems) {
+            if (bulkUpdateProps.columnFilter) {
+                data = this.restoreBulkInsertData(model, data);
+            }
+
             return new Promise((resolve) => {
                 addRows(model, numItems, Map<string, any>(data));
                 this.onRowCountChange();

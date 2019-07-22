@@ -32,6 +32,9 @@ export interface IReportItem {
     thumbnail: string, // This is actually a URL, do we enforce that?
     icon: string,
     iconCls: string,
+    schemaName?: string,
+    queryName?: string,
+    viewName?: string,
 }
 
 function _flattenApiResponse(all, item) {

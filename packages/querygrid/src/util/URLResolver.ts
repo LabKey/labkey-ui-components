@@ -58,7 +58,12 @@ export class URLResolver {
             new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
                 let url = ['rd', 'samples'];
 
-                if (column.has('lookup')) {
+                if (row.has('data'))
+                {
+                    //Search link doesn't use the same url
+                    url = ['samples', row.get('data').get('name')];
+                }
+                else if (column.has('lookup')) {
                     url.push(row.get('displayValue').toString());
                 }
                 else {
@@ -244,7 +249,8 @@ export class URLResolver {
     private mapURL(mapper: MapURLOptions): string {
 
         let _url = this.mappers.toSeq()
-            .map(m => m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))
+            .map(m =>
+                m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))
             .filter(v => v !== undefined)
             .first();
 
@@ -340,6 +346,12 @@ export class URLResolver {
                             query = row.getIn(['data', 'dataClass']).get('name'); // dataClass is nested Map/Object inside of 'data' return
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
                             return row.set('url', this.mapURL({url, row, column, query}));
+                        }
+                        else if (id.indexOf('materialSource') >= 0 ) {
+                            query = row.getIn(['data']).get('name');
+                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({url, row, schema:'experiment', column, query}));
+                            // return row.set('url', this.mapURL({url, row, column, query}));
                         }
                         else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
                             query = row.getIn(['data', 'sampleSet']).get('name');

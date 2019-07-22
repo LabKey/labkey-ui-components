@@ -19,14 +19,15 @@ import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { AssayUploadTabs } from "@glass/base";
 
-import {
-    getQueryGridModel,
-    getStateQueryGridModel,
-    gridInit,
-    BatchPropertiesPanel,
-    RunDataPanel,
-    RunPropertiesPanel, withFormSteps, WithFormStepsProps
-} from "..";
+
+import { gridInit } from "../actions";
+import { getStateQueryGridModel } from "../models";
+import { getQueryGridModel } from "../global";
+import { withFormSteps, WithFormStepsProps } from "../components/forms/FormStep";
+import { RunDataPanel } from "../components/assay/RunDataPanel";
+import { RunPropertiesPanel } from "../components/assay/RunPropertiesPanel";
+import { BatchPropertiesPanel } from "../components/assay/BatchPropertiesPanel";
+import { AssayImportPanels } from "../components/assay/AssayImportPanels";
 import { ASSAY_WIZARD_MODEL } from "../test/data/constants";
 import './stories.scss'
 
@@ -67,6 +68,7 @@ class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
                 onFileChange={this.onFileChange}
                 onFileRemoval={this.onFileRemoval}
                 onTextChange={this.onChange}
+                allowBulkRemove={true}
             />
         )
     }
@@ -103,5 +105,15 @@ storiesOf('AssayImportPanels', module)
     .add("RunDataPanel", () => {
         return (
             <RunDataPanelWrapper/>
+        )
+    })
+    .add("AssayImportPanels", () => {
+        return (
+            <AssayImportPanels
+                assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
+                onCancel={() => console.log('onCancel clicked')}
+                onComplete={(response) => console.log('onComplete', response)}
+                allowBulkRemove={true}
+            />
         )
     });

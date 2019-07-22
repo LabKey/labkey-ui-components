@@ -53,6 +53,7 @@ interface OwnProps {
     onSave?: (response: AssayUploadResultModel) => any
     acceptedPreviewFileFormats?: string
     location?: Location
+    allowBulkRemove?: boolean
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -346,7 +347,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     render() {
-        const { currentStep, onCancel, acceptedPreviewFileFormats, onSave } = this.props;
+        const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, onSave } = this.props;
         const { model } = this.state;
 
         if (!model.isInit) {
@@ -366,6 +367,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     onTextChange={this.handleDataTextChange}
                     acceptedPreviewFileFormats={acceptedPreviewFileFormats}
                     fullWidth={false}
+                    allowBulkRemove={allowBulkRemove}
                 />
                 {model.errorMsg && <Alert bsStyle="danger">{model.errorMsg}</Alert>}
                 <WizardNavButtons

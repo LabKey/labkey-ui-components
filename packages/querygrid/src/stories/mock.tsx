@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import mock, { proxy } from 'xhr-mock';
-import mixturesQueryInfo from "../test/data/mixtures-getQueryDetails.json";
-import mixtureTypesQueryInfo from "../test/data/mixtureTypes-getQueryDetails.json";
-import mixtureTypesQuery from "../test/data/mixtureTypes-getQuery.json";
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
+import mixtureTypesQuery from '../test/data/mixtureTypes-getQuery.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
 import mixturesSelected from '../test/data/mixtures-getSelected.json';
 import mixturesReportInfos from '../test/data/mixtures-getReportInfos.json';
@@ -34,12 +34,14 @@ import sampleDetailsQuery from '../test/data/sampleDetails-getQuery.json';
 import lookuplistQueryInfo from '../test/data/lookuplist-getQueryDetails.json';
 import lookuplistQuery from '../test/data/lookuplist-getQuery.json';
 import samplesUpdate from '../test/data/samples-updateRows.json';
-import nameExpressionQueryInfo from "../test/data/nameExpressionSet-getQueryDetails.json";
-import nameExpressionSelected from "../test/data/nameExpressionSet-getSelected.json";
+import nameExpressionQueryInfo from '../test/data/nameExpressionSet-getQueryDetails.json';
+import nameExpressionSelected from '../test/data/nameExpressionSet-getSelected.json';
 import nameExpressionSelectedQuery from "../test/data/nameExpressionSet-selected-getQuery.json";
-import sampleSet2QueryInfo from "../test/data/sampleSet2-getQueryDetails.json";
-import sampleSetsQuery from "../test/data/sampleSets-getQuery.json";
-import sampleSetsQueryInfo from "../test/data/sampleSets-getQueryDetails.json";
+import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
+import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
+import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
+import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
+import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
 const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDeleteConfirmationData.json");
 const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
@@ -76,6 +78,8 @@ export function initMocks() {
             responseBody = nameExpressionQueryInfo;
         else if (lcSchemaName === 'samples' && lcQueryName === 'sample set 2')
             responseBody = sampleSet2QueryInfo;
+        else if (lcSchemaName === 'assay.general.amino acids' && lcQueryName === 'runs')
+            responseBody = assayRunsWithQCFlagsQueryInfo;
 
         return res
             .status(200)
@@ -106,6 +110,8 @@ export function initMocks() {
             responseBody = nameExpressionSelectedQuery;
         else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
             responseBody = nameExpressionSelectedQuery;
+        else if (bodyParams.indexOf("&query.queryname=runs") > -1)
+            responseBody = assayRunsWithQCFlagsQuery;
 
         return res
             .status(200)

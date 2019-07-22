@@ -443,12 +443,13 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
             loadDataForEditor(newModel, response);
         }
 
-        const { data, dataIds, totalRows } = response;
+        const { data, dataIds, totalRows, messages } = response;
         newModel = updateQueryGridModel(newModel, {
             isError: false,
             isLoading: false,
             isLoaded: true,
             message: undefined,
+            messages,
             selectedState: getSelectedState(dataIds, model.selectedIds, model.maxRows, totalRows),
             totalRows,
             data,

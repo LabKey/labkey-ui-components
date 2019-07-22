@@ -28,8 +28,8 @@ import {
     DOMAIN_FIELD_TYPE,
     DOMAIN_FIELD_FULLY_LOCKED
 } from "../constants";
-import { DomainField, PROP_DESC_TYPES, DomainFieldError} from "../models";
-import { createFormInputId, getDataType } from "../actions/actions";
+import { DomainField, PROP_DESC_TYPES, DomainFieldError } from "../models";
+import {createFormInputId, getCheckedValue, getDataType} from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -37,7 +37,7 @@ interface IDomainRowProps {
     field: DomainField
     index: number
     fieldError?: DomainFieldError
-    onChange: (any) => any
+    onChange: (string, any) => any
     onDelete: (any) => void
     onExpand: (any) => void
 }
@@ -110,6 +110,19 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
+    onFieldChange = (evt) => {
+        const { onChange } = this.props;
+
+        let value = getCheckedValue(evt);
+        if (value === undefined) {
+            value = evt.target.value;
+        }
+
+        if (onChange) {
+            onChange(evt.target.id, value);
+        }
+    }
+
     renderBaseFields() {
         const {index, field, onChange} = this.props;
 
@@ -119,14 +132,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Name'}>
                         <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                     onChange={onChange}/>
+                                     onChange={this.onFieldChange}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
                     <Tip caption={'Data Type'}>
                         <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                                 key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                className={'form-control'} onChange={onChange} value={getDataType(field).name}
+                                className={'form-control'} onChange={this.onFieldChange} value={getDataType(field).name}
                                 disabled={!!field.propertyId}>
                             {
                                 PROP_DESC_TYPES.map(function (type) {
@@ -148,7 +161,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             <Checkbox className='domain-field-checkbox'
                                       id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      checked={field.required} onChange={onChange}/>
+                                      checked={field.required} onChange={this.onFieldChange}/>
                         </Tip>
                     </div>
                 </Col>
@@ -200,6 +213,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
+                         tabIndex={index}
+                         draggable={true}
                     >
                         <Row key={createFormInputId("domainrow", index)}>
                             {this.renderBaseFields()}

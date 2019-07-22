@@ -160,7 +160,7 @@ interface GridHeaderProps {
     transpose?: boolean
 }
 
-class GridHeader extends React.Component<GridHeaderProps, any> {
+class GridHeader extends React.PureComponent<GridHeaderProps, any> {
 
     _handleClick(column: Column, evt) {
         evt.stopPropagation();
@@ -207,6 +207,28 @@ class GridHeader extends React.Component<GridHeaderProps, any> {
     }
 }
 
+interface GridMessagesProps {
+    messages: List<Map<string, string>>
+}
+
+class GridMessages extends React.PureComponent<GridMessagesProps, any> {
+    render() {
+        const { messages } = this.props;
+
+        return (
+            <div className="grid-messages">
+                {messages.map((message: Map<string, string>, i) => {
+                    return (
+                        <div className="grid-message" key={i}>
+                            {message.get('content')}
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+}
+
 interface GridBodyProps {
     data: List<Map<string, any>>
     columns: List<Column>
@@ -217,7 +239,7 @@ interface GridBodyProps {
     transpose: boolean
 }
 
-class GridBody extends React.Component<GridBodyProps, any> {
+class GridBody extends React.PureComponent<GridBodyProps, any> {
 
     constructor(props: GridBodyProps) {
         super(props);
@@ -290,6 +312,7 @@ export interface GridProps {
     headerCell?: any
     isLoading?: boolean
     loadingText?: React.ReactNode
+    messages?: List<Map<string, string>>
     responsive?: boolean
 
     /**
@@ -303,7 +326,7 @@ export interface GridProps {
     transpose?: boolean
 }
 
-export class Grid extends React.Component<GridProps, any> {
+export class Grid extends React.PureComponent<GridProps, any> {
     static defaultProps = {
         bordered: true,
         calcWidths: false,
@@ -313,6 +336,7 @@ export class Grid extends React.Component<GridProps, any> {
         emptyText: 'No data available.',
         isLoading: false,
         loadingText: 'Loading...',
+        messages: List<Map<string, string>>(),
         responsive: true,
         showHeader: true,
         striped: true,
@@ -333,6 +357,7 @@ export class Grid extends React.Component<GridProps, any> {
             headerCell,
             isLoading,
             loadingText,
+            messages,
             responsive,
             rowKey,
             showHeader,
@@ -376,6 +401,8 @@ export class Grid extends React.Component<GridProps, any> {
 
         return (
             <div className={wrapperClasses} data-gridid={gridId}>
+                <GridMessages messages={messages} />
+
                 <table className={tableClasses} ref={tableRef}>
                     <GridHeader {...headerProps} />
                     <GridBody {...bodyProps} />

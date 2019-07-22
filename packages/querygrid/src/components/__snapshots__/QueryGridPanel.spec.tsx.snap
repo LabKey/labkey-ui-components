@@ -1166,6 +1166,9 @@ exports[`QueryGridPanel render with header and message props 1`] = `
           className="table-responsive"
           data-gridid="queryGridLoaded"
         >
+          <div
+            className="grid-messages"
+          />
           <table
             className="table table-striped table-bordered table-condensed"
           >
@@ -1733,6 +1736,9 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
           className="table-responsive"
           data-gridid="queryGridLoaded"
         >
+          <div
+            className="grid-messages"
+          />
           <table
             className="table table-striped table-bordered table-condensed"
           >
@@ -2328,6 +2334,9 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
           className="table-responsive"
           data-gridid="queryGridLoaded"
         >
+          <div
+            className="grid-messages"
+          />
           <table
             className="table table-striped table-bordered table-condensed"
           >

@@ -205,7 +205,7 @@ export class DomainField extends Record({
     URL: undefined,
     updatedField: undefined,
     newField: undefined,
-    excludeFromShifting: false
+    excludeFromShifting: false,
     isPrimaryKey: false,
     lockType: DOMAIN_FIELD_NOT_LOCKED
 

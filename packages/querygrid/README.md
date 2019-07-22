@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.?.?
+*Released*: 22 Jul 2019
+*  Update SearchResultCard to show Sample Sets
+
 ### version 0.9.1
 *Released*: 17 June 2019
 *  Update package for changes to @glass/base v0.9.0

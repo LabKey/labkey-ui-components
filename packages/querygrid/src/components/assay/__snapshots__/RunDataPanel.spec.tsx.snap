@@ -1,0 +1,933 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RunDataPanel/> custom display props 1`] = `
+<div
+  className="panel panel-default full-width"
+>
+  <div
+    className="panel-heading"
+  >
+    Run Data
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-12"
+      >
+        <ul
+          className="list-group clearfix"
+          style={
+            Object {
+              "listStyle": "none",
+            }
+          }
+        >
+          <li
+            className="list-group-item form-step-tab active"
+            onClick={[Function]}
+          >
+            Upload Files
+          </li>
+          <li
+            className="list-group-item form-step-tab"
+            onClick={[Function]}
+          >
+            Copy-and-Paste Data
+          </li>
+          <li
+            className="list-group-item form-step-tab"
+            onClick={[Function]}
+          >
+            Enter Data Into Grid
+          </li>
+        </ul>
+        <div
+          className="clearfix"
+        />
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-12"
+      >
+        <div
+          className="form-step active"
+        >
+          <span
+            className="translator--toggle__wizard"
+          >
+            <div
+              className="row"
+            >
+              <div
+                className="col-sm-12"
+              >
+                <div
+                  className="wizard-row--container"
+                >
+                  <div>
+                    <div
+                      className="file-upload--container block"
+                    >
+                      <label
+                        className="file-upload--label"
+                        htmlFor="fileUpload"
+                        onDragEnter={[Function]}
+                        onDragLeave={[Function]}
+                        onDragOver={[Function]}
+                        onDrop={[Function]}
+                      >
+                        <i
+                          aria-hidden="true"
+                          className="fa fa-cloud-upload fa-2x cloud-logo"
+                        />
+                        Select file or drag and drop here
+                      </label>
+                      <input
+                        accept=""
+                        className="file-upload--input"
+                        id="fileUpload"
+                        multiple={false}
+                        name="fileUpload"
+                        onChange={[Function]}
+                        type="file"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div
+            className="row"
+          >
+            <div
+              className="col-md-9"
+            >
+              
+            </div>
+            <div
+              className="col-md-3"
+            >
+              <div
+                className="pull-right"
+              >
+                <a
+                  className="btn btn-info"
+                  href="/labkey/Sample%20Management%202/assay-template.view?rowId=5051"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  title="Download Template"
+                >
+                  <span
+                    className="fa fa-download"
+                  />
+                   Template
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="form-step"
+        >
+          <form
+            disabled={false}
+            onError={[Function]}
+            onReset={[Function]}
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-group row"
+            >
+              <label
+                className="control-label hidden"
+                data-required={false}
+                htmlFor="frc-rundata-1088"
+              >
+                
+              </label>
+              <div
+                className="col-sm-12"
+              >
+                <textarea
+                  className="form-control"
+                  cols={-1}
+                  disabled={false}
+                  id="frc-rundata-1088"
+                  name="rundata"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Paste in a tab-separated set of values"
+                  required={false}
+                  rows={10}
+                  style={
+                    Object {
+                      "whiteSpace": "nowrap",
+                    }
+                  }
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="form-step"
+        >
+          <div>
+            <div
+              className="row QueryGrid-bottom-spacing"
+            >
+              <div
+                className="col-sm-4"
+              >
+                <div
+                  className="btn-group"
+                >
+                  <button
+                    className="btn btn-default"
+                    disabled={true}
+                    onClick={[Function]}
+                    title="Delete Rows"
+                    type="button"
+                  >
+                    Delete Rows
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              className="editable-grid__container"
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+            >
+              <div
+                className=""
+              >
+                <div
+                  className="grid-messages"
+                />
+                <table
+                  className="table-cellular table-striped table-bordered"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": undefined,
+                          }
+                        }
+                      >
+                        <input
+                          checked={false}
+                          disabled={false}
+                          onChange={[Function]}
+                          type="checkbox"
+                        />
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "45px",
+                          }
+                        }
+                      >
+                        Row
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        SampleID 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Participant ID 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Visit ID 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Date 
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <input
+                          checked={false}
+                          onChange={[Function]}
+                          style={
+                            Object {
+                              "margin": "0 8px",
+                            }
+                          }
+                          type="checkbox"
+                        />
+                      </td>
+                      <td
+                        className="cellular-count dropdown"
+                      >
+                        <div
+                          className="cellular-count-content"
+                          onClick={[Function]}
+                          onContextMenu={[Function]}
+                        >
+                          1
+                        </div>
+                        <ul
+                          aria-labelledby="row-context-0"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              Delete Row
+                            </a>
+                          </li>
+                        </ul>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display size-limited"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "right",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div
+              className="editable-grid__controls form-group margin-top"
+            >
+              <span
+                className="input-group"
+              >
+                <span
+                  className="input-group-btn"
+                >
+                  <button
+                    className="btn btn-default"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add
+                  </button>
+                </span>
+                <input
+                  className="form-control"
+                  max={1000}
+                  min={1}
+                  name="addCount"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  style={
+                    Object {
+                      "width": "65px",
+                    }
+                  }
+                  type="number"
+                  value="1"
+                />
+                <span
+                  style={
+                    Object {
+                      "display": "inline-block",
+                      "padding": "6px 8px",
+                    }
+                  }
+                >
+                  row
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RunDataPanel/> default props 1`] = `
+<div
+  className="panel panel-default full-width"
+>
+  <div
+    className="panel-heading"
+  >
+    Run Data
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-12"
+      >
+        <ul
+          className="list-group clearfix"
+          style={
+            Object {
+              "listStyle": "none",
+            }
+          }
+        >
+          <li
+            className="list-group-item form-step-tab active"
+            onClick={[Function]}
+          >
+            Upload Files
+          </li>
+          <li
+            className="list-group-item form-step-tab"
+            onClick={[Function]}
+          >
+            Copy-and-Paste Data
+          </li>
+          <li
+            className="list-group-item form-step-tab"
+            onClick={[Function]}
+          >
+            Enter Data Into Grid
+          </li>
+        </ul>
+        <div
+          className="clearfix"
+        />
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-sm-12"
+      >
+        <div
+          className="form-step active"
+        >
+          <span
+            className="translator--toggle__wizard"
+          >
+            <div
+              className="row"
+            >
+              <div
+                className="col-sm-12"
+              >
+                <div
+                  className="wizard-row--container"
+                >
+                  <div>
+                    <div
+                      className="file-upload--container block"
+                    >
+                      <label
+                        className="file-upload--label"
+                        htmlFor="fileUpload"
+                        onDragEnter={[Function]}
+                        onDragLeave={[Function]}
+                        onDragOver={[Function]}
+                        onDrop={[Function]}
+                      >
+                        <i
+                          aria-hidden="true"
+                          className="fa fa-cloud-upload fa-2x cloud-logo"
+                        />
+                        Select file or drag and drop here
+                      </label>
+                      <input
+                        accept=""
+                        className="file-upload--input"
+                        id="fileUpload"
+                        multiple={false}
+                        name="fileUpload"
+                        onChange={[Function]}
+                        type="file"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+          <div
+            className="row"
+          >
+            <div
+              className="col-md-9"
+            >
+              
+            </div>
+            <div
+              className="col-md-3"
+            >
+              <div
+                className="pull-right"
+              >
+                <a
+                  className="btn btn-info"
+                  href="/labkey/Sample%20Management%202/assay-template.view?rowId=5051"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  title="Download Template"
+                >
+                  <span
+                    className="fa fa-download"
+                  />
+                   Template
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="form-step"
+        >
+          <form
+            disabled={false}
+            onError={[Function]}
+            onReset={[Function]}
+            onSubmit={[Function]}
+          >
+            <div
+              className="form-group row"
+            >
+              <label
+                className="control-label hidden"
+                data-required={false}
+                htmlFor="frc-rundata-1088"
+              >
+                
+              </label>
+              <div
+                className="col-sm-12"
+              >
+                <textarea
+                  className="form-control"
+                  cols={-1}
+                  disabled={false}
+                  id="frc-rundata-1088"
+                  name="rundata"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onKeyDown={[Function]}
+                  placeholder="Paste in a tab-separated set of values"
+                  required={false}
+                  rows={10}
+                  style={
+                    Object {
+                      "whiteSpace": "nowrap",
+                    }
+                  }
+                  value=""
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          className="form-step"
+        >
+          <div>
+            <div
+              className="row QueryGrid-bottom-spacing"
+            />
+            <div
+              className="editable-grid__container"
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              onMouseUp={[Function]}
+            >
+              <div
+                className=""
+              >
+                <div
+                  className="grid-messages"
+                />
+                <table
+                  className="table-cellular table-striped table-bordered"
+                >
+                  <thead>
+                    <tr>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "45px",
+                          }
+                        }
+                      >
+                        Row
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        SampleID 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Participant ID 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Visit ID 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Date 
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td
+                        className="cellular-count dropdown"
+                      >
+                        <div
+                          className="cellular-count-content"
+                          onClick={[Function]}
+                          onContextMenu={[Function]}
+                        >
+                          1
+                        </div>
+                        <ul
+                          aria-labelledby="row-context-0"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              Delete Row
+                            </a>
+                          </li>
+                        </ul>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display size-limited"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "right",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                      <td
+                        style={
+                          Object {
+                            "textAlign": "left",
+                          }
+                        }
+                      >
+                        <div
+                          autoFocus={false}
+                          className="cellular-display"
+                          onDoubleClick={[Function]}
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onMouseEnter={[Function]}
+                          tabIndex={-1}
+                        >
+                          
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div
+              className="editable-grid__controls form-group margin-top"
+            >
+              <span
+                className="input-group"
+              >
+                <span
+                  className="input-group-btn"
+                >
+                  <button
+                    className="btn btn-default"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Add
+                  </button>
+                </span>
+                <input
+                  className="form-control"
+                  max={1000}
+                  min={1}
+                  name="addCount"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  style={
+                    Object {
+                      "width": "65px",
+                    }
+                  }
+                  type="number"
+                  value="1"
+                />
+                <span
+                  style={
+                    Object {
+                      "display": "inline-block",
+                      "padding": "6px 8px",
+                    }
+                  }
+                >
+                  row
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RunDataPanel/> loading state based on gridModel 1`] = `
+<div
+  className="panel panel-default full-width"
+>
+  <div
+    className="panel-heading"
+  >
+    Run Data
+  </div>
+  <div
+    className="panel-body"
+  >
+    <span
+      className=""
+    >
+      <i
+        aria-hidden="true"
+        className="fa fa-spinner fa-spin"
+      />
+       
+      Loading...
+    </span>
+  </div>
+</div>
+`;

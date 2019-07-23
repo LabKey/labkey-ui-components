@@ -54,6 +54,8 @@ export interface QueryInfoFormProps {
     maxCount?: number
     onCancel?: () => any
     onHide?: () => any
+    onFormChange?: () => any
+    canSubmitNotDirty?: boolean
     canSubmitForEdit?: boolean
     disableSubmitForEditMsg?: string
     onSubmitForEdit?: (data: any) => Promise<any>
@@ -80,6 +82,7 @@ interface State {
     submitForEdit: boolean
     isSubmitted: boolean
     isSubmitting: boolean
+    isDirty: boolean
     errorMsg: string
     count: number
 }
@@ -88,6 +91,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     static defaultProps : Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
+        canSubmitNotDirty: true,
         includeCountField: true,
         checkRequiredFields: true,
         countText: "Quantity",
@@ -107,6 +111,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         this.disableSubmitButton = this.disableSubmitButton.bind(this);
         this.enableSubmitButton = this.enableSubmitButton.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
         this.onHide = this.onHide.bind(this);
         this.onCountChange = this.onCountChange.bind(this);
@@ -119,6 +124,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
+            isDirty: false,
             errorMsg: undefined,
             count: undefined,
             submitForEdit: false,
@@ -147,6 +153,20 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         if (Utils.isFunction(onCancel)) {
             onCancel();
         }
+    }
+
+    handleChange() {
+        const { onFormChange } = this.props;
+        if (Utils.isFunction(onFormChange)) {
+            onFormChange();
+        }
+
+        if (!this.state.isDirty)
+            this.setState(() => {
+                return {
+                    isDirty: true
+                }
+            });
     }
 
     handleSubmitError(error: any) {
@@ -188,7 +208,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             this.setState({
                 errorMsg: undefined,
                 isSubmitted: true,
-                isSubmitting: false
+                isSubmitting: false,
+                isDirty: false
             });
             if (Utils.isFunction(onSuccess)) {
                 return onSuccess(data, submitForEdit);
@@ -263,9 +284,9 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     renderButtons() {
 
-        const { cancelText, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
+        const { cancelText, canSubmitNotDirty, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
 
-        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit } = this.state;
+        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
 
         const inProgressText = isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : undefined);
         const suffix = (count > 1) ? pluralNoun : singularNoun;
@@ -309,7 +330,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <Button
                             className={"test-loc-submit-button"}
                             bsStyle="success"
-                            disabled={!canSubmit || count === 0}
+                            disabled={!canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
                             onClick={this.setSubmittingForSave}
                             type="submit">
                             {!submitForEdit && inProgressText ? inProgressText: submitText}{suffix ? ' ' + suffix : null}
@@ -343,6 +364,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         className="form-horizontal"
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
+                        onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}>
                         {includeCountField && (
                             <Input

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { withKnobs, text, boolean } from '@storybook/addon-knobs'
+import * as React from 'react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 
-import { Grid } from '../components/Grid'
-import * as constants from './constants'
+import { Grid } from '../components/Grid';
+import * as constants from './constants';
 
-import './stories.css'
+import './stories.scss';
 
 storiesOf('Grid', module)
     .addDecorator(withKnobs)
@@ -45,4 +45,5 @@ storiesOf('Grid', module)
             transpose={boolean('transpose', false)}
             data={constants.gridData}
             columns={constants.gridColumns}
-        />);
+        />)
+    .add('With messages', () => <Grid data={constants.gridData} messages={constants.gridMessages} />);

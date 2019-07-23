@@ -4,6 +4,9 @@ exports[`Grid component loading text and action 1`] = `
 <div
   className="table-responsive"
 >
+  <div
+    className="grid-messages"
+  />
   <table
     className="table table-striped table-bordered"
   >
@@ -59,10 +62,159 @@ exports[`Grid component loading text and action 1`] = `
 </div>
 `;
 
+exports[`Grid component render with messages 1`] = `
+<div
+  className="table-responsive"
+>
+  <div
+    className="grid-messages"
+  >
+    <div
+      className="grid-message"
+    >
+      There are 1 rows not shown due to unapproved QC state
+    </div>
+  </div>
+  <table
+    className="table table-striped table-bordered"
+  >
+    <thead>
+      <tr>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          name
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          number
+        </th>
+        <th
+          className="grid-header-cell"
+          onClick={[Function]}
+          style={
+            Object {
+              "minWidth": undefined,
+            }
+          }
+        >
+          position
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Dee Gordon
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          9
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          4
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Mike Zunino
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          3
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          2
+        </td>
+      </tr>
+      <tr>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Kyle Seager
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          15
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          5
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
 exports[`Grid component render with non-default properties 1`] = `
 <div
   className="table-responsive"
 >
+  <div
+    className="grid-messages"
+  />
   <table
     className="table-cellular table-striped table-condensed"
   >
@@ -200,6 +352,9 @@ exports[`Grid component rendering with data 1`] = `
 <div
   className="table-responsive"
 >
+  <div
+    className="grid-messages"
+  />
   <table
     className="table table-striped table-bordered"
   >
@@ -337,6 +492,9 @@ exports[`Grid component rendering with data and columns 1`] = `
 <div
   className="table-responsive"
 >
+  <div
+    className="grid-messages"
+  />
   <table
     className="table table-striped table-bordered"
   >
@@ -475,6 +633,9 @@ exports[`Grid component rendering with no data and columns 1`] = `
   className="table-responsive"
   data-gridid="someId"
 >
+  <div
+    className="grid-messages"
+  />
   <table
     className="table table-striped table-bordered"
   >

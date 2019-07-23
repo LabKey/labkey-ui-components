@@ -214,6 +214,24 @@ describe("QueryInfoForm", () => {
         });
     });
 
+    test("don't allow canSubmitNotDirty", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = shallow(
+                <QueryInfoForm
+                    includeCountField={false}
+                    checkRequiredFields={false}
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    onSubmit={jest.fn()}
+                    canSubmitNotDirty={false}
+                />
+            );
+
+            const submitButton = formWrapper.find(".test-loc-submit-button");
+            expect(submitButton.props().disabled).toBe(true);
+        });
+    });
+
     test("customize column filter", () => {
         const filter = (col) => {
             return col.name === "extraTestColumn";

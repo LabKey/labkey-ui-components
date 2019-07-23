@@ -34,6 +34,12 @@ const gridData = fromJS([{
     position: 5
 }]);
 
+const gridMessages = fromJS([{
+    area: 'view',
+    type: 'WARNING',
+    content: 'There are 1 rows not shown due to unapproved QC state',
+}]);
+
 const gridColumns = List([
     {
         index: 'name',
@@ -119,5 +125,10 @@ describe('Grid component', () => {
                   condensed={true}
             />).toJSON();
         expect(tree).toMatchSnapshot();
-    })
+    });
+
+    test('render with messages', () => {
+        const tree  = renderer.create(<Grid data={gridData} messages={gridMessages}/>).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

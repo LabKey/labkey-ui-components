@@ -162,7 +162,8 @@ export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
     dataRows?: any // Array<any> | QueryGridModel
 }
 
-function parseDataTextToRunRows(rawData: string): Array<any> {
+//exported for jest testing
+export function parseDataTextToRunRows(rawData: string): Array<any> {
     if (!rawData || !rawData.length) {
         return null;
     }

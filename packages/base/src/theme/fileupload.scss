@@ -82,3 +82,24 @@
   margin-top: 5px;
   position: relative;
 }
+
+.attached-file--inline-container {
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+  padding: 8px;
+  position: relative;
+}
+
+.attached-file--icon {
+  color: darkgray;
+  font-size: 20px;
+  margin-right: 7px;
+}
+
+.attached-file--remove-icon {
+  color: $brand-danger;
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}

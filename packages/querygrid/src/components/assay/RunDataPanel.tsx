@@ -36,17 +36,19 @@ interface Props {
     acceptedPreviewFileFormats?: string
     fullWidth?: boolean
     allowBulkRemove?: boolean
+    allowBulkInsert?: boolean
 }
 
 export class RunDataPanel extends React.Component<Props, any> {
 
     static defaultProps = {
         fullWidth: true,
-        allowBulkRemove: false
+        allowBulkRemove: false,
+        allowBulkInsert: false
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onFileChange, onFileRemoval, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove } = this.props;
+        const { currentStep, gridModel, wizardModel, onFileChange, onFileRemoval, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
 
         return (
@@ -98,9 +100,19 @@ export class RunDataPanel extends React.Component<Props, any> {
                                             isSubmitting={wizardModel.isSubmitting}
                                             disabled={currentStep !== AssayUploadTabs.Grid}
                                             allowBulkRemove={allowBulkRemove}
+                                            allowBulkUpdate={allowBulkInsert}
+                                            bulkUpdateText={'Bulk Insert'}
+                                            bulkUpdateProps={{
+                                                title: 'Bulk Insert Assay Rows',
+                                                header: 'Add a batch of assay data rows that will share the properties set below.'
+                                            }}
                                             bordered={true}
                                             striped={true}
-                                            addControlProps={{placement: 'bottom'}}
+                                            addControlProps={{
+                                                placement: 'bottom',
+                                                nounPlural: "rows",
+                                                nounSingular: "row"
+                                            }}
                                         />
                                     </FormStep>
                                 </div>

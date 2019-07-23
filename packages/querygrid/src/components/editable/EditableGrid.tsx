@@ -494,11 +494,13 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     renderBulkCreationHeader() : ReactNode {
         const { bulkUpdateProps } = this.props;
 
-        return (
-            <div className={"editable-grid__bulk-header"}>
-                {bulkUpdateProps.header}
-            </div>
-        )
+        if (bulkUpdateProps && bulkUpdateProps.header) {
+            return (
+                <div className={"editable-grid__bulk-header"}>
+                    {bulkUpdateProps.header}
+                </div>
+            )
+        }
     }
 
     bulkAdd(data: any) : Promise<any> {
@@ -528,7 +530,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     renderBulkUpdate() {
         const { showBulkUpdate } = this.state;
-
         const model = this.getModel(this.props);
 
         return (

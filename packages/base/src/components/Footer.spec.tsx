@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer'
 
 import { Footer } from './Footer'
 
-describe("<Footer />", () => {
+describe("<Footer/>", () => {
    test("test render", () => {
       const component = (
           <Footer/>

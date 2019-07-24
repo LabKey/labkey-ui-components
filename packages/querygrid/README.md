@@ -14,6 +14,15 @@ Query Grid for LabKey schema/query data views
 * factor out AssayImportSubMenuItem and getImportItemsForAssayDefinitions and port from Biologics
 * port loadSelectedSamples from Biologics and export getSelection
 
+### version 0.10.3
+*Released*: 23 July 2019
+* Add columnFilter to QueryInfoForm
+
+### version 0.10.2
+*Released*: 23 July 2019
+* For QueryInfoForm, add ability to disable Submit until change is made
+* For QueryInfoForm, add onFormChange handler 
+
 ### version 0.10.1
 *Released*: 17 July 2019
 * Fix @glass/base dependencies for omnibox package

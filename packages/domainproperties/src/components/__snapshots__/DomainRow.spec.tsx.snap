@@ -1941,18 +1941,24 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                         </option>
                                         <option
                                           key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
                                           value="flag"
                                         >
                                           Flag (String)
                                         </option>
                                         <option
-                                          key="2"
+                                          key="3"
                                           value="ParticipantId"
                                         >
                                           Subject/Participant (String)
                                         </option>
                                         <option
-                                          key="3"
+                                          key="4"
                                           value="lookup"
                                         >
                                           Lookup
@@ -2495,18 +2501,24 @@ exports[`DomainRowDisplay string field 1`] = `
                                         </option>
                                         <option
                                           key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
                                           value="flag"
                                         >
                                           Flag (String)
                                         </option>
                                         <option
-                                          key="2"
+                                          key="3"
                                           value="ParticipantId"
                                         >
                                           Subject/Participant (String)
                                         </option>
                                         <option
-                                          key="3"
+                                          key="4"
                                           value="lookup"
                                         >
                                           Lookup

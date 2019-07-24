@@ -55,12 +55,28 @@ export class PropDescType extends Record({
         return name === 'lookup';
     }
 
+    static isInteger(rangeURI: string): boolean {
+        return (rangeURI === INT_RANGE_URI || rangeURI === USER_RANGE_URI);
+    }
+
+    static isString(rangeURI: string): boolean {
+        return (rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI);
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
 
     isLookup(): boolean {
         return PropDescType.isLookup(this.name);
+    }
+
+    isInteger(): boolean {
+        return PropDescType.isInteger(this.rangeURI);
+    }
+
+    isString(): boolean {
+        return PropDescType.isString(this.rangeURI);
     }
 }
 
@@ -370,6 +386,16 @@ export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
             return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
         }
 
+        // Catches Users
+        if (type.isInteger() && PropDescType.isInteger(rangeURI)) {
+            return true;
+        }
+
+        // Catches Multiline text
+        if (type.isString() && PropDescType.isString(rangeURI)) {
+            return true;
+        }
+
         return rangeURI === type.rangeURI;
     }).toList();
 }
@@ -494,7 +520,9 @@ export class QueryInfoLite extends Record({
         let infos = List<{name: string, type: PropDescType}>().asMutable();
         let pkCols = this.getPkColumns();
 
-        if (pkCols.size > 0 || pkCols.size <= 2) {
+        pkCols = pkCols.filter(col => col.name.toLowerCase() !== 'container') as List<ColumnInfoLite>;
+
+        if (pkCols.size === 1) {
 
             // Sample Set hack (ported from DomainEditorServiceBase.java)
             if (this.schemaName.toLowerCase() === 'samples') {
@@ -505,9 +533,7 @@ export class QueryInfoLite extends Record({
                 }
             }
 
-            pkCols
-                .filter(col => col.name.toLowerCase() !== 'container')
-                .forEach((pk) => {
+            pkCols.forEach((pk) => {
                     let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
 
                     // if supplied, apply rangeURI matching filter

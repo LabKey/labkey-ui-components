@@ -132,9 +132,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
         const { domain, onChange } = this.props;
-        const newDomain = updateDomainField(domain, fieldId, value);
 
         if (onChange) {
+            const newDomain = updateDomainField(domain, fieldId, value);
             onChange(newDomain, true);
         }
 

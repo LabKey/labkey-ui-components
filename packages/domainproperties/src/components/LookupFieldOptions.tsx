@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import {Col, Row} from "react-bootstrap";
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, getIndexFromId} from "../actions/actions";
 import {
     DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA
 } from "../constants";
@@ -21,9 +21,8 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     onFieldChange = (evt) => {
         const { onChange } = this.props;
 
-        let value = evt.target.value;
-
         if (onChange) {
+            let value = evt.target.value;
             onChange(evt.target.id, value);
         }
     }

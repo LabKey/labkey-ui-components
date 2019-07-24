@@ -3,8 +3,16 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+### version 0.10.3
+*Released*: 23 July 2019
+* Add columnFilter to QueryInfoForm
 
-### version 0.9.1
+### version 0.10.2
+ *Released*: 23 July 2019
+ * For QueryInfoForm, add ability to disable Submit until change is made
+ * For QueryInfoForm, add onFormChange handler 
+ 
+ ### version 0.9.1
 *Released*: 17 June 2019
 *  Update package for changes to @glass/base v0.9.0
 

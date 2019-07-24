@@ -26,10 +26,11 @@ import {
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
-    DOMAIN_FIELD_FULLY_LOCKED
+    DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FIELD_FULLY_LOCKED,
 } from "../constants";
 import { DomainField, PROP_DESC_TYPES, DomainFieldError } from "../models";
-import {createFormInputId, getCheckedValue, getDataType} from "../actions/actions";
+import { createFormInputId, getCheckedValue, getDataType, isFieldPartiallyLocked, isFieldFullyLocked } from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -132,7 +133,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Name'}>
                         <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                     onChange={this.onFieldChange}/>
+                                     onChange={this.onFieldChange} disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
@@ -140,7 +141,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                         <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                                 key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                                 className={'form-control'} onChange={this.onFieldChange} value={getDataType(field).name}
-                                disabled={!!field.propertyId}>
+                                disabled={!!field.propertyId || (isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}>
                             {
                                 PROP_DESC_TYPES.map(function (type) {
                                     if (type.display)
@@ -161,7 +162,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             <Checkbox className='domain-field-checkbox'
                                       id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      checked={field.required} onChange={this.onFieldChange}/>
+                                      checked={field.required} onChange={this.onFieldChange} disabled={isFieldFullyLocked(field.lockType)}/>
                         </Tip>
                     </div>
                 </Col>
@@ -170,7 +171,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     renderButtons() {
-        const {index, onDelete, onExpand, expanded} = this.props;
+        const {index, field, onDelete, onExpand, expanded} = this.props;
 
         return (
             <div className={'pull-right'}>
@@ -181,11 +182,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                         className='domain-row-button'
                         onClick={onDelete}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
+                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
                     >
                         Remove Field
                     </Button>
                     <Button
-                        disabled={true}
+                        disabled={true || isFieldFullyLocked(field.lockType)} //TODO: remove true once Advanced Settings are enabled.
                         bsClass='btn btn-light'
                         className='domain-row-button'
                     >

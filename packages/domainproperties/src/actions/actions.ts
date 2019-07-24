@@ -15,7 +15,13 @@
  */
 import {Domain} from "@labkey/api";
 import {List} from "immutable";
-import {DOMAIN_FIELD_PREFIX, DOMAIN_FIELD_TYPE, SEVERITY_LEVEL_ERROR} from "../constants";
+import {
+    DOMAIN_FIELD_FULLY_LOCKED,
+    DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FIELD_PREFIX,
+    DOMAIN_FIELD_TYPE,
+    SEVERITY_LEVEL_ERROR
+} from "../constants";
 import {DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES, DomainException, DomainFieldError} from "../models";
 
 /**
@@ -224,4 +230,16 @@ export function getCheckedValue(evt) {
     }
 
     return undefined;
+}
+
+export function isFieldPartiallyLocked(lockType: string) : boolean {
+
+    //with partially locked can't change name and type, but can change other properties
+    return lockType == DOMAIN_FIELD_PARTIALLY_LOCKED
+}
+
+export function isFieldFullyLocked(lockType: string) : boolean
+{
+    //with fully locked, can't change any properties
+    return lockType == DOMAIN_FIELD_FULLY_LOCKED;
 }

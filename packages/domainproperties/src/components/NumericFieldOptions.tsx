@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, isFieldFullyLocked} from "../actions/actions";
 import {
     DEFAULT_SCALE_LINEAR,
     DEFAULT_SCALE_LOG,
@@ -47,7 +47,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
     }
 
     render() {
-        const { index, label, format, defaultScale } = this.props;
+        const { index, label, format, defaultScale, lockType } = this.props;
 
         return (
             <div>
@@ -75,12 +75,15 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                                      value={format ? format : ""}
                                      onChange={this.onFieldChange}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}/>
+                                     key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
+                                     disabled={isFieldFullyLocked(lockType)}
+                        />
                     </Col>
                     <Col xs={1} />
                     <Col xs={2}>
                         <select id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
                                 key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
+                                disabled={isFieldFullyLocked(lockType)}
                                 className={'form-control'}
                                 onChange={this.onFieldChange} value={defaultScale}>
                                 <option key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LINEAR, index)}

@@ -12,6 +12,8 @@ import { DomainDesign } from "../models";
 import data from "../test/data/property-getDomain.json";
 import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
 import exceptionData from "../test/data/property-domainException.json";
+import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
+import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
 import './stories.scss'
 
 interface Props {
@@ -72,6 +74,20 @@ storiesOf("DomainForm", module)
             <DomainFormContainer
                 data={errorData}
                 exception={exceptionData}
+            />
+        )
+    })
+    .add("with fully locked fields", () => {
+        return (
+            <DomainFormContainer
+                data={fullyLockedData}
+            />
+        )
+    })
+    .add("with partially locked fields", () => {
+        return (
+            <DomainFormContainer
+                data={partiallyLockedData}
             />
         )
     });

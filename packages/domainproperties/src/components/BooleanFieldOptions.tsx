@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, isFieldFullyLocked} from "../actions/actions";
 import {
     DOMAIN_FIELD_FORMAT
 } from "../constants";
@@ -37,7 +37,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
     }
 
     render() {
-        const { index, label, format } = this.props;
+        const { index, label, format, lockType } = this.props;
 
         return (
             <div>
@@ -60,7 +60,9 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                                      value={format}
                                      onChange={this.onFieldChange}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}/>
+                                     key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
+                                     disabled={isFieldFullyLocked(lockType)}
+                        />
                     </Col>
                 </Row>
             </div>

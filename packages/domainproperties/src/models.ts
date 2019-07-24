@@ -33,7 +33,8 @@ import {
 export interface ITypeDependentProps {
     index: number,
     label: string,
-    onChange: (string, any) => any
+    onChange: (string, any) => any,
+    lockType: string
 }
 
 interface IPropDescType{
@@ -207,7 +208,7 @@ export class DomainField extends Record({
     newField: undefined,
     excludeFromShifting: false,
     isPrimaryKey: false,
-    lockType: DOMAIN_FIELD_NOT_LOCKED
+    lockType: undefined
 
 }) implements IDomainField {
     propertyId: number;

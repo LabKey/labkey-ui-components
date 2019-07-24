@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, isFieldFullyLocked} from "../actions/actions";
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
@@ -67,14 +67,14 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                   id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                                   key={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                                   placeholder={'Add a description'}
-                                  onChange={this.handleChange}/>
+                                  onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
                     <Col xs={3}>
                         <div className={'domain-field-label'}>Label</div>
                         <FormControl type="text" value={field.label ? field.label : ''}
                                      id={createFormInputId(DOMAIN_FIELD_LABEL, index)}
                                      key={createFormInputId(DOMAIN_FIELD_LABEL, index)}
-                                     onChange={this.handleChange}/>
+                                     onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
 
                         <div className={'domain-field-label'}>
                             Import Aliases
@@ -85,7 +85,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         <FormControl type="text" value={field.importAliases ? field.importAliases : ''}
                                      id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, index)}
                                      key={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, index)}
-                                     onChange={this.handleChange}/>
+                                     onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -99,7 +99,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         <FormControl type="text" value={field.URL ? field.URL : ''}
                                      id={createFormInputId(DOMAIN_FIELD_URL, index)}
                                      key={createFormInputId(DOMAIN_FIELD_URL, index)}
-                                     onChange={this.handleChange}/>
+                                     onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
                 </Row>
             </div>

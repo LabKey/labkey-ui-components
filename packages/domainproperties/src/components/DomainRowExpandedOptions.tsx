@@ -35,19 +35,19 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         switch(getTypeName(field)) {
             case 'string':
-                return <TextFieldOptions index={index} label='Text Field Options' scale={field.scale} onChange={onChange} />
+                return <TextFieldOptions index={index} label='Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />
             case 'flag':
-                return <TextFieldOptions index={index} label='Text Field Options' scale={field.scale} onChange={onChange} />
+                return <TextFieldOptions index={index} label='Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />
             case 'multiLine':
-                return <TextFieldOptions index={index} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} />
+                return <TextFieldOptions index={index} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />
             case 'boolean':
-                return <BooleanFieldOptions index={index} label='Boolean Field Options' format={field.format} onChange={onChange} />
+                return <BooleanFieldOptions index={index} label='Boolean Field Options' format={field.format} onChange={onChange} lockType={field.lockType} />
             case 'dateTime':
-                return <DateTimeFieldOptions index={index} label='Boolean Field Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} />
+                return <DateTimeFieldOptions index={index} label='Boolean Field Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} lockType={field.lockType} />
             case 'int':
-                return <NumericFieldOptions index={index} label='Numeric Field Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} />
+                return <NumericFieldOptions index={index} label='Numeric Field Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />
             case 'double':
-                return <NumericFieldOptions index={index} label='Numeric Field Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} />
+                return <NumericFieldOptions index={index} label='Numeric Field Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType}/>
         }
 
         return null;

@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.11.0
+*Released*: 24 July 2019
 * port FormStep and related helpers from Biologics
 * port handleInputTab and handleTabKeyOnTextArea from Biologics
 * add AssayWizardModel, BatchPropertiesPanel, RunPropertiesPanel, and RunDataPanel from Biologics

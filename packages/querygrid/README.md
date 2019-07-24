@@ -3,6 +3,11 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+
+### version ???
+*Released*: ???
+* Package patch update for changes to @glass/base v???
+
 ### version 0.10.3
 *Released*: 23 July 2019
 * Add columnFilter to QueryInfoForm

@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Item 5718: Domain designer lookup field support
+
 ### version 0.0.21
 *Released*: 17 July 2019
 * Epic 5862: Domain designer type dependent fields.

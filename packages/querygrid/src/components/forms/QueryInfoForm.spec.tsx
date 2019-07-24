@@ -23,6 +23,7 @@ import { QueryInfoForm } from "./QueryInfoForm";
 import { mount, shallow } from "enzyme";
 import { QueryFormInputs } from "./QueryFormInputs";
 import { Button, Modal, ModalTitle } from "react-bootstrap";
+import {TextInput} from "./input/TextInput";
 
 beforeAll(() => {
     initQueryGridState();
@@ -230,6 +231,26 @@ describe("QueryInfoForm", () => {
             expect(submitButton.props().disabled).toBe(true);
         });
     });
+
+    test("customize column filter", () => {
+        const filter = (col) => {
+            return col.name === "extraTestColumn";
+        };
+
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = mount(
+                        <QueryInfoForm
+                            schemaQuery={schemaQuery}
+                            queryInfo={queryInfo}
+                            columnFilter={filter}
+                            onSubmit={jest.fn()}/>
+                    );
+
+            expect(formWrapper.find(TextInput)).toHaveLength(1);
+            formWrapper.unmount();
+        });
+    });
+
 
     // TODO the following tests require being able to interact with the form in order to make it
     // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.

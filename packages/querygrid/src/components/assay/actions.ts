@@ -185,3 +185,28 @@ export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefi
 
     return items;
 }
+
+
+export interface DuplicateFilesResponse {
+    duplicate: boolean
+    newFileNames: List<string>
+    runNamesPerFile: List<string>
+}
+
+export function checkForDuplicateAssayFiles(fileNames: Array<string>) : DuplicateFilesResponse {
+    let response = undefined;
+    Ajax.request({
+        url: buildURL('assays', 'assayFileDuplicateCheck.api'),
+        method: 'POST',
+        params: {
+            fileNames,
+        },
+        success: Utils.getCallbackWrapper((res) => {
+            res = response;
+        }),
+        failure: Utils.getCallbackWrapper((response) => {
+            console.error("Problem checking for duplicate files", response);
+        }),
+    });
+    return response;
+}

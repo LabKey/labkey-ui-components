@@ -2,7 +2,8 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, isFieldFullyLocked} from "../actions/actions";
+import {createFormInputId} from "../actions/actions";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,

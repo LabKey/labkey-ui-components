@@ -2,7 +2,8 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, getIndexFromId, getNameFromId, isFieldFullyLocked} from "../actions/actions";
+import {createFormInputId, getIndexFromId, getNameFromId} from "../actions/actions";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
     DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH

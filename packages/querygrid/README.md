@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Issue 37993: add missing "isUpdate" parameter for call to updateSampleSet
+
 ### version 0.11.0
 *Released*: 24 July 2019
 * port FormStep and related helpers from Biologics

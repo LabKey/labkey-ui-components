@@ -198,7 +198,7 @@ export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<
         Ajax.request({
             url: buildURL('assay', 'assayFileDuplicateCheck.api'),
             method: 'POST',
-            params: {
+            jsonData: {
                 fileNames,
             },
             success: Utils.getCallbackWrapper((res) => {

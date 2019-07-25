@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
+import { SEVERITY_LEVEL_WARN } from "../constants";
 
 import {
     DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE,
@@ -26,11 +27,11 @@ import {
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
-    DOMAIN_FIELD_PARTIALLY_LOCKED,
     DOMAIN_FIELD_FULLY_LOCKED,
 } from "../constants";
 import { DomainField, PROP_DESC_TYPES, DomainFieldError } from "../models";
-import { createFormInputId, getCheckedValue, getDataType, isFieldPartiallyLocked, isFieldFullyLocked } from "../actions/actions";
+import { createFormInputId, getCheckedValue, getDataType } from "../actions/actions";
+import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -43,11 +44,22 @@ interface IDomainRowProps {
     onExpand: (any) => void
 }
 
+interface IDomainRowState {
+    fieldError?: DomainFieldError
+}
+
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
+export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            fieldError: props.fieldError
+        };
+    }
     /**
      *  Details section of property row
      */
@@ -86,7 +98,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             details += 'Updated';
         }
 
-        if (this.props.fieldError){
+        if (this.props.fieldError) {
 
             if (this.props.field.propertyId == this.props.fieldError.id || this.props.field.name == this.props.fieldError.field)
             {
@@ -97,6 +109,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 details += this.props.fieldError.message
             }
         }
+
+        if (this.state.fieldError) {
+
+            if (details.length > 0)
+            {
+                details += '. ';
+            }
+            details += this.state.fieldError.message;
+        }
+
 
         return details;
     };
@@ -124,6 +146,31 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         }
     }
 
+    onNameChange  = (evt) => {
+
+        const { onChange } = this.props;
+
+        let value = evt.target.value;
+        if (!isLegalName(value)) {
+
+            let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
+            let field = null;
+            let id = null;
+            let severity = SEVERITY_LEVEL_WARN;
+            let domainFieldError = new DomainFieldError({message, field, id, severity});
+
+            this.setState({fieldError : domainFieldError});
+
+        }
+        else {
+            this.setState({fieldError : undefined});
+        }
+
+        if (onChange) {
+            onChange(evt.target.id, value);
+        }
+    }
+
     renderBaseFields() {
         const {index, field, onChange} = this.props;
 
@@ -133,7 +180,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Name'}>
                         <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
                                      key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                     onChange={this.onFieldChange} disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}/>
+                                     onChange={this.onNameChange} disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}/>
                     </Tip>
                 </Col>
                 <Col xs={2}>
@@ -178,28 +225,28 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 {expanded &&
                 <>
                     <Button
-                        bsClass='btn btn-danger'
-                        className='domain-row-button'
-                        onClick={onDelete}
-                        id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
+                            bsClass='btn btn-danger'
+                            className='domain-row-button'
+                            onClick={onDelete}
+                            id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
+                            disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
                     >
                         Remove Field
                     </Button>
                     <Button
-                        disabled={true || isFieldFullyLocked(field.lockType)} //TODO: remove true once Advanced Settings are enabled.
-                        bsClass='btn btn-light'
-                        className='domain-row-button'
+                            disabled={true || isFieldFullyLocked(field.lockType)} //TODO: remove true once Advanced Settings are enabled.
+                            bsClass='btn btn-light'
+                            className='domain-row-button'
                     >
                         Advanced Settings
                     </Button>
                 </>
                 }
                 <Tip caption={'Additional Settings'}>
-                <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
+                    <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
 
                         <FontAwesomeIcon icon={faPencilAlt}/>
-                </div>
+                    </div>
                 </Tip>
             </div>
         )
@@ -226,7 +273,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             </Col>
                         </Row>
                         {expanded &&
-                            <DomainRowExpandedOptions field={field} index={index} onChange={onChange}/>
+                        <DomainRowExpandedOptions field={field} index={index} onChange={onChange}/>
                         }
                     </div>
                 )}

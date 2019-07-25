@@ -1392,7 +1392,6 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
     let messages = List<CellMessage>();
 
     rowData.forEach((data, cn) => {
-
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
 

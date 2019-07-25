@@ -361,6 +361,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                     id={inputProps.id}
                     fieldName={name}
                     labelOverlayProps={{
+                        inputId: name,
                         description,
                         label: label,
                         isFormsy: false,
@@ -385,7 +386,6 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     renderSelect(inputProps: any) {
         const {
             addLabelText,
-            allowCreate,
             autoload,
             cache,
             clearable,

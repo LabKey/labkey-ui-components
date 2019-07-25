@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* Add "appEditable", "asSubPanel", "title", "cancelText" and "submitText" to DetailEditing
+
 ### version 0.11.1
 *Released*: 25 July 2019
 * Issue 37993: add missing "isUpdate" parameter for call to updateSampleSet

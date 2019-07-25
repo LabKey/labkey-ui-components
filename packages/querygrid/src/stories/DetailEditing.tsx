@@ -26,6 +26,10 @@ import './stories.scss'
 
 interface Props {
     canUpdate: boolean
+    asSubPanel?: boolean
+    title?: string,
+    cancelText?: string,
+    submitText?: string,
 }
 
 class DetailEditingPage extends React.Component<Props, any> {
@@ -49,6 +53,7 @@ class DetailEditingPage extends React.Component<Props, any> {
     };
 
     render() {
+        const {canUpdate, asSubPanel, title, cancelText, submitText} = this.props;
         const model = this.getQueryGridModel();
         if (!model.isLoaded) {
             return <LoadingSpinner/>
@@ -57,7 +62,11 @@ class DetailEditingPage extends React.Component<Props, any> {
         return (
             <DetailEditing
                 queryModel={model}
-                canUpdate={this.props.canUpdate}
+                canUpdate={canUpdate}
+                asSubPanel={asSubPanel}
+                title={title}
+                cancelText={cancelText}
+                submitText={submitText}
                 onUpdate={this.onUpdate}
                 useEditIcon={false}
             />
@@ -74,6 +83,12 @@ storiesOf('DetailEditing', module)
     })
     .add("editable", () => {
         return (
-            <DetailEditingPage canUpdate={true}/>
+            <DetailEditingPage
+                canUpdate={true}
+                asSubPanel={boolean("As sub panel?", true)}
+                title={text("Title", "Details")}
+                submitText={text("Submit Text", "Save")}
+                cancelText={text("Cancel Text", "Cancel")}
+            />
         )
     });

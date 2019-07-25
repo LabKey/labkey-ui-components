@@ -1,6 +1,5 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer'
-import { mount } from 'enzyme';
 import mock, { proxy } from "xhr-mock";
 import { AssayUploadTabs } from "@glass/base";
 
@@ -10,6 +9,7 @@ import { getStateQueryGridModel } from "../../models";
 import { gridInit } from "../../actions";
 import { withFormSteps, WithFormStepsProps } from "../forms/FormStep";
 import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
+
 const assayDataQueryInfo = require("../../test/data/assayData-getQueryDetails.json");
 
 let MODEL_ID_NOT_LOADED;

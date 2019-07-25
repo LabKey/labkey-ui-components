@@ -352,6 +352,7 @@ export class SampleIdCreationModel extends Record({
 }
 
 export interface ISampleSetDetails {
+    isUpdate?: boolean
     rowId?: number
     name: string
     nameExpression?: string

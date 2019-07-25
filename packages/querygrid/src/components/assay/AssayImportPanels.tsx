@@ -202,6 +202,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
     handleFileRemove = (attachmentName: string) => {
         this.updateModelState('attachedFiles', Map<string, File>());
+        this.setSubmitting(false, undefined);
     };
 
     handleBatchChange = (fieldValues: any) => {
@@ -363,6 +364,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     currentStep={currentStep}
                     wizardModel={model}
                     gridModel={this.getDataGridModel()}
+                    onRenameConfirm={this.onFinish.bind(this, false)}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onTextChange={this.handleDataTextChange}

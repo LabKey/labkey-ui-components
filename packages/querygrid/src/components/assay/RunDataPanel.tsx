@@ -32,6 +32,7 @@ interface Props {
     currentStep: number
     wizardModel: AssayWizardModel
     gridModel: QueryGridModel
+    onRenameConfirm?: () => any
     onFileChange: (attachments: Map<string, File>) => any
     onFileRemoval: (attachmentName: string) => any
     onTextChange: (inputName: string, value: any) => any
@@ -76,15 +77,19 @@ export class RunDataPanel extends React.Component<Props, State> {
         return this.props.onFileRemoval(attachmentName);
     };
 
-    onFileChange = () => {
-        this.props.onFileChange(this.state.attachments)
+    onRenameConfirm = () => {
+        if (this.state.showRenameModal) {
+            this.setState(() => ({showRenameModal: false}));
+        }
+        if (this.props.onRenameConfirm) {
+            this.props.onRenameConfirm();
+        }
     };
 
     renderFileRenameModal() {
-        console.log("this.state.dupData", this.state.dupData);
         return (
             <ImportWithRenameConfirmModal
-                onConfirm={this.onFileChange}
+                onConfirm={this.onRenameConfirm}
                 onCancel={this.onCancelRename}
                 originalName={this.state.attachments.keySeq().get(0)}
                 newName={this.state.dupData.newFileNames[0]}/>
@@ -92,22 +97,20 @@ export class RunDataPanel extends React.Component<Props, State> {
     }
 
     checkForDuplicateFiles = (attachments: Map<string, File>) => {
-       checkForDuplicateAssayFiles(attachments.keySeq().toArray()).then((dupData) => {
-           if (dupData.duplicate) {
-               this.setState(() => ({
+        this.props.onFileChange(attachments);
+        checkForDuplicateAssayFiles(attachments.keySeq().toArray()).then((dupData) => {
+            if (dupData.duplicate) {
+                this.setState(() => ({
                    attachments,
                    showRenameModal: true,
                    dupData
-               }));
-           }
-           else {
-               this.props.onFileChange(attachments);
-           }
-       }).catch((reason) => {
+                }));
+            }
+        }).catch((reason) => {
            this.setState(() => ({
                error: getActionErrorMessage("There was an error retrieving assay run data.", "assay run")
            }));
-       })
+        })
     };
 
     onTabChange = () => {
@@ -115,7 +118,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onFileChange, onFileRemoval, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
+        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
         const { showRenameModal, error } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
 

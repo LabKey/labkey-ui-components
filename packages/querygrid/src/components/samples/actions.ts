@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { Filter } from '@labkey/api'
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, List, Map, OrderedMap } from 'immutable'
 import { Ajax, Utils } from '@labkey/api';
-import { buildURL, naturalSort, SchemaQuery, SCHEMAS } from '@glass/base';
+import { buildURL, naturalSort, QueryColumn, SchemaQuery, SCHEMAS } from '@glass/base';
 
 import {
     DisplayObject,
@@ -26,7 +26,7 @@ import {
     SampleSetOption,
     SampleSetParentType
 } from './models';
-import { getSelected } from "../../actions";
+import { getSelected, getSelection } from "../../actions";
 import { selectRows } from "../..";
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
@@ -236,5 +236,34 @@ export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: A
                reject(response.exception);
            })
        })
+    });
+}
+
+export function loadSelectedSamples(location: any, sampleColumn: QueryColumn): Promise<OrderedMap<any, any>> {
+    return getSelection(location).then((selection) => {
+        if (selection.resolved && selection.schemaQuery && selection.selected.length) {
+            return selectRows({
+                schemaName: selection.schemaQuery.schemaName,
+                queryName: selection.schemaQuery.queryName,
+                filterArray: [
+                    Filter.create('RowId', selection.selected, Filter.Types.IN)
+                ]
+            }).then(response => {
+                const { key, models, orderedModels } = response;
+                const rows = fromJS(models[key]);
+                let data = OrderedMap<any, any>();
+
+                // The transformation done here makes the samples compatible with the editable grid on the assay upload
+                // wizard.
+                orderedModels[key].forEach((id) => {
+                    data = data.setIn([id, sampleColumn.fieldKey], List([{
+                        displayValue: rows.getIn([id, sampleColumn.lookup.displayColumn, 'value']),
+                        value: rows.getIn([id, sampleColumn.lookup.keyColumn, 'value'])
+                    }]));
+                });
+
+                return data;
+            });
+        }
     });
 }

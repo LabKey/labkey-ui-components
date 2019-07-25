@@ -26,7 +26,7 @@ import './stories.scss'
 
 storiesOf('SearchResults', module)
     .addDecorator(withKnobs)
-    .add("search result cart", () => {
+    .add("search result card", () => {
         return (
             <SearchResultCard
                 iconUrl={'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'}

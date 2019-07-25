@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.10.1-fb-domain-lookups-duex.0",
+  "version": "0.11.0",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

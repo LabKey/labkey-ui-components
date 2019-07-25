@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { ReactNode } from 'react'
-
+import { OrderedMap } from 'immutable'
 import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
@@ -58,8 +58,8 @@ export interface QueryInfoFormProps {
     canSubmitNotDirty?: boolean
     canSubmitForEdit?: boolean
     disableSubmitForEditMsg?: string
-    onSubmitForEdit?: (data: any) => Promise<any>
-    onSubmit?: (data: any) => Promise<any>
+    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>
+    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>
     onSuccess?: (data: any, submitForEdit: boolean) => any
     columnFilter?: (col?: QueryColumn) => boolean
     queryInfo: QueryInfo
@@ -178,19 +178,21 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
-    filterDisabledFields(data: any, requiredFields?: Array<string>) {
+    filterDisabledFields(data: any, requiredFields?: Array<string>): OrderedMap<string, any> {
         const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
             const enabledKey = getFieldEnabledFieldName(column);
             return data[enabledKey] === undefined || data[enabledKey] === 'true';
         });
-        let filteredData = {};
+
+        let filteredData = OrderedMap<string, any>();
         for (let key in data) {
             if (data.hasOwnProperty(key) ) {
                 if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1 ) {
-                    filteredData[key] = data[key];
+                    filteredData = filteredData.set(key, data[key]);
                 }
             }
         }
+
         return filteredData;
     }
 

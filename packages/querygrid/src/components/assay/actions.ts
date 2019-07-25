@@ -196,7 +196,7 @@ export interface DuplicateFilesResponse {
 export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<DuplicateFilesResponse> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assays', 'assayFileDuplicateCheck.api'),
+            url: buildURL('assay', 'assayFileDuplicateCheck.api'),
             method: 'POST',
             params: {
                 fileNames,

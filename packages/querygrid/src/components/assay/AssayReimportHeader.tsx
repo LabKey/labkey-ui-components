@@ -4,7 +4,7 @@ import { Map } from 'immutable';
 import { AppURL, AssayDefinitionModel } from '@glass/base';
 
 interface Props {
-    hasBatchProperties: boolean
+    hasBatchProperties?: boolean
     assay: AssayDefinitionModel
     replacedRunData: Map<string, any>
 }

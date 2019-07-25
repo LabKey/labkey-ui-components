@@ -106,6 +106,8 @@ storiesOf('AssayImportPanels', module)
         return (
             <RunDataPanelWrapper/>
         )
+    }, {
+        notes: "For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message."
     })
     .add("AssayImportPanels", () => {
         return (

@@ -42,12 +42,15 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
+import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
+import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
 const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
 const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDeleteConfirmationData.json");
 const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
 const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
 const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
 const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json");
+
 
 export function initMocks() {
     mock.setup();
@@ -205,6 +208,20 @@ export function initMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
+        const bodyParams = req.body().toLowerCase();
+        let responseBody;
+        console.log("bodyParams", bodyParams, bodyParams.indexOf('.csv'), bodyParams.indexOf('.tsv'));
+        if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1))
+            responseBody = assayFileDuplicateCheck;
+        else if (bodyParams.indexOf(".xls") > -1)
+            responseBody= assayFileNoDuplicateCheck;
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody))
     });
 
     mock.use(proxy);

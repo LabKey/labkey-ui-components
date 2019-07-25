@@ -193,20 +193,21 @@ export interface DuplicateFilesResponse {
     runNamesPerFile: List<string>
 }
 
-export function checkForDuplicateAssayFiles(fileNames: Array<string>) : DuplicateFilesResponse {
-    let response = undefined;
-    Ajax.request({
-        url: buildURL('assays', 'assayFileDuplicateCheck.api'),
-        method: 'POST',
-        params: {
-            fileNames,
-        },
-        success: Utils.getCallbackWrapper((res) => {
-            res = response;
-        }),
-        failure: Utils.getCallbackWrapper((response) => {
-            console.error("Problem checking for duplicate files", response);
-        }),
+export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<DuplicateFilesResponse> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assays', 'assayFileDuplicateCheck.api'),
+            method: 'POST',
+            params: {
+                fileNames,
+            },
+            success: Utils.getCallbackWrapper((res) => {
+                resolve(res);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                console.error("Problem checking for duplicate files", response);
+                reject(response);
+            }),
+        });
     });
-    return response;
 }

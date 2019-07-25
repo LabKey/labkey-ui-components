@@ -105,7 +105,8 @@ import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal'
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem'
-import { ImportWithRenameConfirmModal } from './components/assay/ImportWIthRenameConfirmModal'
+import { ImportWithRenameConfirmModal } from './components/assay/ImportWithRenameConfirmModal'
+import { AssayReimportHeader } from './components/assay/AssayReimportHeader'
 import {
     AssayUploadResultModel,
     AssayWizardModel,
@@ -246,6 +247,7 @@ export {
     ImportWithRenameConfirmModal,
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
+    AssayReimportHeader,
 
     // forms
     handleInputTab,

@@ -4,6 +4,11 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ??? 
+*Released*: ???
+
+* export getActionErrorMessage method for consistent error message display after an action has failed.
+
 ### version 0.11.0
 *Released*: 24 July 2019
 * port FileAttachmentFormModel and Footer from Biologics

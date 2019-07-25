@@ -68,6 +68,7 @@ import {
     unorderedEqual,
     valueIsEmpty
 } from './utils/utils'
+import { getActionErrorMessage } from './utils/messaging'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 import { AddEntityButton } from "./components/buttons/AddEntityButton"
 import { RemoveEntityButton } from "./components/buttons/RemoveEntityButton"
@@ -252,6 +253,7 @@ export {
     similaritySortFactory,
     unorderedEqual,
     valueIsEmpty,
+    getActionErrorMessage,
 
     // url functions
     buildURL,

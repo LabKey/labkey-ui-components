@@ -109,12 +109,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 details += this.props.fieldError.message
             }
         }
-
-        if (this.state.fieldError) {
+        else if (this.state.fieldError) {
 
             if (details.length > 0)
             {
-                details += '. ';
+                details += ', ';
             }
             details += this.state.fieldError.message;
         }

@@ -21,7 +21,7 @@ export class ImportWithRenameConfirmModal extends React.Component<Props, any> {
                 msg={
                     <>
                         <p>
-                            A file named <span className={'import-rename-filename'}>"{this.props.originalName}"</span> already exists in this {this.props.folderType} folder.
+                            A file named <span className={'import-rename-filename'}>{this.props.originalName}</span> already exists in this {this.props.folderType} folder.
                         </p>
                         <p>
                             To import this file, either give it a new name or allow {this.props.productName ? this.props.productName + ' to rename it': 'it to be renamed'} to the following on import:

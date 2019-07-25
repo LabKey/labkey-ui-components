@@ -10,7 +10,7 @@ import { gridInit } from "../../actions";
 import { withFormSteps, WithFormStepsProps } from "../forms/FormStep";
 import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
 
-const assayDataQueryInfo = require("../../test/data/assayData-getQueryDetails.json");
+import  assayDataQueryInfo from "../../test/data/assayData-getQueryDetails.json";
 
 let MODEL_ID_NOT_LOADED;
 let MODEL_ID_LOADED;

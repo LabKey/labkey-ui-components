@@ -507,7 +507,7 @@ export class QueryInfoLite extends Record({
 
     static create(raw: IQueryInfoLite, schemaName: string): QueryInfoLite {
         return new QueryInfoLite(Object.assign({}, raw, {
-            columns: List((raw.columns as any).map(c => ColumnInfoLite.create(c))),
+            columns: raw.columns ? List((raw.columns as any).map(c => ColumnInfoLite.create(c))) : List(),
             schemaName
         }));
     }

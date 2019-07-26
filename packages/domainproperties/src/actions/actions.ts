@@ -15,7 +15,7 @@
  */
 import { List, Map } from "immutable";
 import { Domain, Query, Security } from "@labkey/api";
-import { Container, naturalSort, SchemaDetails } from "@glass/base";
+import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
 
 import {
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -136,16 +136,17 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
                 containerPath,
                 includeHidden: false,
                 success: (data) => {
-                    resolve(processSchemas(data));
+                    resolve(handleSchemas(data));
                 }
             })
         })
     ));
 }
 
-export function processSchemas(payload: any): List<SchemaDetails> {
-    return List<SchemaDetails>(Object.keys(payload).map((k) => SchemaDetails.create(payload[k])))
-        .sort((a, b) => naturalSort(a.getLabel(), b.getLabel()))
+export function handleSchemas(payload: any): List<SchemaDetails> {
+    return processSchemas(payload)
+        .valueSeq()
+        .sort((a, b) => naturalSort(a.fullyQualifiedName, b.fullyQualifiedName))
         .toList();
 }
 

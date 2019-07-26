@@ -518,9 +518,9 @@ export class QueryInfoLite extends Record({
 
     getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
         let infos = List<{name: string, type: PropDescType}>().asMutable();
-        let pkCols = this.getPkColumns();
-
-        pkCols = pkCols.filter(col => col.name.toLowerCase() !== 'container') as List<ColumnInfoLite>;
+        let pkCols = this.getPkColumns()
+            .filter(col => col.name.toLowerCase() !== 'container')
+            .toList();
 
         if (pkCols.size === 1) {
 
@@ -534,16 +534,16 @@ export class QueryInfoLite extends Record({
             }
 
             pkCols.forEach((pk) => {
-                    let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
+                let type = PROP_DESC_TYPES.find(propType => propType.name.toLowerCase() === pk.jsonType.toLowerCase());
 
-                    // if supplied, apply rangeURI matching filter
-                    if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
-                        infos.push({
-                            name: this.name,
-                            type
-                        });
-                    }
-                });
+                // if supplied, apply rangeURI matching filter
+                if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
+                    infos.push({
+                        name: this.name,
+                        type
+                    });
+                }
+            });
         }
 
         return infos.asImmutable();

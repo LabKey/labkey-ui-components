@@ -288,7 +288,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                          onChange={onChange}
                          placeholder="Select Schema">
                 {blankOption && <option key="_default" value={undefined}/>}
-                {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.getLabel()}</option>).toArray()}
+                {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.fullyQualifiedName}</option>).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
             </FormControl>
         )

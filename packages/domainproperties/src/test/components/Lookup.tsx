@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { Container, SchemaDetails } from "@glass/base";
 
 import { ILookupContext, LookupContextProvider } from "../../components/Lookup/Context";
-import { processContainers, processQueries, processSchemas } from "../../actions/actions";
+import { processContainers, processQueries, handleSchemas } from "../../actions/actions";
 import { QueryInfoLite } from "../../models";
 
 import containerData from "../data/project-getContainers.json";
@@ -29,7 +29,7 @@ export class MockLookupProvider extends React.Component<any, ILookupContext> {
             fetchSchemas: (containerPath: string) => {
                 const path = containerPath ? containerPath : this.state.activeContainer.path;
                 const data = schemaData.schemasByContainerPath[path];
-                return Promise.resolve<List<SchemaDetails>>(processSchemas(data));
+                return Promise.resolve<List<SchemaDetails>>(handleSchemas(data));
             }
         };
     }

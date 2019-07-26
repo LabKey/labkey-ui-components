@@ -9,6 +9,7 @@ import { ILookupContext, LookupContextConsumer } from "./Context";
 
 interface ILookupProps {
     context: ILookupContext
+    name: string   // Used for testing
 }
 
 interface IFolderSelectProps {
@@ -22,7 +23,7 @@ export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <FolderSelectImpl {...this.props} context={context}/>}
+                {(context) => <FolderSelectImpl {...this.props} context={context} name='folder-select'/>}
             </LookupContextConsumer>
         );
     }
@@ -90,7 +91,7 @@ export class QuerySelect extends React.PureComponent<IQuerySelectProps, any> {
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <QuerySelectImpl {...this.props} context={context}/>}
+                {(context) => <QuerySelectImpl {...this.props} context={context} name='query-select'/>}
             </LookupContextConsumer>
         );
     }
@@ -209,7 +210,7 @@ export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <SchemaSelectImpl {...this.props} context={context}/>}
+                {(context) => <SchemaSelectImpl {...this.props} context={context} name='schema-select'/>}
             </LookupContextConsumer>
         );
     }

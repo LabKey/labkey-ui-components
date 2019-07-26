@@ -25,10 +25,31 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "URL": "This is a URL",
       "shownInInsertView": true,
       "shownInUpdateView": true,
-      "dataType": undefined,
+      "dataType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Text (String)",
+        "name": "string",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "shortDisplay": "String",
+      },
       "lookupQueryValue": undefined,
-      "lookupType": undefined,
-      "original": undefined,
+      "lookupType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Lookup",
+        "name": "lookup",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "shortDisplay": undefined,
+      },
+      "original": Object {
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Text (String)",
+          "name": "string",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "shortDisplay": "String",
+        },
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+      },
       "updatedField": false,
     }
   }

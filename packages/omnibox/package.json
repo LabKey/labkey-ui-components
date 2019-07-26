@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.11.1-fb-domain-lookups-deux.0",
+    "@glass/base": "0.11.1-fb-domain-lookups-deux.1",
     "react-input-autosize": "2.2.1"
   },
   "peerDependencies": {

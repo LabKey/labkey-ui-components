@@ -177,3 +177,5 @@ export enum KEYS {
 export const RELEVANT_SEARCH_RESULT_TYPES = ['data', 'experiment', 'material'];
 
 export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
+
+export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';

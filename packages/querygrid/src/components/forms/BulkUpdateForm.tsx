@@ -2,6 +2,7 @@ import * as React from "react";
 import { Map, List } from "immutable";
 import { Utils } from "@labkey/api";
 import {
+    capitalizeFirstChar,
     createNotification,
     getCommonDataValues,
     getUpdatedData,
@@ -9,12 +10,16 @@ import {
     QueryInfo,
     SchemaQuery
 } from "@glass/base";
-import { getSelectedData, MAX_EDITABLE_GRID_ROWS, QueryInfoForm } from "@glass/querygrid";
 import { MenuItemModel } from "@glass/navigation";
-import { NO_UPDATES_MESSAGE } from "../constants";
+
+import { QueryInfoForm } from "./QueryInfoForm";
+import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from "../../constants";
+import { getSelectedData } from "../../actions";
 
 interface Props {
-    sampleSetItem: MenuItemModel,
+    singularNoun?: string
+    pluralNoun?: string
+    itemLabel?: string
     model: QueryGridModel,
     canSubmitForEdit: boolean,
     onCancel: () => any,
@@ -29,7 +34,13 @@ interface State {
     dataIdsForSelection: List<any>
 }
 
-export class SampleBulkUpdate extends React.Component<Props, State> {
+export class BulkUpdateForm extends React.Component<Props, State> {
+
+    static defaultProps = {
+        singularNoun: 'row',
+        pluralNoun: 'rows',
+        itemLabel: 'table'
+    };
 
     constructor(props) {
         super(props);
@@ -42,7 +53,7 @@ export class SampleBulkUpdate extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        const { model, onCancel } = this.props;
+        const { model, onCancel, pluralNoun } = this.props;
 
         getSelectedData(model).then( (response) => {
             const { data, dataIds, totalRows } = response;
@@ -55,7 +66,7 @@ export class SampleBulkUpdate extends React.Component<Props, State> {
             console.error(reason);
             createNotification({
                 alertClass: 'danger',
-                message: 'There was a problem loading the data for the selected samples.',
+                message: `There was a problem loading the data for the selected ${pluralNoun}.`,
             });
             onCancel();
         });
@@ -66,12 +77,13 @@ export class SampleBulkUpdate extends React.Component<Props, State> {
     }
 
     getSelectionNoun(): string {
-        return this.getSelectionCount() === 1 ? 'sample' : 'samples';
+        const { singularNoun, pluralNoun } = this.props;
+        return this.getSelectionCount() === 1 ? singularNoun : pluralNoun;
     }
 
     getTitle(): string {
         const prefix = 'Update ' + this.getSelectionCount() + ' ' + this.getSelectionNoun();
-        return prefix + " selected from '" + this.props.sampleSetItem.get('label') + "'";
+        return prefix + " selected from '" + this.props.itemLabel + "'";
     }
 
     getUpdateQueryInfo(): QueryInfo {
@@ -80,7 +92,7 @@ export class SampleBulkUpdate extends React.Component<Props, State> {
         return model.queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 
-    bulkUpdateSelectedSamples = (data) : Promise<any> => {
+    bulkUpdateSelectedRows = (data) : Promise<any> => {
         const { model, updateRows } = this.props;
         const rows = !Utils.isEmptyObj(data)? getUpdatedData(this.state.dataForSelection, data, model.queryInfo.pkCols) : [];
 
@@ -110,7 +122,7 @@ export class SampleBulkUpdate extends React.Component<Props, State> {
                 </p>
                 {this.getSelectionCount() > 1 &&
                 <p>
-                    To update individual samples in this selection group, select "Edit with Grid".
+                    To update individual {noun} in this selection group, select "Edit with Grid".
                 </p>}
             </div>
         )
@@ -118,26 +130,25 @@ export class SampleBulkUpdate extends React.Component<Props, State> {
 
     render() {
         const { isLoadingDataForSelection, dataForSelection } = this.state;
-        const { model, canSubmitForEdit, onCancel, onComplete } = this.props;
+        const { pluralNoun, model, canSubmitForEdit, onCancel, onComplete } = this.props;
         const fieldValues = isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 
         return (
             <QueryInfoForm
                 allowFieldDisable={true}
-                canSubmitNotDirty={false}
                 canSubmitForEdit={canSubmitForEdit}
                 disableSubmitForEditMsg={"At most " + MAX_EDITABLE_GRID_ROWS + " can be edited with the grid."}
                 initiallyDisableFields={true}
                 isLoading={isLoadingDataForSelection}
                 fieldValues={fieldValues}
                 onSubmitForEdit={this.onEditWithGrid}
-                onSubmit={this.bulkUpdateSelectedSamples}
+                onSubmit={this.bulkUpdateSelectedRows}
                 onSuccess={onComplete}
                 asModal={true}
                 includeCountField={false}
                 checkRequiredFields={false}
                 submitForEditText={"Edit with Grid"}
-                submitText={"Update Samples"}
+                submitText={`Update ${capitalizeFirstChar(pluralNoun)}`}
                 onHide={onCancel}
                 onCancel={onCancel}
                 queryInfo={this.getUpdateQueryInfo()}

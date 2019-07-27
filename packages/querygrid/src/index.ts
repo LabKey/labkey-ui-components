@@ -79,6 +79,7 @@ import { Detail } from './components/forms/detail/Detail'
 import { handleTabKeyOnTextArea, handleInputTab } from './components/forms/actions'
 import { FormStep, FormTabs, WithFormStepsProps, withFormSteps } from './components/forms/FormStep'
 import { ReactSelectOption } from './components/forms/model'
+import { BulkUpdateForm } from './components/forms/BulkUpdateForm'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
@@ -182,6 +183,7 @@ export {
     SchemaListing,
     QueriesListing,
     HeatMap,
+    BulkUpdateForm,
 
     // interfaces
     EditableColumnMetadata,

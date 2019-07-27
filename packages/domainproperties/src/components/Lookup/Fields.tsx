@@ -29,12 +29,12 @@ export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
     }
 }
 
-interface IFolderSelectImplState {
+export interface IFolderSelectImplState {
     containers: List<Container>
     loading: boolean
 }
 
-type FolderSelectProps = IFolderSelectProps & ILookupProps;
+export type FolderSelectProps = IFolderSelectProps & ILookupProps;
 
 class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectImplState> {
 
@@ -97,7 +97,7 @@ export class QuerySelect extends React.PureComponent<IQuerySelectProps, any> {
     }
 }
 
-interface IQuerySelectImplState {
+export interface IQuerySelectImplState {
     containerPath?: string
     loading?: boolean
     prevPath?: string
@@ -105,7 +105,7 @@ interface IQuerySelectImplState {
     queries?: List<{name: string, type: PropDescType}>
 }
 
-type QuerySelectProps = IQuerySelectProps & ILookupProps;
+export type QuerySelectProps = IQuerySelectProps & ILookupProps;
 
 class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImplState> {
 
@@ -216,9 +216,9 @@ export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
     }
 }
 
-type SchemaSelectProps = ISchemaSelectProps & ILookupProps;
+export type SchemaSelectProps = ISchemaSelectProps & ILookupProps;
 
-interface ISchemaSelectImplState {
+export interface ISchemaSelectImplState {
     containerPath?: string
     loading?: boolean
     prevPath?: string

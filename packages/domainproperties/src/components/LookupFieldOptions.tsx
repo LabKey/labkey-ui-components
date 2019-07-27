@@ -1,7 +1,8 @@
 
-import * as React from 'react'
+import * as React from "react";
 import {Col, Row} from "react-bootstrap";
-import {createFormInputId, getIndexFromId} from "../actions/actions";
+
+import {createFormInputId} from "../actions/actions";
 import {
     DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA
 } from "../constants";
@@ -25,7 +26,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
             let value = evt.target.value;
             onChange(evt.target.id, value);
         }
-    }
+    };
 
     render() {
         const { index, label, lookupContainer, lookupSchema, lookupQueryValue, original } = this.props;

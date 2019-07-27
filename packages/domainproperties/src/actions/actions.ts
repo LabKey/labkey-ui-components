@@ -190,7 +190,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
     })
 }
 
-export function createFormInputId(name: string, index: any): string {
+export function createFormInputId(name: string, index: number): string {
     return [DOMAIN_FIELD_PREFIX, name, index].join('-');
 }
 

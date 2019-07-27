@@ -7,6 +7,7 @@ Query Grid for LabKey schema/query data views
 ### version XXX
 *Released*: XXX
 * Add "appEditable", "asSubPanel", "title", "cancelText" and "submitText" to DetailEditing
+* port BulkUpdateForm from Sample Management
 
 ### version 0.11.1
 *Released*: 25 July 2019

@@ -166,7 +166,6 @@ describe('LookupFieldOptions', () => {
                         expect(schema.props().value).toEqual(_schema);
                         expect(schema.state().schemas.size).toEqual(5);
 
-                        // A bit of a hacky way to set props
                         lookupField.setProps({
                             children: (
                                 <LookupFieldOptions
@@ -175,7 +174,7 @@ describe('LookupFieldOptions', () => {
                                     lookupQueryValue=""
                                     original={field}
                                     onChange={jest.fn()}
-                                    index={1}
+                                    index={_index}
                                     label={_label}
                                 />
                             )
@@ -238,7 +237,6 @@ describe('LookupFieldOptions', () => {
                     .then(() => {
                         expect(schemaField.props().value).toEqual(_schema1);
 
-                        // A bit of a hacky way to set props
                         lookupField.setProps({
                             children: (
                                 <LookupFieldOptions
@@ -247,7 +245,7 @@ describe('LookupFieldOptions', () => {
                                     lookupQueryValue=""
                                     original={field}
                                     onChange={jest.fn()}
-                                    index={1}
+                                    index={_index}
                                     label={_label}
                                 />
                             )
@@ -265,6 +263,71 @@ describe('LookupFieldOptions', () => {
                                 expect(toJson(lookupField)).toMatchSnapshot();
                                 lookupField.unmount();
                             });
+                    });
+            });
+    });
+
+    test('Selected container changes queries', () => {
+        const _container1 = '/StudyVerifyProject/My Study';
+        const _container2 = '/StudyVerifyProject';
+        const _schema1 = 'exp';
+        const _query1 = 'Data';
+        const _label = 'Lookup Field Options';
+        const _index = 1;
+
+        const field = DomainField.create({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test'
+        });
+
+        const lookupField = mount(
+            <MockLookupProvider>
+                <LookupFieldOptions
+                    lookupContainer={_container1}
+                    lookupSchema={_schema1}
+                    lookupQueryValue={_query1}
+                    original={field}
+                    onChange={jest.fn()}
+                    index={_index}
+                    label={_label}
+                />
+            </MockLookupProvider>
+        );
+
+        // Folder
+        let folderField = folderFieldSelector(lookupField, _index);
+
+        return waitForLoad(folderField)
+            .then(() => {
+                expect(folderField.props().value).toEqual(_container1);
+
+                lookupField.setProps({
+                    children: (
+                        <LookupFieldOptions
+                            lookupContainer={_container2}
+                            lookupSchema=""
+                            lookupQueryValue=""
+                            original={field}
+                            onChange={jest.fn()}
+                            index={1}
+                            label={_label}
+                        />
+                    )
+                });
+
+                // Query
+                let queryField = queryFieldSelector(lookupField, _index);
+
+                return waitForLoad(queryField)
+                    .then(() => {
+                        // Verify query field
+                        expect(queryField.state().queries.size).toEqual(0);
+                        expect(queryField.props().value).toEqual("");
+
+                        expect(toJson(lookupField)).toMatchSnapshot();
+                        lookupField.unmount();
                     });
             });
     });

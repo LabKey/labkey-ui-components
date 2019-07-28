@@ -240,26 +240,34 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
           <div
             className="col-xs-2"
           >
-            <select
-              className="form-control"
+            <FormControl
+              bsClass="form-control"
+              componentClass="select"
               id="domainpropertiesrow-defaultScale-1"
               key="domainpropertiesrow-defaultScale-1"
               onChange={[Function]}
               value="LOG"
             >
-              <option
-                key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
-                value="LINEAR"
-              >
-                LINEAR
-              </option>
-              <option
-                key="domainpropertiesrow-defaultScaleoption-LOG-1"
+              <select
+                className="form-control"
+                id="domainpropertiesrow-defaultScale-1"
+                onChange={[Function]}
                 value="LOG"
               >
-                LOG
-              </option>
-            </select>
+                <option
+                  key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
+                  value="LINEAR"
+                >
+                  LINEAR
+                </option>
+                <option
+                  key="domainpropertiesrow-defaultScaleoption-LOG-1"
+                  value="LOG"
+                >
+                  LOG
+                </option>
+              </select>
+            </FormControl>
           </div>
         </Col>
       </div>

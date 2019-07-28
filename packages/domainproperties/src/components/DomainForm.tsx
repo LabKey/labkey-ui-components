@@ -216,7 +216,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
 
         const newDomain = domain.merge({
-            fields: newFields
+            fields: newFields.asImmutable()
         }) as DomainDesign;
 
         if (onChange) {

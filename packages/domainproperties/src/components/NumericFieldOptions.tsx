@@ -72,23 +72,26 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                 <Row className='domain-row-expanded'>
                     <Col xs={2}>
                         <FormControl type="text"
-                                     value={format ? format : ""}
+                                     value={format || ""}
                                      onChange={this.onFieldChange}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
                                      key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}/>
                     </Col>
                     <Col xs={1} />
                     <Col xs={2}>
-                        <select id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
-                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
-                                className={'form-control'}
-                                onChange={this.onFieldChange} value={defaultScale}>
-                                <option key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LINEAR, index)}
-                                            value={DEFAULT_SCALE_LINEAR}>{DEFAULT_SCALE_LINEAR}</option>
-                                <option key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LOG, index)}
-                                            value={DEFAULT_SCALE_LOG}>{DEFAULT_SCALE_LOG}</option>
 
-                        </select>
+                        <FormControl componentClass="select"
+                                     id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
+                                     key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
+                                     onChange={this.onFieldChange} value={defaultScale}>
+                            <option
+                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LINEAR, index)}
+                                value={DEFAULT_SCALE_LINEAR}>{DEFAULT_SCALE_LINEAR}</option>
+                            <option
+                                key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LOG, index)}
+                                value={DEFAULT_SCALE_LOG}>{DEFAULT_SCALE_LOG}</option>
+
+                        </FormControl>
                     </Col>
                 </Row>
             </div>

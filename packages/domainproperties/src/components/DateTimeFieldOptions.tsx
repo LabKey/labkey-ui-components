@@ -84,7 +84,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 <Row className='domain-row-expanded'>
                     <Col xs={2}>
                         <FormControl type="text"
-                                     value={format ? format : ''}
+                                     value={format || ''}
                                      onChange={this.onFieldChange}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
                                      key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}/>

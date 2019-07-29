@@ -50,6 +50,8 @@ const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteC
 const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
 const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
 const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json");
+const assayGpatQueryInfo= require("../test/data/assayGpat-getQueryDetails.json");
+const assayGpatRunData = require("../test/data/assayGpatRuns-getQuery.json");
 
 
 export function initMocks() {
@@ -86,6 +88,10 @@ export function initMocks() {
             responseBody = assayRunsWithQCFlagsQueryInfo;
         else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'data')
             responseBody = assayDataQueryInfo;
+        else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'runs') {
+            responseBody = assayGpatQueryInfo;
+        }
+
 
         return res
             .status(200)
@@ -116,8 +122,9 @@ export function initMocks() {
             responseBody = nameExpressionSelectedQuery;
         else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
             responseBody = nameExpressionSelectedQuery;
-        else if (bodyParams.indexOf("&query.queryname=runs") > -1)
-            responseBody = assayRunsWithQCFlagsQuery;
+        else if (bodyParams.indexOf("&query.queryname=runs") > -1) {
+            responseBody = assayGpatRunData;
+        }
 
         return res
             .status(200)

@@ -6,8 +6,10 @@ Query Grid for LabKey schema/query data views
 
 ### version ???
 *Released*: ???
-* Add ImportWithRenameConfirmModal and checkForDuplicateAssayFiles method
-* Add AssayReimportHeader component
+* add ImportWithRenameConfirmModal and checkForDuplicateAssayFiles method
+* add AssayReimportHeader component
+* add actions for getRunDataModel, getRunRow, getBatchDataModel, getBatchRow
+* update AssayImportPanels to accept an optional runId for pre-populating
 
 ### version 0.11.0
 *Released*: 24 July 2019

@@ -118,4 +118,15 @@ storiesOf('AssayImportPanels', module)
                 allowBulkRemove={true}
             />
         )
-    });
+    })
+    .add("AssayImportPanels for re-import", () => {
+        return (
+            <AssayImportPanels
+                assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
+                onCancel={() => console.log("onCancel clicked")}
+                onComplete={(response) => console.log("onComplete", response)}
+                runId={"568"}
+            />
+        )
+    })
+;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, OrderedMap } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 import { ActionURL, Ajax, Utils, AssayDOM } from '@labkey/api'
 import {
     AssayDefinitionModel,
@@ -21,10 +21,12 @@ import {
     buildURL,
     naturalSort,
     QueryGridModel,
-    SchemaQuery
+    SchemaQuery, SCHEMAS
 } from '@glass/base'
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models'
+import { getStateQueryGridModel } from '../../models';
+import { getQueryGridModel } from '../../global';
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
@@ -210,4 +212,33 @@ export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<
             }),
         });
     });
+}
+
+export function getRunDataModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
+    const model = getStateQueryGridModel('assay-run-details', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), {
+        allowSelection: false,
+        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList()
+    }, runId);
+
+    return getQueryGridModel(model.getId()) || model;
+}
+
+export function getRunRow(assayDefinition: AssayDefinitionModel, runId: string) : Map<string, any> {
+    const model = getRunDataModel(assayDefinition, runId);
+    return model.isLoaded ? model.getRow() : undefined;
+}
+
+
+export function getBatchDataModel(assayDefinition: AssayDefinitionModel, batchId: string): QueryGridModel {
+    const model = getStateQueryGridModel('assay-batchdetails', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'), {
+        allowSelection: false,
+        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList()
+    }, batchId);
+
+    return getQueryGridModel(model.getId()) || model;
+}
+
+export function getBatchRow(assayDefinition: AssayDefinitionModel, batchId: string) : Map<string, any> {
+    const model = getBatchDataModel(assayDefinition, batchId);
+    return model.isLoaded ? model.getRow() : undefined;
 }

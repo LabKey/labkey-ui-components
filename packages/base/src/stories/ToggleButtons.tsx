@@ -5,10 +5,10 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import { text, withKnobs } from '@storybook/addon-knobs'
 
 import { ToggleButtons } from "../components/buttons/ToggleButtons";
-import './stories.css'
+import './stories.scss'
 
 interface State {
     selected: string

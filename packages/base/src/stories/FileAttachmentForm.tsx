@@ -5,7 +5,7 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, text, withKnobs, number } from '@storybook/addon-knobs'
 import mock, { proxy } from 'xhr-mock';
 
 import { FileAttachmentForm } from '../components/files/FileAttachmentForm';

@@ -115,6 +115,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     componentWillUnmount() {
         // remove the QueryGridModel from the global state so it will reload for new assay on next mount
         removeQueryGridModel(this.getDataGridModel());
+        removeQueryGridModel(this.getRunDataModel());
     }
 
     getRunDataModel() : QueryGridModel {
@@ -205,7 +206,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         else {
             this.setState((state) => ({
                 model: state.model.merge({
-                    isInit
+                    isInit,
+                    runProperties: isInit && this.isReimport() ? this.getRunRow() : undefined
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
         }

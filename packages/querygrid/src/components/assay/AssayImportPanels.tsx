@@ -69,10 +69,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
-            model: INIT_WIZARD_MODEL
+            model: INIT_WIZARD_MODEL.merge({runId: props.runId}) as AssayWizardModel
         }
     }
 
@@ -140,7 +139,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     initModel(props: Props) {
-        const { assayDefinition } = props;
+        const { assayDefinition, runId } = props;
 
         if (this.state.model.isInit) {
             return;
@@ -159,6 +158,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         assayDef: assayDefinition,
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
+                        runId,
                         queryInfo
                     })
                 }), this.onGetQueryDetailsComplete)
@@ -433,14 +433,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         disabled={model.isSubmitting}>
                         {onSave
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
-                            : (model.isSubmitting ? 'Importing...' : 'Import')
+                            : (model.isSubmitting ? 'Importing...' : (this.isReimport() ? 'Re-import' : 'Import'))
                         }
                     </Button>
                 </WizardNavButtons>
                 <Progress
                     estimate={this.getProgressSizeEstimate()}
                     modal={true}
-                    title="Importing assay run"
+                    title={this.isReimport() ? "Re-importing assay run" : "Importing assay run"}
                     toggle={model.isSubmitting}/>
             </>
         )

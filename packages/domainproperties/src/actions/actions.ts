@@ -190,6 +190,11 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
     })
 }
 
+// This is used for testing
+export function createFormInputName(name: string): string {
+    return [DOMAIN_FIELD_PREFIX, name].join('-');
+}
+
 export function createFormInputId(name: string, index: number): string {
     return [DOMAIN_FIELD_PREFIX, name, index].join('-');
 }

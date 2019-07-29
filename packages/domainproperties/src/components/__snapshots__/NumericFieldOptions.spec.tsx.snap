@@ -208,7 +208,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               bsClass="form-control"
               componentClass="input"
               id="domainpropertiesrow-format-1"
-              key="domainpropertiesrow-format-1"
+              name="domainpropertiesrow-format"
               onChange={[Function]}
               type="text"
               value="#.##"
@@ -216,6 +216,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               <input
                 className="form-control"
                 id="domainpropertiesrow-format-1"
+                name="domainpropertiesrow-format"
                 onChange={[Function]}
                 type="text"
                 value="#.##"
@@ -244,13 +245,14 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               bsClass="form-control"
               componentClass="select"
               id="domainpropertiesrow-defaultScale-1"
-              key="domainpropertiesrow-defaultScale-1"
+              name="domainpropertiesrow-defaultScale"
               onChange={[Function]}
               value="LOG"
             >
               <select
                 className="form-control"
                 id="domainpropertiesrow-defaultScale-1"
+                name="domainpropertiesrow-defaultScale"
                 onChange={[Function]}
                 value="LOG"
               >

@@ -6,6 +6,13 @@ import { Container, SchemaDetails } from "@glass/base";
 import { encodeLookup, PropDescType } from "../../models";
 
 import { ILookupContext, LookupContextConsumer } from "./Context";
+import {createFormInputName} from "../../actions/actions";
+import {
+    DOMAIN_FIELD_FORMAT,
+    DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_QUERY,
+    DOMAIN_FIELD_LOOKUP_SCHEMA
+} from "../../constants";
 
 interface ILookupProps {
     context: ILookupContext
@@ -23,7 +30,7 @@ export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <FolderSelectImpl {...this.props} context={context} name='folder-select'/>}
+                {(context) => <FolderSelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_CONTAINER)}/>}
             </LookupContextConsumer>
         );
     }
@@ -91,7 +98,7 @@ export class QuerySelect extends React.PureComponent<IQuerySelectProps, any> {
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <QuerySelectImpl {...this.props} context={context} name='query-select'/>}
+                {(context) => <QuerySelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)}/>}
             </LookupContextConsumer>
         );
     }
@@ -171,7 +178,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
     }
 
     render() {
-        const { id, onChange, value } = this.props;
+        const { id, onChange, value, name } = this.props;
         const { loading, queries } = this.state;
 
         const isEmpty = queries.size === 0;
@@ -183,6 +190,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
                          disabled={loading}
                          value={value}
                          id={id}
+                         name={name}
                          onChange={onChange}>
                 {blankOption && <option key="_default" value={undefined}/>}
                 {loading && <option disabled key="_loading" value={value}>Loading...</option>}
@@ -210,7 +218,7 @@ export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <SchemaSelectImpl {...this.props} context={context} name='schema-select'/>}
+                {(context) => <SchemaSelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_SCHEMA)}/>}
             </LookupContextConsumer>
         );
     }
@@ -275,7 +283,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
     }
 
     render() {
-        const { id, onChange, value } = this.props;
+        const { id, onChange, value, name } = this.props;
         const { schemas } = this.state;
 
         const isEmpty = schemas.size === 0;
@@ -286,6 +294,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
             <FormControl componentClass="select"
                          value={value}
                          id={id}
+                         name={name}
                          onChange={onChange}
                          placeholder="Select Schema">
                 {blankOption && <option key="_default" value={undefined}/>}

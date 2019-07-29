@@ -29,7 +29,7 @@ import {
     DOMAIN_FIELD_TYPE
 } from "../constants";
 import { DomainField, FieldErrors, PropDescType, resolveAvailableTypes, PROP_DESC_TYPES } from "../models";
-import {createFormInputId, getCheckedValue} from "../actions/actions";
+import {createFormInputId, createFormInputName, getCheckedValue} from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
@@ -138,8 +138,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 <Col xs={3}>
                     <Tip caption={'Name'}>
                         <FormControl autoFocus={field.isNew()}
+                                     name={createFormInputName(DOMAIN_FIELD_NAME)}
                                      id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
-                                     key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
                                      onChange={this.onFieldChange}/>
                     </Tip>
                 </Col>
@@ -147,9 +147,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Tip caption={'Data Type'}>
                         <FormControl
                             componentClass="select"
+                            name={createFormInputName(DOMAIN_FIELD_TYPE)}
                             disabled={!field.isNew() && field.primaryKey}
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                            key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             onChange={this.onDataTypeChange}
                             value={field.dataType.name}>
                             {
@@ -164,8 +164,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <div className='domain-field-checkbox'>
                         <Tip caption={'Required?'}>
                             <Checkbox className='domain-field-checkbox'
+                                      name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
                                       id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                       checked={field.required}
                                       onChange={this.onFieldChange}/>
                         </Tip>
@@ -185,12 +185,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                     <Button
                         bsStyle="danger"
                         className="domain-row-button"
+                        name={createFormInputName(DOMAIN_FIELD_DELETE)}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
                         onClick={this.onDelete}>
                         Remove Field
                     </Button>
                     <Button
                         disabled={true}
+                        name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, index)}
                         className="domain-row-button">
                         Advanced Settings

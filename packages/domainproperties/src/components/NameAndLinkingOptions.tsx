@@ -2,11 +2,11 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
-    DOMAIN_FIELD_LABEL,
+    DOMAIN_FIELD_LABEL, DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_URL,
     LK_URL_ENCODING_DOC
 } from "../constants";
@@ -65,7 +65,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         <div className={'domain-field-label'}>Description</div>
                         <textarea className="form-control domain-field-description" rows={4} value={field.description || ''}
                                   id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
-                                  key={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
+                                  name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
                                   placeholder={'Add a description'}
                                   onChange={this.handleChange}/>
                     </Col>
@@ -73,7 +73,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         <div className={'domain-field-label'}>Label</div>
                         <FormControl type="text" value={field.label || ''}
                                      id={createFormInputId(DOMAIN_FIELD_LABEL, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_LABEL, index)}
+                                     name={createFormInputName(DOMAIN_FIELD_LABEL)}
                                      onChange={this.handleChange}/>
 
                         <div className={'domain-field-label'}>
@@ -84,7 +84,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         </div>
                         <FormControl type="text" value={field.importAliases || ''}
                                      id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, index)}
+                                     name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
                                      onChange={this.handleChange}/>
                     </Col>
                 </Row>
@@ -98,7 +98,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         </div>
                         <FormControl type="text" value={field.URL || ''}
                                      id={createFormInputId(DOMAIN_FIELD_URL, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_URL, index)}
+                                     name={createFormInputName(DOMAIN_FIELD_URL)}
                                      onChange={this.handleChange}/>
                     </Col>
                 </Row>

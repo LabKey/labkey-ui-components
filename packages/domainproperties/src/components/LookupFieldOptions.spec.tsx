@@ -2,7 +2,7 @@ import * as React from "react";
 import toJson from "enzyme-to-json";
 import {mount, ReactWrapper} from "enzyme";
 
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
     DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
@@ -26,21 +26,21 @@ describe('LookupFieldOptions', () => {
     const folderFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<FolderSelectProps, IFolderSelectImplState> => {
         return field.find({
             id: createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index),
-            name: 'folder-select'
+            name: createFormInputName(DOMAIN_FIELD_LOOKUP_CONTAINER)
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 
     const schemaFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<SchemaSelectProps, ISchemaSelectImplState> => {
         return field.find({
             id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index),
-            name: 'schema-select'
+            name: createFormInputName(DOMAIN_FIELD_LOOKUP_SCHEMA)
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 
     const queryFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<QuerySelectProps, IQuerySelectImplState> => {
         return field.find({
             id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index),
-            name: 'query-select'
+            name: createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 

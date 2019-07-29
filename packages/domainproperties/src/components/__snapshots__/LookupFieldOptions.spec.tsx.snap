@@ -138,7 +138,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupContainer-1"
-                  name="folder-select"
+                  name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
                   value="/StudyVerifyProject/My Study"
                 >
@@ -168,7 +168,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       }
                     }
                     id="domainpropertiesrow-lookupContainer-1"
-                    name="folder-select"
+                    name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
                     value="/StudyVerifyProject/My Study"
                   >
@@ -197,7 +197,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                         }
                       }
                       id="domainpropertiesrow-lookupContainer-1"
-                      name="folder-select"
+                      name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
                       value="/StudyVerifyProject/My Study"
                     >
@@ -258,7 +258,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupSchema-1"
-                  name="schema-select"
+                  name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
                   value="exp"
                 >
@@ -266,6 +266,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     bsClass="form-control"
                     componentClass="select"
                     id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
                     placeholder="Select Schema"
                     value="exp"
@@ -273,6 +274,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     <select
                       className="form-control"
                       id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
                       placeholder="Select Schema"
                       value="exp"
@@ -337,7 +339,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   }
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
-                  name="query-select"
+                  name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName="exp"
                   value="Data"
@@ -347,6 +349,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     componentClass="select"
                     disabled={true}
                     id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
                     onChange={[Function]}
                     value="Data"
                   >
@@ -354,6 +357,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       className="form-control"
                       disabled={true}
                       id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
                       onChange={[Function]}
                       value="Data"
                     >
@@ -521,7 +525,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupContainer-1"
-                  name="folder-select"
+                  name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
                   value="/StudyVerifyProject"
                 >
@@ -551,7 +555,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       }
                     }
                     id="domainpropertiesrow-lookupContainer-1"
-                    name="folder-select"
+                    name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
                     value="/StudyVerifyProject"
                   >
@@ -580,7 +584,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         }
                       }
                       id="domainpropertiesrow-lookupContainer-1"
-                      name="folder-select"
+                      name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
                       value="/StudyVerifyProject"
                     >
@@ -653,7 +657,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupSchema-1"
-                  name="schema-select"
+                  name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
                   value=""
                 >
@@ -661,6 +665,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     bsClass="form-control"
                     componentClass="select"
                     id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
                     placeholder="Select Schema"
                     value=""
@@ -668,6 +673,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     <select
                       className="form-control"
                       id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
                       placeholder="Select Schema"
                       value=""
@@ -759,7 +765,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   }
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
-                  name="query-select"
+                  name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName=""
                   value=""
@@ -769,6 +775,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     componentClass="select"
                     disabled={false}
                     id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
                     onChange={[Function]}
                     value=""
                   >
@@ -776,6 +783,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       className="form-control"
                       disabled={false}
                       id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
                       onChange={[Function]}
                       value=""
                     >
@@ -960,7 +968,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupContainer-1"
-                  name="folder-select"
+                  name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
                   value="/StudyVerifyProject"
                 >
@@ -990,7 +998,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       }
                     }
                     id="domainpropertiesrow-lookupContainer-1"
-                    name="folder-select"
+                    name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
                     value="/StudyVerifyProject"
                   >
@@ -1019,7 +1027,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         }
                       }
                       id="domainpropertiesrow-lookupContainer-1"
-                      name="folder-select"
+                      name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
                       value="/StudyVerifyProject"
                     >
@@ -1092,7 +1100,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupSchema-1"
-                  name="schema-select"
+                  name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
                   value=""
                 >
@@ -1100,6 +1108,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     bsClass="form-control"
                     componentClass="select"
                     id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
                     placeholder="Select Schema"
                     value=""
@@ -1107,6 +1116,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     <select
                       className="form-control"
                       id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
                       placeholder="Select Schema"
                       value=""
@@ -1198,7 +1208,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   }
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
-                  name="query-select"
+                  name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName=""
                   value=""
@@ -1208,6 +1218,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     componentClass="select"
                     disabled={false}
                     id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
                     onChange={[Function]}
                     value=""
                   >
@@ -1215,6 +1226,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       className="form-control"
                       disabled={false}
                       id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
                       onChange={[Function]}
                       value=""
                     >
@@ -1399,7 +1411,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupContainer-1"
-                  name="folder-select"
+                  name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
                   value="/StudyVerifyProject/My Study"
                 >
@@ -1429,7 +1441,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       }
                     }
                     id="domainpropertiesrow-lookupContainer-1"
-                    name="folder-select"
+                    name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
                     value="/StudyVerifyProject/My Study"
                   >
@@ -1458,7 +1470,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         }
                       }
                       id="domainpropertiesrow-lookupContainer-1"
-                      name="folder-select"
+                      name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
                       value="/StudyVerifyProject/My Study"
                     >
@@ -1531,7 +1543,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     }
                   }
                   id="domainpropertiesrow-lookupSchema-1"
-                  name="schema-select"
+                  name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
                   value="study"
                 >
@@ -1539,6 +1551,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     bsClass="form-control"
                     componentClass="select"
                     id="domainpropertiesrow-lookupSchema-1"
+                    name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
                     placeholder="Select Schema"
                     value="study"
@@ -1546,6 +1559,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     <select
                       className="form-control"
                       id="domainpropertiesrow-lookupSchema-1"
+                      name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
                       placeholder="Select Schema"
                       value="study"
@@ -1634,7 +1648,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   }
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
-                  name="query-select"
+                  name="domainpropertiesrow-lookupQueryValue"
                   onChange={[Function]}
                   schemaName="study"
                   value=""
@@ -1644,6 +1658,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     componentClass="select"
                     disabled={false}
                     id="domainpropertiesrow-lookupQueryValue-1"
+                    name="domainpropertiesrow-lookupQueryValue"
                     onChange={[Function]}
                     value=""
                   >
@@ -1651,6 +1666,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       className="form-control"
                       disabled={false}
                       id="domainpropertiesrow-lookupQueryValue-1"
+                      name="domainpropertiesrow-lookupQueryValue"
                       onChange={[Function]}
                       value=""
                     >

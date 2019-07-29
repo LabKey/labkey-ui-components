@@ -31,7 +31,7 @@ import {
 
 import { Location } from "../../util/URL"
 import { loadSelectedSamples } from "../samples/actions";
-import { uploadAssayRunFiles, importAssayRun } from "./actions";
+import { uploadAssayRunFiles, importAssayRun, getRunRow, getRunDataModel } from "./actions";
 import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from "./models";
 import { WithFormStepsProps, WithFormStepsState, withFormSteps } from "../forms/FormStep"
 import { getQueryGridModel, removeQueryGridModel } from "../../global";
@@ -47,7 +47,8 @@ let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
 
 interface OwnProps {
-    assayDefinition: AssayDefinitionModel,
+    assayDefinition: AssayDefinitionModel
+    runId?: string
     onCancel: () => any
     onComplete: (response: AssayUploadResultModel) => any
     onSave?: (response: AssayUploadResultModel) => any
@@ -75,6 +76,10 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
+    isReimport() : boolean {
+        return this.props.runId !== undefined
+    }
+
     componentWillMount() {
         const { location, selectStep } = this.props;
 
@@ -97,11 +102,40 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 this.initModel(nextProps);
             });
         }
+        else if (this.isReimport() && !this.state.model.isInit && this.getRunDataModel().isLoaded) {
+            this.setState((state) => ({
+                model: state.model.merge({
+                    isInit: true,
+                    runProperties: this.getRunRow()
+                }) as AssayWizardModel
+            }), this.onInitModelComplete);
+        }
     }
 
     componentWillUnmount() {
         // remove the QueryGridModel from the global state so it will reload for new assay on next mount
         removeQueryGridModel(this.getDataGridModel());
+    }
+
+    getRunDataModel() : QueryGridModel {
+        return getRunDataModel(this.props.assayDefinition, this.props.runId);
+    }
+
+    getRunRow() :  Map<string, any> {
+        const queryData =  getRunRow(this.props.assayDefinition, this.props.runId);
+        return queryData.reduce((map, v, k) => {
+            if (v && v.has('value') && v.get('value')) {
+                return map.set(k, v.get('value'))
+            }
+            return map;
+        }, Map<string, any>());
+    }
+
+    initRunDataModel() {
+        if (this.isReimport()) {
+            const runDataModel = this.getRunDataModel();
+            gridInit(runDataModel, true, this);
+        }
     }
 
     initModel(props: Props) {
@@ -111,6 +145,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return;
         }
 
+        this.initRunDataModel();
+
         // need to query for the assay data table QueryInfo in order to init the AssayWizardModel
         getQueryDetails(this.state.schemaQuery)
             .then(queryInfo => {
@@ -118,7 +154,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
                 this.setState(() => ({
                     model: new AssayWizardModel({
-                        isInit: sampleColumnData === undefined, // we are done here if the assay does not have a sample column
+                        isInit: sampleColumnData === undefined && (!this.isReimport() || this.getRunDataModel().isLoaded), // we are done here if the assay does not have a sample column
                         assayDef: assayDefinition,
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
@@ -132,6 +168,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const { assayDefinition, location } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
+        const isInit = !this.isReimport() || this.getRunDataModel().isLoaded;
         if (sampleColumnData && location) {
             // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
@@ -157,7 +194,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
                 this.setState((state) => ({
                     model: state.model.merge({
-                        isInit: true,
+                        isInit,
                         selectedSamples: samples,
                         batchProperties,
                         runProperties
@@ -168,7 +205,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         else {
             this.setState((state) => ({
                 model: state.model.merge({
-                    isInit: true
+                    isInit
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
         }

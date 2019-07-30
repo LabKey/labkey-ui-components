@@ -31,6 +31,7 @@ interface FileAttachmentFormProps {
     showAcceptedFormats?: boolean
     allowDirectories?: boolean
     allowMultiple?: boolean
+    files?: Map<string, File>
     cancelText?: string
     label?: string
     labelLong?: string
@@ -85,6 +86,12 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             previewData: undefined,
             previewStatus: undefined
         };
+    }
+
+    componentWillMount() {
+        if (this.props.files && !this.props.files.isEmpty()) {
+           this.handleFileChange(this.props.files as any);
+        }
     }
 
     determineFileSize(): number {

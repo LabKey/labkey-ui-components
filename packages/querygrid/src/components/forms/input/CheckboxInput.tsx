@@ -84,7 +84,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
             <div className="form-group row">
                 <FieldLabel
                     label={label}
-                    labelOverlayProps={{isFormsy: false}}
+                    labelOverlayProps={{isFormsy: false, inputId: queryColumn.name}}
                     showLabel={showLabel}
                     showToggle={allowDisable}
                     column={queryColumn}
@@ -95,6 +95,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 <div className={"col-sm-9 col-xs-12"}>
                     <input
                         disabled={this.state.isDisabled}
+
                         name={name ? name : queryColumn.name}
                         required={queryColumn.required}
                         type={"checkbox"}

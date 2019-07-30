@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 import { fromJS, List, OrderedMap } from 'immutable'
-import { AssayDefinitionModel, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, isSampleLookup } from './model'
+import {
+    AssayDefinitionModel,
+    AssayDomainTypes,
+    isSampleLookup,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery
+} from './model'
 
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../test/data/assayDefinitionModelNoSampleId.json';
@@ -253,6 +261,29 @@ describe("AssayDefinitionModel", () => {
         expect(modelWithSampleId.hasLookup(SchemaQuery.create('study', 'Other'))).toBeFalsy();
    });
 
+   test("getSampleColumnFieldKeys()", () => {
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        const fieldKeys = modelWithSampleId.getSampleColumnFieldKeys();
+        expect(fieldKeys.size).toBe(1);
+        expect(fieldKeys.get(0)).toBe("SampleID");
+   });
+
+   test("getDomainColumns()", () => {
+        const modelWithSampleId = AssayDefinitionModel.create(assayDefJSON);
+        const batchColumns = modelWithSampleId.getDomainColumns(AssayDomainTypes.BATCH);
+        expect(batchColumns.size).toBe(2);
+        expect(batchColumns.has("ParticipantVisitResolver")).toBeFalsy();
+        expect(batchColumns.has("participantvisitresolver")).toBeTruthy();
+        expect(batchColumns.has("targetstudy")).toBeTruthy();
+
+        const runColumns = modelWithSampleId.getDomainColumns(AssayDomainTypes.RUN);
+        expect(runColumns.size).toBe(0);
+
+        const dataColumns = modelWithSampleId.getDomainColumns(AssayDomainTypes.RESULT);
+        expect(dataColumns.size).toBe(4);
+        expect(dataColumns.has("Date")).toBeFalsy();
+        expect(dataColumns.has("date")).toBeTruthy();
+   });
 });
 
 describe('Sample Lookup', () => {

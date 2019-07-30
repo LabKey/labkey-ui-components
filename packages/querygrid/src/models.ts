@@ -590,7 +590,7 @@ export class EditorModel extends Record({
     }
 
     getValidationErrors(queryGridModel: QueryGridModel, uniqueFieldKey?: string) : Array<string> {
-        let { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, "Name");
+        let { uniqueKeyViolations, missingRequired } = this.validateData(queryGridModel, uniqueFieldKey);
         let errors = [];
         if (!uniqueKeyViolations.isEmpty()) {
             const messages = uniqueKeyViolations.reduce((keyMessages, valueMap, fieldNames) => {
@@ -645,7 +645,7 @@ export class EditorModel extends Record({
     }
 
     hasRawValue(descriptor: ValueDescriptor) {
-        return descriptor.raw !== undefined && descriptor.raw !== "";
+        return descriptor && descriptor.raw !== undefined && descriptor.raw !== "";
     }
 
     hasData() : boolean {

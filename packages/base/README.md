@@ -4,6 +4,20 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.11.0
+*Released*: 24 July 2019
+* port FileAttachmentFormModel and Footer from Biologics
+* add getDomainColumns() to AssayDefinitionModel
+* export SubMenuItemProps and ISubItem for Biologics use cases
+* Fix [issue 38011](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=38011) - properly detect 
+when a lookup field has not changed when editing values in the grid.
+
+### version 0.10.0
+*Released*: 17 July 2019
+* add GridMessages to Grid component
+* add QCAnalyst permission and add qcEnabled flag to AssayProtocolModel
+* enables hot reloading of CSS in Storybook for all packages
+
 ### version 0.9.0
 *Released*: 17 July 2019
 * Add LabelHelpTip as a general component for adding help tips and popovers next to a form label

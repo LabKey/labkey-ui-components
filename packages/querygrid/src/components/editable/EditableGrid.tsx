@@ -17,7 +17,7 @@ import * as OrigReact from 'react'
 import { ReactNode } from 'react'
 import React from 'reactn'
 import { Button, Dropdown, MenuItem } from 'react-bootstrap'
-import { List, Map, Set } from 'immutable'
+import { List, Map, Set, OrderedMap } from 'immutable'
 import $ from 'jquery'
 import {
     Alert,
@@ -494,24 +494,36 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     renderBulkCreationHeader() : ReactNode {
         const { bulkUpdateProps } = this.props;
 
-        return (
-            <div className={"editable-grid__bulk-header"}>
-                {bulkUpdateProps.header}
-            </div>
-        )
+        if (bulkUpdateProps && bulkUpdateProps.header) {
+            return (
+                <div className={"editable-grid__bulk-header"}>
+                    {bulkUpdateProps.header}
+                </div>
+            )
+        }
     }
 
-    bulkAdd(data: any) : Promise<any> {
-        const addControlProps = this.props.addControlProps;
+    restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>) : Map<string, any> {
+        let allInsertCols = Map<string, any>().asMutable();
+        model.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
+        return allInsertCols.merge(data).asImmutable();
+    }
+
+    bulkAdd(data: OrderedMap<string, any>) : Promise<any> {
+        const {addControlProps, bulkUpdateProps} = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
-        const numItems = data.numItems;
-        delete data.numItems;
+        const numItems = data.get('numItems');
+        let updatedData = data.delete('numItems');
 
         if (numItems) {
+            if (bulkUpdateProps.columnFilter) {
+                updatedData = this.restoreBulkInsertData(model, updatedData);
+            }
+
             return new Promise((resolve) => {
-                addRows(model, numItems, Map<string, any>(data));
+                addRows(model, numItems, updatedData);
                 this.onRowCountChange();
                 resolve({
                     success: true,
@@ -528,7 +540,6 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     renderBulkUpdate() {
         const { showBulkUpdate } = this.state;
-
         const model = this.getModel(this.props);
 
         return (
@@ -543,6 +554,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
                 onSuccess={this.toggleBulkUpdate}
+                columnFilter={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.columnFilter : null}
                 queryInfo={model.queryInfo}
                 schemaQuery={model.queryInfo.schemaQuery}
                 title={this.props.bulkUpdateProps && this.props.bulkUpdateProps.title}

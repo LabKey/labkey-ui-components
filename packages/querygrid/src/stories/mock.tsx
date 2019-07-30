@@ -47,6 +47,7 @@ const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDelet
 const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
 const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
 const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
+const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json");
 
 export function initMocks() {
     mock.setup();
@@ -80,6 +81,8 @@ export function initMocks() {
             responseBody = sampleSet2QueryInfo;
         else if (lcSchemaName === 'assay.general.amino acids' && lcQueryName === 'runs')
             responseBody = assayRunsWithQCFlagsQueryInfo;
+        else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'data')
+            responseBody = assayDataQueryInfo;
 
         return res
             .status(200)

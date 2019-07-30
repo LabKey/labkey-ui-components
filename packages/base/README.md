@@ -8,6 +8,7 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 
 * export getActionErrorMessage method for consistent error message display after an action has failed.
+* update @labkey/dependencies version
 
 ### version 0.11.0
 *Released*: 24 July 2019

@@ -125,7 +125,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const queryData =  getRunRow(this.props.assayDefinition, this.props.runId);
         return queryData.reduce((map, v, k) => {
             if (v && v.has('value') && v.get('value')) {
-                return map.set(k, v.get('value'))
+                return map.set(k, v.get('value').toString())
             }
             return map;
         }, Map<string, any>());
@@ -207,7 +207,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             this.setState((state) => ({
                 model: state.model.merge({
                     isInit,
-                    runProperties: isInit && this.isReimport() ? this.getRunRow() : undefined
+                    runProperties: isInit && this.isReimport() ? this.getRunRow() : Map<string, any>()
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
         }

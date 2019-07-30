@@ -1270,17 +1270,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@labkey/api@0.0.17":
-  version "0.0.17"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.17.tgz#ad0f0ad2a9570f1a13e3eea402042c7fdc0847ee"
-  integrity sha1-rQ8K0qlXDxoT4+6kAgQsf9wIR+4=
+"@labkey/api@0.0.19-fb-assayReimport.0":
+  version "0.0.19-fb-assayReimport.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.19-fb-assayReimport.0.tgz#7f26d0c4ef824bb2120e279e07d77fde72a39534"
+  integrity sha1-fybQxO+CS7ISDieeB9d/3nKjlTQ=
 
-"@labkey/dependencies@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.6.tgz#f6b484411ee60833f5b8c47c28adbab9db9f4c6d"
-  integrity sha1-9rSEQR7mCDP1uMR8KK26udufTG0=
+"@labkey/dependencies@0.0.8-fb-assayReimport.0":
+  version "0.0.8-fb-assayReimport.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.8-fb-assayReimport.0.tgz#596c5885bb68c2164974de2974484eab2ccda59f"
+  integrity sha1-WWxYhbtowhZJdN4pdEhOqyzNpZ8=
   dependencies:
-    "@labkey/api" "0.0.17"
+    "@labkey/api" "0.0.19-fb-assayReimport.0"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

@@ -138,8 +138,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 <Col xs={3}>
                     <Tip caption={'Name'}>
                         <FormControl autoFocus={field.isNew()}
+                                     type="text"
+                                     value={field.name}
                                      name={createFormInputName(DOMAIN_FIELD_NAME)}
-                                     id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
+                                     id={createFormInputId(DOMAIN_FIELD_NAME, index)}
                                      onChange={this.onFieldChange}/>
                     </Tip>
                 </Col>

@@ -74,7 +74,7 @@ describe("<SearchResultsPanel/>", () => {
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(Alert)).toHaveLength(0);
-        expect(wrapper.find(SearchResultCard)).toHaveLength(46);
+        expect(wrapper.find(SearchResultCard)).toHaveLength(47);
         wrapper.unmount();
     });
 

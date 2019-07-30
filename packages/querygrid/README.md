@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.11.2
+*Released*: 30 Jul 2019
+*  Update SearchResultCard to show Sample Sets
+
 ### version 0.11.1
 *Released*: 25 July 2019
 * Issue 37993: add missing "isUpdate" parameter for call to updateSampleSet

@@ -137,12 +137,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             <div id={createFormInputId(DOMAIN_FIELD_ROW, index)}>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl autoFocus={field.isNew()}
-                                     type="text"
-                                     value={field.name}
-                                     name={createFormInputName(DOMAIN_FIELD_NAME)}
-                                     id={createFormInputId(DOMAIN_FIELD_NAME, index)}
-                                     onChange={this.onFieldChange}/>
+                        <FormControl
+                            // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
+                            type="text"
+                            value={field.name || ''}
+                            name={createFormInputName(DOMAIN_FIELD_NAME)}
+                            id={createFormInputId(DOMAIN_FIELD_NAME, index)}
+                            onChange={this.onFieldChange}
+                        />
                     </Tip>
                 </Col>
                 <Col xs={2}>
@@ -153,7 +155,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                             disabled={!field.isNew() && field.primaryKey}
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             onChange={this.onDataTypeChange}
-                            value={field.dataType.name}>
+                            value={field.dataType.name}
+                        >
                             {
                                 resolveAvailableTypes(field).map((type, i) => (
                                     <option key={i} value={type.name}>{type.display}</option>
@@ -165,11 +168,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 <Col xs={1}>
                     <div className='domain-field-checkbox'>
                         <Tip caption={'Required?'}>
-                            <Checkbox className='domain-field-checkbox'
-                                      name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
-                                      id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      checked={field.required}
-                                      onChange={this.onFieldChange}/>
+                            <Checkbox
+                                className='domain-field-checkbox'
+                                name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                                id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
+                                checked={field.required}
+                                onChange={this.onFieldChange}
+                            />
                         </Tip>
                     </div>
                 </Col>

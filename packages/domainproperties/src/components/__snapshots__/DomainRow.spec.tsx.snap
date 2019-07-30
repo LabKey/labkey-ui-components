@@ -237,7 +237,6 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     }
                                   >
                                     <FormControl
-                                      autoFocus={false}
                                       bsClass="form-control"
                                       componentClass="input"
                                       id="domainpropertiesrow-name-1"
@@ -249,9 +248,9 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
+                                      value="key"
                                     >
                                       <input
-                                        autoFocus={false}
                                         className="form-control"
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
@@ -262,6 +261,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
+                                        value="key"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -774,7 +774,6 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     }
                                   >
                                     <FormControl
-                                      autoFocus={false}
                                       bsClass="form-control"
                                       componentClass="input"
                                       id="domainpropertiesrow-name-1"
@@ -786,9 +785,9 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
+                                      value="key"
                                     >
                                       <input
-                                        autoFocus={false}
                                         className="form-control"
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
@@ -799,6 +798,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
+                                        value="key"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -1311,7 +1311,6 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     }
                                   >
                                     <FormControl
-                                      autoFocus={false}
                                       bsClass="form-control"
                                       componentClass="input"
                                       id="domainpropertiesrow-name-1"
@@ -1323,9 +1322,9 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
+                                      value="key"
                                     >
                                       <input
-                                        autoFocus={false}
                                         className="form-control"
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
@@ -1336,6 +1335,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
+                                        value="key"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -1848,7 +1848,6 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     }
                                   >
                                     <FormControl
-                                      autoFocus={false}
                                       bsClass="form-control"
                                       componentClass="input"
                                       id="domainpropertiesrow-name-1"
@@ -1860,9 +1859,9 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
+                                      value="key"
                                     >
                                       <input
-                                        autoFocus={false}
                                         className="form-control"
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
@@ -1873,6 +1872,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
+                                        value="key"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -2409,7 +2409,6 @@ exports[`DomainRowDisplay string field 1`] = `
                                     }
                                   >
                                     <FormControl
-                                      autoFocus={false}
                                       bsClass="form-control"
                                       componentClass="input"
                                       id="domainpropertiesrow-name-1"
@@ -2421,9 +2420,9 @@ exports[`DomainRowDisplay string field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
+                                      value="key"
                                     >
                                       <input
-                                        autoFocus={false}
                                         className="form-control"
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
@@ -2434,6 +2433,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
+                                        value="key"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -2970,7 +2970,6 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     }
                                   >
                                     <FormControl
-                                      autoFocus={true}
                                       bsClass="form-control"
                                       componentClass="input"
                                       id="domainpropertiesrow-name-1"
@@ -2982,9 +2981,9 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
+                                      value=""
                                     >
                                       <input
-                                        autoFocus={true}
                                         className="form-control"
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
@@ -2995,6 +2994,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
+                                        value=""
                                       />
                                     </FormControl>
                                   </OverlayTrigger>

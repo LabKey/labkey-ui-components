@@ -186,12 +186,14 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         const blankOption = !hasValue && !isEmpty;
 
         return (
-            <FormControl componentClass="select"
-                         disabled={loading}
-                         value={value}
-                         id={id}
-                         name={name}
-                         onChange={onChange}>
+            <FormControl
+                componentClass="select"
+                disabled={loading}
+                value={value}
+                id={id}
+                name={name}
+                onChange={onChange}
+            >
                 {blankOption && <option key="_default" value={undefined}/>}
                 {loading && <option disabled key="_loading" value={value}>Loading...</option>}
                 {queries.map((q) => {
@@ -291,12 +293,14 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         const blankOption = !hasValue && !isEmpty;
 
         return (
-            <FormControl componentClass="select"
-                         value={value}
-                         id={id}
-                         name={name}
-                         onChange={onChange}
-                         placeholder="Select Schema">
+            <FormControl
+                componentClass="select"
+                value={value}
+                id={id}
+                name={name}
+                onChange={onChange}
+                placeholder="Select Schema"
+            >
                 {blankOption && <option key="_default" value={undefined}/>}
                 {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.fullyQualifiedName}</option>).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}

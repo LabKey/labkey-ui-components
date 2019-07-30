@@ -587,7 +587,6 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                         }
                                                       >
                                                         <FormControl
-                                                          autoFocus={true}
                                                           bsClass="form-control"
                                                           componentClass="input"
                                                           id="domainpropertiesrow-name-0"
@@ -599,9 +598,9 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                           onMouseOut={[Function]}
                                                           onMouseOver={[Function]}
                                                           type="text"
+                                                          value=""
                                                         >
                                                           <input
-                                                            autoFocus={true}
                                                             className="form-control"
                                                             id="domainpropertiesrow-name-0"
                                                             name="domainpropertiesrow-name"
@@ -612,6 +611,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                             onMouseOut={[Function]}
                                                             onMouseOver={[Function]}
                                                             type="text"
+                                                            value=""
                                                           />
                                                         </FormControl>
                                                       </OverlayTrigger>

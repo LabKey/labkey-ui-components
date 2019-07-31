@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable'
-import { ActionURL, Ajax, Utils, AssayDOM } from '@labkey/api'
+import { ActionURL, Ajax, Filter, Utils, AssayDOM } from '@labkey/api'
 import {
     AssayDefinitionModel,
     AssayUploadTabs,
@@ -217,7 +217,9 @@ export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<
 export function getRunDataModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
     const model = getStateQueryGridModel('assay-run-details', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), {
         allowSelection: false,
-        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList()
+        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId', "ReplacesRun", "ReplacedByRun", "DataOutputs", "DataOutputs/DataFileUrl").toList(),
+        // allow for the possibility of viewing runs that have been replaced.
+        baseFilters: List( [Filter.create('Replaced', undefined, Filter.Types.NONBLANK)])
     }, runId);
 
     return getQueryGridModel(model.getId()) || model;

@@ -192,7 +192,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
               bsClass="form-control"
               componentClass="input"
               id="domainpropertiesrow-format-1"
-              key="domainpropertiesrow-format-1"
+              name="domainpropertiesrow-scale"
               onChange={[Function]}
               type="text"
               value="Yes;No;Blank"
@@ -200,6 +200,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
               <input
                 className="form-control"
                 id="domainpropertiesrow-format-1"
+                name="domainpropertiesrow-scale"
                 onChange={[Function]}
                 type="text"
                 value="Yes;No;Blank"

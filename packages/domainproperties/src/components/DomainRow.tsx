@@ -21,23 +21,24 @@ import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
 
 import {
-    DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE,
-    DOMAIN_FIELD_DETAILS,
+    DOMAIN_FIELD_ADV,
+    DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_DETAILS, DOMAIN_FIELD_EXPAND,
     DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_ROW,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, PROP_DESC_TYPES } from "../models";
-import {createFormInputId, getCheckedValue, getDataType} from "../actions/actions";
+import { DomainField, FieldErrors, PropDescType, resolveAvailableTypes, PROP_DESC_TYPES } from "../models";
+import {createFormInputId, createFormInputName, getCheckedValue} from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 
 interface IDomainRowProps {
     expanded: boolean
     field: DomainField
     index: number
-    onChange: (string, any) => any
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     onDelete: (any) => void
-    onExpand: (any) => void
+    onExpand: (index?: number) => void
 }
 
 /**
@@ -48,23 +49,39 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     /**
      *  Details section of property row
      */
-    getDetailsText = (): string => {
-        let details = '';
+    getDetailsText = (): React.ReactNode => {
+        const { expanded, field } = this.props;
+        let details = [];
 
-        if (this.props.field.newField) {
-            if (details.length > 0) {
-                details += ', ';
+        if (!expanded) {
+            if (field.hasErrors()) {
+                switch (field.getErrors()) {
+                    case FieldErrors.MISSING_SCHEMA_QUERY:
+                        details.push(
+                            <span key={details.length} style={{color: 'red'}}>
+                                A lookup requires a schema and table!
+                            </span>);
+                        break;
+                    default:
+                        break;
+                }
             }
-
-            details += 'New Field';
-        }
-
-        if (this.props.field.updatedField && !this.props.field.newField) {
-            if (details.length > 0) {
-                details += ', ';
+            else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
+                details.push([
+                    field.lookupContainer || 'Current Folder',
+                    field.lookupSchema,
+                    field.lookupQuery
+                ].join(' > '));
             }
-
-            details += 'Updated';
+            else if (field.isNew()) {
+                details.push('New field');
+            }
+            else if (field.updatedField) {
+                details.push('Field was edited');
+            }
+            else if (field.primaryKey) {
+                details.push('Primary Key');
+            }
         }
 
         return details;
@@ -80,94 +97,119 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
-    onFieldChange = (evt) => {
-        const { onChange } = this.props;
-
-        let value = getCheckedValue(evt);
-        if (value === undefined) {
-            value = evt.target.value;
-        }
+    onFieldChange = (evt: any, expand?: boolean): any => {
+        const { index, onChange } = this.props;
 
         if (onChange) {
-            onChange(evt.target.id, value);
+            let value = getCheckedValue(evt);
+            if (value === undefined) {
+                value = evt.target.value;
+            }
+
+            onChange(evt.target.id, value, index, expand === true);
         }
-    }
+    };
+
+    onDataTypeChange = (evt: any): any => {
+        this.onFieldChange(evt, PropDescType.isLookup(evt.target.value));
+    };
+
+    onDelete = (): any => {
+        const { index, onDelete } = this.props;
+
+        if (onDelete) {
+            onDelete(index);
+        }
+    };
+
+    onExpand = (): any => {
+        const { index, onExpand } = this.props;
+
+        if (onExpand) {
+            onExpand(index);
+        }
+    };
 
     renderBaseFields() {
-        const {index, field, onChange} = this.props;
+        const { index, field } = this.props;
 
         return (
-            <>
+            <div id={createFormInputId(DOMAIN_FIELD_ROW, index)}>
                 <Col xs={3}>
                     <Tip caption={'Name'}>
-                        <FormControl id={createFormInputId(DOMAIN_FIELD_NAME, index)} type="text"
-                                     key={createFormInputId(DOMAIN_FIELD_NAME, index)} value={field.name}
-                                     onChange={this.onFieldChange}/>
+                        <FormControl
+                            // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
+                            type="text"
+                            value={field.name || ''}
+                            name={createFormInputName(DOMAIN_FIELD_NAME)}
+                            id={createFormInputId(DOMAIN_FIELD_NAME, index)}
+                            onChange={this.onFieldChange}
+                        />
                     </Tip>
                 </Col>
                 <Col xs={2}>
                     <Tip caption={'Data Type'}>
-                        <select id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                key={createFormInputId(DOMAIN_FIELD_TYPE, index)}
-                                className={'form-control'} onChange={this.onFieldChange} value={getDataType(field).name}
-                                disabled={!!field.propertyId}>
+                        <FormControl
+                            componentClass="select"
+                            name={createFormInputName(DOMAIN_FIELD_TYPE)}
+                            disabled={!field.isNew() && field.primaryKey}
+                            id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
+                            onChange={this.onDataTypeChange}
+                            value={field.dataType.name}
+                        >
                             {
-                                PROP_DESC_TYPES.map(function (type) {
-                                    if (type.display)
-                                    {
-                                        return <option
-                                            key={createFormInputId(DOMAIN_FIELD_TYPE + 'option-' + type.name, index)}
-                                            value={type.name}>{type.display}</option>
-                                    }
-                                    return ''
-                                })
+                                resolveAvailableTypes(field).map((type, i) => (
+                                    <option key={i} value={type.name}>{type.display}</option>
+                                ))
                             }
-                        </select>
+                        </FormControl>
                     </Tip>
                 </Col>
                 <Col xs={1}>
                     <div className='domain-field-checkbox'>
                         <Tip caption={'Required?'}>
-                            <Checkbox className='domain-field-checkbox'
-                                      id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      key={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
-                                      checked={field.required} onChange={this.onFieldChange}/>
+                            <Checkbox
+                                className='domain-field-checkbox'
+                                name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                                id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
+                                checked={field.required}
+                                onChange={this.onFieldChange}
+                            />
                         </Tip>
                     </div>
                 </Col>
-            </>
+            </div>
         )
     }
 
     renderButtons() {
-        const {index, onDelete, onExpand, expanded} = this.props;
+        const { expanded, index } = this.props;
 
         return (
-            <div className={'pull-right'}>
-                {expanded &&
+            <div className="pull-right">
+                {expanded && (
                 <>
                     <Button
-                        bsClass='btn btn-danger'
-                        className='domain-row-button'
-                        onClick={onDelete}
+                        bsStyle="danger"
+                        className="domain-row-button"
+                        name={createFormInputName(DOMAIN_FIELD_DELETE)}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                    >
+                        onClick={this.onDelete}>
                         Remove Field
                     </Button>
                     <Button
                         disabled={true}
-                        bsClass='btn btn-light'
-                        className='domain-row-button'
-                    >
+                        name={createFormInputName(DOMAIN_FIELD_ADV)}
+                        id={createFormInputId(DOMAIN_FIELD_ADV, index)}
+                        className="domain-row-button">
                         Advanced Settings
                     </Button>
                 </>
-                }
-                <Tip caption={'Additional Settings'}>
-                <div onClick={onExpand} id={createFormInputId(DOMAIN_FIELD_ADV, index)} className={'domain-field-icon'}>
-
+                )}
+                <Tip caption="Additional Settings">
+                    <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
                         <FontAwesomeIcon icon={faPencilAlt}/>
-                </div>
+                    </div>
                 </Tip>
             </div>
         )

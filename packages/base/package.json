@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@labkey/dependencies": "0.0.6",
+    "@labkey/dependencies": "0.0.7",
     "bootstrap": "3.4.1",
     "moment": "2.24.0",
     "moment-jdateformatparser": "1.1.0",

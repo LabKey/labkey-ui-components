@@ -41,13 +41,13 @@ describe('NumericFieldOptions', () => {
         expect(formatField.props().value).toEqual(_format2);
 
         // Verify default scale field
-        let defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1)});
+        let defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1), className: 'form-control'});
         expect(defaultScale.length).toEqual(1);
         expect(defaultScale.props().value).toEqual("LINEAR");
 
         // Select LOG default scale
         numeric.setProps({defaultScale: "LOG"});
-        defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1)});
+        defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1), className: 'form-control'});
         expect(defaultScale.props().value).toEqual("LOG");
 
         expect(toJson(numeric)).toMatchSnapshot();

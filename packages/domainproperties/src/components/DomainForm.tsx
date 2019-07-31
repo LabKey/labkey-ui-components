@@ -23,7 +23,8 @@ import { Alert, ConfirmModal } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import { DomainDesign, DomainField } from "../models";
-import { getIndexFromId, updateDomainField } from "../actions/actions";
+import { addField, getIndexFromId, removeField, updateDomainField } from "../actions/actions";
+import { LookupProvider } from "./Lookup/Context";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -38,10 +39,21 @@ interface IDomainFormState {
     showConfirm: boolean
 }
 
+export default class DomainForm extends React.PureComponent<IDomainFormInput> {
+
+    render() {
+        return (
+            <LookupProvider>
+                <DomainFormImpl {...this.props} />
+            </LookupProvider>
+        )
+    }
+}
+
 /**
  * Form containing all properties of a domain
  */
-export default class DomainForm extends React.PureComponent<IDomainFormInput, IDomainFormState> {
+export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'domain',
         helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',
@@ -57,32 +69,44 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         };
     }
 
+    collapse = (): void => {
+        if (this.isExpanded()) {
+            this.setState({
+                expandedRowIndex: undefined
+            });
+        }
+    };
+
+    expand = (index: number): void => {
+        const { domain } = this.props;
+        const { expandedRowIndex } = this.state;
+
+        if (expandedRowIndex !== index && index < domain.fields.size) {
+            this.setState({
+                expandedRowIndex: index
+            })
+        }
+    };
+
+    isExpanded = (): boolean => {
+        return this.state.expandedRowIndex !== undefined;
+    };
+
     isValidDomain(domainDesign: DomainDesign): boolean {
         return !!(domainDesign);
     }
 
-    onFieldExpandToggle = (evt: any) => {
-        const { domain, onChange } = this.props;
+    onFieldExpandToggle = (index: number): void => {
+        const { expandedRowIndex } = this.state;
 
-        // Bit of a hack to work with fontawesome svg icon
-        const id = evt.target.id || evt.target.parentElement.id || evt.target.parentElement.parentElement.id;
-        let index = id ? parseInt(getIndexFromId(id)) : undefined;
-
-        this.setState((state) => ({expandedRowIndex: state.expandedRowIndex === index ? undefined : index}));
-
-        if (onChange) {
-            onChange(domain, false);
-        }
+        expandedRowIndex === index ? this.collapse() : this.expand(index);
     };
 
     onDeleteConfirm = () => {
         const { domain, onChange } = this.props;
         const { expandedRowIndex } = this.state;
 
-        // filter to the non-removed fields
-        const newDomain = domain.merge({
-            fields: domain.fields.filter((field, i) => i !== expandedRowIndex)
-        }) as DomainDesign;
+        const newDomain = removeField(domain, expandedRowIndex);
 
         this.setState({
             expandedRowIndex: undefined,
@@ -97,36 +121,32 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
     onAddField = () => {
         const {domain, onChange} = this.props;
 
-        const newDomain = domain.merge({
-            fields: domain.fields.push(new DomainField({
-                newField: true
-            }))
-        }) as DomainDesign;
+        const newDomain = addField(domain);
 
         if (onChange) {
             onChange(newDomain, true);
         }
 
-        this.setState(() => ({expandedRowIndex: undefined}));
-
-        // TODO give focus to the "Name" field for the newly added row
+        this.collapse();
     };
 
-    onFieldChange = (id, value) => {
-        const {domain, onChange} = this.props;
-
-        const newDomain = updateDomainField(domain, id, value);
+    onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
+        const { domain, onChange } = this.props;
 
         if (onChange) {
+            const newDomain = updateDomainField(domain, fieldId, value);
             onChange(newDomain, true);
+        }
+
+        if (expand) {
+            this.expand(index);
         }
     };
 
-    onDeleteBtnHandler = (evt) => {
+    onDeleteField = (index: number): void => {
         const { domain } = this.props;
-        const { expandedRowIndex } = this.state;
 
-        let field = domain.fields.get(expandedRowIndex);
+        let field = domain.fields.get(index);
 
         if (field) {
             this.setState({
@@ -158,7 +178,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         let destIndex = result.source.index;  // default behavior go back to original spot if out of bounds
         let srcIndex = result.source.index;
         const id = result.draggableId;
-        let idIndex = id ? parseInt(getIndexFromId(id)) : undefined;
+        let idIndex = id ? getIndexFromId(id) : undefined;
 
         if (result.destination) {
             destIndex = result.destination.index;
@@ -181,11 +201,11 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
             if (i === destIndex) {
                 newFields.push(movedField);
                 if (idIndex === this.state.expandedRowIndex) {
-                    this.setState(() => ({expandedRowIndex: destIndex}));
+                    this.expand(destIndex);
                 } else if (idIndex + 1 === this.state.expandedRowIndex) {
-                    this.setState(() => ({expandedRowIndex: destIndex - 1}));
+                    this.expand(destIndex - 1);
                 } else if (idIndex - 1 === this.state.expandedRowIndex) {
-                    this.setState(() => ({expandedRowIndex: destIndex + 1}));
+                    this.expand(destIndex + 1);
                 }
             }
 
@@ -196,7 +216,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
         });
 
         const newDomain = domain.merge({
-            fields: newFields
+            fields: newFields.asImmutable()
         }) as DomainDesign;
 
         if (onChange) {
@@ -314,7 +334,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput, ID
                                                                 expanded={expandedRowIndex === i}
                                                                 onChange={this.onFieldChange}
                                                                 onExpand={this.onFieldExpandToggle}
-                                                                onDelete={this.onDeleteBtnHandler}
+                                                                onDelete={this.onDeleteField}
                                                             />
                                                         }))}
                                                         {provided.placeholder}

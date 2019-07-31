@@ -4,6 +4,11 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.11.1
+*Released*: 31 July 2019
+* Update to @labkey/dependencies version 0.0.7
+* export processSchemas for usage in domainproperties package
+
 ### version 0.11.0
 *Released*: 24 July 2019
 * port FileAttachmentFormModel and Footer from Biologics

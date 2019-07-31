@@ -696,8 +696,9 @@ export class QueryGridModel extends Record({
                     filterList = filterList.push(
                         Filter.create(this.queryInfo.pkCols.first(), this.keyValue)
                     );
+                } else {
+                    console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
                 }
-                console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
             }
             // if a keyValue if provided, we may still have baseFilters to apply in the case that the default
             // filter on a query view is a limiting filter and we want to expand the set of values returned (e.g., for assay runs

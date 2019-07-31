@@ -39,7 +39,7 @@
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
     "@glass/base": "0.11.1",
-    "@glass/omnibox": "0.1.27-fb-domain-lookups-deux.2",
+    "@glass/omnibox": "0.1.27",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

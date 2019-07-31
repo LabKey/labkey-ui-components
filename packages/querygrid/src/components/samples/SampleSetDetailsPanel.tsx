@@ -64,6 +64,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
         if (this.isExistingSampleSet()) {
             const config = {
+                isUpdate: true,
                 rowId: data.getIn(['RowId', 'value']),
                 nameExpression: this.getNameExpressionValue(),
                 description: this.getDescriptionValue()

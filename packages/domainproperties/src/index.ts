@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {fetchDomain, saveDomain, clearFieldDetails} from "./actions/actions";
+import {fetchDomain, saveDomain} from "./actions/actions";
 import {DomainDesign} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
@@ -28,7 +28,6 @@ export {
     // functions
     fetchDomain,
     saveDomain,
-    clearFieldDetails,
 
     // models
     DomainDesign

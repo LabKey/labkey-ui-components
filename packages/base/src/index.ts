@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
-import { SCHEMAS, fetchSchemas, fetchGetQueries } from './models/schemas'
+import { SCHEMAS, fetchSchemas, fetchGetQueries, processSchemas } from './models/schemas'
 import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile } from './action/actions'
 import {
     AssayProtocolModel,
@@ -250,6 +250,7 @@ export {
     toLowerSafe,
     generateId,
     debounce,
+    processSchemas,
     similaritySortFactory,
     unorderedEqual,
     valueIsEmpty,

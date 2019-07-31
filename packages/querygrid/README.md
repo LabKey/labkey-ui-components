@@ -11,6 +11,18 @@ Query Grid for LabKey schema/query data views
 * add actions for getRunDataModel, getRunRow, getBatchDataModel, getBatchRow
 * update AssayImportPanels to accept an optional runId for pre-populating
 
+### version 0.11.3
+*Released*: 31 July 2019
+* Package patch update for changes to @glass/base v0.11.1
+
+### version 0.11.2
+*Released*: 30 Jul 2019
+*  Update SearchResultCard to show Sample Sets
+
+### version 0.11.1
+*Released*: 25 July 2019
+* Issue 37993: add missing "isUpdate" parameter for call to updateSampleSet
+
 ### version 0.11.0
 *Released*: 24 July 2019
 * port FormStep and related helpers from Biologics

@@ -9,7 +9,7 @@ import toJson from "enzyme-to-json";
 describe('DomainExpandedOptions', () => {
 
     test('Numeric data type', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: INT_RANGE_URI,
             propertyId: 1,
@@ -27,7 +27,7 @@ describe('DomainExpandedOptions', () => {
     });
 
     test('Boolean data type', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: BOOLEAN_RANGE_URI,
             propertyId: 1,
@@ -45,7 +45,7 @@ describe('DomainExpandedOptions', () => {
     });
 
     test('Date/time data type', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: DATETIME_RANGE_URI,
             propertyId: 1,
@@ -63,7 +63,7 @@ describe('DomainExpandedOptions', () => {
     });
 
     test('Text data type', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,

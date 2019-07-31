@@ -74,25 +74,53 @@ exports[`DomainRowDisplay attachment field 1`] = `
                 expanded={false}
                 field={
                   Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "key",
+                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
-                    "name": "key",
-                    "description": undefined,
-                    "label": undefined,
                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                    "conceptURI": undefined,
                     "required": false,
-                    "lookupContainer": undefined,
-                    "lookupSchema": undefined,
-                    "lookupQuery": undefined,
                     "scale": undefined,
-                    "format": undefined,
-                    "defaultScale": undefined,
-                    "importAliases": undefined,
                     "URL": undefined,
-                    "updatedField": undefined,
-                    "newField": undefined,
-                    "excludeFromShifting": false,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Attachment",
+                      "name": "attachment",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "shortDisplay": undefined,
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Attachment",
+                        "name": "attachment",
+                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                        "shortDisplay": undefined,
+                      },
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                    },
+                    "updatedField": false,
                   }
                 }
                 index={1}
@@ -173,204 +201,19 @@ exports[`DomainRowDisplay attachment field 1`] = `
                         <div
                           className="row"
                         >
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={3}
+                          <div
+                            id="domainpropertiesrow-row-1"
                           >
-                            <div
-                              className="col-xs-3"
-                            >
-                              <Tip
-                                caption="Name"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Name
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <FormControl
-                                    bsClass="form-control"
-                                    componentClass="input"
-                                    id="domainpropertiesrow-name-1"
-                                    key="domainpropertiesrow-name-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    type="text"
-                                    value="key"
-                                  >
-                                    <input
-                                      className="form-control"
-                                      id="domainpropertiesrow-name-1"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value="key"
-                                    />
-                                  </FormControl>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={2}
-                          >
-                            <div
-                              className="col-xs-2"
-                            >
-                              <Tip
-                                caption="Data Type"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Data Type
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <select
-                                    className="form-control"
-                                    disabled={true}
-                                    id="domainpropertiesrow-type-1"
-                                    key="domainpropertiesrow-type-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    value="attachment"
-                                  >
-                                    <option
-                                      key="domainpropertiesrow-typeoption-string-1"
-                                      value="string"
-                                    >
-                                      Text (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-multiLine-1"
-                                      value="multiLine"
-                                    >
-                                      Multi-Line Text
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-boolean-1"
-                                      value="boolean"
-                                    >
-                                      Boolean
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-int-1"
-                                      value="int"
-                                    >
-                                      Integer
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-double-1"
-                                      value="double"
-                                    >
-                                      Decimal
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-dateTime-1"
-                                      value="dateTime"
-                                    >
-                                      Date Time
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-flag-1"
-                                      value="flag"
-                                    >
-                                      Flag (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-fileLink-1"
-                                      value="fileLink"
-                                    >
-                                      File
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-attachment-1"
-                                      value="attachment"
-                                    >
-                                      Attachment
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-users-1"
-                                      value="users"
-                                    >
-                                      User
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-ParticipantId-1"
-                                      value="ParticipantId"
-                                    >
-                                      Subject/Participant (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-lookup-1"
-                                      value="lookup"
-                                    >
-                                      Lookup
-                                    </option>
-                                  </select>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="col-xs-1"
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
                             >
                               <div
-                                className="domain-field-checkbox"
+                                className="col-xs-3"
                               >
                                 <Tip
-                                  caption="Required?"
+                                  caption="Name"
                                 >
                                   <OverlayTrigger
                                     defaultOverlayShown={false}
@@ -382,7 +225,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                         id="tooltip"
                                         placement="right"
                                       >
-                                        Required?
+                                        Name
                                       </Tooltip>
                                     }
                                     placement="top"
@@ -393,48 +236,186 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                       ]
                                     }
                                   >
-                                    <Checkbox
-                                      bsClass="checkbox"
-                                      checked={false}
-                                      className="domain-field-checkbox"
-                                      disabled={false}
-                                      id="domainpropertiesrow-required-1"
-                                      inline={false}
-                                      key="domainpropertiesrow-required-1"
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      title=""
+                                      type="text"
+                                      value="key"
                                     >
-                                      <div
-                                        className="domain-field-checkbox checkbox"
-                                      >
-                                        <label
-                                          title=""
-                                        >
-                                          <input
-                                            checked={false}
-                                            disabled={false}
-                                            id="domainpropertiesrow-required-1"
-                                            onBlur={[Function]}
-                                            onChange={[Function]}
-                                            onClick={[Function]}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </label>
-                                      </div>
-                                    </Checkbox>
+                                      <input
+                                        className="form-control"
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="key"
+                                      />
+                                    </FormControl>
                                   </OverlayTrigger>
                                 </Tip>
                               </div>
-                            </div>
-                          </Col>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="attachment"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="attachment"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="attachment"
+                                        >
+                                          Attachment
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
                           <Col
                             bsClass="col"
                             componentClass="div"
@@ -476,7 +457,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-adv-1"
+                                      id="domainpropertiesrow-expand-1"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -630,25 +611,53 @@ exports[`DomainRowDisplay date time field 1`] = `
                 expanded={false}
                 field={
                   Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "key",
+                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
-                    "name": "key",
-                    "description": undefined,
-                    "label": undefined,
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
-                    "conceptURI": undefined,
                     "required": false,
-                    "lookupContainer": undefined,
-                    "lookupSchema": undefined,
-                    "lookupQuery": undefined,
                     "scale": undefined,
-                    "format": undefined,
-                    "defaultScale": undefined,
-                    "importAliases": undefined,
                     "URL": undefined,
-                    "updatedField": undefined,
-                    "newField": undefined,
-                    "excludeFromShifting": false,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Date Time",
+                      "name": "dateTime",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "shortDisplay": undefined,
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Date Time",
+                        "name": "dateTime",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                        "shortDisplay": undefined,
+                      },
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                    },
+                    "updatedField": false,
                   }
                 }
                 index={1}
@@ -729,204 +738,19 @@ exports[`DomainRowDisplay date time field 1`] = `
                         <div
                           className="row"
                         >
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={3}
+                          <div
+                            id="domainpropertiesrow-row-1"
                           >
-                            <div
-                              className="col-xs-3"
-                            >
-                              <Tip
-                                caption="Name"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Name
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <FormControl
-                                    bsClass="form-control"
-                                    componentClass="input"
-                                    id="domainpropertiesrow-name-1"
-                                    key="domainpropertiesrow-name-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    type="text"
-                                    value="key"
-                                  >
-                                    <input
-                                      className="form-control"
-                                      id="domainpropertiesrow-name-1"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value="key"
-                                    />
-                                  </FormControl>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={2}
-                          >
-                            <div
-                              className="col-xs-2"
-                            >
-                              <Tip
-                                caption="Data Type"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Data Type
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <select
-                                    className="form-control"
-                                    disabled={true}
-                                    id="domainpropertiesrow-type-1"
-                                    key="domainpropertiesrow-type-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    value="dateTime"
-                                  >
-                                    <option
-                                      key="domainpropertiesrow-typeoption-string-1"
-                                      value="string"
-                                    >
-                                      Text (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-multiLine-1"
-                                      value="multiLine"
-                                    >
-                                      Multi-Line Text
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-boolean-1"
-                                      value="boolean"
-                                    >
-                                      Boolean
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-int-1"
-                                      value="int"
-                                    >
-                                      Integer
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-double-1"
-                                      value="double"
-                                    >
-                                      Decimal
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-dateTime-1"
-                                      value="dateTime"
-                                    >
-                                      Date Time
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-flag-1"
-                                      value="flag"
-                                    >
-                                      Flag (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-fileLink-1"
-                                      value="fileLink"
-                                    >
-                                      File
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-attachment-1"
-                                      value="attachment"
-                                    >
-                                      Attachment
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-users-1"
-                                      value="users"
-                                    >
-                                      User
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-ParticipantId-1"
-                                      value="ParticipantId"
-                                    >
-                                      Subject/Participant (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-lookup-1"
-                                      value="lookup"
-                                    >
-                                      Lookup
-                                    </option>
-                                  </select>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="col-xs-1"
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
                             >
                               <div
-                                className="domain-field-checkbox"
+                                className="col-xs-3"
                               >
                                 <Tip
-                                  caption="Required?"
+                                  caption="Name"
                                 >
                                   <OverlayTrigger
                                     defaultOverlayShown={false}
@@ -938,7 +762,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                         id="tooltip"
                                         placement="right"
                                       >
-                                        Required?
+                                        Name
                                       </Tooltip>
                                     }
                                     placement="top"
@@ -949,48 +773,186 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       ]
                                     }
                                   >
-                                    <Checkbox
-                                      bsClass="checkbox"
-                                      checked={false}
-                                      className="domain-field-checkbox"
-                                      disabled={false}
-                                      id="domainpropertiesrow-required-1"
-                                      inline={false}
-                                      key="domainpropertiesrow-required-1"
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      title=""
+                                      type="text"
+                                      value="key"
                                     >
-                                      <div
-                                        className="domain-field-checkbox checkbox"
-                                      >
-                                        <label
-                                          title=""
-                                        >
-                                          <input
-                                            checked={false}
-                                            disabled={false}
-                                            id="domainpropertiesrow-required-1"
-                                            onBlur={[Function]}
-                                            onChange={[Function]}
-                                            onClick={[Function]}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </label>
-                                      </div>
-                                    </Checkbox>
+                                      <input
+                                        className="form-control"
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="key"
+                                      />
+                                    </FormControl>
                                   </OverlayTrigger>
                                 </Tip>
                               </div>
-                            </div>
-                          </Col>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="dateTime"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="dateTime"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="dateTime"
+                                        >
+                                          Date Time
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
                           <Col
                             bsClass="col"
                             componentClass="div"
@@ -1032,7 +994,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-adv-1"
+                                      id="domainpropertiesrow-expand-1"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -1186,25 +1148,53 @@ exports[`DomainRowDisplay decimal field 1`] = `
                 expanded={false}
                 field={
                   Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "key",
+                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
-                    "name": "key",
-                    "description": undefined,
-                    "label": undefined,
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
-                    "conceptURI": undefined,
                     "required": false,
-                    "lookupContainer": undefined,
-                    "lookupSchema": undefined,
-                    "lookupQuery": undefined,
                     "scale": undefined,
-                    "format": undefined,
-                    "defaultScale": undefined,
-                    "importAliases": undefined,
                     "URL": undefined,
-                    "updatedField": undefined,
-                    "newField": undefined,
-                    "excludeFromShifting": false,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Decimal",
+                      "name": "double",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "shortDisplay": undefined,
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Decimal",
+                        "name": "double",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                        "shortDisplay": undefined,
+                      },
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                    },
+                    "updatedField": false,
                   }
                 }
                 index={1}
@@ -1285,204 +1275,19 @@ exports[`DomainRowDisplay decimal field 1`] = `
                         <div
                           className="row"
                         >
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={3}
+                          <div
+                            id="domainpropertiesrow-row-1"
                           >
-                            <div
-                              className="col-xs-3"
-                            >
-                              <Tip
-                                caption="Name"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Name
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <FormControl
-                                    bsClass="form-control"
-                                    componentClass="input"
-                                    id="domainpropertiesrow-name-1"
-                                    key="domainpropertiesrow-name-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    type="text"
-                                    value="key"
-                                  >
-                                    <input
-                                      className="form-control"
-                                      id="domainpropertiesrow-name-1"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value="key"
-                                    />
-                                  </FormControl>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={2}
-                          >
-                            <div
-                              className="col-xs-2"
-                            >
-                              <Tip
-                                caption="Data Type"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Data Type
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <select
-                                    className="form-control"
-                                    disabled={true}
-                                    id="domainpropertiesrow-type-1"
-                                    key="domainpropertiesrow-type-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    value="double"
-                                  >
-                                    <option
-                                      key="domainpropertiesrow-typeoption-string-1"
-                                      value="string"
-                                    >
-                                      Text (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-multiLine-1"
-                                      value="multiLine"
-                                    >
-                                      Multi-Line Text
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-boolean-1"
-                                      value="boolean"
-                                    >
-                                      Boolean
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-int-1"
-                                      value="int"
-                                    >
-                                      Integer
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-double-1"
-                                      value="double"
-                                    >
-                                      Decimal
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-dateTime-1"
-                                      value="dateTime"
-                                    >
-                                      Date Time
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-flag-1"
-                                      value="flag"
-                                    >
-                                      Flag (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-fileLink-1"
-                                      value="fileLink"
-                                    >
-                                      File
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-attachment-1"
-                                      value="attachment"
-                                    >
-                                      Attachment
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-users-1"
-                                      value="users"
-                                    >
-                                      User
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-ParticipantId-1"
-                                      value="ParticipantId"
-                                    >
-                                      Subject/Participant (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-lookup-1"
-                                      value="lookup"
-                                    >
-                                      Lookup
-                                    </option>
-                                  </select>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="col-xs-1"
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
                             >
                               <div
-                                className="domain-field-checkbox"
+                                className="col-xs-3"
                               >
                                 <Tip
-                                  caption="Required?"
+                                  caption="Name"
                                 >
                                   <OverlayTrigger
                                     defaultOverlayShown={false}
@@ -1494,7 +1299,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                         id="tooltip"
                                         placement="right"
                                       >
-                                        Required?
+                                        Name
                                       </Tooltip>
                                     }
                                     placement="top"
@@ -1505,48 +1310,186 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       ]
                                     }
                                   >
-                                    <Checkbox
-                                      bsClass="checkbox"
-                                      checked={false}
-                                      className="domain-field-checkbox"
-                                      disabled={false}
-                                      id="domainpropertiesrow-required-1"
-                                      inline={false}
-                                      key="domainpropertiesrow-required-1"
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      title=""
+                                      type="text"
+                                      value="key"
                                     >
-                                      <div
-                                        className="domain-field-checkbox checkbox"
-                                      >
-                                        <label
-                                          title=""
-                                        >
-                                          <input
-                                            checked={false}
-                                            disabled={false}
-                                            id="domainpropertiesrow-required-1"
-                                            onBlur={[Function]}
-                                            onChange={[Function]}
-                                            onClick={[Function]}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </label>
-                                      </div>
-                                    </Checkbox>
+                                      <input
+                                        className="form-control"
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="key"
+                                      />
+                                    </FormControl>
                                   </OverlayTrigger>
                                 </Tip>
                               </div>
-                            </div>
-                          </Col>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="double"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="double"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="double"
+                                        >
+                                          Decimal
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
                           <Col
                             bsClass="col"
                             componentClass="div"
@@ -1588,7 +1531,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-adv-1"
+                                      id="domainpropertiesrow-expand-1"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -1742,25 +1685,53 @@ exports[`DomainRowDisplay participant id field 1`] = `
                 expanded={false}
                 field={
                   Immutable.Record {
+                    "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "key",
+                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
-                    "name": "key",
-                    "description": undefined,
-                    "label": undefined,
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                    "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                     "required": false,
-                    "lookupContainer": undefined,
-                    "lookupSchema": undefined,
-                    "lookupQuery": undefined,
                     "scale": undefined,
-                    "format": undefined,
-                    "defaultScale": undefined,
-                    "importAliases": undefined,
                     "URL": undefined,
-                    "updatedField": undefined,
-                    "newField": undefined,
-                    "excludeFromShifting": false,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
+                      "display": "Subject/Participant (String)",
+                      "name": "ParticipantId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": undefined,
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
+                        "display": "Subject/Participant (String)",
+                        "name": "ParticipantId",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "shortDisplay": undefined,
+                      },
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                    },
+                    "updatedField": false,
                   }
                 }
                 index={1}
@@ -1841,204 +1812,19 @@ exports[`DomainRowDisplay participant id field 1`] = `
                         <div
                           className="row"
                         >
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={3}
+                          <div
+                            id="domainpropertiesrow-row-1"
                           >
-                            <div
-                              className="col-xs-3"
-                            >
-                              <Tip
-                                caption="Name"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Name
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <FormControl
-                                    bsClass="form-control"
-                                    componentClass="input"
-                                    id="domainpropertiesrow-name-1"
-                                    key="domainpropertiesrow-name-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    type="text"
-                                    value="key"
-                                  >
-                                    <input
-                                      className="form-control"
-                                      id="domainpropertiesrow-name-1"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value="key"
-                                    />
-                                  </FormControl>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={2}
-                          >
-                            <div
-                              className="col-xs-2"
-                            >
-                              <Tip
-                                caption="Data Type"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Data Type
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <select
-                                    className="form-control"
-                                    disabled={true}
-                                    id="domainpropertiesrow-type-1"
-                                    key="domainpropertiesrow-type-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    value="ParticipantId"
-                                  >
-                                    <option
-                                      key="domainpropertiesrow-typeoption-string-1"
-                                      value="string"
-                                    >
-                                      Text (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-multiLine-1"
-                                      value="multiLine"
-                                    >
-                                      Multi-Line Text
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-boolean-1"
-                                      value="boolean"
-                                    >
-                                      Boolean
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-int-1"
-                                      value="int"
-                                    >
-                                      Integer
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-double-1"
-                                      value="double"
-                                    >
-                                      Decimal
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-dateTime-1"
-                                      value="dateTime"
-                                    >
-                                      Date Time
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-flag-1"
-                                      value="flag"
-                                    >
-                                      Flag (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-fileLink-1"
-                                      value="fileLink"
-                                    >
-                                      File
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-attachment-1"
-                                      value="attachment"
-                                    >
-                                      Attachment
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-users-1"
-                                      value="users"
-                                    >
-                                      User
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-ParticipantId-1"
-                                      value="ParticipantId"
-                                    >
-                                      Subject/Participant (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-lookup-1"
-                                      value="lookup"
-                                    >
-                                      Lookup
-                                    </option>
-                                  </select>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="col-xs-1"
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
                             >
                               <div
-                                className="domain-field-checkbox"
+                                className="col-xs-3"
                               >
                                 <Tip
-                                  caption="Required?"
+                                  caption="Name"
                                 >
                                   <OverlayTrigger
                                     defaultOverlayShown={false}
@@ -2050,7 +1836,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                         id="tooltip"
                                         placement="right"
                                       >
-                                        Required?
+                                        Name
                                       </Tooltip>
                                     }
                                     placement="top"
@@ -2061,48 +1847,210 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       ]
                                     }
                                   >
-                                    <Checkbox
-                                      bsClass="checkbox"
-                                      checked={false}
-                                      className="domain-field-checkbox"
-                                      disabled={false}
-                                      id="domainpropertiesrow-required-1"
-                                      inline={false}
-                                      key="domainpropertiesrow-required-1"
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      title=""
+                                      type="text"
+                                      value="key"
                                     >
-                                      <div
-                                        className="domain-field-checkbox checkbox"
-                                      >
-                                        <label
-                                          title=""
-                                        >
-                                          <input
-                                            checked={false}
-                                            disabled={false}
-                                            id="domainpropertiesrow-required-1"
-                                            onBlur={[Function]}
-                                            onChange={[Function]}
-                                            onClick={[Function]}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </label>
-                                      </div>
-                                    </Checkbox>
+                                      <input
+                                        className="form-control"
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="key"
+                                      />
+                                    </FormControl>
                                   </OverlayTrigger>
                                 </Tip>
                               </div>
-                            </div>
-                          </Col>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="ParticipantId"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="ParticipantId"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="string"
+                                        >
+                                          Text (String)
+                                        </option>
+                                        <option
+                                          key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
+                                          value="flag"
+                                        >
+                                          Flag (String)
+                                        </option>
+                                        <option
+                                          key="3"
+                                          value="ParticipantId"
+                                        >
+                                          Subject/Participant (String)
+                                        </option>
+                                        <option
+                                          key="4"
+                                          value="lookup"
+                                        >
+                                          Lookup
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
                           <Col
                             bsClass="col"
                             componentClass="div"
@@ -2144,7 +2092,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-adv-1"
+                                      id="domainpropertiesrow-expand-1"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -2298,25 +2246,53 @@ exports[`DomainRowDisplay string field 1`] = `
                 expanded={false}
                 field={
                   Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "key",
+                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
-                    "name": "key",
-                    "description": undefined,
-                    "label": undefined,
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                    "conceptURI": undefined,
                     "required": false,
-                    "lookupContainer": undefined,
-                    "lookupSchema": undefined,
-                    "lookupQuery": undefined,
                     "scale": undefined,
-                    "format": undefined,
-                    "defaultScale": undefined,
-                    "importAliases": undefined,
                     "URL": undefined,
-                    "updatedField": undefined,
-                    "newField": undefined,
-                    "excludeFromShifting": false,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Text (String)",
+                      "name": "string",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": "String",
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Text (String)",
+                        "name": "string",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "shortDisplay": "String",
+                      },
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                    },
+                    "updatedField": false,
                   }
                 }
                 index={1}
@@ -2397,204 +2373,19 @@ exports[`DomainRowDisplay string field 1`] = `
                         <div
                           className="row"
                         >
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={3}
+                          <div
+                            id="domainpropertiesrow-row-1"
                           >
-                            <div
-                              className="col-xs-3"
-                            >
-                              <Tip
-                                caption="Name"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Name
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <FormControl
-                                    bsClass="form-control"
-                                    componentClass="input"
-                                    id="domainpropertiesrow-name-1"
-                                    key="domainpropertiesrow-name-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    type="text"
-                                    value="key"
-                                  >
-                                    <input
-                                      className="form-control"
-                                      id="domainpropertiesrow-name-1"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value="key"
-                                    />
-                                  </FormControl>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={2}
-                          >
-                            <div
-                              className="col-xs-2"
-                            >
-                              <Tip
-                                caption="Data Type"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Data Type
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <select
-                                    className="form-control"
-                                    disabled={true}
-                                    id="domainpropertiesrow-type-1"
-                                    key="domainpropertiesrow-type-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    value="string"
-                                  >
-                                    <option
-                                      key="domainpropertiesrow-typeoption-string-1"
-                                      value="string"
-                                    >
-                                      Text (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-multiLine-1"
-                                      value="multiLine"
-                                    >
-                                      Multi-Line Text
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-boolean-1"
-                                      value="boolean"
-                                    >
-                                      Boolean
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-int-1"
-                                      value="int"
-                                    >
-                                      Integer
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-double-1"
-                                      value="double"
-                                    >
-                                      Decimal
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-dateTime-1"
-                                      value="dateTime"
-                                    >
-                                      Date Time
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-flag-1"
-                                      value="flag"
-                                    >
-                                      Flag (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-fileLink-1"
-                                      value="fileLink"
-                                    >
-                                      File
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-attachment-1"
-                                      value="attachment"
-                                    >
-                                      Attachment
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-users-1"
-                                      value="users"
-                                    >
-                                      User
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-ParticipantId-1"
-                                      value="ParticipantId"
-                                    >
-                                      Subject/Participant (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-lookup-1"
-                                      value="lookup"
-                                    >
-                                      Lookup
-                                    </option>
-                                  </select>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="col-xs-1"
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
                             >
                               <div
-                                className="domain-field-checkbox"
+                                className="col-xs-3"
                               >
                                 <Tip
-                                  caption="Required?"
+                                  caption="Name"
                                 >
                                   <OverlayTrigger
                                     defaultOverlayShown={false}
@@ -2606,7 +2397,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                         id="tooltip"
                                         placement="right"
                                       >
-                                        Required?
+                                        Name
                                       </Tooltip>
                                     }
                                     placement="top"
@@ -2617,48 +2408,210 @@ exports[`DomainRowDisplay string field 1`] = `
                                       ]
                                     }
                                   >
-                                    <Checkbox
-                                      bsClass="checkbox"
-                                      checked={false}
-                                      className="domain-field-checkbox"
-                                      disabled={false}
-                                      id="domainpropertiesrow-required-1"
-                                      inline={false}
-                                      key="domainpropertiesrow-required-1"
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      title=""
+                                      type="text"
+                                      value="key"
                                     >
-                                      <div
-                                        className="domain-field-checkbox checkbox"
-                                      >
-                                        <label
-                                          title=""
-                                        >
-                                          <input
-                                            checked={false}
-                                            disabled={false}
-                                            id="domainpropertiesrow-required-1"
-                                            onBlur={[Function]}
-                                            onChange={[Function]}
-                                            onClick={[Function]}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </label>
-                                      </div>
-                                    </Checkbox>
+                                      <input
+                                        className="form-control"
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="key"
+                                      />
+                                    </FormControl>
                                   </OverlayTrigger>
                                 </Tip>
                               </div>
-                            </div>
-                          </Col>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="string"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="string"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="string"
+                                        >
+                                          Text (String)
+                                        </option>
+                                        <option
+                                          key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
+                                          value="flag"
+                                        >
+                                          Flag (String)
+                                        </option>
+                                        <option
+                                          key="3"
+                                          value="ParticipantId"
+                                        >
+                                          Subject/Participant (String)
+                                        </option>
+                                        <option
+                                          key="4"
+                                          value="lookup"
+                                        >
+                                          Lookup
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
                           <Col
                             bsClass="col"
                             componentClass="div"
@@ -2700,7 +2653,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-adv-1"
+                                      id="domainpropertiesrow-expand-1"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -2854,25 +2807,53 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                 expanded={false}
                 field={
                   Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": undefined,
+                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
-                    "name": "",
-                    "description": undefined,
-                    "label": undefined,
-                    "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                    "conceptURI": undefined,
+                    "rangeURI": undefined,
                     "required": false,
-                    "lookupContainer": undefined,
-                    "lookupSchema": undefined,
-                    "lookupQuery": undefined,
                     "scale": undefined,
-                    "format": undefined,
-                    "defaultScale": undefined,
-                    "importAliases": undefined,
                     "URL": undefined,
-                    "updatedField": undefined,
-                    "newField": undefined,
-                    "excludeFromShifting": false,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Text (String)",
+                      "name": "string",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": "String",
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Text (String)",
+                        "name": "string",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "shortDisplay": "String",
+                      },
+                      "rangeURI": undefined,
+                    },
+                    "updatedField": false,
                   }
                 }
                 index={1}
@@ -2953,204 +2934,19 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                         <div
                           className="row"
                         >
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={3}
+                          <div
+                            id="domainpropertiesrow-row-1"
                           >
-                            <div
-                              className="col-xs-3"
-                            >
-                              <Tip
-                                caption="Name"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Name
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <FormControl
-                                    bsClass="form-control"
-                                    componentClass="input"
-                                    id="domainpropertiesrow-name-1"
-                                    key="domainpropertiesrow-name-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    type="text"
-                                    value=""
-                                  >
-                                    <input
-                                      className="form-control"
-                                      id="domainpropertiesrow-name-1"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value=""
-                                    />
-                                  </FormControl>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={2}
-                          >
-                            <div
-                              className="col-xs-2"
-                            >
-                              <Tip
-                                caption="Data Type"
-                              >
-                                <OverlayTrigger
-                                  defaultOverlayShown={false}
-                                  delay={200}
-                                  onClick={[Function]}
-                                  overlay={
-                                    <Tooltip
-                                      bsClass="tooltip"
-                                      id="tooltip"
-                                      placement="right"
-                                    >
-                                      Data Type
-                                    </Tooltip>
-                                  }
-                                  placement="top"
-                                  trigger={
-                                    Array [
-                                      "focus",
-                                      "hover",
-                                    ]
-                                  }
-                                >
-                                  <select
-                                    className="form-control"
-                                    disabled={false}
-                                    id="domainpropertiesrow-type-1"
-                                    key="domainpropertiesrow-type-1"
-                                    onBlur={[Function]}
-                                    onChange={[Function]}
-                                    onClick={[Function]}
-                                    onFocus={[Function]}
-                                    onMouseOut={[Function]}
-                                    onMouseOver={[Function]}
-                                    value="string"
-                                  >
-                                    <option
-                                      key="domainpropertiesrow-typeoption-string-1"
-                                      value="string"
-                                    >
-                                      Text (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-multiLine-1"
-                                      value="multiLine"
-                                    >
-                                      Multi-Line Text
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-boolean-1"
-                                      value="boolean"
-                                    >
-                                      Boolean
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-int-1"
-                                      value="int"
-                                    >
-                                      Integer
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-double-1"
-                                      value="double"
-                                    >
-                                      Decimal
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-dateTime-1"
-                                      value="dateTime"
-                                    >
-                                      Date Time
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-flag-1"
-                                      value="flag"
-                                    >
-                                      Flag (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-fileLink-1"
-                                      value="fileLink"
-                                    >
-                                      File
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-attachment-1"
-                                      value="attachment"
-                                    >
-                                      Attachment
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-users-1"
-                                      value="users"
-                                    >
-                                      User
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-ParticipantId-1"
-                                      value="ParticipantId"
-                                    >
-                                      Subject/Participant (String)
-                                    </option>
-                                    <option
-                                      key="domainpropertiesrow-typeoption-lookup-1"
-                                      value="lookup"
-                                    >
-                                      Lookup
-                                    </option>
-                                  </select>
-                                </OverlayTrigger>
-                              </Tip>
-                            </div>
-                          </Col>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="col-xs-1"
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
                             >
                               <div
-                                className="domain-field-checkbox"
+                                className="col-xs-3"
                               >
                                 <Tip
-                                  caption="Required?"
+                                  caption="Name"
                                 >
                                   <OverlayTrigger
                                     defaultOverlayShown={false}
@@ -3162,7 +2958,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                         id="tooltip"
                                         placement="right"
                                       >
-                                        Required?
+                                        Name
                                       </Tooltip>
                                     }
                                     placement="top"
@@ -3173,48 +2969,254 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       ]
                                     }
                                   >
-                                    <Checkbox
-                                      bsClass="checkbox"
-                                      checked={false}
-                                      className="domain-field-checkbox"
-                                      disabled={false}
-                                      id="domainpropertiesrow-required-1"
-                                      inline={false}
-                                      key="domainpropertiesrow-required-1"
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      title=""
+                                      type="text"
+                                      value=""
                                     >
-                                      <div
-                                        className="domain-field-checkbox checkbox"
-                                      >
-                                        <label
-                                          title=""
-                                        >
-                                          <input
-                                            checked={false}
-                                            disabled={false}
-                                            id="domainpropertiesrow-required-1"
-                                            onBlur={[Function]}
-                                            onChange={[Function]}
-                                            onClick={[Function]}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            type="checkbox"
-                                          />
-                                        </label>
-                                      </div>
-                                    </Checkbox>
+                                      <input
+                                        className="form-control"
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value=""
+                                      />
+                                    </FormControl>
                                   </OverlayTrigger>
                                 </Tip>
                               </div>
-                            </div>
-                          </Col>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      disabled={false}
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="string"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        disabled={false}
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="string"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="string"
+                                        >
+                                          Text (String)
+                                        </option>
+                                        <option
+                                          key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
+                                          value="boolean"
+                                        >
+                                          Boolean
+                                        </option>
+                                        <option
+                                          key="3"
+                                          value="int"
+                                        >
+                                          Integer
+                                        </option>
+                                        <option
+                                          key="4"
+                                          value="double"
+                                        >
+                                          Decimal
+                                        </option>
+                                        <option
+                                          key="5"
+                                          value="dateTime"
+                                        >
+                                          Date Time
+                                        </option>
+                                        <option
+                                          key="6"
+                                          value="flag"
+                                        >
+                                          Flag (String)
+                                        </option>
+                                        <option
+                                          key="7"
+                                          value="fileLink"
+                                        >
+                                          File
+                                        </option>
+                                        <option
+                                          key="8"
+                                          value="attachment"
+                                        >
+                                          Attachment
+                                        </option>
+                                        <option
+                                          key="9"
+                                          value="users"
+                                        >
+                                          User
+                                        </option>
+                                        <option
+                                          key="10"
+                                          value="ParticipantId"
+                                        >
+                                          Subject/Participant (String)
+                                        </option>
+                                        <option
+                                          key="11"
+                                          value="lookup"
+                                        >
+                                          Lookup
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
                           <Col
                             bsClass="col"
                             componentClass="div"
@@ -3226,7 +3228,9 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                               <span
                                 className="domain-field-details"
                                 id="domainpropertiesrow-details-1"
-                              />
+                              >
+                                New field
+                              </span>
                               <div
                                 className="pull-right"
                               >
@@ -3256,7 +3260,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-adv-1"
+                                      id="domainpropertiesrow-expand-1"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}

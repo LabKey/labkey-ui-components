@@ -16,15 +16,16 @@
 
 
 import * as React from "react";
-import renderer from 'react-test-renderer'
 import {DomainDesign, DomainField, DomainIndex} from "../models";
 import DomainForm from "./DomainForm";
 import {List} from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
-    DATETIME_RANGE_URI, DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE, DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_PREFIX,
+    DATETIME_RANGE_URI,
+    DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_EXPAND,
+    DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_TYPE,
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
@@ -42,9 +43,12 @@ import toJson from "enzyme-to-json";
 describe('DomainFormDisplay', () => {
 
     test('with empty domain form', () => {
-        const domain = new DomainDesign();
+        const domain = DomainDesign.create({});
         const form  = mount(<DomainForm
             domain={domain}
+            helpNoun='domain'
+            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+            showHeader={true}
             onChange={jest.fn()}
         />);
 
@@ -53,7 +57,7 @@ describe('DomainFormDisplay', () => {
     });
 
     test('domain form with no fields', () => {
-        const domain = new DomainDesign({
+        const domain = DomainDesign.create({
             name: "no fields",
             description: 'no field description',
             domainURI: 'test',
@@ -63,6 +67,9 @@ describe('DomainFormDisplay', () => {
         });
         const form  = mount(<DomainForm
             domain={domain}
+            helpNoun='domain'
+            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+            showHeader={true}
             onChange={jest.fn()}
         />);
 
@@ -73,80 +80,70 @@ describe('DomainFormDisplay', () => {
     test('domain form with all field types', () => {
 
         let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'key',
             rangeURI: INT_RANGE_URI,
             propertyId: 1,
-            propertyURI: 'test',
-            key: 1
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'string',
             rangeURI: STRING_RANGE_URI,
             propertyId: 2,
-            propertyURI: 'test',
-            key: 2
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'multiline',
             rangeURI: MULTILINE_RANGE_URI,
             propertyId: 3,
-            propertyURI: 'test',
-            key: 3
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'boolean',
             rangeURI: BOOLEAN_RANGE_URI,
             propertyId: 4,
-            propertyURI: 'test',
-            key: 4
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'double',
             rangeURI: DOUBLE_RANGE_URI,
             propertyId: 5,
-            propertyURI: 'test',
-            key: 5
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'datetime',
             rangeURI: DATETIME_RANGE_URI,
             propertyId: 6,
-            propertyURI: 'test',
-            key: 6
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'flag',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 7,
-            propertyURI: 'test',
-            key: 7
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'file link',
             rangeURI: FILELINK_RANGE_URI,
             propertyId: 8,
-            propertyURI: 'test',
-            key: 8
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'participant id',
             rangeURI: STRING_RANGE_URI,
             conceptURI: PARTICIPANTID_CONCEPT_URI,
             propertyId: 9,
-            propertyURI: 'test',
-            key: 9
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'attachment',
             rangeURI: ATTACHMENT_RANGE_URI,
             propertyId: 10,
-            propertyURI: 'test',
-            key: 10
+            propertyURI: 'test'
         }));
 
-        const domain = new DomainDesign({
+        const domain = DomainDesign.create({
             name: "all field types",
             description: 'description',
             domainURI: 'test',
@@ -156,6 +153,9 @@ describe('DomainFormDisplay', () => {
         });
         const form  = mount(<DomainForm
             domain={domain}
+            helpNoun='domain'
+            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+            showHeader={true}
             onChange={jest.fn()}
         />);
 
@@ -165,37 +165,33 @@ describe('DomainFormDisplay', () => {
 
     test('domain form with updated fields', () => {
         let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test',
-            key: 0
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'string changed to boolean',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,
-            propertyURI: 'test',
-            key: 1
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'int changed to participant',
             rangeURI: INT_RANGE_URI,
             propertyId: 2,
-            propertyURI: 'test',
-            key: 2
+            propertyURI: 'test'
         }));
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'flag changed to attachment',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 3,
-            propertyURI: 'test',
-            key: 3
+            propertyURI: 'test'
         }));
 
-        let domain = new DomainDesign({
+        let domain = DomainDesign.create({
             name: "update field types",
             description: 'description',
             domainURI: 'test',
@@ -209,7 +205,12 @@ describe('DomainFormDisplay', () => {
         domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 2), "ParticipantId");
         domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 3), "attachment");
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainForm
+            domain={domain}
+            helpNoun='domain'
+            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+            showHeader={true}
+            onChange={jest.fn()} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
@@ -217,15 +218,14 @@ describe('DomainFormDisplay', () => {
 
     test('domain form updated field, cleared details', () => {
         let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        fields.push(DomainField.create({
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test',
-            key: 0
+            propertyURI: 'test'
         }));
 
-        let domain = new DomainDesign({
+        let domain = DomainDesign.create({
             name: "update field types",
             description: 'description',
             domainURI: 'test',
@@ -239,23 +239,27 @@ describe('DomainFormDisplay', () => {
         domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
         domain = clearFieldDetails(domain);
 
-        const form = mount(<DomainForm domain={domain} key='domainForm' onChange={jest.fn()} />);
+        const form = mount(<DomainForm
+            domain={domain}
+            helpNoun='domain'
+            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+            showHeader={true}
+            key='domainForm'
+            onChange={jest.fn()} />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('domain form add, expand, and delete field', () => {
-        let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        let fields = [{
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test',
-            key: 0
-        }));
+            propertyURI: 'test'
+        }];
 
-        const domain = new DomainDesign({
+        const domain = DomainDesign.create({
             name: "Add/remove field",
             description: 'Add field description',
             domainURI: 'test',
@@ -273,6 +277,9 @@ describe('DomainFormDisplay', () => {
 
         const form  = mount(<DomainForm
             domain={domain}
+            helpNoun='domain'
+            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
+            showHeader={true}
             onChange={changeHandler}
 
         />);
@@ -286,11 +293,11 @@ describe('DomainFormDisplay', () => {
         form.setProps({domain: updatedDomain, onChange: changeHandler});
 
         // Check new row is added
-        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 1)});
+        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)});
         expect(expandButton.length).toEqual(1);
 
         // Expand first row
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 0)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
 
@@ -305,9 +312,9 @@ describe('DomainFormDisplay', () => {
         form.setProps({domain: updatedDomain, onChange: changeHandler});
 
         // Ensure only one row and expand it
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 1)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)});
         expect(expandButton.length).toEqual(0);
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 0)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
         

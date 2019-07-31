@@ -4,8 +4,8 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.0.24
+*Released*: 31 July 2019
 * Item 5718: Domain designer lookup field support
 
 ### version 0.0.23

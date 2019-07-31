@@ -9,6 +9,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 * export getActionErrorMessage method for consistent error message display after an action has failed.
 * update @labkey/dependencies version
+* update QueryGridMode.getFilters to add in baseFilters even if a key value is provided (to support overriding
+a default filter that limits the set of values such that it may not include the key given, e.g., for assay runs
+that have been replaced)
+* 
 
 ### version 0.11.1
 *Released*: 31 July 2019

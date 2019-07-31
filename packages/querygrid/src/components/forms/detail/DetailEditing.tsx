@@ -17,6 +17,7 @@ import * as React from 'react'
 import { Panel, Button } from 'react-bootstrap'
 import { List, Map } from 'immutable'
 import Formsy from 'formsy-react'
+import { Utils } from '@labkey/api'
 import { Alert, QueryGridModel } from '@glass/base'
 
 import { updateRows } from "../../../query/api";
@@ -34,6 +35,7 @@ interface DetailEditingProps {
     title?: string,
     cancelText?: string,
     submitText?: string,
+    onEditToggle?: (editing: boolean) => any
 }
 
 interface DetailEditingState {
@@ -141,6 +143,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     handleClick = () => {
+        if (Utils.isFunction(this.props.onEditToggle))
+            this.props.onEditToggle(!this.state.editing);
         this.setState((state) => ({
             editing: !state.editing,
             warning: undefined,
@@ -183,6 +187,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 rows: [updatedValues]
             }).then(() => {
                 this.setState(() => ({editing: false}));
+                if (Utils.isFunction(this.props.onEditToggle))
+                    this.props.onEditToggle(false);
 
                 if (onUpdate) {
                     onUpdate();

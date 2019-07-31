@@ -6,8 +6,8 @@ Query Grid for LabKey schema/query data views
 
 ### version XXX
 *Released*: XXX
-* Add "appEditable", "asSubPanel", "title", "cancelText" and "submitText" to DetailEditing
-* port BulkUpdateForm from Sample Management
+* Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing
+* fix "Invalid prop 'value' of type 'number' supplied to 'Input'" error on bulk form
 
 ### version 0.11.1
 *Released*: 25 July 2019

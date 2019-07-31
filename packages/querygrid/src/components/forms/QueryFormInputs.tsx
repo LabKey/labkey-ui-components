@@ -233,7 +233,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         case 'boolean':
                             return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                         default:
-                            return <TextInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
+                            return <TextInput key={i} queryColumn={col} value={value ? String(value) : value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
                     }
                 })
                 .toArray();

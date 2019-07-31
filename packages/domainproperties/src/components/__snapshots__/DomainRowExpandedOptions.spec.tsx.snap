@@ -4,25 +4,53 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
 <DomainRowExpandedOptions
   field={
     Immutable.Record {
+      "conceptURI": undefined,
+      "defaultScale": undefined,
+      "description": undefined,
+      "excludeFromShifting": false,
+      "format": undefined,
+      "hidden": false,
+      "importAliases": undefined,
+      "label": undefined,
+      "lookupContainer": undefined,
+      "lookupQuery": undefined,
+      "lookupSchema": undefined,
+      "name": "key",
+      "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
-      "name": "key",
-      "description": undefined,
-      "label": undefined,
       "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
-      "conceptURI": undefined,
       "required": false,
-      "lookupContainer": undefined,
-      "lookupSchema": undefined,
-      "lookupQuery": undefined,
       "scale": undefined,
-      "format": undefined,
-      "defaultScale": undefined,
-      "importAliases": undefined,
       "URL": undefined,
-      "updatedField": undefined,
-      "newField": undefined,
-      "excludeFromShifting": false,
+      "shownInInsertView": true,
+      "shownInUpdateView": true,
+      "dataType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Boolean",
+        "name": "boolean",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+        "shortDisplay": undefined,
+      },
+      "lookupQueryValue": undefined,
+      "lookupType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Lookup",
+        "name": "lookup",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+        "shortDisplay": undefined,
+      },
+      "original": Object {
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Boolean",
+          "name": "boolean",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+          "shortDisplay": undefined,
+        },
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+      },
+      "updatedField": false,
     }
   }
   index={1}
@@ -218,15 +246,18 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-format-1"
-                key="domainpropertiesrow-format-1"
+                name="domainpropertiesrow-scale"
                 onChange={[Function]}
                 type="text"
+                value=""
               >
                 <input
                   className="form-control"
                   id="domainpropertiesrow-format-1"
+                  name="domainpropertiesrow-scale"
                   onChange={[Function]}
                   type="text"
+                  value=""
                 />
               </FormControl>
             </div>
@@ -238,25 +269,53 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
   <NameAndLinkingOptions
     field={
       Immutable.Record {
+        "conceptURI": undefined,
+        "defaultScale": undefined,
+        "description": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "name": "key",
+        "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
-        "name": "key",
-        "description": undefined,
-        "label": undefined,
         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
-        "conceptURI": undefined,
         "required": false,
-        "lookupContainer": undefined,
-        "lookupSchema": undefined,
-        "lookupQuery": undefined,
         "scale": undefined,
-        "format": undefined,
-        "defaultScale": undefined,
-        "importAliases": undefined,
         "URL": undefined,
-        "updatedField": undefined,
-        "newField": undefined,
-        "excludeFromShifting": false,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Boolean",
+          "name": "boolean",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+          "shortDisplay": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+          "shortDisplay": undefined,
+        },
+        "original": Object {
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Boolean",
+            "name": "boolean",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+            "shortDisplay": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+        },
+        "updatedField": false,
       }
     }
     index={1}
@@ -312,7 +371,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               <textarea
                 className="form-control domain-field-description"
                 id="domainpropertiesrow-description-1"
-                key="domainpropertiesrow-description-1"
+                name="domainpropertiesrow-description"
                 onChange={[Function]}
                 placeholder="Add a description"
                 rows={4}
@@ -337,7 +396,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-label-1"
-                key="domainpropertiesrow-label-1"
+                name="domainpropertiesrow-label"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -345,6 +404,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-label-1"
+                  name="domainpropertiesrow-label"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -473,7 +533,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-importAliases-1"
-                key="domainpropertiesrow-importAliases-1"
+                name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -481,6 +541,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-importAliases-1"
+                  name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -629,7 +690,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-URL-1"
-                key="domainpropertiesrow-URL-1"
+                name="domainpropertiesrow-URL"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -637,6 +698,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-URL-1"
+                  name="domainpropertiesrow-URL"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -655,25 +717,53 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
 <DomainRowExpandedOptions
   field={
     Immutable.Record {
+      "conceptURI": undefined,
+      "defaultScale": undefined,
+      "description": undefined,
+      "excludeFromShifting": false,
+      "format": undefined,
+      "hidden": false,
+      "importAliases": undefined,
+      "label": undefined,
+      "lookupContainer": undefined,
+      "lookupQuery": undefined,
+      "lookupSchema": undefined,
+      "name": "key",
+      "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
-      "name": "key",
-      "description": undefined,
-      "label": undefined,
       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
-      "conceptURI": undefined,
       "required": false,
-      "lookupContainer": undefined,
-      "lookupSchema": undefined,
-      "lookupQuery": undefined,
       "scale": undefined,
-      "format": undefined,
-      "defaultScale": undefined,
-      "importAliases": undefined,
       "URL": undefined,
-      "updatedField": undefined,
-      "newField": undefined,
-      "excludeFromShifting": false,
+      "shownInInsertView": true,
+      "shownInUpdateView": true,
+      "dataType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Date Time",
+        "name": "dateTime",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "shortDisplay": undefined,
+      },
+      "lookupQueryValue": undefined,
+      "lookupType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Lookup",
+        "name": "lookup",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "shortDisplay": undefined,
+      },
+      "original": Object {
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Date Time",
+          "name": "dateTime",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "shortDisplay": undefined,
+        },
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+      },
+      "updatedField": false,
     }
   }
   index={1}
@@ -682,7 +772,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
   <DateTimeFieldOptions
     excludeFromShifting={false}
     index={1}
-    label="Boolean Field Options"
+    label="Date and Time Options"
     onChange={[MockFunction]}
   >
     <div>
@@ -705,7 +795,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <div
                 className="domain-field-section-heading"
               >
-                Boolean Field Options
+                Date and Time Options
               </div>
             </div>
           </Col>
@@ -999,7 +1089,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-format-1"
-                key="domainpropertiesrow-format-1"
+                name="domainpropertiesrow-format"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -1007,6 +1097,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-format-1"
+                  name="domainpropertiesrow-format"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -1035,8 +1126,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 checked={false}
                 className="domain-field-float-left domain-field-checkbox"
                 id="domainpropertiesrow-excludeFromShifting-1"
-                key="domainpropertiesrow-excludeFromShifting-1"
-                name="ExcludeFromShiftingOptions"
+                name="domainpropertiesrow-excludeFromShifting"
                 onChange={[Function]}
                 type="checkbox"
                 value="ExcludeFromShiftingOptions"
@@ -1055,25 +1145,53 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
   <NameAndLinkingOptions
     field={
       Immutable.Record {
+        "conceptURI": undefined,
+        "defaultScale": undefined,
+        "description": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "name": "key",
+        "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
-        "name": "key",
-        "description": undefined,
-        "label": undefined,
         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
-        "conceptURI": undefined,
         "required": false,
-        "lookupContainer": undefined,
-        "lookupSchema": undefined,
-        "lookupQuery": undefined,
         "scale": undefined,
-        "format": undefined,
-        "defaultScale": undefined,
-        "importAliases": undefined,
         "URL": undefined,
-        "updatedField": undefined,
-        "newField": undefined,
-        "excludeFromShifting": false,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Date Time",
+          "name": "dateTime",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "shortDisplay": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+          "shortDisplay": undefined,
+        },
+        "original": Object {
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Date Time",
+            "name": "dateTime",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "shortDisplay": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+        },
+        "updatedField": false,
       }
     }
     index={1}
@@ -1129,7 +1247,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <textarea
                 className="form-control domain-field-description"
                 id="domainpropertiesrow-description-1"
-                key="domainpropertiesrow-description-1"
+                name="domainpropertiesrow-description"
                 onChange={[Function]}
                 placeholder="Add a description"
                 rows={4}
@@ -1154,7 +1272,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-label-1"
-                key="domainpropertiesrow-label-1"
+                name="domainpropertiesrow-label"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -1162,6 +1280,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-label-1"
+                  name="domainpropertiesrow-label"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -1290,7 +1409,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-importAliases-1"
-                key="domainpropertiesrow-importAliases-1"
+                name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -1298,6 +1417,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-importAliases-1"
+                  name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -1446,7 +1566,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-URL-1"
-                key="domainpropertiesrow-URL-1"
+                name="domainpropertiesrow-URL"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -1454,6 +1574,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-URL-1"
+                  name="domainpropertiesrow-URL"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -1472,25 +1593,53 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
 <DomainRowExpandedOptions
   field={
     Immutable.Record {
+      "conceptURI": undefined,
+      "defaultScale": undefined,
+      "description": undefined,
+      "excludeFromShifting": false,
+      "format": undefined,
+      "hidden": false,
+      "importAliases": undefined,
+      "label": undefined,
+      "lookupContainer": undefined,
+      "lookupQuery": undefined,
+      "lookupSchema": undefined,
+      "name": "key",
+      "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
-      "name": "key",
-      "description": undefined,
-      "label": undefined,
       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-      "conceptURI": undefined,
       "required": false,
-      "lookupContainer": undefined,
-      "lookupSchema": undefined,
-      "lookupQuery": undefined,
       "scale": undefined,
-      "format": undefined,
-      "defaultScale": undefined,
-      "importAliases": undefined,
       "URL": undefined,
-      "updatedField": undefined,
-      "newField": undefined,
-      "excludeFromShifting": false,
+      "shownInInsertView": true,
+      "shownInUpdateView": true,
+      "dataType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Integer",
+        "name": "int",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "shortDisplay": undefined,
+      },
+      "lookupQueryValue": undefined,
+      "lookupType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Lookup",
+        "name": "lookup",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "shortDisplay": undefined,
+      },
+      "original": Object {
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Integer",
+          "name": "int",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "shortDisplay": undefined,
+        },
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+      },
+      "updatedField": false,
     }
   }
   index={1}
@@ -1498,7 +1647,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
 >
   <NumericFieldOptions
     index={1}
-    label="Numeric Field Options"
+    label="Integer Options"
     onChange={[MockFunction]}
   >
     <div>
@@ -1521,7 +1670,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <div
                 className="domain-field-section-heading"
               >
-                Numeric Field Options
+                Integer Options
               </div>
             </div>
           </Col>
@@ -1701,7 +1850,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-format-1"
-                key="domainpropertiesrow-format-1"
+                name="domainpropertiesrow-format"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -1709,6 +1858,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-format-1"
+                  name="domainpropertiesrow-format"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -1733,25 +1883,33 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
             <div
               className="col-xs-2"
             >
-              <select
-                className="form-control"
+              <FormControl
+                bsClass="form-control"
+                componentClass="select"
                 id="domainpropertiesrow-defaultScale-1"
-                key="domainpropertiesrow-defaultScale-1"
+                name="domainpropertiesrow-defaultScale"
                 onChange={[Function]}
               >
-                <option
-                  key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
-                  value="LINEAR"
+                <select
+                  className="form-control"
+                  id="domainpropertiesrow-defaultScale-1"
+                  name="domainpropertiesrow-defaultScale"
+                  onChange={[Function]}
                 >
-                  LINEAR
-                </option>
-                <option
-                  key="domainpropertiesrow-defaultScaleoption-LOG-1"
-                  value="LOG"
-                >
-                  LOG
-                </option>
-              </select>
+                  <option
+                    key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
+                    value="LINEAR"
+                  >
+                    LINEAR
+                  </option>
+                  <option
+                    key="domainpropertiesrow-defaultScaleoption-LOG-1"
+                    value="LOG"
+                  >
+                    LOG
+                  </option>
+                </select>
+              </FormControl>
             </div>
           </Col>
         </div>
@@ -1761,25 +1919,53 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
   <NameAndLinkingOptions
     field={
       Immutable.Record {
+        "conceptURI": undefined,
+        "defaultScale": undefined,
+        "description": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "name": "key",
+        "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
-        "name": "key",
-        "description": undefined,
-        "label": undefined,
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
-        "conceptURI": undefined,
         "required": false,
-        "lookupContainer": undefined,
-        "lookupSchema": undefined,
-        "lookupQuery": undefined,
         "scale": undefined,
-        "format": undefined,
-        "defaultScale": undefined,
-        "importAliases": undefined,
         "URL": undefined,
-        "updatedField": undefined,
-        "newField": undefined,
-        "excludeFromShifting": false,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Integer",
+          "name": "int",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "shortDisplay": undefined,
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+          "shortDisplay": undefined,
+        },
+        "original": Object {
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Integer",
+            "name": "int",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+            "shortDisplay": undefined,
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        },
+        "updatedField": false,
       }
     }
     index={1}
@@ -1835,7 +2021,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <textarea
                 className="form-control domain-field-description"
                 id="domainpropertiesrow-description-1"
-                key="domainpropertiesrow-description-1"
+                name="domainpropertiesrow-description"
                 onChange={[Function]}
                 placeholder="Add a description"
                 rows={4}
@@ -1860,7 +2046,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-label-1"
-                key="domainpropertiesrow-label-1"
+                name="domainpropertiesrow-label"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -1868,6 +2054,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-label-1"
+                  name="domainpropertiesrow-label"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -1996,7 +2183,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-importAliases-1"
-                key="domainpropertiesrow-importAliases-1"
+                name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -2004,6 +2191,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-importAliases-1"
+                  name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -2152,7 +2340,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-URL-1"
-                key="domainpropertiesrow-URL-1"
+                name="domainpropertiesrow-URL"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -2160,6 +2348,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-URL-1"
+                  name="domainpropertiesrow-URL"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -2178,25 +2367,53 @@ exports[`DomainExpandedOptions Text data type 1`] = `
 <DomainRowExpandedOptions
   field={
     Immutable.Record {
+      "conceptURI": undefined,
+      "defaultScale": undefined,
+      "description": undefined,
+      "excludeFromShifting": false,
+      "format": undefined,
+      "hidden": false,
+      "importAliases": undefined,
+      "label": undefined,
+      "lookupContainer": undefined,
+      "lookupQuery": undefined,
+      "lookupSchema": undefined,
+      "name": "key",
+      "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
-      "name": "key",
-      "description": undefined,
-      "label": undefined,
       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-      "conceptURI": undefined,
       "required": false,
-      "lookupContainer": undefined,
-      "lookupSchema": undefined,
-      "lookupQuery": undefined,
       "scale": undefined,
-      "format": undefined,
-      "defaultScale": undefined,
-      "importAliases": undefined,
       "URL": undefined,
-      "updatedField": undefined,
-      "newField": undefined,
-      "excludeFromShifting": false,
+      "shownInInsertView": true,
+      "shownInUpdateView": true,
+      "dataType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Text (String)",
+        "name": "string",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "shortDisplay": "String",
+      },
+      "lookupQueryValue": undefined,
+      "lookupType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Lookup",
+        "name": "lookup",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "shortDisplay": undefined,
+      },
+      "original": Object {
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Text (String)",
+          "name": "string",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "shortDisplay": "String",
+        },
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+      },
+      "updatedField": false,
     }
   }
   index={1}
@@ -2204,7 +2421,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
 >
   <TextFieldOptions
     index={1}
-    label="Text Field Options"
+    label="Text Options"
     onChange={[MockFunction]}
   >
     <div>
@@ -2227,7 +2444,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               <div
                 className="domain-field-section-heading"
               >
-                Text Field Options
+                Text Options
               </div>
             </div>
           </Col>
@@ -2393,8 +2610,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 checked={true}
                 className="domain-text-options-radio1 domain-field-float-left"
                 id="domainpropertiesrow-maxLength-1"
-                key="domainpropertiesrow-maxLength-1"
-                name="TextLengthOptions"
+                name="domainpropertiesrow-maxLength"
                 onChange={[Function]}
                 type="radio"
                 value="maxLength"
@@ -2428,8 +2644,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 checked={false}
                 className="domain-text-options-radio2 domain-field-float-left"
                 id="domainpropertiesrow-customLength-1"
-                key="domainpropertiesrow-customLength-1"
-                name="TextLengthOptions"
+                name="domainpropertiesrow-customLength"
                 onChange={[Function]}
                 type="radio"
                 value="customLength"
@@ -2444,7 +2659,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 componentClass="input"
                 disabled={true}
                 id="domainpropertiesrow-scale-1"
-                key="domainpropertiesrow-scale-1"
+                name="domainpropertiesrow-scale"
                 onChange={[Function]}
                 style={
                   Object {
@@ -2458,6 +2673,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                   className="form-control"
                   disabled={true}
                   id="domainpropertiesrow-scale-1"
+                  name="domainpropertiesrow-scale"
                   onChange={[Function]}
                   style={
                     Object {
@@ -2477,25 +2693,53 @@ exports[`DomainExpandedOptions Text data type 1`] = `
   <NameAndLinkingOptions
     field={
       Immutable.Record {
+        "conceptURI": undefined,
+        "defaultScale": undefined,
+        "description": undefined,
+        "excludeFromShifting": false,
+        "format": undefined,
+        "hidden": false,
+        "importAliases": undefined,
+        "label": undefined,
+        "lookupContainer": undefined,
+        "lookupQuery": undefined,
+        "lookupSchema": undefined,
+        "name": "key",
+        "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
-        "name": "key",
-        "description": undefined,
-        "label": undefined,
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-        "conceptURI": undefined,
         "required": false,
-        "lookupContainer": undefined,
-        "lookupSchema": undefined,
-        "lookupQuery": undefined,
         "scale": undefined,
-        "format": undefined,
-        "defaultScale": undefined,
-        "importAliases": undefined,
         "URL": undefined,
-        "updatedField": undefined,
-        "newField": undefined,
-        "excludeFromShifting": false,
+        "shownInInsertView": true,
+        "shownInUpdateView": true,
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Text (String)",
+          "name": "string",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "shortDisplay": "String",
+        },
+        "lookupQueryValue": undefined,
+        "lookupType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Lookup",
+          "name": "lookup",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "shortDisplay": undefined,
+        },
+        "original": Object {
+          "dataType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Text (String)",
+            "name": "string",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+            "shortDisplay": "String",
+          },
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        },
+        "updatedField": false,
       }
     }
     index={1}
@@ -2551,7 +2795,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               <textarea
                 className="form-control domain-field-description"
                 id="domainpropertiesrow-description-1"
-                key="domainpropertiesrow-description-1"
+                name="domainpropertiesrow-description"
                 onChange={[Function]}
                 placeholder="Add a description"
                 rows={4}
@@ -2576,7 +2820,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-label-1"
-                key="domainpropertiesrow-label-1"
+                name="domainpropertiesrow-label"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -2584,6 +2828,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-label-1"
+                  name="domainpropertiesrow-label"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -2712,7 +2957,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-importAliases-1"
-                key="domainpropertiesrow-importAliases-1"
+                name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -2720,6 +2965,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-importAliases-1"
+                  name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
                   type="text"
                   value=""
@@ -2868,7 +3114,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 bsClass="form-control"
                 componentClass="input"
                 id="domainpropertiesrow-URL-1"
-                key="domainpropertiesrow-URL-1"
+                name="domainpropertiesrow-URL"
                 onChange={[Function]}
                 type="text"
                 value=""
@@ -2876,6 +3122,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 <input
                   className="form-control"
                   id="domainpropertiesrow-URL-1"
+                  name="domainpropertiesrow-URL"
                   onChange={[Function]}
                   type="text"
                   value=""

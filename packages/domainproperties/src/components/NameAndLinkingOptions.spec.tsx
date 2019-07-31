@@ -19,7 +19,7 @@ describe('NameAndLinkingOptions', () => {
         const _importAliases = 'This is an alias';
         const _URL = 'This is a URL';
 
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,

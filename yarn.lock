@@ -1270,17 +1270,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@labkey/api@0.0.17":
-  version "0.0.17"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.17.tgz#ad0f0ad2a9570f1a13e3eea402042c7fdc0847ee"
-  integrity sha1-rQ8K0qlXDxoT4+6kAgQsf9wIR+4=
+"@labkey/api@0.0.18":
+  version "0.0.18"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.18.tgz#aca874afe7f5d9545db67edd6b7300d75a277cf6"
+  integrity sha1-rKh0r+f12VRdtn7da3MA11onfPY=
 
-"@labkey/dependencies@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.6.tgz#f6b484411ee60833f5b8c47c28adbab9db9f4c6d"
-  integrity sha1-9rSEQR7mCDP1uMR8KK26udufTG0=
+"@labkey/dependencies@0.0.7":
+  version "0.0.7"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.7.tgz#f881554d902730fd2769c3a73771da6048fc6a20"
+  integrity sha1-+IFVTZAnMP0nacOnN3HaYEj8aiA=
   dependencies:
-    "@labkey/api" "0.0.17"
+    "@labkey/api" "0.0.18"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

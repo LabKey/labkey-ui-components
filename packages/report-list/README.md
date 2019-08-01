@@ -5,6 +5,10 @@ a list.
 
 ## Release Notes ##
 
+### version 0.1.15
+*Released*: 31 July 2019
+* Package patch update for changes to @glass/base v0.11.1
+
 ### version 0.1.14
 *Released*: 24 July 2019
 * Package patch update for changes to @glass/base v0.11.0

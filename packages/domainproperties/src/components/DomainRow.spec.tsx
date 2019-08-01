@@ -15,7 +15,6 @@
  */
 
 import * as React from "react";
-import renderer from 'react-test-renderer'
 import {DomainField} from "../models";
 import {DomainRow} from "./DomainRow";
 import { mount } from "enzyme"
@@ -50,7 +49,7 @@ const wrapDraggable = (element) => {
 describe('DomainRowDisplay', () => {
 
     test('with empty domain form', () => {
-        const field = new DomainField();
+        const field = DomainField.create({});
         const tree = mount(
             wrapDraggable(
                 <DomainRow
@@ -68,7 +67,7 @@ describe('DomainRowDisplay', () => {
     });
 
     test('string field', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,
@@ -92,7 +91,7 @@ describe('DomainRowDisplay', () => {
     });
 
     test('decimal field', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: DOUBLE_RANGE_URI,
             propertyId: 1,
@@ -116,7 +115,7 @@ describe('DomainRowDisplay', () => {
     });
 
     test('date time field', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: DATETIME_RANGE_URI,
             propertyId: 1,
@@ -140,7 +139,7 @@ describe('DomainRowDisplay', () => {
     });
 
     test('participant id field', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: STRING_RANGE_URI,
             conceptURI: PARTICIPANTID_CONCEPT_URI,
@@ -165,7 +164,7 @@ describe('DomainRowDisplay', () => {
     });
 
     test('attachment field', () => {
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: ATTACHMENT_RANGE_URI,
             propertyId: 1,

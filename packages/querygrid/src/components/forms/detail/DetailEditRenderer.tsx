@@ -26,6 +26,7 @@ import { MultiValueRenderer } from "../../../renderers/MultiValueRenderer";
 import { AliasRenderer } from "../../../renderers/AliasRenderer";
 import { AppendUnits } from "../../../renderers/AppendUnits";
 import { LookupSelectInput } from "../input/LookupSelectInput";
+import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')
@@ -202,6 +203,9 @@ export function resolveDetailRenderer(column: QueryColumn) {
                 break;
             case 'appendunits':
                 renderer = (d) => <AppendUnits data={d} col={column}/>;
+                break;
+            case 'assayrunreference':
+                renderer = (d, row) => <AssayRunReferenceRenderer data={d} row={row} col={column}/>;
                 break;
             default:
                 break;

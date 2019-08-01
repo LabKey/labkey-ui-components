@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
-import { SCHEMAS, fetchSchemas, fetchGetQueries } from './models/schemas'
+import { SCHEMAS, fetchSchemas, fetchGetQueries, processSchemas } from './models/schemas'
 import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile } from './action/actions'
 import {
     AssayProtocolModel,
@@ -75,7 +75,7 @@ import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
 import { MultiMenuButton } from './components/menus/MultiMenuButton'
 import { MenuOption, SubMenu } from "./components/menus/SubMenu";
-import { SubMenuItem } from "./components/menus/SubMenuItem";
+import { SubMenuItem, SubMenuItemProps, ISubItem } from "./components/menus/SubMenuItem";
 import { SelectionMenuItem } from "./components/menus/SelectionMenuItem";
 import { CustomToggle } from './components/CustomToggle'
 import { LoadingSpinner } from './components/LoadingSpinner'
@@ -90,12 +90,13 @@ import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
 import { Section } from './components/Section'
 import { FileAttachmentForm } from './components/files/FileAttachmentForm'
+import { FileAttachmentFormModel } from './components/files/models'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { dismissNotifications } from './components/notifications/global'
 import { initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/ConfirmModal'
-import { datePlaceholder, getUnFormattedNumber, getDateFormat } from './utils/Date';
+import { datePlaceholder, getUnFormattedNumber, getDateFormat, generateNameWithTimestamp } from './utils/Date';
 import { Theme, SVGIcon } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
 import {
@@ -113,6 +114,7 @@ import { ManageDropdownButton } from './components/buttons/ManageDropdownButton'
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
 import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/Cards';
+import { Footer } from './components/Footer';
 
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
@@ -137,6 +139,8 @@ export {
     GridProps,
     LoadingPageProps,
     PageProps,
+    SubMenuItemProps,
+    ISubItem,
 
     //models
     AppURL,
@@ -164,6 +168,7 @@ export {
     GridColumn,
     GridData,
     InferDomainResponse,
+    FileAttachmentFormModel,
 
     //components
     AddEntityButton,
@@ -198,6 +203,7 @@ export {
     WizardNavButtons,
     ToggleButtons,
     Cards,
+    Footer,
 
     // actions
     fetchProtocol,
@@ -217,6 +223,7 @@ export {
     datePlaceholder,
     getDateFormat,
     getUnFormattedNumber,
+    generateNameWithTimestamp,
 
     // images
     Theme,
@@ -242,6 +249,7 @@ export {
     toLowerSafe,
     generateId,
     debounce,
+    processSchemas,
     similaritySortFactory,
     unorderedEqual,
     valueIsEmpty,

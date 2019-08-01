@@ -17,6 +17,7 @@ import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './model
 import {
     getSelected,
     getSelectedData,
+    getSelection,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -75,18 +76,30 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader'
 import { DetailEditing } from './components/forms/detail/DetailEditing'
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
 import { Detail } from './components/forms/detail/Detail'
+import { handleTabKeyOnTextArea, handleInputTab } from './components/forms/actions'
+import { FormStep, FormTabs, WithFormStepsProps, withFormSteps } from './components/forms/FormStep'
+import { ReactSelectOption } from './components/forms/model'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
 import { QueriesListing } from './components/listing/QueriesListing'
-import { ReactSelectOption } from './components/forms/model'
 import { HeatMap } from './components/heatmap/HeatMap'
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
-import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
+import { deleteSampleSet, getSampleDeleteConfirmationData, loadSelectedSamples } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
+import { AssayImportPanels } from './components/assay/AssayImportPanels'
+import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
+import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
+import { RunDataPanel } from './components/assay/RunDataPanel'
+import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
+import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal'
+import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
+import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem'
+import { AssayWizardModel, IAssayURLContext, IAssayUploadOptions, AssayUploadResultModel } from './components/assay/models'
+import { importAssayRun, uploadAssayRunFiles, deleteAssayRuns, getImportItemsForAssayDefinitions } from './components/assay/actions'
 
 export {
     // global state functions
@@ -101,6 +114,7 @@ export {
     // grid functions
     getSelected,
     getSelectedData,
+    getSelection,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -184,10 +198,37 @@ export {
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
     createQueryGridModelFilteredBySample,
+    loadSelectedSamples,
 
     // search-related
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
-    searchUsingIndex
+    searchUsingIndex,
+
+    // assay
+    AssayUploadResultModel,
+    AssayResultDeleteConfirmModal,
+    AssayRunDeleteConfirmModal,
+    AssayWizardModel,
+    IAssayURLContext,
+    IAssayUploadOptions,
+    AssayUploadGridLoader,
+    AssayImportPanels,
+    BatchPropertiesPanel,
+    RunPropertiesPanel,
+    RunDataPanel,
+    AssayImportSubMenuItem,
+    importAssayRun,
+    uploadAssayRunFiles,
+    deleteAssayRuns,
+    getImportItemsForAssayDefinitions,
+
+    // forms
+    handleInputTab,
+    handleTabKeyOnTextArea,
+    withFormSteps,
+    WithFormStepsProps,
+    FormStep,
+    FormTabs
 }

@@ -76,6 +76,9 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                         break;
                 }
             }
+            else if (data.get('type') === 'sampleSet') {
+                iconSrc = 'sample_set';
+            }
             else if (data.get('type')) {
                 iconSrc=data.get('type').toLowerCase();
             }

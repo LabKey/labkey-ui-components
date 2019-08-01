@@ -240,7 +240,7 @@ export class Cell extends React.Component<Props, any> {
 
         if (!this.focused()) {
             let valueDisplay = values
-                .filter(vd => vd.display !== undefined)
+                .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
 
             const displayProps = {

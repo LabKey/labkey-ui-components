@@ -1278,6 +1278,22 @@
     "id" : "data:261C2451-1CED-1037-8E6F-A4D8213615F8/NucSequence/41206",
     "title" : "NS-12",
     "url" : "/labkey/261C2451-1CED-1037-8E6F-A4D8213615F8/experiment-showData.view?rowId=41206&_docid=data%3A261C2451-1CED-1037-8E6F-A4D8213615F8%2FNucSequence%2F41206"
+  }, {
+    "container" : "e686748d-817d-1037-bb53-9caba13ba4f1",
+    "summary" : "Some summary of things",
+    "data" : {
+      "lsid" : "urn:lsid:labkey.com:SampleSet.Folder-6:Molecule",
+      "createdBy" : "ians@labkey.com",
+      "created" : "2019-07-16 17:15:27.982",
+      "name" : "Molecule",
+      "modified" : "2019-07-17 10:40:50.285",
+      "modifiedBy" : "ians@labkey.com",
+      "id" : 1,
+      "type" : "sampleSet"
+    },
+    "id" : "materialSource:1",
+    "title" : "Sample Set - Molecule",
+    "url" : "/labkey/e686748d-817d-1037-bb53-9caba13ba4f1/experiment-showMaterialSource.view?rowId=1&_docid=materialSource%3A1"
   } ],
   "metaData" : {
     "successProperty" : "success",
@@ -1285,6 +1301,6 @@
     "root" : "hits"
   },
   "q" : "m-1",
-  "totalHits" : 48,
+  "totalHits" : 49,
   "success" : true
 }

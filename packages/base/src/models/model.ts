@@ -1648,6 +1648,22 @@ export class AssayDefinitionModel extends Record({
             return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
         }
     }
+
+    getDomainColumns(type: AssayDomainTypes): OrderedMap<string, QueryColumn> {
+        let columns = OrderedMap<string, QueryColumn>();
+
+        if (this.domains && this.domains.size) {
+            const domainColumns = this.getDomainByType(type);
+
+            if (domainColumns && domainColumns.size) {
+                domainColumns.forEach(dc => {
+                    columns = columns.set(dc.fieldKey.toLowerCase(), dc);
+                });
+            }
+        }
+
+        return columns;
+    }
 }
 
 export function isSampleLookup(column: QueryColumn) {

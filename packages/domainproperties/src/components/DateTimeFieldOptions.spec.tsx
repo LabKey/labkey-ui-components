@@ -1,5 +1,4 @@
 import {mount} from "enzyme";
-import {BooleanFieldOptions} from "./BooleanFieldOptions";
 import {createFormInputId} from "../actions/actions";
 import {DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT} from "../constants";
 import * as React from "react";

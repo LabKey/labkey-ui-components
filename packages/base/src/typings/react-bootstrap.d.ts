@@ -43,6 +43,7 @@ declare module "react-bootstrap" {
         navDropdown?: boolean;
         onClick?: any;
         id?: string;
+        name?: string;
 
         /**
          * You can use a custom element for this component

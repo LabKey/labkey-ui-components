@@ -329,3 +329,28 @@ export function parseSelectedQuery(model: QuerySelectModelProps, data: Map<strin
         .map((result) => result.getIn([model.displayColumn, 'value']))
         .join(model.delimiter);
 }
+
+// "target" is not typed as an Element in base TypeScript library due to non-DOM events
+// Not exactly correct typings but suffices for the usages below
+// https://stackoverflow.com/q/28900077
+interface ITargetElementEvent {
+    keyCode: number
+    preventDefault(): void
+    target: HTMLInputElement
+}
+
+export function handleInputTab(evt: ITargetElementEvent): void {
+    if (evt.keyCode === 9) { // tab
+        const element = evt.target;
+        evt.preventDefault();
+        const s = element.selectionStart;
+        element.value = element.value.substring(0, s) + '\t' + element.value.substring(element.selectionEnd);
+        element.selectionEnd = s + 1;
+    }
+}
+
+export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
+    if (evt && evt.target && evt.target.type === 'textarea') {
+        handleInputTab(evt);
+    }
+}

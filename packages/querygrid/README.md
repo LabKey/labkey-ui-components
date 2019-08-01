@@ -4,6 +4,46 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.11.3
+*Released*: 31 July 2019
+* Package patch update for changes to @glass/base v0.11.1
+
+### version 0.11.2
+*Released*: 30 Jul 2019
+*  Update SearchResultCard to show Sample Sets
+
+### version 0.11.1
+*Released*: 25 July 2019
+* Issue 37993: add missing "isUpdate" parameter for call to updateSampleSet
+
+### version 0.11.0
+*Released*: 24 July 2019
+* port FormStep and related helpers from Biologics
+* port handleInputTab and handleTabKeyOnTextArea from Biologics
+* add AssayWizardModel, BatchPropertiesPanel, RunPropertiesPanel, and RunDataPanel from Biologics
+* port AssayUploadGridLoader, AssayUploadResultModel, uploadAssayRunFiles and importAssayRun from Biologics
+* add deleteAssayRuns method, AssayRunDeleteConfirmModal, and AssayResultDeleteConfirmModal
+* factor out AssayImportSubMenuItem and getImportItemsForAssayDefinitions and port from Biologics
+* port loadSelectedSamples from Biologics and export getSelection
+
+### version 0.10.3
+*Released*: 23 July 2019
+* Add columnFilter to QueryInfoForm
+
+### version 0.10.2
+*Released*: 23 July 2019
+* For QueryInfoForm, add ability to disable Submit until change is made
+* For QueryInfoForm, add onFormChange handler 
+
+### version 0.10.1
+*Released*: 17 July 2019
+* Fix @glass/base dependencies for omnibox package
+
+### version 0.10.0
+*Released*: 17 July 2019
+* add support for messages to QueryGrid
+* enables hot reloading of CSS in Storybook for all packages
+
 ### version 0.9.1
 *Released*: 17 June 2019
 *  Update package for changes to @glass/base v0.9.0

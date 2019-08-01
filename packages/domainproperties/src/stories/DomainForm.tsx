@@ -5,11 +5,13 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import { text, withKnobs } from '@storybook/addon-knobs'
 
-import DomainForm from "../components/DomainForm";
 import { DomainDesign } from "../models";
-import data from "../test/data/property-getDomain.json";
+import { DomainFormImpl } from "../components/DomainForm";
+import { MockLookupProvider } from "../test/components/Lookup";
+
+import domainData from "../test/data/property-getDomain.json";
 import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
 import exceptionData from "../test/data/property-domainException.json";
 import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
@@ -42,11 +44,13 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         const { domain } = this.state;
 
         return (
-            <DomainForm
-                {...this.props}
-                domain={domain}
-                onChange={this.onChange}
-            />
+            <MockLookupProvider>
+                <DomainFormImpl
+                    {...this.props}
+                    domain={domain}
+                    onChange={this.onChange}
+                />
+            </MockLookupProvider>
         )
     }
 }
@@ -65,7 +69,7 @@ storiesOf("DomainForm", module)
     .add("with domain properties", () => {
         return (
             <DomainFormContainer
-                data={data}
+                data={domainData}
             />
         )
     })

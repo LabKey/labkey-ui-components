@@ -2,8 +2,6 @@ import {mount} from "enzyme";
 import {createFormInputId} from "../actions/actions";
 import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
-    DOMAIN_FIELD_DEFAULT_SCALE,
-    DOMAIN_FIELD_FORMAT,
     DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE
 } from "../constants";
 import * as React from "react";

@@ -363,7 +363,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         {
             let fieldError = domainException.errors.filter( e => {
 
-                return e && (field.newField || field.updatedField) &&
+                return e && (field.isNew() || field.updatedField) &&
                     (e.get("id") == field.propertyId || e.get("field") == field.name);
             });
 

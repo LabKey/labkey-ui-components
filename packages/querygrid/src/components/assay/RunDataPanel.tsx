@@ -125,7 +125,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         return (
             <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
                 <div className="panel-heading">
-                    Run Data
+                    Results
                 </div>
                 <div className="panel-body">
                     {isLoading ? <LoadingSpinner/>

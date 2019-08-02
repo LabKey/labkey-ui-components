@@ -39,7 +39,7 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
             return (
                 <div className="panel panel-default">
                     <div className="panel-heading">
-                        Batch Properties
+                        Batch Details
                     </div>
 
                     <div className="panel-body">

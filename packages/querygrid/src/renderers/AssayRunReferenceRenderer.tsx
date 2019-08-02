@@ -18,23 +18,18 @@ import { Map } from 'immutable'
 import { AppURL, AssayDefinitionModel } from '@glass/base';
 
 interface AssayRunReferenceRendererProps {
-    row: any,
-    col: any,
     data: Map<any, any>
 }
 
 export class AssayRunReferenceRenderer extends React.Component<AssayRunReferenceRendererProps, any> {
 
     render() {
-        const { row, col, data } = this.props;
+        const { data } = this.props;
 
-        console.log("row", row.toJS());
-        console.log("col", col.toJS());
-        // TODO how do we get the assay definition in here?
         if (data && data.size > 0 && data.get('value')) {
             return (
                 <div>
-                    <a href={AppURL.create("assays", "general", "gpat 1", "runs", data.get('value') ).toHref()}>
+                    <a href={"#/rd/assayrun/" +  data.get('value')}>
                         Run {data.get('value')}
                     </a>
                 </div>

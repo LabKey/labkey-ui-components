@@ -12,7 +12,7 @@ Base components, models, and utility functions for LabKey applications and pages
 * update QueryGridMode.getFilters to add in baseFilters even if a key value is provided (to support overriding
 a default filter that limits the set of values such that it may not include the key given, e.g., for assay runs
 that have been replaced)
-* 
+* change signature of fileMatchesAcceptedFormat to take a file name instead of a File (since that's all we use)
 
 ### version 0.11.1
 *Released*: 31 July 2019

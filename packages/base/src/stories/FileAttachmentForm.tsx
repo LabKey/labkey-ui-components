@@ -4,8 +4,9 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import * as React from 'react'
+import { fromJS } from 'immutable'
 import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import mock, { proxy } from 'xhr-mock';
 
 import { FileAttachmentForm } from '../components/files/FileAttachmentForm';
@@ -43,4 +44,29 @@ storiesOf('FileAttachmentForm', module)
                 }}
             />
         )
-    });
+    })
+    .add("with initial file names and preview data", () => {
+        return (
+            <FileAttachmentForm
+                showLabel={true}
+                label={'Attachments'}
+                labelLong={'Select file or drag and drop here'}
+                acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                showAcceptedFormats={true}
+                allowMultiple={true}
+                showButtons={false}
+                previewGridProps={{
+                    previewCount: number('Preview Grid Row Count', 3),
+                    acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx'),
+                    initialData: fromJS([
+                        {
+                            "Field 1": "F1",
+                            "Field 2": "F2",
+                        }
+                    ])
+                }}
+                initialFileNames={["test.txt", "other.csv"]}
+            />
+        )
+    })
+;

@@ -31,8 +31,8 @@ interface FileAttachmentFormProps {
     showAcceptedFormats?: boolean
     allowDirectories?: boolean
     allowMultiple?: boolean
-    files?: Map<string, File>
     cancelText?: string
+    initialFileNames?: Array<string>
     label?: string
     labelLong?: string
     onCancel?: () => any
@@ -83,16 +83,11 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.state = {
             attachedFiles: Map<string, File>(),
             errorMessage: undefined,
-            previewData: undefined,
+            previewData: props.previewGridProps ? props.previewGridProps.initialData : undefined,
             previewStatus: undefined
         };
     }
 
-    componentWillMount() {
-        if (this.props.files && !this.props.files.isEmpty()) {
-           this.handleFileChange(this.props.files as any);
-        }
-    }
 
     determineFileSize(): number {
         const { attachedFiles } = this.state;
@@ -223,7 +218,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         // check if this usage has a set of formats which are supported for preview
         if (previewGridProps.acceptedFormats) {
-            const fileCheck = fileMatchesAcceptedFormat(file, previewGridProps.acceptedFormats);
+            const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
             // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
             if (!fileCheck.get('isMatch')) {
                 return;
@@ -309,6 +304,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             acceptedFormats,
             allowDirectories,
             allowMultiple,
+            initialFileNames,
             label,
             labelLong,
             showButtons,
@@ -329,6 +325,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             allowDirectories={allowDirectories}
                             handleChange={this.handleFileChange}
                             handleRemoval={this.handleFileRemoval}
+                            initialFileNames={initialFileNames}
                             allowMultiple={allowMultiple}
                             labelLong={labelLong}/>
                     </FormSection>

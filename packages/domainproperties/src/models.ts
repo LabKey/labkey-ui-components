@@ -25,9 +25,7 @@ import {
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     STRING_RANGE_URI,
-    USER_RANGE_URI,
-    DOMAIN_FIELD_NOT_LOCKED,
-    SEVERITY_LEVEL_ERROR
+    USER_RANGE_URI
 } from "./constants";
 
 export interface ITypeDependentProps {
@@ -625,8 +623,8 @@ export class DomainException extends Record({
 
 interface IDomainFieldError {
     message: string;
-    field: string;
-    id?: number;
+    field: string; //field name
+    id?: number; //property id
     severity?: string
 }
 

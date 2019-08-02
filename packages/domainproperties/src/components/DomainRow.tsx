@@ -99,18 +99,27 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             }
         }
 
+        let comma = '';
+        if (details.length > 0) {
+            comma = ', ';
+        }
+
         if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
-           details.push('Locked');
+           details.push(comma + 'Locked');
+        }
+
+        if (details.length > 0) {
+            comma = ', ';
         }
 
         if (this.props.fieldError) {
 
             if (this.props.field.propertyId == this.props.fieldError.id || this.props.field.name == this.props.fieldError.field) {
-                details.push(this.props.fieldError.message);
+                details.push(comma + this.props.fieldError.message);
             }
         }
         else if (this.state.fieldError) {
-            details.push(this.state.fieldError.message);
+            details.push(comma + this.state.fieldError.message);
         }
 
         return details;

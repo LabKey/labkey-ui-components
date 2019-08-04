@@ -214,10 +214,10 @@ export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<
     });
 }
 
-export function getRunDataModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
+export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
     const model = getStateQueryGridModel('assay-run-details', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), {
         allowSelection: false,
-        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId', "ReplacesRun", "ReplacedByRun", "DataOutputs", "DataOutputs/DataFileUrl").toList(),
+        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId', "ReplacesRun", "ReplacedByRun", "DataOutputs").toList(),
         // allow for the possibility of viewing runs that have been replaced.
         baseFilters: List( [Filter.create('Replaced', undefined, Filter.Types.NONBLANK)])
     }, runId);
@@ -225,13 +225,13 @@ export function getRunDataModel(assayDefinition: AssayDefinitionModel, runId: st
     return getQueryGridModel(model.getId()) || model;
 }
 
-export function getRunRow(assayDefinition: AssayDefinitionModel, runId: string) : Map<string, any> {
-    const model = getRunDataModel(assayDefinition, runId);
+export function getRunPropertiesRow(assayDefinition: AssayDefinitionModel, runId: string) : Map<string, any> {
+    const model = getRunPropertiesModel(assayDefinition, runId);
     return model.isLoaded ? model.getRow() : undefined;
 }
 
 
-export function getBatchDataModel(assayDefinition: AssayDefinitionModel, batchId: string): QueryGridModel {
+export function getBatchPropertiesModel(assayDefinition: AssayDefinitionModel, batchId: string): QueryGridModel {
     const model = getStateQueryGridModel('assay-batchdetails', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'), {
         allowSelection: false,
         requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList()
@@ -240,7 +240,7 @@ export function getBatchDataModel(assayDefinition: AssayDefinitionModel, batchId
     return getQueryGridModel(model.getId()) || model;
 }
 
-export function getBatchRow(assayDefinition: AssayDefinitionModel, batchId: string) : Map<string, any> {
-    const model = getBatchDataModel(assayDefinition, batchId);
+export function getBatchPropertiesRow(assayDefinition: AssayDefinitionModel, batchId: string) : Map<string, any> {
+    const model = getBatchPropertiesModel(assayDefinition, batchId);
     return model.isLoaded ? model.getRow() : undefined;
 }

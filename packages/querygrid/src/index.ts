@@ -120,10 +120,10 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
     DuplicateFilesResponse,
-    getRunDataModel,
-    getRunRow,
-    getBatchDataModel,
-    getBatchRow
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow
 } from './components/assay/actions'
 
 export {
@@ -252,10 +252,10 @@ export {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
     AssayReimportHeader,
-    getRunDataModel,
-    getRunRow,
-    getBatchDataModel,
-    getBatchRow,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
 
     // forms
     handleInputTab,

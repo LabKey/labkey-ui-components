@@ -32,7 +32,7 @@ import { AssayWizardModel } from "./models";
 import { EditableGridPanel } from "../../components/editable/EditableGridPanel";
 import { handleTabKeyOnTextArea } from "../../components/forms/actions";
 import { FormStep, FormTabs } from "../forms/FormStep";
-import { checkForDuplicateAssayFiles, DuplicateFilesResponse, getRunRow } from './actions';
+import { checkForDuplicateAssayFiles, DuplicateFilesResponse, getRunPropertiesRow } from './actions';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
@@ -107,7 +107,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         const { gridModel, wizardModel } = this.props;
 
         if (wizardModel.isInit  && gridModel && gridModel.isLoaded) {
-            const row = getRunRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
+            const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
             console.log("getPreviewData", row.toJS());
             if (row.has("DataOutputs")) {
                 const outputs = row.get('DataOutputs');

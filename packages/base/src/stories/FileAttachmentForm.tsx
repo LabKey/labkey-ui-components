@@ -11,6 +11,7 @@ import mock, { proxy } from 'xhr-mock';
 
 import { FileAttachmentForm } from '../components/files/FileAttachmentForm';
 import inferDomainJson from '../test/data/property-inferDomain.json';
+import filePreviewJson from '../test/data/property-getFilePreview.json';
 
 import './stories.scss';
 
@@ -58,26 +59,7 @@ storiesOf('FileAttachmentForm', module)
                 previewGridProps={{
                     previewCount: number('Preview Grid Row Count', 3),
                     acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx'),
-                    initialData: fromJS({
-                        "data": [
-                            [
-                                "Field 1",
-                                "Field 2"
-                            ],
-                            [
-                                 "F1",
-                                 "F2",
-                            ]
-                        ],
-                        "fields": [
-                            {
-                                "name": "Field1"
-                            },
-                            {
-                                "name": "Field2",
-                            }
-                        ]
-                    })
+                    initialData: fromJS(filePreviewJson)
                 }}
                 initialFileNames={["test.txt", "other.csv"]}
             />

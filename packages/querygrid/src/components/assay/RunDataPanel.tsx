@@ -17,13 +17,22 @@ import * as React from 'react'
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { Map } from 'immutable';
-import { Alert, AssayUploadTabs, FileAttachmentForm, LoadingSpinner, QueryGridModel, getActionErrorMessage } from "@glass/base";
+import {
+    Alert,
+    AssayUploadTabs,
+    FileAttachmentForm,
+    getActionErrorMessage,
+    getServerFilePreview,
+    InferDomainResponse,
+    LoadingSpinner,
+    QueryGridModel
+} from "@glass/base";
 
 import { AssayWizardModel } from "./models";
 import { EditableGridPanel } from "../../components/editable/EditableGridPanel";
 import { handleTabKeyOnTextArea } from "../../components/forms/actions";
 import { FormStep, FormTabs } from "../forms/FormStep";
-import { checkForDuplicateAssayFiles, DuplicateFilesResponse } from './actions';
+import { checkForDuplicateAssayFiles, DuplicateFilesResponse, getRunRow } from './actions';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
@@ -42,14 +51,27 @@ interface Props {
     allowBulkInsert?: boolean
 }
 
+interface PreviewData {
+    isLoaded: boolean
+    isLoading: boolean
+    data: InferDomainResponse
+    fileNames: Array<string> // currently we support only one file
+}
+
 interface State {
     attachments?: Map<string, File>
     showRenameModal : boolean
     dupData?: DuplicateFilesResponse
     error?: React.ReactNode
+    loadingPreviewData?: boolean
+    loadedPreviewData?: boolean
+    previousRunData?:  InferDomainResponse
+    previousRunFiles?: Array<string>
 }
 
 export class RunDataPanel extends React.Component<Props, State> {
+
+    private static previewCount = 3;
 
     static defaultProps = {
         fullWidth: true,
@@ -60,12 +82,69 @@ export class RunDataPanel extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            showRenameModal: false
+            showRenameModal: false,
+            previousRunFiles: []
+        }
+    }
+
+    isRerun() {
+        return this.props.wizardModel.runId !== undefined;
+    }
+
+    componentWillMount() {
+        this.initPreviewData();
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        this.initPreviewData();
+    }
+
+    initPreviewData() {
+        if (!this.isRerun() || this.state.loadedPreviewData || this.state.loadingPreviewData) {
+           return;
+        }
+
+        const { gridModel, wizardModel } = this.props;
+
+        if (wizardModel.isInit  && gridModel && gridModel.isLoaded) {
+            const row = getRunRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
+            console.log("getPreviewData", row.toJS());
+            if (row.has("DataOutputs")) {
+                const outputs = row.get('DataOutputs');
+                if (outputs.size > 1) {
+                    console.warn("More than one data output for this run.  Using the last.");
+                }
+
+                getServerFilePreview(outputs.getIn([outputs.size -1, "value"]),  RunDataPanel.previewCount).then((response) => {
+                    this.setState(() => ({
+                            previousRunData: response,
+                            previousRunFiles: [outputs.getIn([outputs.size -1, 'displayValue'])],
+                            loadingPreviewData: false,
+                            loadedPreviewData: true
+                        }
+                    ));
+                }).catch((reason) => {
+                    this.setState(() => ({
+                        error: reason, // TODO this probably isn't the right error.
+                        loadingPreviewData: false,
+                        loadedPreviewData: true
+                    }));
+                });
+            }
+        }
+        else {
+            console.log("Not yet loaded.  Can't get preview.");
         }
     }
 
     resetState = () => {
-        this.setState( () => ({error: undefined, attachments: undefined, dupData: undefined}));
+        this.setState( () => ({
+            error: undefined,
+            attachments: undefined,
+            dupData: undefined,
+            previousRunData: undefined,
+            previousRunFiles: [],
+        }));
     };
 
     onCancelRename = () => {
@@ -92,7 +171,8 @@ export class RunDataPanel extends React.Component<Props, State> {
                 onConfirm={this.onRenameConfirm}
                 onCancel={this.onCancelRename}
                 originalName={this.state.attachments.keySeq().get(0)}
-                newName={this.state.dupData.newFileNames[0]}/>
+                newName={this.state.dupData.newFileNames[0]}
+            />
         )
     }
 
@@ -141,12 +221,14 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             allowDirectories={false}
                                             allowMultiple={false}
                                             showLabel={false}
+                                            initialFileNames={this.state.previousRunFiles}
                                             onFileChange={this.checkForDuplicateFiles}
                                             onFileRemoval={this.onFileRemove}
                                             templateUrl={wizardModel.assayDef.templateLink}
                                             previewGridProps={acceptedPreviewFileFormats && {
-                                                previewCount: 3,
-                                                acceptedFormats: acceptedPreviewFileFormats
+                                                previewCount: RunDataPanel.previewCount,
+                                                acceptedFormats: acceptedPreviewFileFormats,
+                                                initialData: this.state.previousRunData
                                             }}
                                         />
                                     </FormStep>

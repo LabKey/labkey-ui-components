@@ -58,6 +58,23 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }
     }
 
+    componentWillMount() {
+        this.initFileNames(this.props);
+    }
+
+    componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
+        if (this.props.initialFileNames != nextProps.initialFileNames)
+            this.initFileNames(nextProps);
+    }
+
+    initFileNames(props: FileAttachmentContainerProps) {
+        // since we do not have the file objects themselves, we do not check if the
+        // file "type" is valid.  There is presumably nothing a user could do if it were
+        // invalid.
+        this.setState(() => ({fileNames: props.initialFileNames || []}))
+    }
+
+
     areValidFileTypes(fileList: FileList, transferItems?: DataTransferItemList) {
         const { acceptedFormats, allowDirectories } = this.props;
 

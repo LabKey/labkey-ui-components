@@ -83,11 +83,25 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.state = {
             attachedFiles: Map<string, File>(),
             errorMessage: undefined,
-            previewData: props.previewGridProps ? props.previewGridProps.initialData : undefined,
             previewStatus: undefined
         };
     }
 
+    componentWillMount() {
+        this.initPreviewData(this.props)
+    }
+
+    componentWillReceiveProps(nextProps: FileAttachmentFormProps) {
+        this.initPreviewData(nextProps);
+    }
+
+    initPreviewData(props: FileAttachmentFormProps) {
+        let previewData;
+        if (props.previewGridProps && props.previewGridProps.initialData) {
+            previewData = convertRowDataIntoPreviewData(props.previewGridProps.initialData.get('data'), props.previewGridProps.previewCount)
+        }
+        this.setState(() => ({previewData}));
+    }
 
     determineFileSize(): number {
         const { attachedFiles } = this.state;
@@ -313,6 +327,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             isSubmitting
         } = this.props;
 
+        console.log("initialFileNames", initialFileNames);
         return (
             <>
                 <span className="translator--toggle__wizard">

@@ -58,12 +58,26 @@ storiesOf('FileAttachmentForm', module)
                 previewGridProps={{
                     previewCount: number('Preview Grid Row Count', 3),
                     acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx'),
-                    initialData: fromJS([
-                        {
-                            "Field 1": "F1",
-                            "Field 2": "F2",
-                        }
-                    ])
+                    initialData: fromJS({
+                        "data": [
+                            [
+                                "Field 1",
+                                "Field 2"
+                            ],
+                            [
+                                 "F1",
+                                 "F2",
+                            ]
+                        ],
+                        "fields": [
+                            {
+                                "name": "Field1"
+                            },
+                            {
+                                "name": "Field2",
+                            }
+                        ]
+                    })
                 }}
                 initialFileNames={["test.txt", "other.csv"]}
             />

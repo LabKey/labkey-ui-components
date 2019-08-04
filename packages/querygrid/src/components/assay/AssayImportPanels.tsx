@@ -19,21 +19,21 @@ import { Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
     Alert,
+    AssayDefinitionModel,
     AssayDomainTypes,
     AssayUploadTabs,
+    LoadingSpinner,
     Progress,
     QueryGridModel,
     SchemaQuery,
-    WizardNavButtons,
-    AssayDefinitionModel,
-    LoadingSpinner
+    WizardNavButtons
 } from '@glass/base';
 
 import { Location } from "../../util/URL"
 import { loadSelectedSamples } from "../samples/actions";
-import { uploadAssayRunFiles, importAssayRun, getRunRow, getRunDataModel } from "./actions";
+import { getRunDataModel, getRunRow, importAssayRun, uploadAssayRunFiles } from "./actions";
 import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from "./models";
-import { WithFormStepsProps, WithFormStepsState, withFormSteps } from "../forms/FormStep"
+import { withFormSteps, WithFormStepsProps } from "../forms/FormStep"
 import { getQueryGridModel, removeQueryGridModel } from "../../global";
 import { AssayUploadGridLoader } from "./AssayUploadGridLoader";
 import { getStateQueryGridModel } from "../../models";
@@ -131,7 +131,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }, Map<string, any>());
     }
 
-    initRunDataModel() {
+    initRerunData() {
         if (this.isReimport()) {
             const runDataModel = this.getRunDataModel();
             gridInit(runDataModel, true, this);
@@ -145,7 +145,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return;
         }
 
-        this.initRunDataModel();
+        this.initRerunData();
 
         // need to query for the assay data table QueryInfo in order to init the AssayWizardModel
         getQueryDetails(this.state.schemaQuery)

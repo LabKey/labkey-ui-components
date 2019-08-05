@@ -58,8 +58,7 @@ export class URLResolver {
             new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
                 let url = ['rd', 'samples'];
 
-                if (row.has('data'))
-                {
+                if (row.has('data')) {
                     //Search link doesn't use the same url
                     url = ['samples', row.get('data').get('name')];
                 }
@@ -437,14 +436,16 @@ class LookupMapper implements URLMapper {
 }
 
 // TODO: This is copied from LABKEY.ActionURL -- make public?
-function parsePathName(path: string) {
-    const start = ActionURL.getContextPath().length;
+export function parsePathName(path: string) {
     const qMarkIdx = path.indexOf('?');
-    const end = qMarkIdx > -1 ? qMarkIdx : path.length - 1;
-
+    if (qMarkIdx > -1) {
+        path = path.substring(0, qMarkIdx);
+    }
+    const start = ActionURL.getContextPath().length;
+    const end = path.lastIndexOf('/');
+    let action = path.substring(end + 1);
     path = path.substring(start, end);
 
-    let action = path.substring(path.lastIndexOf('/') + 1);
     let controller = null;
 
     const dash = action.indexOf('-');

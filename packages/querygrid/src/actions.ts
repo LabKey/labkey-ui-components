@@ -1304,7 +1304,8 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
             schemaName: lookup.schemaName,
             queryName: lookup.queryName,
             columns: [lookup.displayColumn,lookup.keyColumn].join(','),
-            maxRows
+            maxRows,
+            includeTotalCount: 'f'
         };
 
         if (values) {

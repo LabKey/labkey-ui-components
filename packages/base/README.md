@@ -15,6 +15,7 @@ that have been replaced)
 * change signature of fileMatchesAcceptedFormat to take a file name instead of a File (since that's all we use)
 * Refactor FileAttachmentForm to accept a list of initial file names to show and initial preview data
 * add getServerFilePreview method for retrieving preview data of file already on the server
+* add optional parameter to getActionErrorMessage to indicate if the refresh suggestion should be shown or not.
 
 ### version 0.11.1
 *Released*: 31 July 2019

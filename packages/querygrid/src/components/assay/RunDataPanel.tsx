@@ -51,22 +51,20 @@ interface Props {
     allowBulkInsert?: boolean
 }
 
-interface PreviewData {
-    isLoaded: boolean
-    isLoading: boolean
-    data: InferDomainResponse
-    fileNames: Array<string> // currently we support only one file
+interface PreviousRunData {
+    isLoaded?: boolean
+    isLoading?: boolean
+    data?: InferDomainResponse
+    fileName?: string
 }
 
 interface State {
     attachments?: Map<string, File>
     showRenameModal : boolean
     dupData?: DuplicateFilesResponse
-    error?: React.ReactNode
-    loadingPreviewData?: boolean
-    loadedPreviewData?: boolean
-    previousRunData?:  InferDomainResponse
-    previousRunFiles?: Array<string>
+    message?: React.ReactNode
+    messageStyle?: string
+    previousRunData?: PreviousRunData
 }
 
 export class RunDataPanel extends React.Component<Props, State> {
@@ -83,7 +81,11 @@ export class RunDataPanel extends React.Component<Props, State> {
         super(props);
         this.state = {
             showRenameModal: false,
-            previousRunFiles: []
+            previousRunData : {
+                isLoaded: false,
+                isLoading: false
+            },
+            messageStyle: 'danger'
         }
     }
 
@@ -100,7 +102,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     }
 
     initPreviewData() {
-        if (!this.isRerun() || this.state.loadedPreviewData || this.state.loadingPreviewData) {
+        if (!this.isRerun() || this.state.previousRunData.isLoaded || this.state.previousRunData.isLoading) {
            return;
         }
 
@@ -117,17 +119,22 @@ export class RunDataPanel extends React.Component<Props, State> {
 
                 getServerFilePreview(outputs.getIn([outputs.size -1, "value"]),  RunDataPanel.previewCount).then((response) => {
                     this.setState(() => ({
-                            previousRunData: response,
-                            previousRunFiles: [outputs.getIn([outputs.size -1, 'displayValue'])],
-                            loadingPreviewData: false,
-                            loadedPreviewData: true
+                            previousRunData: {
+                                isLoaded: true,
+                                isLoading: false,
+                                data: response,
+                                fileName: outputs.getIn([outputs.size -1, 'displayValue'])
+                            }
                         }
                     ));
                 }).catch((reason) => {
                     this.setState(() => ({
-                        error: reason, // TODO this probably isn't the right error.
-                        loadingPreviewData: false,
-                        loadedPreviewData: true
+                        message: "There was a problem retrieving the current run's data for previewing.  Re-import should still be possible.",
+                        messageStyle: "warning",
+                        previousRunData: {
+                            isLoaded: true,
+                            isLoading: false
+                        }
                     }));
                 });
             }
@@ -139,11 +146,13 @@ export class RunDataPanel extends React.Component<Props, State> {
 
     resetState = () => {
         this.setState( () => ({
-            error: undefined,
+            message: undefined,
             attachments: undefined,
             dupData: undefined,
-            previousRunData: undefined,
-            previousRunFiles: [],
+            previousRunData: {
+                isLoaded: false,
+                isLoading: false
+            }
         }));
     };
 
@@ -188,7 +197,7 @@ export class RunDataPanel extends React.Component<Props, State> {
             }
         }).catch((reason) => {
            this.setState(() => ({
-               error: getActionErrorMessage("There was an error retrieving assay run data.", "assay run")
+               message: getActionErrorMessage("There was an error retrieving assay run data.", "assay run")
            }));
         })
     };
@@ -199,7 +208,7 @@ export class RunDataPanel extends React.Component<Props, State> {
 
     render() {
         const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
-        const { showRenameModal, error } = this.state;
+        const { showRenameModal, message, messageStyle } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
 
         return (
@@ -211,8 +220,8 @@ export class RunDataPanel extends React.Component<Props, State> {
                     {isLoading ? <LoadingSpinner/>
                         : <>
                             <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
-                            <Alert>
-                                {error}
+                            <Alert bsStyle={messageStyle}>
+                                {message}
                             </Alert>
                             <div className="row">
                                 <div className="col-sm-12">
@@ -221,14 +230,14 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             allowDirectories={false}
                                             allowMultiple={false}
                                             showLabel={false}
-                                            initialFileNames={this.state.previousRunFiles}
+                                            initialFileNames={this.state.previousRunData && this.state.previousRunData.fileName ? [this.state.previousRunData.fileName] : []}
                                             onFileChange={this.checkForDuplicateFiles}
                                             onFileRemoval={this.onFileRemove}
                                             templateUrl={wizardModel.assayDef.templateLink}
                                             previewGridProps={acceptedPreviewFileFormats && {
                                                 previewCount: RunDataPanel.previewCount,
                                                 acceptedFormats: acceptedPreviewFileFormats,
-                                                initialData: this.state.previousRunData
+                                                initialData: this.state.previousRunData.data
                                             }}
                                         />
                                     </FormStep>

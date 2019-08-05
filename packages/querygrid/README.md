@@ -9,6 +9,10 @@ Query Grid for LabKey schema/query data views
 * Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing
 * fix "Invalid prop 'value' of type 'number' supplied to 'Input'" error on bulk form
 
+### version 0.11.4
+*Released*: 5 Aug 2019
+* Issue 38097: improve lookup search perf using ~q filter
+
 ### version 0.11.3
 *Released*: 31 July 2019
 * Package patch update for changes to @glass/base v0.11.1

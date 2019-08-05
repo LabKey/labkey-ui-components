@@ -18,6 +18,7 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
+    getActionErrorMessage,
     Alert,
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -320,8 +321,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         this.onSuccessComplete(response);
                     }
                 })
-                .catch(this.onFailure);
-        }).catch(this.onFailure);
+                .catch((reason) => {
+                    console.error("Problem importing assay run", reason);
+                    this.onFailure("There was a problem importing the assay results.")
+                });
+        }).catch((reason) => {
+            console.error("Problem uploading assay run files", reason);
+            this.onFailure("There was a problem uploading the data files.");
+        });
     };
 
     onSuccessContinue = (response: AssayUploadResultModel) => {
@@ -354,13 +361,13 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     onFailure = (error: any) => {
-        this.setSubmitting(false, error.message || error.exception);
+        this.setSubmitting(false, error);
     };
 
     setSubmitting(isSubmitting: boolean, errorMsg: string) {
         this.setState((state) => {
             let model = state.model.set('isSubmitting', isSubmitting) as AssayWizardModel;
-            model = model.set('errorMsg', errorMsg) as AssayWizardModel;
+            model = model.set('errorMsg', errorMsg ? getActionErrorMessage(errorMsg, "assay design", true) : undefined) as AssayWizardModel;
             return {
                 model
             }

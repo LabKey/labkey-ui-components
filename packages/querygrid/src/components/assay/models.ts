@@ -77,7 +77,7 @@ export class AssayWizardModel extends Record({
     returnURL?: AppURL;
     isSubmitted?: boolean;
     isSubmitting?: boolean;
-    errorMsg?: string;
+    errorMsg?: React.ReactNode;
 
     attachedFiles: Map<string, File>;
     batchColumns: OrderedMap<string, QueryColumn>;

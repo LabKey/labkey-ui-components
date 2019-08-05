@@ -13,6 +13,10 @@ Query Grid for LabKey schema/query data views
 * add optional queryColumns parameter for Detail component to be able to modify the columns in the detail view
 * in RunDataPanel, support display of previous run's data when reimporting.
 
+### version 0.11.4
+*Released*: 5 Aug 2019
+* Issue 38097: improve lookup search perf using ~q filter
+
 ### version 0.11.3
 *Released*: 31 July 2019
 * Package patch update for changes to @glass/base v0.11.1

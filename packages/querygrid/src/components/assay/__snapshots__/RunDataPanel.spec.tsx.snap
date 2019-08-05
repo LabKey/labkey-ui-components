@@ -7,7 +7,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
   <div
     className="panel-heading"
   >
-    Run Data
+    Results
   </div>
   <div
     className="panel-body"
@@ -486,7 +486,7 @@ exports[`<RunDataPanel/> default props 1`] = `
   <div
     className="panel-heading"
   >
-    Run Data
+    Results
   </div>
   <div
     className="panel-body"
@@ -913,7 +913,7 @@ exports[`<RunDataPanel/> loading state based on gridModel 1`] = `
   <div
     className="panel-heading"
   >
-    Run Data
+    Results
   </div>
   <div
     className="panel-body"

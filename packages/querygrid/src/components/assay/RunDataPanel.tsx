@@ -98,13 +98,18 @@ export class RunDataPanel extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
+        const nextWizardModel = nextProps.wizardModel;
+        const nextGridModel = nextProps.gridModel;
+
+        if (nextWizardModel.runId != this.props.wizardModel.runId) {
             this.setState(() => ({
                 previousRunData: {
                     isLoaded: false,
                     isLoading: false
                 }
-            }), () => this.initPreviewData());
+            }));
+        } else if (nextWizardModel.isInit  && nextGridModel && nextGridModel.isLoaded ) {
+            this.initPreviewData();
         }
     }
 
@@ -117,7 +122,6 @@ export class RunDataPanel extends React.Component<Props, State> {
 
         if (wizardModel.isInit  && gridModel && gridModel.isLoaded) {
             const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
-            console.log("getPreviewData", row.toJS());
             if (row.has("DataOutputs")) {
                 const outputs = row.get('DataOutputs');
                 if (outputs.size > 1) {
@@ -145,9 +149,6 @@ export class RunDataPanel extends React.Component<Props, State> {
                     }));
                 });
             }
-        }
-        else {
-            console.log("Not yet loaded.  Can't get preview.");
         }
     }
 

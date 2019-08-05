@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### ??? 
+*Released*: ???
+* export clearFieldDetails
+
 ### version 0.0.24
 *Released*: 31 July 2019
 * Item 5718: Domain designer lookup field support

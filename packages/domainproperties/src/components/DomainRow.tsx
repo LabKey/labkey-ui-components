@@ -47,22 +47,11 @@ interface IDomainRowProps {
     onExpand: (index?: number) => void
 }
 
-interface IDomainRowState {
-    fieldError?: DomainFieldError
-}
-
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
+export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            fieldError: props.fieldError
-        };
-    }
     /**
      *  Details section of property row
      */
@@ -115,13 +104,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
 
         if (this.props.fieldError) {
-
-            if (this.props.field.propertyId == this.props.fieldError.id || this.props.field.name == this.props.fieldError.field) {
-                details.push(comma + this.props.fieldError.message);
-            }
-        }
-        else if (this.state.fieldError) {
-            details.push(comma + this.state.fieldError.message);
+            details.push(comma + this.props.fieldError.message);
         }
 
         return details;
@@ -165,12 +148,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         if (!isLegalName(value)) {
 
             let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
-            let field = value;
-            let id = null;
+            let fieldName = value;
             let severity = SEVERITY_LEVEL_WARN;
-            let domainFieldError = new DomainFieldError({message, field, id, severity});
-
-            this.setState({fieldError : domainFieldError});
+            let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index});
 
             let nameAndErrorList = List<IFieldChange>().asMutable();
 
@@ -186,8 +166,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
         else
         {
-            this.setState({fieldError: undefined});
-            this.onSingleFieldChange(id, value, index, true);
+            let nameAndErrorList = List<IFieldChange>().asMutable();
+
+            //add evt.target.id and evt.target.value
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
+
+            //set error to undefined
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: undefined});
+
+            if (onChange) {
+                onChange(nameAndErrorList, index, true);
+            }
         }
 
     };

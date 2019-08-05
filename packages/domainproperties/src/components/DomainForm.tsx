@@ -24,15 +24,13 @@ import { Alert, ConfirmModal } from "@glass/base";
 import { DomainRow } from "./DomainRow";
 import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
 import {
-    addDomainException,
     addField,
     getIndexFromId,
-    getNameFromId, handleDomainUpdates,
+    handleDomainUpdates,
     removeField,
     updateDomainField
 } from "../actions/actions";
 import { LookupProvider } from "./Lookup/Context";
-import {DOMAIN_FIELD_CLIENT_SIDE_ERROR} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -228,13 +226,33 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         });
 
+        const domainException = this.moveErrors(idIndex, destIndex, domain.domainException);
+
         const newDomain = domain.merge({
-            fields: newFields.asImmutable()
+            fields: newFields.asImmutable(),
+            domainException: domainException
         }) as DomainDesign;
 
         if (onChange) {
             onChange(newDomain, true);
         }
+    };
+
+    moveErrors = (oldIndex: number, newIndex: number, domainException: DomainException) => {
+
+        if(domainException) {
+
+            const errors = domainException.errors.map(fieldError => {
+
+                if (fieldError.index === oldIndex) {
+                    return fieldError.set('index', newIndex);
+                }
+                return fieldError;
+            });
+
+            return domainException.set('errors', errors);
+        }
+        return domainException;
     };
 
     getAddFieldButton() {
@@ -343,7 +361,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                             return <DomainRow
                                                                 key={'domain-row-key-' + i}
                                                                 field={field}
-                                                                fieldError={this.getFieldError(field, domain.domainException)}
+                                                                fieldError={this.getFieldError(field, domain.domainException, i)}
                                                                 index={i}
                                                                 expanded={expandedRowIndex === i}
                                                                 onChange={this.onFieldsChange}
@@ -370,14 +388,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
 
-    private getFieldError(field: DomainField, domainException: DomainException) : DomainFieldError
+    private getFieldError(field: DomainField, domainException: DomainException, index: number) : DomainFieldError
     {
         if (domainException && domainException.errors)
         {
             let fieldError = domainException.errors.filter( e => {
 
-                return e && (field.isNew() || field.updatedField) &&
-                    (e.get("id") == field.propertyId || e.get("field") == field.name);
+                return e && (field.isNew() && e.index === index) ||
+                    (!field.isNew() && (e.get("propertyId") === field.propertyId || e.get("fieldName") === field.name));
             });
 
             return fieldError.get(0);

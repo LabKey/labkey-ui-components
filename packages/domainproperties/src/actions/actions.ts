@@ -259,7 +259,7 @@ export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldCh
 
         type = getNameFromId(change.id);
         if (type === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
-            domain = addDomainException(domain, change.value);
+            domain = updateDomainException(domain, getIndexFromId(change.id), change.value);
         }
         else {
             domain = updateDomainField(domain, change)
@@ -355,24 +355,36 @@ export function getCheckedValue(evt) {
  * @param domainFieldError: Field level error with message and severity
  * @return copy of domain with exception set on a field
  */
-export function addDomainException(domain: DomainDesign, domainFieldError: any): DomainDesign {
+export function updateDomainException(domain: DomainDesign, index: any, domainFieldError: any): DomainDesign {
 
     let domainExceptionObj;
-    if (domain.domainException && domain.domainException.errors) {
-        let newErrors = domain.domainException.errors.push(domainFieldError);
-        domainExceptionObj = domain.domainException.merge({errors: newErrors})
+    if (domainFieldError)
+    {
+        if (domain.domainException && domain.domainException.errors)
+        {
+            let newErrors = domain.domainException.errors.push(domainFieldError);
+            domainExceptionObj = domain.domainException.merge({errors: newErrors})
+        }
+        else
+        {
+            let exception = domainFieldError.fieldName + " : " + domainFieldError.message;
+            let success = undefined;
+            let severity = domainFieldError.severity;
+            let errors = List<DomainFieldError>().asMutable();
+            errors.push(domainFieldError);
+            let errorsImmutable = errors.asImmutable();
+
+            domainExceptionObj = new DomainException({exception, success, severity, errors: errorsImmutable});
+        }
     }
     else {
-        let exception = domainFieldError.field + " :" + domainFieldError.message;
-        let success = undefined;
-        let severity = domainFieldError.severity;
-        let errors = List<DomainFieldError>().asMutable();
-        errors.push(domainFieldError);
-        let errorsImmutable = errors.asImmutable();
-
-        domainExceptionObj = new DomainException({exception, success, severity, errorsImmutable});
+        if (domain.domainException && domain.domainException.errors) {
+            const errors = domain.domainException.errors.remove( domain.domainException.errors.findIndex(e => {
+                return e && (e.index == index)
+            }));
+            domainExceptionObj = domain.domainException.set('errors', errors);
+        }
     }
-
     return domain.merge({
         domainException: domainExceptionObj
     }) as DomainDesign;

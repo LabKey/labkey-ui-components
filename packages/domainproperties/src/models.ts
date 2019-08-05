@@ -597,7 +597,7 @@ export class DomainException extends Record({
     severity: string;
     errors?: List<DomainFieldError>;
 
-    static create(rawModel, severityLevel): DomainException
+    static create(rawModel: any, severityLevel): DomainException
     {
         if (rawModel)
         {
@@ -628,35 +628,39 @@ export class DomainException extends Record({
 
 interface IDomainFieldError {
     message: string;
-    field: string; //field name
-    id?: number; //property id
-    severity?: string
+    fieldName: string;
+    propertyId?: number;
+    severity?: string;
+    index?: number
 }
 
 export class DomainFieldError extends Record({
     message: undefined,
-    field: undefined,
-    id: undefined,
-    severity: undefined
+    fieldName: undefined,
+    propertyId: undefined,
+    severity: undefined,
+    index: undefined
 
 }) implements IDomainFieldError {
     message: string;
-    field: string;
-    id?: number;
+    fieldName: string;
+    propertyId?: number;
     severity?: string;
+    index?: number;
 
-    static fromJS(rawFields: Array<IDomainFieldError>, severityLevel: String): List<DomainFieldError> {
+    static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
 
         let fieldErrors = List<DomainFieldError>().asMutable();
 
         for (let i=0; i < rawFields.length; i++) {
 
             let message = rawFields[i].message;
-            let field = rawFields[i].field;
-            let id = rawFields[i].id;
+            let fieldName = rawFields[i].field;
+            let propertyId = rawFields[i].id;
             let severity = severityLevel;
+            let index = undefined;
 
-            let domainFieldError = new DomainFieldError({message, field, id, severity});
+            let domainFieldError = new DomainFieldError({message, fieldName, propertyId, severity, index});
             fieldErrors.push(domainFieldError);
         }
 

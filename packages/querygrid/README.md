@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version 0.11.4-fb-large-lookups-36792.1
-*Released*: ???
+### version 0.11.4
+*Released*: 5 Aug 2019
 * Issue 38097: improve lookup search perf using ~q filter
 
 ### version 0.11.3

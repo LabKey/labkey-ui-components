@@ -211,16 +211,13 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     };
 
     static renderSubPanelDivider() {
-        const dividerStyle = {
-            padding: '25px 0',
-        };
         return (
             <>
-                <div className="top-spacing"/>
-                <div style={dividerStyle}/>
-                <div className="bottom-spacing"/>
+                {[1, 2, 3, 4, 5].map((value, index) =>
+                    <div key={index} className="bottom-spacing"/>
+                )}
             </>
-        )
+        );
     }
 
     renderEditControls() {

@@ -257,14 +257,14 @@
       "facetingBehaviorType" : "AUTOMATIC",
       "caption" : "Row Id"
     }, {
-      "fieldKey" : [ "Comments" ],
-      "description" : "Contains comments about this run",
-      "friendlyType" : "Text (String)",
-      "type" : "string",
-      "jsonType" : "string",
-      "sqlType" : "text",
+      "fieldKey" : [ "ReplacesRun" ],
+      "description" : "The run that this run replaces, usually with updated or corrected information",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "INTEGER",
       "defaultValue" : null,
-      "scale" : 2147483647,
+      "scale" : 0,
       "align" : "left",
       "sortable" : true,
       "width" : "",
@@ -274,26 +274,33 @@
       "mvEnabled" : false,
       "nullable" : true,
       "readOnly" : false,
-      "userEditable" : true,
-      "calculated" : false,
+      "userEditable" : false,
+      "calculated" : true,
       "versionField" : false,
       "selectable" : true,
-      "shownInInsertView" : true,
-      "shownInUpdateView" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
       "shownInDetailsView" : true,
-      "dimension" : false,
+      "dimension" : true,
       "measure" : false,
       "recommendedVariable" : false,
       "defaultScale" : "LINEAR",
       "phi" : "NotPHI",
       "excludeFromShifting" : false,
       "conceptURI" : null,
-      "inputType" : "textarea",
-      "cols" : 60,
-      "rows" : 2,
-      "shortCaption" : "Comments",
+      "displayField" : [ "ReplacesRun", "Name" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "text",
+      "shortCaption" : "Replaces",
       "facetingBehaviorType" : "AUTOMATIC",
-      "caption" : "Comments"
+      "caption" : "Replaces",
+      "lookup" : {
+        "keyColumn" : "RowId",
+        "public" : true,
+        "displayColumn" : "Name",
+        "queryName" : "Runs",
+        "schemaName" : [ "assay", "General", "GPAT 1" ]
+      }
     }, {
       "fieldKey" : [ "ReplacedByRun" ],
       "description" : "The run that has replaced this run, usually with updated or corrected information",
@@ -340,6 +347,91 @@
         "queryName" : "Runs",
         "schemaName" : [ "assay", "General", "GPAT 1" ]
       }
+    }, {
+      "fieldKey" : [ "DataOutputs" ],
+      "description" : "Contains multi-value lookup to each data outputs produced by this run",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "serial",
+      "defaultValue" : null,
+      "scale" : 10,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : true,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : true,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : true,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "displayField" : [ "DataOutputs", "OutputDataId/Name" ],
+      "displayFieldJsonType" : "string",
+      "inputType" : "text",
+      "shortCaption" : "Data Outputs",
+      "facetingBehaviorType" : "ALWAYS_OFF",
+      "caption" : "Data Outputs",
+      "lookup" : {
+        "keyColumn" : "RowId",
+        "public" : true,
+        "displayColumn" : "OutputDataId/Name",
+        "junctionLookup" : "OutputDataId",
+        "queryName" : "Data",
+        "schemaName" : [ "exp" ],
+        "multiValued" : "junction"
+      }
+    }, {
+      "fieldKey" : [ "Comments" ],
+      "description" : "Contains comments about this run",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "text",
+      "defaultValue" : null,
+      "scale" : 2147483647,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "textarea",
+      "cols" : 60,
+      "rows" : 2,
+      "shortCaption" : "Comments",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Comments"
     }, {
       "fieldKey" : [ "run_text_field" ],
       "friendlyType" : "Text (String)",
@@ -566,23 +658,23 @@
   "rows" : [ {
     "data" : {
       "RowId" : {
-        "value" : 568,
-        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=568"
+        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=589",
+        "value" : 589
       },
       "CreatedBy" : {
-        "value" : 1005,
         "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
-        "displayValue" : "susanh"
+        "displayValue" : "susanh",
+        "value" : 1005
       },
       "Modified" : {
-        "value" : "2019-07-29 07:50:24.151",
-        "formattedValue" : "2019-07-29 07:50"
+        "value" : "2019-08-04 15:43:46.912",
+        "formattedValue" : "2019-08-04 15:43"
       },
       "Comments" : {
         "value" : null
       },
       "run_bool_field" : {
-        "value" : true
+        "value" : null
       },
       "run_int_field" : {
         "value" : 42
@@ -591,30 +683,38 @@
         "value" : null
       },
       "ModifiedBy" : {
-        "value" : 1005,
         "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
-        "displayValue" : "susanh"
+        "displayValue" : "susanh",
+        "value" : 1005
       },
       "Created" : {
-        "value" : "2019-07-29 07:50:22.085",
-        "formattedValue" : "2019-07-29 07:50"
+        "value" : "2019-08-04 15:43:46.845",
+        "formattedValue" : "2019-08-04 15:43"
       },
       "Name" : {
-        "value" : "GPAT_1-2019-07-29-0750",
-        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=568"
+        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=589",
+        "value" : "rerunData.xls"
+      },
+      "ReplacesRun" : {
+        "displayValue" : "update",
+        "value" : 588
       },
       "run_text_field" : {
-        "value" : "Text"
+        "value" : "new run text field"
       },
+      "DataOutputs" : [ {
+        "url" : "/labkey/Sample%20Management/experiment-showData.view?rowId=1949",
+        "displayValue" : "rerunData.xls",
+        "value" : 1949
+      } ],
       "run_multi_field" : {
-        "value" : "Multiple lines\r\nof text"
+        "value" : null
       },
       "run_dbl_field" : {
-        "value" : 4.21
+        "value" : null
       },
       "run_date_field" : {
-        "value" : "2019-07-30 00:00:00.000",
-        "formattedValue" : "2019-07-30 00:00"
+        "value" : null
       }
     }
   } ],

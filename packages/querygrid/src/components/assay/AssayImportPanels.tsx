@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { Button } from 'react-bootstrap';
-import { Map, OrderedMap } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
     getActionErrorMessage,
@@ -125,8 +125,15 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     getRunPropertiesRow() :  Map<string, any> {
         const queryData =  getRunPropertiesRow(this.props.assayDefinition, this.props.runId);
         return queryData.reduce((map, v, k) => {
-            if (v && v.has('value') && v.get('value')) {
-                return map.set(k, v.get('value').toString())
+            let valueMap = v;
+            if (List.isList(v)) {
+                if (v.size > 1) {
+                    console.warn("Multiple values for field '" + k + "'.  Using the last.");
+                }
+                valueMap = v.get(v.size-1);
+            }
+            if (valueMap && valueMap.has('value') && valueMap.get('value')) {
+                return map.set(k, valueMap.get('value').toString())
             }
             return map;
         }, Map<string, any>());
@@ -241,7 +248,6 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     handleFileRemove = (attachmentName: string) => {
-        this.updateModelState('attachedFiles', Map<string, File>());
         this.setSubmitting(false, undefined);
     };
 
@@ -323,11 +329,11 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 })
                 .catch((reason) => {
                     console.error("Problem importing assay run", reason);
-                    this.onFailure("There was a problem importing the assay results.")
+                    this.onFailure(reason.exception || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
                 });
         }).catch((reason) => {
             console.error("Problem uploading assay run files", reason);
-            this.onFailure("There was a problem uploading the data files.");
+            this.onFailure(reason.exception || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
         });
     };
 
@@ -364,12 +370,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         this.setSubmitting(false, error);
     };
 
-    setSubmitting(isSubmitting: boolean, errorMsg: string) {
+    setSubmitting(isSubmitting: boolean, errorMsg: React.ReactNode) {
         this.setState((state) => {
-            let model = state.model.set('isSubmitting', isSubmitting) as AssayWizardModel;
-            model = model.set('errorMsg', errorMsg ? getActionErrorMessage(errorMsg, "assay design", true) : undefined) as AssayWizardModel;
             return {
-                model
+                model : state.model.merge({
+                    isSubmitting,
+                    errorMsg,
+                    attachedFiles: isSubmitting ? state.model.attachedFiles : Map<string, File>()
+                }) as AssayWizardModel
             }
         });
     }

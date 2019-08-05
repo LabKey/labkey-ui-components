@@ -57,6 +57,7 @@ export class AssayWizardModel extends Record({
     attachedFiles: Map<string, File>(),
     batchColumns: OrderedMap<string, QueryColumn>(),
     batchProperties: Map<string, any>(),
+    runFilePath: undefined,
     runColumns: OrderedMap<string, QueryColumn>(),
     runId: undefined,
     runProperties: Map<string, any>(),
@@ -82,6 +83,7 @@ export class AssayWizardModel extends Record({
     attachedFiles: Map<string, File>;
     batchColumns: OrderedMap<string, QueryColumn>;
     batchProperties: Map<string, any>;
+    runFilePath: string; // the path to the original run file
     runColumns: OrderedMap<string, QueryColumn>;
     runId?: string;
     runProperties?: Map<string, any>;
@@ -137,6 +139,12 @@ export class AssayWizardModel extends Record({
 
         if (currentStep === AssayUploadTabs.Files) {
             assayData.files = this.getAttachedFiles().toArray();
+            if (runId !== undefined && assayData.files.length === 0) {
+               const url = runProperties.get("DataOutputs/DataFileUrl");
+               const filesIndex = url.indexOf("@files");
+               // get past the @files and the trailing slash
+               assayData.runFilePath = url.substring(filesIndex + 7);
+            }
         }
         else if (currentStep === AssayUploadTabs.Copy) {
             assayData.dataRows = parseDataTextToRunRows(dataText);

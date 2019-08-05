@@ -379,8 +379,8 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
     }
     else {
         if (domain.domainException && domain.domainException.errors) {
-            const errors = domain.domainException.errors.remove( domain.domainException.errors.findIndex(e => {
-                return e && (e.index == index)
+            const errors = domain.domainException.errors.delete( domain.domainException.errors.findIndex(e => {
+                return e && (e.index === index)
             }));
             domainExceptionObj = domain.domainException.set('errors', errors);
         }

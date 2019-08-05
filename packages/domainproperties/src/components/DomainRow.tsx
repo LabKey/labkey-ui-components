@@ -144,7 +144,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         const { index, onChange } = this.props;
 
         let value = evt.target.value;
-        let id = evt.target.id;
+        let nameAndErrorList = List<IFieldChange>().asMutable();
+
+        //add evt.target.id and evt.target.value
+        nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
+
         if (!isLegalName(value)) {
 
             let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
@@ -152,31 +156,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             let severity = SEVERITY_LEVEL_WARN;
             let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index});
 
-            let nameAndErrorList = List<IFieldChange>().asMutable();
-
-            //add evt.target.id and evt.target.value
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
-
-            //add error
+            //set error obj
             nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: domainFieldError});
 
-            if (onChange) {
-                onChange(nameAndErrorList, index, true);
-            }
         }
-        else
-        {
-            let nameAndErrorList = List<IFieldChange>().asMutable();
-
-            //add evt.target.id and evt.target.value
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
-
+        else {
             //set error to undefined
             nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: undefined});
+        }
 
-            if (onChange) {
-                onChange(nameAndErrorList, index, true);
-            }
+        if (onChange) {
+            onChange(nameAndErrorList, index, true);
         }
 
     };

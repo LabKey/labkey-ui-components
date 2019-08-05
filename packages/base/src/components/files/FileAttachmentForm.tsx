@@ -327,7 +327,6 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             isSubmitting
         } = this.props;
 
-        console.log("initialFileNames", initialFileNames);
         return (
             <>
                 <span className="translator--toggle__wizard">

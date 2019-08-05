@@ -22,9 +22,17 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Alert, ConfirmModal } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import { DomainDesign, DomainField, DomainException, DomainFieldError} from "../models";
-import { addField, getIndexFromId, removeField, updateDomainField } from "../actions/actions";
+import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
+import {
+    addDomainException,
+    addField,
+    getIndexFromId,
+    getNameFromId, handleDomainUpdates,
+    removeField,
+    updateDomainField
+} from "../actions/actions";
 import { LookupProvider } from "./Lookup/Context";
+import {DOMAIN_FIELD_CLIENT_SIDE_ERROR} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -134,12 +142,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain, onChange } = this.props;
 
         if (onChange) {
-            const newDomain = updateDomainField(domain, fieldId, value);
+            const newDomain = updateDomainField(domain, value);
             onChange(newDomain, true);
         }
+    };
 
-        if (expand) {
-            this.expand(index);
+    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
+        const {domain, onChange} = this.props;
+
+        if (onChange) {
+            const newDomain = handleDomainUpdates(domain, changes);
+            onChange(newDomain, true);
         }
     };
 
@@ -333,7 +346,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                                 fieldError={this.getFieldError(field, domain.domainException)}
                                                                 index={i}
                                                                 expanded={expandedRowIndex === i}
-                                                                onChange={this.onFieldChange}
+                                                                onChange={this.onFieldsChange}
                                                                 onExpand={this.onFieldExpandToggle}
                                                                 onDelete={this.onDeleteField}
                                                             />

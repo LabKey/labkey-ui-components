@@ -18,6 +18,7 @@ import { Domain, Query, Security } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
 
 import {
+    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
@@ -25,7 +26,17 @@ import {
     DOMAIN_FIELD_TYPE,
     SEVERITY_LEVEL_ERROR
 } from "../constants";
-import { decodeLookup, DomainDesign, DomainField, PropDescType, PROP_DESC_TYPES, QueryInfoLite, DomainException, DomainFieldError } from "../models";
+import {
+    decodeLookup,
+    DomainDesign,
+    DomainField,
+    PropDescType,
+    PROP_DESC_TYPES,
+    QueryInfoLite,
+    DomainException,
+    DomainFieldError,
+    IFieldChange
+} from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -238,13 +249,28 @@ export function removeField(domain: DomainDesign, index: number): DomainDesign {
 /**
  *
  * @param domain: DomainDesign to update
- * @param fieldId: Field Id to update
- * @param value: New value
- * @return copy of domain with updated field
+ * @param changes: List of ids and values describing changes
+ * @return copy of domain with updated fields
  */
-export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
-    const type = getNameFromId(fieldId);
-    const index = getIndexFromId(fieldId);
+export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldChange>): DomainDesign {
+    let type;
+
+    changes.forEach((change) => {
+
+        type = getNameFromId(change.id);
+        if (type === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
+            domain = addDomainException(domain, change.value);
+        }
+        else {
+            domain = updateDomainField(domain, change)
+        }
+    });
+    return domain;
+}
+
+export function updateDomainField(domain: DomainDesign, change: IFieldChange): DomainDesign {
+    const type = getNameFromId(change.id);
+    const index = getIndexFromId(change.id);
 
     let field = domain.fields.get(index);
 
@@ -253,25 +279,25 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:
-                newField = updateDataType(newField, value);
+                newField = updateDataType(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_CONTAINER:
-                newField = updateLookup(newField, value);
+                newField = updateLookup(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
-                newField = updateLookup(newField, newField.lookupContainer, value);
+                newField = updateLookup(newField, newField.lookupContainer, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_QUERY:
-                const { queryName, rangeURI } = decodeLookup(value);
+                const { queryName, rangeURI } = decodeLookup(change.value);
                 newField = newField.merge({
                     lookupQuery: queryName,
-                    lookupQueryValue: value,
+                    lookupQueryValue: change.value,
                     lookupType: newField.lookupType.set('rangeURI', rangeURI),
                     rangeURI
                 }) as DomainField;
                 break;
             default:
-                newField = newField.set(type, value) as DomainField;
+                newField = newField.set(type, change.value) as DomainField;
                 break;
         }
 
@@ -322,3 +348,32 @@ export function getCheckedValue(evt) {
 
     return undefined;
 }
+
+/**
+ *
+ * @param domain: DomainDesign to update with Field level error, in this case, set DomainException property which will carry field level error
+ * @param domainFieldError: Field level error with message and severity
+ * @return copy of domain with exception set on a field
+ */
+export function addDomainException(domain: DomainDesign, domainFieldError: any): DomainDesign {
+
+    let domainExceptionObj;
+    if (domain.domainException && domain.domainException.errors) {
+        let newErrors = domain.domainException.errors.push(domainFieldError);
+        domainExceptionObj = domain.domainException.merge({errors: newErrors})
+    }
+    else {
+        let exception = domainFieldError.field + " :" + domainFieldError.message;
+        let success = undefined;
+        let severity = domainFieldError.severity;
+        let errors = List<DomainFieldError>().asMutable();
+        errors.push(domainFieldError);
+        let errorsImmutable = errors.asImmutable();
+
+        domainExceptionObj = new DomainException({exception, success, severity, errorsImmutable});
+    }
+
+    return domain.merge({
+        domainException: domainExceptionObj
+    }) as DomainDesign;
+};

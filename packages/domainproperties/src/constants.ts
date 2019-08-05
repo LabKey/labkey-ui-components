@@ -35,6 +35,7 @@ export const DOMAIN_FIELD_LOOKUP_SCHEMA = 'lookupSchema';
 export const DOMAIN_FIELD_FORMAT = 'format';
 export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
 export const DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING = 'excludeFromShifting';
+export const DOMAIN_FIELD_CLIENT_SIDE_ERROR = 'error';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';

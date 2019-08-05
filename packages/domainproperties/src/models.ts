@@ -28,6 +28,11 @@ import {
     USER_RANGE_URI
 } from "./constants";
 
+export interface IFieldChange {
+    id: string,
+    value: any
+}
+
 export interface ITypeDependentProps {
     index: number,
     label: string,

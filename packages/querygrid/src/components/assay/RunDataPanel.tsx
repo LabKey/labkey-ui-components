@@ -64,7 +64,7 @@ interface State {
     dupData?: DuplicateFilesResponse
     message?: React.ReactNode
     messageStyle?: string
-    previousRunData?: PreviousRunData
+    previousRunData: PreviousRunData
 }
 
 export class RunDataPanel extends React.Component<Props, State> {
@@ -98,7 +98,14 @@ export class RunDataPanel extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        this.initPreviewData();
+        if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
+            this.setState(() => ({
+                previousRunData: {
+                    isLoaded: false,
+                    isLoading: false
+                }
+            }), () => this.initPreviewData());
+        }
     }
 
     initPreviewData() {

@@ -205,7 +205,7 @@ export function resolveDetailRenderer(column: QueryColumn) {
                 renderer = (d) => <AppendUnits data={d} col={column}/>;
                 break;
             case 'assayrunreference':
-                renderer = (d, row) => <AssayRunReferenceRenderer data={d}/>;
+                renderer = (d) => <AssayRunReferenceRenderer data={d}/>;
                 break;
             default:
                 break;

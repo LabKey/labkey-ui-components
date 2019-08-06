@@ -21,7 +21,6 @@ import {
     Alert,
     AssayUploadTabs,
     FileAttachmentForm,
-    getActionErrorMessage,
     getServerFilePreview,
     InferDomainResponse,
     LoadingSpinner,
@@ -32,8 +31,7 @@ import { AssayWizardModel } from "./models";
 import { EditableGridPanel } from "../../components/editable/EditableGridPanel";
 import { handleTabKeyOnTextArea } from "../../components/forms/actions";
 import { FormStep, FormTabs } from "../forms/FormStep";
-import { checkForDuplicateAssayFiles, DuplicateFilesResponse, getRunPropertiesRow } from './actions';
-import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
+import { getRunPropertiesRow } from './actions';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 
@@ -113,9 +111,9 @@ export class RunDataPanel extends React.Component<Props, State> {
 
         const { gridModel, wizardModel } = this.props;
 
-        if (wizardModel.isInit  && gridModel && gridModel.isLoaded) {
+        if (wizardModel.isInit  && gridModel && gridModel.isLoaded  && wizardModel.usePreviousRunFile) {
             const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
-            if (wizardModel.usePreviousRunFile && row.has("DataOutputs")) {
+            if (row.has("DataOutputs")) {
                 const outputFiles = row.get('DataOutputs/DataFileUrl');
                 if (outputFiles.size > 0) {
                     const outputs = row.get('DataOutputs');
@@ -144,12 +142,12 @@ export class RunDataPanel extends React.Component<Props, State> {
                         }));
                     });
                 }
-                else {
-                    this.setState(() => ({
-                        message: "No preview data available for the current run's data.",
-                        messageStyle: "info"
-                    }))
-                }
+                // else {
+                //     this.setState(() => ({
+                //         message: "No preview data available for the current run.",
+                //         messageStyle: "info"
+                //     }))
+                // }
             }
         }
     }
@@ -163,6 +161,12 @@ export class RunDataPanel extends React.Component<Props, State> {
                 isLoading: false
             }}
         }));
+    };
+
+    onFileChange = (attachments: Map<string, File>) => {
+        this.setState(() => ({
+            message: undefined
+        }), () => this.props.onFileChange(attachments));
     };
 
     onFileRemove = (attachmentName: string) => {
@@ -182,7 +186,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onFileChange, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
+        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
         const { message, messageStyle } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
 
@@ -204,7 +208,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             allowMultiple={false}
                                             showLabel={false}
                                             initialFileNames={wizardModel.usePreviousRunFile && this.state.previousRunData && this.state.previousRunData.fileName ? [this.state.previousRunData.fileName] : []}
-                                            onFileChange={onFileChange}
+                                            onFileChange={this.onFileChange}
                                             onFileRemoval={this.onFileRemove}
                                             templateUrl={wizardModel.assayDef.templateLink}
                                             previewGridProps={acceptedPreviewFileFormats && {

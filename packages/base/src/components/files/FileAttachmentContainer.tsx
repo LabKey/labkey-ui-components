@@ -63,8 +63,9 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
     }
 
     componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
-        if (this.props.initialFileNames != nextProps.initialFileNames)
+        if (this.props.initialFileNames != nextProps.initialFileNames && Object.keys(this.state.files).length === 0) {
             this.initFileNames(nextProps);
+        }
     }
 
     initFileNames(props: FileAttachmentContainerProps) {

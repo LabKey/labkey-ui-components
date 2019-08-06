@@ -30,7 +30,7 @@
   border-radius: 2px;
   margin: 0 0 20px 0;
   padding: 13px 10px 5px 15px;
-  box-shadow: inset 0 0 5px 0 $yellow-shadow;
+  box-shadow: inset 0 0 5px 0 $yellow-shadow, 0 0 5px 0 $yellow-shadow;
   background-color: white;
 };
 
@@ -39,7 +39,7 @@
   border-radius: 2px;
   margin: 0 0 20px 0;
   padding: 13px 10px 5px 15px;
-  box-shadow: inset 0 0 5px 0 $red-shadow;
+  box-shadow: inset 0 0 5px 0 $red-shadow, 0 0 5px 0 $red-shadow;
   background-color: white;
 };
 

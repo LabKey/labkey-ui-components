@@ -210,16 +210,6 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
         }
     };
 
-    static renderSubPanelDivider() {
-        return (
-            <>
-                {[1, 2, 3, 4, 5].map((value, index) =>
-                    <div key={index} className="bottom-spacing"/>
-                )}
-            </>
-        );
-    }
-
     renderEditControls() {
         const {cancelText, submitText} = this.props;
         const { canSubmit } = this.state;
@@ -282,7 +272,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                         </Panel.Body>
                     </Panel>
                     {this.renderEditControls()}
-                    {asSubPanel && DetailEditing.renderSubPanelDivider()}
+                    {asSubPanel && <div className="panel-divider-spacing"/>}
                 </Formsy>
             )
         }

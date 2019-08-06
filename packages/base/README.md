@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* add css class for DetailEditing panel divider
+
 ### version 0.11.1
 *Released*: 31 July 2019
 * Update to @labkey/dependencies version 0.0.7

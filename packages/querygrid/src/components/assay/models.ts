@@ -162,9 +162,11 @@ export class AssayWizardModel extends Record({
             assayData.files = this.getAttachedFiles().toArray();
             if (runId !== undefined && usePreviousRunFile && assayData.files.length === 0) {
                 const url = runProperties.get("DataOutputs/DataFileUrl");
-                const filesIndex = url.indexOf("@files");
-                // get past the @files and the trailing slash
-                assayData.runFilePath = url.substring(filesIndex + 7);
+                if (url) {
+                    const filesIndex = url.indexOf("@files");
+                    // get past the @files and the trailing slash
+                    assayData.runFilePath = url.substring(filesIndex + 7);
+                }
             }
         }
         else if (currentStep === AssayUploadTabs.Copy) {

@@ -84,8 +84,7 @@ export class RunDataPanel extends React.Component<Props, State> {
             previousRunData : {
                 isLoaded: false,
                 isLoading: false
-            },
-            messageStyle: 'danger'
+            }
         }
     }
 
@@ -108,7 +107,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                     isLoading: false
                 }
             }));
-        } else if (nextWizardModel.isInit  && nextGridModel && nextGridModel.isLoaded ) {
+        } else if (this.isRerun() && !this.state.previousRunData.isLoaded && !this.state.previousRunData.isLoading) {
             this.initPreviewData();
         }
     }
@@ -122,45 +121,54 @@ export class RunDataPanel extends React.Component<Props, State> {
 
         if (wizardModel.isInit  && gridModel && gridModel.isLoaded) {
             const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
-            if (row.has("DataOutputs")) {
-                const outputs = row.get('DataOutputs');
-                if (outputs.size > 1) {
-                    console.warn("More than one data output for this run.  Using the last.");
-                }
+            if (wizardModel.usePreviousRunFile && row.has("DataOutputs")) {
+                const outputFiles = row.get('DataOutputs/DataFileUrl');
+                if (outputFiles.size > 0) {
+                    const outputs = row.get('DataOutputs');
+                    if (outputs.size > 1) {
+                        console.warn("More than one data output for this run.  Using the last.");
+                    }
 
-                getServerFilePreview(outputs.getIn([outputs.size -1, "value"]),  RunDataPanel.previewCount).then((response) => {
-                    this.setState(() => ({
+                    getServerFilePreview(outputs.getIn([outputs.size - 1, "value"]), RunDataPanel.previewCount).then((response) => {
+                        this.setState(() => ({
+                                previousRunData: {
+                                    isLoaded: true,
+                                    isLoading: false,
+                                    data: response,
+                                    fileName: outputs.getIn([outputs.size - 1, 'displayValue'])
+                                }
+                            }
+                        ));
+                    }).catch((reason) => {
+                        this.setState(() => ({
+                            message: "There was a problem retrieving the current run's data for previewing.  Re-import should still be possible.",
+                            messageStyle: "warning",
                             previousRunData: {
                                 isLoaded: true,
-                                isLoading: false,
-                                data: response,
-                                fileName: outputs.getIn([outputs.size -1, 'displayValue'])
+                                isLoading: false
                             }
-                        }
-                    ));
-                }).catch((reason) => {
+                        }));
+                    });
+                }
+                else {
                     this.setState(() => ({
-                        message: "There was a problem retrieving the current run's data for previewing.  Re-import should still be possible.",
-                        messageStyle: "warning",
-                        previousRunData: {
-                            isLoaded: true,
-                            isLoading: false
-                        }
-                    }));
-                });
+                        message: "No preview data available for the current run's data.",
+                        messageStyle: "info"
+                    }))
+                }
             }
         }
     }
 
     resetState = () => {
-        this.setState( () => ({
+        this.setState( (state) => ({
             message: undefined,
             attachments: undefined,
             dupData: undefined,
-            previousRunData: {
+            previousRunData: {...state.previousRunData, ...{
                 isLoaded: false,
                 isLoading: false
-            }
+            }}
         }));
     };
 
@@ -169,7 +177,15 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     onFileRemove = (attachmentName: string) => {
-        this.resetState();
+        this.setState( (state) => ({
+            message: undefined,
+            attachments: undefined,
+            dupData: undefined,
+            previousRunData: {
+                isLoaded: false,
+                isLoading: false
+            }
+        }));
         return this.props.onFileRemoval(attachmentName);
     };
 
@@ -195,19 +211,25 @@ export class RunDataPanel extends React.Component<Props, State> {
 
     checkForDuplicateFiles = (attachments: Map<string, File>) => {
         this.props.onFileChange(attachments);
-        checkForDuplicateAssayFiles(attachments.keySeq().toArray()).then((dupData) => {
-            if (dupData.duplicate) {
+        this.setState(() => ({
+            message: undefined
+        }), () => {
+            checkForDuplicateAssayFiles(attachments.keySeq().toArray()).then((dupData) => {
+                if (dupData.duplicate) {
+                    this.setState(() => ({
+                        attachments,
+                        showRenameModal: true,
+                        dupData
+                    }));
+                }
+            }).catch((reason) => {
                 this.setState(() => ({
-                   attachments,
-                   showRenameModal: true,
-                   dupData
+                    message: getActionErrorMessage("There was an error retrieving the assay run data.", "assay run"),
+                    messageStyle: 'danger'
                 }));
-            }
-        }).catch((reason) => {
-           this.setState(() => ({
-               message: getActionErrorMessage("There was an error retrieving assay run data.", "assay run")
-           }));
-        })
+            })
+        });
+
     };
 
     onTabChange = () => {
@@ -228,9 +250,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                     {isLoading ? <LoadingSpinner/>
                         : <>
                             <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
-                            <Alert bsStyle={messageStyle}>
-                                {message}
-                            </Alert>
+
                             <div className="row">
                                 <div className="col-sm-12">
                                     <FormStep stepIndex={AssayUploadTabs.Files}>
@@ -238,7 +258,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             allowDirectories={false}
                                             allowMultiple={false}
                                             showLabel={false}
-                                            initialFileNames={this.state.previousRunData && this.state.previousRunData.fileName ? [this.state.previousRunData.fileName] : []}
+                                            initialFileNames={wizardModel.usePreviousRunFile && this.state.previousRunData && this.state.previousRunData.fileName ? [this.state.previousRunData.fileName] : []}
                                             onFileChange={this.checkForDuplicateFiles}
                                             onFileRemoval={this.onFileRemove}
                                             templateUrl={wizardModel.assayDef.templateLink}
@@ -289,6 +309,11 @@ export class RunDataPanel extends React.Component<Props, State> {
                                         />
                                     </FormStep>
                                 </div>
+                            </div>
+                            <div className={"top-spacing"}>
+                                <Alert bsStyle={messageStyle}>
+                                    {message}
+                                </Alert>
                             </div>
                             {showRenameModal && (this.renderFileRenameModal())}
                         </>

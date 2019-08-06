@@ -60,8 +60,6 @@ interface PreviousRunData {
 
 interface State {
     attachments?: Map<string, File>
-    showRenameModal : boolean
-    dupData?: DuplicateFilesResponse
     message?: React.ReactNode
     messageStyle?: string
     previousRunData: PreviousRunData
@@ -80,7 +78,6 @@ export class RunDataPanel extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            showRenameModal: false,
             previousRunData : {
                 isLoaded: false,
                 isLoading: false
@@ -97,10 +94,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const nextWizardModel = nextProps.wizardModel;
-        const nextGridModel = nextProps.gridModel;
-
-        if (nextWizardModel.runId != this.props.wizardModel.runId) {
+        if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
             this.setState(() => ({
                 previousRunData: {
                     isLoaded: false,
@@ -164,7 +158,6 @@ export class RunDataPanel extends React.Component<Props, State> {
         this.setState( (state) => ({
             message: undefined,
             attachments: undefined,
-            dupData: undefined,
             previousRunData: {...state.previousRunData, ...{
                 isLoaded: false,
                 isLoading: false
@@ -172,15 +165,10 @@ export class RunDataPanel extends React.Component<Props, State> {
         }));
     };
 
-    onCancelRename = () => {
-        this.setState(() => ({showRenameModal: false}));
-    };
-
     onFileRemove = (attachmentName: string) => {
         this.setState( (state) => ({
             message: undefined,
             attachments: undefined,
-            dupData: undefined,
             previousRunData: {
                 isLoaded: false,
                 isLoading: false
@@ -189,56 +177,13 @@ export class RunDataPanel extends React.Component<Props, State> {
         return this.props.onFileRemoval(attachmentName);
     };
 
-    onRenameConfirm = () => {
-        if (this.state.showRenameModal) {
-            this.setState(() => ({showRenameModal: false}));
-        }
-        if (this.props.onRenameConfirm) {
-            this.props.onRenameConfirm();
-        }
-    };
-
-    renderFileRenameModal() {
-        return (
-            <ImportWithRenameConfirmModal
-                onConfirm={this.onRenameConfirm}
-                onCancel={this.onCancelRename}
-                originalName={this.state.attachments.keySeq().get(0)}
-                newName={this.state.dupData.newFileNames[0]}
-            />
-        )
-    }
-
-    checkForDuplicateFiles = (attachments: Map<string, File>) => {
-        this.props.onFileChange(attachments);
-        this.setState(() => ({
-            message: undefined
-        }), () => {
-            checkForDuplicateAssayFiles(attachments.keySeq().toArray()).then((dupData) => {
-                if (dupData.duplicate) {
-                    this.setState(() => ({
-                        attachments,
-                        showRenameModal: true,
-                        dupData
-                    }));
-                }
-            }).catch((reason) => {
-                this.setState(() => ({
-                    message: getActionErrorMessage("There was an error retrieving the assay run data.", "assay run"),
-                    messageStyle: 'danger'
-                }));
-            })
-        });
-
-    };
-
     onTabChange = () => {
         this.resetState();
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
-        const { showRenameModal, message, messageStyle } = this.state;
+        const { currentStep, gridModel, wizardModel, onFileChange, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
+        const { message, messageStyle } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
 
         return (
@@ -259,7 +204,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             allowMultiple={false}
                                             showLabel={false}
                                             initialFileNames={wizardModel.usePreviousRunFile && this.state.previousRunData && this.state.previousRunData.fileName ? [this.state.previousRunData.fileName] : []}
-                                            onFileChange={this.checkForDuplicateFiles}
+                                            onFileChange={onFileChange}
                                             onFileRemoval={this.onFileRemove}
                                             templateUrl={wizardModel.assayDef.templateLink}
                                             previewGridProps={acceptedPreviewFileFormats && {
@@ -315,7 +260,6 @@ export class RunDataPanel extends React.Component<Props, State> {
                                     {message}
                                 </Alert>
                             </div>
-                            {showRenameModal && (this.renderFileRenameModal())}
                         </>
                     }
                 </div>

@@ -18,11 +18,11 @@ import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
-    getActionErrorMessage,
     Alert,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayUploadTabs,
+    getActionErrorMessage,
     LoadingSpinner,
     Progress,
     QueryGridModel,
@@ -32,7 +32,14 @@ import {
 
 import { Location } from "../../util/URL"
 import { loadSelectedSamples } from "../samples/actions";
-import { getRunPropertiesModel, getRunPropertiesRow, importAssayRun, uploadAssayRunFiles } from "./actions";
+import {
+    checkForDuplicateAssayFiles,
+    DuplicateFilesResponse,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    importAssayRun,
+    uploadAssayRunFiles
+} from "./actions";
 import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from "./models";
 import { withFormSteps, WithFormStepsProps } from "../forms/FormStep"
 import { getQueryGridModel, removeQueryGridModel } from "../../global";
@@ -43,6 +50,7 @@ import { getQueryDetails } from "../../query/api";
 import { BatchPropertiesPanel } from "./BatchPropertiesPanel";
 import { RunPropertiesPanel } from "./RunPropertiesPanel";
 import { RunDataPanel } from "./RunDataPanel";
+import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
@@ -63,7 +71,9 @@ type Props = OwnProps & WithFormStepsProps;
 
 interface State {
     schemaQuery: SchemaQuery
-    model: AssayWizardModel
+    model: AssayWizardModel,
+    showRenameModal : boolean
+    dupData?: DuplicateFilesResponse
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
@@ -72,7 +82,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         super(props);
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
-            model: INIT_WIZARD_MODEL.merge({runId: props.runId}) as AssayWizardModel
+            model: INIT_WIZARD_MODEL.merge({runId: props.runId}) as AssayWizardModel,
+            showRenameModal: false
         }
     }
 
@@ -324,6 +335,24 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }, 250);
     }
 
+    checkForDuplicateFiles = () => {
+        checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray()).then((dupData) => {
+            if (dupData.duplicate) {
+                this.setState(() => ({
+                    showRenameModal: true,
+                    dupData
+                }));
+            }
+            else {
+                this.onFinish(false);
+            }
+        }).catch((reason) => {
+            this.setState((state) => ({
+                model: state.model.set('errorMsg', getActionErrorMessage("There was in checking for duplicate file names.", "assay run")) as AssayWizardModel
+            }));
+        });
+    };
+
     onFinish(importAgain: boolean) {
         const { currentStep, onSave } = this.props;
         const { model } = this.state;
@@ -415,9 +444,31 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
+    onCancelRename = () => {
+        this.setState(() => ({showRenameModal: false}));
+    };
+
+    onRenameConfirm = () => {
+        if (this.state.showRenameModal) {
+            this.setState(() => ({showRenameModal: false}));
+        }
+        this.onFinish(false)
+    };
+
+    renderFileRenameModal() {
+        return (
+            <ImportWithRenameConfirmModal
+                onConfirm={this.onRenameConfirm}
+                onCancel={this.onCancelRename}
+                originalName={this.state.model.attachedFiles.keySeq().get(0)}
+                newName={this.state.dupData.newFileNames[0]}
+            />
+        )
+    }
+
     render() {
         const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, allowBulkInsert, onSave } = this.props;
-        const { model } = this.state;
+        const { model, showRenameModal } = this.state;
 
         if (!model.isInit) {
             return <LoadingSpinner/>
@@ -458,7 +509,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     <Button
                         type="submit"
                         bsStyle={"success"}
-                        onClick={this.onFinish.bind(this, false)}
+                        onClick={this.checkForDuplicateFiles}
                         disabled={model.isSubmitting || !model.hasData(currentStep, dataGridModel)}>
                         {onSave
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
@@ -471,6 +522,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     modal={true}
                     title={this.isReimport() ? "Re-importing assay run" : "Importing assay run"}
                     toggle={model.isSubmitting}/>
+                {showRenameModal && (this.renderFileRenameModal())}
             </>
         )
     }

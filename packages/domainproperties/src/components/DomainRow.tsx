@@ -20,7 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
-import {DOMAIN_FIELD_CLIENT_SIDE_ERROR, SEVERITY_LEVEL_WARN} from "../constants";
+import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR } from "../constants";
 
 import {
     DOMAIN_FIELD_ADV,
@@ -32,7 +32,7 @@ import {
     DOMAIN_FIELD_FULLY_LOCKED,
 } from "../constants";
 import { DomainField, IFieldChange, FieldErrors, DomainFieldError, PropDescType, resolveAvailableTypes } from "../models";
-import {createFormInputId, createFormInputName, getCheckedValue, getIndexFromId} from "../actions/actions";
+import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "../actions/actions";
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 import {dom} from "@fortawesome/fontawesome-svg-core";
@@ -280,12 +280,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     render() {
-        const { index, field, expanded } = this.props;
+        const { index, field, expanded, fieldError } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
                 {(provided) => (
-                    <div className={'domain-field-row ' + (expanded?'domain-row-expanded ':'')}
+                    <div className={(fieldError ? this.getFieldErrorClass(fieldError) : 'domain-field-row ') + (expanded ? 'domain-row-expanded ': '') }
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
@@ -306,5 +306,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 )}
             </Draggable>
         );
+    }
+
+    private getFieldErrorClass(fieldError: DomainFieldError)
+    {
+        //severity will be undefined for storybook's server side error mockup
+        if (!fieldError.severity || fieldError.severity === SEVERITY_LEVEL_ERROR) {
+            return 'domain-field-row-error '
+        }
+        else {
+            return 'domain-field-row-warning ';
+        }
     }
 }

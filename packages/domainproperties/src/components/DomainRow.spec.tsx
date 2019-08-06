@@ -22,7 +22,7 @@ import {
     ATTACHMENT_RANGE_URI,
     DATETIME_RANGE_URI,
     DOUBLE_RANGE_URI,
-    PARTICIPANTID_CONCEPT_URI,
+    PARTICIPANTID_CONCEPT_URI, PHILEVEL_RESTRICTED_PHI,
     STRING_RANGE_URI
 } from "../constants";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
@@ -60,6 +60,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -84,6 +85,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -108,6 +110,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -132,6 +135,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -157,6 +161,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -181,6 +186,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();

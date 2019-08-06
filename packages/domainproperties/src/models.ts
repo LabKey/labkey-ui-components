@@ -17,12 +17,17 @@ import { List, Record, fromJS } from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
-    DATETIME_RANGE_URI,
+    DATETIME_RANGE_URI, DOMAIN_FIELD_DIMENSION, DOMAIN_FIELD_MEASURE,
     DOUBLE_RANGE_URI, FILELINK_RANGE_URI, FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI, PARTICIPANTID_CONCEPT_URI, STRING_RANGE_URI,
     USER_RANGE_URI
 } from "./constants";
+
+export interface IFieldChange {
+    id: string,
+    value: any
+}
 
 export interface ITypeDependentProps {
     index: number,
@@ -63,6 +68,14 @@ export class PropDescType extends Record({
         return (rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI);
     }
 
+    static isMeasureDimension(rangeURI: string): boolean {
+        return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI);
+    }
+
+    static isMvEnableable(rangeURI: string): boolean {
+        return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI && rangeURI !== MULTILINE_RANGE_URI)
+    }
+
     constructor(values?: {[key:string]: any}) {
         super(values);
     }
@@ -82,19 +95,29 @@ export class PropDescType extends Record({
 
 const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, shortDisplay: 'String'});
 const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
+const MULTILINE_TYPE = new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI});
+const BOOLEAN_TYPE = new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI});
+const INTEGER_TYPE = new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI});
+const DOUBLE_TYPE = new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI});
+const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI});
+const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
+const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI});
+const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
+const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI});
+const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
-    new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
-    new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
-    new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
-    new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI}),
-    new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI}),
-    new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI}),
-    new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI}),
-    new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI}),
-    new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI}),
-    new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI}),
+    MULTILINE_TYPE,
+    BOOLEAN_TYPE,
+    INTEGER_TYPE,
+    DOUBLE_TYPE,
+    DATETIME_TYPE,
+    FLAG_TYPE,
+    FILE_TYPE,
+    ATTACHMENT_TYPE,
+    USERS_TYPE,
+    PARTICIPANT_TYPE,
     LOOKUP_TYPE
 ]);
 
@@ -195,6 +218,7 @@ export interface IDomainField {
     conceptURI?: string
     defaultScale?: string
     description?: string
+    dimension?: boolean
     excludeFromShifting?: boolean
     format?: string
     hidden?: boolean
@@ -203,14 +227,19 @@ export interface IDomainField {
     lookupContainer?: string
     lookupQuery?: string
     lookupSchema?: string
+    measure?: boolean
+    mvEnabled?: boolean
     name: string
+    phi?: string
     primaryKey?: boolean
     propertyId?: number
     propertyURI: string
     rangeURI: string
     required?: boolean
+    recommendedVariable?: boolean
     scale?: number
     URL?: string
+    shownInDetailsView?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
 
@@ -225,6 +254,7 @@ export class DomainField extends Record({
     conceptURI: undefined,
     defaultScale: undefined,
     description: undefined,
+    dimension: undefined,
     excludeFromShifting: false,
     format: undefined,
     hidden: false,
@@ -233,14 +263,19 @@ export class DomainField extends Record({
     lookupContainer: undefined,
     lookupQuery: undefined,
     lookupSchema: undefined,
+    measure: undefined,
+    mvEnabled: false,
     name: undefined,
+    phi: undefined,
     primaryKey: undefined,
     propertyId: undefined,
     propertyURI: undefined,
     rangeURI: undefined,
+    recommendedVariable: false,
     required: false,
     scale: undefined,
     URL: undefined,
+    shownInDetailsView: true,
     shownInInsertView: true,
     shownInUpdateView: true,
 
@@ -253,6 +288,7 @@ export class DomainField extends Record({
     conceptURI?: string;
     defaultScale?: string;
     description?: string;
+    dimension?: boolean;
     excludeFromShifting?: boolean;
     format?: string;
     hidden?: boolean;
@@ -261,14 +297,19 @@ export class DomainField extends Record({
     lookupContainer?: string;
     lookupQuery?: string;
     lookupSchema?: string;
+    measure?: boolean;
+    mvEnabled?: boolean;
     name: string;
+    phi?: string;
     primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;
     rangeURI: string;
+    recommendedVariable: boolean;
     required?: boolean;
     scale?: number;
     URL?: string;
+    shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
 
@@ -283,6 +324,7 @@ export class DomainField extends Record({
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
         return new DomainField(Object.assign({}, rawField, {
+        // return new DomainField(Object.assign({}, rawField, {
             dataType,
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
             lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
@@ -346,6 +388,30 @@ export class DomainField extends Record({
 
     isNew(): boolean {
         return isFieldNew(this);
+    }
+
+    static createNew() {
+        return DomainField.updateDefaultValues(DomainField.create({}))
+    }
+
+    static updateDefaultValues(field: DomainField): DomainField {
+
+        return field.merge({
+            measure: DomainField.defaultValues(DOMAIN_FIELD_MEASURE, field.dataType),
+            dimension: DomainField.defaultValues(DOMAIN_FIELD_DIMENSION, field.dataType)
+        }) as DomainField;
+    }
+
+    static defaultValues(prop: string, type: PropDescType): any {
+
+        switch(prop) {
+            case DOMAIN_FIELD_MEASURE:
+                return (type === INTEGER_TYPE || type === DOUBLE_TYPE);
+            case DOMAIN_FIELD_DIMENSION:
+                return (type === LOOKUP_TYPE || type === USERS_TYPE);
+            default:
+                return false
+        }
     }
 }
 

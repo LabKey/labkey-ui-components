@@ -35,6 +35,15 @@ export const DOMAIN_FIELD_LOOKUP_SCHEMA = 'lookupSchema';
 export const DOMAIN_FIELD_FORMAT = 'format';
 export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
 export const DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING = 'excludeFromShifting';
+export const DOMAIN_FIELD_MEASURE = 'measure';
+export const DOMAIN_FIELD_DIMENSION = 'dimension';
+export const DOMAIN_FIELD_HIDDEN = 'hidden';
+export const DOMAIN_FIELD_MVENABLED = 'mvEnabled';
+export const DOMAIN_FIELD_PHI = 'phi';
+export const DOMAIN_FIELD_RECOMMENDEDVARIABLE = 'recommendedVariable';
+export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
+export const DOMAIN_FIELD_SHOWNINDINSERTVIEW = 'shownInInsertView';
+export const DOMAIN_FIELD_SHOWNINUPDATESVIEW = 'shownInUpdateView';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -62,6 +71,18 @@ export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#Participa
 export const MAX_TEXT_LENGTH = 4000;
 
 export const LK_URL_ENCODING_DOC = "https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding";
+
+export const PHILEVEL_NOT_PHI = "NotPHI";
+export const PHILEVEL_LIMITED_PHI = "Limited";
+export const PHILEVEL_FULL_PHI = "PHI";
+export const PHILEVEL_RESTRICTED_PHI = "Restricted";
+
+export const DOMAIN_PHI_LEVELS = List([
+    {label: 'Not PHI', value: PHILEVEL_NOT_PHI},
+    {label: 'Limited PHI', value: PHILEVEL_LIMITED_PHI},
+    {label: 'Full PHI', value: PHILEVEL_FULL_PHI},
+    {label: 'Restricted PHI', value: PHILEVEL_RESTRICTED_PHI}
+]);
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

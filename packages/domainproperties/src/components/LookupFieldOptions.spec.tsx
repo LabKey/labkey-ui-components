@@ -72,6 +72,7 @@ describe('LookupFieldOptions', () => {
                     lookupQueryValue={_query}
                     original={field}
                     onChange={jest.fn()}
+                    onMultiChange={jest.fn()}
                     index={_index}
                     label={_label}/>
             </MockLookupProvider>
@@ -146,6 +147,7 @@ describe('LookupFieldOptions', () => {
                     lookupQueryValue={_query}
                     original={field}
                     onChange={jest.fn()}
+                    onMultiChange={jest.fn()}
                     index={_index}
                     label={_label}/>
             </MockLookupProvider>
@@ -174,6 +176,7 @@ describe('LookupFieldOptions', () => {
                                     lookupQueryValue=""
                                     original={field}
                                     onChange={jest.fn()}
+                                    onMultiChange={jest.fn()}
                                     index={_index}
                                     label={_label}
                                 />
@@ -217,6 +220,7 @@ describe('LookupFieldOptions', () => {
                     lookupQueryValue={_query1}
                     original={field}
                     onChange={jest.fn()}
+                    onMultiChange={jest.fn()}
                     index={_index}
                     label={_label}
                 />
@@ -245,6 +249,7 @@ describe('LookupFieldOptions', () => {
                                     lookupQueryValue=""
                                     original={field}
                                     onChange={jest.fn()}
+                                    onMultiChange={jest.fn()}
                                     index={_index}
                                     label={_label}
                                 />
@@ -290,6 +295,7 @@ describe('LookupFieldOptions', () => {
                     lookupQueryValue={_query1}
                     original={field}
                     onChange={jest.fn()}
+                    onMultiChange={jest.fn()}
                     index={_index}
                     label={_label}
                 />
@@ -311,6 +317,7 @@ describe('LookupFieldOptions', () => {
                             lookupQueryValue=""
                             original={field}
                             onChange={jest.fn()}
+                            onMultiChange={jest.fn()}
                             index={1}
                             label={_label}
                         />

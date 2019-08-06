@@ -22,9 +22,10 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Alert, ConfirmModal } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import { DomainDesign, DomainField } from "../models";
-import { addField, getIndexFromId, removeField, updateDomainField } from "../actions/actions";
+import {DomainDesign, DomainField, IFieldChange} from "../models";
+import {addField, getIndexFromId, getMaxPhiLevel, handleDomainUpdates, removeField} from "../actions/actions";
 import { LookupProvider } from "./Lookup/Context";
+import {PHILEVEL_NOT_PHI} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -32,11 +33,13 @@ interface IDomainFormInput {
     helpURL: string
     helpNoun: string
     showHeader: boolean
+    maxPhiLevel?: string  // Just for testing, only affects display
 }
 
 interface IDomainFormState {
     expandedRowIndex: number
     showConfirm: boolean
+    maxPhiLevel: string
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -65,8 +68,22 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.state = {
             expandedRowIndex: undefined,
-            showConfirm: false
+            showConfirm: false,
+            maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI
         };
+    }
+
+    componentDidMount(): void {
+        if (!this.props.maxPhiLevel) {
+            getMaxPhiLevel()
+                .then((maxPhiLevel) => {
+                    this.setState({maxPhiLevel: maxPhiLevel})
+                })
+                .catch((error) => {
+                        console.error("Unable to retrieve max PHI level.")
+                    }
+                )
+        }
     }
 
     collapse = (): void => {
@@ -130,11 +147,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.collapse();
     };
 
-    onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
-        const { domain, onChange } = this.props;
+    onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
+        const {domain, onChange} = this.props;
 
         if (onChange) {
-            const newDomain = updateDomainField(domain, fieldId, value);
+            const newDomain = handleDomainUpdates(domain, changes);
             onChange(newDomain, true);
         }
 
@@ -301,7 +318,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader } = this.props;
-        const { showConfirm, expandedRowIndex } = this.state;
+        const { showConfirm, expandedRowIndex, maxPhiLevel } = this.state;
 
         return (
             <>
@@ -332,9 +349,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                                 field={field}
                                                                 index={i}
                                                                 expanded={expandedRowIndex === i}
-                                                                onChange={this.onFieldChange}
+                                                                onChange={this.onFieldsChange}
                                                                 onExpand={this.onFieldExpandToggle}
                                                                 onDelete={this.onDeleteField}
+                                                                maxPhiLevel={maxPhiLevel}
                                                             />
                                                         }))}
                                                         {provided.placeholder}

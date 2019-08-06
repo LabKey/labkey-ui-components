@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from "immutable";
-import { Domain, Query, Security } from "@labkey/api";
+import { Domain, Query, Security, Ajax, ActionURL } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
 
 import {
@@ -24,7 +24,7 @@ import {
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { decodeLookup, DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
+import {decodeLookup, DomainDesign, DomainField, IFieldChange, PROP_DESC_TYPES, QueryInfoLite} from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -150,6 +150,20 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .toList();
 }
 
+export function getMaxPhiLevel(): Promise<string> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('security', 'GetMaxPhiLevel.api'),
+            success: (data) => {
+                resolve(JSON.parse(data.response).maxPhiLevel);
+            },
+            failure: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
 /**
  * @param domain: DomainDesign to save
  * @param kind: DomainKind if creating new Domain
@@ -219,7 +233,7 @@ export function getIndexFromId(id: string): number {
 
 export function addField(domain: DomainDesign): DomainDesign {
     return domain.merge({
-        fields: domain.fields.push(DomainField.create({}))
+        fields: domain.fields.push(DomainField.createNew())
     }) as DomainDesign;
 }
 
@@ -232,13 +246,29 @@ export function removeField(domain: DomainDesign, index: number): DomainDesign {
 /**
  *
  * @param domain: DomainDesign to update
- * @param fieldId: Field Id to update
- * @param value: New value
- * @return copy of domain with updated field
+ * @param changes: List of ids and values describing changes
+ * @return copy of domain with updated fields
  */
-export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
-    const type = getNameFromId(fieldId);
-    const index = getIndexFromId(fieldId);
+export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldChange>): DomainDesign {
+    let type;
+
+    changes.forEach((change) => {
+        // TODO: Do something like this commented out code, filling in your function to handle errors.
+        // type = getNameFromId(change.id);
+        // if (type === DOMAIN_FIELD_ERROR) {
+        //     domain = handleFieldErrors(change)
+        // }
+        // else {
+            domain = updateDomainField(domain, change)
+        // }
+    });
+
+    return domain;
+}
+
+function updateDomainField(domain: DomainDesign, change: IFieldChange): DomainDesign {
+    const type = getNameFromId(change.id);
+    const index = getIndexFromId(change.id);
 
     let field = domain.fields.get(index);
 
@@ -247,25 +277,25 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:
-                newField = updateDataType(newField, value);
+                newField = updateDataType(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_CONTAINER:
-                newField = updateLookup(newField, value);
+                newField = updateLookup(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
-                newField = updateLookup(newField, newField.lookupContainer, value);
+                newField = updateLookup(newField, newField.lookupContainer, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_QUERY:
-                const { queryName, rangeURI } = decodeLookup(value);
+                const { queryName, rangeURI } = decodeLookup(change.value);
                 newField = newField.merge({
                     lookupQuery: queryName,
-                    lookupQueryValue: value,
+                    lookupQueryValue: change.value,
                     lookupType: newField.lookupType.set('rangeURI', rangeURI),
                     rangeURI
                 }) as DomainField;
                 break;
             default:
-                newField = newField.set(type, value) as DomainField;
+                newField = newField.set(type, change.value) as DomainField;
                 break;
         }
 
@@ -288,6 +318,10 @@ function updateDataType(field: DomainField, value: any): DomainField {
             conceptURI: dataType.conceptURI,
             rangeURI: dataType.rangeURI
         }) as DomainField;
+
+        if (field.isNew()) {
+            field = DomainField.updateDefaultValues(field);
+        }
     }
 
     return field;

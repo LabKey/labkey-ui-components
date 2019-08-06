@@ -143,3 +143,78 @@
 .domain-help-table {
   border: 1px solid black;
 }
+
+.domain-adv-footer {
+  font-size: 14px;
+}
+
+.domain-adv-link:hover {
+  cursor: pointer;
+}
+
+.domain-adv-apply-btn {
+   margin-left: 12px;
+}
+
+.domain-adv-cancel-btn {
+  float: left;
+}
+
+.domain-adv-display-options {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.domain-adv-misc-options {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 0 14px 0;
+}
+
+.domain-adv-phi {
+  float: right;
+  width: 250px;
+}
+
+.domain-adv-checkbox {
+  cursor: default
+}
+
+.my-node-enter {
+  max-height:0px;
+  height:0px;
+}
+.my-node-enter-active {
+  overflow:hidden;
+  transition:max-height 1s ease-out; // note that we're transitioning max-height, not height!
+  height:auto;
+  max-height:600px;
+}
+.my-node-exit {
+  max-height:600px;
+}
+.my-node-exit-active {
+  overflow:hidden;
+  transition:max-height 1s ease-out; // note that we're transitioning max-height, not height!
+  height:0;
+  max-height:0px;
+}
+
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1.0;
+  transition: opacity 300ms ease-in;
+}
+
+.example-leave {
+  opacity: 1.0;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
+}

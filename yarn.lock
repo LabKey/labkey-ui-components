@@ -1119,6 +1119,17 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
+"@glass/base@0.11.1":
+  version "0.11.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.11.1.tgz#a96a7754b50845246bb344e9daeff5d71e67a702"
+  integrity sha1-qWp3VLUIRSRrs0Tp2u/11x5npwI=
+  dependencies:
+    "@labkey/dependencies" "0.0.7"
+    bootstrap "3.4.1"
+    moment "2.24.0"
+    moment-jdateformatparser "1.1.0"
+    numeral "2.0.6"
+
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
@@ -11088,6 +11099,16 @@ react-textarea-autosize@^7.1.0:
   dependencies:
     "@babel/runtime" "^7.1.2"
     prop-types "^15.6.0"
+
+react-transition-group@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.2.2.tgz#8b5252410180c27fd7eebf50b185256b41799b16"
+  integrity sha512-uP0tjqewtvjb7kGZFpZYPoD/NlVZmIgts9eTt1w35pAaEApPxQGv94lD3VkqyXf2aMqrSGwhs6EV/DLaoKbLSw==
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    dom-helpers "^3.4.0"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react-transition-group@^2.0.0, react-transition-group@^2.2.0, react-transition-group@^2.2.1:
   version "2.9.0"

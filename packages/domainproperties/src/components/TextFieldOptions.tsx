@@ -85,9 +85,11 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 <Row className='domain-row-expanded '>
                     <Col xs={12}>
                         <div className={'domain-field-label'}>
-                            Max Text Character Count<LabelHelpTip
+                            Max Text Character Count
+                            <LabelHelpTip
                                 title="Max Text Length"
-                                body={this.getMaxCountHelpText} />
+                                body={this.getMaxCountHelpText}
+                            />
                         </div>
                     </Col>
                 </Row>

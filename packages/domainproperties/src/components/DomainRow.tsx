@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { Row, Col, FormControl, Checkbox, Button } from "react-bootstrap";
+import {Row, Col, FormControl, Checkbox, Button, Collapse} from "react-bootstrap";
+import { List } from "immutable";
+import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from "react-beautiful-dnd";
@@ -28,23 +30,39 @@ import {
     DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_ROW,
     DOMAIN_FIELD_TYPE
 } from "../constants";
-import { DomainField, FieldErrors, PropDescType, resolveAvailableTypes, PROP_DESC_TYPES } from "../models";
+import { DomainField, IFieldChange, FieldErrors, PropDescType, resolveAvailableTypes } from "../models";
 import {createFormInputId, createFormInputName, getCheckedValue} from "../actions/actions";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
+import {AdvancedSettings} from "./AdvancedSettings";
 
 interface IDomainRowProps {
     expanded: boolean
     field: DomainField
     index: number
-    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
+    maxPhiLevel: string
+    onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any
     onDelete: (any) => void
     onExpand: (index?: number) => void
+}
+
+interface IDomainRowState {
+    showAdv: boolean
+    closed: boolean
 }
 
 /**
  * React component for one property in a domain
  */
-export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
+export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showAdv: false,
+            closed: true
+        };
+    }
 
     /**
      *  Details section of property row
@@ -97,21 +115,43 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
-    onFieldChange = (evt: any, expand?: boolean): any => {
-        const { index, onChange } = this.props;
+    onFieldChange = (evt: any, expand?: boolean) => {
+        const { index } = this.props;
+
+        let value = getCheckedValue(evt);
+        if (value === undefined) {
+            value = evt.target.value;
+        }
+
+        this.onSingleFieldChange(evt.target.id, value, index, expand);
+    };
+
+    onSingleFieldChange = (id: string, value: any, index?: number, expand?: boolean): void => {
+        const { onChange } = this.props;
 
         if (onChange) {
-            let value = getCheckedValue(evt);
-            if (value === undefined) {
-                value = evt.target.value;
-            }
+            onChange(List([{id, value} as IFieldChange]), index, expand === true);
+        }
+    };
 
-            onChange(evt.target.id, value, index, expand === true);
+    onMultiFieldChange = (changes: List<IFieldChange>): void => {
+        const { onChange, index } = this.props;
+
+        if (onChange) {
+            onChange(changes, index, true);
         }
     };
 
     onDataTypeChange = (evt: any): any => {
         this.onFieldChange(evt, PropDescType.isLookup(evt.target.value));
+    };
+
+    onShowAdvanced = (): any => {
+        this.setState({showAdv: true});
+    };
+
+    onHideAdvanced = (): any => {
+        this.setState({showAdv: false});
     };
 
     onDelete = (): any => {
@@ -125,9 +165,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     onExpand = (): any => {
         const { index, onExpand } = this.props;
 
+        this.setState({closed: false});
+
         if (onExpand) {
             onExpand(index);
         }
+    };
+
+    onCollapsed = () : void => {
+        this.setState({closed: true});
     };
 
     renderBaseFields() {
@@ -194,14 +240,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                         className="domain-row-button"
                         name={createFormInputName(DOMAIN_FIELD_DELETE)}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                        onClick={this.onDelete}>
+                        onClick={this.onDelete}
+                    >
                         Remove Field
                     </Button>
                     <Button
-                        disabled={true}
                         name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, index)}
-                        className="domain-row-button">
+                        onClick={this.onShowAdvanced}
+                        className="domain-row-button"
+                    >
                         Advanced Settings
                     </Button>
                 </>
@@ -216,12 +264,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
     }
 
     render() {
-        const { index, field, expanded, onChange } = this.props;
+        const { index, field, expanded, maxPhiLevel } = this.props;
+        const { closed } = this.state;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
                 {(provided) => (
-                    <div className={'domain-field-row ' + (expanded?'domain-row-expanded ':'')}
+                    <div className={'domain-field-row ' + (closed?'':'domain-row-expanded ')}
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
@@ -229,15 +278,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                          draggable={true}
                     >
                         <Row key={createFormInputId("domainrow", index)}>
+                            <AdvancedSettings index={index} maxPhiLevel={maxPhiLevel} field={field} onApply={this.onMultiFieldChange} show={this.state.showAdv} onHide={this.onHideAdvanced} label={field.name}/>
                             {this.renderBaseFields()}
                             <Col xs={6}>
                                 {this.getDetails()}
                                 {this.renderButtons()}
                             </Col>
                         </Row>
-                        {expanded &&
-                            <DomainRowExpandedOptions field={field} index={index} onChange={onChange}/>
-                        }
+                            <Collapse in={expanded} onExited={this.onCollapsed}>
+                                <div>
+                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}/>
+                                </div>
+                            </Collapse>
                     </div>
                 )}
             </Draggable>

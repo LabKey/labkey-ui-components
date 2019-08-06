@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 import * as React from "react";
-import {DomainField} from "../models";
+import {DomainField, IFieldChange} from "../models";
 import {NameAndLinkingOptions} from "./NameAndLinkingOptions";
 import {TextFieldOptions} from "./TextFieldOptions";
 import {BooleanFieldOptions} from "./BooleanFieldOptions";
 import {NumericFieldOptions} from "./NumericFieldOptions";
 import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import {LookupFieldOptions} from "./LookupFieldOptions";
+import {Row} from "react-bootstrap";
+import { List } from "immutable";
 
-interface IDomainRowExpandedOptions {
+interface IDomainRowExpandedOptionsProps {
     field: DomainField
     index: number
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
+    onMultiChange: (changes: List<IFieldChange>) => void
 }
 
-export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptions, any> {
+export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
 
     typeDependentOptions = () => {
-        const { field, index, onChange } = this.props;
+        const { field, index, onChange, onMultiChange } = this.props;
 
         switch(field.dataType.name) {
             case 'string':
@@ -55,7 +58,8 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                            lookupSchema={field.lookupSchema}
                                            lookupQueryValue={field.lookupQueryValue}
                                            original={field.original}
-                                           onChange={onChange}  />
+                                           onChange={onChange}
+                                           onMultiChange={onMultiChange}  />
         }
 
         return null;
@@ -68,6 +72,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             <>
                 {this.typeDependentOptions()}
                 <NameAndLinkingOptions index={index} field={field} onChange={onChange} />
+                <Row style={{height: '20px'}}/>
             </>
         );
     }

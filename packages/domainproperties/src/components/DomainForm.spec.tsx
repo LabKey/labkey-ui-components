@@ -16,7 +16,7 @@
 
 
 import * as React from "react";
-import {DomainDesign, DomainField, DomainIndex} from "../models";
+import {DomainDesign, DomainField, DomainIndex, IFieldChange} from "../models";
 import DomainForm from "./DomainForm";
 import {List} from "immutable";
 import {
@@ -36,7 +36,7 @@ import {
     STRING_RANGE_URI
 } from "../constants";
 import {mount} from "enzyme";
-import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
+import {clearFieldDetails, createFormInputId, handleDomainUpdates} from "../actions/actions";
 import toJson from "enzyme-to-json";
 
 
@@ -200,10 +200,12 @@ describe('DomainFormDisplay', () => {
             indices: List<DomainIndex>()
         });
 
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 1), "boolean");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 2), "ParticipantId");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 3), "attachment");
+        let changes = List<IFieldChange>().asMutable();
+        changes.push({id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
+        changes.push({id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
+        changes.push({id: createFormInputId(DOMAIN_FIELD_TYPE, 2), value: "ParticipantId"});
+        changes.push({id: createFormInputId(DOMAIN_FIELD_TYPE, 3), value: "attachment"});
+        domain = handleDomainUpdates(domain, changes.asImmutable());
 
         const form = mount(<DomainForm
             domain={domain}
@@ -236,7 +238,10 @@ describe('DomainFormDisplay', () => {
             key: 1
         });
 
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
+        let changes = List<IFieldChange>().asMutable();
+        changes.push({id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
+        domain = handleDomainUpdates(domain, changes.asImmutable());
+
         domain = clearFieldDetails(domain);
 
         const form = mount(<DomainForm

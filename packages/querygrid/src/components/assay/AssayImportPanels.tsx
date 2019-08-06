@@ -237,18 +237,26 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return getQueryGridModel(gridModel.getId()) || gridModel;
     }
 
-    updateModelState(prop: string, value: any) {
-        this.setState((state) => ({
-            model: state.model.set(prop, value) as AssayWizardModel
-        }));
-    }
-
     handleFileChange = (attachments: Map<string, File>) => {
-        this.updateModelState('attachedFiles', attachments);
+        this.setState((state) => ({
+            model: state.model.merge({
+                attachedFiles: attachments,
+                errorMsg: undefined,
+                usePreviousRunFile: false,
+            }) as AssayWizardModel
+        }));
     };
 
     handleFileRemove = (attachmentName: string) => {
-        this.setSubmitting(false, undefined);
+        this.setState((state) => {
+            return {
+                model : state.model.merge({
+                    errorMsg: undefined,
+                    attachedFiles: Map<string, File>(),
+                    usePreviousRunFile: false
+                }) as AssayWizardModel
+            }
+        });
     };
 
     handleBatchChange = (fieldValues: any) => {
@@ -287,8 +295,12 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }, {});
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
-            this.updateModelState('runName', runName);
-            this.updateModelState('comment', comment);
+            this.setState((state) => ({
+                model: state.model.merge({
+                    runName,
+                    comment,
+                }) as AssayWizardModel
+            }));
         });
     };
 
@@ -302,7 +314,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
         assayUploadTimer = window.setTimeout(() => {
             assayUploadTimer = null;
-            this.updateModelState(prop, value);
+            this.setState((state) => ({
+                model: state.model.set(prop, value) as AssayWizardModel
+            }));
 
             if (onComplete) {
                 onComplete();
@@ -313,8 +327,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     onFinish(importAgain: boolean) {
         const { currentStep, onSave } = this.props;
         const { model } = this.state;
-
-        this.setSubmitting(true, undefined);
+        this.setModelState(true, undefined);
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
 
         uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
@@ -362,15 +375,15 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     onSuccessComplete = (response: AssayUploadResultModel) => {
-        this.setSubmitting(false, undefined);
+        this.setModelState(false, undefined);
         this.props.onComplete(response);
     };
 
     onFailure = (error: any) => {
-        this.setSubmitting(false, error);
+        this.setModelState(false, error);
     };
 
-    setSubmitting(isSubmitting: boolean, errorMsg: React.ReactNode) {
+    setModelState(isSubmitting: boolean, errorMsg: React.ReactNode) {
         this.setState((state) => {
             return {
                 model : state.model.merge({
@@ -410,6 +423,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return <LoadingSpinner/>
         }
 
+        const dataGridModel = this.getDataGridModel();
         return (
             <>
                 <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
@@ -417,7 +431,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 <RunDataPanel
                     currentStep={currentStep}
                     wizardModel={model}
-                    gridModel={this.getDataGridModel()}
+                    gridModel={dataGridModel}
                     onRenameConfirm={this.onFinish.bind(this, false)}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
@@ -445,7 +459,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         type="submit"
                         bsStyle={"success"}
                         onClick={this.onFinish.bind(this, false)}
-                        disabled={model.isSubmitting}>
+                        disabled={model.isSubmitting || !model.hasData(currentStep, dataGridModel)}>
                         {onSave
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
                             : (model.isSubmitting ? 'Importing...' : (this.isReimport() ? 'Re-import' : 'Import'))

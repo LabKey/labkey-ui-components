@@ -475,6 +475,9 @@ exports[`<RunDataPanel/> custom display props 1`] = `
         </div>
       </div>
     </div>
+    <div
+      className="top-spacing"
+    />
   </div>
 </div>
 `;
@@ -902,6 +905,9 @@ exports[`<RunDataPanel/> default props 1`] = `
         </div>
       </div>
     </div>
+    <div
+      className="top-spacing"
+    />
   </div>
 </div>
 `;

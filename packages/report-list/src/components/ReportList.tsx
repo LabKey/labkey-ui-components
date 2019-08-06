@@ -13,20 +13,105 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
+import * as React from 'react';
 import { Media, Image, Panel, Modal } from 'react-bootstrap'
-import { IReportItem } from "../model";
-import { LoadingSpinner } from '@glass/base'
+import { Set } from 'immutable';
+import { IReportItem } from '../model';
+import { LoadingSpinner, SchemaQuery } from '@glass/base'
+import { PreviewGrid } from '@glass/querygrid';
 
-interface ReportItemModalProps {
+export enum ReportTypes {
+    Query = 'Query',
+    Dataset = 'Dataset',
+    XYScatterPlot= 'XY Scatter Plot',
+    AutomaticPlot = 'Automatic Plot',
+    TimeChart = 'Time Chart',
+    CrosstabReport = 'Crosstab Report',
+    RReport = 'R Report',
+    ParticipantReport = 'Participant Report',
+}
+const GRID_REPORTS = Set([ReportTypes.Query, ReportTypes.Dataset]);
+const CHARTS = Set([ReportTypes.AutomaticPlot, ReportTypes.XYScatterPlot, ReportTypes.TimeChart]);
+
+interface ReportConsumer {
     report: IReportItem,
-    onClose(): void,
+}
+
+interface ReportItemModalProps extends ReportConsumer{
+    onClose?(): void,
+}
+
+class UnsupportedReportBody extends React.PureComponent<ReportConsumer> {
+    render() {
+        const { description, runUrl, type, createdBy } = this.props.report;
+
+        return (
+            <Modal.Body>
+                <div className="alert alert-warning report-list__unsupported-preview">
+                    <div className="unsupported-icon">
+                        <span className="fa fa-exclamation-circle">&nbsp;</span>
+                    </div>
+
+                    <p>
+                        This report is not currently supported. It is recommended that you view the report in LabKey
+                        Server.
+                    </p>
+
+                    <a href={runUrl} className="btn btn-warning">
+                        <span>View in LabKey</span>
+                    </a>
+                </div>
+
+                <div className="report-item__metadata">
+                    <div className="report-item__metadata-item">
+                        <label>Created By:</label>
+                        <span>{createdBy}</span>
+                    </div>
+
+                    <div className="report-item__metadata-item">
+                        <label>Type:</label>
+                        <span>{type}</span>
+                    </div>
+
+                    <div className="report-item__metadata-item">
+                        <label>Description:</label>
+                        <span>{description}</span>
+                    </div>
+                </div>
+            </Modal.Body>
+        );
+    }
+}
+
+class GridReportBody extends React.PureComponent<ReportConsumer> {
+    render () {
+        const { schemaName, queryName, viewName } = this.props.report;
+        const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+
+        return (
+            <Modal.Body>
+                <div className="report-list_grid_preview">
+                    <div>
+                        TODO: Render links
+                    </div>
+                    <PreviewGrid schemaQuery={schemaQuery} numCols={4} numRows={3} />
+                </div>
+            </Modal.Body>
+        );
+    }
 }
 
 export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
     render() {
-        const { name, description, runUrl, type, thumbnail, createdBy } = this.props.report;
+        const { name, type } = this.props.report;
         const onClose = this.props.onClose;
+        let BodyRenderer = UnsupportedReportBody;
+
+        if (GRID_REPORTS.contains(type as ReportTypes)) {
+            BodyRenderer = GridReportBody;
+        } else if (CHARTS.contains(type as ReportTypes)) {
+            // TODO: Set body renderer to visualization renderer.
+        }
 
         return (
             <div className="report-item-modal">
@@ -35,25 +120,7 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
                         <Modal.Title>{name}</Modal.Title>
                     </Modal.Header>
 
-                    <Modal.Body>
-                        <p>
-                            <a href={runUrl}>View report Definition <span className="fa fa-external-link"/></a>
-                        </p>
-
-                        <p>
-                            <strong>Created By:</strong> {createdBy}
-                        </p>
-
-                        <p>
-                            <strong>Type:</strong> {type}
-                        </p>
-
-                        <p>
-                            <strong>Description:</strong> {description}
-                        </p>
-
-                        <Image src={thumbnail}/>
-                    </Modal.Body>
+                    <BodyRenderer report={this.props.report} />
                 </Modal>
             </div>
         );

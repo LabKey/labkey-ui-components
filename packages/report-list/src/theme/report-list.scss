@@ -33,3 +33,19 @@ img.report-list-item__icon {
 .report-list__message {
   padding: 1em;
 }
+.report-list__unsupported-preview {
+  display: flex;
+}
+.report-list__unsupported-preview > * {
+  margin: 0 0.2em;
+}
+.unsupported-icon {
+  padding-top: 0.5em;
+  padding-right: 0.5em;
+}
+.report-item__metadata-item > label {
+  width: 110px;
+}
+.report-item__metadata-item {
+  display: flex;
+}

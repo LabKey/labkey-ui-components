@@ -92,7 +92,6 @@ export function initMocks() {
         else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'runs') {
             responseBody = assayGpatQueryInfo;
         }
-        console.log("lcSchemaName " + lcSchemaName + " lcQueryName " + lcQueryName, responseBody);
 
         return res
             .status(200)
@@ -126,7 +125,6 @@ export function initMocks() {
         else if (bodyParams.indexOf("&query.queryname=runs") > -1) {
             responseBody = assayGpatRunData;
         }
-        console.log("getQuery", responseBody);
 
         return res
             .status(200)
@@ -222,7 +220,6 @@ export function initMocks() {
     mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
-        console.log("bodyParams", bodyParams, bodyParams.indexOf('.csv'), bodyParams.indexOf('.tsv'));
         if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1))
             responseBody = assayFileDuplicateCheck;
         else if (bodyParams.indexOf(".xls") > -1)

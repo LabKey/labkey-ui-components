@@ -57,7 +57,7 @@ export class AssayWizardModel extends Record({
     attachedFiles: Map<string, File>(),
     batchColumns: OrderedMap<string, QueryColumn>(),
     batchProperties: Map<string, any>(),
-    runFilePath: undefined,
+    usePreviousRunFile: true,
     runColumns: OrderedMap<string, QueryColumn>(),
     runId: undefined,
     runProperties: Map<string, any>(),
@@ -83,7 +83,7 @@ export class AssayWizardModel extends Record({
     attachedFiles: Map<string, File>;
     batchColumns: OrderedMap<string, QueryColumn>;
     batchProperties: Map<string, any>;
-    runFilePath: string; // the path to the original run file
+    usePreviousRunFile: boolean;
     runColumns: OrderedMap<string, QueryColumn>;
     runId?: string;
     runProperties?: Map<string, any>;
@@ -118,8 +118,29 @@ export class AssayWizardModel extends Record({
         return generateNameWithTimestamp(this.assayDef.name);
     }
 
+    hasData(currentStep: number, gridModel: QueryGridModel) : boolean {
+
+        if (currentStep === AssayUploadTabs.Files) {
+            if (!this.attachedFiles.isEmpty()) {
+                return true;
+            }
+            if (this.runId && this.usePreviousRunFile) {
+                return true;
+            }
+
+        } else if (currentStep === AssayUploadTabs.Copy) {
+            return this.dataText !== undefined;
+        } else if (currentStep === AssayUploadTabs.Grid) {
+            // TODO add a dirty flag to the editorModel
+            // const editorModel = getEditorModel(gridModel.getId());
+            // return editorModel.hasData();
+            return true;
+        }
+        return false;
+    }
+
     prepareFormData(currentStep: number, gridModel: QueryGridModel): IAssayUploadOptions {
-        const { batchId, batchProperties, comment, dataText, assayDef, runProperties, runId } = this;
+        const { batchId, batchProperties, comment, dataText, assayDef, runProperties, runId, usePreviousRunFile } = this;
 
         let assayData: any = {
             assayId: assayDef.id,
@@ -139,11 +160,11 @@ export class AssayWizardModel extends Record({
 
         if (currentStep === AssayUploadTabs.Files) {
             assayData.files = this.getAttachedFiles().toArray();
-            if (runId !== undefined && assayData.files.length === 0) {
-               const url = runProperties.get("DataOutputs/DataFileUrl");
-               const filesIndex = url.indexOf("@files");
-               // get past the @files and the trailing slash
-               assayData.runFilePath = url.substring(filesIndex + 7);
+            if (runId !== undefined && usePreviousRunFile && assayData.files.length === 0) {
+                const url = runProperties.get("DataOutputs/DataFileUrl");
+                const filesIndex = url.indexOf("@files");
+                // get past the @files and the trailing slash
+                assayData.runFilePath = url.substring(filesIndex + 7);
             }
         }
         else if (currentStep === AssayUploadTabs.Copy) {

@@ -87,6 +87,7 @@ import { SearchResultsPanel } from './components/search/SearchResultsPanel'
 import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
+import { PreviewGrid } from './components/PreviewGrid';
 
 export {
     // global state functions
@@ -159,6 +160,7 @@ export {
     LabelOverlay,
     EditableGridPanel,
     QueryGridPanel,
+    PreviewGrid,
     QueryInfoForm,
     SelectInput,
     QuerySelect,

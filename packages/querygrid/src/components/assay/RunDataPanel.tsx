@@ -133,7 +133,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                         ));
                     }).catch((reason) => {
                         this.setState(() => ({
-                            message: "There was a problem retrieving the current run's data for previewing.  Re-import should still be possible.",
+                            message: "There was a problem retrieving the current run's data for previewing.  Reimport should still be possible.",
                             messageStyle: "warning",
                             previousRunData: {
                                 isLoaded: true,

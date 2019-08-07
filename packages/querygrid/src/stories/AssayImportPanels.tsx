@@ -119,7 +119,7 @@ storiesOf('AssayImportPanels', module)
             />
         )
     })
-    .add("AssayImportPanels for re-import", () => {
+    .add("AssayImportPanels for reimport", () => {
         return (
             <AssayImportPanels
                 assayDefinition={ASSAY_WIZARD_MODEL.assayDef}

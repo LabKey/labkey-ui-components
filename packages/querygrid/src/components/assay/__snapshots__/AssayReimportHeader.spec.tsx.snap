@@ -7,14 +7,14 @@ exports[`<AssayReimportHeader/> has batch properties 1`] = `
   <div
     className="panel-heading"
   >
-    Re-Import Run
+    Reimport Run
   </div>
   <div
     className="panel-body"
   >
     <p>
       <strong>
-        Re-importing Run: 
+        Reimporting Run: 
         <a
           href="#/assays/general/gpat%201/runs/10"
         >
@@ -38,14 +38,14 @@ exports[`<AssayReimportHeader/> no batch properties 1`] = `
   <div
     className="panel-heading"
   >
-    Re-Import Run
+    Reimport Run
   </div>
   <div
     className="panel-body"
   >
     <p>
       <strong>
-        Re-importing Run: 
+        Reimporting Run: 
         <a
           href="#/assays/general/gpat%201/runs/10"
         >

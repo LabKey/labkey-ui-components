@@ -51,6 +51,7 @@ import { BatchPropertiesPanel } from "./BatchPropertiesPanel";
 import { RunPropertiesPanel } from "./RunPropertiesPanel";
 import { RunDataPanel } from "./RunDataPanel";
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
+import { AssayReimportHeader } from './AssayReimportHeader';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
@@ -134,7 +135,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     getRunPropertiesRow() :  Map<string, any> {
-        const queryData =  getRunPropertiesRow(this.props.assayDefinition, this.props.runId);
+        const queryData = getRunPropertiesRow(this.props.assayDefinition, this.props.runId);
         return queryData.reduce((map, v, k) => {
             let valueMap = v;
             if (List.isList(v)) {
@@ -477,6 +478,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const dataGridModel = this.getDataGridModel();
         return (
             <>
+                {this.isReimport() && <AssayReimportHeader assay={model.assayDef} replacedRunProperties={this.getRunPropertiesRow()}/>}
                 <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
                 <RunDataPanel
@@ -513,14 +515,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         disabled={model.isSubmitting || !model.hasData(currentStep, dataGridModel)}>
                         {onSave
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
-                            : (model.isSubmitting ? 'Importing...' : (this.isReimport() ? 'Re-import' : 'Import'))
+                            : (model.isSubmitting ? 'Importing...' : (this.isReimport() ? 'Reimport' : 'Import'))
                         }
                     </Button>
                 </WizardNavButtons>
                 <Progress
                     estimate={this.getProgressSizeEstimate()}
                     modal={true}
-                    title={this.isReimport() ? "Re-importing assay run" : "Importing assay run"}
+                    title={this.isReimport() ? "Reimporting assay run" : "Importing assay run"}
                     toggle={model.isSubmitting}/>
                 {showRenameModal && (this.renderFileRenameModal())}
             </>

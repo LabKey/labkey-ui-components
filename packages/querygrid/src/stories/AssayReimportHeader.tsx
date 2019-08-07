@@ -30,18 +30,14 @@ storiesOf('AssayReimportHeader', module)
         const assay = AssayDefinitionModel.create(assayDefJSON);
 
         const runData = fromJS({
-            'RowId': {
-                'value': 10
-            },
-            'Name': {
-                'value': 'Test Name'
-            }
+            'RowId': "10",
+            'Name':  'Test Name'
         });
         return (
             <AssayReimportHeader
                 hasBatchProperties={boolean("Has batch properties?", false)}
                 assay={assay}
-                replacedRunData={runData}
+                replacedRunProperties={runData}
             />
         )
     });

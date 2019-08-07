@@ -24,7 +24,7 @@ import {
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_TYPE,
-    SEVERITY_LEVEL_ERROR
+    SEVERITY_LEVEL_ERROR, SEVERITY_LEVEL_WARN
 } from "../constants";
 import {
     decodeLookup,
@@ -183,8 +183,20 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                     // resolve(DomainDesign.create(data, undefined));
                 },
                     failure: (error) => {
-                    let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let badDomain = domain.set('domainException', domainException);
+                    let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    let exceptionWithAllErrors = undefined;
+
+                    //merge pre-existing warnings on the domain
+                    if (domain && domain.domainException && domain.domainException.errors) {
+
+                        let existingWarnings = domain.domainException.get('errors').filter(e => e.severity === SEVERITY_LEVEL_WARN);
+                        let serverSideErrors = exceptionWithServerSideErrors.get('errors');
+                        let allErrors = serverSideErrors.concat(existingWarnings);
+
+                        exceptionWithAllErrors = exceptionWithServerSideErrors.set('errors', allErrors);
+                    }
+
+                    let badDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors));
                     reject(badDomain);
                 }
             })
@@ -379,8 +391,25 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
     }
     else {
         if (domain.domainException && domain.domainException.errors) {
+
             const updatedErrors = domain.domainException.get('errors').filter(e => {return e && (e.index !== index)});
-            domainExceptionObj = domain.domainException.set('errors', updatedErrors);
+
+            if (updatedErrors && updatedErrors.size > 0) {
+
+                let exception = updatedErrors.get(0).fieldName + " : " + updatedErrors.get(0).message;
+                let severity = updatedErrors.get(0).severity;
+                let success = undefined;
+
+                domainExceptionObj = new DomainException({
+                    exception,
+                    success,
+                    severity,
+                    errors: updatedErrors
+                })
+            }
+            else {
+                domainExceptionObj = undefined;
+            }
         }
     }
     return domain.merge({

@@ -394,8 +394,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         {
             let fieldError = domainException.errors.filter( e => {
 
-                return e && (field.isNew() && e.index === index) ||
-                    (!field.isNew() && (e.get("propertyId") === field.propertyId || e.get("fieldName") === field.name));
+                return e && (e.index === index || (field.propertyId !== undefined && e.get("propertyId") === field.propertyId) || (field.name !== undefined && e.get("fieldName") === field.name));
             });
 
             return fieldError.get(0);

@@ -27,6 +27,7 @@ import {
     STRING_RANGE_URI,
     USER_RANGE_URI
 } from "./constants";
+import {createFormInputName, getIndexFromId} from "./actions/actions";
 
 export interface IFieldChange {
     id: string,
@@ -656,9 +657,9 @@ export class DomainFieldError extends Record({
 
             let message = rawFields[i].message;
             let fieldName = rawFields[i].field;
-            let propertyId = rawFields[i].id;
+            let propertyId = (rawFields[i].id === "null" ? undefined : rawFields[i].id);
             let severity = severityLevel;
-            let index = undefined;
+            let index = getIndexFromId(createFormInputName(fieldName));
 
             let domainFieldError = new DomainFieldError({message, fieldName, propertyId, severity, index});
             fieldErrors.push(domainFieldError);

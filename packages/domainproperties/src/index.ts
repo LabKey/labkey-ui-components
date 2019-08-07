@@ -19,6 +19,7 @@ import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
 
 import './theme/index.scss'
+import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR} from "./constants";
 
 export {
     // components
@@ -30,5 +31,9 @@ export {
     saveDomain,
 
     // models
-    DomainDesign
+    DomainDesign,
+
+    // constants
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN
 }

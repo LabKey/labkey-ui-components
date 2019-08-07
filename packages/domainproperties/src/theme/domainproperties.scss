@@ -173,8 +173,20 @@
 }
 
 .domain-adv-phi {
-  float: right;
+  float: left;
+}
+
+select.domain-adv-phi {
   width: 250px;
+}
+
+span.domain-adv-phi {
+  margin-top: 3px;
+  margin-right: 25px;
+}
+
+.domain-adv-phi-row {
+  padding-bottom: 30px;
 }
 
 .domain-adv-checkbox {

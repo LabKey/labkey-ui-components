@@ -196,7 +196,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                    onEnter={this.initializeState}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>{'Advanced Settings and Properties for ' + label}</Modal.Title>
+                    <Modal.Title>{'Advanced Settings and Properties' + (label ? (' for ' + label) : '')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='domain-adv-display-options'>Display Options</div>
@@ -206,7 +206,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINDINSERTVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINDINSERTVIEW, index)}>Show on insert form when updating a single row of data</Checkbox>
                     <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on details page for a single row</Checkbox>
                     <div className='domain-adv-misc-options'>Miscellaneous Options</div>
-                    <div>PHI Level<LabelHelpTip title='PHI Level' body={this.getPhiHelpText} />
+                    <div className='domain-adv-phi-row'>
+                        <span className='domain-adv-phi'>PHI Level<LabelHelpTip title='PHI Level' body={this.getPhiHelpText} /></span>
                         <FormControl
                             componentClass="select"
                             className="domain-adv-phi"
@@ -242,16 +243,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </Checkbox>
                     </>
                     }
-                    {PropDescType.isMvEnableable(field.rangeURI) &&
-                        <Checkbox
-                                checked={mvEnabled === true}
-                                onChange={this.handleCheckbox}
-                                name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                                id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
-                        >
-                            Indicate when this field is missing a value<LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
-                        </Checkbox>
-                    }
                     <Checkbox
                         checked={recommendedVariable === true}
                         onChange={this.handleCheckbox}
@@ -260,12 +251,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     >
                         Make this field a recommended variable<LabelHelpTip title='Recommended Variable' body={this.getRecommendedVariableHelpText} />
                     </Checkbox>
+
+                    {PropDescType.isMvEnableable(field.rangeURI) &&
+                        <Checkbox
+                                checked={mvEnabled === true}
+                                onChange={this.handleCheckbox}
+                                name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
+                                id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
+                        >
+                            Track reason for missing data values<LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
+                        </Checkbox>
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.handleClose} bsClass='btn' className='domain-adv-footer domain-adv-cancel-btn'>
                         Cancel
                     </Button>
-                    <a className='domain-adv-footer domain-adv-link'>Get Help With Domain Settings</a>
+                    <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                       className='domain-adv-footer domain-adv-link'>Get Help With Domain Settings</a>
                     <Button onClick={this.handleApply} bsClass='btn btn-success' className='domain-adv-footer domain-adv-apply-btn'>
                         Apply
                     </Button>

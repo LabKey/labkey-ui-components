@@ -56,7 +56,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
                             <span className="navbar-item pull-left">
                                 {brand}
                             </span>
-                                <span className="navbar-item">
+                            <span className="navbar-item">
                                 {productMenu}
                             </span>
                             {projectName && (

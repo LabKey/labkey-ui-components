@@ -98,7 +98,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     initPreviewData(props: FileAttachmentFormProps) {
         let previewData;
         if (props.previewGridProps && props.previewGridProps.initialData) {
-            previewData = convertRowDataIntoPreviewData(props.previewGridProps.initialData.get('data'), props.previewGridProps.previewCount)
+            previewData = convertRowDataIntoPreviewData(props.previewGridProps.initialData.get('data'), props.previewGridProps.previewCount);
+            this.setState(() => ({previewData}));
         }
         this.setState(() => ({previewData}));
     }

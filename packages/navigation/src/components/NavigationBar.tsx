@@ -49,33 +49,36 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
         const userMenu = user ? <UserMenu model={model} user={user}/> : null;
 
         return (
-
             <nav className="navbar navbar-container test-loc-nav-header">
                 <div className="container">
-                    <span className="navbar-left">
-                        <span className="navbar-item pull-left">
-                            {brand}
-                        </span>
-                        <span className="navbar-item">
-                            {productMenu}
-                        </span>
-                        {projectName && (
-                            <span className="navbar-item">
-                                <span className="project-name"><i className="fa fa-folder-open-o"/> {projectName} </span>
+                    <div className="row">
+                        <div className="navbar-left col-sm-6 col-xs-9">
+                            <span className="navbar-item pull-left">
+                                {brand}
                             </span>
-                        )}
-                    </span>
-                    <span className="navbar-right pull-right">
-                        <span className="navbar-item">
-                            {searchBox}
-                        </span>
-                        <span className="pull-right">
-                            {userMenu}
-                        </span>
-                    </span>
+                                <span className="navbar-item">
+                                {productMenu}
+                            </span>
+                            {projectName && (
+                                <span className="navbar-item hidden-sm hidden-xs">
+                                    <span className="project-name"><i className="fa fa-folder-open-o"/> {projectName} </span>
+                                </span>
+                            )}
+                        </div>
+                        <div className="navbar-right col-sm-6 col-xs-3">
+                            <div className="navbar-item pull-right">
+                                {userMenu}
+                            </div>
+                            <div className="navbar-item pull-right hidden-xs">
+                                {searchBox}
+                            </div>
+                            <div className="navbar-item pull-right visible-xs">
+                                <i className={'fa fa-search navbar__xs-search-icon'} onClick={() => onSearch('')}/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
-
         )
     }
 

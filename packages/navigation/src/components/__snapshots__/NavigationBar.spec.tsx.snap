@@ -7,26 +7,38 @@ exports[`<NavigationBar/> default props 1`] = `
   <div
     className="container"
   >
-    <span
-      className="navbar-left"
+    <div
+      className="row"
     >
-      <span
-        className="navbar-item pull-left"
-      />
-      <span
-        className="navbar-item"
-      />
-    </span>
-    <span
-      className="navbar-right pull-right"
-    >
-      <span
-        className="navbar-item"
-      />
-      <span
-        className="pull-right"
-      />
-    </span>
+      <div
+        className="navbar-left col-sm-6 col-xs-9"
+      >
+        <span
+          className="navbar-item pull-left"
+        />
+        <span
+          className="navbar-item"
+        />
+      </div>
+      <div
+        className="navbar-right col-sm-6 col-xs-3"
+      >
+        <div
+          className="navbar-item pull-right"
+        />
+        <div
+          className="navbar-item pull-right hidden-xs"
+        />
+        <div
+          className="navbar-item pull-right visible-xs"
+        >
+          <i
+            className="fa fa-search navbar__xs-search-icon"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
 `;
@@ -38,47 +50,59 @@ exports[`<NavigationBar/> with search box 1`] = `
   <div
     className="container"
   >
-    <span
-      className="navbar-left"
+    <div
+      className="row"
     >
-      <span
-        className="navbar-item pull-left"
-      />
-      <span
-        className="navbar-item"
-      />
-    </span>
-    <span
-      className="navbar-right pull-right"
-    >
-      <span
-        className="navbar-item"
+      <div
+        className="navbar-left col-sm-6 col-xs-9"
       >
-        <form
-          className="navbar__search-form"
-          onSubmit={[Function]}
+        <span
+          className="navbar-item pull-left"
+        />
+        <span
+          className="navbar-item"
+        />
+      </div>
+      <div
+        className="navbar-right col-sm-6 col-xs-3"
+      >
+        <div
+          className="navbar-item pull-right"
+        />
+        <div
+          className="navbar-item pull-right hidden-xs"
         >
-          <div
-            className="form-group"
+          <form
+            className="navbar__search-form"
+            onSubmit={[Function]}
           >
-            <i
-              className="fa fa-search navbar__search-icon"
-            />
-            <input
-              className="navbar__search-input"
-              onChange={[Function]}
-              placeholder="Enter Search Terms"
-              size={34}
-              type="text"
-              value=""
-            />
-          </div>
-        </form>
-      </span>
-      <span
-        className="pull-right"
-      />
-    </span>
+            <div
+              className="form-group"
+            >
+              <i
+                className="fa fa-search navbar__search-icon"
+              />
+              <input
+                className="navbar__search-input"
+                onChange={[Function]}
+                placeholder="Enter Search Terms"
+                size={34}
+                type="text"
+                value=""
+              />
+            </div>
+          </form>
+        </div>
+        <div
+          className="navbar-item pull-right visible-xs"
+        >
+          <i
+            className="fa fa-search navbar__xs-search-icon"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
 `;

@@ -4,6 +4,10 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Issue 38167: fix NavigationBar elements layout for bootstrap xs vs sm screen size
+
 ### version 0.3.8
 *Released*: 31 July 2019
 * Package patch update for changes to @glass/base v0.11.1

@@ -185,3 +185,22 @@ export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefi
 
     return items;
 }
+
+export function deleteAssayDesign(rowId: string) : Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'deleteProtocolByRowIdsAPI.api'),
+            method: 'POST',
+            params: {
+                singleObjectRowId: rowId,
+                forceDelete: true
+            },
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}

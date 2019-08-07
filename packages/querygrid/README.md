@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* add deleteAssayDesign method, AssayDesignDeleteConfirmModal
+
 ### version 0.11.4
 *Released*: 5 Aug 2019
 * Issue 38097: improve lookup search perf using ~q filter

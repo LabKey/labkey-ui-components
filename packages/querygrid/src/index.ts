@@ -95,11 +95,12 @@ import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
 import { RunDataPanel } from './components/assay/RunDataPanel'
 import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
+import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal'
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal'
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem'
 import { AssayWizardModel, IAssayURLContext, IAssayUploadOptions, AssayUploadResultModel } from './components/assay/models'
-import { importAssayRun, uploadAssayRunFiles, deleteAssayRuns, getImportItemsForAssayDefinitions } from './components/assay/actions'
+import { importAssayRun, uploadAssayRunFiles, deleteAssayDesign, deleteAssayRuns, getImportItemsForAssayDefinitions } from './components/assay/actions'
 
 export {
     // global state functions
@@ -208,6 +209,7 @@ export {
 
     // assay
     AssayUploadResultModel,
+    AssayDesignDeleteConfirmModal,
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
     AssayWizardModel,
@@ -221,6 +223,7 @@ export {
     AssayImportSubMenuItem,
     importAssayRun,
     uploadAssayRunFiles,
+    deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
 

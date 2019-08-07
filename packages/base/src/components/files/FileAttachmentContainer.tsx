@@ -227,7 +227,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
     render() {
         const { acceptedFormats, allowMultiple, labelLong } = this.props;
-        const { files, fileNames, isHover } = this.state;
+        const { fileNames, isHover } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
 
         return (
@@ -257,7 +257,6 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 {this.renderErrorDetails()}
 
                 {fileNames.map((fileName: string) => {
-                    // const file = files[key];
                     return (
                         <div key={fileName} className="attached-file--container">
                             <span

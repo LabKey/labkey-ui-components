@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Package patch update for changes to @glass/base v???
+
 ### version 0.11.4
 *Released*: 5 Aug 2019
 * Issue 38097: improve lookup search perf using ~q filter

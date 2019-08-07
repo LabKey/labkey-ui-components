@@ -164,12 +164,16 @@ export class ProductMenuModel extends Record( {
         }) as ProductMenuModel;
     }
 
-    getSection(key: string)
-    {
+    getSection(key: string): MenuSectionModel {
         if (this.sections.size > 0) {
             return this.sections
                 .filter((section) => section.key.toLowerCase() === key.toLowerCase())
                 .first();
         }
+    }
+
+    hasSectionItems(key: string): boolean {
+        const section = this.getSection(key);
+        return this.isLoaded && section && section.totalCount > 0;
     }
 }

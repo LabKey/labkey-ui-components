@@ -44,7 +44,7 @@ interface AdvancedSettingsState {
     measure?: boolean
     mvEnabled?: boolean
     recommendedVariable?: boolean
-    phi?: string
+    PHI?: string
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -62,7 +62,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             measure: this.props.field.measure,
             mvEnabled: this.props.field.mvEnabled,
             recommendedVariable: this.props.field.recommendedVariable,
-            phi: this.props.field.phi
+            PHI: this.props.field.PHI
         };
 
     }
@@ -77,7 +77,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             measure: this.props.field.measure,
             mvEnabled: this.props.field.mvEnabled,
             recommendedVariable: this.props.field.recommendedVariable,
-            phi: this.props.field.phi
+            PHI: this.props.field.PHI
         });
     };
 
@@ -182,7 +182,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     render() {
         const { show, label, index, maxPhiLevel, field } = this.props;
-        const { hidden, shownInDetailsView, shownInInsertView, shownInUpdateView, measure, dimension, mvEnabled, recommendedVariable, phi } = this.state;
+        const { hidden, shownInDetailsView, shownInInsertView, shownInUpdateView, measure, dimension, mvEnabled, recommendedVariable, PHI } = this.state;
 
         // Filter phi levels available
         const phiIndex = this.getMaxPhiLevelIndex(maxPhiLevel);
@@ -214,7 +214,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             name={createFormInputName(DOMAIN_FIELD_PHI)}
                             id={createFormInputId(DOMAIN_FIELD_PHI, index)}
                             onChange={this.handlePhiChange}
-                            value={phi}
+                            value={PHI}
                         >
                             {
                                 phiLevels.map((level, i) => (

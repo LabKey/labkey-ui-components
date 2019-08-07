@@ -230,7 +230,7 @@ export interface IDomainField {
     measure?: boolean
     mvEnabled?: boolean
     name: string
-    phi?: string
+    PHI?: string
     primaryKey?: boolean
     propertyId?: number
     propertyURI: string
@@ -266,7 +266,7 @@ export class DomainField extends Record({
     measure: undefined,
     mvEnabled: false,
     name: undefined,
-    phi: undefined,
+    PHI: undefined,
     primaryKey: undefined,
     propertyId: undefined,
     propertyURI: undefined,
@@ -300,7 +300,7 @@ export class DomainField extends Record({
     measure?: boolean;
     mvEnabled?: boolean;
     name: string;
-    phi?: string;
+    PHI?: string;
     primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;

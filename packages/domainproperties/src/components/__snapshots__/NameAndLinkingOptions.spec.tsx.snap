@@ -19,7 +19,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "measure": undefined,
       "mvEnabled": false,
       "name": "key",
-      "phi": undefined,
+      "PHI": undefined,
       "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",

@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.16-fb-assayReimport.6",
+  "version": "0.1.16-fb-assayReimport.7",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",

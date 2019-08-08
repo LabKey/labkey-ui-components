@@ -15,7 +15,6 @@ describe("<ImportWithRenameConfirmModal/>", () => {
             />;
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        console.log(confirmModal.text());
         expect(confirmModal.text().indexOf("already exists in this  folder")).toBeGreaterThan(-1);
         expect(confirmModal.text().indexOf("allow it to be renamed")).toBeGreaterThan(-1);
     });
@@ -30,7 +29,6 @@ describe("<ImportWithRenameConfirmModal/>", () => {
         />;
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        console.log(confirmModal.text());
         expect(confirmModal.text().indexOf("already exists in this Test folder")).toBeGreaterThan(-1);
         expect(confirmModal.text().indexOf("allow it to be renamed")).toBeGreaterThan(-1);
     });
@@ -45,7 +43,6 @@ describe("<ImportWithRenameConfirmModal/>", () => {
         />;
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        console.log(confirmModal.text());
         expect(confirmModal.text().indexOf("already exists in this  folder")).toBeGreaterThan(-1);
         expect(confirmModal.text().indexOf("allow Test Product to rename")).toBeGreaterThan(-1);
     });
@@ -61,7 +58,6 @@ describe("<ImportWithRenameConfirmModal/>", () => {
         />;
         const wrapper = mount(component);
         const confirmModal = wrapper.find(ConfirmModal);
-        console.log(confirmModal.text());
         expect(confirmModal.text().indexOf("already exists in this Test Folder folder")).toBeGreaterThan(-1);
         expect(confirmModal.text().indexOf("allow Test Product to rename")).toBeGreaterThan(-1);
     });

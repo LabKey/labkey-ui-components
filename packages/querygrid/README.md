@@ -12,6 +12,7 @@ Query Grid for LabKey schema/query data views
 * update AssayImportPanels to accept an optional runId for pre-populating
 * add optional queryColumns parameter for Detail component to be able to modify the columns in the detail view
 * in RunDataPanel, support display of previous run's data when reimporting.
+* add param to support cascade delete of replaced runs in deleteAssayRuns API call
 
 ### version 0.11.4
 *Released*: 5 Aug 2019

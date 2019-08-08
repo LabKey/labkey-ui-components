@@ -149,9 +149,11 @@ function collectFiles(source): FileMap {
 }
 
 
-export function deleteAssayRuns(selectionKey?: string, rowId?: string) : Promise<any> {
+export function deleteAssayRuns(selectionKey?: string, rowId?: string, cascadeDeleteReplacedRuns = false) : Promise<any> {
     return new Promise((resolve, reject) => {
-        const params = selectionKey ? {'dataRegionSelectionKey': selectionKey} : {singleObjectRowId: rowId};
+        let params = selectionKey ? {'dataRegionSelectionKey': selectionKey} : {singleObjectRowId: rowId};
+        params['cascade'] = cascadeDeleteReplacedRuns;
+
         return Ajax.request({
             url: buildURL('experiment', 'deleteRuns.api'),
             method: 'POST',

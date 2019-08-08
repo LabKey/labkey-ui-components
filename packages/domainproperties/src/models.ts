@@ -267,7 +267,6 @@ export class DomainField extends Record({
     lookupType: undefined,
     original: undefined,
     updatedField: false,
-    newField: undefined,
     isPrimaryKey: false,
     lockType: undefined
 

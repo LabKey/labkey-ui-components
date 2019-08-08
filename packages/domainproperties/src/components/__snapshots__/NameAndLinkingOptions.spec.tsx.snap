@@ -51,6 +51,8 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
       },
       "updatedField": false,
+      "isPrimaryKey": false,
+      "lockType": "NotLocked",
     }
   }
   index={1}
@@ -105,6 +107,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             </div>
             <textarea
               className="form-control domain-field-description"
+              disabled={false}
               id="domainpropertiesrow-description-1"
               name="domainpropertiesrow-description"
               onChange={[Function]}
@@ -130,6 +133,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-label-1"
               name="domainpropertiesrow-label"
               onChange={[Function]}
@@ -138,6 +142,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-label-1"
                 name="domainpropertiesrow-label"
                 onChange={[Function]}
@@ -267,6 +272,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-importAliases-1"
               name="domainpropertiesrow-importAliases"
               onChange={[Function]}
@@ -275,6 +281,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-importAliases-1"
                 name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
@@ -424,6 +431,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-URL-1"
               name="domainpropertiesrow-URL"
               onChange={[Function]}
@@ -432,6 +440,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-URL-1"
                 name="domainpropertiesrow-URL"
                 onChange={[Function]}

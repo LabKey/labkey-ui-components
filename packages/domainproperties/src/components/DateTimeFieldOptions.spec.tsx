@@ -1,6 +1,6 @@
 import {mount} from "enzyme";
 import {createFormInputId} from "../actions/actions";
-import {DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT} from "../constants";
+import {DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED} from "../constants";
 import * as React from "react";
 import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import toJson from "enzyme-to-json";
@@ -18,7 +18,8 @@ describe('DateTimeFieldOptions', () => {
             label: _section,
             format: _format,
             excludeFromShifting: true,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         const dateTime  = mount(<DateTimeFieldOptions

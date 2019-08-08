@@ -21,6 +21,7 @@ import {
     Alert,
     AssayUploadTabs,
     FileAttachmentForm,
+    getActionErrorMessage,
     getServerFilePreview,
     InferDomainResponse,
     LoadingSpinner,
@@ -133,8 +134,8 @@ export class RunDataPanel extends React.Component<Props, State> {
                         ));
                     }).catch((reason) => {
                         this.setState(() => ({
-                            message: "There was a problem retrieving the current run's data for previewing.  Reimport should still be possible.",
-                            messageStyle: "warning",
+                            message: getActionErrorMessage("There was a problem retrieving the current run's data for previewing. ", "assay run"),
+                            messageStyle: "danger",
                             previousRunData: {
                                 isLoaded: true,
                                 isLoading: false

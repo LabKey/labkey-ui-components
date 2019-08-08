@@ -18,8 +18,7 @@ describe('DateTimeFieldOptions', () => {
             label: _section,
             format: _format,
             excludeFromShifting: true,
-            onChange: jest.fn(),
-            lockType: DOMAIN_FIELD_NOT_LOCKED
+            onChange: jest.fn()
         };
 
         const dateTime  = mount(<DateTimeFieldOptions

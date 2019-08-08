@@ -121,6 +121,8 @@ exports[`DomainRowDisplay attachment field 1`] = `
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     },
                     "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
                   }
                 }
                 index={1}
@@ -239,6 +241,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
+                                      disabled={false}
                                       id="domainpropertiesrow-name-1"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
@@ -252,6 +255,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     >
                                       <input
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
@@ -303,6 +307,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
+                                      disabled={false}
                                       id="domainpropertiesrow-type-1"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
@@ -315,6 +320,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
                                     >
                                       <select
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
@@ -658,6 +664,8 @@ exports[`DomainRowDisplay date time field 1`] = `
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                     },
                     "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
                   }
                 }
                 index={1}
@@ -776,6 +784,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
+                                      disabled={false}
                                       id="domainpropertiesrow-name-1"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
@@ -789,6 +798,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     >
                                       <input
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
@@ -840,6 +850,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
+                                      disabled={false}
                                       id="domainpropertiesrow-type-1"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
@@ -852,6 +863,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     >
                                       <select
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
@@ -1195,6 +1207,8 @@ exports[`DomainRowDisplay decimal field 1`] = `
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                     },
                     "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
                   }
                 }
                 index={1}
@@ -1313,6 +1327,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
+                                      disabled={false}
                                       id="domainpropertiesrow-name-1"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
@@ -1326,6 +1341,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     >
                                       <input
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
@@ -1377,6 +1393,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
+                                      disabled={false}
                                       id="domainpropertiesrow-type-1"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
@@ -1389,6 +1406,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     >
                                       <select
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
@@ -1732,6 +1750,8 @@ exports[`DomainRowDisplay participant id field 1`] = `
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
                   }
                 }
                 index={1}
@@ -1850,6 +1870,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
+                                      disabled={false}
                                       id="domainpropertiesrow-name-1"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
@@ -1863,6 +1884,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     >
                                       <input
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
@@ -1914,6 +1936,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
+                                      disabled={false}
                                       id="domainpropertiesrow-type-1"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
@@ -1926,6 +1949,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     >
                                       <select
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
@@ -2293,6 +2317,8 @@ exports[`DomainRowDisplay string field 1`] = `
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                     },
                     "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
                   }
                 }
                 index={1}
@@ -2411,6 +2437,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
+                                      disabled={false}
                                       id="domainpropertiesrow-name-1"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
@@ -2424,6 +2451,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     >
                                       <input
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
@@ -2475,6 +2503,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
+                                      disabled={false}
                                       id="domainpropertiesrow-type-1"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
@@ -2487,6 +2516,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     >
                                       <select
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
@@ -2854,6 +2884,8 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                       "rangeURI": undefined,
                     },
                     "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
                   }
                 }
                 index={1}
@@ -2972,6 +3004,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
+                                      disabled={false}
                                       id="domainpropertiesrow-name-1"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
@@ -2985,6 +3018,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     >
                                       <input
                                         className="form-control"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}

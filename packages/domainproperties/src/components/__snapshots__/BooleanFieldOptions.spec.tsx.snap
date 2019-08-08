@@ -5,7 +5,6 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
   format="Yes;No;Blank"
   index={1}
   label="Boolean Field Options"
-  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>

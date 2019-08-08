@@ -51,6 +51,8 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
       },
       "updatedField": false,
+      "isPrimaryKey": false,
+      "lockType": "NotLocked",
     }
   }
   index={1}
@@ -59,6 +61,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
   <BooleanFieldOptions
     index={1}
     label="Boolean Field Options"
+    lockType="NotLocked"
     onChange={[MockFunction]}
   >
     <div>
@@ -245,6 +248,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
                 name="domainpropertiesrow-scale"
                 onChange={[Function]}
@@ -253,6 +257,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-format-1"
                   name="domainpropertiesrow-scale"
                   onChange={[Function]}
@@ -316,6 +321,8 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
     index={1}
@@ -370,6 +377,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               </div>
               <textarea
                 className="form-control domain-field-description"
+                disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
                 onChange={[Function]}
@@ -395,6 +403,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-label-1"
                 name="domainpropertiesrow-label"
                 onChange={[Function]}
@@ -403,6 +412,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-label-1"
                   name="domainpropertiesrow-label"
                   onChange={[Function]}
@@ -532,6 +542,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-importAliases-1"
                 name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
@@ -540,6 +551,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-importAliases-1"
                   name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
@@ -689,6 +701,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-URL-1"
                 name="domainpropertiesrow-URL"
                 onChange={[Function]}
@@ -697,6 +710,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-URL-1"
                   name="domainpropertiesrow-URL"
                   onChange={[Function]}
@@ -764,6 +778,8 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
       },
       "updatedField": false,
+      "isPrimaryKey": false,
+      "lockType": "NotLocked",
     }
   }
   index={1}
@@ -773,6 +789,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
     excludeFromShifting={false}
     index={1}
     label="Date and Time Options"
+    lockType="NotLocked"
     onChange={[MockFunction]}
   >
     <div>
@@ -1088,6 +1105,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
                 name="domainpropertiesrow-format"
                 onChange={[Function]}
@@ -1096,6 +1114,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-format-1"
                   name="domainpropertiesrow-format"
                   onChange={[Function]}
@@ -1125,6 +1144,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <input
                 checked={false}
                 className="domain-field-float-left domain-field-checkbox"
+                disabled={false}
                 id="domainpropertiesrow-excludeFromShifting-1"
                 name="domainpropertiesrow-excludeFromShifting"
                 onChange={[Function]}
@@ -1192,6 +1212,8 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
     index={1}
@@ -1246,6 +1268,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               </div>
               <textarea
                 className="form-control domain-field-description"
+                disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
                 onChange={[Function]}
@@ -1271,6 +1294,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-label-1"
                 name="domainpropertiesrow-label"
                 onChange={[Function]}
@@ -1279,6 +1303,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-label-1"
                   name="domainpropertiesrow-label"
                   onChange={[Function]}
@@ -1408,6 +1433,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-importAliases-1"
                 name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
@@ -1416,6 +1442,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-importAliases-1"
                   name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
@@ -1565,6 +1592,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-URL-1"
                 name="domainpropertiesrow-URL"
                 onChange={[Function]}
@@ -1573,6 +1601,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-URL-1"
                   name="domainpropertiesrow-URL"
                   onChange={[Function]}
@@ -1640,6 +1669,8 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
       },
       "updatedField": false,
+      "isPrimaryKey": false,
+      "lockType": "NotLocked",
     }
   }
   index={1}
@@ -1648,6 +1679,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
   <NumericFieldOptions
     index={1}
     label="Integer Options"
+    lockType="NotLocked"
     onChange={[MockFunction]}
   >
     <div>
@@ -1849,6 +1881,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
                 name="domainpropertiesrow-format"
                 onChange={[Function]}
@@ -1857,6 +1890,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-format-1"
                   name="domainpropertiesrow-format"
                   onChange={[Function]}
@@ -1886,12 +1920,14 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="select"
+                disabled={false}
                 id="domainpropertiesrow-defaultScale-1"
                 name="domainpropertiesrow-defaultScale"
                 onChange={[Function]}
               >
                 <select
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-defaultScale-1"
                   name="domainpropertiesrow-defaultScale"
                   onChange={[Function]}
@@ -1966,6 +2002,8 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
     index={1}
@@ -2020,6 +2058,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               </div>
               <textarea
                 className="form-control domain-field-description"
+                disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
                 onChange={[Function]}
@@ -2045,6 +2084,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-label-1"
                 name="domainpropertiesrow-label"
                 onChange={[Function]}
@@ -2053,6 +2093,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-label-1"
                   name="domainpropertiesrow-label"
                   onChange={[Function]}
@@ -2182,6 +2223,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-importAliases-1"
                 name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
@@ -2190,6 +2232,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-importAliases-1"
                   name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
@@ -2339,6 +2382,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-URL-1"
                 name="domainpropertiesrow-URL"
                 onChange={[Function]}
@@ -2347,6 +2391,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-URL-1"
                   name="domainpropertiesrow-URL"
                   onChange={[Function]}
@@ -2414,6 +2459,8 @@ exports[`DomainExpandedOptions Text data type 1`] = `
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
       },
       "updatedField": false,
+      "isPrimaryKey": false,
+      "lockType": "NotLocked",
     }
   }
   index={1}
@@ -2422,6 +2469,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
   <TextFieldOptions
     index={1}
     label="Text Options"
+    lockType="NotLocked"
     onChange={[MockFunction]}
   >
     <div>
@@ -2609,6 +2657,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               <input
                 checked={true}
                 className="domain-text-options-radio1 domain-field-float-left"
+                disabled={false}
                 id="domainpropertiesrow-maxLength-1"
                 name="domainpropertiesrow-maxLength"
                 onChange={[Function]}
@@ -2740,6 +2789,8 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
     index={1}
@@ -2794,6 +2845,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               </div>
               <textarea
                 className="form-control domain-field-description"
+                disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
                 onChange={[Function]}
@@ -2819,6 +2871,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-label-1"
                 name="domainpropertiesrow-label"
                 onChange={[Function]}
@@ -2827,6 +2880,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-label-1"
                   name="domainpropertiesrow-label"
                   onChange={[Function]}
@@ -2956,6 +3010,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-importAliases-1"
                 name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
@@ -2964,6 +3019,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-importAliases-1"
                   name="domainpropertiesrow-importAliases"
                   onChange={[Function]}
@@ -3113,6 +3169,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               <FormControl
                 bsClass="form-control"
                 componentClass="input"
+                disabled={false}
                 id="domainpropertiesrow-URL-1"
                 name="domainpropertiesrow-URL"
                 onChange={[Function]}
@@ -3121,6 +3178,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               >
                 <input
                   className="form-control"
+                  disabled={false}
                   id="domainpropertiesrow-URL-1"
                   name="domainpropertiesrow-URL"
                   onChange={[Function]}

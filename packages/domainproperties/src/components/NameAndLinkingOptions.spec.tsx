@@ -27,8 +27,7 @@ describe('NameAndLinkingOptions', () => {
             label: _label,
             importAliases: _importAliases,
             URL: _URL,
-            propertyURI: 'test',
-            lockType: DOMAIN_FIELD_NOT_LOCKED
+            propertyURI: 'test'
         });
 
         const numeric  = mount(<NameAndLinkingOptions

@@ -58,6 +58,8 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
   >
@@ -445,6 +447,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
   >
@@ -888,6 +892,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
   >
@@ -1331,6 +1337,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
         "updatedField": false,
+        "isPrimaryKey": false,
+        "lockType": "NotLocked",
       }
     }
   >

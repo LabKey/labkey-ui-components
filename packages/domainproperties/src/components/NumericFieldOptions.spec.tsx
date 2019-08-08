@@ -18,8 +18,7 @@ describe('NumericFieldOptions', () => {
             label: _section,
             format: _format,
             defaultScale: "LINEAR",
-            onChange: jest.fn(),
-            lockType: DOMAIN_FIELD_NOT_LOCKED
+            onChange: jest.fn()
         };
 
         const numeric  = mount(<NumericFieldOptions

@@ -6,7 +6,6 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
   format="MM/dd/yyyy hh:mm"
   index={1}
   label="Date and Time Field Options"
-  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>

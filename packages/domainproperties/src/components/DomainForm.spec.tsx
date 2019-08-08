@@ -43,7 +43,7 @@ import toJson from "enzyme-to-json";
 describe('DomainFormDisplay', () => {
 
     test('with empty domain form', () => {
-        const domain = DomainDesign.create({});
+        const domain = DomainDesign.create({}, undefined);
         const form  = mount(<DomainForm
             domain={domain}
             helpNoun='domain'
@@ -64,7 +64,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: List<DomainField>(),
             indices: List<DomainIndex>()
-        });
+        }, undefined);
         const form  = mount(<DomainForm
             domain={domain}
             helpNoun='domain'
@@ -150,7 +150,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: fields,
             indices: List<DomainIndex>()
-        });
+        }, undefined);
         const form  = mount(<DomainForm
             domain={domain}
             helpNoun='domain'
@@ -198,12 +198,12 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: fields,
             indices: List<DomainIndex>()
-        });
+        }, undefined);
 
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 1), "boolean");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 2), "ParticipantId");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 3), "attachment");
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 2), value: "ParticipantId"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 3), value: "attachment"});
 
         const form = mount(<DomainForm
             domain={domain}
@@ -234,9 +234,9 @@ describe('DomainFormDisplay', () => {
             fields: List<DomainIndex>(),
             indices: List<DomainIndex>(),
             key: 1
-        });
+        }, undefined);
 
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
         domain = clearFieldDetails(domain);
 
         const form = mount(<DomainForm
@@ -266,7 +266,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: fields,
             indices: List<DomainIndex>()
-        });
+        }, undefined);
 
         let updatedDomain;
         const changeHandler = (newDomain, dirty) => {

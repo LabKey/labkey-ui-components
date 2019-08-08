@@ -60,11 +60,18 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
         let body = <div>Loading...</div>;
 
         if (loading === false && data !== null) {
-            const { numCols } = this.props;
+            const { numCols, numRows } = this.props;
             const { viewName }= this.props.schemaQuery;
             const { queryInfo } = this.state;
-            const columns = queryInfo.getDisplayColumns(viewName).slice(0, numCols);
-            body = <Grid bordered={false} columns={columns} data={data} />;
+            const allColumns = queryInfo.getDisplayColumns(viewName);
+            const columns = allColumns.slice(0, numCols);
+            const stats = `Previewing first ${numRows} rows and ${columns.size} of ${allColumns.size} columns.`;
+            body = (
+                <>
+                    <p>{stats}</p>
+                    <Grid bordered={false} columns={columns} data={data} />
+                </>
+            );
         }
 
         return (

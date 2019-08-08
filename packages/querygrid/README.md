@@ -8,6 +8,11 @@ Query Grid for LabKey schema/query data views
 *Released*: XXX
 * add deleteAssayDesign method, AssayDesignDeleteConfirmModal
 
+### version 0.11.5
+*Released*: 8 Aug 2019
+* Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing
+* fix "Invalid prop 'value' of type 'number' supplied to 'Input'" error on bulk form
+
 ### version 0.11.4
 *Released*: 5 Aug 2019
 * Issue 38097: improve lookup search perf using ~q filter

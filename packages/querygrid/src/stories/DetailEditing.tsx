@@ -26,6 +26,15 @@ import './stories.scss'
 
 interface Props {
     canUpdate: boolean
+    asSubPanel?: boolean
+    title?: string,
+    cancelText?: string,
+    submitText?: string,
+    onEditToggle?: (editing: boolean) => any,
+}
+
+function onEditToggle(isEditing) {
+    console.log('Editing state updated to ' + isEditing);
 }
 
 class DetailEditingPage extends React.Component<Props, any> {
@@ -49,6 +58,7 @@ class DetailEditingPage extends React.Component<Props, any> {
     };
 
     render() {
+        const {canUpdate, asSubPanel, title, cancelText, submitText, onEditToggle} = this.props;
         const model = this.getQueryGridModel();
         if (!model.isLoaded) {
             return <LoadingSpinner/>
@@ -57,9 +67,14 @@ class DetailEditingPage extends React.Component<Props, any> {
         return (
             <DetailEditing
                 queryModel={model}
-                canUpdate={this.props.canUpdate}
+                canUpdate={canUpdate}
+                asSubPanel={asSubPanel}
+                title={title}
+                cancelText={cancelText}
+                submitText={submitText}
                 onUpdate={this.onUpdate}
                 useEditIcon={false}
+                onEditToggle={onEditToggle}
             />
         )
     }
@@ -74,6 +89,13 @@ storiesOf('DetailEditing', module)
     })
     .add("editable", () => {
         return (
-            <DetailEditingPage canUpdate={true}/>
+            <DetailEditingPage
+                canUpdate={true}
+                asSubPanel={boolean("As sub panel?", true)}
+                onEditToggle={boolean("Use onEditToggle (check console log)?", true) ? onEditToggle : null}
+                title={text("Title", "Details")}
+                submitText={text("Submit Text", "Save")}
+                cancelText={text("Cancel Text", "Cancel")}
+            />
         )
     });

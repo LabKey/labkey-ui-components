@@ -17,7 +17,7 @@ import { List, Record, fromJS } from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
-    DATETIME_RANGE_URI,
+    DATETIME_RANGE_URI, DOMAIN_FIELD_NOT_LOCKED,
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
     FLAG_CONCEPT_URI,
@@ -268,7 +268,7 @@ export class DomainField extends Record({
     original: undefined,
     updatedField: false,
     isPrimaryKey: false,
-    lockType: undefined
+    lockType: DOMAIN_FIELD_NOT_LOCKED
 
 }) implements IDomainField {
     conceptURI?: string;

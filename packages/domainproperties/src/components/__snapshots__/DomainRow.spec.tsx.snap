@@ -543,6 +543,627 @@ exports[`DomainRowDisplay attachment field 1`] = `
 </DragDropContext>
 `;
 
+exports[`DomainRowDisplay client side warning on field 1`] = `
+<DragDropContext
+  onDragEnd={[MockFunction]}
+>
+  <ErrorBoundary>
+    <App
+      onDragEnd={[MockFunction]}
+      setOnError={[Function]}
+      uniqueId={6}
+    >
+      <Provider
+        context={
+          Object {
+            "$$typeof": Symbol(react.context),
+            "Consumer": Object {
+              "$$typeof": Symbol(react.context),
+              "_calculateChangedBits": null,
+              "_context": [Circular],
+            },
+            "Provider": Object {
+              "$$typeof": Symbol(react.provider),
+              "_context": [Circular],
+            },
+            "_calculateChangedBits": null,
+            "_currentRenderer": Object {},
+            "_currentRenderer2": null,
+            "_currentValue": null,
+            "_currentValue2": null,
+            "_threadCount": 0,
+          }
+        }
+        store={
+          Object {
+            "dispatch": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+            Symbol(observable): [Function],
+          }
+        }
+      >
+        <ConnectFunction
+          direction="vertical"
+          droppableId="domain-form-droppable"
+          ignoreContainerClipping={false}
+          isCombineEnabled={false}
+          isDropDisabled={false}
+          type="DEFAULT"
+        >
+          <Droppable
+            direction="vertical"
+            droppableId="domain-form-droppable"
+            ignoreContainerClipping={false}
+            isCombineEnabled={false}
+            isDropDisabled={false}
+            placeholder={null}
+            shouldAnimatePlaceholder={true}
+            snapshot={
+              Object {
+                "draggingFromThisWith": null,
+                "draggingOverWith": null,
+                "isDraggingOver": false,
+              }
+            }
+            type="DEFAULT"
+            updateViewportMaxScroll={[Function]}
+          >
+            <div
+              data-react-beautiful-dnd-droppable="6"
+            >
+              <DomainRow
+                expanded={false}
+                field={
+                  Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "#ColumnAwesome",
+                    "primaryKey": undefined,
+                    "propertyId": undefined,
+                    "propertyURI": "test",
+                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                    "required": false,
+                    "scale": undefined,
+                    "URL": undefined,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Text (String)",
+                      "name": "string",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": "String",
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Text (String)",
+                        "name": "string",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "shortDisplay": "String",
+                      },
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                    },
+                    "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
+                  }
+                }
+                fieldError={
+                  Immutable.Record {
+                    "message": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+                    "fieldName": "#ColumnAwesome",
+                    "propertyId": undefined,
+                    "severity": "Warning",
+                    "index": 0,
+                  }
+                }
+                index={1}
+                key="domain-row-key-1"
+                onChange={[MockFunction]}
+                onDelete={[MockFunction]}
+                onExpand={[MockFunction]}
+              >
+                <ConnectFunction
+                  disableInteractiveElementBlocking={false}
+                  draggableId="domainpropertiesrow-domaindrag-1"
+                  index={1}
+                  isDragDisabled={false}
+                  shouldRespectForcePress={false}
+                >
+                  <Draggable
+                    disableInteractiveElementBlocking={false}
+                    draggableId="domainpropertiesrow-domaindrag-1"
+                    drop={[Function]}
+                    dropAnimationFinished={[Function]}
+                    index={1}
+                    isDragDisabled={false}
+                    lift={[Function]}
+                    mapped={
+                      Object {
+                        "combineTargetFor": null,
+                        "offset": Object {
+                          "x": 0,
+                          "y": 0,
+                        },
+                        "shouldAnimateDisplacement": true,
+                        "snapshot": Object {
+                          "combineTargetFor": null,
+                          "combineWith": null,
+                          "draggingOver": null,
+                          "dropAnimation": null,
+                          "isDragging": false,
+                          "isDropAnimating": false,
+                          "mode": null,
+                        },
+                        "type": "SECONDARY",
+                      }
+                    }
+                    move={[Function]}
+                    moveByWindowScroll={[Function]}
+                    moveDown={[Function]}
+                    moveLeft={[Function]}
+                    moveRight={[Function]}
+                    moveUp={[Function]}
+                    shouldRespectForcePress={false}
+                  >
+                    <div
+                      aria-roledescription="Draggable item. Press space bar to lift"
+                      className="domain-field-row-warning "
+                      data-react-beautiful-dnd-drag-handle="6"
+                      data-react-beautiful-dnd-draggable="6"
+                      draggable={true}
+                      onBlur={[Function]}
+                      onDragStart={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      onTransitionEnd={null}
+                      style={
+                        Object {
+                          "transform": null,
+                          "transition": null,
+                        }
+                      }
+                      tabIndex={1}
+                    >
+                      <Row
+                        bsClass="row"
+                        componentClass="div"
+                        key="domainpropertiesrow-domainrow-1"
+                      >
+                        <div
+                          className="row"
+                        >
+                          <div
+                            id="domainpropertiesrow-row-1"
+                          >
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
+                            >
+                              <div
+                                className="col-xs-3"
+                              >
+                                <Tip
+                                  caption="Name"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Name
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      disabled={false}
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      type="text"
+                                      value="#ColumnAwesome"
+                                    >
+                                      <input
+                                        className="form-control"
+                                        disabled={false}
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="#ColumnAwesome"
+                                      />
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      disabled={false}
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="string"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        disabled={false}
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="string"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="string"
+                                        >
+                                          Text (String)
+                                        </option>
+                                        <option
+                                          key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
+                                          value="boolean"
+                                        >
+                                          Boolean
+                                        </option>
+                                        <option
+                                          key="3"
+                                          value="int"
+                                        >
+                                          Integer
+                                        </option>
+                                        <option
+                                          key="4"
+                                          value="double"
+                                        >
+                                          Decimal
+                                        </option>
+                                        <option
+                                          key="5"
+                                          value="dateTime"
+                                        >
+                                          Date Time
+                                        </option>
+                                        <option
+                                          key="6"
+                                          value="flag"
+                                        >
+                                          Flag (String)
+                                        </option>
+                                        <option
+                                          key="7"
+                                          value="fileLink"
+                                        >
+                                          File
+                                        </option>
+                                        <option
+                                          key="8"
+                                          value="attachment"
+                                        >
+                                          Attachment
+                                        </option>
+                                        <option
+                                          key="9"
+                                          value="users"
+                                        >
+                                          User
+                                        </option>
+                                        <option
+                                          key="10"
+                                          value="ParticipantId"
+                                        >
+                                          Subject/Participant (String)
+                                        </option>
+                                        <option
+                                          key="11"
+                                          value="lookup"
+                                        >
+                                          Lookup
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
+                          <Col
+                            bsClass="col"
+                            componentClass="div"
+                            xs={6}
+                          >
+                            <div
+                              className="col-xs-6"
+                            >
+                              <span
+                                className="domain-field-details"
+                                id="domainpropertiesrow-details-1"
+                              >
+                                New field
+                                , SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.
+                              </span>
+                              <div
+                                className="pull-right"
+                              >
+                                <Tip
+                                  caption="Additional Settings"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Additional Settings
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="domain-field-icon"
+                                      id="domainpropertiesrow-expand-1"
+                                      onBlur={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f303",
+                                              "M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z",
+                                            ],
+                                            "iconName": "pencil-alt",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-pencil-alt fa-w-16 "
+                                          data-icon="pencil-alt"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </div>
+                          </Col>
+                        </div>
+                      </Row>
+                    </div>
+                  </Draggable>
+                </ConnectFunction>
+              </DomainRow>
+              <AnimateInOut
+                on={null}
+                shouldAnimate={true}
+              />
+            </div>
+          </Droppable>
+        </ConnectFunction>
+      </Provider>
+    </App>
+  </ErrorBoundary>
+</DragDropContext>
+`;
+
 exports[`DomainRowDisplay date time field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
@@ -2087,6 +2708,627 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                 className="domain-field-details"
                                 id="domainpropertiesrow-details-1"
                               />
+                              <div
+                                className="pull-right"
+                              >
+                                <Tip
+                                  caption="Additional Settings"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Additional Settings
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="domain-field-icon"
+                                      id="domainpropertiesrow-expand-1"
+                                      onBlur={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                    >
+                                      <FontAwesomeIcon
+                                        border={false}
+                                        className=""
+                                        fixedWidth={false}
+                                        flip={null}
+                                        icon={
+                                          Object {
+                                            "icon": Array [
+                                              512,
+                                              512,
+                                              Array [],
+                                              "f303",
+                                              "M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z",
+                                            ],
+                                            "iconName": "pencil-alt",
+                                            "prefix": "fas",
+                                          }
+                                        }
+                                        inverse={false}
+                                        listItem={false}
+                                        mask={null}
+                                        pull={null}
+                                        pulse={false}
+                                        rotation={null}
+                                        size={null}
+                                        spin={false}
+                                        symbol={false}
+                                        title=""
+                                        transform={null}
+                                      >
+                                        <svg
+                                          aria-hidden="true"
+                                          className="svg-inline--fa fa-pencil-alt fa-w-16 "
+                                          data-icon="pencil-alt"
+                                          data-prefix="fas"
+                                          focusable="false"
+                                          role="img"
+                                          style={Object {}}
+                                          viewBox="0 0 512 512"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                                            fill="currentColor"
+                                            style={Object {}}
+                                          />
+                                        </svg>
+                                      </FontAwesomeIcon>
+                                    </div>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </div>
+                          </Col>
+                        </div>
+                      </Row>
+                    </div>
+                  </Draggable>
+                </ConnectFunction>
+              </DomainRow>
+              <AnimateInOut
+                on={null}
+                shouldAnimate={true}
+              />
+            </div>
+          </Droppable>
+        </ConnectFunction>
+      </Provider>
+    </App>
+  </ErrorBoundary>
+</DragDropContext>
+`;
+
+exports[`DomainRowDisplay server side error on reserved field 1`] = `
+<DragDropContext
+  onDragEnd={[MockFunction]}
+>
+  <ErrorBoundary>
+    <App
+      onDragEnd={[MockFunction]}
+      setOnError={[Function]}
+      uniqueId={7}
+    >
+      <Provider
+        context={
+          Object {
+            "$$typeof": Symbol(react.context),
+            "Consumer": Object {
+              "$$typeof": Symbol(react.context),
+              "_calculateChangedBits": null,
+              "_context": [Circular],
+            },
+            "Provider": Object {
+              "$$typeof": Symbol(react.provider),
+              "_context": [Circular],
+            },
+            "_calculateChangedBits": null,
+            "_currentRenderer": Object {},
+            "_currentRenderer2": null,
+            "_currentValue": null,
+            "_currentValue2": null,
+            "_threadCount": 0,
+          }
+        }
+        store={
+          Object {
+            "dispatch": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+            Symbol(observable): [Function],
+          }
+        }
+      >
+        <ConnectFunction
+          direction="vertical"
+          droppableId="domain-form-droppable"
+          ignoreContainerClipping={false}
+          isCombineEnabled={false}
+          isDropDisabled={false}
+          type="DEFAULT"
+        >
+          <Droppable
+            direction="vertical"
+            droppableId="domain-form-droppable"
+            ignoreContainerClipping={false}
+            isCombineEnabled={false}
+            isDropDisabled={false}
+            placeholder={null}
+            shouldAnimatePlaceholder={true}
+            snapshot={
+              Object {
+                "draggingFromThisWith": null,
+                "draggingOverWith": null,
+                "isDraggingOver": false,
+              }
+            }
+            type="DEFAULT"
+            updateViewportMaxScroll={[Function]}
+          >
+            <div
+              data-react-beautiful-dnd-droppable="7"
+            >
+              <DomainRow
+                expanded={false}
+                field={
+                  Immutable.Record {
+                    "conceptURI": undefined,
+                    "defaultScale": undefined,
+                    "description": undefined,
+                    "excludeFromShifting": false,
+                    "format": undefined,
+                    "hidden": false,
+                    "importAliases": undefined,
+                    "label": undefined,
+                    "lookupContainer": undefined,
+                    "lookupQuery": undefined,
+                    "lookupSchema": undefined,
+                    "name": "modified",
+                    "primaryKey": undefined,
+                    "propertyId": undefined,
+                    "propertyURI": "test",
+                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                    "required": false,
+                    "scale": undefined,
+                    "URL": undefined,
+                    "shownInInsertView": true,
+                    "shownInUpdateView": true,
+                    "dataType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Text (String)",
+                      "name": "string",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "shortDisplay": "String",
+                    },
+                    "lookupQueryValue": undefined,
+                    "lookupType": Immutable.Record {
+                      "conceptURI": undefined,
+                      "display": "Lookup",
+                      "name": "lookup",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "shortDisplay": undefined,
+                    },
+                    "original": Object {
+                      "dataType": Immutable.Record {
+                        "conceptURI": undefined,
+                        "display": "Text (String)",
+                        "name": "string",
+                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "shortDisplay": "String",
+                      },
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                    },
+                    "updatedField": false,
+                    "isPrimaryKey": false,
+                    "lockType": "NotLocked",
+                  }
+                }
+                fieldError={
+                  Immutable.Record {
+                    "message": "'modified' is a reserved field name in 'CancerCuringStudy'",
+                    "fieldName": "modified",
+                    "propertyId": undefined,
+                    "severity": "Error",
+                    "index": 0,
+                  }
+                }
+                index={1}
+                key="domain-row-key-1"
+                onChange={[MockFunction]}
+                onDelete={[MockFunction]}
+                onExpand={[MockFunction]}
+              >
+                <ConnectFunction
+                  disableInteractiveElementBlocking={false}
+                  draggableId="domainpropertiesrow-domaindrag-1"
+                  index={1}
+                  isDragDisabled={false}
+                  shouldRespectForcePress={false}
+                >
+                  <Draggable
+                    disableInteractiveElementBlocking={false}
+                    draggableId="domainpropertiesrow-domaindrag-1"
+                    drop={[Function]}
+                    dropAnimationFinished={[Function]}
+                    index={1}
+                    isDragDisabled={false}
+                    lift={[Function]}
+                    mapped={
+                      Object {
+                        "combineTargetFor": null,
+                        "offset": Object {
+                          "x": 0,
+                          "y": 0,
+                        },
+                        "shouldAnimateDisplacement": true,
+                        "snapshot": Object {
+                          "combineTargetFor": null,
+                          "combineWith": null,
+                          "draggingOver": null,
+                          "dropAnimation": null,
+                          "isDragging": false,
+                          "isDropAnimating": false,
+                          "mode": null,
+                        },
+                        "type": "SECONDARY",
+                      }
+                    }
+                    move={[Function]}
+                    moveByWindowScroll={[Function]}
+                    moveDown={[Function]}
+                    moveLeft={[Function]}
+                    moveRight={[Function]}
+                    moveUp={[Function]}
+                    shouldRespectForcePress={false}
+                  >
+                    <div
+                      aria-roledescription="Draggable item. Press space bar to lift"
+                      className="domain-field-row-error "
+                      data-react-beautiful-dnd-drag-handle="7"
+                      data-react-beautiful-dnd-draggable="7"
+                      draggable={true}
+                      onBlur={[Function]}
+                      onDragStart={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      onMouseDown={[Function]}
+                      onTouchStart={[Function]}
+                      onTransitionEnd={null}
+                      style={
+                        Object {
+                          "transform": null,
+                          "transition": null,
+                        }
+                      }
+                      tabIndex={1}
+                    >
+                      <Row
+                        bsClass="row"
+                        componentClass="div"
+                        key="domainpropertiesrow-domainrow-1"
+                      >
+                        <div
+                          className="row"
+                        >
+                          <div
+                            id="domainpropertiesrow-row-1"
+                          >
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={3}
+                            >
+                              <div
+                                className="col-xs-3"
+                              >
+                                <Tip
+                                  caption="Name"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Name
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="input"
+                                      disabled={false}
+                                      id="domainpropertiesrow-name-1"
+                                      name="domainpropertiesrow-name"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      type="text"
+                                      value="modified"
+                                    >
+                                      <input
+                                        className="form-control"
+                                        disabled={false}
+                                        id="domainpropertiesrow-name-1"
+                                        name="domainpropertiesrow-name"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        type="text"
+                                        value="modified"
+                                      />
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={2}
+                            >
+                              <div
+                                className="col-xs-2"
+                              >
+                                <Tip
+                                  caption="Data Type"
+                                >
+                                  <OverlayTrigger
+                                    defaultOverlayShown={false}
+                                    delay={200}
+                                    onClick={[Function]}
+                                    overlay={
+                                      <Tooltip
+                                        bsClass="tooltip"
+                                        id="tooltip"
+                                        placement="right"
+                                      >
+                                        Data Type
+                                      </Tooltip>
+                                    }
+                                    placement="top"
+                                    trigger={
+                                      Array [
+                                        "focus",
+                                        "hover",
+                                      ]
+                                    }
+                                  >
+                                    <FormControl
+                                      bsClass="form-control"
+                                      componentClass="select"
+                                      disabled={false}
+                                      id="domainpropertiesrow-type-1"
+                                      name="domainpropertiesrow-type"
+                                      onBlur={[Function]}
+                                      onChange={[Function]}
+                                      onClick={[Function]}
+                                      onFocus={[Function]}
+                                      onMouseOut={[Function]}
+                                      onMouseOver={[Function]}
+                                      value="string"
+                                    >
+                                      <select
+                                        className="form-control"
+                                        disabled={false}
+                                        id="domainpropertiesrow-type-1"
+                                        name="domainpropertiesrow-type"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        value="string"
+                                      >
+                                        <option
+                                          key="0"
+                                          value="string"
+                                        >
+                                          Text (String)
+                                        </option>
+                                        <option
+                                          key="1"
+                                          value="multiLine"
+                                        >
+                                          Multi-Line Text
+                                        </option>
+                                        <option
+                                          key="2"
+                                          value="boolean"
+                                        >
+                                          Boolean
+                                        </option>
+                                        <option
+                                          key="3"
+                                          value="int"
+                                        >
+                                          Integer
+                                        </option>
+                                        <option
+                                          key="4"
+                                          value="double"
+                                        >
+                                          Decimal
+                                        </option>
+                                        <option
+                                          key="5"
+                                          value="dateTime"
+                                        >
+                                          Date Time
+                                        </option>
+                                        <option
+                                          key="6"
+                                          value="flag"
+                                        >
+                                          Flag (String)
+                                        </option>
+                                        <option
+                                          key="7"
+                                          value="fileLink"
+                                        >
+                                          File
+                                        </option>
+                                        <option
+                                          key="8"
+                                          value="attachment"
+                                        >
+                                          Attachment
+                                        </option>
+                                        <option
+                                          key="9"
+                                          value="users"
+                                        >
+                                          User
+                                        </option>
+                                        <option
+                                          key="10"
+                                          value="ParticipantId"
+                                        >
+                                          Subject/Participant (String)
+                                        </option>
+                                        <option
+                                          key="11"
+                                          value="lookup"
+                                        >
+                                          Lookup
+                                        </option>
+                                      </select>
+                                    </FormControl>
+                                  </OverlayTrigger>
+                                </Tip>
+                              </div>
+                            </Col>
+                            <Col
+                              bsClass="col"
+                              componentClass="div"
+                              xs={1}
+                            >
+                              <div
+                                className="col-xs-1"
+                              >
+                                <div
+                                  className="domain-field-checkbox"
+                                >
+                                  <Tip
+                                    caption="Required?"
+                                  >
+                                    <OverlayTrigger
+                                      defaultOverlayShown={false}
+                                      delay={200}
+                                      onClick={[Function]}
+                                      overlay={
+                                        <Tooltip
+                                          bsClass="tooltip"
+                                          id="tooltip"
+                                          placement="right"
+                                        >
+                                          Required?
+                                        </Tooltip>
+                                      }
+                                      placement="top"
+                                      trigger={
+                                        Array [
+                                          "focus",
+                                          "hover",
+                                        ]
+                                      }
+                                    >
+                                      <Checkbox
+                                        bsClass="checkbox"
+                                        checked={false}
+                                        className="domain-field-checkbox"
+                                        disabled={false}
+                                        id="domainpropertiesrow-required-1"
+                                        inline={false}
+                                        name="domainpropertiesrow-required"
+                                        onBlur={[Function]}
+                                        onChange={[Function]}
+                                        onClick={[Function]}
+                                        onFocus={[Function]}
+                                        onMouseOut={[Function]}
+                                        onMouseOver={[Function]}
+                                        title=""
+                                      >
+                                        <div
+                                          className="domain-field-checkbox checkbox"
+                                        >
+                                          <label
+                                            title=""
+                                          >
+                                            <input
+                                              checked={false}
+                                              disabled={false}
+                                              id="domainpropertiesrow-required-1"
+                                              name="domainpropertiesrow-required"
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onClick={[Function]}
+                                              onFocus={[Function]}
+                                              onMouseOut={[Function]}
+                                              onMouseOver={[Function]}
+                                              type="checkbox"
+                                            />
+                                          </label>
+                                        </div>
+                                      </Checkbox>
+                                    </OverlayTrigger>
+                                  </Tip>
+                                </div>
+                              </div>
+                            </Col>
+                          </div>
+                          <Col
+                            bsClass="col"
+                            componentClass="div"
+                            xs={6}
+                          >
+                            <div
+                              className="col-xs-6"
+                            >
+                              <span
+                                className="domain-field-details"
+                                id="domainpropertiesrow-details-1"
+                              >
+                                New field
+                                , 'modified' is a reserved field name in 'CancerCuringStudy'
+                              </span>
                               <div
                                 className="pull-right"
                               >

@@ -1032,7 +1032,7 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
-    getDisplayColumns(view?: string, requiredColumns?: List<string>): List<QueryColumn> {
+    getDisplayColumns(view?: string): List<QueryColumn> {
 
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;

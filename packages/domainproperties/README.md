@@ -8,6 +8,10 @@ Domain property related components for LabKey domains
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.0.25
+*Released*: 8 Aug 2019
+* Package patch update for changes to @glass/base v0.11.2
+
 ### version 0.0.24
 *Released*: 31 July 2019
 * Item 5718: Domain designer lookup field support

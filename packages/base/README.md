@@ -9,6 +9,10 @@ Base components, models, and utility functions for LabKey applications and pages
 * add getUserProperties function (which calls user-getUserProperties API)
 * change the DesignAssayPermission package path for move to assay module (from study)
 
+### version 0.11.2
+*Released*: 8 Aug 2019
+* add css class for DetailEditing panel divider
+
 ### version 0.11.1
 *Released*: 31 July 2019
 * Update to @labkey/dependencies version 0.0.7

@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.12.0-fb-assayReimport.20",
+  "version": "0.12.0-fb-assayReimport.21",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.11.3-fb-assayReimport.7",
-    "@glass/omnibox": "0.1.29-fb-assayReimport.8",
+    "@glass/base": "0.11.3-fb-assayReimport.8",
+    "@glass/omnibox": "0.1.29-fb-assayReimport.9",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

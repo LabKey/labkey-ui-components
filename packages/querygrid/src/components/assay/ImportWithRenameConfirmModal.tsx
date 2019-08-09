@@ -7,7 +7,6 @@ interface Props {
     originalName: string,
     newName: string,
     folderType?: string
-    productName?: string
 }
 
 export class ImportWithRenameConfirmModal extends React.Component<Props, any> {
@@ -24,7 +23,7 @@ export class ImportWithRenameConfirmModal extends React.Component<Props, any> {
                             A file named <span className={'import-rename-filename'}>{this.props.originalName}</span> already exists in this {this.props.folderType} folder.
                         </p>
                         <p>
-                            To import this file, either give it a new name or allow {this.props.productName ? this.props.productName + ' to rename it': 'it to be renamed'} to the following on import:
+                            To import this file, either give it a new name or it will be renamed to the following on import:
                         </p>
                         <p>
                             <span className={'import-rename-filename'}>{this.props.newName}</span>

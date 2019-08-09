@@ -154,14 +154,9 @@ export class RunDataPanel extends React.Component<Props, State> {
         }
     }
 
-    resetState = () => {
+    resetMessage = () => {
         this.setState( (state) => ({
             message: undefined,
-            attachments: undefined,
-            previousRunData: {...state.previousRunData, ...{
-                isLoaded: false,
-                isLoading: false
-            }}
         }));
     };
 
@@ -183,7 +178,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     onTabChange = () => {
-        this.resetState();
+        this.resetMessage();
     };
 
     render() {

@@ -25,12 +25,13 @@ export class AssayRunReferenceRenderer extends React.Component<AssayRunReference
 
     render() {
         const { data } = this.props;
+        const value = data.get('value');
 
-        if (data && data.size > 0 && data.get('value')) {
+        if (data && data.size > 0 && value) {
             return (
                 <div>
-                    <a href={"#/rd/assayrun/" +  data.get('value')}>
-                        Run {data.get('value')}
+                    <a href={"#/rd/assayrun/" + value}>
+                        Run {value}
                     </a>
                 </div>
             )

@@ -40,7 +40,6 @@ interface Props {
     currentStep: number
     wizardModel: AssayWizardModel
     gridModel: QueryGridModel
-    onRenameConfirm?: () => any
     onFileChange: (attachments: Map<string, File>) => any
     onFileRemoval: (attachmentName: string) => any
     onTextChange: (inputName: string, value: any) => any

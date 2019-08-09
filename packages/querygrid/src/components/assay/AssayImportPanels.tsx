@@ -137,6 +137,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     getRunPropertiesRow() :  Map<string, any> {
         const queryData = getRunPropertiesRow(this.props.assayDefinition, this.props.runId);
         if (queryData) {
+            // TODO make the consumers of this row data able to handle the queryData instead of
+            // having to create the key -> value map via reduction.
             return queryData.reduce((map, v, k) => {
                 let valueMap = v;
                 if (List.isList(v)) {
@@ -161,6 +163,11 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
+    isRunPropertiesInit() {
+        // if not reimporting, we don't need run properties to display in the form
+        return !this.isReimport() || this.getRunPropertiesModel().isLoaded;
+    }
+
     initModel(props: Props) {
         const { assayDefinition, runId } = props;
 
@@ -176,7 +183,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 const sampleColumnData = assayDefinition.getSampleColumn();
                 this.setState(() => ({
                     model: new AssayWizardModel({
-                        isInit: sampleColumnData === undefined && (!this.isReimport() || this.getRunPropertiesModel().isLoaded), // we are done here if the assay does not have a sample column
+                        // we are done here if the assay does not have a sample column and we aren't getting the run properties to show for reimport
+                        isInit: sampleColumnData === undefined && this.isRunPropertiesInit(),
                         assayDef: assayDefinition,
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
@@ -192,7 +200,6 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const { assayDefinition, location } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
-        const isInit = !this.isReimport() || this.getRunPropertiesModel().isLoaded;
         if (sampleColumnData && location) {
             // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
@@ -218,7 +225,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
                 this.setState((state) => ({
                     model: state.model.merge({
-                        isInit,
+                        isInit : this.isRunPropertiesInit(),
                         selectedSamples: samples,
                         batchProperties,
                         runProperties
@@ -229,7 +236,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         else {
             this.setState((state) => ({
                 model: state.model.merge({
-                    isInit,
+                    isInit : this.isRunPropertiesInit(),
                     runProperties: this.getRunPropertiesRow()
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
@@ -352,7 +359,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             }
         }).catch((reason) => {
             this.setState((state) => ({
-                model: state.model.set('errorMsg', getActionErrorMessage("There was in checking for duplicate file names.", "assay run")) as AssayWizardModel
+                model: state.model.set('errorMsg', getActionErrorMessage("There was in a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
             }));
         });
     };
@@ -488,7 +495,6 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     currentStep={currentStep}
                     wizardModel={model}
                     gridModel={dataGridModel}
-                    onRenameConfirm={this.onFinish.bind(this, false)}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onTextChange={this.handleDataTextChange}

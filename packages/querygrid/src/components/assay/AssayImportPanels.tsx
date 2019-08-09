@@ -83,9 +83,13 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         super(props);
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
-            model: INIT_WIZARD_MODEL.merge({runId: props.runId}) as AssayWizardModel,
+            model: AssayImportPanelsImpl.getInitWizardModel(props),
             showRenameModal: false
         }
+    }
+
+    static getInitWizardModel(props: Props) : AssayWizardModel {
+        return INIT_WIZARD_MODEL.merge({runId: props.runId}) as AssayWizardModel
     }
 
     isReimport() : boolean {
@@ -109,7 +113,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
             this.setState(() => ({
                 schemaQuery: SchemaQuery.create(nextProps.assayDefinition.protocolSchemaName, 'Data'),
-                model: INIT_WIZARD_MODEL
+                model: AssayImportPanelsImpl.getInitWizardModel(nextProps)
             }), () => {
                 this.initModel(nextProps);
             });

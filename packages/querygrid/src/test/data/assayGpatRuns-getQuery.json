@@ -395,6 +395,42 @@
         "multiValued" : "junction"
       }
     }, {
+      "fieldKey" : [ "DataOutputs", "DataFileUrl" ],
+      "description" : "Contains the full path to this file on the server's file system",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "varchar",
+      "defaultValue" : null,
+      "scale" : 600,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "textarea",
+      "shortCaption" : "Data File Url",
+      "facetingBehaviorType" : "ALWAYS_OFF",
+      "caption" : "Data File Url"
+    }, {
       "fieldKey" : [ "Comments" ],
       "description" : "Contains comments about this run",
       "friendlyType" : "Text (String)",
@@ -658,17 +694,17 @@
   "rows" : [ {
     "data" : {
       "RowId" : {
-        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=589",
-        "value" : 589
+        "value" : 650,
+        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=650"
       },
       "CreatedBy" : {
-        "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
+        "value" : 1005,
         "displayValue" : "susanh",
-        "value" : 1005
+        "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
       },
       "Modified" : {
-        "value" : "2019-08-04 15:43:46.912",
-        "formattedValue" : "2019-08-04 15:43"
+        "formattedValue" : "2019-08-07 13:18",
+        "value" : "2019-08-07 13:18:15.498"
       },
       "Comments" : {
         "value" : null
@@ -677,35 +713,38 @@
         "value" : null
       },
       "run_int_field" : {
-        "value" : 42
+        "value" : null
       },
       "ReplacedByRun" : {
         "value" : null
       },
       "ModifiedBy" : {
-        "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005",
+        "value" : 1005,
         "displayValue" : "susanh",
-        "value" : 1005
+        "url" : "/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
       },
+      "DataOutputs/DataFileUrl" : [ {
+        "value" : "file:///Users/susanhert/Development/labkey/trunk/build/deploy/files/Sample%20Management/@files/assaydata/GPAT_1-2019-08-07-1318.tmp"
+      } ],
       "Created" : {
-        "value" : "2019-08-04 15:43:46.845",
-        "formattedValue" : "2019-08-04 15:43"
+        "formattedValue" : "2019-08-07 13:18",
+        "value" : "2019-08-07 13:18:15.121"
       },
       "Name" : {
-        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=589",
-        "value" : "rerunData.xls"
+        "value" : "GPAT 1_2019-08-07_13-18-06",
+        "url" : "/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=650"
       },
       "ReplacesRun" : {
-        "displayValue" : "update",
-        "value" : 588
+        "value" : 646,
+        "displayValue" : "GPAT 1_2019-08-07_11-56-36"
       },
       "run_text_field" : {
-        "value" : "new run text field"
+        "value" : "reimport run 2"
       },
       "DataOutputs" : [ {
-        "url" : "/labkey/Sample%20Management/experiment-showData.view?rowId=1949",
-        "displayValue" : "rerunData.xls",
-        "value" : 1949
+        "value" : 2010,
+        "displayValue" : "GPAT_1-2019-08-07-1318.tmp",
+        "url" : "/labkey/Sample%20Management/experiment-showData.view?rowId=2010"
       } ],
       "run_multi_field" : {
         "value" : null

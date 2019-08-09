@@ -92,7 +92,9 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     componentWillReceiveProps(nextProps: FileAttachmentFormProps) {
-        this.initPreviewData(nextProps);
+        if (this.props.previewGridProps !== nextProps.previewGridProps) {
+            this.initPreviewData(nextProps);
+        }
     }
 
     initPreviewData(props: FileAttachmentFormProps) {

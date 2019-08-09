@@ -147,4 +147,37 @@ describe("<DetailEditing/>", () => {
       wrapper.unmount();
    });
 
+    test("custom title and buttons", () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const panelTitleText = 'Override Title';
+        const submitText = 'Override Save';
+        const cancelText = 'Override Cancel';
+        const component = (
+            <DetailEditing
+                queryModel={model}
+                canUpdate={true}
+                title={panelTitleText}
+                useEditIcon={true}
+                submitText={submitText}
+                cancelText={cancelText}
+            />
+        );
+
+        const wrapper = mount(component);
+        const panelTitle = wrapper.find(headingSelector);
+        expect(panelTitle.text()).toBe(panelTitleText);
+
+        const editButton = wrapper.find(editBtnSelector);
+        editButton.hostNodes().simulate('click');
+        expect(wrapper.find(headingSelector).text()).toBe('Editing ' + panelTitleText);
+
+        const cancelButton = wrapper.find('.btn-default');
+        expect(cancelButton.text()).toBe(cancelText);
+
+        const saveButton = wrapper.find('.btn-success');
+        expect(saveButton.text()).toBe(submitText);
+
+        wrapper.unmount();
+    });
+
 });

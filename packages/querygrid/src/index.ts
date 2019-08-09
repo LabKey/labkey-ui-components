@@ -55,7 +55,7 @@ import {
     selectRows,
     updateRows
 } from './query/api'
-import { MAX_EDITABLE_GRID_ROWS } from './constants'
+import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
@@ -170,6 +170,7 @@ export {
     changeColumn,
     removeColumn,
     MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE,
 
     // location related items
     Location,

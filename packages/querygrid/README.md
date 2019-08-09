@@ -14,6 +14,11 @@ Query Grid for LabKey schema/query data views
 * in RunDataPanel, support display of previous run's data when reimporting.
 * add param to support cascade delete of replaced runs in deleteAssayRuns API call
 
+### version 0.11.5
+*Released*: 8 Aug 2019
+* Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing
+* fix "Invalid prop 'value' of type 'number' supplied to 'Input'" error on bulk form
+
 ### version 0.11.4
 *Released*: 5 Aug 2019
 * Issue 38097: improve lookup search perf using ~q filter

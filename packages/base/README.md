@@ -17,6 +17,10 @@ that have been replaced)
 * add getServerFilePreview method for retrieving preview data of file already on the server
 * add optional parameter to getActionErrorMessage to indicate if the refresh suggestion should be shown or not.
 
+### version 0.11.2
+*Released*: 8 Aug 2019
+* add css class for DetailEditing panel divider
+
 ### version 0.11.1
 *Released*: 31 July 2019
 * Update to @labkey/dependencies version 0.0.7

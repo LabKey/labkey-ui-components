@@ -1,0 +1,12 @@
+{
+"exception": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+"success": null,
+"severity": "Warning",
+"errors": [
+    {
+    "field": "#FieldText$",
+    "message": "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.",
+    "severity": "Warning",
+    "index" : 0
+    }]
+}

@@ -139,7 +139,7 @@ export class DomainDesign extends Record({
     static create(rawModel, exception): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
-        let domainException = DomainException.create(exception, undefined);
+        let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
             if (rawModel.fields) {

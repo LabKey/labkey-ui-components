@@ -13,7 +13,9 @@ import { MockLookupProvider } from "../test/components/Lookup";
 
 import domainData from "../test/data/property-getDomain.json";
 import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
-import exceptionData from "../test/data/property-domainException.json";
+import warningData from "../test/data/property-unexpectedCharInFieldName.json";
+import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
+import exceptionDataClient from "../test/data/property-domainExceptionClient.json";
 import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
 import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
 import './stories.scss'
@@ -73,11 +75,19 @@ storiesOf("DomainForm", module)
             />
         )
     })
-    .add("with domain property errors", () => {
+    .add("with server side errors", () => {
         return (
             <DomainFormContainer
                 data={errorData}
-                exception={exceptionData}
+                exception={exceptionDataServer}
+            />
+        )
+    })
+    .add("with client side warnings", () => {
+        return (
+            <DomainFormContainer
+                data={warningData}
+                exception={exceptionDataClient}
             />
         )
     })

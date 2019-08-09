@@ -310,8 +310,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
 
     private getFieldErrorClass(fieldError: DomainFieldError)
     {
-        //severity will be undefined for storybook's server side error mockup
-        if (!fieldError.severity || fieldError.severity === SEVERITY_LEVEL_ERROR) {
+        if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
             return 'domain-field-row-error '
         }
         else {

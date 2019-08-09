@@ -101,7 +101,6 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             previewData = convertRowDataIntoPreviewData(props.previewGridProps.initialData.get('data'), props.previewGridProps.previewCount);
             this.setState(() => ({previewData}));
         }
-        this.setState(() => ({previewData}));
     }
 
     determineFileSize(): number {

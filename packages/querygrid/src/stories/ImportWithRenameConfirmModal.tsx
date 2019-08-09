@@ -27,7 +27,6 @@ storiesOf('ImportWithRenameConfirmModal', module)
             originalName={text('Original file name', 'original.txt')}
             newName={text('New file name', 'original_1.txt')}
             folderType={text('Folder type', "Product")}
-            productName={text('Product name', 'Our Product')}
             onConfirm={() => console.log('confirm')}
             onCancel={() => console.log('cancel')}
         />

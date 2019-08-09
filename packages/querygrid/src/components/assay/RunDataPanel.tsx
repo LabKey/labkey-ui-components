@@ -99,7 +99,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                     isLoading: false
                 }
             }));
-        } else if (this.isRerun() && !this.state.previousRunData.isLoaded && !this.state.previousRunData.isLoading) {
+        } else {
             this.initPreviewData();
         }
     }
@@ -179,8 +179,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                 isLoaded: false,
                 isLoading: false
             }
-        }));
-        return this.props.onFileRemoval(attachmentName);
+        }), () => this.props.onFileRemoval(attachmentName));
     };
 
     onTabChange = () => {

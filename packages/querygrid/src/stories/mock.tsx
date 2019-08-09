@@ -233,7 +233,7 @@ export function initMocks() {
     mock.get(/.*getFilePreview.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        if (queryParams.file === "1949") {
+        if (queryParams.file === "1949" || queryParams.file === "2010") {
             responseBody = filePreviewData;
         }
 

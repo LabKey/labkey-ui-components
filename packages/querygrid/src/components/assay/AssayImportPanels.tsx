@@ -136,19 +136,22 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
     getRunPropertiesRow() :  Map<string, any> {
         const queryData = getRunPropertiesRow(this.props.assayDefinition, this.props.runId);
-        return queryData.reduce((map, v, k) => {
-            let valueMap = v;
-            if (List.isList(v)) {
-                if (v.size > 1) {
-                    console.warn("Multiple values for field '" + k + "'.  Using the last.");
+        if (queryData) {
+            return queryData.reduce((map, v, k) => {
+                let valueMap = v;
+                if (List.isList(v)) {
+                    if (v.size > 1) {
+                        console.warn("Multiple values for field '" + k + "'.  Using the last.");
+                    }
+                    valueMap = v.get(v.size - 1);
                 }
-                valueMap = v.get(v.size-1);
-            }
-            if (valueMap && valueMap.has('value') && valueMap.get('value')) {
-                return map.set(k, valueMap.get('value').toString())
-            }
-            return map;
-        }, Map<string, any>());
+                if (valueMap && valueMap.has('value') && valueMap.get('value')) {
+                    return map.set(k, valueMap.get('value').toString())
+                }
+                return map;
+            }, Map<string, any>());
+        }
+        return Map<string, any>();
     }
 
     initRerunModel() {
@@ -171,7 +174,6 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         getQueryDetails(this.state.schemaQuery)
             .then(queryInfo => {
                 const sampleColumnData = assayDefinition.getSampleColumn();
-
                 this.setState(() => ({
                     model: new AssayWizardModel({
                         isInit: sampleColumnData === undefined && (!this.isReimport() || this.getRunPropertiesModel().isLoaded), // we are done here if the assay does not have a sample column
@@ -179,6 +181,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
                         runId,
+                        runProperties: this.getRunPropertiesRow(),
                         queryInfo
                     })
                 }), this.onGetQueryDetailsComplete)
@@ -196,7 +199,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             // samples.
             loadSelectedSamples(location, sampleColumnData.column).then((samples) => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                let runProperties = Map<string, any>();
+                let runProperties = this.getRunPropertiesRow();
                 let batchProperties = Map<string, any>();
                 if (sampleColumnData && samples && samples.size == 1) {
                     const { column, domain } = sampleColumnData;
@@ -227,7 +230,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             this.setState((state) => ({
                 model: state.model.merge({
                     isInit,
-                    runProperties: isInit && this.isReimport() ? this.getRunPropertiesRow() : Map<string, any>()
+                    runProperties: this.getRunPropertiesRow()
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
         }
@@ -478,7 +481,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const dataGridModel = this.getDataGridModel();
         return (
             <>
-                {this.isReimport() && <AssayReimportHeader assay={model.assayDef} replacedRunProperties={this.getRunPropertiesRow()}/>}
+                {this.isReimport() && this.getRunPropertiesModel().isLoaded && <AssayReimportHeader assay={model.assayDef} replacedRunProperties={this.getRunPropertiesRow()}/>}
                 <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
                 <RunDataPanel

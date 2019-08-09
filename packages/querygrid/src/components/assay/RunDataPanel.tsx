@@ -110,13 +110,15 @@ export class RunDataPanel extends React.Component<Props, State> {
            return;
         }
 
+        this.setState(() => ({previousRunData: {isLoading: true}}));
+
         const { gridModel, wizardModel } = this.props;
 
         if (wizardModel.isInit  && gridModel && gridModel.isLoaded  && wizardModel.usePreviousRunFile) {
             const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
             if (row.has("DataOutputs")) {
                 const outputFiles = row.get('DataOutputs/DataFileUrl');
-                if (outputFiles.size > 0) {
+                if (outputFiles && outputFiles.size > 0) {
                     const outputs = row.get('DataOutputs');
                     if (outputs.size > 1) {
                         console.warn("More than one data output for this run.  Using the last.");
@@ -143,12 +145,12 @@ export class RunDataPanel extends React.Component<Props, State> {
                         }));
                     });
                 }
-                // else {
-                //     this.setState(() => ({
-                //         message: "No preview data available for the current run.",
-                //         messageStyle: "info"
-                //     }))
-                // }
+                else {
+                    this.setState(() => ({
+                        message: "No preview data available for the current run.",
+                        messageStyle: "info"
+                    }))
+                }
             }
         }
     }

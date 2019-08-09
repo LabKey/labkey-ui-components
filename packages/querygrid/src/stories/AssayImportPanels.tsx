@@ -30,11 +30,14 @@ import { BatchPropertiesPanel } from "../components/assay/BatchPropertiesPanel";
 import { AssayImportPanels } from "../components/assay/AssayImportPanels";
 import { ASSAY_WIZARD_MODEL } from "../test/data/constants";
 import './stories.scss'
+import { getRunPropertiesModel } from '..';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
 
     componentDidMount(): void {
         gridInit(this.getQueryGridModel(), false, this);
+        const runPropertiesModel =  getRunPropertiesModel(ASSAY_WIZARD_MODEL.assayDef, '123');
+        gridInit(runPropertiesModel, true, this);
     }
 
     getQueryGridModel() {
@@ -106,8 +109,6 @@ storiesOf('AssayImportPanels', module)
         return (
             <RunDataPanelWrapper/>
         )
-    }, {
-        notes: "For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message."
     })
     .add("AssayImportPanels", () => {
         return (
@@ -118,6 +119,8 @@ storiesOf('AssayImportPanels', module)
                 allowBulkRemove={true}
             />
         )
+    }, {
+        notes: "For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message."
     })
     .add("AssayImportPanels for reimport", () => {
         return (

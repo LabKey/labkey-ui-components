@@ -105,8 +105,6 @@ import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal'
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem'
-import { ImportWithRenameConfirmModal } from './components/assay/ImportWithRenameConfirmModal'
-import { AssayReimportHeader } from './components/assay/AssayReimportHeader'
 import {
     AssayUploadResultModel,
     AssayWizardModel,
@@ -114,16 +112,14 @@ import {
     IAssayURLContext
 } from './components/assay/models'
 import {
-    checkForDuplicateAssayFiles,
     deleteAssayRuns,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
-    importAssayRun,
-    uploadAssayRunFiles,
-    DuplicateFilesResponse,
     getRunPropertiesModel,
     getRunPropertiesRow,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow
+    importAssayRun,
+    uploadAssayRunFiles
 } from './components/assay/actions'
 
 export {
@@ -249,10 +245,6 @@ export {
     uploadAssayRunFiles,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
-    ImportWithRenameConfirmModal,
-    checkForDuplicateAssayFiles,
-    DuplicateFilesResponse,
-    AssayReimportHeader,
     getRunPropertiesModel,
     getRunPropertiesRow,
     getBatchPropertiesModel,

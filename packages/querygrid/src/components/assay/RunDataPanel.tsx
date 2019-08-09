@@ -109,27 +109,23 @@ export class RunDataPanel extends React.Component<Props, State> {
            return;
         }
 
-        this.setState(() => ({previousRunData: {isLoading: true}}));
-
         const { gridModel, wizardModel } = this.props;
 
         if (wizardModel.isInit  && gridModel && gridModel.isLoaded  && wizardModel.usePreviousRunFile) {
             const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
             if (row.has("DataOutputs")) {
                 const outputFiles = row.get('DataOutputs/DataFileUrl');
-                if (outputFiles && outputFiles.size > 0) {
+                if (outputFiles && outputFiles.size == 1) {
                     const outputs = row.get('DataOutputs');
-                    if (outputs.size > 1) {
-                        console.warn("More than one data output for this run.  Using the last.");
-                    }
+                    this.setState(() => ({previousRunData: {isLoading: true}}));
 
-                    getServerFilePreview(outputs.getIn([outputs.size - 1, "value"]), RunDataPanel.previewCount).then((response) => {
+                    getServerFilePreview(outputs.getIn([0, "value"]), RunDataPanel.previewCount).then((response) => {
                         this.setState(() => ({
                                 previousRunData: {
                                     isLoaded: true,
                                     isLoading: false,
                                     data: response,
-                                    fileName: outputs.getIn([outputs.size - 1, 'displayValue'])
+                                    fileName: outputs.getIn([0, 'displayValue'])
                                 }
                             }
                         ));
@@ -145,8 +141,12 @@ export class RunDataPanel extends React.Component<Props, State> {
                     });
                 }
                 else {
+                    let message = "No preview data available for the current run.";
+                    if (outputFiles.size > 1) {
+                        message += "  There are " + outputFiles.size + " output files for this run. Preview is not currently supported for multiple files."
+                    }
                     this.setState(() => ({
-                        message: "No preview data available for the current run.",
+                        message,
                         messageStyle: "info"
                     }))
                 }

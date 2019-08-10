@@ -19,7 +19,7 @@ import {
     DOMAIN_FIELD_PHI,
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
-    DOMAIN_FIELD_SHOWNINDINSERTVIEW,
+    DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_PHI_LEVELS
 } from "../constants";
@@ -203,7 +203,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <div>These options configure how and in which views this field will be visible.</div>
                     <Checkbox checked={hidden === false} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_HIDDEN)} id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>Show field on default view of the grid</Checkbox>
                     <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on update form when updating a single row of data</Checkbox>
-                    <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINDINSERTVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINDINSERTVIEW, index)}>Show on insert form when updating a single row of data</Checkbox>
+                    <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>Show on insert form when updating a single row of data</Checkbox>
                     <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on details page for a single row</Checkbox>
                     <div className='domain-adv-misc-options'>Miscellaneous Options</div>
                     <div className='domain-adv-phi-row'>

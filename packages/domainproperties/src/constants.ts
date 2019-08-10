@@ -42,7 +42,7 @@ export const DOMAIN_FIELD_MVENABLED = 'mvEnabled';
 export const DOMAIN_FIELD_PHI = 'PHI';
 export const DOMAIN_FIELD_RECOMMENDEDVARIABLE = 'recommendedVariable';
 export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
-export const DOMAIN_FIELD_SHOWNINDINSERTVIEW = 'shownInInsertView';
+export const DOMAIN_FIELD_SHOWNININSERTVIEW = 'shownInInsertView';
 export const DOMAIN_FIELD_SHOWNINUPDATESVIEW = 'shownInUpdateView';
 
 // TextFieldOptions

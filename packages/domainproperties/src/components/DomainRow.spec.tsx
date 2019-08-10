@@ -15,18 +15,27 @@
  */
 
 import * as React from "react";
-import {DomainField} from "../models";
+import {ATTACHMENT_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, PARTICIPANT_TYPE, TEXT_TYPE} from "../models";
 import {DomainRow} from "./DomainRow";
 import { mount } from "enzyme"
 import {
     ATTACHMENT_RANGE_URI,
-    DATETIME_RANGE_URI,
+    DATETIME_RANGE_URI, DOMAIN_FIELD_ADV,
+    DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_EXPAND,
+    DOMAIN_FIELD_NAME,
+    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_TYPE,
     DOUBLE_RANGE_URI,
-    PARTICIPANTID_CONCEPT_URI, PHILEVEL_RESTRICTED_PHI,
+    PARTICIPANTID_CONCEPT_URI,
+    PHILEVEL_RESTRICTED_PHI,
     STRING_RANGE_URI
 } from "../constants";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import toJson from "enzyme-to-json";
+import {createFormInputId} from "../actions/actions";
+import {LookupFieldOptions} from "./LookupFieldOptions";
+import {fn} from "moment";
 
 const wrapDraggable = (element) => {
     return (
@@ -44,7 +53,7 @@ const wrapDraggable = (element) => {
         </DragDropContext>
     )
 
-}
+};
 
 describe('DomainRowDisplay', () => {
 
@@ -67,19 +76,23 @@ describe('DomainRowDisplay', () => {
         tree.unmount();
     });
 
-    test('string field', () => {
+    test('string field test', () => {
+        const _index = 1;
+        const _name = 'stringField';
+        const _propDesc = TEXT_TYPE;
+
         const field = DomainField.create({
-            name: 'key',
-            rangeURI: STRING_RANGE_URI,
+            name: _name,
+            rangeURI: _propDesc.rangeURI,
             propertyId: 1,
             propertyURI: 'test'
         });
 
-        const tree = mount(
+        const row = mount(
             wrapDraggable(
                 <DomainRow
                     key={'domain-row-key-1'}
-                    index={1}
+                    index={_index}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -88,23 +101,40 @@ describe('DomainRowDisplay', () => {
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
-        expect(toJson(tree)).toMatchSnapshot();
-        tree.unmount();
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        expect(type.length).toEqual(1);
+        expect(type.props().value).toEqual(_propDesc.name);
+
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        expect(name.length).toEqual(1);
+        expect(name.props().value).toEqual(_name);
+
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        expect(req.length).toEqual(1);
+        expect(req.props().checked).toEqual(false);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
     });
 
     test('decimal field', () => {
+        const _index = 2;
+        const _name = 'decimalField';
+        const _propDesc = DOUBLE_TYPE;
+
         const field = DomainField.create({
-            name: 'key',
-            rangeURI: DOUBLE_RANGE_URI,
+            name: _name,
+            rangeURI: _propDesc.rangeURI,
             propertyId: 1,
-            propertyURI: 'test'
+            propertyURI: 'test',
+            required: true
         });
 
-        const tree = mount(
+        const row = mount(
             wrapDraggable(
                 <DomainRow
                     key={'domain-row-key-1'}
-                    index={1}
+                    index={_index}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -113,23 +143,40 @@ describe('DomainRowDisplay', () => {
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
-        expect(toJson(tree)).toMatchSnapshot();
-        tree.unmount();
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        expect(type.length).toEqual(1);
+        expect(type.props().value).toEqual(_propDesc.name);
+
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        expect(name.length).toEqual(1);
+        expect(name.props().value).toEqual(_name);
+
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        expect(req.length).toEqual(1);
+        expect(req.props().checked).toEqual(true);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
     });
 
     test('date time field', () => {
+        const _index = 0;
+        const _name = 'dateTimeField';
+        const _propDesc = DATETIME_TYPE;
+
         const field = DomainField.create({
-            name: 'key',
-            rangeURI: DATETIME_RANGE_URI,
+            name: _name,
+            rangeURI: _propDesc.rangeURI,
             propertyId: 1,
-            propertyURI: 'test'
+            propertyURI: 'test',
+            required: false
         });
 
-        const tree = mount(
+        const row = mount(
             wrapDraggable(
                 <DomainRow
                     key={'domain-row-key-1'}
-                    index={1}
+                    index={_index}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -138,24 +185,40 @@ describe('DomainRowDisplay', () => {
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
-        expect(toJson(tree)).toMatchSnapshot();
-        tree.unmount();
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        expect(type.length).toEqual(1);
+        expect(type.props().value).toEqual(_propDesc.name);
+
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        expect(name.length).toEqual(1);
+        expect(name.props().value).toEqual(_name);
+
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        expect(req.length).toEqual(1);
+        expect(req.props().checked).toEqual(false);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
     });
 
     test('participant id field', () => {
+        const _index = 0;
+        const _name = 'participantField';
+        const _propDesc = PARTICIPANT_TYPE;
+
         const field = DomainField.create({
-            name: 'key',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: PARTICIPANTID_CONCEPT_URI,
+            name: _name,
+            rangeURI: _propDesc.rangeURI,
+            conceptURI: _propDesc.conceptURI,
             propertyId: 1,
             propertyURI: 'test'
         });
 
-        const tree = mount(
+        const row = mount(
             wrapDraggable(
                 <DomainRow
                     key={'domain-row-key-1'}
-                    index={1}
+                    index={_index}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
@@ -164,32 +227,84 @@ describe('DomainRowDisplay', () => {
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
-        expect(toJson(tree)).toMatchSnapshot();
-        tree.unmount();
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        expect(type.length).toEqual(1);
+        expect(type.props().value).toEqual(_propDesc.name);
+
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        expect(name.length).toEqual(1);
+        expect(name.props().value).toEqual(_name);
+
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        expect(req.length).toEqual(1);
+        expect(req.props().checked).toEqual(false);
+
+        // Verify not expanded
+        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)});
+        expect(expandButton.length).toEqual(1);
+
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index)});
+        expect(deleteButton.length).toEqual(0);
+
+        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index)});
+        expect(advButton.length).toEqual(0);
+
+        let sectionLabel = row.find({className: 'domain-field-section-heading'});
+        expect(sectionLabel.length).toEqual(1);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
     });
 
     test('attachment field', () => {
+        const _index = 0;
+        const _name = 'attachmentField';
+        const _propDesc = ATTACHMENT_TYPE;
+
         const field = DomainField.create({
-            name: 'key',
-            rangeURI: ATTACHMENT_RANGE_URI,
+            name: _name,
+            rangeURI: _propDesc.rangeURI,
             propertyId: 1,
             propertyURI: 'test'
         });
 
-        const tree = mount(
+        const row = mount(
             wrapDraggable(
                 <DomainRow
                     key={'domain-row-key-1'}
-                    index={1}
+                    index={_index}
                     field={field}
                     onChange={jest.fn()}
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
-                    expanded={false}
+                    expanded={true}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
-        expect(toJson(tree)).toMatchSnapshot();
-        tree.unmount();
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        expect(type.length).toEqual(1);
+        expect(type.props().value).toEqual(_propDesc.name);
+
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        expect(name.length).toEqual(1);
+        expect(name.props().value).toEqual(_name);
+
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        expect(req.length).toEqual(1);
+        expect(req.props().checked).toEqual(false);
+
+        // Verify expanded
+        let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)});
+        expect(expandButton.length).toEqual(1);
+
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index), bsStyle: 'danger'});
+        expect(deleteButton.length).toEqual(1);
+
+        let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index), bsStyle: 'default'});
+        expect(advButton.length).toEqual(1);
+
+        let sectionLabel = row.find({className: 'domain-field-section-heading'});
+        expect(sectionLabel.length).toEqual(1);
+
     })
 });

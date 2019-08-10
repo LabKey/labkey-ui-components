@@ -1,1235 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DomainRowDisplay attachment field 1`] = `
-<DragDropContext
-  onDragEnd={[MockFunction]}
->
-  <ErrorBoundary>
-    <App
-      onDragEnd={[MockFunction]}
-      setOnError={[Function]}
-      uniqueId={5}
-    >
-      <Provider
-        context={
-          Object {
-            "$$typeof": Symbol(react.context),
-            "Consumer": Object {
-              "$$typeof": Symbol(react.context),
-              "_calculateChangedBits": null,
-              "_context": [Circular],
-            },
-            "Provider": Object {
-              "$$typeof": Symbol(react.provider),
-              "_context": [Circular],
-            },
-            "_calculateChangedBits": null,
-            "_currentRenderer": Object {},
-            "_currentRenderer2": null,
-            "_currentValue": null,
-            "_currentValue2": null,
-            "_threadCount": 0,
-          }
-        }
-        store={
-          Object {
-            "dispatch": [Function],
-            "getState": [Function],
-            "replaceReducer": [Function],
-            "subscribe": [Function],
-            Symbol(observable): [Function],
-          }
-        }
-      >
-        <ConnectFunction
-          direction="vertical"
-          droppableId="domain-form-droppable"
-          ignoreContainerClipping={false}
-          isCombineEnabled={false}
-          isDropDisabled={false}
-          type="DEFAULT"
-        >
-          <Droppable
-            direction="vertical"
-            droppableId="domain-form-droppable"
-            ignoreContainerClipping={false}
-            isCombineEnabled={false}
-            isDropDisabled={false}
-            placeholder={null}
-            shouldAnimatePlaceholder={true}
-            snapshot={
-              Object {
-                "draggingFromThisWith": null,
-                "draggingOverWith": null,
-                "isDraggingOver": false,
-              }
-            }
-            type="DEFAULT"
-            updateViewportMaxScroll={[Function]}
-          >
-            <div
-              data-react-beautiful-dnd-droppable="5"
-            >
-              <DomainRow
-                expanded={false}
-                field={
-                  Immutable.Record {
-                    "conceptURI": undefined,
-                    "defaultScale": undefined,
-                    "description": undefined,
-                    "dimension": undefined,
-                    "excludeFromShifting": false,
-                    "format": undefined,
-                    "hidden": false,
-                    "importAliases": undefined,
-                    "label": undefined,
-                    "lookupContainer": undefined,
-                    "lookupQuery": undefined,
-                    "lookupSchema": undefined,
-                    "measure": undefined,
-                    "mvEnabled": false,
-                    "name": "key",
-                    "PHI": undefined,
-                    "primaryKey": undefined,
-                    "propertyId": 1,
-                    "propertyURI": "test",
-                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                    "recommendedVariable": false,
-                    "required": false,
-                    "scale": undefined,
-                    "URL": undefined,
-                    "shownInDetailsView": true,
-                    "shownInInsertView": true,
-                    "shownInUpdateView": true,
-                    "dataType": Immutable.Record {
-                      "conceptURI": undefined,
-                      "display": "Attachment",
-                      "name": "attachment",
-                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                      "shortDisplay": undefined,
-                    },
-                    "lookupQueryValue": undefined,
-                    "lookupType": Immutable.Record {
-                      "conceptURI": undefined,
-                      "display": "Lookup",
-                      "name": "lookup",
-                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                      "shortDisplay": undefined,
-                    },
-                    "original": Object {
-                      "dataType": Immutable.Record {
-                        "conceptURI": undefined,
-                        "display": "Attachment",
-                        "name": "attachment",
-                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                        "shortDisplay": undefined,
-                      },
-                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                    },
-                    "updatedField": false,
-                  }
-                }
-                index={1}
-                key="domain-row-key-1"
-                maxPhiLevel="Restricted"
-                onChange={[MockFunction]}
-                onDelete={[MockFunction]}
-                onExpand={[MockFunction]}
-              >
-                <ConnectFunction
-                  disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
-                  index={1}
-                  isDragDisabled={false}
-                  shouldRespectForcePress={false}
-                >
-                  <Draggable
-                    disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
-                    drop={[Function]}
-                    dropAnimationFinished={[Function]}
-                    index={1}
-                    isDragDisabled={false}
-                    lift={[Function]}
-                    mapped={
-                      Object {
-                        "combineTargetFor": null,
-                        "offset": Object {
-                          "x": 0,
-                          "y": 0,
-                        },
-                        "shouldAnimateDisplacement": true,
-                        "snapshot": Object {
-                          "combineTargetFor": null,
-                          "combineWith": null,
-                          "draggingOver": null,
-                          "dropAnimation": null,
-                          "isDragging": false,
-                          "isDropAnimating": false,
-                          "mode": null,
-                        },
-                        "type": "SECONDARY",
-                      }
-                    }
-                    move={[Function]}
-                    moveByWindowScroll={[Function]}
-                    moveDown={[Function]}
-                    moveLeft={[Function]}
-                    moveRight={[Function]}
-                    moveUp={[Function]}
-                    shouldRespectForcePress={false}
-                  >
-                    <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
-                      className="domain-field-row "
-                      data-react-beautiful-dnd-drag-handle="5"
-                      data-react-beautiful-dnd-draggable="5"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
-                      onTouchStart={[Function]}
-                      onTransitionEnd={null}
-                      style={
-                        Object {
-                          "transform": null,
-                          "transition": null,
-                        }
-                      }
-                      tabIndex={1}
-                    >
-                      <Row
-                        bsClass="row"
-                        componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
-                      >
-                        <div
-                          className="row"
-                        >
-                          <AdvancedSettings
-                            field={
-                              Immutable.Record {
-                                "conceptURI": undefined,
-                                "defaultScale": undefined,
-                                "description": undefined,
-                                "dimension": undefined,
-                                "excludeFromShifting": false,
-                                "format": undefined,
-                                "hidden": false,
-                                "importAliases": undefined,
-                                "label": undefined,
-                                "lookupContainer": undefined,
-                                "lookupQuery": undefined,
-                                "lookupSchema": undefined,
-                                "measure": undefined,
-                                "mvEnabled": false,
-                                "name": "key",
-                                "PHI": undefined,
-                                "primaryKey": undefined,
-                                "propertyId": 1,
-                                "propertyURI": "test",
-                                "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                "recommendedVariable": false,
-                                "required": false,
-                                "scale": undefined,
-                                "URL": undefined,
-                                "shownInDetailsView": true,
-                                "shownInInsertView": true,
-                                "shownInUpdateView": true,
-                                "dataType": Immutable.Record {
-                                  "conceptURI": undefined,
-                                  "display": "Attachment",
-                                  "name": "attachment",
-                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                  "shortDisplay": undefined,
-                                },
-                                "lookupQueryValue": undefined,
-                                "lookupType": Immutable.Record {
-                                  "conceptURI": undefined,
-                                  "display": "Lookup",
-                                  "name": "lookup",
-                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                  "shortDisplay": undefined,
-                                },
-                                "original": Object {
-                                  "dataType": Immutable.Record {
-                                    "conceptURI": undefined,
-                                    "display": "Attachment",
-                                    "name": "attachment",
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                    "shortDisplay": undefined,
-                                  },
-                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                },
-                                "updatedField": false,
-                              }
-                            }
-                            index={1}
-                            label="key"
-                            maxPhiLevel="Restricted"
-                            onApply={[Function]}
-                            onHide={[Function]}
-                            show={false}
-                          >
-                            <Modal
-                              animation={true}
-                              autoFocus={true}
-                              backdrop={true}
-                              bsClass="modal"
-                              dialogComponentClass={[Function]}
-                              enforceFocus={true}
-                              keyboard={true}
-                              manager={
-                                ModalManager {
-                                  "add": [Function],
-                                  "containers": Array [],
-                                  "data": Array [],
-                                  "handleContainerOverflow": true,
-                                  "hideSiblingNodes": true,
-                                  "isTopModal": [Function],
-                                  "modals": Array [],
-                                  "remove": [Function],
-                                }
-                              }
-                              onEnter={[Function]}
-                              onHide={[Function]}
-                              renderBackdrop={[Function]}
-                              restoreFocus={true}
-                              show={false}
-                            >
-                              <Modal
-                                autoFocus={true}
-                                backdrop={true}
-                                backdropClassName="modal-backdrop"
-                                backdropTransition={[Function]}
-                                containerClassName="modal-open"
-                                enforceFocus={true}
-                                keyboard={true}
-                                manager={
-                                  ModalManager {
-                                    "add": [Function],
-                                    "containers": Array [],
-                                    "data": Array [],
-                                    "handleContainerOverflow": true,
-                                    "hideSiblingNodes": true,
-                                    "isTopModal": [Function],
-                                    "modals": Array [],
-                                    "remove": [Function],
-                                  }
-                                }
-                                onEnter={[Function]}
-                                onEntering={[Function]}
-                                onExited={[Function]}
-                                onHide={[Function]}
-                                renderBackdrop={[Function]}
-                                restoreFocus={true}
-                                show={false}
-                                transition={[Function]}
-                              />
-                            </Modal>
-                          </AdvancedSettings>
-                          <div
-                            id="domainpropertiesrow-row-1"
-                          >
-                            <Col
-                              bsClass="col"
-                              componentClass="div"
-                              xs={3}
-                            >
-                              <div
-                                className="col-xs-3"
-                              >
-                                <Tip
-                                  caption="Name"
-                                >
-                                  <OverlayTrigger
-                                    defaultOverlayShown={false}
-                                    delay={200}
-                                    onClick={[Function]}
-                                    overlay={
-                                      <Tooltip
-                                        bsClass="tooltip"
-                                        id="tooltip"
-                                        placement="right"
-                                      >
-                                        Name
-                                      </Tooltip>
-                                    }
-                                    placement="top"
-                                    trigger={
-                                      Array [
-                                        "focus",
-                                        "hover",
-                                      ]
-                                    }
-                                  >
-                                    <FormControl
-                                      bsClass="form-control"
-                                      componentClass="input"
-                                      id="domainpropertiesrow-name-1"
-                                      name="domainpropertiesrow-name"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      type="text"
-                                      value="key"
-                                    >
-                                      <input
-                                        className="form-control"
-                                        id="domainpropertiesrow-name-1"
-                                        name="domainpropertiesrow-name"
-                                        onBlur={[Function]}
-                                        onChange={[Function]}
-                                        onClick={[Function]}
-                                        onFocus={[Function]}
-                                        onMouseOut={[Function]}
-                                        onMouseOver={[Function]}
-                                        type="text"
-                                        value="key"
-                                      />
-                                    </FormControl>
-                                  </OverlayTrigger>
-                                </Tip>
-                              </div>
-                            </Col>
-                            <Col
-                              bsClass="col"
-                              componentClass="div"
-                              xs={2}
-                            >
-                              <div
-                                className="col-xs-2"
-                              >
-                                <Tip
-                                  caption="Data Type"
-                                >
-                                  <OverlayTrigger
-                                    defaultOverlayShown={false}
-                                    delay={200}
-                                    onClick={[Function]}
-                                    overlay={
-                                      <Tooltip
-                                        bsClass="tooltip"
-                                        id="tooltip"
-                                        placement="right"
-                                      >
-                                        Data Type
-                                      </Tooltip>
-                                    }
-                                    placement="top"
-                                    trigger={
-                                      Array [
-                                        "focus",
-                                        "hover",
-                                      ]
-                                    }
-                                  >
-                                    <FormControl
-                                      bsClass="form-control"
-                                      componentClass="select"
-                                      id="domainpropertiesrow-type-1"
-                                      name="domainpropertiesrow-type"
-                                      onBlur={[Function]}
-                                      onChange={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                      value="attachment"
-                                    >
-                                      <select
-                                        className="form-control"
-                                        id="domainpropertiesrow-type-1"
-                                        name="domainpropertiesrow-type"
-                                        onBlur={[Function]}
-                                        onChange={[Function]}
-                                        onClick={[Function]}
-                                        onFocus={[Function]}
-                                        onMouseOut={[Function]}
-                                        onMouseOver={[Function]}
-                                        value="attachment"
-                                      >
-                                        <option
-                                          key="0"
-                                          value="attachment"
-                                        >
-                                          Attachment
-                                        </option>
-                                      </select>
-                                    </FormControl>
-                                  </OverlayTrigger>
-                                </Tip>
-                              </div>
-                            </Col>
-                            <Col
-                              bsClass="col"
-                              componentClass="div"
-                              xs={1}
-                            >
-                              <div
-                                className="col-xs-1"
-                              >
-                                <div
-                                  className="domain-field-checkbox"
-                                >
-                                  <Tip
-                                    caption="Required?"
-                                  >
-                                    <OverlayTrigger
-                                      defaultOverlayShown={false}
-                                      delay={200}
-                                      onClick={[Function]}
-                                      overlay={
-                                        <Tooltip
-                                          bsClass="tooltip"
-                                          id="tooltip"
-                                          placement="right"
-                                        >
-                                          Required?
-                                        </Tooltip>
-                                      }
-                                      placement="top"
-                                      trigger={
-                                        Array [
-                                          "focus",
-                                          "hover",
-                                        ]
-                                      }
-                                    >
-                                      <Checkbox
-                                        bsClass="checkbox"
-                                        checked={false}
-                                        className="domain-field-checkbox"
-                                        disabled={false}
-                                        id="domainpropertiesrow-required-1"
-                                        inline={false}
-                                        name="domainpropertiesrow-required"
-                                        onBlur={[Function]}
-                                        onChange={[Function]}
-                                        onClick={[Function]}
-                                        onFocus={[Function]}
-                                        onMouseOut={[Function]}
-                                        onMouseOver={[Function]}
-                                        title=""
-                                      >
-                                        <div
-                                          className="domain-field-checkbox checkbox"
-                                        >
-                                          <label
-                                            title=""
-                                          >
-                                            <input
-                                              checked={false}
-                                              disabled={false}
-                                              id="domainpropertiesrow-required-1"
-                                              name="domainpropertiesrow-required"
-                                              onBlur={[Function]}
-                                              onChange={[Function]}
-                                              onClick={[Function]}
-                                              onFocus={[Function]}
-                                              onMouseOut={[Function]}
-                                              onMouseOver={[Function]}
-                                              type="checkbox"
-                                            />
-                                          </label>
-                                        </div>
-                                      </Checkbox>
-                                    </OverlayTrigger>
-                                  </Tip>
-                                </div>
-                              </div>
-                            </Col>
-                          </div>
-                          <Col
-                            bsClass="col"
-                            componentClass="div"
-                            xs={6}
-                          >
-                            <div
-                              className="col-xs-6"
-                            >
-                              <span
-                                className="domain-field-details"
-                                id="domainpropertiesrow-details-1"
-                              />
-                              <div
-                                className="pull-right"
-                              >
-                                <Tip
-                                  caption="Additional Settings"
-                                >
-                                  <OverlayTrigger
-                                    defaultOverlayShown={false}
-                                    delay={200}
-                                    onClick={[Function]}
-                                    overlay={
-                                      <Tooltip
-                                        bsClass="tooltip"
-                                        id="tooltip"
-                                        placement="right"
-                                      >
-                                        Additional Settings
-                                      </Tooltip>
-                                    }
-                                    placement="top"
-                                    trigger={
-                                      Array [
-                                        "focus",
-                                        "hover",
-                                      ]
-                                    }
-                                  >
-                                    <div
-                                      className="domain-field-icon"
-                                      id="domainpropertiesrow-expand-1"
-                                      onBlur={[Function]}
-                                      onClick={[Function]}
-                                      onFocus={[Function]}
-                                      onMouseOut={[Function]}
-                                      onMouseOver={[Function]}
-                                    >
-                                      <FontAwesomeIcon
-                                        border={false}
-                                        className=""
-                                        fixedWidth={false}
-                                        flip={null}
-                                        icon={
-                                          Object {
-                                            "icon": Array [
-                                              512,
-                                              512,
-                                              Array [],
-                                              "f303",
-                                              "M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z",
-                                            ],
-                                            "iconName": "pencil-alt",
-                                            "prefix": "fas",
-                                          }
-                                        }
-                                        inverse={false}
-                                        listItem={false}
-                                        mask={null}
-                                        pull={null}
-                                        pulse={false}
-                                        rotation={null}
-                                        size={null}
-                                        spin={false}
-                                        symbol={false}
-                                        title=""
-                                        transform={null}
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          className="svg-inline--fa fa-pencil-alt fa-w-16 "
-                                          data-icon="pencil-alt"
-                                          data-prefix="fas"
-                                          focusable="false"
-                                          role="img"
-                                          style={Object {}}
-                                          viewBox="0 0 512 512"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
-                                            fill="currentColor"
-                                            style={Object {}}
-                                          />
-                                        </svg>
-                                      </FontAwesomeIcon>
-                                    </div>
-                                  </OverlayTrigger>
-                                </Tip>
-                              </div>
-                            </div>
-                          </Col>
-                        </div>
-                      </Row>
-                      <Collapse
-                        appear={false}
-                        dimension="height"
-                        getDimensionValue={[Function]}
-                        in={false}
-                        mountOnEnter={false}
-                        onExited={[Function]}
-                        timeout={300}
-                        unmountOnExit={false}
-                      >
-                        <Transition
-                          appear={false}
-                          aria-expanded={null}
-                          enter={true}
-                          exit={true}
-                          in={false}
-                          mountOnEnter={false}
-                          onEnter={[Function]}
-                          onEntered={[Function]}
-                          onEntering={[Function]}
-                          onExit={[Function]}
-                          onExited={[Function]}
-                          onExiting={[Function]}
-                          timeout={300}
-                          unmountOnExit={false}
-                        >
-                          <div
-                            aria-expanded={null}
-                            className="collapse"
-                          >
-                            <DomainRowExpandedOptions
-                              field={
-                                Immutable.Record {
-                                  "conceptURI": undefined,
-                                  "defaultScale": undefined,
-                                  "description": undefined,
-                                  "dimension": undefined,
-                                  "excludeFromShifting": false,
-                                  "format": undefined,
-                                  "hidden": false,
-                                  "importAliases": undefined,
-                                  "label": undefined,
-                                  "lookupContainer": undefined,
-                                  "lookupQuery": undefined,
-                                  "lookupSchema": undefined,
-                                  "measure": undefined,
-                                  "mvEnabled": false,
-                                  "name": "key",
-                                  "PHI": undefined,
-                                  "primaryKey": undefined,
-                                  "propertyId": 1,
-                                  "propertyURI": "test",
-                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                  "recommendedVariable": false,
-                                  "required": false,
-                                  "scale": undefined,
-                                  "URL": undefined,
-                                  "shownInDetailsView": true,
-                                  "shownInInsertView": true,
-                                  "shownInUpdateView": true,
-                                  "dataType": Immutable.Record {
-                                    "conceptURI": undefined,
-                                    "display": "Attachment",
-                                    "name": "attachment",
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                    "shortDisplay": undefined,
-                                  },
-                                  "lookupQueryValue": undefined,
-                                  "lookupType": Immutable.Record {
-                                    "conceptURI": undefined,
-                                    "display": "Lookup",
-                                    "name": "lookup",
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                    "shortDisplay": undefined,
-                                  },
-                                  "original": Object {
-                                    "dataType": Immutable.Record {
-                                      "conceptURI": undefined,
-                                      "display": "Attachment",
-                                      "name": "attachment",
-                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                      "shortDisplay": undefined,
-                                    },
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                  },
-                                  "updatedField": false,
-                                }
-                              }
-                              index={1}
-                              onChange={[Function]}
-                              onMultiChange={[Function]}
-                            >
-                              <NameAndLinkingOptions
-                                field={
-                                  Immutable.Record {
-                                    "conceptURI": undefined,
-                                    "defaultScale": undefined,
-                                    "description": undefined,
-                                    "dimension": undefined,
-                                    "excludeFromShifting": false,
-                                    "format": undefined,
-                                    "hidden": false,
-                                    "importAliases": undefined,
-                                    "label": undefined,
-                                    "lookupContainer": undefined,
-                                    "lookupQuery": undefined,
-                                    "lookupSchema": undefined,
-                                    "measure": undefined,
-                                    "mvEnabled": false,
-                                    "name": "key",
-                                    "PHI": undefined,
-                                    "primaryKey": undefined,
-                                    "propertyId": 1,
-                                    "propertyURI": "test",
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                    "recommendedVariable": false,
-                                    "required": false,
-                                    "scale": undefined,
-                                    "URL": undefined,
-                                    "shownInDetailsView": true,
-                                    "shownInInsertView": true,
-                                    "shownInUpdateView": true,
-                                    "dataType": Immutable.Record {
-                                      "conceptURI": undefined,
-                                      "display": "Attachment",
-                                      "name": "attachment",
-                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                      "shortDisplay": undefined,
-                                    },
-                                    "lookupQueryValue": undefined,
-                                    "lookupType": Immutable.Record {
-                                      "conceptURI": undefined,
-                                      "display": "Lookup",
-                                      "name": "lookup",
-                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                      "shortDisplay": undefined,
-                                    },
-                                    "original": Object {
-                                      "dataType": Immutable.Record {
-                                        "conceptURI": undefined,
-                                        "display": "Attachment",
-                                        "name": "attachment",
-                                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                        "shortDisplay": undefined,
-                                      },
-                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
-                                    },
-                                    "updatedField": false,
-                                  }
-                                }
-                                index={1}
-                                onChange={[Function]}
-                              >
-                                <div>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <div
-                                            className="domain-field-section-heading"
-                                          >
-                                            Name and Linking Options
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={5}
-                                      >
-                                        <div
-                                          className="col-xs-5"
-                                        >
-                                          <div
-                                            className="domain-field-label"
-                                          >
-                                            Description
-                                          </div>
-                                          <textarea
-                                            className="form-control domain-field-description"
-                                            id="domainpropertiesrow-description-1"
-                                            name="domainpropertiesrow-description"
-                                            onChange={[Function]}
-                                            placeholder="Add a description"
-                                            rows={4}
-                                            value=""
-                                          />
-                                        </div>
-                                      </Col>
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={3}
-                                      >
-                                        <div
-                                          className="col-xs-3"
-                                        >
-                                          <div
-                                            className="domain-field-label"
-                                          >
-                                            Label
-                                          </div>
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            id="domainpropertiesrow-label-1"
-                                            name="domainpropertiesrow-label"
-                                            onChange={[Function]}
-                                            type="text"
-                                            value=""
-                                          >
-                                            <input
-                                              className="form-control"
-                                              id="domainpropertiesrow-label-1"
-                                              name="domainpropertiesrow-label"
-                                              onChange={[Function]}
-                                              type="text"
-                                              value=""
-                                            />
-                                          </FormControl>
-                                          <div
-                                            className="domain-field-label"
-                                          >
-                                            Import Aliases
-                                            <LabelHelpTip
-                                              body={[Function]}
-                                              title="Import Aliases"
-                                            >
-                                              <span
-                                                className="label-help-target"
-                                                onMouseOut={[Function]}
-                                                onMouseOver={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className="label-help-icon"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        512,
-                                                        512,
-                                                        Array [],
-                                                        "f059",
-                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                      ],
-                                                      "iconName": "question-circle",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size={null}
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                    data-icon="question-circle"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 512 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                                <Overlay
-                                                  animation={[Function]}
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
-                                                >
-                                                  <Overlay
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
-                                                    transition={[Function]}
-                                                  />
-                                                </Overlay>
-                                              </span>
-                                            </LabelHelpTip>
-                                          </div>
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            id="domainpropertiesrow-importAliases-1"
-                                            name="domainpropertiesrow-importAliases"
-                                            onChange={[Function]}
-                                            type="text"
-                                            value=""
-                                          >
-                                            <input
-                                              className="form-control"
-                                              id="domainpropertiesrow-importAliases-1"
-                                              name="domainpropertiesrow-importAliases"
-                                              onChange={[Function]}
-                                              type="text"
-                                              value=""
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={5}
-                                      >
-                                        <div
-                                          className="col-xs-5"
-                                        >
-                                          <div
-                                            className="domain-field-label"
-                                          >
-                                            URL
-                                            <LabelHelpTip
-                                              body={[Function]}
-                                              title="URL"
-                                            >
-                                              <span
-                                                className="label-help-target"
-                                                onMouseOut={[Function]}
-                                                onMouseOver={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className="label-help-icon"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        512,
-                                                        512,
-                                                        Array [],
-                                                        "f059",
-                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                      ],
-                                                      "iconName": "question-circle",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size={null}
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                    data-icon="question-circle"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 512 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                                <Overlay
-                                                  animation={[Function]}
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
-                                                >
-                                                  <Overlay
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
-                                                    transition={[Function]}
-                                                  />
-                                                </Overlay>
-                                              </span>
-                                            </LabelHelpTip>
-                                          </div>
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            id="domainpropertiesrow-URL-1"
-                                            name="domainpropertiesrow-URL"
-                                            onChange={[Function]}
-                                            type="text"
-                                            value=""
-                                          >
-                                            <input
-                                              className="form-control"
-                                              id="domainpropertiesrow-URL-1"
-                                              name="domainpropertiesrow-URL"
-                                              onChange={[Function]}
-                                              type="text"
-                                              value=""
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                </div>
-                              </NameAndLinkingOptions>
-                              <Row
-                                bsClass="row"
-                                componentClass="div"
-                                style={
-                                  Object {
-                                    "height": "20px",
-                                  }
-                                }
-                              >
-                                <div
-                                  className="row"
-                                  style={
-                                    Object {
-                                      "height": "20px",
-                                    }
-                                  }
-                                />
-                              </Row>
-                            </DomainRowExpandedOptions>
-                          </div>
-                        </Transition>
-                      </Collapse>
-                    </div>
-                  </Draggable>
-                </ConnectFunction>
-              </DomainRow>
-              <AnimateInOut
-                on={null}
-                shouldAnimate={true}
-              />
-            </div>
-          </Droppable>
-        </ConnectFunction>
-      </Provider>
-    </App>
-  </ErrorBoundary>
-</DragDropContext>
-`;
-
 exports[`DomainRowDisplay date time field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
@@ -1318,7 +88,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                     "lookupSchema": undefined,
                     "measure": undefined,
                     "mvEnabled": false,
-                    "name": "key",
+                    "name": "dateTimeField",
                     "PHI": undefined,
                     "primaryKey": undefined,
                     "propertyId": 1,
@@ -1359,7 +129,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                     "updatedField": false,
                   }
                 }
-                index={1}
+                index={0}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -1368,17 +138,17 @@ exports[`DomainRowDisplay date time field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
-                  index={1}
+                  draggableId="domainpropertiesrow-domaindrag-0"
+                  index={0}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-0"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
-                    index={1}
+                    index={0}
                     isDragDisabled={false}
                     lift={[Function]}
                     mapped={
@@ -1428,12 +198,12 @@ exports[`DomainRowDisplay date time field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={1}
+                      tabIndex={0}
                     >
                       <Row
                         bsClass="row"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-0"
                       >
                         <div
                           className="row"
@@ -1455,7 +225,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                 "lookupSchema": undefined,
                                 "measure": undefined,
                                 "mvEnabled": false,
-                                "name": "key",
+                                "name": "dateTimeField",
                                 "PHI": undefined,
                                 "primaryKey": undefined,
                                 "propertyId": 1,
@@ -1496,8 +266,8 @@ exports[`DomainRowDisplay date time field 1`] = `
                                 "updatedField": false,
                               }
                             }
-                            index={1}
-                            label="key"
+                            index={0}
+                            label="dateTimeField"
                             maxPhiLevel="Restricted"
                             onApply={[Function]}
                             onHide={[Function]}
@@ -1561,7 +331,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
-                            id="domainpropertiesrow-row-1"
+                            id="domainpropertiesrow-row-0"
                           >
                             <Col
                               bsClass="col"
@@ -1598,7 +368,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
-                                      id="domainpropertiesrow-name-1"
+                                      id="domainpropertiesrow-name-0"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
@@ -1607,11 +377,11 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
-                                      value="key"
+                                      value="dateTimeField"
                                     >
                                       <input
                                         className="form-control"
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-0"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
                                         onChange={[Function]}
@@ -1620,7 +390,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
-                                        value="key"
+                                        value="dateTimeField"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -1662,7 +432,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
-                                      id="domainpropertiesrow-type-1"
+                                      id="domainpropertiesrow-type-0"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
                                       onChange={[Function]}
@@ -1674,7 +444,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     >
                                       <select
                                         className="form-control"
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-0"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
                                         onChange={[Function]}
@@ -1736,7 +506,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                         checked={false}
                                         className="domain-field-checkbox"
                                         disabled={false}
-                                        id="domainpropertiesrow-required-1"
+                                        id="domainpropertiesrow-required-0"
                                         inline={false}
                                         name="domainpropertiesrow-required"
                                         onBlur={[Function]}
@@ -1756,7 +526,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             <input
                                               checked={false}
                                               disabled={false}
-                                              id="domainpropertiesrow-required-1"
+                                              id="domainpropertiesrow-required-0"
                                               name="domainpropertiesrow-required"
                                               onBlur={[Function]}
                                               onChange={[Function]}
@@ -1785,7 +555,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                             >
                               <span
                                 className="domain-field-details"
-                                id="domainpropertiesrow-details-1"
+                                id="domainpropertiesrow-details-0"
                               />
                               <div
                                 className="pull-right"
@@ -1816,7 +586,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-0"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -1926,7 +696,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                   "lookupSchema": undefined,
                                   "measure": undefined,
                                   "mvEnabled": false,
-                                  "name": "key",
+                                  "name": "dateTimeField",
                                   "PHI": undefined,
                                   "primaryKey": undefined,
                                   "propertyId": 1,
@@ -1967,13 +737,13 @@ exports[`DomainRowDisplay date time field 1`] = `
                                   "updatedField": false,
                                 }
                               }
-                              index={1}
+                              index={0}
                               onChange={[Function]}
                               onMultiChange={[Function]}
                             >
                               <DateTimeFieldOptions
                                 excludeFromShifting={false}
-                                index={1}
+                                index={0}
                                 label="Date and Time Options"
                                 onChange={[Function]}
                               >
@@ -2290,7 +1060,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-format-1"
+                                            id="domainpropertiesrow-format-0"
                                             name="domainpropertiesrow-format"
                                             onChange={[Function]}
                                             type="text"
@@ -2298,7 +1068,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-format-1"
+                                              id="domainpropertiesrow-format-0"
                                               name="domainpropertiesrow-format"
                                               onChange={[Function]}
                                               type="text"
@@ -2327,7 +1097,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           <input
                                             checked={false}
                                             className="domain-field-float-left domain-field-checkbox"
-                                            id="domainpropertiesrow-excludeFromShifting-1"
+                                            id="domainpropertiesrow-excludeFromShifting-0"
                                             name="domainpropertiesrow-excludeFromShifting"
                                             onChange={[Function]}
                                             type="checkbox"
@@ -2361,7 +1131,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     "lookupSchema": undefined,
                                     "measure": undefined,
                                     "mvEnabled": false,
-                                    "name": "key",
+                                    "name": "dateTimeField",
                                     "PHI": undefined,
                                     "primaryKey": undefined,
                                     "propertyId": 1,
@@ -2402,7 +1172,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     "updatedField": false,
                                   }
                                 }
-                                index={1}
+                                index={0}
                                 onChange={[Function]}
                               >
                                 <div>
@@ -2454,7 +1224,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           </div>
                                           <textarea
                                             className="form-control domain-field-description"
-                                            id="domainpropertiesrow-description-1"
+                                            id="domainpropertiesrow-description-0"
                                             name="domainpropertiesrow-description"
                                             onChange={[Function]}
                                             placeholder="Add a description"
@@ -2479,7 +1249,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-label-1"
+                                            id="domainpropertiesrow-label-0"
                                             name="domainpropertiesrow-label"
                                             onChange={[Function]}
                                             type="text"
@@ -2487,7 +1257,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-label-1"
+                                              id="domainpropertiesrow-label-0"
                                               name="domainpropertiesrow-label"
                                               onChange={[Function]}
                                               type="text"
@@ -2616,7 +1386,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-importAliases-1"
+                                            id="domainpropertiesrow-importAliases-0"
                                             name="domainpropertiesrow-importAliases"
                                             onChange={[Function]}
                                             type="text"
@@ -2624,7 +1394,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-importAliases-1"
+                                              id="domainpropertiesrow-importAliases-0"
                                               name="domainpropertiesrow-importAliases"
                                               onChange={[Function]}
                                               type="text"
@@ -2773,7 +1543,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-URL-1"
+                                            id="domainpropertiesrow-URL-0"
                                             name="domainpropertiesrow-URL"
                                             onChange={[Function]}
                                             type="text"
@@ -2781,7 +1551,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-URL-1"
+                                              id="domainpropertiesrow-URL-0"
                                               name="domainpropertiesrow-URL"
                                               onChange={[Function]}
                                               type="text"
@@ -2921,14 +1691,14 @@ exports[`DomainRowDisplay decimal field 1`] = `
                     "lookupSchema": undefined,
                     "measure": undefined,
                     "mvEnabled": false,
-                    "name": "key",
+                    "name": "decimalField",
                     "PHI": undefined,
                     "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                     "recommendedVariable": false,
-                    "required": false,
+                    "required": true,
                     "scale": undefined,
                     "URL": undefined,
                     "shownInDetailsView": true,
@@ -2962,7 +1732,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                     "updatedField": false,
                   }
                 }
-                index={1}
+                index={2}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -2971,17 +1741,17 @@ exports[`DomainRowDisplay decimal field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
-                  index={1}
+                  draggableId="domainpropertiesrow-domaindrag-2"
+                  index={2}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-2"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
-                    index={1}
+                    index={2}
                     isDragDisabled={false}
                     lift={[Function]}
                     mapped={
@@ -3031,12 +1801,12 @@ exports[`DomainRowDisplay decimal field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={1}
+                      tabIndex={2}
                     >
                       <Row
                         bsClass="row"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-2"
                       >
                         <div
                           className="row"
@@ -3058,14 +1828,14 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                 "lookupSchema": undefined,
                                 "measure": undefined,
                                 "mvEnabled": false,
-                                "name": "key",
+                                "name": "decimalField",
                                 "PHI": undefined,
                                 "primaryKey": undefined,
                                 "propertyId": 1,
                                 "propertyURI": "test",
                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                 "recommendedVariable": false,
-                                "required": false,
+                                "required": true,
                                 "scale": undefined,
                                 "URL": undefined,
                                 "shownInDetailsView": true,
@@ -3099,8 +1869,8 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                 "updatedField": false,
                               }
                             }
-                            index={1}
-                            label="key"
+                            index={2}
+                            label="decimalField"
                             maxPhiLevel="Restricted"
                             onApply={[Function]}
                             onHide={[Function]}
@@ -3164,7 +1934,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
-                            id="domainpropertiesrow-row-1"
+                            id="domainpropertiesrow-row-2"
                           >
                             <Col
                               bsClass="col"
@@ -3201,7 +1971,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
-                                      id="domainpropertiesrow-name-1"
+                                      id="domainpropertiesrow-name-2"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
@@ -3210,11 +1980,11 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
-                                      value="key"
+                                      value="decimalField"
                                     >
                                       <input
                                         className="form-control"
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-2"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
                                         onChange={[Function]}
@@ -3223,7 +1993,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
-                                        value="key"
+                                        value="decimalField"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -3265,7 +2035,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
-                                      id="domainpropertiesrow-type-1"
+                                      id="domainpropertiesrow-type-2"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
                                       onChange={[Function]}
@@ -3277,7 +2047,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     >
                                       <select
                                         className="form-control"
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-2"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
                                         onChange={[Function]}
@@ -3336,10 +2106,10 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     >
                                       <Checkbox
                                         bsClass="checkbox"
-                                        checked={false}
+                                        checked={true}
                                         className="domain-field-checkbox"
                                         disabled={false}
-                                        id="domainpropertiesrow-required-1"
+                                        id="domainpropertiesrow-required-2"
                                         inline={false}
                                         name="domainpropertiesrow-required"
                                         onBlur={[Function]}
@@ -3357,9 +2127,9 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                             title=""
                                           >
                                             <input
-                                              checked={false}
+                                              checked={true}
                                               disabled={false}
-                                              id="domainpropertiesrow-required-1"
+                                              id="domainpropertiesrow-required-2"
                                               name="domainpropertiesrow-required"
                                               onBlur={[Function]}
                                               onChange={[Function]}
@@ -3388,7 +2158,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                             >
                               <span
                                 className="domain-field-details"
-                                id="domainpropertiesrow-details-1"
+                                id="domainpropertiesrow-details-2"
                               />
                               <div
                                 className="pull-right"
@@ -3419,7 +2189,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-2"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -3529,14 +2299,14 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                   "lookupSchema": undefined,
                                   "measure": undefined,
                                   "mvEnabled": false,
-                                  "name": "key",
+                                  "name": "decimalField",
                                   "PHI": undefined,
                                   "primaryKey": undefined,
                                   "propertyId": 1,
                                   "propertyURI": "test",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                   "recommendedVariable": false,
-                                  "required": false,
+                                  "required": true,
                                   "scale": undefined,
                                   "URL": undefined,
                                   "shownInDetailsView": true,
@@ -3570,12 +2340,12 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                   "updatedField": false,
                                 }
                               }
-                              index={1}
+                              index={2}
                               onChange={[Function]}
                               onMultiChange={[Function]}
                             >
                               <NumericFieldOptions
-                                index={1}
+                                index={2}
                                 label="Decimal Options"
                                 onChange={[Function]}
                               >
@@ -3778,7 +2548,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-format-1"
+                                            id="domainpropertiesrow-format-2"
                                             name="domainpropertiesrow-format"
                                             onChange={[Function]}
                                             type="text"
@@ -3786,7 +2556,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-format-1"
+                                              id="domainpropertiesrow-format-2"
                                               name="domainpropertiesrow-format"
                                               onChange={[Function]}
                                               type="text"
@@ -3815,24 +2585,24 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            id="domainpropertiesrow-defaultScale-1"
+                                            id="domainpropertiesrow-defaultScale-2"
                                             name="domainpropertiesrow-defaultScale"
                                             onChange={[Function]}
                                           >
                                             <select
                                               className="form-control"
-                                              id="domainpropertiesrow-defaultScale-1"
+                                              id="domainpropertiesrow-defaultScale-2"
                                               name="domainpropertiesrow-defaultScale"
                                               onChange={[Function]}
                                             >
                                               <option
-                                                key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
+                                                key="domainpropertiesrow-defaultScaleoption-LINEAR-2"
                                                 value="LINEAR"
                                               >
                                                 LINEAR
                                               </option>
                                               <option
-                                                key="domainpropertiesrow-defaultScaleoption-LOG-1"
+                                                key="domainpropertiesrow-defaultScaleoption-LOG-2"
                                                 value="LOG"
                                               >
                                                 LOG
@@ -3862,14 +2632,14 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     "lookupSchema": undefined,
                                     "measure": undefined,
                                     "mvEnabled": false,
-                                    "name": "key",
+                                    "name": "decimalField",
                                     "PHI": undefined,
                                     "primaryKey": undefined,
                                     "propertyId": 1,
                                     "propertyURI": "test",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                     "recommendedVariable": false,
-                                    "required": false,
+                                    "required": true,
                                     "scale": undefined,
                                     "URL": undefined,
                                     "shownInDetailsView": true,
@@ -3903,7 +2673,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     "updatedField": false,
                                   }
                                 }
-                                index={1}
+                                index={2}
                                 onChange={[Function]}
                               >
                                 <div>
@@ -3955,7 +2725,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           </div>
                                           <textarea
                                             className="form-control domain-field-description"
-                                            id="domainpropertiesrow-description-1"
+                                            id="domainpropertiesrow-description-2"
                                             name="domainpropertiesrow-description"
                                             onChange={[Function]}
                                             placeholder="Add a description"
@@ -3980,7 +2750,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-label-1"
+                                            id="domainpropertiesrow-label-2"
                                             name="domainpropertiesrow-label"
                                             onChange={[Function]}
                                             type="text"
@@ -3988,7 +2758,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-label-1"
+                                              id="domainpropertiesrow-label-2"
                                               name="domainpropertiesrow-label"
                                               onChange={[Function]}
                                               type="text"
@@ -4117,7 +2887,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-importAliases-1"
+                                            id="domainpropertiesrow-importAliases-2"
                                             name="domainpropertiesrow-importAliases"
                                             onChange={[Function]}
                                             type="text"
@@ -4125,7 +2895,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-importAliases-1"
+                                              id="domainpropertiesrow-importAliases-2"
                                               name="domainpropertiesrow-importAliases"
                                               onChange={[Function]}
                                               type="text"
@@ -4274,7 +3044,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-URL-1"
+                                            id="domainpropertiesrow-URL-2"
                                             name="domainpropertiesrow-URL"
                                             onChange={[Function]}
                                             type="text"
@@ -4282,7 +3052,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-URL-1"
+                                              id="domainpropertiesrow-URL-2"
                                               name="domainpropertiesrow-URL"
                                               onChange={[Function]}
                                               type="text"
@@ -4422,7 +3192,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                     "lookupSchema": undefined,
                     "measure": undefined,
                     "mvEnabled": false,
-                    "name": "key",
+                    "name": "participantField",
                     "PHI": undefined,
                     "primaryKey": undefined,
                     "propertyId": 1,
@@ -4463,7 +3233,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                     "updatedField": false,
                   }
                 }
-                index={1}
+                index={0}
                 key="domain-row-key-1"
                 maxPhiLevel="Restricted"
                 onChange={[MockFunction]}
@@ -4472,17 +3242,17 @@ exports[`DomainRowDisplay participant id field 1`] = `
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
-                  draggableId="domainpropertiesrow-domaindrag-1"
-                  index={1}
+                  draggableId="domainpropertiesrow-domaindrag-0"
+                  index={0}
                   isDragDisabled={false}
                   shouldRespectForcePress={false}
                 >
                   <Draggable
                     disableInteractiveElementBlocking={false}
-                    draggableId="domainpropertiesrow-domaindrag-1"
+                    draggableId="domainpropertiesrow-domaindrag-0"
                     drop={[Function]}
                     dropAnimationFinished={[Function]}
-                    index={1}
+                    index={0}
                     isDragDisabled={false}
                     lift={[Function]}
                     mapped={
@@ -4532,12 +3302,12 @@ exports[`DomainRowDisplay participant id field 1`] = `
                           "transition": null,
                         }
                       }
-                      tabIndex={1}
+                      tabIndex={0}
                     >
                       <Row
                         bsClass="row"
                         componentClass="div"
-                        key="domainpropertiesrow-domainrow-1"
+                        key="domainpropertiesrow-domainrow-0"
                       >
                         <div
                           className="row"
@@ -4559,7 +3329,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                 "lookupSchema": undefined,
                                 "measure": undefined,
                                 "mvEnabled": false,
-                                "name": "key",
+                                "name": "participantField",
                                 "PHI": undefined,
                                 "primaryKey": undefined,
                                 "propertyId": 1,
@@ -4600,8 +3370,8 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                 "updatedField": false,
                               }
                             }
-                            index={1}
-                            label="key"
+                            index={0}
+                            label="participantField"
                             maxPhiLevel="Restricted"
                             onApply={[Function]}
                             onHide={[Function]}
@@ -4665,7 +3435,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
-                            id="domainpropertiesrow-row-1"
+                            id="domainpropertiesrow-row-0"
                           >
                             <Col
                               bsClass="col"
@@ -4702,7 +3472,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="input"
-                                      id="domainpropertiesrow-name-1"
+                                      id="domainpropertiesrow-name-0"
                                       name="domainpropertiesrow-name"
                                       onBlur={[Function]}
                                       onChange={[Function]}
@@ -4711,11 +3481,11 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
-                                      value="key"
+                                      value="participantField"
                                     >
                                       <input
                                         className="form-control"
-                                        id="domainpropertiesrow-name-1"
+                                        id="domainpropertiesrow-name-0"
                                         name="domainpropertiesrow-name"
                                         onBlur={[Function]}
                                         onChange={[Function]}
@@ -4724,7 +3494,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
-                                        value="key"
+                                        value="participantField"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -4766,7 +3536,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     <FormControl
                                       bsClass="form-control"
                                       componentClass="select"
-                                      id="domainpropertiesrow-type-1"
+                                      id="domainpropertiesrow-type-0"
                                       name="domainpropertiesrow-type"
                                       onBlur={[Function]}
                                       onChange={[Function]}
@@ -4778,7 +3548,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     >
                                       <select
                                         className="form-control"
-                                        id="domainpropertiesrow-type-1"
+                                        id="domainpropertiesrow-type-0"
                                         name="domainpropertiesrow-type"
                                         onBlur={[Function]}
                                         onChange={[Function]}
@@ -4864,7 +3634,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                         checked={false}
                                         className="domain-field-checkbox"
                                         disabled={false}
-                                        id="domainpropertiesrow-required-1"
+                                        id="domainpropertiesrow-required-0"
                                         inline={false}
                                         name="domainpropertiesrow-required"
                                         onBlur={[Function]}
@@ -4884,7 +3654,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                             <input
                                               checked={false}
                                               disabled={false}
-                                              id="domainpropertiesrow-required-1"
+                                              id="domainpropertiesrow-required-0"
                                               name="domainpropertiesrow-required"
                                               onBlur={[Function]}
                                               onChange={[Function]}
@@ -4913,7 +3683,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                             >
                               <span
                                 className="domain-field-details"
-                                id="domainpropertiesrow-details-1"
+                                id="domainpropertiesrow-details-0"
                               />
                               <div
                                 className="pull-right"
@@ -4944,7 +3714,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                   >
                                     <div
                                       className="domain-field-icon"
-                                      id="domainpropertiesrow-expand-1"
+                                      id="domainpropertiesrow-expand-0"
                                       onBlur={[Function]}
                                       onClick={[Function]}
                                       onFocus={[Function]}
@@ -5054,7 +3824,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                   "lookupSchema": undefined,
                                   "measure": undefined,
                                   "mvEnabled": false,
-                                  "name": "key",
+                                  "name": "participantField",
                                   "PHI": undefined,
                                   "primaryKey": undefined,
                                   "propertyId": 1,
@@ -5095,7 +3865,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                   "updatedField": false,
                                 }
                               }
-                              index={1}
+                              index={0}
                               onChange={[Function]}
                               onMultiChange={[Function]}
                             >
@@ -5116,7 +3886,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     "lookupSchema": undefined,
                                     "measure": undefined,
                                     "mvEnabled": false,
-                                    "name": "key",
+                                    "name": "participantField",
                                     "PHI": undefined,
                                     "primaryKey": undefined,
                                     "propertyId": 1,
@@ -5157,7 +3927,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     "updatedField": false,
                                   }
                                 }
-                                index={1}
+                                index={0}
                                 onChange={[Function]}
                               >
                                 <div>
@@ -5209,7 +3979,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           </div>
                                           <textarea
                                             className="form-control domain-field-description"
-                                            id="domainpropertiesrow-description-1"
+                                            id="domainpropertiesrow-description-0"
                                             name="domainpropertiesrow-description"
                                             onChange={[Function]}
                                             placeholder="Add a description"
@@ -5234,7 +4004,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-label-1"
+                                            id="domainpropertiesrow-label-0"
                                             name="domainpropertiesrow-label"
                                             onChange={[Function]}
                                             type="text"
@@ -5242,7 +4012,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-label-1"
+                                              id="domainpropertiesrow-label-0"
                                               name="domainpropertiesrow-label"
                                               onChange={[Function]}
                                               type="text"
@@ -5371,7 +4141,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-importAliases-1"
+                                            id="domainpropertiesrow-importAliases-0"
                                             name="domainpropertiesrow-importAliases"
                                             onChange={[Function]}
                                             type="text"
@@ -5379,7 +4149,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-importAliases-1"
+                                              id="domainpropertiesrow-importAliases-0"
                                               name="domainpropertiesrow-importAliases"
                                               onChange={[Function]}
                                               type="text"
@@ -5528,7 +4298,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="input"
-                                            id="domainpropertiesrow-URL-1"
+                                            id="domainpropertiesrow-URL-0"
                                             name="domainpropertiesrow-URL"
                                             onChange={[Function]}
                                             type="text"
@@ -5536,7 +4306,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           >
                                             <input
                                               className="form-control"
-                                              id="domainpropertiesrow-URL-1"
+                                              id="domainpropertiesrow-URL-0"
                                               name="domainpropertiesrow-URL"
                                               onChange={[Function]}
                                               type="text"
@@ -5588,7 +4358,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay string field 1`] = `
+exports[`DomainRowDisplay string field test 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -5676,7 +4446,7 @@ exports[`DomainRowDisplay string field 1`] = `
                     "lookupSchema": undefined,
                     "measure": undefined,
                     "mvEnabled": false,
-                    "name": "key",
+                    "name": "stringField",
                     "PHI": undefined,
                     "primaryKey": undefined,
                     "propertyId": 1,
@@ -5813,7 +4583,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                 "lookupSchema": undefined,
                                 "measure": undefined,
                                 "mvEnabled": false,
-                                "name": "key",
+                                "name": "stringField",
                                 "PHI": undefined,
                                 "primaryKey": undefined,
                                 "propertyId": 1,
@@ -5855,7 +4625,7 @@ exports[`DomainRowDisplay string field 1`] = `
                               }
                             }
                             index={1}
-                            label="key"
+                            label="stringField"
                             maxPhiLevel="Restricted"
                             onApply={[Function]}
                             onHide={[Function]}
@@ -5965,7 +4735,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
                                       type="text"
-                                      value="key"
+                                      value="stringField"
                                     >
                                       <input
                                         className="form-control"
@@ -5978,7 +4748,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
                                         type="text"
-                                        value="key"
+                                        value="stringField"
                                       />
                                     </FormControl>
                                   </OverlayTrigger>
@@ -6308,7 +5078,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                   "lookupSchema": undefined,
                                   "measure": undefined,
                                   "mvEnabled": false,
-                                  "name": "key",
+                                  "name": "stringField",
                                   "PHI": undefined,
                                   "primaryKey": undefined,
                                   "propertyId": 1,
@@ -6641,7 +5411,7 @@ exports[`DomainRowDisplay string field 1`] = `
                                     "lookupSchema": undefined,
                                     "measure": undefined,
                                     "mvEnabled": false,
-                                    "name": "key",
+                                    "name": "stringField",
                                     "PHI": undefined,
                                     "primaryKey": undefined,
                                     "propertyId": 1,

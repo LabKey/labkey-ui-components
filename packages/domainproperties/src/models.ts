@@ -34,6 +34,11 @@ export interface IFieldChange {
     value: any
 }
 
+export interface IBannerMessage {
+    message?: string,
+    messageType?: string,
+}
+
 export interface ITypeDependentProps {
     index: number,
     label: string,

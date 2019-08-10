@@ -30,12 +30,12 @@ import {
     decodeLookup,
     DomainDesign,
     DomainField,
-    PropDescType,
     PROP_DESC_TYPES,
     QueryInfoLite,
     DomainException,
     DomainFieldError,
-    IFieldChange
+    IFieldChange,
+    IBannerMessage
 } from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
@@ -415,4 +415,63 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
     return domain.merge({
         domainException: domainExceptionObj
     }) as DomainDesign;
+}
+
+export function getBannerMessages (domain: any) : List<IBannerMessage> {
+
+    if (domain.domainException && domain.domainException.errors && domain.domainException.errors.size > 0) {
+
+        let msgList = List<IBannerMessage>().asMutable();
+        let errMsg = getErrorBannerMessage(domain);
+        if (errMsg !== undefined) {
+            msgList.push({message: errMsg, messageType: 'danger'});
+        }
+
+        let warnMsg = getWarningBannerMessage(domain);
+        if (warnMsg !== undefined) {
+            msgList.push({message: warnMsg, messageType: 'warning'})
+        }
+
+        return msgList.asImmutable();
+
+    }
+    else {
+        return List<IBannerMessage>();
+    }
+}
+
+function getErrorBannerMessage (domain: any) : any {
+
+    if (domain && domain.domainException && domain.domainException.errors) {
+        let errors = domain.domainException.get('errors').filter(e => {
+            return e && (e.severity === SEVERITY_LEVEL_ERROR)
+        });
+
+        if (errors && errors.size > 0) {
+            if (errors.size > 1) {
+                return "Multiple fields contain issues that need to be fixed. Review the red highlighted fields below for more information.";
+            }
+            else {
+                return errors.get(0).message;
+            }
+        }
+    }
+    return undefined;
+}
+
+function getWarningBannerMessage (domain: any) : any {
+
+    if (domain && domain.domainException && domain.domainException.errors) {
+        let warnings = domain.domainException.get('errors').filter(e => {return e && (e.severity === SEVERITY_LEVEL_WARN)});
+
+        if (warnings && warnings.size > 0) {
+            if (warnings.size > 1) {
+                return "Multiple fields may require your attention. Review the yellow highlighted fields below for more information.";
+            }
+            else {
+                return (warnings.get(0).fieldName + " : " + warnings.get(0).message);
+            }
+        }
+    }
+    return undefined;
 };

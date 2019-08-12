@@ -78,6 +78,7 @@ import { MenuOption, SubMenu } from "./components/menus/SubMenu";
 import { SubMenuItem, SubMenuItemProps, ISubItem } from "./components/menus/SubMenuItem";
 import { SelectionMenuItem } from "./components/menus/SelectionMenuItem";
 import { CustomToggle } from './components/CustomToggle'
+import { LoadingModal } from './components/LoadingModal'
 import { LoadingSpinner } from './components/LoadingSpinner'
 import { NotFound } from './components/NotFound'
 import { Page, PageProps } from './components/Page'
@@ -175,6 +176,7 @@ export {
     RemoveEntityButton,
     Alert,
     CustomToggle,
+    LoadingModal,
     LoadingSpinner,
     LoadingPage,
     NotFound,

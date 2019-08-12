@@ -1,6 +1,10 @@
 import {mount} from "enzyme";
 import {createFormInputId} from "../actions/actions";
-import {DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED} from "../constants";
+import {
+    DOMAIN_FIELD_DEFAULT_SCALE,
+    DOMAIN_FIELD_FORMAT,
+    DOMAIN_FIELD_NOT_LOCKED
+} from "../constants";
 import * as React from "react";
 import {NumericFieldOptions} from "./NumericFieldOptions";
 import toJson from "enzyme-to-json";
@@ -18,7 +22,8 @@ describe('NumericFieldOptions', () => {
             label: _section,
             format: _format,
             defaultScale: "LINEAR",
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         const numeric  = mount(<NumericFieldOptions

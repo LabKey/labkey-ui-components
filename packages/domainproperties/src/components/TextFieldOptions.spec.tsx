@@ -48,7 +48,8 @@ describe('TextFieldOptions', () => {
             index: 1,
             label: _section,
             scale: _scale2,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
         textField  = mount(<TextFieldOptions
             {...props2}

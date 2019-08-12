@@ -17,7 +17,8 @@ describe('BooleanFieldOptions', () => {
             index: 1,
             label: _section,
             format: _format,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         const boolean  = mount(<BooleanFieldOptions

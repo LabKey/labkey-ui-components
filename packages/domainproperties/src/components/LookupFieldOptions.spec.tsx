@@ -4,8 +4,9 @@ import {mount, ReactWrapper} from "enzyme";
 
 import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
-    DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY,
-    DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_LOOKUP_CONTAINER,
+    DOMAIN_FIELD_LOOKUP_QUERY,
+    DOMAIN_FIELD_LOOKUP_SCHEMA, DOMAIN_FIELD_NOT_LOCKED,
     INT_RANGE_URI,
 } from "../constants";
 import {DomainField} from "../models";
@@ -73,7 +74,7 @@ describe('LookupFieldOptions', () => {
                     original={field}
                     onChange={jest.fn()}
                     index={_index}
-                    label={_label}/>
+                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}/>
             </MockLookupProvider>
         );
 
@@ -147,7 +148,7 @@ describe('LookupFieldOptions', () => {
                     original={field}
                     onChange={jest.fn()}
                     index={_index}
-                    label={_label}/>
+                    label={_label} lockType={DOMAIN_FIELD_NOT_LOCKED}/>
             </MockLookupProvider>
         );
 
@@ -176,7 +177,7 @@ describe('LookupFieldOptions', () => {
                                     onChange={jest.fn()}
                                     index={_index}
                                     label={_label}
-                                />
+                                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
                             )
                         });
 
@@ -219,7 +220,7 @@ describe('LookupFieldOptions', () => {
                     onChange={jest.fn()}
                     index={_index}
                     label={_label}
-                />
+                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
             </MockLookupProvider>
         );
 
@@ -247,7 +248,7 @@ describe('LookupFieldOptions', () => {
                                     onChange={jest.fn()}
                                     index={_index}
                                     label={_label}
-                                />
+                                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
                             )
                         });
 
@@ -292,7 +293,7 @@ describe('LookupFieldOptions', () => {
                     onChange={jest.fn()}
                     index={_index}
                     label={_label}
-                />
+                    lockType={DOMAIN_FIELD_NOT_LOCKED}/>
             </MockLookupProvider>
         );
 
@@ -313,7 +314,7 @@ describe('LookupFieldOptions', () => {
                             onChange={jest.fn()}
                             index={1}
                             label={_label}
-                        />
+                            lockType={DOMAIN_FIELD_NOT_LOCKED}/>
                     )
                 });
 

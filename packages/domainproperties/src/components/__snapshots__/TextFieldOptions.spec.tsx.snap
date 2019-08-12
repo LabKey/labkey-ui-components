@@ -4,6 +4,7 @@ exports[`TextFieldOptions Text data type 1`] = `
 <TextFieldOptions
   index={1}
   label="Text Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
   scale={200}
 >

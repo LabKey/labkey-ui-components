@@ -6,6 +6,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
   format="#.##"
   index={1}
   label="Numeric Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>

@@ -259,7 +259,7 @@ export class QueryColumn extends Record({
     required: undefined,
     // selectable: undefined,
     shortCaption: undefined,
-    // shownInDetailsView: undefined,
+    shownInDetailsView: undefined,
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
     sortable: true,
@@ -320,7 +320,7 @@ export class QueryColumn extends Record({
     required: boolean;
     // selectable: boolean;
     shortCaption: string;
-    // shownInDetailsView: boolean;
+    shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInUpdateView: boolean;
     sortable: boolean;
@@ -1060,6 +1060,12 @@ export class QueryInfo extends Record({
         return List<QueryColumn>();
     }
 
+    getDetailsColumns(): List<QueryColumn> {
+        return this.columns
+            .filter(detailsColumnFilter)
+            .toList();
+    }
+
     getInsertColumns(): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
         return this.columns
@@ -1350,6 +1356,14 @@ function getSortsFromView(rawViewInfo): List<QuerySort> {
     }
 
     return List<QuerySort>();
+}
+
+export function detailsColumnFilter(col: QueryColumn): boolean {
+    return (
+        col &&
+        col.removeFromViews !== true &&
+        col.shownInDetailsView === true
+    );
 }
 
 export function insertColumnFilter(col: QueryColumn): boolean {

@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.12.0-fb-assayDesignDelete.3",
+  "version": "0.12.0-fb-assayDesignDelete.4",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -38,8 +38,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.11.3-fb-assayDesignDelete.1",
-    "@glass/omnibox": "0.1.29-fb-assayDesignDelete.1",
+    "@glass/base": "0.11.3-fb-assayDesignDelete.2",
+    "@glass/omnibox": "0.1.29-fb-assayDesignDelete.2",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

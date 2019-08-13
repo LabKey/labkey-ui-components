@@ -85,25 +85,27 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 details.push('Updated');
             }
             else if (field.isPrimaryKey) {
-                details.push('Key');
+                details.push('Primary Key');
             }
         }
 
-        let comma = '';
+        let period = '';
         if (details.length > 0) {
-            comma = ', ';
+            period = '. ';
         }
 
         if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
-           details.push(comma + 'Locked');
+           details.push(period + 'Locked');
         }
 
         if (details.length > 0) {
-            comma = ', ';
+            period = '. ';
         }
 
         if (this.props.fieldError) {
-            details.push(comma + this.props.fieldError.message);
+            details.push(period);
+            const msg = this.props.fieldError.severity + ": " + this.props.fieldError.message;
+            details.push(<b>{msg}</b>);
         }
 
         return details;

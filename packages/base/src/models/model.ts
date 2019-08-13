@@ -593,16 +593,8 @@ export class QueryGridModel extends Record({
      * @returns {List<QueryColumn>}
      */
     getDisplayColumns(): List<QueryColumn> {
-        if (this.queryInfo) {
-            let cols = this.queryInfo.getDisplayColumns(this.view);
-
-            if (this.omittedColumns.size > 0) {
-                const lowerOmit = toLowerSafe(this.omittedColumns);
-                return cols.filter(c => c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase())).toList();
-            }
-
-            return cols;
-        }
+        if (this.queryInfo)
+            return this.queryInfo.getDisplayColumns(this.view, this.omittedColumns);
 
         return emptyColumns;
     }
@@ -613,14 +605,25 @@ export class QueryGridModel extends Record({
      */
     getDetailsDisplayColumns(): List<QueryColumn> {
         if (this.queryInfo) {
-            let cols = this.queryInfo.getDisplayColumns(ViewInfo.DETAIL_NAME);
+            return this.queryInfo
+                .getDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns)
+                .filter(c => !c.removeFromViews && c.shownInDetailsView)
+                .toList();
+        }
 
-            if (this.omittedColumns.size > 0) {
-                const lowerOmit = toLowerSafe(this.omittedColumns);
-                cols = cols.filter(c => c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase())).toList();
-            }
+        return emptyColumns;
+    }
 
-            return cols.filter(c => !c.removeFromViews && c.shownInDetailsView).toList();
+    /**
+     * Returns the set of display columns for update view for this QueryGridModel based on its configuration.
+     * @returns {List<QueryColumn>}
+     */
+    getUpdateDisplayColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            return this.queryInfo
+                .getDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns)
+                .filter(updateColumnFilter)
+                .toList();
         }
 
         return emptyColumns;
@@ -1047,15 +1050,27 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
-    getDisplayColumns(view?: string): List<QueryColumn> {
+    getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
 
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
         }
 
+        let lowerOmit;
+        if (omittedColumns)
+            lowerOmit = toLowerSafe(omittedColumns);
+
+        const colFilter = (c) => {
+            if (lowerOmit && lowerOmit.size > 0) {
+                return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
+            }
+            return true;
+        };
+
         let viewInfo = this.getView(view);
         if (viewInfo) {
             return viewInfo.columns
+                .filter(colFilter)
                 .reduce((list, col) => {
                     let c = this.getColumn(col.fieldKey);
 
@@ -1289,6 +1304,7 @@ export class ViewInfo extends Record({
 
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';
+    static UPDATE_NAME = '~~UPDATE~~';
     // TODO seems like this should not be in the generic model, but we'll need a good way
     //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';

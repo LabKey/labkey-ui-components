@@ -35,7 +35,6 @@ import { DomainField, IFieldChange, FieldErrors, DomainFieldError, PropDescType,
 import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "../actions/actions";
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
-import {dom} from "@fortawesome/fontawesome-svg-core";
 
 interface IDomainRowProps {
     expanded: boolean

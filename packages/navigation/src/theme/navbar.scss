@@ -43,7 +43,6 @@
 }
 
 .navbar-left {
-  padding-left: 40px;
   margin: 10px 0;
 
   .navbar-item {
@@ -52,7 +51,6 @@
 }
 
 .navbar-right {
-  padding-right: 40px;
   margin: 10px 0;
 
   .navbar-item {
@@ -286,12 +284,11 @@
 }
 
 .navbar__search-form {
-  display: inline-block;
   height: 34px;
 
   .navbar__search-icon {
     position: absolute;
-    top: 19px;
+    top: 8px;
     margin-left: 5px;
     color: $gray-light;
   }
@@ -301,4 +298,10 @@
     border-radius: 4px;
     border-style: none;
   }
+}
+
+.navbar__xs-search-icon {
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 2px;
 }

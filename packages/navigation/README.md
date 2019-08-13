@@ -4,6 +4,11 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
+### version 0.4.0
+*Released*: 13 August 2019
+* Issue 38167: fix NavigationBar elements layout for bootstrap xs vs sm screen size
+* add hasSectionItems to ProductMenuModel
+
 ### version 0.3.9
 *Released*: 8 Aug 2019
 * Package patch update for changes to @glass/base v0.11.2

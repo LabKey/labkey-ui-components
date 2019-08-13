@@ -9,6 +9,11 @@ Base components, models, and utility functions for LabKey applications and pages
 * fix DesignAssay permission constant
 * add LoadingModal
 
+### version 0.12.0
+*Released*: 13 August 2019
+* add getUserProperties function (which calls user-getUserProperties API)
+* change the DesignAssayPermission package path for move to assay module (from study)
+
 ### version 0.11.2
 *Released*: 8 Aug 2019
 * add css class for DetailEditing panel divider

@@ -15,7 +15,7 @@
  */
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
 import { SCHEMAS, fetchSchemas, fetchGetQueries, processSchemas } from './models/schemas'
-import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile } from './action/actions'
+import { fetchProtocol, fetchAllAssays, createGeneralAssayDesign, importGeneralAssayRun, inferDomainFromFile, getUserProperties } from './action/actions'
 import {
     AssayProtocolModel,
     AssayDefinitionModel,
@@ -215,6 +215,7 @@ export {
     createGeneralAssayDesign,
     importGeneralAssayRun,
     inferDomainFromFile,
+    getUserProperties,
 
     // notification functions
     createNotification,

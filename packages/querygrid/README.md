@@ -8,6 +8,10 @@ Query Grid for LabKey schema/query data views
 *Released*: XXX
 * add deleteAssayDesign method, AssayDesignDeleteConfirmModal
 
+### version 0.11.6
+*Released*: 13 August 2019
+* Package patch update for changes to @glass/base v0.12.0
+
 ### version 0.11.5
 *Released*: 8 Aug 2019
 * Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing

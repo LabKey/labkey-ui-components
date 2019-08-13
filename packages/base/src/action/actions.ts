@@ -132,3 +132,17 @@ export function inferDomainFromFile(file: File, numLinesToInclude: number) : Pro
         });
     })
 }
+
+export function getUserProperties(userId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('user', 'getUserProps.api', {userId}),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            })
+        });
+    });
+}

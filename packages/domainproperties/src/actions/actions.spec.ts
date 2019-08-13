@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { createFormInputId, getBannerMessages, updateDomainException } from "./actions";
-import {DomainDesign, DomainException, DomainField} from "../models";
+import {DomainDesign, DomainException, DomainField, DomainFieldError} from "../models";
 import {
     DOMAIN_FIELD_PREFIX,
     FLAG_CONCEPT_URI,
@@ -23,9 +23,6 @@ import {
     STRING_RANGE_URI,
     USER_RANGE_URI
 } from "../constants";
-import {mount} from "enzyme";
-import toJson from "enzyme-to-json";
-import * as React from "react";
 
 describe("domain properties actions", () => {
 
@@ -62,27 +59,29 @@ describe("domain properties actions", () => {
 
     test('server side error on the banner', () => {
 
-        let fields = [];
+        const fields = [];
+        const field1 = 'column1';
+        const field2 = 'modified';
+
         fields.push({
-            name: 'column1',
+            name: field1,
             rangeURI: INT_RANGE_URI,
             propertyId: 1, //simulate existing field
             propertyURI: 'test'
         });
 
         fields.push({
-            name: 'column1',
+            name: field1,
             rangeURI: INT_RANGE_URI,
             propertyId: undefined, //new field with duplicate column name
             propertyURI: 'test'
         });
 
         let message = "The field name 'column1' is already taken. Please provide a unique name for each field.";
-        let fieldName = 'column1';
-        let severity = SEVERITY_LEVEL_ERROR;
         let domainFieldError = [];
-        domainFieldError.push({message, fieldName, propertyId: undefined, severity});
-        let domainException = new DomainException({exception: message, success: false, severity, errors: domainFieldError});
+        domainFieldError.push({message, field: field1, id: 0});
+        let rawModel = {exception: message, success: false, errors: domainFieldError};
+        let domainException = DomainException.create(rawModel, SEVERITY_LEVEL_ERROR);
 
         let domain = DomainDesign.create({
             name: "CancerCuringStudy",
@@ -93,13 +92,14 @@ describe("domain properties actions", () => {
             domainId: 123,
             fields: fields,
             indices: []
-        }, domainException);
+        });
+        let badDomain = domain.set('domainException', domainException);
 
-        expect(domain.domainException.errors.get(0).message).toBe(message);
-        expect(getBannerMessages(domain).get(0).message).toBe(message);
+        expect(badDomain.get('domainException').errors.get(0).message).toBe(message);
+        expect(getBannerMessages(badDomain).get(0).message).toBe(message);
 
         fields.push({
-            name: 'modified',//reserved field
+            name: field2,//reserved field
             rangeURI: INT_RANGE_URI,
             propertyId: undefined,
             propertyURI: 'test'
@@ -108,9 +108,9 @@ describe("domain properties actions", () => {
         let multipleErrorMsg = "Multiple fields contain issues that need to be fixed. Review the red highlighted fields below for more information.";
 
         message = "'modified' is a reserved field name in 'CancerCuringStudy'";
-        fieldName = 'modified';
-        domainFieldError.push({message, fieldName, propertyId: undefined, severity});
-        domainException = new DomainException({exception: message, success: false, severity, errors: domainFieldError});
+        domainFieldError.push({message, field: field2, id: 1});
+        rawModel = {exception: message, success: false, errors: domainFieldError};
+        domainException = DomainException.create(rawModel, SEVERITY_LEVEL_ERROR);
 
         domain = DomainDesign.create({
             name: "CancerCuringStudy",
@@ -121,14 +121,15 @@ describe("domain properties actions", () => {
             domainId: 123,
             fields: fields,
             indices: []
-        }, domainException);
+        });
+        badDomain = domain.set('domainException', domainException);
 
-        expect(getBannerMessages(domain).get(0).message).toBe(multipleErrorMsg);
+        expect(getBannerMessages(badDomain).get(0).message).toBe(multipleErrorMsg);
     });
 
     test('client side warning on the banner', () => {
 
-        let fields = [];
+        const fields = [];
         fields.push({
             name: '#column#',
             rangeURI: INT_RANGE_URI,
@@ -138,9 +139,8 @@ describe("domain properties actions", () => {
 
         let fieldName = '#column#';
         let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
-        let severity = SEVERITY_LEVEL_WARN;
         let domainFieldError = [];
-        domainFieldError.push({message, fieldName, propertyId: undefined, severity});
+        domainFieldError.push({message, fieldName, propertyId: undefined, severity: SEVERITY_LEVEL_WARN});
 
         let domain = DomainDesign.create({
             name: "CancerCuringStudy",

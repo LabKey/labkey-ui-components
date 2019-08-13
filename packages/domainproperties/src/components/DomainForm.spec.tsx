@@ -16,14 +16,13 @@
 
 
 import * as React from "react";
-import {DomainDesign, DomainException, DomainField, DomainFieldError, DomainIndex} from "../models";
+import {DomainDesign} from "../models";
 import DomainForm from "./DomainForm";
-import {List} from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
     DATETIME_RANGE_URI,
-    DOMAIN_FIELD_DELETE, DOMAIN_FIELD_DETAILS,
+    DOMAIN_FIELD_DELETE,
     DOMAIN_FIELD_EXPAND,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_TYPE,
@@ -32,19 +31,17 @@ import {
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI,
-    PARTICIPANTID_CONCEPT_URI, SEVERITY_LEVEL_ERROR,
+    PARTICIPANTID_CONCEPT_URI,
     STRING_RANGE_URI
 } from "../constants";
 import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
-import {DomainRow} from "./DomainRow";
-
 
 describe('DomainFormDisplay', () => {
 
     test('with empty domain form', () => {
-        const domain = DomainDesign.create({}, undefined);
+        const domain = DomainDesign.create({});
         const form  = mount(<DomainForm
             domain={domain}
             helpNoun='domain'
@@ -65,7 +62,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: [],
             indices: []
-        }, undefined);
+        });
         const form  = mount(<DomainForm
             domain={domain}
             helpNoun='domain'
@@ -151,7 +148,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: fields,
             indices: []
-        }, undefined);
+        });
         const form  = mount(<DomainForm
             domain={domain}
             helpNoun='domain'
@@ -199,7 +196,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: fields,
             indices:[]
-        }, undefined);
+        });
 
         domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
         domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
@@ -234,7 +231,7 @@ describe('DomainFormDisplay', () => {
             fields: fields,
             indices: [],
             key: 1
-        }, undefined);
+        });
 
         domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
         domain = clearFieldDetails(domain);
@@ -266,7 +263,7 @@ describe('DomainFormDisplay', () => {
             domainId: 1,
             fields: fields,
             indices: []
-        }, undefined);
+        });
 
         let updatedDomain;
         const changeHandler = (newDomain, dirty) => {

@@ -2,7 +2,7 @@ import {mount} from "enzyme";
 import {createFormInputId} from "../actions/actions";
 import {
     DOMAIN_FIELD_DESCRIPTION,
-    DOMAIN_FIELD_IMPORTALIASES, DOMAIN_FIELD_LABEL, DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_URL,
+    DOMAIN_FIELD_IMPORTALIASES, DOMAIN_FIELD_LABEL, DOMAIN_FIELD_URL,
     STRING_RANGE_URI
 } from "../constants";
 import * as React from "react";

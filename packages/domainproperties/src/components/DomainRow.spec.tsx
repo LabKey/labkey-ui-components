@@ -190,10 +190,10 @@ describe('DomainRowDisplay', () => {
 
     test('client side warning on field', () => {
 
-        let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
-        let fieldName = '#ColumnAwesome';
-        let severity = SEVERITY_LEVEL_WARN;
-        let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
+        const message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
+        const fieldName = '#ColumnAwesome';
+        const severity = SEVERITY_LEVEL_WARN;
+        const domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
 
         const field = DomainField.create({
             name: fieldName,
@@ -220,10 +220,10 @@ describe('DomainRowDisplay', () => {
         expect(warningRowClass.length).toEqual(1);
 
         //test warning message
-        let rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
+        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
-        let received = rowDetails.props().children[0] + rowDetails.props().children[1];
-        let expected = "New field, " + message;
+        const received = rowDetails.props().children[0] + rowDetails.props().children[1];
+        const expected = "New field, " + message;
         expect(received).toEqual(expected);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -232,10 +232,10 @@ describe('DomainRowDisplay', () => {
 
     test('server side error on reserved field', () => {
 
-        let message = "'modified' is a reserved field name in 'CancerCuringStudy'";
-        let fieldName = 'modified';
-        let severity = SEVERITY_LEVEL_ERROR;
-        let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
+        const message = "'modified' is a reserved field name in 'CancerCuringStudy'";
+        const fieldName = 'modified';
+        const severity = SEVERITY_LEVEL_ERROR;
+        const domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
 
         const field = DomainField.create({
             name: fieldName,
@@ -262,10 +262,10 @@ describe('DomainRowDisplay', () => {
         expect(warningRowClass.length).toEqual(1);
 
         //test error message
-        let rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
+        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
-        let received = rowDetails.props().children[0] + rowDetails.props().children[1];
-        let expected = "New field, " + message;
+        const received = rowDetails.props().children[0] + rowDetails.props().children[1];
+        const expected = "New field, " + message;
         expect(received).toEqual(expected);
 
         expect(toJson(row)).toMatchSnapshot();

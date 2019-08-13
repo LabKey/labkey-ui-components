@@ -15,8 +15,8 @@
  */
 import React from 'reactn';
 import { mount } from 'enzyme'
-import { List, Map } from 'immutable';
-import { MenuSectionModel, ProductMenuModel } from '../model';
+import { List } from 'immutable';
+import { MenuSectionModel } from '../model';
 import { MenuSectionConfig, ProductMenuSection } from "./ProductMenuSection";
 
 

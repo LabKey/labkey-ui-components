@@ -14,6 +14,10 @@ Query Grid for LabKey schema/query data views
 * in RunDataPanel, support display of previous run's data when reimporting.
 * add param to support cascade delete of replaced runs in deleteAssayRuns API call
 
+### version 0.11.6
+*Released*: 13 August 2019
+* Package patch update for changes to @glass/base v0.12.0
+
 ### version 0.11.5
 *Released*: 8 Aug 2019
 * Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing

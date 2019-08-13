@@ -6,7 +6,6 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version ??? 
 *Released*: ???
-
 * export getActionErrorMessage method for consistent error message display after an action has failed.
 * update @labkey/dependencies version
 * update QueryGridMode.getFilters to add in baseFilters even if a key value is provided (to support overriding
@@ -16,6 +15,11 @@ that have been replaced)
 * Refactor FileAttachmentForm to accept a list of initial file names to show and initial preview data
 * add getServerFilePreview method for retrieving preview data of file already on the server
 * add optional parameter to getActionErrorMessage to indicate if the refresh suggestion should be shown or not.
+
+### version 0.12.0
+*Released*: 13 August 2019
+* add getUserProperties function (which calls user-getUserProperties API)
+* change the DesignAssayPermission package path for move to assay module (from study)
 
 ### version 0.11.2
 *Released*: 8 Aug 2019

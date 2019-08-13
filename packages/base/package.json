@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.11.3-fb-assayReimport.8",
+  "version": "0.12.0",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

@@ -21,7 +21,8 @@ import {
     fetchProtocol,
     getServerFilePreview,
     importGeneralAssayRun,
-    inferDomainFromFile
+    inferDomainFromFile,
+    getUserProperties
 } from './action/actions'
 import {
     AssayDefinitionModel,
@@ -119,6 +120,7 @@ import { WizardNavButtons } from './components/buttons/WizardNavButtons';
 import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/Cards';
 import { Footer } from './components/Footer';
+
 // Import the scss file so it will be processed in the rollup scripts
 import './theme/index.scss'
 
@@ -216,6 +218,7 @@ export {
     createGeneralAssayDesign,
     importGeneralAssayRun,
     inferDomainFromFile,
+    getUserProperties,
     getServerFilePreview,
 
     // notification functions

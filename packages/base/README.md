@@ -6,7 +6,6 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version XXX
 *Released*: XXX
-* fix DesignAssay permission constant
 * add LoadingModal
 
 ### version 0.12.0

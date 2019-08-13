@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* Issue 37827: update Detail and DetailEditing display columns
+
 ### version 0.11.5
 *Released*: 8 Aug 2019
 * Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing

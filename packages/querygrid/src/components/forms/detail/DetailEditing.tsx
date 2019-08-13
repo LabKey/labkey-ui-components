@@ -266,6 +266,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                                 {error && <Alert>{error}</Alert>}
                                 <Detail
                                     queryModel={queryModel}
+                                    editingMode={true}
                                     detailRenderer={resolveDetailEditRenderer}
                                     titleRenderer={titleRenderer}/>
                             </div>

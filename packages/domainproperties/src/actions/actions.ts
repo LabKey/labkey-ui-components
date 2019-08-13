@@ -405,7 +405,7 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
     }) as DomainDesign;
 }
 
-export function getBannerMessages (domain: DomainDesign) : List<IBannerMessage> {
+export function getBannerMessages (domain: any) : List<IBannerMessage> {
 
     if (domain && domain.hasException()) {
 

@@ -607,6 +607,25 @@ export class QueryGridModel extends Record({
         return emptyColumns;
     }
 
+    /**
+     * Returns the set of display columns for details view for this QueryGridModel based on its configuration.
+     * @returns {List<QueryColumn>}
+     */
+    getDetailsDisplayColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            let cols = this.queryInfo.getDisplayColumns(ViewInfo.DETAIL_NAME);
+
+            if (this.omittedColumns.size > 0) {
+                const lowerOmit = toLowerSafe(this.omittedColumns);
+                cols = cols.filter(c => c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase())).toList();
+            }
+
+            return cols.filter(c => !c.removeFromViews && c.shownInDetailsView).toList();
+        }
+
+        return emptyColumns;
+    }
+
     getColumnIndex(fieldKey: string): number {
         if (!fieldKey)
             return -1;
@@ -1060,12 +1079,6 @@ export class QueryInfo extends Record({
         return List<QueryColumn>();
     }
 
-    getDetailsColumns(): List<QueryColumn> {
-        return this.columns
-            .filter(detailsColumnFilter)
-            .toList();
-    }
-
     getInsertColumns(): List<QueryColumn> {
         // CONSIDER: use the columns in ~~INSERT~~ view to determine this set
         return this.columns
@@ -1356,14 +1369,6 @@ function getSortsFromView(rawViewInfo): List<QuerySort> {
     }
 
     return List<QuerySort>();
-}
-
-export function detailsColumnFilter(col: QueryColumn): boolean {
-    return (
-        col &&
-        col.removeFromViews !== true &&
-        col.shownInDetailsView === true
-    );
 }
 
 export function insertColumnFilter(col: QueryColumn): boolean {

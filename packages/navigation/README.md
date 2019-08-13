@@ -4,8 +4,8 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.4.0
+*Released*: 13 August 2019
 * Issue 38167: fix NavigationBar elements layout for bootstrap xs vs sm screen size
 * add hasSectionItems to ProductMenuModel
 

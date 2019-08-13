@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.12.0
+*Released*: 13 August 2019
 * add getUserProperties function (which calls user-getUserProperties API)
 * change the DesignAssayPermission package path for move to assay module (from study)
 

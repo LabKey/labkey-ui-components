@@ -184,18 +184,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 },
                 failure: (error) => {
                     let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let exceptionWithAllErrors = undefined;
-
-                    //merge pre-existing warnings on the domain
-                    if (domain && domain.domainException && domain.domainException.errors) {
-
-                        let existingWarnings = domain.domainException.get('errors').filter(e => e.severity === SEVERITY_LEVEL_WARN);
-                        let serverSideErrors = exceptionWithServerSideErrors.get('errors');
-                        let allErrors = serverSideErrors.concat(existingWarnings);
-
-                        exceptionWithAllErrors = exceptionWithServerSideErrors.set('errors', allErrors);
-                    }
-
+                    let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithServerSideErrors);
                     let badDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors));
                     reject(badDomain);
                 }
@@ -207,7 +196,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
                 success: (data) => {
-                    resolve(DomainDesign.create(data, undefined));
+                    resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
                     let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
@@ -370,43 +359,42 @@ export function getCheckedValue(evt) {
 export function updateDomainException(domain: DomainDesign, index: any, domainFieldError: any): DomainDesign {
 
     let domainExceptionObj;
+
+    //new error on a field at a given index
     if (domainFieldError)
     {
-        if (domain.domainException && domain.domainException.errors)
+        //add incoming field error to a previously existing domainException object
+        if (domain.hasException())
         {
             let newErrors = domain.domainException.errors.push(domainFieldError);
             domainExceptionObj = domain.domainException.merge({errors: newErrors})
         }
+        //domainException is not defined yet/doesn't have field errors, so create a new domainException object
         else
         {
-            let exception = domainFieldError.fieldName + " : " + domainFieldError.message;
-            let success = undefined;
-            let severity = domainFieldError.severity;
-            let errors = List<DomainFieldError>().asMutable();
+            const exception = domainFieldError.fieldName + " : " + domainFieldError.message;
+            const errors = List<DomainFieldError>().asMutable();
             errors.push(domainFieldError);
-            let errorsImmutable = errors.asImmutable();
 
-            domainExceptionObj = new DomainException({exception, success, severity, errors: errorsImmutable});
+            domainExceptionObj = new DomainException({exception, success: undefined, severity: domainFieldError.severity, errors: errors.asImmutable()});
         }
     }
+    //no error on a field at a given index
     else {
-        if (domain.domainException && domain.domainException.errors) {
+        //clear out an old error on a field, ex. if the client side error is fixed on a field then its previous error needs to be cleared out from the error set
+        if (domain && domain.hasException()) {
 
+            //get errors on other fields minus the previous error on a field at a given index
             const updatedErrors = domain.domainException.get('errors').filter(e => {return e && (e.index !== index)});
 
+            //reset domainException obj with an updated set of errors
             if (updatedErrors && updatedErrors.size > 0) {
 
-                let exception = updatedErrors.get(0).fieldName + " : " + updatedErrors.get(0).message;
-                let severity = updatedErrors.get(0).severity;
-                let success = undefined;
+                const exception = updatedErrors.get(0).fieldName + " : " + updatedErrors.get(0).message; //create exception message based on the first error, to be consistent with how server side errors are created
 
-                domainExceptionObj = new DomainException({
-                    exception,
-                    success,
-                    severity,
-                    errors: updatedErrors
-                })
+                domainExceptionObj = new DomainException({exception, success: undefined, severity: updatedErrors.get(0).severity, errors: updatedErrors})
             }
+            //previous/old error on an incoming field was the last error to clear out, so no more errors
             else {
                 domainExceptionObj = undefined;
             }
@@ -417,9 +405,9 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
     }) as DomainDesign;
 }
 
-export function getBannerMessages (domain: any) : List<IBannerMessage> {
+export function getBannerMessages (domain: DomainDesign) : List<IBannerMessage> {
 
-    if (domain.domainException && domain.domainException.errors && domain.domainException.errors.size > 0) {
+    if (domain && domain.hasException()) {
 
         let msgList = List<IBannerMessage>().asMutable();
         let errMsg = getErrorBannerMessage(domain);
@@ -442,7 +430,7 @@ export function getBannerMessages (domain: any) : List<IBannerMessage> {
 
 function getErrorBannerMessage (domain: any) : any {
 
-    if (domain && domain.domainException && domain.domainException.errors) {
+    if (domain && domain.hasException()) {
         let errors = domain.domainException.get('errors').filter(e => {
             return e && (e.severity === SEVERITY_LEVEL_ERROR)
         });
@@ -461,7 +449,7 @@ function getErrorBannerMessage (domain: any) : any {
 
 function getWarningBannerMessage (domain: any) : any {
 
-    if (domain && domain.domainException && domain.domainException.errors) {
+    if (domain && domain.hasException()) {
         let warnings = domain.domainException.get('errors').filter(e => {return e && (e.severity === SEVERITY_LEVEL_WARN)});
 
         if (warnings && warnings.size > 0) {

@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version XXX
 *Released*: XXX
-* add shownInDetailsView, getUpdateDisplayColumns and getDetailsDisplayColumns to QueryGridModel
+* add shownInDetailsView, getDetailsDisplayColumns and getUpdateDisplayColumns to QueryGridModel
 
 ### version 0.11.2
 *Released*: 8 Aug 2019

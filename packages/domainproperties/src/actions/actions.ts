@@ -366,7 +366,8 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
         //add incoming field error to a previously existing domainException object
         if (domain.hasException())
         {
-            let newErrors = domain.domainException.errors.push(domainFieldError);
+            const updatedErrors = domain.domainException.get('errors').filter(e => {return e && (e.index !== index)}); //clear previously present error on a given row index
+            const newErrors = updatedErrors.push(domainFieldError);
             domainExceptionObj = domain.domainException.merge({errors: newErrors})
         }
         //domainException is not defined yet/doesn't have field errors, so create a new domainException object

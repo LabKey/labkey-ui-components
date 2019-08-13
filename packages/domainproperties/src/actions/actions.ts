@@ -178,9 +178,8 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
             Domain.save({
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
-                success: (success) => {
-                    resolve(clearFieldDetails(domain));
-                    // resolve(DomainDesign.create(data, undefined));
+                success: (data) => {
+                    resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
                     let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);

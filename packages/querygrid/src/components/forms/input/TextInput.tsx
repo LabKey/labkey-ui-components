@@ -85,7 +85,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
         return <FieldLabel
             label={label}
             showLabel={showLabel}
-            labelOverlayProps={{addLabelAsterisk: addLabelAsterisk}}
+            labelOverlayProps={{isFormsy: true, addLabelAsterisk: addLabelAsterisk}}
             showToggle={allowDisable}
             column={queryColumn}
             isDisabled = {isDisabled}

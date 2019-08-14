@@ -74,7 +74,8 @@ interface State {
     schemaQuery: SchemaQuery
     model: AssayWizardModel,
     showRenameModal : boolean
-    dupData?: DuplicateFilesResponse
+    duplicateFileResponse?: DuplicateFilesResponse
+    importAgain?: boolean
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
@@ -350,22 +351,32 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }, 250);
     }
 
-    checkForDuplicateFiles = () => {
-        checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray()).then((dupData) => {
-            if (dupData.duplicate) {
+    checkForDuplicateFiles(importAgain: boolean) {
+        checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray()).then((response) => {
+            if (response.duplicate) {
                 this.setState(() => ({
                     showRenameModal: true,
-                    dupData
+                    duplicateFileResponse: response,
+                    importAgain
                 }));
             }
             else {
-                this.onFinish(false);
+                this.onFinish(importAgain);
             }
         }).catch((reason) => {
             this.setState((state) => ({
                 model: state.model.set('errorMsg', getActionErrorMessage("There was in a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
             }));
         });
+    }
+
+    onSaveClick = (importAgain: boolean) => {
+        if (this.state.model.isFilesTab(this.props.currentStep)) {
+            this.checkForDuplicateFiles(importAgain);
+        }
+        else {
+            this.onFinish(importAgain);
+        }
     };
 
     onFinish(importAgain: boolean) {
@@ -385,12 +396,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     }
                 })
                 .catch((reason) => {
-                    console.error("Problem importing assay run", reason);
-                    this.onFailure(reason.exception || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
+                    const error = reason.message || reason.exception;
+                    console.error("Problem importing assay run", error);
+                    this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
                 });
         }).catch((reason) => {
-            console.error("Problem uploading assay run files", reason);
-            this.onFailure(reason.exception || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
+            const error = reason.message || reason.exception;
+            console.error("Problem uploading assay run files", error);
+            this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
         });
     };
 
@@ -433,7 +446,6 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 model : state.model.merge({
                     isSubmitting,
                     errorMsg,
-                    attachedFiles: isSubmitting ? state.model.attachedFiles : Map<string, File>()
                 }) as AssayWizardModel
             }
         });
@@ -460,23 +472,36 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     onCancelRename = () => {
-        this.setState(() => ({showRenameModal: false}));
+        this.setState(() => ({
+            showRenameModal: false,
+            duplicateFileResponse: undefined,
+            importAgain: undefined
+        }));
     };
 
     onRenameConfirm = () => {
-        if (this.state.showRenameModal) {
-            this.setState(() => ({showRenameModal: false}));
+        const { showRenameModal, importAgain } = this.state;
+
+        if (showRenameModal) {
+            this.setState(() => ({
+                showRenameModal: false,
+                duplicateFileResponse: undefined,
+                importAgain: undefined
+            }), () => {
+                this.onFinish(importAgain);
+            });
         }
-        this.onFinish(false)
     };
 
     renderFileRenameModal() {
+        const { model, duplicateFileResponse } = this.state;
+
         return (
             <ImportWithRenameConfirmModal
                 onConfirm={this.onRenameConfirm}
                 onCancel={this.onCancelRename}
-                originalName={this.state.model.attachedFiles.keySeq().get(0)}
-                newName={this.state.dupData.newFileNames[0]}
+                originalName={model.attachedFiles.keySeq().get(0)}
+                newName={duplicateFileResponse.newFileNames[0]}
             />
         )
     }
@@ -490,9 +515,18 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
 
         const dataGridModel = this.getDataGridModel();
+        const showReimportHeader = this.isReimport() && this.getRunPropertiesModel().isLoaded;
+        const showSaveAgainBtn = !this.isReimport() && onSave !== undefined;
+        const disabledSave = model.isSubmitting || !model.hasData(currentStep, dataGridModel);
+
         return (
             <>
-                {this.isReimport() && this.getRunPropertiesModel().isLoaded && <AssayReimportHeader assay={model.assayDef} replacedRunProperties={this.getRunPropertiesRow()}/>}
+                {showReimportHeader &&
+                    <AssayReimportHeader
+                        assay={model.assayDef}
+                        replacedRunProperties={this.getRunPropertiesRow()}
+                    />
+                }
                 <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
                 <RunDataPanel
@@ -513,20 +547,22 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     containerClassName=""
                     includeNext={false}
                 >
-                    {onSave &&
+                    {showSaveAgainBtn &&
                         <Button
-                                type="submit"
-                                onClick={this.onFinish.bind(this, true)}
-                                disabled={model.isSubmitting}>
+                            type="submit"
+                            onClick={this.onSaveClick.bind(this, true)}
+                            disabled={disabledSave}
+                        >
                             {model.isSubmitting ? 'Saving...' : 'Save And Import Another Run'}
                         </Button>
                     }
                     <Button
                         type="submit"
                         bsStyle={"success"}
-                        onClick={this.checkForDuplicateFiles}
-                        disabled={model.isSubmitting || !model.hasData(currentStep, dataGridModel)}>
-                        {onSave
+                        onClick={this.onSaveClick.bind(this, false)}
+                        disabled={disabledSave}
+                    >
+                        {showSaveAgainBtn
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
                             : (model.isSubmitting ? 'Importing...' : (this.isReimport() ? 'Reimport' : 'Import'))
                         }
@@ -537,7 +573,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     modal={true}
                     title={this.isReimport() ? "Reimporting assay run" : "Importing assay run"}
                     toggle={model.isSubmitting}/>
-                {showRenameModal && (this.renderFileRenameModal())}
+                {showRenameModal && this.renderFileRenameModal()}
             </>
         )
     }

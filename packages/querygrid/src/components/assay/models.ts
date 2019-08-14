@@ -98,6 +98,18 @@ export class AssayWizardModel extends Record({
         super(values);
     }
 
+    isFilesTab(currentStep: AssayUploadTabs): boolean {
+        return currentStep === AssayUploadTabs.Files;
+    }
+
+    isCopyTab(currentStep: AssayUploadTabs): boolean {
+        return currentStep === AssayUploadTabs.Copy;
+    }
+
+    isGridTab(currentStep: AssayUploadTabs): boolean {
+        return currentStep === AssayUploadTabs.Grid;
+    }
+
     getAttachedFiles(): List<File> {
         return this.attachedFiles.valueSeq().toList();
     }
@@ -107,7 +119,7 @@ export class AssayWizardModel extends Record({
             return this.runName;
         }
 
-        if (currentStep === AssayUploadTabs.Files) {
+        if (this.isFilesTab(currentStep)) {
             // using file upload tab
             const file = this.getAttachedFiles().first();
             if (file) {
@@ -120,7 +132,7 @@ export class AssayWizardModel extends Record({
 
     hasData(currentStep: number, gridModel: QueryGridModel) : boolean {
 
-        if (currentStep === AssayUploadTabs.Files) {
+        if (this.isFilesTab(currentStep)) {
             if (!this.attachedFiles.isEmpty()) {
                 return true;
             }
@@ -128,9 +140,9 @@ export class AssayWizardModel extends Record({
                 return true;
             }
 
-        } else if (currentStep === AssayUploadTabs.Copy) {
+        } else if (this.isCopyTab(currentStep)) {
             return this.dataText !== undefined;
-        } else if (currentStep === AssayUploadTabs.Grid) {
+        } else if (this.isGridTab(currentStep)) {
             // TODO add a dirty flag to the editorModel
             // const editorModel = getEditorModel(gridModel.getId());
             // return editorModel.hasData();
@@ -158,7 +170,7 @@ export class AssayWizardModel extends Record({
             }
         });
 
-        if (currentStep === AssayUploadTabs.Files) {
+        if (this.isFilesTab(currentStep)) {
             assayData.files = this.getAttachedFiles().toArray();
             if (runId !== undefined && usePreviousRunFile && assayData.files.length === 0) {
                 const url = runProperties.get("DataOutputs/DataFileUrl");
@@ -169,10 +181,10 @@ export class AssayWizardModel extends Record({
                 }
             }
         }
-        else if (currentStep === AssayUploadTabs.Copy) {
+        else if (this.isCopyTab(currentStep)) {
             assayData.dataRows = parseDataTextToRunRows(dataText);
         }
-        else if (currentStep === AssayUploadTabs.Grid) {
+        else if (this.isGridTab(currentStep)) {
             // need to get the EditorModel for the data to use in the import
             const editorModel = getEditorModel(gridModel.getId());
 

@@ -57,7 +57,7 @@ export class AssayWizardModel extends Record({
     attachedFiles: Map<string, File>(),
     batchColumns: OrderedMap<string, QueryColumn>(),
     batchProperties: Map<string, any>(),
-    usePreviousRunFile: true,
+    usePreviousRunFile: false,
     runColumns: OrderedMap<string, QueryColumn>(),
     runId: undefined,
     runProperties: Map<string, any>(),

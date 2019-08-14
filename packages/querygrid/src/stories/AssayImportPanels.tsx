@@ -122,7 +122,7 @@ storiesOf('AssayImportPanels', module)
     }, {
         notes: "For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message."
     })
-    .add("AssayImportPanels for reimport", () => {
+    .add("AssayImportPanels for re-import", () => {
         return (
             <AssayImportPanels
                 assayDefinition={ASSAY_WIZARD_MODEL.assayDef}

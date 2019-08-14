@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { Button } from 'react-bootstrap';
-import { List, Map, OrderedMap } from 'immutable'
+import { Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
     Alert,
@@ -35,8 +35,11 @@ import { loadSelectedSamples } from "../samples/actions";
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
+    flattenQueryGridModelRow,
     getRunPropertiesModel,
     getRunPropertiesRow,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
     importAssayRun,
     uploadAssayRunFiles
 } from "./actions";
@@ -82,6 +85,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
+
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
             model: AssayImportPanelsImpl.getInitWizardModel(props),
@@ -90,7 +94,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     static getInitWizardModel(props: Props) : AssayWizardModel {
-        return INIT_WIZARD_MODEL.merge({runId: props.runId}) as AssayWizardModel
+        return INIT_WIZARD_MODEL.merge({
+            runId: props.runId
+        }) as AssayWizardModel
     }
 
     isReimport(props: Props) : boolean {
@@ -131,37 +137,29 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     getRunPropertiesRow(props: Props) :  Map<string, any> {
-        const queryData = getRunPropertiesRow(props.assayDefinition, props.runId);
-        if (queryData) {
-            // TODO make the consumers of this row data able to handle the queryData instead of
-            // having to create the key -> value map via reduction.
-            return queryData.reduce((map, v, k) => {
-                let valueMap = v;
-                if (List.isList(v)) {
-                    if (v.size > 1) {
-                        console.warn("Multiple values for field '" + k + "'.  Using the last.");
-                    }
-                    valueMap = v.get(v.size - 1);
-                }
-                if (valueMap && valueMap.has('value') && valueMap.get('value')) {
-                    return map.set(k, valueMap.get('value').toString())
-                }
-                return map;
-            }, Map<string, any>());
-        }
-        return Map<string, any>();
+        const runData = getRunPropertiesRow(props.assayDefinition, props.runId);
+        return flattenQueryGridModelRow(runData);
     }
 
-    initRerunModel(props: Props) {
-        if (this.isReimport(props)) {
-            const runPropertiesModel = this.getRunPropertiesModel(props);
-            gridInit(runPropertiesModel, true, this);
-        }
+    getBatchId(props: Props): string {
+        const runData = this.getRunPropertiesRow(props);
+        return runData ? runData.get('Batch') : undefined;
+    }
+
+    getBatchPropertiesModel(props: Props) : QueryGridModel {
+        return getBatchPropertiesModel(props.assayDefinition, this.getBatchId(props));
+    }
+
+    getBatchPropertiesRow(props: Props) :  Map<string, any> {
+        const batchData = getBatchPropertiesRow(props.assayDefinition, this.getBatchId(props));
+        return flattenQueryGridModelRow(batchData);
     }
 
     isRunPropertiesInit(props: Props) {
-        // if not reimporting, we don't need run properties to display in the form
-        return !this.isReimport(props) || this.getRunPropertiesModel(props).isLoaded;
+        // if not reimporting, we don't need batch/run properties to display in the form
+        const runModel = this.getRunPropertiesModel(props);
+        const batchModel = this.getBatchPropertiesModel(props);
+        return !this.isReimport(props) || (runModel && runModel.isLoaded && batchModel && batchModel.isLoaded);
     }
 
     initModel(props: Props) {
@@ -171,7 +169,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return;
         }
 
-        this.initRerunModel(props);
+        this.initializeGridModels(props);
 
         // need to query for the assay data table QueryInfo in order to init the AssayWizardModel
         getQueryDetails(this.state.schemaQuery)
@@ -185,11 +183,46 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
                         runId,
+                        usePreviousRunFile: this.isReimport(props),
+                        batchProperties: this.getBatchPropertiesRow(props),
                         runProperties: this.getRunPropertiesRow(props),
                         queryInfo
                     })
                 }), this.onGetQueryDetailsComplete)
             });
+    }
+
+    initializeGridModels(props: Props) {
+        const { model } = this.state;
+        const runModel = this.getRunPropertiesModel(props);
+        const batchModel = this.getBatchPropertiesModel(props);
+
+        if (!this.isRunPropertiesInit(props)) {
+            if (runModel && !runModel.isLoaded) {
+                gridInit(runModel, true, this);
+            }
+
+            if (batchModel && !batchModel.isLoaded) {
+                gridInit(batchModel, true, this);
+            }
+        }
+
+        if (model.isInit) {
+            // only init the gridModel after the state has been set since it uses the AssayWizardModel in the grid loader
+            gridInit(this.getDataGridModel(), true, this);
+        }
+        else if (model.queryInfo && this.isReimport(props) && runModel && runModel.isLoaded && batchModel && batchModel.isLoaded) {
+            // if this is a re-import and the batch/run props are now loaded, put them into the state model
+            this.setState((state) => ({
+                model: state.model.merge({
+                    isInit: true,
+                    batchProperties: this.getBatchPropertiesRow(this.props),
+                    runProperties: this.getRunPropertiesRow(this.props)
+                }) as AssayWizardModel
+            }), () => {
+                this.onInitModelComplete();
+            });
+        }
     }
 
     onGetQueryDetailsComplete() {
@@ -203,7 +236,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             loadSelectedSamples(location, sampleColumnData.column).then((samples) => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                 let runProperties = this.getRunPropertiesRow(this.props);
-                let batchProperties = Map<string, any>();
+                let batchProperties = this.getBatchPropertiesRow(this.props);
                 if (sampleColumnData && samples && samples.size == 1) {
                     const { column, domain } = sampleColumnData;
                     const selectedSample = samples.first();
@@ -233,6 +266,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             this.setState((state) => ({
                 model: state.model.merge({
                     isInit : this.isRunPropertiesInit(this.props),
+                    batchProperties: this.getBatchPropertiesRow(this.props),
                     runProperties: this.getRunPropertiesRow(this.props)
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
@@ -240,8 +274,17 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     onInitModelComplete() {
-        // only init the gridModel after the state has been set since it uses the AssayWizardModel in the grid loader
-        gridInit(this.getDataGridModel(), true, this);
+        const runPropsData = this.getRunPropertiesRow(this.props);
+
+        // Issue 38237: set the runName and comments for the re-import case
+        this.setState((state) => ({
+            model: state.model.merge({
+                runName: runPropsData ? runPropsData.get('Name') : undefined,
+                comment: runPropsData ? runPropsData.get('Comments') : '',
+            }) as AssayWizardModel
+        }), () => {
+            this.initializeGridModels(this.props);
+        });
     }
 
     getDataGridModel(): QueryGridModel {
@@ -502,6 +545,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const { model, showRenameModal } = this.state;
 
         if (!model.isInit) {
+            this.initializeGridModels(this.props);
             return <LoadingSpinner/>
         }
 
@@ -517,6 +561,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     <AssayReimportHeader
                         assay={model.assayDef}
                         replacedRunProperties={this.getRunPropertiesRow(this.props)}
+                        hasBatchProperties={model.batchColumns.size > 0}
                     />
                 }
                 <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
@@ -556,14 +601,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     >
                         {showSaveAgainBtn
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
-                            : (model.isSubmitting ? 'Importing...' : (isReimport ? 'Reimport' : 'Import'))
+                            : (model.isSubmitting ? 'Importing...' : (isReimport ? 'Re-Import' : 'Import'))
                         }
                     </Button>
                 </WizardNavButtons>
                 <Progress
                     estimate={this.getProgressSizeEstimate()}
                     modal={true}
-                    title={isReimport ? "Reimporting assay run" : "Importing assay run"}
+                    title={isReimport ? "Re-importing assay run" : "Importing assay run"}
                     toggle={model.isSubmitting}/>
                 {showRenameModal && this.renderFileRenameModal()}
             </>

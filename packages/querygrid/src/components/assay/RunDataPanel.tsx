@@ -35,6 +35,7 @@ import { FormStep, FormTabs } from "../forms/FormStep";
 import { getRunPropertiesRow } from './actions';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
+const PREVIEW_ROW_COUNT = 3;
 
 interface Props {
     currentStep: number
@@ -51,7 +52,6 @@ interface Props {
 
 interface PreviousRunData {
     isLoaded?: boolean
-    isLoading?: boolean
     data?: InferDomainResponse
     fileName?: string
 }
@@ -60,12 +60,10 @@ interface State {
     attachments?: Map<string, File>
     message?: React.ReactNode
     messageStyle?: string
-    previousRunData: PreviousRunData
+    previousRunData?: PreviousRunData
 }
 
 export class RunDataPanel extends React.Component<Props, State> {
-
-    private static previewCount = 3;
 
     static defaultProps = {
         fullWidth: true,
@@ -75,11 +73,9 @@ export class RunDataPanel extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
+
         this.state = {
-            previousRunData : {
-                isLoaded: false,
-                isLoading: false
-            }
+            previousRunData : props.wizardModel.usePreviousRunFile ? {isLoaded: false} : undefined
         }
     }
 
@@ -94,10 +90,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
             this.setState(() => ({
-                previousRunData: {
-                    isLoaded: false,
-                    isLoading: false
-                }
+                previousRunData: nextProps.wizardModel.usePreviousRunFile ? {isLoaded: false} : undefined
             }));
         } else {
             this.initPreviewData();
@@ -105,37 +98,34 @@ export class RunDataPanel extends React.Component<Props, State> {
     }
 
     initPreviewData() {
-        if (!this.isRerun() || this.state.previousRunData.isLoaded || this.state.previousRunData.isLoading) {
+        const { previousRunData } = this.state;
+        const { wizardModel } = this.props;
+
+        if (!this.isRerun() || !previousRunData || previousRunData.isLoaded) {
            return;
         }
 
-        const { gridModel, wizardModel } = this.props;
-
-        if (wizardModel.isInit  && gridModel && gridModel.isLoaded  && wizardModel.usePreviousRunFile) {
-            const row = getRunPropertiesRow(this.props.wizardModel.assayDef, this.props.wizardModel.runId);
+        if (wizardModel.isInit && wizardModel.usePreviousRunFile) {
+            const row = getRunPropertiesRow(wizardModel.assayDef, wizardModel.runId);
             if (row.has("DataOutputs")) {
                 const outputFiles = row.get('DataOutputs/DataFileUrl');
                 if (outputFiles && outputFiles.size == 1) {
                     const outputs = row.get('DataOutputs');
-                    this.setState(() => ({previousRunData: {isLoading: true}}));
 
-                    getServerFilePreview(outputs.getIn([0, "value"]), RunDataPanel.previewCount).then((response) => {
+                    getServerFilePreview(outputs.getIn([0, "value"]), PREVIEW_ROW_COUNT).then((response) => {
                         this.setState(() => ({
-                                previousRunData: {
-                                    isLoaded: true,
-                                    isLoading: false,
-                                    data: response,
-                                    fileName: outputs.getIn([0, 'displayValue'])
-                                }
+                            previousRunData: {
+                                isLoaded: true,
+                                data: response,
+                                fileName: outputs.getIn([0, 'displayValue'])
                             }
-                        ));
+                        }));
                     }).catch((reason) => {
                         this.setState(() => ({
                             message: getActionErrorMessage("There was a problem retrieving the current run's data for previewing. ", "assay run"),
                             messageStyle: "danger",
                             previousRunData: {
-                                isLoaded: true,
-                                isLoading: false
+                                isLoaded: true
                             }
                         }));
                     });
@@ -147,7 +137,10 @@ export class RunDataPanel extends React.Component<Props, State> {
                     }
                     this.setState(() => ({
                         message,
-                        messageStyle: "info"
+                        messageStyle: "info",
+                        previousRunData: {
+                            isLoaded: true
+                        }
                     }))
                 }
             }
@@ -163,17 +156,16 @@ export class RunDataPanel extends React.Component<Props, State> {
     onFileChange = (attachments: Map<string, File>) => {
         this.setState(() => ({
             message: undefined
-        }), () => this.props.onFileChange(attachments));
+        }), () => {
+            this.props.onFileChange(attachments)
+        });
     };
 
     onFileRemove = (attachmentName: string) => {
         this.setState( (state) => ({
             message: undefined,
             attachments: undefined,
-            previousRunData: {
-                isLoaded: false,
-                isLoading: false
-            }
+            previousRunData: undefined
         }), () => this.props.onFileRemoval(attachmentName));
     };
 
@@ -183,8 +175,9 @@ export class RunDataPanel extends React.Component<Props, State> {
 
     render() {
         const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
-        const { message, messageStyle } = this.state;
+        const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
+        const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
         return (
             <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
@@ -199,20 +192,23 @@ export class RunDataPanel extends React.Component<Props, State> {
                             <div className="row">
                                 <div className="col-sm-12">
                                     <FormStep stepIndex={AssayUploadTabs.Files}>
-                                        <FileAttachmentForm
-                                            allowDirectories={false}
-                                            allowMultiple={false}
-                                            showLabel={false}
-                                            initialFileNames={wizardModel.usePreviousRunFile && this.state.previousRunData && this.state.previousRunData.fileName ? [this.state.previousRunData.fileName] : []}
-                                            onFileChange={this.onFileChange}
-                                            onFileRemoval={this.onFileRemove}
-                                            templateUrl={wizardModel.assayDef.templateLink}
-                                            previewGridProps={acceptedPreviewFileFormats && {
-                                                previewCount: RunDataPanel.previewCount,
-                                                acceptedFormats: acceptedPreviewFileFormats,
-                                                initialData: this.state.previousRunData.data
-                                            }}
-                                        />
+                                        {isLoadingPreview
+                                            ? <LoadingSpinner/>
+                                            : <FileAttachmentForm
+                                                allowDirectories={false}
+                                                allowMultiple={false}
+                                                showLabel={false}
+                                                initialFileNames={previousRunData && previousRunData.fileName ? [previousRunData.fileName] : []}
+                                                onFileChange={this.onFileChange}
+                                                onFileRemoval={this.onFileRemove}
+                                                templateUrl={wizardModel.assayDef.templateLink}
+                                                previewGridProps={acceptedPreviewFileFormats && {
+                                                    previewCount: PREVIEW_ROW_COUNT,
+                                                    acceptedFormats: acceptedPreviewFileFormats,
+                                                    initialData: previousRunData ? previousRunData.data : undefined
+                                                }}
+                                            />
+                                        }
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Copy}>
                                         <Formsy>

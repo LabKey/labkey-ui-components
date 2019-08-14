@@ -13,15 +13,15 @@ export class AssayReimportHeader extends React.Component<Props> {
 
     render() {
         const { assay, hasBatchProperties, replacedRunProperties } = this.props;
-        let assayRunUrl = AppURL.create('assays', assay.type, assay.name, 'runs', replacedRunProperties.getIn(['RowId']));
+        let assayRunUrl = AppURL.create('assays', assay.type, assay.name, 'runs', replacedRunProperties.get('RowId'));
         return (
             <Panel>
                 <Panel.Heading>
-                    Reimport Run
+                    Re-Import Run
                 </Panel.Heading>
                 <Panel.Body>
                     <p>
-                        <strong>Reimporting Run: <a href={assayRunUrl.toHref()}>{replacedRunProperties.getIn(['Name'])}</a></strong>
+                        <strong>Replacing Run: <a href={assayRunUrl.toHref()}>{replacedRunProperties.get('Name')}</a></strong>
                     </p>
                     <p>
                         Edit the {hasBatchProperties ? 'batch and ' : ''} run properties below or provide updated data for this assay run.  Changes will be reflected in the audit history for this run.

@@ -25,8 +25,8 @@ import { resolveRenderer } from "../renderers";
 import { MultiValueRenderer } from "../../../renderers/MultiValueRenderer";
 import { AliasRenderer } from "../../../renderers/AliasRenderer";
 import { AppendUnits } from "../../../renderers/AppendUnits";
-import { LookupSelectInput } from "../input/LookupSelectInput";
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
+import { LookupSelectInput } from "../input/LookupSelectInput";
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')

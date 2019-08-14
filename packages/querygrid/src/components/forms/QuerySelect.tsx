@@ -129,6 +129,7 @@ interface InheritedSelectInputProps {
     required?: boolean
     saveOnBlur?: boolean
     showLabel?: boolean
+    addLabelAsterisk?: boolean
     validations?: any
     value?: any
 }

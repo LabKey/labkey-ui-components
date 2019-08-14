@@ -208,6 +208,7 @@ storiesOf('QueryInfoForm', module)
             <QueryInfoForm
                 checkRequiredFields={false}
                 includeCountField={boolean("Include count field?", true)}
+                showLabelAsterisk={boolean("Show '*' for required field", false)}
                 maxCount={number("Max count", 100)}
                 queryInfo={model.queryInfo}
                 onSubmit={formSubmit}

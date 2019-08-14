@@ -34,6 +34,7 @@ interface TextAreaInputProps extends DisableableInputProps {
     allowDisable?: boolean
     initiallyDisabled?: boolean
     value?: any
+    addLabelAsterisk?: boolean
 }
 
 
@@ -58,12 +59,13 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     }
 
     renderLabel() {
-        const { label, queryColumn, showLabel, allowDisable } = this.props;
+        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk } = this.props;
         const { isDisabled } = this.state;
 
         return <FieldLabel
             label={label}
             showLabel={showLabel}
+            labelOverlayProps={{addLabelAsterisk: addLabelAsterisk}}
             showToggle={allowDisable}
             column={queryColumn}
             isDisabled = {isDisabled}

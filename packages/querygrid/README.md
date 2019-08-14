@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* Allow showing * in required field's label when checkRequiredFields is false for QueryInfoForm or QueryFormInput
+
 ### version 0.11.6
 *Released*: 13 August 2019
 * Package patch update for changes to @glass/base v0.12.0

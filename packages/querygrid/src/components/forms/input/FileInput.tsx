@@ -37,6 +37,7 @@ interface FileInputProps extends DisableableInputProps {
     name?: string
     onChange: any
     queryColumn: QueryColumn
+    addLabelAsterisk?: boolean
 }
 
 export class FileInput extends DisableableInput<FileInputProps, FileInputState> {
@@ -135,7 +136,8 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     render() {
         const {
             queryColumn,
-            allowDisable
+            allowDisable,
+            addLabelAsterisk
         } = this.props;
         const {
             isHover,
@@ -199,7 +201,8 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
 
         const labelOverlayProps = {
             isFormsy: false,
-            inputId: inputId
+            inputId: inputId,
+            addLabelAsterisk: addLabelAsterisk
         };
 
         return (

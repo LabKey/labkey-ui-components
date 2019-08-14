@@ -31,6 +31,7 @@ interface DateInputProps extends DisableableInputProps {
     showLabel?: boolean
     validatePristine?: boolean
     value?: string
+    addLabelAsterisk?: boolean
 }
 
 export class DateInput extends DisableableInput<DateInputProps, any> {

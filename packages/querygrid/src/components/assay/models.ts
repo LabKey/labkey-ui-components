@@ -163,6 +163,7 @@ export class AssayWizardModel extends Record({
             name: this.getRunName(currentStep),
             properties: runProperties.toObject(),
             reRunId: runId,
+            saveDataAsFile: true
         };
 
         Object.keys(assayData).forEach(k => {

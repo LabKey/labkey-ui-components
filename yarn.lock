@@ -1270,17 +1270,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@labkey/api@0.0.19":
-  version "0.0.19"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.19.tgz#07c783f9ea5d0e5733e0cdad937276959751f8a9"
-  integrity sha1-B8eD+epdDlcz4M2tk3J2lZdR+Kk=
+"@labkey/api@0.0.20-fb-saveDataAsFile.0":
+  version "0.0.20-fb-saveDataAsFile.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.20-fb-saveDataAsFile.0.tgz#89b8c299203d10950d02b774f09765b4fb10b5fe"
+  integrity sha1-ibjCmSA9EJUNArd08JdltPsQtf4=
 
-"@labkey/dependencies@0.0.8":
-  version "0.0.8"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.8.tgz#71f6053897dd44b96cc33e2026b98ab53725d312"
-  integrity sha1-cfYFOJfdRLlswz4gJrmKtTcl0xI=
+"@labkey/dependencies@0.0.9-fb-saveDataAsFile.0":
+  version "0.0.9-fb-saveDataAsFile.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.9-fb-saveDataAsFile.0.tgz#70173c0658175a97f5b7fd2d643da2e3816eea5f"
+  integrity sha1-cBc8BlgXWpf1t/0tZD2i44Fu6l8=
   dependencies:
-    "@labkey/api" "0.0.19"
+    "@labkey/api" "0.0.20-fb-saveDataAsFile.0"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

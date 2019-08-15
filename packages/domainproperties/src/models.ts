@@ -27,7 +27,6 @@ import {
     STRING_RANGE_URI,
     USER_RANGE_URI
 } from "./constants";
-import {createFormInputName, getIndexFromId} from "./actions/actions";
 
 export interface IFieldChange {
     id: string,
@@ -604,14 +603,14 @@ export class DomainException extends Record({
     severity: undefined,
     errors: List<DomainFieldError>()
 
-}) implements IDomainException{
+}) implements IDomainException
+{
     exception: string;
     success: boolean;
     severity: string;
     errors?: List<DomainFieldError>;
 
-    static create(rawModel: any, severityLevel): DomainException
-    {
+    static create(rawModel: any, severityLevel): DomainException {
         if (rawModel)
         {
             let errors = List<DomainFieldError>();
@@ -629,24 +628,47 @@ export class DomainException extends Record({
         return undefined;
     }
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
     //merge warnings with an incoming server side errors so that both server and pre-existing client side warning can be shown on the banner
-    static mergeWarnings(domain: DomainDesign, exceptionWithServerSideErrors: DomainException)
-    {
+    static mergeWarnings(domain: DomainDesign, exception: DomainException) {
         //merge pre-existing warnings on the domain
         if (domain && domain.hasException()) {
 
             let existingWarnings = domain.domainException.get('errors').filter(e => e.severity === SEVERITY_LEVEL_WARN);
-            let serverSideErrors = exceptionWithServerSideErrors.get('errors');
+            let serverSideErrors = exception.get('errors');
             let allErrors = serverSideErrors.concat(existingWarnings);
 
-            return exceptionWithServerSideErrors.set('errors', allErrors);
+            return exception.set('errors', allErrors);
         }
 
-        return undefined;
+        return exception.set('errors', exception.errors);
+    }
+
+    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException) {
+
+        let allFieldErrors = exceptionFromServer.get('errors');
+
+        allFieldErrors = allFieldErrors.map((error) => {
+
+            let indices = domain.fields.reduce((indexList, field, idx, iter) : List<number> => {
+
+                if ((field.name === undefined && error.get("fieldName") === undefined) ||
+                    (field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
+                    (field.name !== undefined && error.get("fieldName") !== undefined && field.name.toLowerCase() === error.get("fieldName").toLowerCase())) {
+
+                    indexList = indexList.push(idx);
+                }
+
+                return indexList;
+            }, List<number>());
+
+            return error.merge({rowIndexes: indices});
+        });
+
+        return exceptionFromServer.set('errors', allFieldErrors) as DomainException;
     }
 }
 
@@ -655,7 +677,7 @@ interface IDomainFieldError {
     fieldName: string;
     propertyId?: number;
     severity?: string;
-    index?: number
+    rowIndexes: List<number>
 }
 
 export class DomainFieldError extends Record({
@@ -663,14 +685,14 @@ export class DomainFieldError extends Record({
     fieldName: undefined,
     propertyId: undefined,
     severity: undefined,
-    index: undefined
+    rowIndexes: List<number>()
 
 }) implements IDomainFieldError {
     message: string;
     fieldName: string;
     propertyId?: number;
     severity?: string;
-    index?: number;
+    rowIndexes: List<number>;
 
     static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
 
@@ -678,11 +700,10 @@ export class DomainFieldError extends Record({
 
         for (let i=0; i < rawFields.length; i++) {
 
-            let fieldName = rawFields[i].field;
-            let propertyId = (rawFields[i].id === "null" ? undefined : rawFields[i].id);
-            let index = getIndexFromId(createFormInputName(fieldName));
+            let fieldName = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].field);
+            let propertyId = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].id);
 
-            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId, severity: severityLevel, index});
+            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId, severity: severityLevel});
             fieldErrors.push(domainFieldError);
         }
 

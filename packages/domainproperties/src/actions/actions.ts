@@ -183,7 +183,8 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 },
                 failure: (error) => {
                     let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithServerSideErrors);
+                    let exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exceptionWithServerSideErrors);
+                    let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
                     let badDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors));
                     reject(badDomain);
                 }
@@ -241,8 +242,16 @@ export function addField(domain: DomainDesign): DomainDesign {
 }
 
 export function removeField(domain: DomainDesign, index: number): DomainDesign {
+
+    let de = domain.domainException;
+    if (de) {
+        const updatedErrors = clearFieldError(domain, index);
+        de = domain.domainException.merge({errors: updatedErrors}) as DomainException;
+    }
+
     return domain.merge({
-        fields: domain.fields.delete(index)
+        fields: domain.fields.delete(index),
+        domainException: de
     }) as DomainDesign
 }
 
@@ -341,12 +350,31 @@ export function clearFieldDetails(domain: DomainDesign): DomainDesign {
 }
 
 export function getCheckedValue(evt) {
-    if (evt.target.type === "checkbox")
-    {
+    if (evt.target.type === "checkbox") {
         return evt.target.checked;
     }
 
     return undefined;
+}
+
+ function clearFieldError (domain: DomainDesign, rowIndex: any) {
+
+    let allErrors = domain.domainException.get('errors');
+
+    //filter errors where rowIndexes size > 2
+    let filteredErrors = allErrors.filter(error => {
+
+        if (error.rowIndexes.includes(rowIndex)) {
+            return error.rowIndexes.size > 2;
+        }
+        return true;
+
+    });
+
+    //find an index of an error to remove from the list of errors
+     return filteredErrors.map((error) => {
+         return error.set('rowIndexes', error.rowIndexes.filter(idx => { return idx !== rowIndex }));
+     });
 }
 
 /**
@@ -365,7 +393,7 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
         //add incoming field error to a previously existing domainException object
         if (domain.hasException())
         {
-            const updatedErrors = domain.domainException.get('errors').filter(e => {return e && (e.index !== index)}); //clear previously present error on a given row index
+            const updatedErrors = clearFieldError(domain, index); //clear previously present error on a given row index
             const newErrors = updatedErrors.push(domainFieldError);
             domainExceptionObj = domain.domainException.merge({errors: newErrors})
         }
@@ -384,8 +412,7 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
         //clear out an old error on a field, ex. if the client side error is fixed on a field then its previous error needs to be cleared out from the error set
         if (domain && domain.hasException()) {
 
-            //get errors on other fields minus the previous error on a field at a given index
-            const updatedErrors = domain.domainException.get('errors').filter(e => {return e && (e.index !== index)});
+            const updatedErrors = clearFieldError(domain, index);
 
             //reset domainException obj with an updated set of errors
             if (updatedErrors && updatedErrors.size > 0) {

@@ -121,6 +121,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         )
     }
 
+    getFieldErrorClass = (fieldError: DomainFieldError) => {
+        if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
+            return 'domain-field-row-error '
+        }
+        else {
+            return 'domain-field-row-warning ';
+        }
+    };
+
     onFieldChange = (evt: any, expand?: boolean) => {
         const { index } = this.props;
 
@@ -155,11 +164,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
             let fieldName = value;
             let severity = SEVERITY_LEVEL_WARN;
-            let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index});
+            let indexes = List<number>([index]);
+            let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, rowIndexes: indexes});
 
             //set error obj
             nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: domainFieldError});
-
         }
         else {
             //set error to undefined
@@ -307,15 +316,5 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
                 )}
             </Draggable>
         );
-    }
-
-    private getFieldErrorClass(fieldError: DomainFieldError)
-    {
-        if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
-            return 'domain-field-row-error '
-        }
-        else {
-            return 'domain-field-row-warning ';
-        }
     }
 }

@@ -26,9 +26,9 @@ export const _defaultRenderer = (d) => {
     return <DefaultRenderer data={d} />;
 };
 
-function processFields(model: QueryGridModel, detailRenderer: Function, titleRenderer: Function): Map<string, DetailField> {
-    return model
-        .getDisplayColumns()
+function processFields(editingMode: boolean, model: QueryGridModel, detailRenderer: Function, titleRenderer: Function): Map<string, DetailField> {
+    let displayCols = editingMode ? model.getUpdateDisplayColumns() : model.getDetailsDisplayColumns();
+    return displayCols
         .reduce((fields, c) => {
             let fieldKey = c.fieldKey.toLowerCase(),
                 renderer;
@@ -80,20 +80,22 @@ interface DetailProps {
     detailRenderer?: Function
     titleRenderer?: Function
     asPanel: boolean
+    editingMode?: boolean
 }
 
 
 export class Detail extends React.Component<DetailProps, any> {
 
     static defaultProps = {
-        asPanel: false
+        asPanel: false,
+        editingMode: false
     };
 
     render() {
-        const { queryModel, detailRenderer, titleRenderer, asPanel } = this.props;
+        const { queryModel, detailRenderer, editingMode, titleRenderer, asPanel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
-            const fields = processFields(queryModel, detailRenderer, titleRenderer);
+            const fields = processFields(editingMode, queryModel, detailRenderer, titleRenderer);
             const target = queryModel.getData();
             let body;
 

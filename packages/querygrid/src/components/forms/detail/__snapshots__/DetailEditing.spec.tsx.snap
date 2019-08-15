@@ -24,25 +24,6 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
           <tr>
             <td>
               <span
-                title="Name"
-              >
-                Name
-              </span>
-            </td>
-            <td
-              data-caption="Name"
-              data-fieldkey="name"
-            >
-              <a
-                href="/labkey/Sample%20Management%202/experiment-showMaterial.view?rowId=123"
-              >
-                SampleId-123
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span
                 title="Flag"
               >
                 Flag
@@ -166,25 +147,6 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
         className="table table-responsive table-condensed detail-component--table__fixed"
       >
         <tbody>
-          <tr>
-            <td>
-              <span
-                title="Name"
-              >
-                Name
-              </span>
-            </td>
-            <td
-              data-caption="Name"
-              data-fieldkey="name"
-            >
-              <a
-                href="/labkey/Sample%20Management%202/experiment-showMaterial.view?rowId=123"
-              >
-                SampleId-123
-              </a>
-            </td>
-          </tr>
           <tr>
             <td>
               <span

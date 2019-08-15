@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.12.1
+*Released*: 15 August 2019
+* add shownInDetailsView, getDetailsDisplayColumns and getUpdateDisplayColumns to QueryGridModel
+
 ### version 0.12.0
 *Released*: 13 August 2019
 * add getUserProperties function (which calls user-getUserProperties API)

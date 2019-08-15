@@ -52,6 +52,7 @@ interface Props {
 }
 
 interface PreviousRunData {
+    isLoading?: boolean
     isLoaded?: boolean
     data?: InferDomainResponse
     fileName?: string
@@ -103,7 +104,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         const { previousRunData } = this.state;
         const { wizardModel } = this.props;
 
-        if (!this.isRerun() || !previousRunData || previousRunData.isLoaded) {
+        if (!this.isRerun() || !previousRunData || previousRunData.isLoaded || previousRunData.isLoading) {
            return;
         }
 
@@ -113,6 +114,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                 const outputFiles = row.get('DataOutputs/DataFileUrl');
                 if (outputFiles && outputFiles.size == 1) {
                     const outputs = row.get('DataOutputs');
+                    this.setState(() => ({previousRunData: {isLoading: true, isLoaded: false}}));
 
                     getServerFilePreview(outputs.getIn([0, "value"]), PREVIEW_ROW_COUNT).then((response) => {
                         this.setState(() => ({

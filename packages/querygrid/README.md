@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.11.7
+*Released*: 15 August 2019
 * Issue 37827: update Detail and DetailEditing display columns
 
 ### version 0.11.6

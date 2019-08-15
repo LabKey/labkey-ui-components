@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { Map } from "immutable";
+import { Map, fromJS } from "immutable";
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { AssayUploadTabs } from "@glass/base";
+import { AssayDefinitionModel, AssayUploadTabs } from "@glass/base";
 
 
 import { gridInit } from "../actions";
@@ -28,9 +28,13 @@ import { RunDataPanel } from "../components/assay/RunDataPanel";
 import { RunPropertiesPanel } from "../components/assay/RunPropertiesPanel";
 import { BatchPropertiesPanel } from "../components/assay/BatchPropertiesPanel";
 import { AssayImportPanels } from "../components/assay/AssayImportPanels";
+import { getRunPropertiesModel } from '../components/assay/actions';
+import { AssayReimportHeader } from "../components/assay/AssayReimportHeader";
+
 import { ASSAY_WIZARD_MODEL } from "../test/data/constants";
+import assayDefJSON from '../test/data/assayDefinitionModel.json';
+
 import './stories.scss'
-import { getRunPropertiesModel } from '..';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
 
@@ -132,4 +136,17 @@ storiesOf('AssayImportPanels', module)
             />
         )
     })
-;
+    .add("AssayReimportHeader", () => {
+        const assay = AssayDefinitionModel.create(assayDefJSON);
+        const runData = fromJS({
+            'RowId': "10",
+            'Name':  'Test Name'
+        });
+        return (
+            <AssayReimportHeader
+                hasBatchProperties={boolean("Has batch properties?", false)}
+                assay={assay}
+                replacedRunProperties={runData}
+            />
+        )
+    });

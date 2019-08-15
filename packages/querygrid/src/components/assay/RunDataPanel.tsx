@@ -48,6 +48,7 @@ interface Props {
     fullWidth?: boolean
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
+    title: string
 }
 
 interface PreviousRunData {
@@ -68,7 +69,8 @@ export class RunDataPanel extends React.Component<Props, State> {
     static defaultProps = {
         fullWidth: true,
         allowBulkRemove: false,
-        allowBulkInsert: false
+        allowBulkInsert: false,
+        title: 'Results'
     };
 
     constructor(props: Props) {
@@ -174,7 +176,7 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert } = this.props;
+        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, title } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
@@ -182,7 +184,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         return (
             <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
                 <div className="panel-heading">
-                    Results
+                    {title}
                 </div>
                 <div className="panel-body">
                     {isLoading ? <LoadingSpinner/>

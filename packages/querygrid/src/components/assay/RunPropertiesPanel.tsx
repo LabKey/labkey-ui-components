@@ -43,12 +43,13 @@ export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProp
     }
 
     render() {
-        const { model, onChange } = this.props;
+        const { model, onChange, title } = this.props;
+        const panelTitle = title || 'Run Details';
 
         return (
             <div className="panel panel-default">
                 <div className="panel-heading">
-                    Run Details
+                    {panelTitle}
                 </div>
                 <div className="panel-body">
                     <Formsy className="form-horizontal" onChange={onChange}>

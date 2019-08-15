@@ -31,7 +31,8 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
     }
 
     render() {
-        const { model, onChange } = this.props;
+        const { model, onChange, title } = this.props;
+        const panelTitle = title || 'Batch Details';
 
         if (model.batchColumns.size) {
             const disabled = model.batchId !== undefined;
@@ -39,7 +40,7 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
             return (
                 <div className="panel panel-default">
                     <div className="panel-heading">
-                        Batch Details
+                        {panelTitle}
                     </div>
 
                     <div className="panel-body">

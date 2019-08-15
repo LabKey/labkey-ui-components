@@ -31,6 +31,7 @@ import { getEditorModel } from "../../global";
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel
     onChange: Function
+    title?: string
 }
 
 export interface IAssayURLContext {

@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.14.0
+*Released*: 16 August 2019
 * add LoadingModal
 
 ### version 0.13.0 

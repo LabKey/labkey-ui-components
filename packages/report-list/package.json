@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.18-fb-assayReimport.3",
+  "version": "0.1.18-fb-assayReimport.4",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.13.0-fb-assayReimport.3"
+    "@glass/base": "0.13.0-fb-assayReimport.4"
   },
   "jest": {
     "globals": {

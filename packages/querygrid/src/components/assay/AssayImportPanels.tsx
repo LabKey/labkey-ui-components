@@ -19,21 +19,32 @@ import { Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
     Alert,
+    AssayDefinitionModel,
     AssayDomainTypes,
     AssayUploadTabs,
+    getActionErrorMessage,
+    LoadingSpinner,
     Progress,
     QueryGridModel,
     SchemaQuery,
-    WizardNavButtons,
-    AssayDefinitionModel,
-    LoadingSpinner
+    WizardNavButtons
 } from '@glass/base';
 
 import { Location } from "../../util/URL"
 import { loadSelectedSamples } from "../samples/actions";
-import { uploadAssayRunFiles, importAssayRun } from "./actions";
+import {
+    checkForDuplicateAssayFiles,
+    DuplicateFilesResponse,
+    flattenQueryGridModelRow,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
+    importAssayRun,
+    uploadAssayRunFiles
+} from "./actions";
 import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from "./models";
-import { WithFormStepsProps, WithFormStepsState, withFormSteps } from "../forms/FormStep"
+import { withFormSteps, WithFormStepsProps } from "../forms/FormStep"
 import { getQueryGridModel, removeQueryGridModel } from "../../global";
 import { AssayUploadGridLoader } from "./AssayUploadGridLoader";
 import { getStateQueryGridModel } from "../../models";
@@ -42,12 +53,15 @@ import { getQueryDetails } from "../../query/api";
 import { BatchPropertiesPanel } from "./BatchPropertiesPanel";
 import { RunPropertiesPanel } from "./RunPropertiesPanel";
 import { RunDataPanel } from "./RunDataPanel";
+import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
+import { AssayReimportHeader } from './AssayReimportHeader';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
 
 interface OwnProps {
-    assayDefinition: AssayDefinitionModel,
+    assayDefinition: AssayDefinitionModel
+    runId?: string
     onCancel: () => any
     onComplete: (response: AssayUploadResultModel) => any
     onSave?: (response: AssayUploadResultModel) => any
@@ -61,7 +75,10 @@ type Props = OwnProps & WithFormStepsProps;
 
 interface State {
     schemaQuery: SchemaQuery
-    model: AssayWizardModel
+    model: AssayWizardModel,
+    showRenameModal : boolean
+    duplicateFileResponse?: DuplicateFilesResponse
+    importAgain?: boolean
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
@@ -71,8 +88,19 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
         this.state = {
             schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
-            model: INIT_WIZARD_MODEL
+            model: AssayImportPanelsImpl.getInitWizardModel(props),
+            showRenameModal: false
         }
+    }
+
+    static getInitWizardModel(props: Props) : AssayWizardModel {
+        return INIT_WIZARD_MODEL.merge({
+            runId: props.runId
+        }) as AssayWizardModel
+    }
+
+    isReimport(props: Props) : boolean {
+        return props.runId !== undefined
     }
 
     componentWillMount() {
@@ -86,13 +114,13 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (this.props.assayDefinition.protocolSchemaName !== nextProps.assayDefinition.protocolSchemaName) {
+        if (this.props.assayDefinition.protocolSchemaName !== nextProps.assayDefinition.protocolSchemaName || this.props.runId !== nextProps.runId) {
             // remove QueryGridModel just in case the URL params change back to this assay
             removeQueryGridModel(this.getDataGridModel());
 
             this.setState(() => ({
                 schemaQuery: SchemaQuery.create(nextProps.assayDefinition.protocolSchemaName, 'Data'),
-                model: INIT_WIZARD_MODEL
+                model: AssayImportPanelsImpl.getInitWizardModel(nextProps)
             }), () => {
                 this.initModel(nextProps);
             });
@@ -104,28 +132,97 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         removeQueryGridModel(this.getDataGridModel());
     }
 
+    getRunPropertiesModel(props: Props) : QueryGridModel {
+        return getRunPropertiesModel(props.assayDefinition, props.runId);
+    }
+
+    getRunPropertiesRow(props: Props) :  Map<string, any> {
+        const runData = getRunPropertiesRow(props.assayDefinition, props.runId);
+        return flattenQueryGridModelRow(runData);
+    }
+
+    getBatchId(props: Props): string {
+        const runData = this.getRunPropertiesRow(props);
+        return runData ? runData.get('Batch') : undefined;
+    }
+
+    getBatchPropertiesModel(props: Props) : QueryGridModel {
+        return getBatchPropertiesModel(props.assayDefinition, this.getBatchId(props));
+    }
+
+    getBatchPropertiesRow(props: Props) :  Map<string, any> {
+        const batchData = getBatchPropertiesRow(props.assayDefinition, this.getBatchId(props));
+        return flattenQueryGridModelRow(batchData);
+    }
+
+    isRunPropertiesInit(props: Props) {
+        // if not reimporting, we don't need batch/run properties to display in the form
+        const runModel = this.getRunPropertiesModel(props);
+        const batchModel = this.getBatchPropertiesModel(props);
+        return !this.isReimport(props) || (runModel && runModel.isLoaded && batchModel && batchModel.isLoaded);
+    }
+
     initModel(props: Props) {
-        const { assayDefinition } = props;
+        const { assayDefinition, runId } = props;
 
         if (this.state.model.isInit) {
             return;
         }
 
+        this.initializeGridModels(props);
+
         // need to query for the assay data table QueryInfo in order to init the AssayWizardModel
         getQueryDetails(this.state.schemaQuery)
             .then(queryInfo => {
                 const sampleColumnData = assayDefinition.getSampleColumn();
-
                 this.setState(() => ({
                     model: new AssayWizardModel({
-                        isInit: sampleColumnData === undefined, // we are done here if the assay does not have a sample column
+                        // we are done here if the assay does not have a sample column and we aren't getting the run properties to show for reimport
+                        isInit: sampleColumnData === undefined && this.isRunPropertiesInit(props),
                         assayDef: assayDefinition,
                         batchColumns: assayDefinition.getDomainColumns(AssayDomainTypes.BATCH),
                         runColumns: assayDefinition.getDomainColumns(AssayDomainTypes.RUN),
+                        runId,
+                        usePreviousRunFile: this.isReimport(props),
+                        batchProperties: this.getBatchPropertiesRow(props),
+                        runProperties: this.getRunPropertiesRow(props),
                         queryInfo
                     })
                 }), this.onGetQueryDetailsComplete)
             });
+    }
+
+    initializeGridModels(props: Props) {
+        const { model } = this.state;
+        const runModel = this.getRunPropertiesModel(props);
+        const batchModel = this.getBatchPropertiesModel(props);
+
+        if (!this.isRunPropertiesInit(props)) {
+            if (runModel && !runModel.isLoaded) {
+                gridInit(runModel, true, this);
+            }
+
+            if (batchModel && !batchModel.isLoaded) {
+                gridInit(batchModel, true, this);
+            }
+        }
+
+        if (model.isInit) {
+            // only init the gridModel after the state has been set since it uses the AssayWizardModel in the grid loader
+            gridInit(this.getDataGridModel(), true, this);
+        }
+        else if (model.queryInfo && this.isReimport(props) && runModel && runModel.isLoaded && batchModel && batchModel.isLoaded) {
+            // if this is a re-import and the batch/run props are now loaded, put them into the state model
+            this.setState((state) => ({
+                model: state.model.merge({
+                    isInit: true,
+                    batchProperties: this.getBatchPropertiesRow(this.props),
+                    runProperties: this.getRunPropertiesRow(this.props)
+                }) as AssayWizardModel
+            }), () => {
+                this.onInitModelComplete();
+            });
+        }
     }
 
     onGetQueryDetailsComplete() {
@@ -138,8 +235,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             // samples.
             loadSelectedSamples(location, sampleColumnData.column).then((samples) => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                let runProperties = Map<string, any>();
-                let batchProperties = Map<string, any>();
+                let runProperties = this.getRunPropertiesRow(this.props);
+                let batchProperties = this.getBatchPropertiesRow(this.props);
                 if (sampleColumnData && samples && samples.size == 1) {
                     const { column, domain } = sampleColumnData;
                     const selectedSample = samples.first();
@@ -157,7 +254,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
                 this.setState((state) => ({
                     model: state.model.merge({
-                        isInit: true,
+                        isInit : this.isRunPropertiesInit(this.props),
                         selectedSamples: samples,
                         batchProperties,
                         runProperties
@@ -168,15 +265,26 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         else {
             this.setState((state) => ({
                 model: state.model.merge({
-                    isInit: true
+                    isInit : this.isRunPropertiesInit(this.props),
+                    batchProperties: this.getBatchPropertiesRow(this.props),
+                    runProperties: this.getRunPropertiesRow(this.props)
                 }) as AssayWizardModel
             }), this.onInitModelComplete);
         }
     }
 
     onInitModelComplete() {
-        // only init the gridModel after the state has been set since it uses the AssayWizardModel in the grid loader
-        gridInit(this.getDataGridModel(), true, this);
+        const runPropsData = this.getRunPropertiesRow(this.props);
+
+        // Issue 38237: set the runName and comments for the re-import case
+        this.setState((state) => ({
+            model: state.model.merge({
+                runName: runPropsData ? runPropsData.get('Name') : undefined,
+                comment: runPropsData ? runPropsData.get('Comments') : '',
+            }) as AssayWizardModel
+        }), () => {
+            this.initializeGridModels(this.props);
+        });
     }
 
     getDataGridModel(): QueryGridModel {
@@ -190,18 +298,26 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return getQueryGridModel(gridModel.getId()) || gridModel;
     }
 
-    updateModelState(prop: string, value: any) {
-        this.setState((state) => ({
-            model: state.model.set(prop, value) as AssayWizardModel
-        }));
-    }
-
     handleFileChange = (attachments: Map<string, File>) => {
-        this.updateModelState('attachedFiles', attachments);
+        this.setState((state) => ({
+            model: state.model.merge({
+                attachedFiles: attachments,
+                errorMsg: undefined,
+                usePreviousRunFile: false,
+            }) as AssayWizardModel
+        }));
     };
 
     handleFileRemove = (attachmentName: string) => {
-        this.updateModelState('attachedFiles', Map<string, File>());
+        this.setState((state) => {
+            return {
+                model : state.model.merge({
+                    errorMsg: undefined,
+                    attachedFiles: Map<string, File>(),
+                    usePreviousRunFile: false
+                }) as AssayWizardModel
+            }
+        });
     };
 
     handleBatchChange = (fieldValues: any) => {
@@ -240,8 +356,12 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }, {});
 
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
-            this.updateModelState('runName', runName);
-            this.updateModelState('comment', comment);
+            this.setState((state) => ({
+                model: state.model.merge({
+                    runName,
+                    comment,
+                }) as AssayWizardModel
+            }));
         });
     };
 
@@ -255,7 +375,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
         assayUploadTimer = window.setTimeout(() => {
             assayUploadTimer = null;
-            this.updateModelState(prop, value);
+            this.setState((state) => ({
+                model: state.model.set(prop, value) as AssayWizardModel
+            }));
 
             if (onComplete) {
                 onComplete();
@@ -263,11 +385,38 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }, 250);
     }
 
+    checkForDuplicateFiles(importAgain: boolean) {
+        checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray()).then((response) => {
+            if (response.duplicate) {
+                this.setState(() => ({
+                    showRenameModal: true,
+                    duplicateFileResponse: response,
+                    importAgain
+                }));
+            }
+            else {
+                this.onFinish(importAgain);
+            }
+        }).catch((reason) => {
+            this.setState((state) => ({
+                model: state.model.set('errorMsg', getActionErrorMessage("There was in a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
+            }));
+        });
+    }
+
+    onSaveClick = (importAgain: boolean) => {
+        if (this.state.model.isFilesTab(this.props.currentStep)) {
+            this.checkForDuplicateFiles(importAgain);
+        }
+        else {
+            this.onFinish(importAgain);
+        }
+    };
+
     onFinish(importAgain: boolean) {
         const { currentStep, onSave } = this.props;
         const { model } = this.state;
-
-        this.setSubmitting(true, undefined);
+        this.setModelState(true, undefined);
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
 
         uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
@@ -280,8 +429,16 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                         this.onSuccessComplete(response);
                     }
                 })
-                .catch(this.onFailure);
-        }).catch(this.onFailure);
+                .catch((reason) => {
+                    const error = reason.message || reason.exception;
+                    console.error("Problem importing assay run", error);
+                    this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
+                });
+        }).catch((reason) => {
+            const error = reason.message || reason.exception;
+            console.error("Problem uploading assay run files", error);
+            this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
+        });
     };
 
     onSuccessContinue = (response: AssayUploadResultModel) => {
@@ -309,20 +466,21 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     onSuccessComplete = (response: AssayUploadResultModel) => {
-        this.setSubmitting(false, undefined);
+        this.setModelState(false, undefined);
         this.props.onComplete(response);
     };
 
     onFailure = (error: any) => {
-        this.setSubmitting(false, error.message || error.exception);
+        this.setModelState(false, error);
     };
 
-    setSubmitting(isSubmitting: boolean, errorMsg: string) {
+    setModelState(isSubmitting: boolean, errorMsg: React.ReactNode) {
         this.setState((state) => {
-            let model = state.model.set('isSubmitting', isSubmitting) as AssayWizardModel;
-            model = model.set('errorMsg', errorMsg) as AssayWizardModel;
             return {
-                model
+                model : state.model.merge({
+                    isSubmitting,
+                    errorMsg,
+                }) as AssayWizardModel
             }
         });
     }
@@ -347,22 +505,71 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
+    onCancelRename = () => {
+        this.setState(() => ({
+            showRenameModal: false,
+            duplicateFileResponse: undefined,
+            importAgain: undefined
+        }));
+    };
+
+    onRenameConfirm = () => {
+        const { showRenameModal, importAgain } = this.state;
+
+        if (showRenameModal) {
+            this.setState(() => ({
+                showRenameModal: false,
+                duplicateFileResponse: undefined,
+                importAgain: undefined
+            }), () => {
+                this.onFinish(importAgain);
+            });
+        }
+    };
+
+    renderFileRenameModal() {
+        const { model, duplicateFileResponse } = this.state;
+
+        return (
+            <ImportWithRenameConfirmModal
+                onConfirm={this.onRenameConfirm}
+                onCancel={this.onCancelRename}
+                originalName={model.attachedFiles.keySeq().get(0)}
+                newName={duplicateFileResponse.newFileNames[0]}
+            />
+        )
+    }
+
     render() {
         const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, allowBulkInsert, onSave } = this.props;
-        const { model } = this.state;
+        const { model, showRenameModal } = this.state;
 
         if (!model.isInit) {
+            this.initializeGridModels(this.props);
             return <LoadingSpinner/>
         }
 
+        const dataGridModel = this.getDataGridModel();
+        const isReimport = this.isReimport(this.props);
+        const showReimportHeader = isReimport && this.getRunPropertiesModel(this.props).isLoaded;
+        const showSaveAgainBtn = !isReimport && onSave !== undefined;
+        const disabledSave = model.isSubmitting || !model.hasData(currentStep, dataGridModel);
+
         return (
             <>
+                {showReimportHeader &&
+                    <AssayReimportHeader
+                        assay={model.assayDef}
+                        replacedRunProperties={this.getRunPropertiesRow(this.props)}
+                        hasBatchProperties={model.batchColumns.size > 0}
+                    />
+                }
                 <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
                 <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
                 <RunDataPanel
                     currentStep={currentStep}
                     wizardModel={model}
-                    gridModel={this.getDataGridModel()}
+                    gridModel={dataGridModel}
                     onFileChange={this.handleFileChange}
                     onFileRemoval={this.handleFileRemove}
                     onTextChange={this.handleDataTextChange}
@@ -377,30 +584,33 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     containerClassName=""
                     includeNext={false}
                 >
-                    {onSave &&
+                    {showSaveAgainBtn &&
                         <Button
-                                type="submit"
-                                onClick={this.onFinish.bind(this, true)}
-                                disabled={model.isSubmitting}>
+                            type="submit"
+                            onClick={this.onSaveClick.bind(this, true)}
+                            disabled={disabledSave}
+                        >
                             {model.isSubmitting ? 'Saving...' : 'Save And Import Another Run'}
                         </Button>
                     }
                     <Button
                         type="submit"
                         bsStyle={"success"}
-                        onClick={this.onFinish.bind(this, false)}
-                        disabled={model.isSubmitting}>
-                        {onSave
+                        onClick={this.onSaveClick.bind(this, false)}
+                        disabled={disabledSave}
+                    >
+                        {showSaveAgainBtn
                             ? (model.isSubmitting ? 'Saving...' : 'Save and Finish')
-                            : (model.isSubmitting ? 'Importing...' : 'Import')
+                            : (model.isSubmitting ? 'Importing...' : (isReimport ? 'Re-Import' : 'Import'))
                         }
                     </Button>
                 </WizardNavButtons>
                 <Progress
                     estimate={this.getProgressSizeEstimate()}
                     modal={true}
-                    title="Importing assay run"
+                    title={isReimport ? "Re-importing assay run" : "Importing assay run"}
                     toggle={model.isSubmitting}/>
+                {showRenameModal && this.renderFileRenameModal()}
             </>
         )
     }

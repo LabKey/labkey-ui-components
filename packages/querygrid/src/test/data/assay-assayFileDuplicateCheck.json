@@ -1,0 +1,5 @@
+{
+  "duplicate" : true,
+  "runNamesPerFile" : [ [ "duplicate.tsv" ] ],
+  "newFileNames" : [ "duplicate-2.xls" ]
+}

@@ -18,7 +18,7 @@ import { Panel, Button } from 'react-bootstrap'
 import { List, Map } from 'immutable'
 import Formsy from 'formsy-react'
 import { Utils } from '@labkey/api'
-import { Alert, QueryGridModel } from '@glass/base'
+import { Alert, QueryColumn, QueryGridModel } from '@glass/base'
 
 import { updateRows } from "../../../query/api";
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from "./DetailEditRenderer";
@@ -27,6 +27,7 @@ import { DetailPanelHeader } from "./DetailPanelHeader";
 
 interface DetailEditingProps {
     queryModel: QueryGridModel
+    queryColumns?: List<QueryColumn>
     canUpdate: boolean
     onUpdate?: () => void
     useEditIcon: boolean,
@@ -143,8 +144,10 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     handleClick = () => {
-        if (Utils.isFunction(this.props.onEditToggle))
+        if (Utils.isFunction(this.props.onEditToggle)) {
             this.props.onEditToggle(!this.state.editing);
+        }
+
         this.setState((state) => ({
             editing: !state.editing,
             warning: undefined,
@@ -234,7 +237,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     render() {
-        const { queryModel, canUpdate, useEditIcon, appEditable, asSubPanel, title } = this.props;
+        const { queryModel, queryColumns, canUpdate, useEditIcon, appEditable, asSubPanel, title } = this.props;
         const { editing, warning, error } = this.state;
 
         let isEditable = false;
@@ -268,7 +271,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                                     queryModel={queryModel}
                                     editingMode={true}
                                     detailRenderer={resolveDetailEditRenderer}
-                                    titleRenderer={titleRenderer}/>
+                                    titleRenderer={titleRenderer}
+                                />
                             </div>
                         </Panel.Body>
                     </Panel>
@@ -282,8 +286,11 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
             <Panel>
                 <Panel.Heading>{header}</Panel.Heading>
                 <Panel.Body>
-                    <Detail queryModel={queryModel}
-                            detailRenderer={resolveDetailRenderer}/>
+                    <Detail
+                        queryModel={queryModel}
+                        queryColumns={queryColumns}
+                        detailRenderer={resolveDetailRenderer}
+                    />
                 </Panel.Body>
             </Panel>
         )

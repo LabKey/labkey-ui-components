@@ -13,18 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, OrderedMap } from 'immutable'
-import { ActionURL, Ajax, Utils, AssayDOM } from '@labkey/api'
+import { List, Map, OrderedMap } from 'immutable'
+import { ActionURL, Ajax, Filter, Utils, AssayDOM } from '@labkey/api'
 import {
     AssayDefinitionModel,
     AssayUploadTabs,
     buildURL,
     naturalSort,
     QueryGridModel,
-    SchemaQuery
+    SchemaQuery, SCHEMAS
 } from '@glass/base'
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models'
+import { getStateQueryGridModel } from '../../models';
+import { getQueryGridModel } from '../../global';
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
@@ -147,9 +149,11 @@ function collectFiles(source): FileMap {
 }
 
 
-export function deleteAssayRuns(selectionKey?: string, rowId?: string) : Promise<any> {
+export function deleteAssayRuns(selectionKey?: string, rowId?: string, cascadeDeleteReplacedRuns = false) : Promise<any> {
     return new Promise((resolve, reject) => {
-        const params = selectionKey ? {'dataRegionSelectionKey': selectionKey} : {singleObjectRowId: rowId};
+        let params = selectionKey ? {'dataRegionSelectionKey': selectionKey} : {singleObjectRowId: rowId};
+        params['cascade'] = cascadeDeleteReplacedRuns;
+
         return Ajax.request({
             url: buildURL('experiment', 'deleteRuns.api'),
             method: 'POST',
@@ -184,4 +188,87 @@ export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefi
         });
 
     return items;
+}
+
+
+export interface DuplicateFilesResponse {
+    duplicate: boolean
+    newFileNames: List<string>
+    runNamesPerFile: List<string>
+}
+
+export function checkForDuplicateAssayFiles(fileNames: Array<string>) : Promise<DuplicateFilesResponse> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assay', 'assayFileDuplicateCheck.api'),
+            method: 'POST',
+            jsonData: {
+                fileNames,
+            },
+            success: Utils.getCallbackWrapper((res) => {
+                resolve(res);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                console.error("Problem checking for duplicate files", response);
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
+    const model = getStateQueryGridModel('assay-run-details', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'), {
+        allowSelection: false,
+        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId', "ReplacesRun", "ReplacedByRun", "DataOutputs", "DataOutputs/DataFileUrl", "Batch").toList(),
+        // allow for the possibility of viewing runs that have been replaced.
+        baseFilters: List( [Filter.create('Replaced', undefined, Filter.Types.NONBLANK)])
+    }, runId);
+
+    return getQueryGridModel(model.getId()) || model;
+}
+
+export function getRunPropertiesRow(assayDefinition: AssayDefinitionModel, runId: string) : Map<string, any> {
+    const model = getRunPropertiesModel(assayDefinition, runId);
+    return model.isLoaded ? model.getRow() : undefined;
+}
+
+
+export function getBatchPropertiesModel(assayDefinition: AssayDefinitionModel, batchId: string): QueryGridModel {
+    if (!batchId) {
+        return undefined;
+    }
+
+    const model = getStateQueryGridModel('assay-batchdetails', SchemaQuery.create(assayDefinition.protocolSchemaName, 'Batches'), {
+        allowSelection: false,
+        requiredColumns: SCHEMAS.CBMB.concat('Name', 'RowId').toList()
+    }, batchId);
+
+    return getQueryGridModel(model.getId()) || model;
+}
+
+export function getBatchPropertiesRow(assayDefinition: AssayDefinitionModel, batchId: string) : Map<string, any> {
+    const model = getBatchPropertiesModel(assayDefinition, batchId);
+    return model && model.isLoaded ? model.getRow() : undefined;
+}
+
+export function flattenQueryGridModelRow(rowData: Map<string, any>): Map<string, any> {
+    if (rowData) {
+        // TODO make the consumers of this row data able to handle the queryData instead of
+        // having to create the key -> value map via reduction.
+        return rowData.reduce((map, v, k) => {
+            let valueMap = v;
+            if (List.isList(v)) {
+                if (v.size > 1) {
+                    console.warn("Multiple values for field '" + k + "'.  Using the last.");
+                }
+                valueMap = v.get(v.size - 1);
+            }
+            if (valueMap && valueMap.has('value') && valueMap.get('value')) {
+                return map.set(k, valueMap.get('value').toString())
+            }
+            return map;
+        }, Map<string, any>());
+    }
+
+    return Map<string, any>();
 }

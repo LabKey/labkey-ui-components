@@ -711,17 +711,21 @@ export class QueryGridModel extends Record({
     }
 
     getFilters(): List<Filter.IFilter> {
+        let filterList = List<Filter.IFilter>();
         if (this.queryInfo) {
             if (this.keyValue !== undefined) {
                 if (this.queryInfo.pkCols.size === 1) {
-                    return List([
+                    filterList = filterList.push(
                         Filter.create(this.queryInfo.pkCols.first(), this.keyValue)
-                    ]);
+                    );
+                } else {
+                    console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
                 }
-                console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
             }
-
-            return this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray).toList();
+            // if a keyValue if provided, we may still have baseFilters to apply in the case that the default
+            // filter on a query view is a limiting filter and we want to expand the set of values returned (e.g., for assay runs
+            // that may have been replaced)
+            return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
         }
 
         return this.baseFilters.concat(this.filterArray).toList();

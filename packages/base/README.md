@@ -8,6 +8,22 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: XXX
 * add LoadingModal
 
+### version 0.13.0 
+*Released*: 16 August 2019
+* update @labkey/dependencies version to 0.0.8
+* export getActionErrorMessage method for consistent error message display after an action has failed.
+* update QueryGridMode.getFilters to add in baseFilters even if a key value is provided (to support overriding
+a default filter that limits the set of values such that it may not include the key given, e.g., for assay runs
+that have been replaced)
+* change signature of fileMatchesAcceptedFormat to take a file name instead of a File (since that's all we use)
+* Refactor FileAttachmentForm to accept a list of initial file names to show and initial preview data
+* add getServerFilePreview method for retrieving preview data of file already on the server
+* add optional parameter to getActionErrorMessage to indicate if the refresh suggestion should be shown or not.
+
+### version 0.12.1
+*Released*: 15 August 2019
+* add shownInDetailsView, getDetailsDisplayColumns and getUpdateDisplayColumns to QueryGridModel
+
 ### version 0.12.0
 *Released*: 13 August 2019
 * add getUserProperties function (which calls user-getUserProperties API)

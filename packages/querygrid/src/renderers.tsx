@@ -17,12 +17,12 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { OrderedMap } from 'immutable'
 import { Dropdown, MenuItem } from 'react-bootstrap'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, CustomToggle, GridColumn } from '@glass/base'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, CustomToggle, GridColumn } from '@glass/base'
 
 import { DefaultRenderer } from './renderers/DefaultRenderer'
 import { getQueryColumnRenderers } from './global'
 
-export function headerCell(handleSort: any, column: GridColumn, i: number, selectable?: boolean, sortable: boolean = true) {
+export function headerCell(handleSort: any, column: GridColumn, i: number, selectable?: boolean, sortable: boolean = true, columnCount?: number) {
 
     const col: QueryColumn = column.raw;
 
@@ -32,13 +32,14 @@ export function headerCell(handleSort: any, column: GridColumn, i: number, selec
 
     const isSortAsc = col.sorts === '+';
     const isSortDesc = col.sorts === '-';
+    const isOnlyColumn = columnCount !== undefined && ((selectable && columnCount === 2) || (!selectable && columnCount === 1));
 
     return (
         <span>
             {col.caption === '&nbsp;' ? '' : col.caption}
             {sortable && col.sortable && (
                 <span className={classNames({'pull-right': i === 0 && !selectable || selectable && i === 1})}>
-                <Dropdown id={`grid-menu-${i}`} className={classNames('hidden-xs hidden-sm', {'pull-right': i > 0 && !selectable || i > 1})}>
+                <Dropdown id={`grid-menu-${i}`} className={classNames('hidden-xs hidden-sm', {'pull-right': isOnlyColumn || i > 0 && !selectable || i > 1})}>
                     <CustomToggle bsRole="toggle">
                         <span className="fa fa-chevron-circle-down" style={{color: 'lightgray', fontSize: '12px'}}/>
                     </CustomToggle>

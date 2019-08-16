@@ -32,29 +32,25 @@ describe("files actions", () => {
     });
 
     test("fileMatchesAcceptedFormat - not a match", () => {
-        const file = new File([], 'testing.txt');
-        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        const response = fileMatchesAcceptedFormat("testing.txt", '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.txt');
         expect(response.get('isMatch')).toBeFalsy();
     });
 
     test("fileMatchesAcceptedFormat - matches first", () => {
-        const file = new File([], 'testing.csv');
-        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        const response = fileMatchesAcceptedFormat('testing.csv', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.csv');
         expect(response.get('isMatch')).toBeTruthy();
     });
 
     test("fileMatchesAcceptedFormat - matches middle", () => {
-        const file = new File([], 'testing.tsv');
-        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        const response = fileMatchesAcceptedFormat('testing.tsv', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.tsv');
         expect(response.get('isMatch')).toBeTruthy();
     });
 
     test("fileMatchesAcceptedFormat - matches last", () => {
-        const file = new File([], 'testing.xlsx');
-        const response = fileMatchesAcceptedFormat(file, '.csv, .tsv, .xlsx');
+        const response = fileMatchesAcceptedFormat('testing.xlsx', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.xlsx');
         expect(response.get('isMatch')).toBeTruthy();
     });

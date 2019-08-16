@@ -1,6 +1,6 @@
 {
   "name": "@glass/omnibox",
-  "version": "0.1.30-fb-assayDesignDelete.0",
+  "version": "0.1.31",
   "description": "A LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.",
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.13.0-fb-assayDesignDelete.0",
+    "@glass/base": "0.13.0",
     "react-input-autosize": "2.2.1"
   },
   "peerDependencies": {
@@ -60,5 +60,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
+  "gitHead": "d3414b9c3c37e2cd6e175f43fb0ecdc6572767a2"
 }

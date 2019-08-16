@@ -195,7 +195,7 @@ class GridHeader extends React.PureComponent<GridHeaderProps, any> {
                                 key={i}
                                 onClick={this._handleClick.bind(this, column)}
                                 style={{minWidth}}>
-                                {headerCell ? headerCell(column, i) : column.title}
+                                {headerCell ? headerCell(column, i, columns.size) : column.title}
                             </th>
                         );
                     }

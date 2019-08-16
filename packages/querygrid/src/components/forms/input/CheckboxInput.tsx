@@ -50,7 +50,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         this.onChange = this.onChange.bind(this);
 
         this.state = {
-            checked: props.value === true,
+            checked: props.value === true || props.value === "true",
             isDisabled: props.initiallyDisabled
         }
     }

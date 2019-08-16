@@ -400,7 +400,7 @@
     "selectable" : true,
     "shownInInsertView" : true,
     "shownInUpdateView" : true,
-    "shownInDetailsView" : true,
+    "shownInDetailsView" : false,
     "dimension" : false,
     "measure" : false,
     "recommendedVariable" : false,
@@ -627,7 +627,7 @@
     "selectable" : true,
     "shownInInsertView" : false,
     "shownInUpdateView" : false,
-    "shownInDetailsView" : true,
+    "shownInDetailsView" : false,
     "dimension" : true,
     "measure" : false,
     "recommendedVariable" : false,
@@ -1466,7 +1466,7 @@
       "selectable" : true,
       "shownInInsertView" : true,
       "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
+      "shownInDetailsView" : false,
       "dimension" : false,
       "measure" : false,
       "recommendedVariable" : false,
@@ -1837,7 +1837,7 @@
       "selectable" : true,
       "shownInInsertView" : true,
       "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
+      "shownInDetailsView" : false,
       "dimension" : false,
       "measure" : false,
       "recommendedVariable" : false,
@@ -2193,18 +2193,6 @@
       "key" : "Name",
       "fieldKey" : "Name"
     }, {
-      "name" : "Description",
-      "key" : "Description",
-      "fieldKey" : "Description"
-    }, {
-      "name" : "SampleSet",
-      "key" : "SampleSet",
-      "fieldKey" : "SampleSet"
-    }, {
-      "name" : "Run",
-      "key" : "Run",
-      "fieldKey" : "Run"
-    }, {
       "name" : "Flag",
       "key" : "Flag",
       "fieldKey" : "Flag"
@@ -2263,7 +2251,7 @@
       "selectable" : true,
       "shownInInsertView" : true,
       "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
+      "shownInDetailsView" : false,
       "dimension" : false,
       "measure" : false,
       "recommendedVariable" : false,
@@ -2427,7 +2415,7 @@
       "selectable" : true,
       "shownInInsertView" : false,
       "shownInUpdateView" : false,
-      "shownInDetailsView" : true,
+      "shownInDetailsView" : false,
       "dimension" : true,
       "measure" : false,
       "recommendedVariable" : false,
@@ -2809,7 +2797,7 @@
       "selectable" : true,
       "shownInInsertView" : true,
       "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
+      "shownInDetailsView" : false,
       "dimension" : false,
       "measure" : false,
       "recommendedVariable" : false,
@@ -3286,7 +3274,7 @@
       "selectable" : true,
       "shownInInsertView" : true,
       "shownInUpdateView" : true,
-      "shownInDetailsView" : true,
+      "shownInDetailsView" : false,
       "dimension" : false,
       "measure" : false,
       "recommendedVariable" : false,

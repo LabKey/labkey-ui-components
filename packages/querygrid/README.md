@@ -4,6 +4,20 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.12.0
+*Released*: 16 August 2019
+* add ImportWithRenameConfirmModal and checkForDuplicateAssayFiles method
+* add AssayReimportHeader component
+* add actions for getRunDataModel, getRunRow, getBatchDataModel, getBatchRow
+* update AssayImportPanels to accept an optional runId for pre-populating
+* add optional queryColumns parameter for Detail component to be able to modify the columns in the detail view
+* in RunDataPanel, support display of previous run's data when reimporting.
+* add param to support cascade delete of replaced runs in deleteAssayRuns API call
+
+### version 0.11.7
+*Released*: 15 August 2019
+* Issue 37827: update Detail and DetailEditing display columns
+
 ### version XXX
 *Released*: XXX
 * add deleteAssayDesign method, AssayDesignDeleteConfirmModal

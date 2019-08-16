@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.18-fb-assayDesignDelete.0",
+  "version": "0.1.19",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.13.0-fb-assayDesignDelete.0"
+    "@glass/base": "0.13.0"
   },
   "jest": {
     "globals": {
@@ -56,5 +56,6 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  }
+  },
+  "gitHead": "d3414b9c3c37e2cd6e175f43fb0ecdc6572767a2"
 }

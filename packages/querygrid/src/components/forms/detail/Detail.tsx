@@ -80,20 +80,23 @@ interface DetailProps {
     detailRenderer?: Function
     titleRenderer?: Function
     asPanel: boolean
+    editingMode?: boolean
 }
 
 
 export class Detail extends React.Component<DetailProps, any> {
 
     static defaultProps = {
-        asPanel: false
+        asPanel: false,
+        editingMode: false
     };
 
     render() {
-        const { queryModel, detailRenderer, titleRenderer, asPanel } = this.props;
+        const { queryModel, detailRenderer, editingMode, titleRenderer, asPanel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
-            const fields = processFields(this.props.queryColumns || queryModel.getDisplayColumns(), detailRenderer, titleRenderer);
+            const displayCols = editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns();
+            const fields = processFields(this.props.queryColumns || displayCols, detailRenderer, titleRenderer);
             const target = queryModel.getData();
             let body;
 

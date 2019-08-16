@@ -16,6 +16,10 @@ that have been replaced)
 * add getServerFilePreview method for retrieving preview data of file already on the server
 * add optional parameter to getActionErrorMessage to indicate if the refresh suggestion should be shown or not.
 
+### version 0.12.1
+*Released*: 15 August 2019
+* add shownInDetailsView, getDetailsDisplayColumns and getUpdateDisplayColumns to QueryGridModel
+
 ### version 0.12.0
 *Released*: 13 August 2019
 * add getUserProperties function (which calls user-getUserProperties API)

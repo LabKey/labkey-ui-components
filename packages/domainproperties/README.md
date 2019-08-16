@@ -8,6 +8,10 @@ Domain property related components for LabKey domains
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.0.27
+*Released*: 15 August 2019
+* Package patch update for changes to @glass/base v0.12.1
+
 ### version 0.0.26
 *Released*: 13 August 2019
 * Package patch update for changes to @glass/base v0.12.0

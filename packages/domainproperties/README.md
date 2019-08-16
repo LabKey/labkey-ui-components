@@ -4,6 +4,12 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.?
+*Released*: ? August 2019
+* Item 6000: Domain designer Advanced Settings.
+    - Advanced settings added to each domain property
+    - Various PHI and various display settings
+
 ### version 0.0.24
 *Released*: 31 July 2019
 * Item 5718: Domain designer lookup field support

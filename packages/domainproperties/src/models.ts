@@ -319,11 +319,11 @@ export class DomainField extends Record({
     original: Partial<IDomainField>;
     updatedField: boolean;
 
-    static create(rawField: Partial<IDomainField>): DomainField {
+    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean): DomainField {
         let dataType = resolveDataType(rawField);
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
-        return new DomainField(Object.assign({}, rawField, {
+        let field = new DomainField(Object.assign({}, rawField, {
         // return new DomainField(Object.assign({}, rawField, {
             dataType,
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
@@ -335,6 +335,12 @@ export class DomainField extends Record({
                 rangeURI: rawField.rangeURI
             }
         }));
+
+        if (shouldApplyDefaultValues) {
+            field = DomainField.updateDefaultValues(field);
+        }
+
+        return field;
     }
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
@@ -388,10 +394,6 @@ export class DomainField extends Record({
 
     isNew(): boolean {
         return isFieldNew(this);
-    }
-
-    static createNew() {
-        return DomainField.updateDefaultValues(DomainField.create({}))
     }
 
     static updateDefaultValues(field: DomainField): DomainField {

@@ -45,6 +45,7 @@ interface AdvancedSettingsState {
     mvEnabled?: boolean
     recommendedVariable?: boolean
     PHI?: string
+    phiLevels?: List<any>
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -53,32 +54,32 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     constructor(props) {
         super(props);
 
-        this.state = {
-            hidden: this.props.field.hidden,
-            shownInDetailsView: this.props.field.shownInDetailsView,
-            shownInInsertView: this.props.field.shownInInsertView,
-            shownInUpdateView: this.props.field.shownInUpdateView,
-            dimension: this.props.field.dimension,
-            measure: this.props.field.measure,
-            mvEnabled: this.props.field.mvEnabled,
-            recommendedVariable: this.props.field.recommendedVariable,
-            PHI: this.props.field.PHI
-        };
+        // Filter phi levels available
+        const phiIndex = this.getMaxPhiLevelIndex(props.maxPhiLevel);
+        const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
+            return index <= phiIndex;
+        }) as List<any>;
 
+        this.state = this.getInitialState(this.props.field, phiLevels);
     }
 
     initializeState = () => {
-        this.setState({
-            hidden: this.props.field.hidden,
-            shownInDetailsView: this.props.field.shownInDetailsView,
-            shownInInsertView: this.props.field.shownInInsertView,
-            shownInUpdateView: this.props.field.shownInUpdateView,
-            dimension: this.props.field.dimension,
-            measure: this.props.field.measure,
-            mvEnabled: this.props.field.mvEnabled,
-            recommendedVariable: this.props.field.recommendedVariable,
-            PHI: this.props.field.PHI
-        });
+        this.setState(this.getInitialState(this.props.field, this.state.phiLevels));
+    };
+
+    getInitialState = (field, phiLevels) => {
+        return ({
+            hidden: field.hidden,
+            shownInDetailsView: field.shownInDetailsView,
+            shownInInsertView: field.shownInInsertView,
+            shownInUpdateView: field.shownInUpdateView,
+            dimension: field.dimension,
+            measure: field.measure,
+            mvEnabled: field.mvEnabled,
+            recommendedVariable: field.recommendedVariable,
+            PHI: field.PHI,
+            phiLevels: phiLevels
+        })
     };
 
     handleClose = () => {
@@ -96,7 +97,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
             // Iterate over state values and put into list of changes
             Object.keys(this.state).forEach(function (key, i) {
-                changes.push({id: createFormInputId(key, index), value: this.state[key]} as IFieldChange)
+                if (key !== 'phiLevels') {
+                    changes.push({id: createFormInputId(key, index), value: this.state[key]} as IFieldChange)
+                }
             }, this);
 
             onApply(changes.asImmutable());
@@ -105,7 +108,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         if (onHide) {
             onHide();
         }
-    }
+    };
 
     handleCheckbox = (evt) => {
         let value = getCheckedValue(evt);
@@ -131,27 +134,27 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     getMeasureHelpText = () => {
         return(
-            <div>Indicates fields that contain data subject to charting and other analysis. These are typically numeric results.
-            <br/><br/>
-            Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=chartTrouble">Measures and Dimensions</a> for analysis.
+            <div>
+                <p>Indicates fields that contain data subject to charting and other analysis. These are typically numeric results.</p>
+                <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=chartTrouble">Measures and Dimensions</a> for analysis.</p>
             </div>
         )
     };
 
     getDimensionHelpText = () => {
         return(
-            <div>Indicates a column of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.
-                <br/><br/>
-                Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=chartTrouble">Measures and Dimensions</a> for analysis.
+            <div>
+                <p>Indicates a column of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
+                <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=chartTrouble">Measures and Dimensions</a> for analysis.</p>
             </div>
         )
     };
 
     getMissingValueHelpText = () => {
         return(
-            <div>Fields using this can hold special values to indicate data that has failed review or was originally missing. Administrators can set custom Missing Value indicators at the site and folder levels.
-                <br/><br/>
-                Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=manageMissing">Missing Value Indicators</a>
+            <div>
+                <p>Fields using this can hold special values to indicate data that has failed review or was originally missing. Administrators can set custom Missing Value indicators at the site and folder levels.</p>
+                <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=manageMissing">Missing Value Indicators</a></p>
             </div>
         )
     };
@@ -167,9 +170,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     getPhiHelpText = () => {
         return(
             <div>
-                Sets Protected Health Information (PHI) level for this field. This is a premium LabKey feature.
-                <br/><br/>
-                Learn more about <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=compliancePHI">PHI Compliance</a> in LabKey.
+                <p>Sets Protected Health Information (PHI) level for this field. This is a premium LabKey feature.</p>
+                <p>Learn more about <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=compliancePHI">PHI Compliance</a> in LabKey.</p>
             </div>
         )
     };
@@ -178,7 +180,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return DOMAIN_PHI_LEVELS.findIndex((level) => {
             return level.value === phi;
         });
-    }
+    };
 
     render() {
         const { show, label, index, maxPhiLevel, field } = this.props;

@@ -233,7 +233,7 @@ export function getIndexFromId(id: string): number {
 
 export function addField(domain: DomainDesign): DomainDesign {
     return domain.merge({
-        fields: domain.fields.push(DomainField.createNew())
+        fields: domain.fields.push(DomainField.create({}, true))
     }) as DomainDesign;
 }
 

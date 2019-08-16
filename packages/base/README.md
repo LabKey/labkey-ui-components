@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ??? 
-*Released*: ???
+### version 0.13.0 
+*Released*: 16 August 2019
 * update @labkey/dependencies version to 0.0.8
 * export getActionErrorMessage method for consistent error message display after an action has failed.
 * update QueryGridMode.getFilters to add in baseFilters even if a key value is provided (to support overriding

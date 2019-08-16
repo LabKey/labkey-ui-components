@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* add deleteAssayDesign method, AssayDesignDeleteConfirmModal
+
 ### version 0.12.0
 *Released*: 16 August 2019
 * add ImportWithRenameConfirmModal and checkForDuplicateAssayFiles method
@@ -17,10 +21,6 @@ Query Grid for LabKey schema/query data views
 ### version 0.11.7
 *Released*: 15 August 2019
 * Issue 37827: update Detail and DetailEditing display columns
-
-### version XXX
-*Released*: XXX
-* add deleteAssayDesign method, AssayDesignDeleteConfirmModal
 
 ### version 0.11.6
 *Released*: 13 August 2019

@@ -25,6 +25,7 @@ import { resolveRenderer } from "../renderers";
 import { MultiValueRenderer } from "../../../renderers/MultiValueRenderer";
 import { AliasRenderer } from "../../../renderers/AliasRenderer";
 import { AppendUnits } from "../../../renderers/AppendUnits";
+import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 import { LookupSelectInput } from "../input/LookupSelectInput";
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
@@ -202,6 +203,9 @@ export function resolveDetailRenderer(column: QueryColumn) {
                 break;
             case 'appendunits':
                 renderer = (d) => <AppendUnits data={d} col={column}/>;
+                break;
+            case 'assayrunreference':
+                renderer = (d) => <AssayRunReferenceRenderer data={d}/>;
                 break;
             default:
                 break;

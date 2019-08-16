@@ -17,6 +17,7 @@ import {fetchDomain, saveDomain} from "./actions/actions";
 import {DomainDesign} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
+import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
 
 import './theme/index.scss'
 
@@ -24,6 +25,7 @@ export {
     // components
     DomainForm,
     DomainFieldsDisplay,
+    AssayPropertiesPanel,
 
     // functions
     fetchDomain,

@@ -655,7 +655,7 @@ export class DomainException extends Record({
 
             let indices = domain.fields.reduce((indexList, field, idx, iter) : List<number> => {
 
-                if ((field.name === undefined && error.get("fieldName") === undefined) ||
+                if (((field.name === undefined || field.name === '') && error.get("fieldName") === undefined) ||
                     (field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
                     (field.name !== undefined && error.get("fieldName") !== undefined && field.name.toLowerCase() === error.get("fieldName").toLowerCase())) {
 

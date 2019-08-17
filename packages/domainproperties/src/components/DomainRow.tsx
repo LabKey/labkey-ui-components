@@ -55,7 +55,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { expanded, field } = this.props;
+        const { expanded, field, index } = this.props;
         let details = [];
 
         if (!expanded) {
@@ -105,7 +105,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         if (this.props.fieldError) {
             details.push(period);
             const msg = this.props.fieldError.severity + ": " + this.props.fieldError.message;
-            details.push(<b>{msg}</b>);
+            details.push(<b key={field.name+"_"+index}>{msg}</b>);
         }
 
         return details;

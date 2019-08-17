@@ -156,10 +156,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         let value = evt.target.value;
         let nameAndErrorList = List<IFieldChange>().asMutable();
 
-        //add evt.target.id and evt.target.value
+        //set value for the field
         nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
 
-        if (!isLegalName(value) || (value !== undefined && value.trim().indexOf(' ') >= 0)) {
+        if (isLegalName(value) && !value.includes(' ')) {
+
+            //set value to undefined for field error
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: undefined});
+        }
+        else {
 
             let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
             let fieldName = value;
@@ -167,12 +172,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
             let indexes = List<number>([index]);
             let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, rowIndexes: indexes});
 
-            //set error obj
+            //set value for field error
             nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: domainFieldError});
-        }
-        else {
-            //set error to undefined
-            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: undefined});
         }
 
         if (onChange) {

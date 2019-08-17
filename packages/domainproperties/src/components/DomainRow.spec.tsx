@@ -222,8 +222,8 @@ describe('DomainRowDisplay', () => {
         //test warning message
         const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
-        const received = rowDetails.props().children[0] + rowDetails.props().children[1];
-        const expected = "New field, " + message;
+        const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
+        const expected = "New field. " + severity + ": " + message;
         expect(received).toEqual(expected);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -264,8 +264,8 @@ describe('DomainRowDisplay', () => {
         //test error message
         const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
         expect(rowDetails.length).toEqual(1);
-        const received = rowDetails.props().children[0] + rowDetails.props().children[1];
-        const expected = "New field, " + message;
+        const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
+        const expected = "New field. " + severity + ": " + message;
         expect(received).toEqual(expected);
 
         expect(toJson(row)).toMatchSnapshot();

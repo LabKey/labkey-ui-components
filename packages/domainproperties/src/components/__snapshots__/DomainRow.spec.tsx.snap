@@ -674,7 +674,8 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                     "fieldName": "#ColumnAwesome",
                     "propertyId": undefined,
                     "severity": "Warning",
-                    "index": 0,
+                    "rowIndexes": Immutable.List [],
+                    "newRowIndexes": undefined,
                   }
                 }
                 index={1}
@@ -1053,7 +1054,12 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                 id="domainpropertiesrow-details-1"
                               >
                                 New field
-                                , SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.
+                                . 
+                                <b
+                                  key="#ColumnAwesome_1"
+                                >
+                                  Warning: SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.
+                                </b>
                               </span>
                               <div
                                 className="pull-right"
@@ -2948,7 +2954,8 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                     "fieldName": "modified",
                     "propertyId": undefined,
                     "severity": "Error",
-                    "index": 0,
+                    "rowIndexes": Immutable.List [],
+                    "newRowIndexes": undefined,
                   }
                 }
                 index={1}
@@ -3327,7 +3334,12 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                 id="domainpropertiesrow-details-1"
                               >
                                 New field
-                                , 'modified' is a reserved field name in 'CancerCuringStudy'
+                                . 
+                                <b
+                                  key="modified_1"
+                                >
+                                  Error: 'modified' is a reserved field name in 'CancerCuringStudy'
+                                </b>
                               </span>
                               <div
                                 className="pull-right"

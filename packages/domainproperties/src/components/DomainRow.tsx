@@ -159,7 +159,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, any> {
         //add evt.target.id and evt.target.value
         nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
 
-        if (!isLegalName(value) || (value && value.indexOf(' ') >= 0)) {
+        if (!isLegalName(value) || (value !== undefined && value.trim().indexOf(' ') >= 0)) {
 
             let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
             let fieldName = value;

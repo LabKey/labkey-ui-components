@@ -241,6 +241,20 @@ export function addField(domain: DomainDesign): DomainDesign {
     }) as DomainDesign;
 }
 
+function updateErrorIndexes(removedFieldIndex: number, domainException: DomainException) {
+
+    let errorsWithNewIndex = domainException.errors.map(error => {
+        let newRowIndexes = error.rowIndexes.map((rowIndex) => {
+            if (rowIndex > removedFieldIndex) {
+                return rowIndex-1;
+            }
+        });
+        return error.set("rowIndexes", newRowIndexes);
+    });
+
+    return domainException.set('errors', errorsWithNewIndex);
+}
+
 export function removeField(domain: DomainDesign, index: number): DomainDesign {
 
     let de = domain.domainException;
@@ -249,10 +263,12 @@ export function removeField(domain: DomainDesign, index: number): DomainDesign {
         de = domain.domainException.merge({errors: updatedErrors}) as DomainException;
     }
 
-    return domain.merge({
+    let newDomain = domain.merge({
         fields: domain.fields.delete(index),
         domainException: de
-    }) as DomainDesign
+    }) as DomainDesign;
+
+    return newDomain.set('domainException', updateErrorIndexes(index, newDomain.domainException)) as DomainDesign;
 }
 
 /**

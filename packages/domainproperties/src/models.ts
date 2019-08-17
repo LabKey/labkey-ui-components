@@ -677,7 +677,8 @@ interface IDomainFieldError {
     fieldName: string;
     propertyId?: number;
     severity?: string;
-    rowIndexes: List<number>
+    rowIndexes: List<number>;
+    newRowIndexes?: List<number> //for drag and drop
 }
 
 export class DomainFieldError extends Record({
@@ -685,7 +686,8 @@ export class DomainFieldError extends Record({
     fieldName: undefined,
     propertyId: undefined,
     severity: undefined,
-    rowIndexes: List<number>()
+    rowIndexes: List<number>(),
+    newRowIndexes: undefined
 
 }) implements IDomainFieldError {
     message: string;
@@ -693,6 +695,7 @@ export class DomainFieldError extends Record({
     propertyId?: number;
     severity?: string;
     rowIndexes: List<number>;
+    newRowIndexes?: List<number>;
 
     static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
 
@@ -700,10 +703,12 @@ export class DomainFieldError extends Record({
 
         for (let i=0; i < rawFields.length; i++) {
 
+            //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
             let fieldName = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].field);
             let propertyId = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].id);
 
-            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId, severity: severityLevel});
+            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
+                severity: severityLevel, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
             fieldErrors.push(domainFieldError);
         }
 

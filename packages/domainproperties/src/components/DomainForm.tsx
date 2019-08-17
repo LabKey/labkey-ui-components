@@ -202,15 +202,19 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let movedField = domain.fields.find((field, i) => i === idIndex);
 
         const newFields = List<DomainField>().asMutable();
+        let fieldsWithNewIndexesOnErrors = domain.hasException() ? domain.domainException.errors : List<DomainFieldError>();
+
         domain.fields.forEach((field, i) => {
 
             // move down
             if (i !== idIndex && srcIndex < destIndex) {
                 newFields.push(field);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors, field.name);
             }
 
             if (i === destIndex) {
                 newFields.push(movedField);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(idIndex, destIndex, fieldsWithNewIndexesOnErrors, movedField.name);
                 if (idIndex === this.state.expandedRowIndex) {
                     this.expand(destIndex);
                 } else if (idIndex + 1 === this.state.expandedRowIndex) {
@@ -223,14 +227,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             // move up
             if (i !== idIndex && srcIndex > destIndex) {
                 newFields.push(field);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors, field.name);
             }
         });
 
-        const domainException = this.moveErrors(idIndex, destIndex, domain.domainException);
+        //set existing error row indexes with new row indexes
+        const fieldsWithMovedErrorsUpdated = fieldsWithNewIndexesOnErrors.map(error => {
+            return error.merge({
+                'rowIndexes': (error.newRowIndexes ? error.newRowIndexes : error.rowIndexes),
+                'newRowIndexes': undefined //reset newRowIndexes
+            });
+        });
+
+        const domainExceptionWithMovedErrors = domain.domainException.set('errors', fieldsWithMovedErrorsUpdated);
 
         const newDomain = domain.merge({
             fields: newFields.asImmutable(),
-            domainException: domainException
+            domainException: domainExceptionWithMovedErrors
         }) as DomainDesign;
 
         if (onChange) {
@@ -238,26 +251,28 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    moveErrors = (oldIndex: number, newIndex: number, domainException: DomainException) => {
+    setNewIndexOnError = (oldIndex: number, newIndex: number, fieldErrors: List<DomainFieldError>, fieldName: string) => {
 
-        if(domainException) {
+        let updatedErrorList = fieldErrors.map(fieldError => {
 
-            const errors = domainException.errors.map(fieldError => {
+                let newRowIndexes;
+                if (fieldError.newRowIndexes === undefined) {
+                    newRowIndexes = List<number>().asMutable();
+                }
+                else {
+                    newRowIndexes = fieldError.get('newRowIndexes');
+                }
 
-                let indexList = fieldError.rowIndexes;
-                const updatedIndexList = indexList.update(
-                    indexList.findIndex(function(idx) {
-                        return idx === oldIndex;
-                    }), function(item) {
-                        return newIndex;
-                    });
+                fieldError.rowIndexes.forEach(val => {
+                    if (val === oldIndex) {
+                        newRowIndexes = newRowIndexes.push(newIndex);
+                    }
+                });
 
-                return fieldError.set('rowIndexes', updatedIndexList);
-            });
+                return fieldError.set('newRowIndexes', newRowIndexes.asImmutable());
+        });
 
-            return domainException.set('errors', errors);
-        }
-        return domainException;
+        return updatedErrorList as List<DomainFieldError>;
     };
 
     getAddFieldButton() {

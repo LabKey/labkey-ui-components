@@ -8,6 +8,10 @@ Domain property related components for LabKey domains
 *Released*: ???
 * AssayPropertiesPanel for top level assay design properties for create/update
 
+### version 0.0.29
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.14.0
+
 ### version 0.0.28
 *Released*: 16 August 2019
 * Package patch update for changes to @glass/base v0.13.0

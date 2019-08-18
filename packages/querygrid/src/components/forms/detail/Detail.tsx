@@ -15,8 +15,8 @@
  */
 import * as React from 'react'
 import { Panel } from 'react-bootstrap'
-import { Map, OrderedMap } from 'immutable'
-import { LoadingSpinner, QueryGridModel } from '@glass/base'
+import { List, Map, OrderedMap } from 'immutable'
+import { LoadingSpinner, QueryColumn, QueryGridModel } from '@glass/base'
 
 import { DefaultRenderer } from "../../../renderers/DefaultRenderer";
 
@@ -26,9 +26,8 @@ export const _defaultRenderer = (d) => {
     return <DefaultRenderer data={d} />;
 };
 
-function processFields(model: QueryGridModel, detailRenderer: Function, titleRenderer: Function): Map<string, DetailField> {
-    return model
-        .getDisplayColumns()
+function processFields(queryColumns: List<QueryColumn>, detailRenderer: Function, titleRenderer: Function): Map<string, DetailField> {
+    return queryColumns
         .reduce((fields, c) => {
             let fieldKey = c.fieldKey.toLowerCase(),
                 renderer;
@@ -77,23 +76,27 @@ class DetailField {
 
 interface DetailProps {
     queryModel?: QueryGridModel
+    queryColumns?: List<QueryColumn>
     detailRenderer?: Function
     titleRenderer?: Function
     asPanel: boolean
+    editingMode?: boolean
 }
 
 
 export class Detail extends React.Component<DetailProps, any> {
 
     static defaultProps = {
-        asPanel: false
+        asPanel: false,
+        editingMode: false
     };
 
     render() {
-        const { queryModel, detailRenderer, titleRenderer, asPanel } = this.props;
+        const { queryModel, detailRenderer, editingMode, titleRenderer, asPanel } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
-            const fields = processFields(queryModel, detailRenderer, titleRenderer);
+            const displayCols = editingMode ? queryModel.getUpdateDisplayColumns() : queryModel.getDetailsDisplayColumns();
+            const fields = processFields(this.props.queryColumns || displayCols, detailRenderer, titleRenderer);
             const target = queryModel.getData();
             let body;
 

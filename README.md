@@ -293,35 +293,54 @@ alpha versions of that package for this feature branch.
 ## Publishing commands
 
 ### Lerna
-Though the updating of version numbers can be done manually, it is recommended that you take advantage of the 
+Though the updating of version numbers can be done manually, when changing more than one package, particularly if changing 
+the base package, it is recommended that you take advantage of the 
 [`lerna version`](https://github.com/lerna/lerna/tree/master/commands/version#readme) and 
 [`lerna publish`](https://github.com/lerna/lerna/tree/master/commands/publish#readme) commands, particularly if
 you are changing a package that other packages depend on.  
 
 When you first create your feature branch, you'll want to use 
 ```
-lerna version --exact
+lerna version --exact --preid fb-feature
 ``` 
 to update the versions to ones corresponding to your feature branch.  This will prompt you for the type of version you 
 want to create. In this case, you will likely want to choose 'Custom' and type in the appropriate version that 
-corresponds to your feature branch.
+corresponds to your feature branch.  If all of the version updates are going to be of the same type (e.g., patch),
+you can bypass the prompting with something like
+```
+lerna version --exact --preid fb-feature prerelease
+```
 
-When ready to publish a new version of the package(s) for use in an application, if everything
-works according to plan, you should be able to do the following to update package versions and publish these new versions:
+The first time you publish from your feature branch, you'll want to use a publish command that sets up the version 
+number according to the conventions outlined above:
+```
+lerna publish prerelease --preid fb-feature --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+```
+After that, you can leave off the `--preid argument`
 
-``
+```
 lerna publish prerelease --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
-``
+```
 
-While still doing development, use the `prerelease` option.  When ready to make the release, you may be able to
+While still doing development, use the `prerelease` option.  There is a shortcut for this command in the root-level 
+`package.json` file, so in the root directory you can do
+```
+yarn run publish:prerelease
+```
+
+When ready to make the release, you may be able to
 use the [appropriate option](https://github.com/lerna/lerna/tree/master/commands/version#readme) for the type of 
-update, but if there are changes in more than one package, they may not all need the same kind of version update,
-so you'll want to go through the prompts provided if no semver bump keyword is provided.  We use the `--exact` option 
-so that any transitive dependencies will use the exact version reference instead of 
-the ^ version reference.  This is particularly important when there may be multiple branches open that are 
-possibly targeting the same next release version, as the last one alphabetically will match to the ^ version.
+update instead of the `prerelease` option.  For example:
+```
+lerna publish patch --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
+```
+There is a shortcut for this command as well in the root-level `package.json` so you can do
+```
+yarn run publish:patch
+```
+If the versions suggested by this command are not what you want, you will likely need to first update the version and
+then publish:
 
-You can also publish by first changing the version and then publishing:
 ```
 lerna version --exact
 ```
@@ -331,8 +350,12 @@ the command
 ```
 lerna publish from-git --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client
 ```
-The `--registry` option is necessary (currently, at least) because even though packages have the registry 
+In all of these commands, the `--registry` option is necessary (currently, at least) because even though packages have the registry 
 specified in their `package.json` files, for some reason this is not found by the publish command.
+Also, we use the `--exact` option 
+so that any transitive dependencies will use the exact version reference instead of 
+the ^ version reference.  This is particularly important when there may be multiple branches open that are 
+possibly targeting the same next release version, as the last one alphabetically will match to the ^ version.
 
 ### Yarn publish 
 If publishing with lerna does not work, you can also do it manually using either `yarn` or `npm`.  From the package 

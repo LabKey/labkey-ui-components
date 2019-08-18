@@ -4,6 +4,37 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.13.0
+*Released*: 16 August 2019
+* add deleteAssayDesign method, AssayDesignDeleteConfirmModal
+
+### version 0.12.0
+*Released*: 16 August 2019
+* add ImportWithRenameConfirmModal and checkForDuplicateAssayFiles method
+* add AssayReimportHeader component
+* add actions for getRunDataModel, getRunRow, getBatchDataModel, getBatchRow
+* update AssayImportPanels to accept an optional runId for pre-populating
+* add optional queryColumns parameter for Detail component to be able to modify the columns in the detail view
+* in RunDataPanel, support display of previous run's data when reimporting.
+* add param to support cascade delete of replaced runs in deleteAssayRuns API call
+
+### version 0.11.7
+*Released*: 15 August 2019
+* Issue 37827: update Detail and DetailEditing display columns
+
+### version 0.11.6
+*Released*: 13 August 2019
+* Package patch update for changes to @glass/base v0.12.0
+
+### version 0.11.5
+*Released*: 8 Aug 2019
+* Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing
+* fix "Invalid prop 'value' of type 'number' supplied to 'Input'" error on bulk form
+
+### version 0.11.4
+*Released*: 5 Aug 2019
+* Issue 38097: improve lookup search perf using ~q filter
+
 ### version 0.11.3
 *Released*: 31 July 2019
 * Package patch update for changes to @glass/base v0.11.1

@@ -389,7 +389,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <p>Adjust fields and their properties that will be shown within this domain. Click a row
                         to access additional options. Drag and drop rows to re-order them.</p>
                 </Row>
-                {this.renderSearchRow()}
+                {/*{this.renderSearchRow()}*/}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         {this.renderRowHeaders()}

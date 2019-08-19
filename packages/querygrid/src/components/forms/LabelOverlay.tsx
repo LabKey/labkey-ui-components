@@ -27,6 +27,7 @@ export interface LabelOverlayProps {
     type?: string
     column?: QueryColumn
     required?: boolean
+    addLabelAsterisk?: boolean
     content?: any // other content to render to the popover
 }
 
@@ -34,6 +35,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
 
     static defaultProps = {
         isFormsy: true,
+        addLabelAsterisk: false,
         labelClass: 'control-label col-md-3 col-xs-12 text-left'
     };
 
@@ -64,7 +66,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
     }
 
     render() {
-        const { column, inputId, isFormsy, labelClass, placement, required } = this.props;
+        const { column, inputId, isFormsy, labelClass, placement, required, addLabelAsterisk } = this.props;
         const label = this.props.label ? this.props.label : (column ? column.caption : null);
 
         if (isFormsy) {
@@ -78,6 +80,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                         overlay={this.overlayContent()}>
                         <i className="fa fa-question-circle"/>
                     </OverlayTrigger>
+                    {!required && addLabelAsterisk ? <span className="required-symbol"> *</span> : null}
                 </span>
             )
         }
@@ -90,7 +93,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                     overlay={this.overlayContent()}>
                     <i className="fa fa-question-circle"/>
                 </OverlayTrigger>
-                {required ? <span className="required-symbol"> *</span> : null}
+                {required || addLabelAsterisk ? <span className="required-symbol"> *</span> : null}
             </label>
         );
     }

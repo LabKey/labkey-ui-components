@@ -251,6 +251,37 @@ describe("QueryInfoForm", () => {
         });
     });
 
+    test("skip required check", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = mount(
+                <QueryInfoForm
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    checkRequiredFields={false}
+                    onSubmit={jest.fn()}/>
+            );
+
+            expect(formWrapper.text()).toContain('Extra Test Column Cancel');
+            formWrapper.unmount();
+        });
+    });
+
+    test("skip required check but show asterisk on label", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = mount(
+                <QueryInfoForm
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    checkRequiredFields={false}
+                    showLabelAsterisk={true}
+                    onSubmit={jest.fn()}/>
+            );
+
+            expect(formWrapper.text()).toContain('Extra Test Column  *');
+            formWrapper.unmount();
+        });
+    });
+
 
     // TODO the following tests require being able to interact with the form in order to make it
     // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.

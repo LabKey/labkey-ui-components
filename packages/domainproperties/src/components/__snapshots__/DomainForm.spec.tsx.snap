@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
+exports[`DomainForm domain form add, expand, and delete field 1`] = `
 <DomainForm
   domain={
     Immutable.Record {
@@ -67,6 +67,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
   }
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  initCollapsed={false}
   onChange={[Function]}
   showHeader={true}
 >
@@ -137,6 +138,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
       }
       helpNoun="domain"
       helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+      initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
     >
@@ -159,9 +161,9 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
               <div
                 className="panel-heading"
               >
-                <div>
+                <span>
                   updated
-                </div>
+                </span>
               </div>
             </PanelHeading>
             <PanelBody
@@ -1069,7 +1071,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                         className="col-xs-12"
                                                       >
                                                         <div
-                                                          className="domain-field-section-heading"
+                                                          className="domain-field-section-heading margin-top"
                                                         >
                                                           Text Options
                                                         </div>
@@ -1393,7 +1395,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                         className="col-xs-12"
                                                       >
                                                         <div
-                                                          className="domain-field-section-heading"
+                                                          className="domain-field-section-heading margin-top"
                                                         >
                                                           Name and Linking Options
                                                         </div>
@@ -1872,7 +1874,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
 </DomainForm>
 `;
 
-exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
+exports[`DomainForm domain form updated field, cleared details 1`] = `
 <DomainForm
   domain={
     Immutable.Record {
@@ -1939,6 +1941,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
   }
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  initCollapsed={false}
   onChange={[MockFunction]}
   showHeader={true}
 >
@@ -2009,6 +2012,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
       }
       helpNoun="domain"
       helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+      initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
     >
@@ -2031,9 +2035,9 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
               <div
                 className="panel-heading"
               >
-                <div>
+                <span>
                   update field types
-                </div>
+                </span>
               </div>
             </PanelHeading>
             <PanelBody
@@ -2864,7 +2868,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
 </DomainForm>
 `;
 
-exports[`DomainFormDisplay domain form with all field types 1`] = `
+exports[`DomainForm domain form with all field types 1`] = `
 <DomainForm
   domain={
     Immutable.Record {
@@ -3390,6 +3394,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
   }
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  initCollapsed={false}
   onChange={[MockFunction]}
   showHeader={true}
 >
@@ -3919,6 +3924,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
       }
       helpNoun="domain"
       helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+      initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
     >
@@ -3941,9 +3947,9 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
               <div
                 className="panel-heading"
               >
-                <div>
+                <span>
                   all field types
-                </div>
+                </span>
               </div>
             </PanelHeading>
             <PanelBody
@@ -9004,7 +9010,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
 </DomainForm>
 `;
 
-exports[`DomainFormDisplay domain form with no fields 1`] = `
+exports[`DomainForm domain form with no fields 1`] = `
 <DomainForm
   domain={
     Immutable.Record {
@@ -9019,6 +9025,7 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
   }
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  initCollapsed={false}
   onChange={[MockFunction]}
   showHeader={true}
 >
@@ -9037,6 +9044,7 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
       }
       helpNoun="domain"
       helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+      initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
     >
@@ -9059,9 +9067,9 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
               <div
                 className="panel-heading"
               >
-                <div>
+                <span>
                   no fields
-                </div>
+                </span>
               </div>
             </PanelHeading>
             <PanelBody
@@ -9288,7 +9296,7 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
 </DomainForm>
 `;
 
-exports[`DomainFormDisplay domain form with updated fields 1`] = `
+exports[`DomainForm domain form with updated fields 1`] = `
 <DomainForm
   domain={
     Immutable.Record {
@@ -9508,6 +9516,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
   }
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  initCollapsed={false}
   onChange={[MockFunction]}
   showHeader={true}
 >
@@ -9731,6 +9740,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
       }
       helpNoun="domain"
       helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+      initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
     >
@@ -9753,9 +9763,9 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
               <div
                 className="panel-heading"
               >
-                <div>
+                <span>
                   update field types
-                </div>
+                </span>
               </div>
             </PanelHeading>
             <PanelBody
@@ -12034,7 +12044,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
 </DomainForm>
 `;
 
-exports[`DomainFormDisplay with empty domain form 1`] = `
+exports[`DomainForm with empty domain form 1`] = `
 <DomainForm
   domain={
     Immutable.Record {
@@ -12049,6 +12059,7 @@ exports[`DomainFormDisplay with empty domain form 1`] = `
   }
   helpNoun="domain"
   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  initCollapsed={false}
   onChange={[MockFunction]}
   showHeader={true}
 >
@@ -12067,6 +12078,7 @@ exports[`DomainFormDisplay with empty domain form 1`] = `
       }
       helpNoun="domain"
       helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+      initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
     >
@@ -12089,9 +12101,9 @@ exports[`DomainFormDisplay with empty domain form 1`] = `
               <div
                 className="panel-heading"
               >
-                <div>
+                <span>
                   Field Properties
-                </div>
+                </span>
               </div>
             </PanelHeading>
             <PanelBody

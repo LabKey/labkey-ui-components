@@ -18,11 +18,11 @@ import { List} from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Alert, ConfirmModal } from "@glass/base";
+import { faPlusCircle, faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
+import { Alert, ConfirmModal, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
+import { DomainDesign, DomainField, DomainFieldError, IFieldChange} from "../models";
 import {
     addField,
     getIndexFromId,
@@ -38,11 +38,14 @@ interface IDomainFormInput {
     helpURL: string
     helpNoun: string
     showHeader: boolean
+    initCollapsed: boolean
+    collapsible?: boolean
 }
 
 interface IDomainFormState {
     expandedRowIndex: number
     showConfirm: boolean
+    collapsed: boolean
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -63,7 +66,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     static defaultProps = {
         helpNoun: 'domain',
         helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',
-        showHeader: true
+        showHeader: true,
+        initCollapsed: false
     };
 
     constructor(props) {
@@ -71,11 +75,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.state = {
             expandedRowIndex: undefined,
-            showConfirm: false
+            showConfirm: false,
+            collapsed: props.initCollapsed
         };
     }
 
-    collapse = (): void => {
+    togglePanel = (): void => {
+        this.setState((state) => ({
+            collapsed: !state.collapsed
+        }));
+    };
+
+    collapseRow = (): void => {
         if (this.isExpanded()) {
             this.setState({
                 expandedRowIndex: undefined
@@ -83,7 +94,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    expand = (index: number): void => {
+    expandRow = (index: number): void => {
         const { domain } = this.props;
         const { expandedRowIndex } = this.state;
 
@@ -105,7 +116,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     onFieldExpandToggle = (index: number): void => {
         const { expandedRowIndex } = this.state;
 
-        expandedRowIndex === index ? this.collapse() : this.expand(index);
+        expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
     onDeleteConfirm = () => {
@@ -133,7 +144,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             onChange(newDomain, true);
         }
 
-        this.collapse();
+        this.collapseRow();
     };
 
     onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
@@ -216,11 +227,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 newFields.push(movedField);
                 fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(idIndex, destIndex, fieldsWithNewIndexesOnErrors, movedField.name);
                 if (idIndex === this.state.expandedRowIndex) {
-                    this.expand(destIndex);
+                    this.expandRow(destIndex);
                 } else if (idIndex + 1 === this.state.expandedRowIndex) {
-                    this.expand(destIndex - 1);
+                    this.expandRow(destIndex - 1);
                 } else if (idIndex - 1 === this.state.expandedRowIndex) {
-                    this.expand(destIndex + 1);
+                    this.expandRow(destIndex + 1);
                 }
             }
 
@@ -368,9 +379,58 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
+    renderForm() {
+        const { domain } = this.props;
+        const { expandedRowIndex } = this.state;
+
+        return (
+            <>
+                <Row className='domain-form-hdr-row'>
+                    <p>Adjust fields and their properties that will be shown within this domain. Click a row
+                        to access additional options. Drag and drop rows to re-order them.</p>
+                </Row>
+                {this.renderSearchRow()}
+                {domain.fields.size > 0 ?
+                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
+                        {this.renderRowHeaders()}
+                        <Droppable droppableId='domain-form-droppable'>
+                            {(provided) => (
+                                <div ref={provided.innerRef}
+                                     {...provided.droppableProps}>
+                                    <Form>
+                                        {(domain.fields.map((field, i) => {
+                                            return <DomainRow
+                                                key={'domain-row-key-' + i}
+                                                field={field}
+                                                fieldError={this.getFieldError(domain, i)}
+                                                index={i}
+                                                expanded={expandedRowIndex === i}
+                                                onChange={this.onFieldsChange}
+                                                onExpand={this.onFieldExpandToggle}
+                                                onDelete={this.onDeleteField}
+                                            />
+                                        }))}
+                                        {provided.placeholder}
+                                    </Form>
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    : this.renderEmptyDomain()
+                }
+                {this.getAddFieldButton()}
+            </>
+        )
+    }
+
     render() {
-        const { domain, showHeader } = this.props;
-        const { showConfirm, expandedRowIndex } = this.state;
+        const { domain, showHeader, collapsible, initCollapsed } = this.props;
+        const { showConfirm, collapsed } = this.state;
+
+        let name = domain.name ? domain.name : "Field Properties";
+        if (collapsed && domain.fields.size > 0) {
+            name = name + ' (' + domain.fields.size + ')';
+        }
 
         return (
             <>
@@ -378,50 +438,31 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Panel className={"domain-form-panel"}>
                     {showHeader &&
                         <Panel.Heading>
-                            <div>{domain.name ? domain.name : "Field Properties"}</div>
+                            <span>{name}</span>
+                            {collapsed &&
+                                <Tip caption="Expand Panel">
+                                    <span className={'pull-right'} onClick={this.togglePanel}>
+                                        <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                                    </span>
+                                </Tip>
+                            }
+                            {(collapsible || initCollapsed) && !collapsed &&
+                                <Tip caption="Collapse Panel">
+                                    <span className={'pull-right'} onClick={this.togglePanel}>
+                                        <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                                    </span>
+                                </Tip>
+                            }
                         </Panel.Heading>
                     }
-                    <Panel.Body>
-                        {this.isValidDomain(domain) ? (
-                            <>
-                                <Row className='domain-form-hdr-row'>
-                                    <p>Adjust fields and their properties that will be shown within this domain. Click a row
-                                        to access additional options. Drag and drop rows to re-order them.</p>
-                                </Row>
-                                {this.renderSearchRow()}
-                                {domain.fields.size > 0 ?
-                                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                                        {this.renderRowHeaders()}
-                                        <Droppable droppableId='domain-form-droppable'>
-                                            {(provided) => (
-                                                <div ref={provided.innerRef}
-                                                     {...provided.droppableProps}>
-                                                    <Form>
-                                                        {(domain.fields.map((field, i) => {
-                                                            return <DomainRow
-                                                                key={'domain-row-key-' + i}
-                                                                field={field}
-                                                                fieldError={this.getFieldError(domain, i)}
-                                                                index={i}
-                                                                expanded={expandedRowIndex === i}
-                                                                onChange={this.onFieldsChange}
-                                                                onExpand={this.onFieldExpandToggle}
-                                                                onDelete={this.onDeleteField}
-                                                            />
-                                                        }))}
-                                                        {provided.placeholder}
-                                                    </Form>
-                                                </div>
-                                            )}
-                                        </Droppable>
-                                    </DragDropContext>
-                                    : this.renderEmptyDomain()
-                                }
-                                {this.getAddFieldButton()}
-                            </>
-                        ) :<Alert>Invalid domain design.</Alert>
-                        }
-                    </Panel.Body>
+                    {!collapsed &&
+                        <Panel.Body>
+                            {this.isValidDomain(domain)
+                                ? this.renderForm()
+                                :<Alert>Invalid domain design.</Alert>
+                            }
+                        </Panel.Body>
+                    }
                 </Panel>
             </>
         );

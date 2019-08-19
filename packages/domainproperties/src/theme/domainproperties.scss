@@ -84,6 +84,15 @@
   color: $brand-success;
 }
 
+.domain-form-expand-btn {
+  color: $gray-light;
+
+  &:hover {
+    color: $gray-base;
+    cursor: pointer;
+  }
+}
+
 .domain-form-no-field-panel {
   height: 53px;
   margin: 25px 0px 20px 0px;

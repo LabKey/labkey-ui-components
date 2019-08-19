@@ -21,6 +21,7 @@ import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLoc
 import './stories.scss'
 
 interface Props {
+    initCollapsed?: boolean
     data: {}
     exception?: {}
     helpNoun?: any
@@ -72,6 +73,14 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={domainData}
+            />
+        )
+    })
+    .add("initCollapsed", () => {
+        return (
+            <DomainFormContainer
+                data={domainData}
+                initCollapsed={true}
             />
         )
     })

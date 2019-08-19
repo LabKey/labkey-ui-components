@@ -38,7 +38,7 @@ import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
 
-describe('DomainFormDisplay', () => {
+describe('DomainForm', () => {
 
     test('with empty domain form', () => {
         const domain = DomainDesign.create({});
@@ -47,6 +47,7 @@ describe('DomainFormDisplay', () => {
             helpNoun='domain'
             helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
             showHeader={true}
+            initCollapsed={false}
             onChange={jest.fn()}
         />);
 
@@ -68,6 +69,7 @@ describe('DomainFormDisplay', () => {
             helpNoun='domain'
             helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
             showHeader={true}
+            initCollapsed={false}
             onChange={jest.fn()}
         />);
 
@@ -154,6 +156,7 @@ describe('DomainFormDisplay', () => {
             helpNoun='domain'
             helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
             showHeader={true}
+            initCollapsed={false}
             onChange={jest.fn()}
         />);
 
@@ -208,6 +211,7 @@ describe('DomainFormDisplay', () => {
             helpNoun='domain'
             helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
             showHeader={true}
+            initCollapsed={false}
             onChange={jest.fn()} />);
 
         expect(toJson(form)).toMatchSnapshot();
@@ -241,6 +245,7 @@ describe('DomainFormDisplay', () => {
             helpNoun='domain'
             helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
             showHeader={true}
+            initCollapsed={false}
             key='domainForm'
             onChange={jest.fn()} />);
 
@@ -277,6 +282,7 @@ describe('DomainFormDisplay', () => {
             helpNoun='domain'
             helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
             showHeader={true}
+            initCollapsed={false}
             onChange={changeHandler}
 
         />);

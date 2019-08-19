@@ -4,7 +4,6 @@ import mixturesQueryInfo from '../../../querygrid/src/test/data/mixtures-getQuer
 import mixturesQuery from '../../../querygrid/src/test/data/mixtures-getQuery.json';
 
 export function initMocks() {
-    console.log('INIT MOCKS');
     mock.setup();
 
     mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
@@ -12,8 +11,6 @@ export function initMocks() {
         let responseBody;
         let lcSchemaName = queryParams.schemaName.toLowerCase();
         let lcQueryName = queryParams.queryName.toLowerCase();
-
-        console.log('Mock API', lcSchemaName, lcQueryName);
 
         if (lcSchemaName === 'exp.data' && lcQueryName === 'mixtures') {
             responseBody = mixturesQueryInfo;

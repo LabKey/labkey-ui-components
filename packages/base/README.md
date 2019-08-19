@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* move AssayProtocolModel (and related actions) from base to domainproperties
+
 ### version 0.14.0
 *Released*: 16 August 2019
 * add LoadingModal

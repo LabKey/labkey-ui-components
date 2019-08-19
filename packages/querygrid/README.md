@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Package patch update for changes to @glass/base v???
+
 ### version 0.13.0
 *Released*: 16 August 2019
 * add deleteAssayDesign method, AssayDesignDeleteConfirmModal

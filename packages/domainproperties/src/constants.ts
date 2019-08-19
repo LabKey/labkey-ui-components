@@ -35,11 +35,19 @@ export const DOMAIN_FIELD_LOOKUP_SCHEMA = 'lookupSchema';
 export const DOMAIN_FIELD_FORMAT = 'format';
 export const DOMAIN_FIELD_DEFAULT_SCALE = 'defaultScale';
 export const DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING = 'excludeFromShifting';
+export const DOMAIN_FIELD_CLIENT_SIDE_ERROR = 'error';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
 export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
 export const DOMAIN_FIELD_SCALE = 'scale';
+
+export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
+export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
+export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties
+
+export const SEVERITY_LEVEL_ERROR = "Error";
+export const SEVERITY_LEVEL_WARN = "Warning";
 
 // Default scale types
 export const DEFAULT_SCALE_LINEAR = 'LINEAR';

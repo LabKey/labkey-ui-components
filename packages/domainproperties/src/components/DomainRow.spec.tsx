@@ -15,18 +15,19 @@
  */
 
 import * as React from "react";
-import {DomainField} from "../models";
+import {DomainField, DomainFieldError} from "../models";
 import {DomainRow} from "./DomainRow";
 import { mount } from "enzyme"
 import {
     ATTACHMENT_RANGE_URI,
-    DATETIME_RANGE_URI,
+    DATETIME_RANGE_URI, DOMAIN_FIELD_DETAILS,
     DOUBLE_RANGE_URI,
-    PARTICIPANTID_CONCEPT_URI,
+    PARTICIPANTID_CONCEPT_URI, SEVERITY_LEVEL_ERROR, SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI
 } from "../constants";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import toJson from "enzyme-to-json";
+import {createFormInputId} from "../actions/actions";
 
 const wrapDraggable = (element) => {
     return (
@@ -185,5 +186,91 @@ describe('DomainRowDisplay', () => {
 
         expect(toJson(tree)).toMatchSnapshot();
         tree.unmount();
-    })
+    });
+
+    test('client side warning on field', () => {
+
+        const message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
+        const fieldName = '#ColumnAwesome';
+        const severity = SEVERITY_LEVEL_WARN;
+        const domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
+
+        const field = DomainField.create({
+            name: fieldName,
+            rangeURI: ATTACHMENT_RANGE_URI,
+            propertyId: undefined, //new field
+            propertyURI: 'test'
+        });
+
+        const row = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    fieldError={domainFieldError}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
+
+        //test row highlighting for a warning
+        const warningRowClass = row.find({className: 'domain-field-row-warning '});
+        expect(warningRowClass.length).toEqual(1);
+
+        //test warning message
+        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
+        expect(rowDetails.length).toEqual(1);
+        const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
+        const expected = "New field. " + severity + ": " + message;
+        expect(received).toEqual(expected);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
+    });
+
+    test('server side error on reserved field', () => {
+
+        const message = "'modified' is a reserved field name in 'CancerCuringStudy'";
+        const fieldName = 'modified';
+        const severity = SEVERITY_LEVEL_ERROR;
+        const domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, index: 0});
+
+        const field = DomainField.create({
+            name: fieldName,
+            rangeURI: ATTACHMENT_RANGE_URI,
+            propertyId: undefined, //new field
+            propertyURI: 'test'
+        });
+
+        const row = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={1}
+                    field={field}
+                    fieldError={domainFieldError}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                />));
+
+        //test row highlighting for error
+        const warningRowClass = row.find({className: 'domain-field-row-error '});
+        expect(warningRowClass.length).toEqual(1);
+
+        //test error message
+        const rowDetails = row.find({id: createFormInputId(DOMAIN_FIELD_DETAILS, 1), className: 'domain-field-details'});
+        expect(rowDetails.length).toEqual(1);
+        const received = rowDetails.props().children[0] + rowDetails.props().children[1] + rowDetails.props().children[2].props.children;
+        const expected = "New field. " + severity + ": " + message;
+        expect(received).toEqual(expected);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
+
+    });
+
 });

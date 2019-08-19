@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {fetchDomain, saveDomain} from "./actions/actions";
-import {DomainDesign} from "./models";
+import {fetchDomain, saveDomain, getBannerMessages} from "./actions/actions";
+import {DomainDesign, IBannerMessage} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
 import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
 
 import './theme/index.scss'
+import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR} from "./constants";
 
 export {
     // components
@@ -30,7 +31,13 @@ export {
     // functions
     fetchDomain,
     saveDomain,
+    getBannerMessages,
 
     // models
-    DomainDesign
+    DomainDesign,
+    IBannerMessage,
+
+    // constants
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN
 }

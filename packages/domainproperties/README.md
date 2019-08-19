@@ -8,6 +8,13 @@ Domain property related components for LabKey domains
 *Released*: ???
 * AssayPropertiesPanel for top level assay design properties for create/update
 
+### version 0.0.30
+*Released*: 18 August 2019
+* Epic 5859: Error validation and display in domain designer
+    - Add/highlight/clear client side warnings on invalid names
+    - Add/highlight/clear server side errors
+    - Banner messages for both client and server side warnings/errors
+
 ### version 0.0.29
 *Released*: 16 August 2019
 * Package patch update for changes to @glass/base v0.14.0

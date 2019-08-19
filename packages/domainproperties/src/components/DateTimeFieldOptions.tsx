@@ -1,6 +1,7 @@
 
 import * as React from 'react'
 import { Col, FormControl, Row } from "react-bootstrap";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
     DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
@@ -54,7 +55,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
     }
 
     render() {
-        const { index, label, format, excludeFromShifting } = this.props;
+        const { index, label, format, excludeFromShifting, lockType } = this.props;
 
         return (
             <div>
@@ -86,6 +87,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                         <FormControl type="text"
                                      value={format || ''}
                                      onChange={this.onFieldChange}
+                                     disabled={isFieldFullyLocked(lockType)}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
                                      name={createFormInputName(DOMAIN_FIELD_FORMAT)}
                         />
@@ -98,6 +100,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                                value='ExcludeFromShiftingOptions'
                                checked={excludeFromShifting}
                                onChange={this.onFieldChange}
+                               disabled={isFieldFullyLocked(lockType)}
                                id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
                         />
                         <div className='domain-field-float-left domain-field-checkbox-label'>Do Not Shift Dates on Export or Publication</div>

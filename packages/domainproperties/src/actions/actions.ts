@@ -18,13 +18,25 @@ import { Domain, Query, Security } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
 
 import {
+    DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PREFIX,
-    DOMAIN_FIELD_TYPE
+    DOMAIN_FIELD_TYPE,
+    SEVERITY_LEVEL_ERROR, SEVERITY_LEVEL_WARN
 } from "../constants";
-import { decodeLookup, DomainDesign, DomainField, PROP_DESC_TYPES, QueryInfoLite } from "../models";
+import {
+    decodeLookup,
+    DomainDesign,
+    DomainField,
+    PROP_DESC_TYPES,
+    QueryInfoLite,
+    DomainException,
+    DomainFieldError,
+    IFieldChange,
+    IBannerMessage
+} from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -87,7 +99,7 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             schemaName,
             queryName,
             success: (data) => {
-                resolve(DomainDesign.create(data));
+                resolve(DomainDesign.create(data, undefined));
             },
             failure: (error) => {
                 reject(error);
@@ -166,11 +178,15 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
             Domain.save({
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
-                success: (success) => {
-                    resolve(clearFieldDetails(domain));
+                success: (data) => {
+                    resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
-                    reject(error);
+                    let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    let exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exceptionWithServerSideErrors);
+                    let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
+                    let badDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors));
+                    reject(badDomain);
                 }
             })
         }
@@ -183,7 +199,9 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                     resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
-                    reject(error);
+                    let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    let badDomain = domain.set('domainException', domainException);
+                    reject(badDomain);
                 }
             })
         }
@@ -223,22 +241,67 @@ export function addField(domain: DomainDesign): DomainDesign {
     }) as DomainDesign;
 }
 
+function updateErrorIndexes(removedFieldIndex: number, domainException: DomainException) {
+
+    let errorsWithNewIndex = domainException.errors.map(error => {
+        let newRowIndexes = error.rowIndexes.map((rowIndex) => {
+            if (rowIndex > removedFieldIndex) {
+                return rowIndex-1;
+            }
+        });
+        return error.set("rowIndexes", newRowIndexes);
+    });
+
+    return domainException.set('errors', errorsWithNewIndex);
+}
+
 export function removeField(domain: DomainDesign, index: number): DomainDesign {
-    return domain.merge({
-        fields: domain.fields.delete(index)
-    }) as DomainDesign
+
+    let de;
+
+    //clear field error on a removed field
+    if (domain.hasException()) {
+        const updatedErrors = clearFieldError(domain, index);
+        de = domain.domainException.merge({errors: updatedErrors}) as DomainException;
+    }
+
+    let newDomain = domain.merge({
+        fields: domain.fields.delete(index),
+        domainException: de
+    }) as DomainDesign;
+
+    //"move up" the indexes of the fields with error, i.e. the fields that are below the removed field
+    if (newDomain.hasException()) {
+        return newDomain.set('domainException', updateErrorIndexes(index, newDomain.domainException)) as DomainDesign;
+    }
+    return newDomain;
 }
 
 /**
  *
  * @param domain: DomainDesign to update
- * @param fieldId: Field Id to update
- * @param value: New value
- * @return copy of domain with updated field
+ * @param changes: List of ids and values describing changes
+ * @return copy of domain with updated fields
  */
-export function updateDomainField(domain: DomainDesign, fieldId: string, value: any): DomainDesign {
-    const type = getNameFromId(fieldId);
-    const index = getIndexFromId(fieldId);
+export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldChange>): DomainDesign {
+    let type;
+
+    changes.forEach((change) => {
+
+        type = getNameFromId(change.id);
+        if (type === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
+            domain = updateDomainException(domain, getIndexFromId(change.id), change.value);
+        }
+        else {
+            domain = updateDomainField(domain, change)
+        }
+    });
+    return domain;
+}
+
+export function updateDomainField(domain: DomainDesign, change: IFieldChange): DomainDesign {
+    const type = getNameFromId(change.id);
+    const index = getIndexFromId(change.id);
 
     let field = domain.fields.get(index);
 
@@ -247,25 +310,25 @@ export function updateDomainField(domain: DomainDesign, fieldId: string, value: 
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:
-                newField = updateDataType(newField, value);
+                newField = updateDataType(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_CONTAINER:
-                newField = updateLookup(newField, value);
+                newField = updateLookup(newField, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
-                newField = updateLookup(newField, newField.lookupContainer, value);
+                newField = updateLookup(newField, newField.lookupContainer, change.value);
                 break;
             case DOMAIN_FIELD_LOOKUP_QUERY:
-                const { queryName, rangeURI } = decodeLookup(value);
+                const { queryName, rangeURI } = decodeLookup(change.value);
                 newField = newField.merge({
                     lookupQuery: queryName,
-                    lookupQueryValue: value,
+                    lookupQueryValue: change.value,
                     lookupType: newField.lookupType.set('rangeURI', rangeURI),
                     rangeURI
                 }) as DomainField;
                 break;
             default:
-                newField = newField.set(type, value) as DomainField;
+                newField = newField.set(type, change.value) as DomainField;
                 break;
         }
 
@@ -309,10 +372,143 @@ export function clearFieldDetails(domain: DomainDesign): DomainDesign {
 }
 
 export function getCheckedValue(evt) {
-    if (evt.target.type === "checkbox")
-    {
+    if (evt.target.type === "checkbox") {
         return evt.target.checked;
     }
 
     return undefined;
 }
+
+ function clearFieldError (domain: DomainDesign, rowIndex: any) {
+
+    let allErrors = domain.domainException.get('errors');
+
+    //filter errors where rowIndexes size > 2
+    let filteredErrors = allErrors.filter(error => {
+
+        if (error.rowIndexes.includes(rowIndex)) {
+            return error.rowIndexes.size > 2;
+        }
+        return true;
+
+    });
+
+    //find an index of an error to remove from the list of errors
+     return filteredErrors.map((error) => {
+         return error.set('rowIndexes', error.rowIndexes.filter(idx => { return idx !== rowIndex }));
+     });
+}
+
+/**
+ *
+ * @param domain: DomainDesign to update with Field level error, in this case, set DomainException property which will carry field level error
+ * @param domainFieldError: Field level error with message and severity
+ * @return copy of domain with exception set on a field
+ */
+export function updateDomainException(domain: DomainDesign, index: any, domainFieldError: any): DomainDesign {
+
+    let domainExceptionObj;
+
+    //new error on a field at a given index
+    if (domainFieldError)
+    {
+        //add incoming field error to a previously existing domainException object
+        if (domain.hasException())
+        {
+            const updatedErrors = clearFieldError(domain, index); //clear previously present error on a given row index
+            const newErrors = updatedErrors.push(domainFieldError);
+            domainExceptionObj = domain.domainException.merge({errors: newErrors})
+        }
+        //domainException is not defined yet/doesn't have field errors, so create a new domainException object
+        else
+        {
+            const exception = domainFieldError.fieldName + " : " + domainFieldError.message;
+            const errors = List<DomainFieldError>().asMutable();
+            errors.push(domainFieldError);
+
+            domainExceptionObj = new DomainException({exception, success: undefined, severity: domainFieldError.severity, errors: errors.asImmutable()});
+        }
+    }
+    //no error on a field at a given index
+    else {
+        //clear out an old error on a field, ex. if the client side error is fixed on a field then its previous error needs to be cleared out from the error set
+        if (domain && domain.hasException()) {
+
+            const updatedErrors = clearFieldError(domain, index);
+
+            //reset domainException obj with an updated set of errors
+            if (updatedErrors && updatedErrors.size > 0) {
+
+                const exception = updatedErrors.get(0).fieldName + " : " + updatedErrors.get(0).message; //create exception message based on the first error, to be consistent with how server side errors are created
+
+                domainExceptionObj = new DomainException({exception, success: undefined, severity: updatedErrors.get(0).severity, errors: updatedErrors})
+            }
+            //previous/old error on an incoming field was the last error to clear out, so no more errors
+            else {
+                domainExceptionObj = undefined;
+            }
+        }
+    }
+    return domain.merge({
+        domainException: domainExceptionObj
+    }) as DomainDesign;
+}
+
+export function getBannerMessages (domain: any) : List<IBannerMessage> {
+
+    if (domain && domain.hasException()) {
+
+        let msgList = List<IBannerMessage>().asMutable();
+        let errMsg = getErrorBannerMessage(domain);
+        if (errMsg !== undefined) {
+            msgList.push({message: errMsg, messageType: 'danger'});
+        }
+
+        let warnMsg = getWarningBannerMessage(domain);
+        if (warnMsg !== undefined) {
+            msgList.push({message: warnMsg, messageType: 'warning'})
+        }
+
+        return msgList.asImmutable();
+
+    }
+    else {
+        return List<IBannerMessage>();
+    }
+}
+
+function getErrorBannerMessage (domain: any) : any {
+
+    if (domain && domain.hasException()) {
+        let errors = domain.domainException.get('errors').filter(e => {
+            return e && (e.severity === SEVERITY_LEVEL_ERROR)
+        });
+
+        if (errors && errors.size > 0) {
+            if (errors.size > 1) {
+                return "Multiple fields contain issues that need to be fixed. Review the red highlighted fields below for more information.";
+            }
+            else {
+                return errors.get(0).message;
+            }
+        }
+    }
+    return undefined;
+}
+
+function getWarningBannerMessage (domain: any) : any {
+
+    if (domain && domain.hasException()) {
+        let warnings = domain.domainException.get('errors').filter(e => {return e && (e.severity === SEVERITY_LEVEL_WARN)});
+
+        if (warnings && warnings.size > 0) {
+            if (warnings.size > 1) {
+                return "Multiple fields may require your attention. Review the yellow highlighted fields below for more information.";
+            }
+            else {
+                return (warnings.get(0).fieldName + " : " + warnings.get(0).message);
+            }
+        }
+    }
+    return undefined;
+};

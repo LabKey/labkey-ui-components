@@ -6,6 +6,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
   format="#.##"
   index={1}
   label="Numeric Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>
@@ -207,6 +208,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-format-1"
               name="domainpropertiesrow-format"
               onChange={[Function]}
@@ -215,6 +217,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
                 name="domainpropertiesrow-format"
                 onChange={[Function]}
@@ -244,6 +247,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="select"
+              disabled={false}
               id="domainpropertiesrow-defaultScale-1"
               name="domainpropertiesrow-defaultScale"
               onChange={[Function]}
@@ -251,6 +255,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             >
               <select
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-defaultScale-1"
                 name="domainpropertiesrow-defaultScale"
                 onChange={[Function]}

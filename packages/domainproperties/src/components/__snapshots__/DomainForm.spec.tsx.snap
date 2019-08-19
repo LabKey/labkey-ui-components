@@ -159,10 +159,8 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
               <div
                 className="panel-heading"
               >
-                <div
-                  className="panel-title"
-                >
-                  Field Properties - updated
+                <div>
+                  updated
                 </div>
               </div>
             </PanelHeading>
@@ -2033,10 +2031,8 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
               <div
                 className="panel-heading"
               >
-                <div
-                  className="panel-title"
-                >
-                  Field Properties - update field types
+                <div>
+                  update field types
                 </div>
               </div>
             </PanelHeading>
@@ -3945,10 +3941,8 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
               <div
                 className="panel-heading"
               >
-                <div
-                  className="panel-title"
-                >
-                  Field Properties - all field types
+                <div>
+                  all field types
                 </div>
               </div>
             </PanelHeading>
@@ -9065,10 +9059,8 @@ exports[`DomainFormDisplay domain form with no fields 1`] = `
               <div
                 className="panel-heading"
               >
-                <div
-                  className="panel-title"
-                >
-                  Field Properties - no fields
+                <div>
+                  no fields
                 </div>
               </div>
             </PanelHeading>
@@ -9761,10 +9753,8 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
               <div
                 className="panel-heading"
               >
-                <div
-                  className="panel-title"
-                >
-                  Field Properties - update field types
+                <div>
+                  update field types
                 </div>
               </div>
             </PanelHeading>
@@ -12099,9 +12089,7 @@ exports[`DomainFormDisplay with empty domain form 1`] = `
               <div
                 className="panel-heading"
               >
-                <div
-                  className="panel-title"
-                >
+                <div>
                   Field Properties
                 </div>
               </div>

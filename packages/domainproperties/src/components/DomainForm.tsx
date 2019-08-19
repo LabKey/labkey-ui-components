@@ -376,9 +376,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel"}>
-                    {showHeader && <Panel.Heading>
-                        <div className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
-                    </Panel.Heading>}
+                    {showHeader &&
+                        <Panel.Heading>
+                            <div>{domain.name ? domain.name : "Field Properties"}</div>
+                        </Panel.Heading>
+                    }
                     <Panel.Body>
                         {this.isValidDomain(domain) ? (
                             <>

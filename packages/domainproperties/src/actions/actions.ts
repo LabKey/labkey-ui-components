@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { List, Map } from "immutable";
-import { Domain, Query, Security } from "@labkey/api";
-import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
+import { Domain, Query, Security, Ajax, Utils } from "@labkey/api";
+import { Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn } from "@glass/base";
 
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -35,7 +35,8 @@ import {
     DomainException,
     DomainFieldError,
     IFieldChange,
-    IBannerMessage
+    IBannerMessage,
+    AssayProtocolModel
 } from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
@@ -511,4 +512,65 @@ function getWarningBannerMessage (domain: any) : any {
         }
     }
     return undefined;
-};
+}
+
+export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assay', 'getProtocol.api', { protocolId }),
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(new AssayProtocolModel(data.data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        })
+    });
+}
+
+export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
+    const dataFields = fields.map((field) => {
+        return {
+            name: field.name,
+            rangeURI: field.rangeURI
+        }
+    });
+
+    // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
+    const model = new AssayProtocolModel({
+        providerName: 'General',
+        name,
+        description,
+        domains: List([{
+            name: 'Batch Fields',
+            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Batch.Folder-${Container.RowId}:${AssayName}',
+            // fields: List<QueryColumn>()
+        },{
+            name: 'Run Fields',
+            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Run.Folder-${Container.RowId}:${AssayName}',
+            // fields: List<QueryColumn>()
+        },{
+            name: 'Data Fields',
+            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Data.Folder-${Container.RowId}:${AssayName}',
+            fields: dataFields
+        }])
+    });
+
+    return saveAssayDesign(model);
+}
+
+export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
+    return new Promise((resolve, reject) => {
+        // TODO: this API needs to handle checks for reserved fields for domains (ex. I was able to create a data domain with "RowId" as a field name but then data imports failed because of it)
+        Ajax.request({
+            url: buildURL('assay', 'saveProtocol.api'),
+            jsonData: model,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(new AssayProtocolModel(response.data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error.exception);
+            }, this, false)
+        });
+    });
+}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Col, Form, FormControl, Row, Panel } from "react-bootstrap";
-import { AssayProtocolModel, LabelHelpTip } from "@glass/base";
+import { LabelHelpTip } from "@glass/base";
+import { AssayProtocolModel } from "../../models";
 
 const FORM_ID_PREFIX = 'assay-design-';
 const FORM_IDS = {

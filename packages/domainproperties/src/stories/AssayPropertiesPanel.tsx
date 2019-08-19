@@ -6,8 +6,8 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { text, boolean, withKnobs } from '@storybook/addon-knobs'
-import { AssayProtocolModel } from "@glass/base";
 
+import { AssayProtocolModel } from "../models";
 import { AssayPropertiesPanel } from "../components/assay/AssayPropertiesPanel"
 import './stories.scss'
 

@@ -47,7 +47,7 @@ const wrapDraggable = (element) => {
 
 }
 
-describe('DomainRowDisplay', () => {
+describe('DomainRow', () => {
 
     test('with empty domain form', () => {
         const field = DomainField.create({});

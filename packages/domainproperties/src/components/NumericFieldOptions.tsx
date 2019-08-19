@@ -54,7 +54,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <div className={'domain-field-section-heading margin-top'}>{label}</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

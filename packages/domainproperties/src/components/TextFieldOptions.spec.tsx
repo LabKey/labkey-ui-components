@@ -29,7 +29,7 @@ describe('TextFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = textField.find({className: 'domain-field-section-heading'});
+        const sectionLabel = textField.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 

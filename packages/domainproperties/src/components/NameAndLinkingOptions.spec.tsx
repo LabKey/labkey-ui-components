@@ -37,7 +37,7 @@ describe('NameAndLinkingOptions', () => {
         />);
 
         // Verify section label
-        const sectionLabel = numeric.find({className: 'domain-field-section-heading'});
+        const sectionLabel = numeric.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Name and Linking Options');
 

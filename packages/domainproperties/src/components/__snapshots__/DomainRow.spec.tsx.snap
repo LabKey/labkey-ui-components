@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DomainRowDisplay attachment field 1`] = `
+exports[`DomainRow attachment field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -543,7 +543,7 @@ exports[`DomainRowDisplay attachment field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay client side warning on field 1`] = `
+exports[`DomainRow client side warning on field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -1170,7 +1170,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay date time field 1`] = `
+exports[`DomainRow date time field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -1713,7 +1713,7 @@ exports[`DomainRowDisplay date time field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay decimal field 1`] = `
+exports[`DomainRow decimal field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -2256,7 +2256,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay participant id field 1`] = `
+exports[`DomainRow participant id field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -2823,7 +2823,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay server side error on reserved field 1`] = `
+exports[`DomainRow server side error on reserved field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -3450,7 +3450,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay string field 1`] = `
+exports[`DomainRow string field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -4017,7 +4017,7 @@ exports[`DomainRowDisplay string field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay with empty domain form 1`] = `
+exports[`DomainRow with empty domain form 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >

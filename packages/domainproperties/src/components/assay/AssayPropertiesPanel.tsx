@@ -86,8 +86,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, any> {
                 {showEditSettings &&
                     <Row>
                         <Col xs={12}>
-                            {/*TODO move inline style to scss*/}
-                            <div style={{color: '#555555', fontWeight: 'bold'}}>Basic Properties</div>
+                            <div className={'domain-field-section-heading'}>Basic Properties</div>
                         </Col>
                     </Row>
                 }

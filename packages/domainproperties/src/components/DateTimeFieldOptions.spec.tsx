@@ -27,7 +27,7 @@ describe('DateTimeFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = dateTime.find({className: 'domain-field-section-heading'});
+        const sectionLabel = dateTime.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 

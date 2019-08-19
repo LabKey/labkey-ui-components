@@ -58,7 +58,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>Name and Linking Options</div>
+                        <div className={'domain-field-section-heading margin-top'}>Name and Linking Options</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>

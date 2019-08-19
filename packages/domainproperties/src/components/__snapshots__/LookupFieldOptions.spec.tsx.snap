@@ -82,7 +82,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading"
+                className="domain-field-section-heading margin-top"
               >
                 Lookup Field Options
               </div>
@@ -472,7 +472,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading"
+                className="domain-field-section-heading margin-top"
               >
                 Lookup Field Options
               </div>
@@ -918,7 +918,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading"
+                className="domain-field-section-heading margin-top"
               >
                 Lookup Field Options
               </div>
@@ -1364,7 +1364,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading"
+                className="domain-field-section-heading margin-top"
               >
                 Lookup Field Options
               </div>

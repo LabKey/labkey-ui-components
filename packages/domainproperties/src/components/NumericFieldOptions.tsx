@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
     DEFAULT_SCALE_LINEAR,
@@ -47,7 +48,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
     }
 
     render() {
-        const { index, label, format, defaultScale } = this.props;
+        const { index, label, format, defaultScale, lockType } = this.props;
 
         return (
             <div>
@@ -76,6 +77,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                                      onChange={this.onFieldChange}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
                                      name={createFormInputName(DOMAIN_FIELD_FORMAT)}
+                                     disabled={isFieldFullyLocked(lockType)}
                         />
                     </Col>
                     <Col xs={1} />
@@ -83,6 +85,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
 
                         <FormControl componentClass="select"
                                      id={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, index)}
+                                     disabled={isFieldFullyLocked(lockType)}
                                      name={createFormInputName(DOMAIN_FIELD_DEFAULT_SCALE)}
                                      onChange={this.onFieldChange} value={defaultScale}>
                             <option
@@ -91,7 +94,6 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                             <option
                                 key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LOG, index)}
                                 value={DEFAULT_SCALE_LOG}>{DEFAULT_SCALE_LOG}</option>
-
                         </FormControl>
                     </Col>
                 </Row>

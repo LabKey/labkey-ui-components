@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.20",
+  "version": "0.1.21-fb-assayDesignCreate.0",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.14.0"
+    "@glass/base": "0.14.1-fb-assayDesignCreate.0"
   },
   "jest": {
     "globals": {

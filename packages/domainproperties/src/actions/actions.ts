@@ -529,31 +529,25 @@ export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
 }
 
 export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
-    const dataFields = fields.map((field) => {
-        return {
-            name: field.name,
-            rangeURI: field.rangeURI
-        }
-    });
+    let dataDomain = DomainDesign.init('Data');
+    dataDomain = dataDomain.merge({
+        fields: fields.map((field) => {
+            return {
+                name: field.name,
+                rangeURI: field.rangeURI
+            }
+        })
+    }) as DomainDesign;
 
-    // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
     const model = new AssayProtocolModel({
         providerName: 'General',
         name,
         description,
-        domains: List([{
-            name: 'Batch Fields',
-            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Batch.Folder-${Container.RowId}:${AssayName}',
-            // fields: List<QueryColumn>()
-        },{
-            name: 'Run Fields',
-            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Run.Folder-${Container.RowId}:${AssayName}',
-            // fields: List<QueryColumn>()
-        },{
-            name: 'Data Fields',
-            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-Data.Folder-${Container.RowId}:${AssayName}',
-            fields: dataFields
-        }])
+        domains: List([
+            DomainDesign.init('Batch'),
+            DomainDesign.init('Run'),
+            dataDomain
+        ])
     });
 
     return saveAssayDesign(model);
@@ -561,10 +555,15 @@ export function createGeneralAssayDesign(name: string, description: string, fiel
 
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
+        // need to serialize the DomainDesign objects to remove the unrecognized fields
+        const domains = model.domains.map((domain) => {
+            return DomainDesign.serialize(domain);
+        });
+
         // TODO: this API needs to handle checks for reserved fields for domains (ex. I was able to create a data domain with "RowId" as a field name but then data imports failed because of it)
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api'),
-            jsonData: model,
+            jsonData: model.merge({domains}),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(new AssayProtocolModel(response.data));
             }),

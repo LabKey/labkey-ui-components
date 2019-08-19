@@ -140,6 +140,14 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>;
     domainException: DomainException;
 
+    static init(name: string): DomainDesign {
+        // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
+        return DomainDesign.create({
+            name: name + ' Fields',
+            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-' + name + '.Folder-${Container.RowId}:${AssayName}'
+        });
+    }
+
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();

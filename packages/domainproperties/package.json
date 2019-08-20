@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.31-fb-assayDesignCreate.4",
+  "version": "0.0.31-fb-assayDesignCreate.5",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",

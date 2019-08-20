@@ -30,7 +30,7 @@ interface State {
 export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
     static defaultProps = {
-        model: new AssayProtocolModel(),
+        model: AssayProtocolModel.create({}),
         showEditSettings: true,
         asPanel: true,
         initCollapsed: false

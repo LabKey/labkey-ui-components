@@ -519,7 +519,7 @@ export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
         Ajax.request({
             url: buildURL('assay', 'getProtocol.api', { protocolId }),
             success: Utils.getCallbackWrapper((data) => {
-                resolve(new AssayProtocolModel(data.data));
+                resolve(AssayProtocolModel.create(data.data));
             }),
             failure: Utils.getCallbackWrapper((error) => {
                 reject(error);
@@ -539,7 +539,7 @@ export function createGeneralAssayDesign(name: string, description: string, fiel
         })
     }) as DomainDesign;
 
-    const model = new AssayProtocolModel({
+    const model = AssayProtocolModel.create({
         providerName: 'General',
         name,
         description,
@@ -564,7 +564,7 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
             url: buildURL('assay', 'saveProtocol.api'),
             jsonData: model.merge({domains}),
             success: Utils.getCallbackWrapper((response) => {
-                resolve(new AssayProtocolModel(response.data));
+                resolve(AssayProtocolModel.create(response.data));
             }),
             failure: Utils.getCallbackWrapper((error) => {
                 reject(error.exception);

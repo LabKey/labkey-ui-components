@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { List, Record, fromJS } from "immutable";
+import { Utils } from "@labkey/api";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -360,6 +361,12 @@ export class DomainField extends Record({
 
         if (json.lookupContainer === undefined) {
             json.lookupContainer = null;
+        }
+
+        // for some reason the property binding server side cares about casing here for 'URL'
+        if (json.URL !== undefined) {
+            json.url = json.URL;
+            delete json.URL;
         }
 
         // remove non-serializable fields
@@ -781,5 +788,21 @@ export class AssayProtocolModel extends Record({
 
     constructor(values?: {[key:string]: any}) {
         super(values);
+    }
+
+    static create(raw: any): AssayProtocolModel {
+        let domains = List<DomainDesign>();
+        if (raw.domains && Utils.isArray(raw.domains)) {
+            domains = List<DomainDesign>(
+                raw.domains.map((domain) => {
+                    return DomainDesign.create(domain);
+                })
+            );
+        }
+
+        return new AssayProtocolModel({
+            ...raw,
+            domains
+        });
     }
 }

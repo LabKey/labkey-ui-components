@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react'
 import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
 
 import { WizardNavButtons } from "../components/buttons/WizardNavButtons";
-import './stories.css'
+import './stories.scss'
 
 storiesOf("WizardNavButtons", module)
     .addDecorator(withKnobs)

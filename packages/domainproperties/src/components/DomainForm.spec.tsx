@@ -18,7 +18,6 @@
 import * as React from "react";
 import {DomainDesign, DomainField, DomainIndex, IFieldChange} from "../models";
 import DomainForm from "./DomainForm";
-import {List} from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -36,9 +35,8 @@ import {
     STRING_RANGE_URI
 } from "../constants";
 import {mount} from "enzyme";
-import {clearFieldDetails, createFormInputId, handleDomainUpdates} from "../actions/actions";
+import {clearFieldDetails, createFormInputId, handleDomainUpdates, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
-
 
 describe('DomainFormDisplay', () => {
 
@@ -62,8 +60,8 @@ describe('DomainFormDisplay', () => {
             description: 'no field description',
             domainURI: 'test',
             domainId: 1,
-            fields: List<DomainField>(),
-            indices: List<DomainIndex>()
+            fields: [],
+            indices: []
         });
         const form  = mount(<DomainForm
             domain={domain}
@@ -79,69 +77,69 @@ describe('DomainFormDisplay', () => {
 
     test('domain form with all field types', () => {
 
-        let fields = List<DomainField>().asMutable();
-        fields.push(DomainField.create({
+        let fields = [];
+        fields.push({
             name: 'key',
             rangeURI: INT_RANGE_URI,
             propertyId: 1,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'string',
             rangeURI: STRING_RANGE_URI,
             propertyId: 2,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'multiline',
             rangeURI: MULTILINE_RANGE_URI,
             propertyId: 3,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'boolean',
             rangeURI: BOOLEAN_RANGE_URI,
             propertyId: 4,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'double',
             rangeURI: DOUBLE_RANGE_URI,
             propertyId: 5,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'datetime',
             rangeURI: DATETIME_RANGE_URI,
             propertyId: 6,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'flag',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 7,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'file link',
             rangeURI: FILELINK_RANGE_URI,
             propertyId: 8,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'participant id',
             rangeURI: STRING_RANGE_URI,
             conceptURI: PARTICIPANTID_CONCEPT_URI,
             propertyId: 9,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'attachment',
             rangeURI: ATTACHMENT_RANGE_URI,
             propertyId: 10,
             propertyURI: 'test'
-        }));
+        });
 
         const domain = DomainDesign.create({
             name: "all field types",
@@ -149,7 +147,7 @@ describe('DomainFormDisplay', () => {
             domainURI: 'test',
             domainId: 1,
             fields: fields,
-            indices: List<DomainIndex>()
+            indices: []
         });
         const form  = mount(<DomainForm
             domain={domain}
@@ -164,32 +162,32 @@ describe('DomainFormDisplay', () => {
     });
 
     test('domain form with updated fields', () => {
-        let fields = List<DomainField>().asMutable();
-        fields.push(DomainField.create({
+        let fields = [];
+        fields.push({
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'string changed to boolean',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'int changed to participant',
             rangeURI: INT_RANGE_URI,
             propertyId: 2,
             propertyURI: 'test'
-        }));
-        fields.push(DomainField.create({
+        });
+        fields.push({
             name: 'flag changed to attachment',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 3,
             propertyURI: 'test'
-        }));
+        });
 
         let domain = DomainDesign.create({
             name: "update field types",
@@ -197,15 +195,14 @@ describe('DomainFormDisplay', () => {
             domainURI: 'test',
             domainId: 1,
             fields: fields,
-            indices: List<DomainIndex>()
+            indices:[]
         });
 
-        let changes = List<IFieldChange>().asMutable();
-        changes.push({id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
-        changes.push({id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
-        changes.push({id: createFormInputId(DOMAIN_FIELD_TYPE, 2), value: "ParticipantId"});
-        changes.push({id: createFormInputId(DOMAIN_FIELD_TYPE, 3), value: "attachment"});
-        domain = handleDomainUpdates(domain, changes.asImmutable());
+
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 2), value: "ParticipantId"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 3), value: "attachment"});
 
         const form = mount(<DomainForm
             domain={domain}
@@ -219,29 +216,25 @@ describe('DomainFormDisplay', () => {
     });
 
     test('domain form updated field, cleared details', () => {
-        let fields = List<DomainField>().asMutable();
-        fields.push(DomainField.create({
+        let fields = [];
+        fields.push({
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
             propertyURI: 'test'
-        }));
+        });
 
         let domain = DomainDesign.create({
             name: "update field types",
             description: 'description',
             domainURI: 'test',
             domainId: 1,
-            // fields: fields,
-            fields: List<DomainIndex>(),
-            indices: List<DomainIndex>(),
+            fields: fields,
+            indices: [],
             key: 1
         });
 
-        let changes = List<IFieldChange>().asMutable();
-        changes.push({id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
-        domain = handleDomainUpdates(domain, changes.asImmutable());
-
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
         domain = clearFieldDetails(domain);
 
         const form = mount(<DomainForm
@@ -270,7 +263,7 @@ describe('DomainFormDisplay', () => {
             domainURI: 'test',
             domainId: 1,
             fields: fields,
-            indices: List<DomainIndex>()
+            indices: []
         });
 
         let updatedDomain;

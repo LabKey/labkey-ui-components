@@ -46,6 +46,8 @@ export interface QueryInfoFormProps {
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
     checkRequiredFields?: boolean
+    // if checkRequiredFields is false, showLabelAsterisk to show * for fields that are originally required
+    showLabelAsterisk?: boolean
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
@@ -346,7 +348,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields, columnFilter } = this.props;
+        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields, columnFilter } = this.props;
         const { count } = this.state;
 
 
@@ -391,6 +393,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             allowFieldDisable={allowFieldDisable}
                             initiallyDisableFields={initiallyDisableFields}
                             checkRequiredFields={checkRequiredFields}
+                            showLabelAsterisk={showLabelAsterisk}
                             queryInfo={queryInfo}
                             columnFilter={columnFilter}
                             fieldValues={fieldValues}/>

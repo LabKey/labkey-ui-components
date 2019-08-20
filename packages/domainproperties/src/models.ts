@@ -17,10 +17,18 @@ import { List, Record, fromJS } from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
-    DATETIME_RANGE_URI, DOMAIN_FIELD_DIMENSION, DOMAIN_FIELD_MEASURE,
-    DOUBLE_RANGE_URI, FILELINK_RANGE_URI, FLAG_CONCEPT_URI,
+    DOMAIN_FIELD_DIMENSION,
+    DOMAIN_FIELD_MEASURE,
+    FLAG_CONCEPT_URI,
+    DATETIME_RANGE_URI,
+    DOMAIN_FIELD_NOT_LOCKED,
+    DOUBLE_RANGE_URI,
+    FILELINK_RANGE_URI,
     INT_RANGE_URI,
-    MULTILINE_RANGE_URI, PARTICIPANTID_CONCEPT_URI, STRING_RANGE_URI,
+    MULTILINE_RANGE_URI,
+    PARTICIPANTID_CONCEPT_URI,
+    SEVERITY_LEVEL_WARN,
+    STRING_RANGE_URI,
     USER_RANGE_URI
 } from "./constants";
 
@@ -29,10 +37,16 @@ export interface IFieldChange {
     value: any
 }
 
+export interface IBannerMessage {
+    message: string,
+    messageType: string,
+}
+
 export interface ITypeDependentProps {
     index: number,
     label: string,
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
+    lockType: string
 }
 
 interface IPropDescType {
@@ -128,6 +142,7 @@ interface IDomainDesign {
     domainId: number
     fields?: List<DomainField>
     indices?: List<DomainIndex>
+    domainException?: DomainException
 }
 
 export class DomainDesign extends Record({
@@ -136,7 +151,8 @@ export class DomainDesign extends Record({
     domainURI: undefined,
     domainId: null,
     fields: List<DomainField>(),
-    indices: List<DomainIndex>()
+    indices: List<DomainIndex>(),
+    domainException: undefined
 }) implements IDomainDesign {
     name: string;
     description: string;
@@ -144,10 +160,12 @@ export class DomainDesign extends Record({
     domainId: number;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
+    domainException: DomainException;
 
-    static create(rawModel): DomainDesign {
+    static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
+        let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
             if (rawModel.fields) {
@@ -162,7 +180,8 @@ export class DomainDesign extends Record({
         return new DomainDesign({
             ...rawModel,
             fields,
-            indices
+            indices,
+            domainException
         })
     }
 
@@ -178,6 +197,10 @@ export class DomainDesign extends Record({
 
     hasErrors(): boolean {
         return this.fields.find((f) => f.hasErrors()) !== undefined;
+    }
+
+    hasException(): boolean {
+        return (this.domainException !== undefined && this.domainException.errors !== undefined);
     }
 }
 
@@ -248,6 +271,8 @@ export interface IDomainField {
     lookupType: PropDescType
     original: Partial<IDomainField>
     updatedField: boolean
+    isPrimaryKey: boolean
+    lockType: string
 }
 
 export class DomainField extends Record({
@@ -284,6 +309,9 @@ export class DomainField extends Record({
     lookupType: undefined,
     original: undefined,
     updatedField: false,
+    isPrimaryKey: false,
+    lockType: DOMAIN_FIELD_NOT_LOCKED
+
 }) implements IDomainField {
     conceptURI?: string;
     defaultScale?: string;
@@ -318,6 +346,8 @@ export class DomainField extends Record({
     lookupType: PropDescType;
     original: Partial<IDomainField>;
     updatedField: boolean;
+    isPrimaryKey: boolean;
+    lockType: string;
 
     static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean): DomainField {
         let dataType = resolveDataType(rawField);
@@ -342,6 +372,7 @@ export class DomainField extends Record({
 
         return field;
     }
+
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();
@@ -619,5 +650,139 @@ export class QueryInfoLite extends Record({
 
     getPkColumns(): List<ColumnInfoLite> {
         return this.columns.filter(c => c.isKeyField).toList();
+    }
+}
+
+//modeled after the JSON object received during server side error (except the severity).
+interface IDomainException {
+    exception: string;
+    success: boolean;
+    severity: string;
+    errors?: List<DomainFieldError>;
+}
+
+// DomainException is used for both server side and client side errors.
+// For server side, DomainException object is constructed in actions.ts (see saveDomain()) on failure while saving or creating a domain.
+// For client side, DomainException object is constructed in actions.ts (see handleDomainUpdates()) while updating the domain.
+export class DomainException extends Record({
+    exception: undefined,
+    success: undefined,
+    severity: undefined,
+    errors: List<DomainFieldError>()
+
+}) implements IDomainException
+{
+    exception: string;
+    success: boolean;
+    severity: string;
+    errors?: List<DomainFieldError>;
+
+    static create(rawModel: any, severityLevel): DomainException {
+        if (rawModel)
+        {
+            let errors = List<DomainFieldError>();
+            if (rawModel.errors) {
+                errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
+            }
+
+            return new DomainException({
+                exception: rawModel.exception,
+                success: rawModel.success,
+                severity: severityLevel,
+                errors: errors
+            })
+        }
+        return undefined;
+    }
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    }
+
+    //merge warnings with an incoming server side errors so that both server and pre-existing client side warning can be shown on the banner
+    static mergeWarnings(domain: DomainDesign, exception: DomainException) {
+        //merge pre-existing warnings on the domain
+        if (domain && domain.hasException()) {
+
+            let existingWarnings = domain.domainException.get('errors').filter(e => e.severity === SEVERITY_LEVEL_WARN);
+            let serverSideErrors = exception.get('errors');
+            let allErrors = serverSideErrors.concat(existingWarnings);
+
+            return exception.set('errors', allErrors);
+        }
+
+        return exception.set('errors', exception.errors);
+    }
+
+    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException) {
+
+        let allFieldErrors = exceptionFromServer.get('errors');
+
+        allFieldErrors = allFieldErrors.map((error) => {
+
+            let indices = domain.fields.reduce((indexList, field, idx, iter) : List<number> => {
+
+                if (((field.name === undefined || field.name === '') && error.get("fieldName") === undefined) ||
+                    (field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
+                    (field.name !== undefined && error.get("fieldName") !== undefined && field.name.toLowerCase() === error.get("fieldName").toLowerCase())) {
+
+                    indexList = indexList.push(idx);
+                }
+
+                return indexList;
+            }, List<number>());
+
+            return error.merge({rowIndexes: indices});
+        });
+
+        return exceptionFromServer.set('errors', allFieldErrors) as DomainException;
+    }
+}
+
+interface IDomainFieldError {
+    message: string;
+    fieldName: string;
+    propertyId?: number;
+    severity?: string;
+    rowIndexes: List<number>;
+    newRowIndexes?: List<number> //for drag and drop
+}
+
+export class DomainFieldError extends Record({
+    message: undefined,
+    fieldName: undefined,
+    propertyId: undefined,
+    severity: undefined,
+    rowIndexes: List<number>(),
+    newRowIndexes: undefined
+
+}) implements IDomainFieldError {
+    message: string;
+    fieldName: string;
+    propertyId?: number;
+    severity?: string;
+    rowIndexes: List<number>;
+    newRowIndexes?: List<number>;
+
+    static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
+
+        let fieldErrors = List<DomainFieldError>().asMutable();
+
+        for (let i=0; i < rawFields.length; i++) {
+
+            //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
+            let fieldName = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].field);
+            let propertyId = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].id);
+
+            let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
+                severity: severityLevel, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
+            fieldErrors.push(domainFieldError);
+        }
+
+        return fieldErrors.asImmutable();
+    }
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
     }
 }

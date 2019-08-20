@@ -5,6 +5,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
   format="Yes;No;Blank"
   index={1}
   label="Boolean Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>
@@ -191,6 +192,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-format-1"
               name="domainpropertiesrow-scale"
               onChange={[Function]}
@@ -199,6 +201,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
                 name="domainpropertiesrow-scale"
                 onChange={[Function]}

@@ -88,9 +88,9 @@ describe("<Detail/>", () => {
 
       const wrapper = mount(component);
       // expect one table row for each display column
-      expect(wrapper.find('tr')).toHaveLength(model.getDisplayColumns().size);
-      // expect two of the field values to render as links (Name, Lookupfield)
-      expect(wrapper.find('a')).toHaveLength(2);
+      expect(wrapper.find('tr')).toHaveLength(model.getDetailsDisplayColumns().size);
+      // expect one field value to render as links (Lookupfield)
+      expect(wrapper.find('a')).toHaveLength(1);
       // expect the row labels to be the column captions by default
       expect(wrapper.find('table').text().indexOf('Lookup Field Caption')).toBeGreaterThan(-1);
       wrapper.unmount();
@@ -128,7 +128,7 @@ describe("<Detail/>", () => {
 
       const wrapper = mount(component);
       expect(wrapper.find('a')).toHaveLength(0);
-      expect(wrapper.find('h1')).toHaveLength(model.getDisplayColumns().size);
+      expect(wrapper.find('h1')).toHaveLength(model.getDetailsDisplayColumns().size);
       wrapper.unmount();
    });
 

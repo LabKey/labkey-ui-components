@@ -22,8 +22,16 @@ import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { Alert, ConfirmModal } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import {DomainDesign, DomainField, IFieldChange} from "../models";
-import {addField, getIndexFromId, getMaxPhiLevel, handleDomainUpdates, removeField} from "../actions/actions";
+import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
+import {
+    addField,
+    getIndexFromId,
+    handleDomainUpdates,
+    getMaxPhiLevel,
+    removeField,
+    updateDomainField
+} from "../actions/actions";
+
 import { LookupProvider } from "./Lookup/Context";
 import {PHILEVEL_NOT_PHI} from "../constants";
 
@@ -208,15 +216,19 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let movedField = domain.fields.find((field, i) => i === idIndex);
 
         const newFields = List<DomainField>().asMutable();
+        let fieldsWithNewIndexesOnErrors = domain.hasException() ? domain.domainException.errors : List<DomainFieldError>();
+
         domain.fields.forEach((field, i) => {
 
             // move down
             if (i !== idIndex && srcIndex < destIndex) {
                 newFields.push(field);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors, field.name);
             }
 
             if (i === destIndex) {
                 newFields.push(movedField);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(idIndex, destIndex, fieldsWithNewIndexesOnErrors, movedField.name);
                 if (idIndex === this.state.expandedRowIndex) {
                     this.expand(destIndex);
                 } else if (idIndex + 1 === this.state.expandedRowIndex) {
@@ -229,16 +241,52 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             // move up
             if (i !== idIndex && srcIndex > destIndex) {
                 newFields.push(field);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors, field.name);
             }
         });
 
+        //set existing error row indexes with new row indexes
+        const fieldsWithMovedErrorsUpdated = fieldsWithNewIndexesOnErrors.map(error => {
+            return error.merge({
+                'rowIndexes': (error.newRowIndexes ? error.newRowIndexes : error.rowIndexes),
+                'newRowIndexes': undefined //reset newRowIndexes
+            });
+        });
+
+        const domainExceptionWithMovedErrors = domain.domainException.set('errors', fieldsWithMovedErrorsUpdated);
+
         const newDomain = domain.merge({
-            fields: newFields.asImmutable()
+            fields: newFields.asImmutable(),
+            domainException: domainExceptionWithMovedErrors
         }) as DomainDesign;
 
         if (onChange) {
             onChange(newDomain, true);
         }
+    };
+
+    setNewIndexOnError = (oldIndex: number, newIndex: number, fieldErrors: List<DomainFieldError>, fieldName: string) => {
+
+        let updatedErrorList = fieldErrors.map(fieldError => {
+
+                let newRowIndexes;
+                if (fieldError.newRowIndexes === undefined) {
+                    newRowIndexes = List<number>().asMutable();
+                }
+                else {
+                    newRowIndexes = fieldError.get('newRowIndexes');
+                }
+
+                fieldError.rowIndexes.forEach(val => {
+                    if (val === oldIndex) {
+                        newRowIndexes = newRowIndexes.push(newIndex);
+                    }
+                });
+
+                return fieldError.set('newRowIndexes', newRowIndexes.asImmutable());
+        });
+
+        return updatedErrorList as List<DomainFieldError>;
     };
 
     getAddFieldButton() {
@@ -252,6 +300,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             </Row>
         )
     }
+
+    getFieldError(domain: DomainDesign, index: number) : DomainFieldError {
+
+        if (domain.hasException()) {
+
+            let fieldErrors = domain.domainException.errors;
+
+            if (!fieldErrors.isEmpty())
+            {
+                const errorsWithIndex = fieldErrors.filter((error) => {
+                    return error.rowIndexes.findIndex(idx => {return idx === index}) >= 0;
+                });
+                return errorsWithIndex.get(0);
+            }
+        }
+
+        return undefined;
+    };
 
     renderFieldRemoveConfirm() {
         return (
@@ -347,6 +413,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                             return <DomainRow
                                                                 key={'domain-row-key-' + i}
                                                                 field={field}
+                                                                fieldError={this.getFieldError(domain, i)}
                                                                 index={i}
                                                                 expanded={expandedRowIndex === i}
                                                                 onChange={this.onFieldsChange}

@@ -6,6 +6,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
   format="MM/dd/yyyy hh:mm"
   index={1}
   label="Date and Time Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>
@@ -321,6 +322,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-format-1"
               name="domainpropertiesrow-format"
               onChange={[Function]}
@@ -329,6 +331,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
                 name="domainpropertiesrow-format"
                 onChange={[Function]}
@@ -358,6 +361,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
             <input
               checked={false}
               className="domain-field-float-left domain-field-checkbox"
+              disabled={false}
               id="domainpropertiesrow-excludeFromShifting-1"
               name="domainpropertiesrow-excludeFromShifting"
               onChange={[Function]}

@@ -44,11 +44,19 @@ export const DOMAIN_FIELD_RECOMMENDEDVARIABLE = 'recommendedVariable';
 export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
 export const DOMAIN_FIELD_SHOWNININSERTVIEW = 'shownInInsertView';
 export const DOMAIN_FIELD_SHOWNINUPDATESVIEW = 'shownInUpdateView';
+export const DOMAIN_FIELD_CLIENT_SIDE_ERROR = 'error';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
 export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
 export const DOMAIN_FIELD_SCALE = 'scale';
+
+export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
+export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
+export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties
+
+export const SEVERITY_LEVEL_ERROR = "Error";
+export const SEVERITY_LEVEL_WARN = "Warning";
 
 // Default scale types
 export const DEFAULT_SCALE_LINEAR = 'LINEAR';

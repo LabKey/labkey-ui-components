@@ -16,11 +16,11 @@
 import * as React from "react";
 import {Row, Col, FormControl, Checkbox, Button, Collapse} from "react-bootstrap";
 import { List } from "immutable";
-import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from "react-beautiful-dnd";
 import { Tip } from "@glass/base";
+import { DOMAIN_FIELD_CLIENT_SIDE_ERROR, SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR } from "../constants";
 
 import {
     DOMAIN_FIELD_ADV,
@@ -28,10 +28,12 @@ import {
     DOMAIN_FIELD_DETAILS, DOMAIN_FIELD_EXPAND,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_ROW,
-    DOMAIN_FIELD_TYPE
+    DOMAIN_FIELD_TYPE,
+    DOMAIN_FIELD_FULLY_LOCKED,
 } from "../constants";
-import { DomainField, IFieldChange, FieldErrors, PropDescType, resolveAvailableTypes } from "../models";
-import {createFormInputId, createFormInputName, getCheckedValue} from "../actions/actions";
+import { DomainField, IFieldChange, FieldErrors, DomainFieldError, PropDescType, resolveAvailableTypes } from "../models";
+import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "../actions/actions";
+import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 import {AdvancedSettings} from "./AdvancedSettings";
 
@@ -41,6 +43,7 @@ interface IDomainRowProps {
     index: number
     maxPhiLevel: string
     onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any
+    fieldError?: DomainFieldError
     onDelete: (any) => void
     onExpand: (index?: number) => void
 }
@@ -68,7 +71,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { expanded, field } = this.props;
+        const { expanded, field, index } = this.props;
         let details = [];
 
         if (!expanded) {
@@ -95,11 +98,30 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 details.push('New field');
             }
             else if (field.updatedField) {
-                details.push('Field was edited');
+                details.push('Updated');
             }
-            else if (field.primaryKey) {
+            else if (field.isPrimaryKey) {
                 details.push('Primary Key');
             }
+        }
+
+        let period = '';
+        if (details.length > 0) {
+            period = '. ';
+        }
+
+        if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+           details.push(period + 'Locked');
+        }
+
+        if (details.length > 0) {
+            period = '. ';
+        }
+
+        if (this.props.fieldError) {
+            details.push(period);
+            const msg = this.props.fieldError.severity + ": " + this.props.fieldError.message;
+            details.push(<b key={field.name+"_"+index}>{msg}</b>);
         }
 
         return details;
@@ -114,6 +136,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             </span>
         )
     }
+
+    getFieldErrorClass = (fieldError: DomainFieldError) => {
+        if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
+            return 'domain-field-row-error '
+        }
+        else {
+            return 'domain-field-row-warning ';
+        }
+    };
 
     onFieldChange = (evt: any, expand?: boolean) => {
         const { index } = this.props;
@@ -139,6 +170,38 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         if (onChange) {
             onChange(changes, index, true);
+        }
+    };
+
+    onNameChange  = (evt) => {
+
+        const { index, onChange } = this.props;
+
+        let value = evt.target.value;
+        let nameAndErrorList = List<IFieldChange>().asMutable();
+
+        //set value for the field
+        nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_NAME, getIndexFromId(evt.target.id)), value: value});
+
+        if (isLegalName(value) && !value.includes(' ')) {
+
+            //set value to undefined for field error
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: undefined});
+        }
+        else {
+
+            let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
+            let fieldName = value;
+            let severity = SEVERITY_LEVEL_WARN;
+            let indexes = List<number>([index]);
+            let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, rowIndexes: indexes});
+
+            //set value for field error
+            nameAndErrorList.push({id : createFormInputId(DOMAIN_FIELD_CLIENT_SIDE_ERROR, getIndexFromId(evt.target.id)), value: domainFieldError});
+        }
+
+        if (onChange) {
+            onChange(nameAndErrorList, index, true);
         }
     };
 
@@ -189,7 +252,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             value={field.name || ''}
                             name={createFormInputName(DOMAIN_FIELD_NAME)}
                             id={createFormInputId(DOMAIN_FIELD_NAME, index)}
-                            onChange={this.onFieldChange}
+                            onChange={this.onNameChange}
+                            disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
                         />
                     </Tip>
                 </Col>
@@ -198,7 +262,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         <FormControl
                             componentClass="select"
                             name={createFormInputName(DOMAIN_FIELD_TYPE)}
-                            disabled={!field.isNew() && field.primaryKey}
+                            disabled={!field.isNew() && field.primaryKey || (isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
                             id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                             onChange={this.onDataTypeChange}
                             value={field.dataType.name}
@@ -220,6 +284,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 id={createFormInputId(DOMAIN_FIELD_REQUIRED, index)}
                                 checked={field.required}
                                 onChange={this.onFieldChange}
+                                disabled={isFieldFullyLocked(field.lockType)}
                             />
                         </Tip>
                     </div>
@@ -229,7 +294,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderButtons() {
-        const { expanded, index } = this.props;
+        const { expanded, index, field } = this.props;
 
         return (
             <div className="pull-right">
@@ -240,11 +305,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         className="domain-row-button"
                         name={createFormInputName(DOMAIN_FIELD_DELETE)}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
-                        onClick={this.onDelete}
-                    >
+                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
+                        onClick={this.onDelete}>
                         Remove Field
                     </Button>
                     <Button
+                        disabled={true || isFieldFullyLocked(field.lockType)} //TODO: remove true once Advanced Settings are enabled.
                         name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, index)}
                         onClick={this.onShowAdvanced}
@@ -264,13 +330,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     render() {
-        const { index, field, expanded, maxPhiLevel } = this.props;
         const { closed } = this.state;
+        const { index, field, expanded, fieldError, maxPhiLevel } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
                 {(provided) => (
-                    <div className={'domain-field-row ' + (closed?'':'domain-row-expanded ')}
+                    <div className={(fieldError ? this.getFieldErrorClass(fieldError) : 'domain-field-row ') + (closed ? 'domain-row-expanded ': '') }
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
@@ -296,4 +362,3 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 }
-

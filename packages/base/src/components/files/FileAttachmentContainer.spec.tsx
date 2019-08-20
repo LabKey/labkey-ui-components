@@ -73,11 +73,12 @@ describe("<FileAttachmentContainer/>", () => {
             />
         );
 
+
         expect(page.find('.file-upload--container')).toHaveLength(1);
         expect(page.find('.attached-file--container')).toHaveLength(0);
 
         page.setState({
-            files: {'files1': new Blob(['text'], {type : 'text/plain'})}
+            fileNames: ['files1']
         });
         expect(page.find('.file-upload--container').props().className).toContain("hidden");
         expect(page.find('.attached-file--container')).toHaveLength(1);
@@ -97,14 +98,41 @@ describe("<FileAttachmentContainer/>", () => {
         expect(page.find('.attached-file--container')).toHaveLength(0);
 
         page.setState({
-            files: {
-                'files1': new Blob(['text'], {type : 'text/plain'}),
-                'files2': new Blob(['text'], {type : 'text/plain'})
-            }
+            fileNames: ['files1', 'files2']
         });
         expect(page.find('.file-upload--container').props().className).toContain("block");
         expect(page.find('.attached-file--container')).toHaveLength(2);
 
         page.unmount();
     });
+
+    test('with initial file names', () => {
+        const page = mount(
+            <FileAttachmentContainer
+                allowMultiple={true}
+                allowDirectories={false}
+                initialFileNames={['initial1.txt', 'initial2.csv']}
+            />
+        );
+
+        expect(page.find('.file-upload--container').props().className).toContain("block");
+        expect(page.find('.attached-file--container')).toHaveLength(2);
+
+        page.unmount();
+    });
+
+    test('with initial single file name - no multiples allowed', () => {
+        const page = mount(
+            <FileAttachmentContainer
+                allowMultiple={false}
+                allowDirectories={false}
+                initialFileNames={['single.csv']}
+            />
+        );
+
+        expect(page.find('.file-upload--container').props().className).toContain("hidden");
+        expect(page.find('.attached-file--container')).toHaveLength(1);
+
+        page.unmount();
+    })
 });

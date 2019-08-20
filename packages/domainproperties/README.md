@@ -9,6 +9,33 @@ Domain property related components for LabKey domains
 * Item 6000: Domain designer Advanced Settings.
     - Advanced settings added to each domain property
     - Various PHI and various display settings
+    
+### version 0.0.30
+*Released*: 18 August 2019
+* Epic 5859: Error validation and display in domain designer
+    - Add/highlight/clear client side warnings on invalid names
+    - Add/highlight/clear server side errors
+    - Banner messages for both client and server side warnings/errors
+
+### version 0.0.29
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.14.0
+
+### version 0.0.28
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.13.0
+
+### version 0.0.27
+*Released*: 15 August 2019
+* Package patch update for changes to @glass/base v0.12.1
+
+### version 0.0.26
+*Released*: 13 August 2019
+* Package patch update for changes to @glass/base v0.12.0
+
+### version 0.0.25
+*Released*: 8 Aug 2019
+* Package patch update for changes to @glass/base v0.11.2
 
 ### version 0.0.24
 *Released*: 31 July 2019

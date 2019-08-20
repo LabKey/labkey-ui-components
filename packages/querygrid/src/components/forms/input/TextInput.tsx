@@ -34,6 +34,7 @@ export interface TextInputProps extends DisableableInputProps {
     startFocused?: boolean
     validatePristine?: boolean
     value?: string
+    addLabelAsterisk?: boolean
 }
 
 interface TextInputState extends DisableableInputState {
@@ -78,12 +79,13 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     }
 
     renderLabel() {
-        const { label, queryColumn, showLabel, allowDisable } = this.props;
+        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk } = this.props;
         const { isDisabled } = this.state;
 
         return <FieldLabel
             label={label}
             showLabel={showLabel}
+            labelOverlayProps={{isFormsy: true, addLabelAsterisk: addLabelAsterisk}}
             showToggle={allowDisable}
             column={queryColumn}
             isDisabled = {isDisabled}

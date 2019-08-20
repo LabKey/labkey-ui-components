@@ -13,10 +13,17 @@ import { MockLookupProvider } from "../test/components/Lookup";
 import { PHILEVEL_RESTRICTED_PHI } from "../constants";
 
 import domainData from "../test/data/property-getDomain.json";
+import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
+import warningData from "../test/data/property-unexpectedCharInFieldName.json";
+import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
+import exceptionDataClient from "../test/data/property-domainExceptionClient.json";
+import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
+import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
 import './stories.scss'
 
 interface Props {
     data: {}
+    exception?: {}
     helpNoun?: any
     helpURL?: any
 }
@@ -26,7 +33,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         super(props);
 
         this.state = {
-            domain: DomainDesign.create(props.data),
+            domain: DomainDesign.create(props.data, props.exception)
         };
     }
 
@@ -67,6 +74,36 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={domainData}
+            />
+        )
+    })
+    .add("with server side errors", () => {
+        return (
+            <DomainFormContainer
+                data={errorData}
+                exception={exceptionDataServer}
+            />
+        )
+    })
+    .add("with client side warnings", () => {
+        return (
+            <DomainFormContainer
+                data={warningData}
+                exception={exceptionDataClient}
+            />
+        )
+    })
+    .add("with fully locked fields", () => {
+        return (
+            <DomainFormContainer
+                data={fullyLockedData}
+            />
+        )
+    })
+    .add("with partially locked fields", () => {
+        return (
+            <DomainFormContainer
+                data={partiallyLockedData}
             />
         )
     });

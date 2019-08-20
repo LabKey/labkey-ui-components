@@ -213,13 +213,19 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         allFilters = allFilters.concat(queryFilters.toArray());
     }
 
+    // Include PKs plus useful-to-search-over columns and append the grid view's column list
+    let requiredColumns = model.queryInfo.pkCols.concat(['Name', 'Description', 'Alias']);
+    let columns = model.queryInfo.getDisplayColumns(schemaQuery.viewName).map(c => c.fieldKey).concat(requiredColumns);
+
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
     return searchRows({
         schemaName: schemaQuery.getSchema(),
         queryName: schemaQuery.getQuery(),
+        columns: columns.join(','),
         filterArray: allFilters,
         sort: displayColumn,
-        maxRows
+        maxRows,
+        includeTotalCount: 'f'
     }, filterVal, addExactFilter ? displayColumn : undefined);
 }
 

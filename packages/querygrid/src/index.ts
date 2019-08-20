@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models'
+import { EditorModel, getStateQueryGridModel, SearchResultsModel } from './models'
 import {
+    addColumns,
+    changeColumn,
+    createQueryGridModelFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
@@ -24,12 +27,9 @@ import {
     gridRefresh,
     gridShowError,
     queryGridInvalidate,
-    schemaGridInvalidate,
-    addColumns,
-    changeColumn,
     removeColumn,
+    schemaGridInvalidate,
     searchUsingIndex,
-    createQueryGridModelFilteredBySample,
     setSelected
 } from './actions'
 import {
@@ -41,25 +41,32 @@ import {
     setQueryMetadata
 } from './global'
 import {
+    deleteRows,
     getQueryDetails,
-    invalidateQueryDetailsCacheKey,
-    InsertRowsResponse,
-    ISelectRowsResult,
     IImportData,
+    importData,
     InsertFormats,
     InsertOptions,
     insertRows,
+    InsertRowsResponse,
+    invalidateQueryDetailsCacheKey,
+    ISelectRowsResult,
     searchRows,
     selectRows,
-    updateRows,
-    deleteRows,
-    importData
+    updateRows
 } from './query/api'
-import { MAX_EDITABLE_GRID_ROWS } from './constants'
+import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants'
 import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
 import { URLResolver } from './util/URLResolver'
 import { URLService } from './util/URLService'
-import { AppRouteResolver, AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
+import {
+    AppRouteResolver,
+    AssayResolver,
+    AssayRunResolver,
+    ListResolver,
+    SampleSetResolver,
+    SamplesResolver
+} from './util/AppURLResolver'
 import { QueryGridPanel } from './components/QueryGridPanel'
 import { EditableGridPanel } from './components/editable/EditableGridPanel'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
@@ -76,8 +83,8 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader'
 import { DetailEditing } from './components/forms/detail/DetailEditing'
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
 import { Detail } from './components/forms/detail/Detail'
-import { handleTabKeyOnTextArea, handleInputTab } from './components/forms/actions'
-import { FormStep, FormTabs, WithFormStepsProps, withFormSteps } from './components/forms/FormStep'
+import { handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions'
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep'
 import { ReactSelectOption } from './components/forms/model'
 import { PlacementType } from './components/editable/Controls'
 import { SchemaListing } from './components/listing/SchemaListing'
@@ -95,11 +102,27 @@ import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel'
 import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel'
 import { RunDataPanel } from './components/assay/RunDataPanel'
 import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader'
+import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal'
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal'
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal'
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem'
-import { AssayWizardModel, IAssayURLContext, IAssayUploadOptions, AssayUploadResultModel } from './components/assay/models'
-import { importAssayRun, uploadAssayRunFiles, deleteAssayRuns, getImportItemsForAssayDefinitions } from './components/assay/actions'
+import {
+    AssayUploadResultModel,
+    AssayWizardModel,
+    IAssayUploadOptions,
+    IAssayURLContext
+} from './components/assay/models'
+import {
+    deleteAssayDesign,
+    deleteAssayRuns,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
+    getImportItemsForAssayDefinitions,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    importAssayRun,
+    uploadAssayRunFiles
+} from './components/assay/actions'
 
 export {
     // global state functions
@@ -145,6 +168,7 @@ export {
     changeColumn,
     removeColumn,
     MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE,
 
     // location related items
     Location,
@@ -208,6 +232,7 @@ export {
 
     // assay
     AssayUploadResultModel,
+    AssayDesignDeleteConfirmModal,
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
     AssayWizardModel,
@@ -221,8 +246,13 @@ export {
     AssayImportSubMenuItem,
     importAssayRun,
     uploadAssayRunFiles,
+    deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
 
     // forms
     handleInputTab,

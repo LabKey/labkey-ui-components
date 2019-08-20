@@ -38,7 +38,11 @@ initQueryGridState(fromJS({
             columnDefaults: {
                 name: {
                     caption: 'Sample ID',
-                    shownInUpdateView: false
+                    shownInUpdateView: false,
+                    shownInDetailsView: false
+                },
+                run: {
+                    shownInDetailsView: false
                 }
             },
             queryDefaults: {

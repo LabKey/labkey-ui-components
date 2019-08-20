@@ -17,7 +17,8 @@ import * as React from 'react'
 import { Panel, Button } from 'react-bootstrap'
 import { List, Map } from 'immutable'
 import Formsy from 'formsy-react'
-import { Alert, QueryGridModel } from '@glass/base'
+import { Utils } from '@labkey/api'
+import { Alert, QueryColumn, QueryGridModel } from '@glass/base'
 
 import { updateRows } from "../../../query/api";
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from "./DetailEditRenderer";
@@ -26,9 +27,16 @@ import { DetailPanelHeader } from "./DetailPanelHeader";
 
 interface DetailEditingProps {
     queryModel: QueryGridModel
+    queryColumns?: List<QueryColumn>
     canUpdate: boolean
     onUpdate?: () => void
-    useEditIcon: boolean
+    useEditIcon: boolean,
+    appEditable?: boolean,
+    asSubPanel?: boolean,
+    title?: string,
+    cancelText?: string,
+    submitText?: string,
+    onEditToggle?: (editing: boolean) => any
 }
 
 interface DetailEditingState {
@@ -40,7 +48,9 @@ interface DetailEditingState {
 
 export class DetailEditing extends React.Component<DetailEditingProps, DetailEditingState> {
     static defaultProps = {
-        useEditIcon: true
+        useEditIcon: true,
+        cancelText: "Cancel",
+        submitText: "Save",
     };
 
     constructor(props: DetailEditingProps) {
@@ -134,6 +144,10 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     handleClick = () => {
+        if (Utils.isFunction(this.props.onEditToggle)) {
+            this.props.onEditToggle(!this.state.editing);
+        }
+
         this.setState((state) => ({
             editing: !state.editing,
             warning: undefined,
@@ -176,6 +190,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 rows: [updatedValues]
             }).then(() => {
                 this.setState(() => ({editing: false}));
+                if (Utils.isFunction(this.props.onEditToggle))
+                    this.props.onEditToggle(false);
 
                 if (onUpdate) {
                     onUpdate();
@@ -198,13 +214,14 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     };
 
     renderEditControls() {
+        const {cancelText, submitText} = this.props;
         const { canSubmit } = this.state;
         return (
             <>
                 <div className="pull-left bottom-spacing">
                     <Button
                         onClick={this.handleClick}>
-                        Cancel
+                        {cancelText}
                     </Button>
                 </div>
                 <div className="btn-group pull-right">
@@ -212,7 +229,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                         bsStyle={"success"}
                         type="submit"
                         disabled={!canSubmit}>
-                        Save
+                        {submitText}
                     </Button>
                 </div>
             </>
@@ -220,13 +237,13 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     render() {
-        const { queryModel, canUpdate, useEditIcon } = this.props;
+        const { queryModel, queryColumns, canUpdate, useEditIcon, appEditable, asSubPanel, title } = this.props;
         const { editing, warning, error } = this.state;
 
         let isEditable = false;
         if (queryModel && queryModel.queryInfo) {
             const hasData = queryModel.getData().size > 0;
-            isEditable = hasData && queryModel.queryInfo.isAppEditable();
+            isEditable = hasData && (queryModel.queryInfo.isAppEditable() || appEditable);
         }
 
         const header = <DetailPanelHeader
@@ -234,6 +251,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
             isEditable={isEditable}
             canUpdate={canUpdate}
             editing={editing}
+            title={title}
             onClickFn={this.handleClick}
             warning={warning}/>;
 
@@ -251,12 +269,15 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                                 {error && <Alert>{error}</Alert>}
                                 <Detail
                                     queryModel={queryModel}
+                                    editingMode={true}
                                     detailRenderer={resolveDetailEditRenderer}
-                                    titleRenderer={titleRenderer}/>
+                                    titleRenderer={titleRenderer}
+                                />
                             </div>
                         </Panel.Body>
                     </Panel>
                     {this.renderEditControls()}
+                    {asSubPanel && <div className="panel-divider-spacing"/>}
                 </Formsy>
             )
         }
@@ -265,8 +286,11 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
             <Panel>
                 <Panel.Heading>{header}</Panel.Heading>
                 <Panel.Body>
-                    <Detail queryModel={queryModel}
-                            detailRenderer={resolveDetailRenderer}/>
+                    <Detail
+                        queryModel={queryModel}
+                        queryColumns={queryColumns}
+                        detailRenderer={resolveDetailRenderer}
+                    />
                 </Panel.Body>
             </Panel>
         )

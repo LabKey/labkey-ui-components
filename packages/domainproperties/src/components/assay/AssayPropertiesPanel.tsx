@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Col, Form, FormControl, Row, Panel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPlusSquare, faMinusSquare, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { LabelHelpTip, Tip } from "@glass/base";
 
 import { AssayProtocolModel } from "../../models";
@@ -21,6 +21,7 @@ interface Props {
     asPanel: boolean
     initCollapsed: boolean
     collapsible?: boolean
+    markComplete?: boolean
 }
 
 interface State {
@@ -49,6 +50,10 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         if (!this.props.collapsible && nextProps.initCollapsed !== this.props.initCollapsed) {
             this.togglePanel(null, nextProps.initCollapsed);
         }
+    }
+
+    isNew(): boolean {
+        return this.props.model.protocolId === undefined;
     }
 
     togglePanel = (evt: any, collapsed?: boolean): void => {
@@ -136,6 +141,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                             placeholder={'Enter a name for this assay'}
                             value={model.name || ''}
                             onChange={this.onChange}
+                            disabled={!this.isNew()}
                         />
                     </Col>
                 </Row>
@@ -222,7 +228,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderPanel() {
-        const { collapsible } = this.props;
+        const { collapsible, markComplete } = this.props;
         const { collapsed } = this.state;
 
         return (
@@ -242,6 +248,11 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                                 <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
                             </span>
                         </Tip>
+                    }
+                    {!collapsible && collapsed && markComplete &&
+                        <span className={'pull-right'} onClick={this.togglePanel}>
+                            <FontAwesomeIcon icon={faCheckCircle}/>
+                        </span>
                     }
                 </Panel.Heading>
                 {!collapsed &&

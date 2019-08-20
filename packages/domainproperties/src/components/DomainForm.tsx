@@ -18,7 +18,7 @@ import { List} from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle, faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faPlusSquare, faMinusSquare, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { Alert, ConfirmModal, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
@@ -40,6 +40,8 @@ interface IDomainFormInput {
     showHeader: boolean
     initCollapsed: boolean
     collapsible?: boolean
+    markComplete?: boolean
+    headerPrefix?: string // used as a string to remove from the heading when using the domain.name
 }
 
 interface IDomainFormState {
@@ -388,14 +390,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderForm() {
-        const { domain } = this.props;
+        const { domain, children } = this.props;
         const { expandedRowIndex } = this.state;
 
         return (
             <>
                 <Row className='domain-form-hdr-row'>
-                    <p>Adjust fields and their properties that will be shown within this domain. Click a row
-                        to access additional options. Drag and drop rows to re-order them.</p>
+                    {children ? children
+                        : <p>Adjust fields and their properties that will be shown within this domain. Click a row
+                            to access additional options. Drag and drop rows to re-order them.</p>
+                    }
                 </Row>
                 {/*{this.renderSearchRow()}*/}
                 {domain.fields.size > 0 ?
@@ -431,14 +435,32 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
-    render() {
-        const { domain, showHeader, collapsible } = this.props;
-        const { showConfirm, collapsed } = this.state;
+    getHeaderName(): string {
+        const { domain, headerPrefix } = this.props;
+        const { collapsed } = this.state;
+        let name = domain.name ? domain.name : "Domain Properties";
 
-        let name = domain.name ? domain.name : "Field Properties";
+        // prefer to use the suffix "Properties" over "Fields"
+        if (name.endsWith(' Fields')) {
+            name = name.substring(0, name.length - 7) + ' Properties';
+        }
+
+        // in collapsed view, add the field count to the header
         if (collapsed && domain.fields.size > 0) {
             name = name + ' (' + domain.fields.size + ')';
         }
+
+        // optionally trim off a headerPrefix from the name display
+        if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
+            name = name.replace(headerPrefix + ' ', '');
+        }
+
+        return name;
+    }
+
+    render() {
+        const { domain, showHeader, collapsible, markComplete } = this.props;
+        const { showConfirm, collapsed } = this.state;
 
         return (
             <>
@@ -446,7 +468,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Panel className={"domain-form-panel"}>
                     {showHeader &&
                         <Panel.Heading>
-                            <span>{name}</span>
+                            <span>{this.getHeaderName()}</span>
                             {collapsible && collapsed &&
                                 <Tip caption="Expand Panel">
                                     <span className={'pull-right'} onClick={this.togglePanel}>
@@ -460,6 +482,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                         <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
                                     </span>
                                 </Tip>
+                            }
+                            {!collapsible && collapsed && markComplete &&
+                                <span className={'pull-right'} onClick={this.togglePanel}>
+                                    <FontAwesomeIcon icon={faCheckCircle}/>
+                                </span>
                             }
                         </Panel.Heading>
                     }

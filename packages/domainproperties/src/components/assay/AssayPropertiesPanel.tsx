@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Col, Form, FormControl, Row, Panel } from "react-bootstrap";
-import { LabelHelpTip } from "@glass/base";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
+import { LabelHelpTip, Tip } from "@glass/base";
+
 import { AssayProtocolModel } from "../../models";
 
 const FORM_ID_PREFIX = 'assay-design-';
@@ -16,14 +19,42 @@ interface Props {
     onChange: (evt: any) => any
     showEditSettings: boolean
     asPanel: boolean
+    initCollapsed: boolean
+    collapsible?: boolean
 }
 
-export class AssayPropertiesPanel extends React.PureComponent<Props, any> {
+interface State {
+    collapsed: boolean
+}
+
+export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
     static defaultProps = {
         model: new AssayProtocolModel(),
         showEditSettings: true,
-        asPanel: true
+        asPanel: true,
+        initCollapsed: false
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            collapsed: props.initCollapsed
+        };
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        // if not collapsible, allow the prop change to update the collapsed state
+        if (!this.props.collapsible && nextProps.initCollapsed !== this.props.initCollapsed) {
+            this.togglePanel(null, nextProps.initCollapsed);
+        }
+    }
+
+    togglePanel = (evt: any, collapsed?: boolean): void => {
+        this.setState((state) => ({
+            collapsed: collapsed !== undefined ? collapsed : !state.collapsed
+        }));
     };
 
     onChange = (evt) => {
@@ -118,7 +149,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, any> {
                     </Col>
                     <Col xs={9}>
                         <textarea
-                            className="form-control"
+                            className="form-control domain-field-textarea"
                             id={FORM_IDS.ASSAY_DESCRIPTION}
                             placeholder={'Add a description'}
                             value={model.description || ''}
@@ -191,14 +222,33 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, any> {
     }
 
     renderPanel() {
+        const { collapsible } = this.props;
+        const { collapsed } = this.state;
+
         return (
             <Panel>
                 <Panel.Heading>
-                    Assay Properties
+                    <span>Assay Properties</span>
+                    {collapsible && collapsed &&
+                        <Tip caption="Expand Panel">
+                            <span className={'pull-right'} onClick={this.togglePanel}>
+                                <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                            </span>
+                        </Tip>
+                    }
+                    {collapsible && !collapsed &&
+                        <Tip caption="Collapse Panel">
+                            <span className={'pull-right'} onClick={this.togglePanel}>
+                                <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                            </span>
+                        </Tip>
+                    }
                 </Panel.Heading>
-                <Panel.Body>
-                    {this.renderForm()}
-                </Panel.Body>
+                {!collapsed &&
+                    <Panel.Body>
+                        {this.renderForm()}
+                    </Panel.Body>
+                }
             </Panel>
         )
     }

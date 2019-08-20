@@ -80,9 +80,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         };
     }
 
-    togglePanel = (): void => {
+    componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
+        // if not collapsible, allow the prop change to update the collapsed state
+        if (!this.props.collapsible && nextProps.initCollapsed !== this.props.initCollapsed) {
+            this.togglePanel(null, nextProps.initCollapsed);
+        }
+    }
+
+    togglePanel = (evt: any, collapsed?: boolean): void => {
         this.setState((state) => ({
-            collapsed: !state.collapsed
+            expandedRowIndex: undefined,
+            collapsed: collapsed !== undefined ? collapsed : !state.collapsed
         }));
     };
 
@@ -424,7 +432,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     render() {
-        const { domain, showHeader, collapsible, initCollapsed } = this.props;
+        const { domain, showHeader, collapsible } = this.props;
         const { showConfirm, collapsed } = this.state;
 
         let name = domain.name ? domain.name : "Field Properties";
@@ -439,14 +447,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     {showHeader &&
                         <Panel.Heading>
                             <span>{name}</span>
-                            {collapsed &&
+                            {collapsible && collapsed &&
                                 <Tip caption="Expand Panel">
                                     <span className={'pull-right'} onClick={this.togglePanel}>
                                         <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
                                     </span>
                                 </Tip>
                             }
-                            {(collapsible || initCollapsed) && !collapsed &&
+                            {collapsible && !collapsed &&
                                 <Tip caption="Collapse Panel">
                                     <span className={'pull-right'} onClick={this.togglePanel}>
                                         <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>

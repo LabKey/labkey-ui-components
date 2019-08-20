@@ -174,6 +174,10 @@ export class DomainDesign extends Record({
     static serialize(dd: DomainDesign): any {
         let json = dd.toJS();
         json.fields = dd.fields.map(DomainField.serialize).toArray();
+
+        // remove non-serializable fields
+        delete json.domainException;
+
         return json;
     }
 

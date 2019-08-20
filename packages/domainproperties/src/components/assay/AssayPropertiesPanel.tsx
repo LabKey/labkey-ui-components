@@ -226,7 +226,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         const { collapsed } = this.state;
 
         return (
-            <Panel>
+            <Panel className={"domain-form-panel"}>
                 <Panel.Heading>
                     <span>Assay Properties</span>
                     {collapsible && collapsed &&

@@ -560,7 +560,6 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
             return DomainDesign.serialize(domain);
         });
 
-        // TODO: this API needs to handle checks for reserved fields for domains (ex. I was able to create a data domain with "RowId" as a field name but then data imports failed because of it)
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api'),
             jsonData: model.merge({domains}),

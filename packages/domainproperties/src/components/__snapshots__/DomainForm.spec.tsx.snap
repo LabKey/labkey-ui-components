@@ -1327,7 +1327,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                           Description
                                                         </div>
                                                         <textarea
-                                                          className="form-control domain-field-description"
+                                                          className="form-control domain-field-textarea"
                                                           disabled={false}
                                                           id="domainpropertiesrow-description-0"
                                                           name="domainpropertiesrow-description"

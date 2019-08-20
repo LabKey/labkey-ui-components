@@ -376,7 +376,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 Description
               </div>
               <textarea
-                className="form-control domain-field-description"
+                className="form-control domain-field-textarea"
                 disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
@@ -1267,7 +1267,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 Description
               </div>
               <textarea
-                className="form-control domain-field-description"
+                className="form-control domain-field-textarea"
                 disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
@@ -2057,7 +2057,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 Description
               </div>
               <textarea
-                className="form-control domain-field-description"
+                className="form-control domain-field-textarea"
                 disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
@@ -2844,7 +2844,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 Description
               </div>
               <textarea
-                className="form-control domain-field-description"
+                className="form-control domain-field-textarea"
                 disabled={false}
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"

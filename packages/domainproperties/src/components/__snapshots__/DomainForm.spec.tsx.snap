@@ -11612,7 +11612,7 @@ exports[`DomainForm with empty domain form 1`] = `
                 className="panel-heading"
               >
                 <span>
-                  Field Properties
+                  Domain Properties
                 </span>
               </div>
             </PanelHeading>

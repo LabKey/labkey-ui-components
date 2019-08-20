@@ -46,6 +46,7 @@ interface QueryFormInputsProps {
     fieldValues?: any
     fireQSChangeOnInit?: boolean
     checkRequiredFields?: boolean
+    showLabelAsterisk?: boolean // only used if checkRequiredFields is false, to show * for fields that are originally required
     includeLabelField?: boolean
     onQSChange?: (name: string, value: string | Array<any>, items: any) => any
     queryColumns?: OrderedMap<string, QueryColumn>
@@ -140,6 +141,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             fieldValues,
             fireQSChangeOnInit,
             checkRequiredFields,
+            showLabelAsterisk,
             initiallyDisableFields,
             lookups,
             queryColumns,
@@ -161,8 +163,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 .valueSeq()
                 .map((col: QueryColumn, i: number) => {
                     let value = caseInsensitive(fieldValues, col.name);
-                    if (!checkRequiredFields) {
+
+                    let showAsteriskSymbol = false;
+                    if (!checkRequiredFields && col.required) {
                         col = col.set('required', false) as QueryColumn;
+                        showAsteriskSymbol = showLabelAsterisk;
                     }
 
                     if (!value && lookups) {
@@ -203,6 +208,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         joinValues={joinValues}
                                         label={col.caption}
+                                        addLabelAsterisk={showAsteriskSymbol}
                                         loadOnChange
                                         loadOnFocus
                                         maxRows={10}
@@ -222,18 +228,18 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.inputType === 'textarea') {
-                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
+                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
                     } else if (col.inputType === 'file' && renderFileInputs) {
-                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
+                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
                     }
 
                     switch (col.jsonType) {
                         case 'date':
-                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
+                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
                         case 'boolean':
-                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
+                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
                         default:
-                            return <TextInput key={i} queryColumn={col} value={value ? String(value) : value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields}/>;
+                            return <TextInput key={i} queryColumn={col} value={value ? String(value) : value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
                     }
                 })
                 .toArray();

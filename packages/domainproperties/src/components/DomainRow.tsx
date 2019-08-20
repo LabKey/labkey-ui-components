@@ -336,7 +336,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
                 {(provided) => (
-                    <div className={(fieldError ? this.getFieldErrorClass(fieldError) : 'domain-field-row ') + (closed ? 'domain-row-expanded ': '') }
+                    <div className={(fieldError ? this.getFieldErrorClass(fieldError) : 'domain-field-row ') + (!closed ? 'domain-row-expanded ': '') }
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}

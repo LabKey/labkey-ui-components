@@ -337,6 +337,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         //test row highlighting for a warning
@@ -379,6 +380,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
         //test row highlighting for error

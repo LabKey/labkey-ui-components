@@ -195,6 +195,10 @@ export class DomainDesign extends Record({
     hasException(): boolean {
         return (this.domainException !== undefined && this.domainException.errors !== undefined);
     }
+
+    isNameSuffixMatch(name: string): boolean {
+        return this.name && this.name.endsWith(name + ' Fields');
+    }
 }
 
 interface IDomainIndex {
@@ -810,5 +814,13 @@ export class AssayProtocolModel extends Record({
             ...raw,
             domains
         });
+    }
+
+    getDomainByNameSuffix(name: string): DomainDesign {
+        if (this.domains.size > 0) {
+            return this.domains.find((domain) => {
+                return domain.isNameSuffixMatch(name);
+            });
+        }
     }
 }

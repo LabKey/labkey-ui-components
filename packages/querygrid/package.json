@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.13.1-fb-assayDesignCreate.7",
+  "version": "0.13.1-fb-assayDesignCreate.8",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -39,7 +39,7 @@
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
     "@glass/base": "0.14.1-fb-assayDesignCreate.1",
-    "@glass/domainproperties": "0.0.31-fb-assayDesignCreate.8",
+    "@glass/domainproperties": "0.0.31-fb-assayDesignCreate.9",
     "@glass/omnibox": "0.1.33-fb-assayDesignCreate.1",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",

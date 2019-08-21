@@ -71,6 +71,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
               data-react-beautiful-dnd-droppable="6"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {
@@ -1678,6 +1679,7 @@ exports[`DomainRowDisplay date time field 1`] = `
               data-react-beautiful-dnd-droppable="3"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {
@@ -3305,6 +3307,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
               data-react-beautiful-dnd-droppable="2"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {
@@ -4831,6 +4834,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
               data-react-beautiful-dnd-droppable="4"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {
@@ -6105,6 +6109,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
               data-react-beautiful-dnd-droppable="7"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {
@@ -7712,6 +7717,7 @@ exports[`DomainRowDisplay string field test 1`] = `
               data-react-beautiful-dnd-droppable="1"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {
@@ -9259,6 +9265,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
               data-react-beautiful-dnd-droppable="0"
             >
               <DomainRow
+                expandTransition={300}
                 expanded={false}
                 field={
                   Immutable.Record {

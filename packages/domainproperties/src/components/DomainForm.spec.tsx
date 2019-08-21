@@ -16,7 +16,7 @@
 
 
 import * as React from "react";
-import {DomainDesign, DomainField, DomainIndex, IFieldChange} from "../models";
+import {DomainDesign} from "../models";
 import DomainForm from "./DomainForm";
 import {
     ATTACHMENT_RANGE_URI,
@@ -35,7 +35,7 @@ import {
     STRING_RANGE_URI
 } from "../constants";
 import {mount} from "enzyme";
-import {clearFieldDetails, createFormInputId, handleDomainUpdates, updateDomainField} from "../actions/actions";
+import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
 
 describe('DomainFormDisplay', () => {

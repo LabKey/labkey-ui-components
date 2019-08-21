@@ -12,10 +12,8 @@ import {
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     INT_RANGE_URI, PHILEVEL_FULL_PHI,
-    PHILEVEL_LIMITED_PHI,
-    PHILEVEL_RESTRICTED_PHI
+    PHILEVEL_LIMITED_PHI
 } from "../constants";
-import toJson from "enzyme-to-json";
 import {AdvancedSettings} from "./AdvancedSettings";
 import {DomainField} from "../models";
 

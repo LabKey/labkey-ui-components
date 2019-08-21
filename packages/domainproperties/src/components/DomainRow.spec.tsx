@@ -26,20 +26,15 @@ import {
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
-    PARTICIPANTID_CONCEPT_URI,
     PHILEVEL_RESTRICTED_PHI,
-    DATETIME_RANGE_URI,
     DOMAIN_FIELD_DETAILS,
-    DOUBLE_RANGE_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-    STRING_RANGE_URI
+    EXPAND_TRANSITION
 } from "../constants";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import toJson from "enzyme-to-json";
 import {createFormInputId} from "../actions/actions";
-import {LookupFieldOptions} from "./LookupFieldOptions";
-import {fn} from "moment";
 
 const wrapDraggable = (element) => {
     return (
@@ -73,6 +68,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -102,6 +98,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -144,6 +141,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -186,6 +184,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -228,6 +227,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -282,6 +282,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={true}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -337,6 +338,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 
@@ -380,6 +382,7 @@ describe('DomainRowDisplay', () => {
                     onExpand={jest.fn()}
                     onDelete={jest.fn()}
                     expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />));
 

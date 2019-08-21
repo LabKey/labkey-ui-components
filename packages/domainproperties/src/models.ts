@@ -59,12 +59,14 @@ export class PropDescType extends Record({
     display: undefined,
     name: undefined,
     rangeURI: undefined,
+    alternateRangeURI: undefined,
     shortDisplay: undefined
 }) implements IPropDescType {
     conceptURI: string;
     display: string;
     name: string;
     rangeURI: string;
+    alternateRangeURI: string;
     shortDisplay: string;
 
     static isLookup(name: string): boolean {
@@ -96,16 +98,16 @@ export class PropDescType extends Record({
     }
 }
 
-const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, shortDisplay: 'String'});
+const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
 const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI}),
-    new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI}),
-    new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI}),
-    new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI}),
-    new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI}),
+    new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI, alternateRangeURI: 'xsd:boolean'}),
+    new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'}),
+    new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI, alternateRangeURI: 'xsd:double'}),
+    new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI, alternateRangeURI: 'xsd:dateTime'}),
     new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI}),
     new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI}),
     new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI}),
@@ -454,7 +456,7 @@ export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
 function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
     let type: PropDescType;
 
-    if (!isFieldNew(rawField)) {
+    if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
@@ -464,6 +466,10 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
                 {
                     return true;
                 }
+            }
+            // handle alternateRangeURI which are returned from the server for inferDomain response
+            else if (type.alternateRangeURI && type.alternateRangeURI === rawField.rangeURI) {
+                return true;
             }
             // handle selected lookup option
             else if (type.isLookup() && rawField.lookupQuery && rawField.lookupQuery !== 'users') {

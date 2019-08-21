@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { List} from "immutable";
+import { List, Map } from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faPlusSquare, faMinusSquare, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { Alert, ConfirmModal, Tip } from "@glass/base";
+import { Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import { DomainDesign, DomainField, DomainFieldError, IFieldChange} from "../models";
 import {
-    addField,
+    addDomainField,
     getIndexFromId,
     handleDomainUpdates,
-    removeField,
+    removeField, setDomainFields,
     updateDomainField
 } from "../actions/actions";
 import { LookupProvider } from "./Lookup/Context";
@@ -42,6 +42,7 @@ interface IDomainFormInput {
     collapsible?: boolean
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
+    showInferFromFile?: boolean
 }
 
 interface IDomainFormState {
@@ -129,50 +130,34 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
+    onDomainChange(updatedDomain: DomainDesign) {
+        const { onChange } = this.props;
+
+        if (onChange) {
+            onChange(updatedDomain, true);
+        }
+    }
+
     onDeleteConfirm = () => {
-        const { domain, onChange } = this.props;
-        const { expandedRowIndex } = this.state;
-
-        const newDomain = removeField(domain, expandedRowIndex);
-
         this.setState({
             expandedRowIndex: undefined,
             showConfirm: false
         });
 
-        if (onChange) {
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
 
     onAddField = () => {
-        const {domain, onChange} = this.props;
-
-        const newDomain = addField(domain);
-
-        if (onChange) {
-            onChange(newDomain, true);
-        }
-
+        this.onDomainChange(addDomainField(this.props.domain));
         this.collapseRow();
     };
 
     onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
-        const { domain, onChange } = this.props;
-
-        if (onChange) {
-            const newDomain = updateDomainField(domain, value);
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(updateDomainField(this.props.domain, value));
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
-        const {domain, onChange} = this.props;
-
-        if (onChange) {
-            const newDomain = handleDomainUpdates(domain, changes);
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(handleDomainUpdates(this.props.domain, changes));
     };
 
     onDeleteField = (index: number): void => {
@@ -197,15 +182,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onBeforeDragStart = () => {
-        const { domain, onChange } = this.props;
-
-        if (onChange) {
-            onChange(domain, true);
-        }
+        this.onDomainChange(this.props.domain);
     };
 
     onDragEnd = (result) => {
-        const { domain, onChange } = this.props;
+        const { domain } = this.props;
 
         let destIndex = result.source.index;  // default behavior go back to original spot if out of bounds
         let srcIndex = result.source.index;
@@ -267,9 +248,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainException: domainExceptionWithMovedErrors
         }) as DomainDesign;
 
-        if (onChange) {
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(newDomain);
     };
 
     setNewIndexOnError = (oldIndex: number, newIndex: number, fieldErrors: List<DomainFieldError>, fieldName: string) => {
@@ -296,16 +275,26 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return updatedErrorList as List<DomainFieldError>;
     };
 
-    getAddFieldButton() {
-        return (
-            <Row>
-                <Col xs={12}>
+    renderAddFieldOption() {
+
+        if (this.shouldShowInferFromFile()) {
+            return (
+                <div className={'domain-form-add-link margin-top'} onClick={this.onAddField}>
+                    Or Start a New Design
+                </div>
+            )
+        }
+        else {
+            return (
+                <Row>
+                    <Col xs={12}>
                     <span className={"domain-form-add"} onClick={this.onAddField}>
                         <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
                     </span>
-                </Col>
-            </Row>
-        )
+                    </Col>
+                </Row>
+            )
+        }
     }
 
     getFieldError(domain: DomainDesign, index: number) : DomainFieldError {
@@ -357,15 +346,42 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
-    renderEmptyDomain() {
-        const { helpURL, helpNoun } = this.props;
+    shouldShowInferFromFile(): boolean {
+        const { domain, showInferFromFile } = this.props;
+        return showInferFromFile && domain.fields.size === 0;
+    }
 
-        return (
-            <Panel className='domain-form-no-field-panel'>
-                {'No fields have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
-                <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
-            </Panel>
-        )
+    handleFilePreviewLoad = (response: InferDomainResponse) => {
+        this.onDomainChange(setDomainFields(this.props.domain, response.fields));
+    };
+
+    renderEmptyDomain() {
+        if (this.shouldShowInferFromFile()) {
+            return (
+                <FileAttachmentForm
+                    acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}
+                    showAcceptedFormats={true}
+                    allowDirectories={false}
+                    allowMultiple={false}
+                    label={'Infer fields from file'}
+                    previewGridProps={{
+                        previewCount: 3, // TODO what value to use here?
+                        skipPreviewGrid: true,
+                        onPreviewLoad: this.handleFilePreviewLoad
+                    }}
+                />
+            )
+        }
+        else {
+            const { helpURL, helpNoun } = this.props;
+
+            return (
+                <Panel className='domain-form-no-field-panel'>
+                    {'No fields have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
+                    <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
+                </Panel>
+            )
+        }
     }
 
     renderSearchRow() {
@@ -430,7 +446,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     </DragDropContext>
                     : this.renderEmptyDomain()
                 }
-                {this.getAddFieldButton()}
+                {this.renderAddFieldOption()}
             </>
         )
     }

@@ -84,6 +84,15 @@
   color: $brand-success;
 }
 
+.domain-form-add-link {
+  color: $brand-primary;
+  cursor: pointer;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
 .domain-form-expand-btn {
   color: $gray-light;
 

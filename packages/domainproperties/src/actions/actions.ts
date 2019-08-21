@@ -236,7 +236,7 @@ export function getIndexFromId(id: string): number {
     return -1;
 }
 
-export function addField(domain: DomainDesign): DomainDesign {
+export function addDomainField(domain: DomainDesign): DomainDesign {
     return domain.merge({
         fields: domain.fields.push(DomainField.create({}))
     }) as DomainDesign;
@@ -528,16 +528,19 @@ export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
     });
 }
 
-export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
-    let dataDomain = DomainDesign.init('Data');
-    dataDomain = dataDomain.merge({
+export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>): DomainDesign {
+    return domain.merge({
         fields: fields.map((field) => {
-            return {
+            return DomainField.create({
                 name: field.name,
                 rangeURI: field.rangeURI
-            }
+            });
         })
     }) as DomainDesign;
+}
+
+export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
+    const dataDomain = setDomainFields(DomainDesign.init('Data'), fields);
 
     const model = AssayProtocolModel.create({
         providerName: 'General',

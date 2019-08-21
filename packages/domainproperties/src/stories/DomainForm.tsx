@@ -5,7 +5,8 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { text, withKnobs } from '@storybook/addon-knobs'
+import { text, boolean, withKnobs } from '@storybook/addon-knobs'
+import mock, { proxy } from 'xhr-mock';
 
 import { DomainDesign } from "../models";
 import { DomainFormImpl } from "../components/DomainForm";
@@ -18,10 +19,21 @@ import exceptionDataServer from "../test/data/property-domainExceptionFromServer
 import exceptionDataClient from "../test/data/property-domainExceptionClient.json";
 import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
 import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
+import inferDomainJson from '../test/data/property-inferDomain.json';
 import './stories.scss'
 
+mock.setup();
+mock.post(/.*\/property\/inferDomain.*/, {
+    status: 200,
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(inferDomainJson)
+});
+mock.use(proxy);
+
 interface Props {
+    showInferFromFile?: boolean
     initCollapsed?: boolean
+    markComplete?: boolean
     data: {}
     exception?: {}
     helpNoun?: any
@@ -69,6 +81,14 @@ storiesOf("DomainForm", module)
             />
         )
     })
+    .add("infer from file", () => {
+        return (
+            <DomainFormContainer
+                data={undefined}
+                showInferFromFile={boolean('showInferFromFile', true)}
+            />
+        )
+    })
     .add("with domain properties", () => {
         return (
             <DomainFormContainer
@@ -76,11 +96,12 @@ storiesOf("DomainForm", module)
             />
         )
     })
-    .add("initCollapsed", () => {
+    .add("initCollapsed and mark complete", () => {
         return (
             <DomainFormContainer
                 data={domainData}
-                initCollapsed={true}
+                initCollapsed={boolean('initCollapsed', true)}
+                markComplete={boolean('markComplete', false)}
             />
         )
     })

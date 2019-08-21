@@ -161,3 +161,53 @@
 .domain-help-table {
   border: 1px solid black;
 }
+
+.domain-adv-footer {
+  font-size: 14px;
+}
+
+.domain-adv-link:hover {
+  cursor: pointer;
+}
+
+.domain-adv-apply-btn {
+   margin-left: 12px;
+}
+
+.domain-adv-cancel-btn {
+  float: left;
+}
+
+.domain-adv-display-options {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.domain-adv-misc-options {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 0 14px 0;
+}
+
+.domain-adv-phi {
+  float: left;
+}
+
+select.domain-adv-phi {
+  width: 250px;
+}
+
+span.domain-adv-phi {
+  margin-top: 3px;
+  margin-right: 25px;
+}
+
+.domain-adv-phi-row {
+  padding-bottom: 30px;
+}
+
+.domain-adv-checkbox {
+  cursor: default
+}
+

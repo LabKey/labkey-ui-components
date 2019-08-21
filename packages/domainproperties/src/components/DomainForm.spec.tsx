@@ -198,6 +198,7 @@ describe('DomainFormDisplay', () => {
             indices:[]
         });
 
+
         domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
         domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
         domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 2), value: "ParticipantId"});

@@ -27,10 +27,13 @@ import {
     addField,
     getIndexFromId,
     handleDomainUpdates,
+    getMaxPhiLevel,
     removeField,
     updateDomainField
 } from "../actions/actions";
+
 import { LookupProvider } from "./Lookup/Context";
+import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -38,11 +41,14 @@ interface IDomainFormInput {
     helpURL: string
     helpNoun: string
     showHeader: boolean
+    maxPhiLevel?: string  // Just for testing, only affects display
 }
 
 interface IDomainFormState {
     expandedRowIndex: number
+    expandTransition: number
     showConfirm: boolean
+    maxPhiLevel: string
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -71,14 +77,30 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.state = {
             expandedRowIndex: undefined,
-            showConfirm: false
+            expandTransition: EXPAND_TRANSITION,
+            showConfirm: false,
+            maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI
         };
+    }
+
+    componentDidMount(): void {
+        if (!this.props.maxPhiLevel) {
+            getMaxPhiLevel()
+                .then((maxPhiLevel) => {
+                    this.setState({maxPhiLevel: maxPhiLevel})
+                })
+                .catch((error) => {
+                        console.error("Unable to retrieve max PHI level.")
+                    }
+                )
+        }
     }
 
     collapse = (): void => {
         if (this.isExpanded()) {
             this.setState({
-                expandedRowIndex: undefined
+                expandedRowIndex: undefined,
+                expandTransition: EXPAND_TRANSITION
             });
         }
     };
@@ -89,10 +111,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
             this.setState({
-                expandedRowIndex: index
+                expandedRowIndex: index,
+                expandTransition: EXPAND_TRANSITION
             })
         }
     };
+
+    fastExpand = (index: number): void => {
+        const { domain } = this.props;
+        const { expandedRowIndex } = this.state;
+
+        if (expandedRowIndex !== index && index < domain.fields.size) {
+            this.setState({
+                expandedRowIndex: index,
+                expandTransition: EXPAND_TRANSITION_FAST
+            })
+        }
+    }
 
     isExpanded = (): boolean => {
         return this.state.expandedRowIndex !== undefined;
@@ -136,21 +171,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.collapse();
     };
 
-    onFieldChange = (fieldId: string, value: any, index: number, expand: boolean) => {
-        const { domain, onChange } = this.props;
-
-        if (onChange) {
-            const newDomain = updateDomainField(domain, value);
-            onChange(newDomain, true);
-        }
-    };
-
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
         const {domain, onChange} = this.props;
 
         if (onChange) {
             const newDomain = handleDomainUpdates(domain, changes);
             onChange(newDomain, true);
+        }
+
+        if (expand) {
+            this.expand(index);
         }
     };
 
@@ -204,30 +234,34 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const newFields = List<DomainField>().asMutable();
         let fieldsWithNewIndexesOnErrors = domain.hasException() ? domain.domainException.errors : List<DomainFieldError>();
 
+        let expanded = this.state.expandedRowIndex;
+
         domain.fields.forEach((field, i) => {
 
             // move down
             if (i !== idIndex && srcIndex < destIndex) {
                 newFields.push(field);
-                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors, field.name);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors);
+                if (i === this.state.expandedRowIndex) {
+                    expanded = newFields.size - 1;
+                }
             }
 
             if (i === destIndex) {
                 newFields.push(movedField);
-                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(idIndex, destIndex, fieldsWithNewIndexesOnErrors, movedField.name);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(idIndex, destIndex, fieldsWithNewIndexesOnErrors);
                 if (idIndex === this.state.expandedRowIndex) {
-                    this.expand(destIndex);
-                } else if (idIndex + 1 === this.state.expandedRowIndex) {
-                    this.expand(destIndex - 1);
-                } else if (idIndex - 1 === this.state.expandedRowIndex) {
-                    this.expand(destIndex + 1);
+                    expanded = destIndex;
                 }
             }
 
             // move up
             if (i !== idIndex && srcIndex > destIndex) {
                 newFields.push(field);
-                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors, field.name);
+                fieldsWithNewIndexesOnErrors = this.setNewIndexOnError(i, newFields.size - 1, fieldsWithNewIndexesOnErrors);
+                if (i === this.state.expandedRowIndex) {
+                    expanded = newFields.size - 1;
+                }
             }
         });
 
@@ -239,7 +273,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         });
 
-        const domainExceptionWithMovedErrors = domain.domainException.set('errors', fieldsWithMovedErrorsUpdated);
+        let domainExceptionWithMovedErrors = undefined;
+        if( domain.hasException()) {
+            domainExceptionWithMovedErrors = domain.domainException.set('errors', fieldsWithMovedErrorsUpdated);
+        }
 
         const newDomain = domain.merge({
             fields: newFields.asImmutable(),
@@ -249,9 +286,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (onChange) {
             onChange(newDomain, true);
         }
+
+        this.fastExpand(expanded);
     };
 
-    setNewIndexOnError = (oldIndex: number, newIndex: number, fieldErrors: List<DomainFieldError>, fieldName: string) => {
+    setNewIndexOnError = (oldIndex: number, newIndex: number, fieldErrors: List<DomainFieldError>) => {
 
         let updatedErrorList = fieldErrors.map(fieldError => {
 
@@ -370,7 +409,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader } = this.props;
-        const { showConfirm, expandedRowIndex } = this.state;
+        const { showConfirm, expandedRowIndex, expandTransition, maxPhiLevel } = this.state;
 
         return (
             <>
@@ -402,9 +441,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                                 fieldError={this.getFieldError(domain, i)}
                                                                 index={i}
                                                                 expanded={expandedRowIndex === i}
+                                                                expandTransition={expandTransition}
                                                                 onChange={this.onFieldsChange}
                                                                 onExpand={this.onFieldExpandToggle}
                                                                 onDelete={this.onDeleteField}
+                                                                maxPhiLevel={maxPhiLevel}
                                                             />
                                                         }))}
                                                         {provided.placeholder}

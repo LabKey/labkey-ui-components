@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from "immutable";
-import { Domain, Query, Security } from "@labkey/api";
+import { Domain, Query, Security, Ajax, ActionURL } from "@labkey/api";
 import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
 
 import {
@@ -26,6 +26,7 @@ import {
     DOMAIN_FIELD_TYPE,
     SEVERITY_LEVEL_ERROR, SEVERITY_LEVEL_WARN
 } from "../constants";
+
 import {
     decodeLookup,
     DomainDesign,
@@ -162,6 +163,20 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .toList();
 }
 
+export function getMaxPhiLevel(): Promise<string> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('security', 'GetMaxPhiLevel.api'),
+            success: (data) => {
+                resolve(JSON.parse(data.response).maxPhiLevel);
+            },
+            failure: (error) => {
+                reject(error);
+            }
+        });
+    });
+}
+
 /**
  * @param domain: DomainDesign to save
  * @param kind: DomainKind if creating new Domain
@@ -237,7 +252,7 @@ export function getIndexFromId(id: string): number {
 
 export function addField(domain: DomainDesign): DomainDesign {
     return domain.merge({
-        fields: domain.fields.push(DomainField.create({}))
+        fields: domain.fields.push(DomainField.create({}, true))
     }) as DomainDesign;
 }
 
@@ -287,15 +302,17 @@ export function handleDomainUpdates(domain: DomainDesign, changes: List<IFieldCh
     let type;
 
     changes.forEach((change) => {
-
         type = getNameFromId(change.id);
-        if (type === DOMAIN_FIELD_CLIENT_SIDE_ERROR) {
+        if (type === DOMAIN_FIELD_CLIENT_SIDE_ERROR)
+        {
             domain = updateDomainException(domain, getIndexFromId(change.id), change.value);
         }
-        else {
+        else
+        {
             domain = updateDomainField(domain, change)
         }
     });
+
     return domain;
 }
 
@@ -351,6 +368,10 @@ function updateDataType(field: DomainField, value: any): DomainField {
             conceptURI: dataType.conceptURI,
             rangeURI: dataType.rangeURI
         }) as DomainField;
+
+        if (field.isNew()) {
+            field = DomainField.updateDefaultValues(field);
+        }
     }
 
     return field;

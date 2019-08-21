@@ -62,6 +62,9 @@ export const SEVERITY_LEVEL_WARN = "Warning";
 export const DEFAULT_SCALE_LINEAR = 'LINEAR';
 export const DEFAULT_SCALE_LOG = 'LOG';
 
+export const EXPAND_TRANSITION = 300;
+export const EXPAND_TRANSITION_FAST = 0;
+
 // URIs for data types
 export const STRING_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#string';
 export const MULTILINE_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#multiLine';

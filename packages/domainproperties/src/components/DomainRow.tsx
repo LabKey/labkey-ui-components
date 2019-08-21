@@ -39,6 +39,7 @@ import {AdvancedSettings} from "./AdvancedSettings";
 
 interface IDomainRowProps {
     expanded: boolean
+    expandTransition: number
     field: DomainField
     index: number
     maxPhiLevel: string
@@ -50,7 +51,7 @@ interface IDomainRowProps {
 
 interface IDomainRowState {
     showAdv: boolean
-    closed: boolean
+    closing: boolean
 }
 
 /**
@@ -63,7 +64,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         this.state = {
             showAdv: false,
-            closed: true
+            closing: false
         };
     }
 
@@ -228,15 +229,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     onExpand = (): any => {
         const { index, onExpand } = this.props;
 
-        this.setState({closed: false});
-
         if (onExpand) {
             onExpand(index);
         }
     };
 
     onCollapsed = () : void => {
-        this.setState({closed: true});
+        this.setState({closing: false});
+    };
+
+    onCollapsing = () : void => {
+        this.setState({closing: true})
     };
 
     renderBaseFields() {
@@ -310,7 +313,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Remove Field
                     </Button>
                     <Button
-                        disabled={true || isFieldFullyLocked(field.lockType)} //TODO: remove true once Advanced Settings are enabled.
+                        disabled={isFieldFullyLocked(field.lockType)}
                         name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, index)}
                         onClick={this.onShowAdvanced}
@@ -330,13 +333,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     render() {
-        const { closed } = this.state;
-        const { index, field, expanded, fieldError, maxPhiLevel } = this.props;
+        const { closing } = this.state;
+        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
                 {(provided) => (
-                    <div className={(fieldError ? this.getFieldErrorClass(fieldError) : 'domain-field-row ') + (!closed ? 'domain-row-expanded ': '') }
+                    <div className={(fieldError ? this.getFieldErrorClass(fieldError) : 'domain-field-row ') + (closing || expanded ? 'domain-row-expanded ': '') }
                          {...provided.draggableProps}
                          {...provided.dragHandleProps}
                          ref={provided.innerRef}
@@ -351,7 +354,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 {this.renderButtons()}
                             </Col>
                         </Row>
-                            <Collapse in={expanded} onExited={this.onCollapsed}>
+                            <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
                                     <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}/>
                                 </div>

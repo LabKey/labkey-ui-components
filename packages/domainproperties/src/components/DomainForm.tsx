@@ -35,10 +35,10 @@ import { LookupProvider } from "./Lookup/Context";
 interface IDomainFormInput {
     domain: DomainDesign
     onChange: (newDomain: DomainDesign, dirty: boolean) => any
-    helpURL: string
-    helpNoun: string
-    showHeader: boolean
-    initCollapsed: boolean
+    helpURL?: string
+    helpNoun?: string
+    showHeader?: boolean
+    initCollapsed?: boolean
     collapsible?: boolean
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name

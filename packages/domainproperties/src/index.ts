@@ -18,6 +18,7 @@ import {AssayProtocolModel, DomainDesign, IBannerMessage} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
 import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
+import {AssayDesignerPanels} from "./components/assay/AssayDesignerPanels";
 import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR} from "./constants";
 
 import './theme/index.scss'
@@ -27,6 +28,7 @@ export {
     DomainForm,
     DomainFieldsDisplay,
     AssayPropertiesPanel,
+    AssayDesignerPanels,
 
     // functions
     fetchDomain,

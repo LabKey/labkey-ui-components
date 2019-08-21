@@ -30,6 +30,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "display": "Text (String)",
         "name": "string",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "alternateRangeURI": "xsd:string",
         "shortDisplay": "String",
       },
       "lookupQueryValue": undefined,
@@ -38,6 +39,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "display": "Lookup",
         "name": "lookup",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "alternateRangeURI": undefined,
         "shortDisplay": undefined,
       },
       "original": Object {
@@ -46,6 +48,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           "display": "Text (String)",
           "name": "string",
           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "alternateRangeURI": "xsd:string",
           "shortDisplay": "String",
         },
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",

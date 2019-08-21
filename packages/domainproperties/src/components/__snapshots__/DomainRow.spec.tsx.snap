@@ -100,6 +100,7 @@ exports[`DomainRow attachment field 1`] = `
                       "display": "Attachment",
                       "name": "attachment",
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -108,6 +109,7 @@ exports[`DomainRow attachment field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -116,6 +118,7 @@ exports[`DomainRow attachment field 1`] = `
                         "display": "Attachment",
                         "name": "attachment",
                         "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                        "alternateRangeURI": undefined,
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
@@ -640,10 +643,11 @@ exports[`DomainRow client side warning on field 1`] = `
                     "shownInUpdateView": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
-                      "name": "string",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                      "shortDisplay": "String",
+                      "display": "Attachment",
+                      "name": "attachment",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
                     "lookupType": Immutable.Record {
@@ -651,15 +655,17 @@ exports[`DomainRow client side warning on field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Text (String)",
-                        "name": "string",
-                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                        "shortDisplay": "String",
+                        "display": "Attachment",
+                        "name": "attachment",
+                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                        "alternateRangeURI": undefined,
+                        "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     },
@@ -869,7 +875,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      value="string"
+                                      value="attachment"
                                     >
                                       <select
                                         className="form-control"
@@ -882,7 +888,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         onFocus={[Function]}
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
-                                        value="string"
+                                        value="attachment"
                                       >
                                         <option
                                           key="0"
@@ -1270,6 +1276,7 @@ exports[`DomainRow date time field 1`] = `
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": "xsd:dateTime",
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -1278,6 +1285,7 @@ exports[`DomainRow date time field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -1286,6 +1294,7 @@ exports[`DomainRow date time field 1`] = `
                         "display": "Date Time",
                         "name": "dateTime",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                        "alternateRangeURI": "xsd:dateTime",
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -1813,6 +1822,7 @@ exports[`DomainRow decimal field 1`] = `
                       "display": "Decimal",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": "xsd:double",
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -1821,6 +1831,7 @@ exports[`DomainRow decimal field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -1829,6 +1840,7 @@ exports[`DomainRow decimal field 1`] = `
                         "display": "Decimal",
                         "name": "double",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                        "alternateRangeURI": "xsd:double",
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -2356,6 +2368,7 @@ exports[`DomainRow participant id field 1`] = `
                       "display": "Subject/Participant (String)",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -2364,6 +2377,7 @@ exports[`DomainRow participant id field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -2372,6 +2386,7 @@ exports[`DomainRow participant id field 1`] = `
                         "display": "Subject/Participant (String)",
                         "name": "ParticipantId",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "alternateRangeURI": undefined,
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -2920,10 +2935,11 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "shownInUpdateView": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
-                      "name": "string",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                      "shortDisplay": "String",
+                      "display": "Attachment",
+                      "name": "attachment",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
                     "lookupType": Immutable.Record {
@@ -2931,15 +2947,17 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Text (String)",
-                        "name": "string",
-                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                        "shortDisplay": "String",
+                        "display": "Attachment",
+                        "name": "attachment",
+                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                        "alternateRangeURI": undefined,
+                        "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
                     },
@@ -3149,7 +3167,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      value="string"
+                                      value="attachment"
                                     >
                                       <select
                                         className="form-control"
@@ -3162,7 +3180,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         onFocus={[Function]}
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
-                                        value="string"
+                                        value="attachment"
                                       >
                                         <option
                                           key="0"
@@ -3550,6 +3568,7 @@ exports[`DomainRow string field 1`] = `
                       "display": "Text (String)",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": "xsd:string",
                       "shortDisplay": "String",
                     },
                     "lookupQueryValue": undefined,
@@ -3558,6 +3577,7 @@ exports[`DomainRow string field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -3566,6 +3586,7 @@ exports[`DomainRow string field 1`] = `
                         "display": "Text (String)",
                         "name": "string",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "alternateRangeURI": "xsd:string",
                         "shortDisplay": "String",
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -4117,6 +4138,7 @@ exports[`DomainRow with empty domain form 1`] = `
                       "display": "Text (String)",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": "xsd:string",
                       "shortDisplay": "String",
                     },
                     "lookupQueryValue": undefined,
@@ -4125,6 +4147,7 @@ exports[`DomainRow with empty domain form 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": undefined,
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -4133,6 +4156,7 @@ exports[`DomainRow with empty domain form 1`] = `
                         "display": "Text (String)",
                         "name": "string",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "alternateRangeURI": "xsd:string",
                         "shortDisplay": "String",
                       },
                       "rangeURI": undefined,

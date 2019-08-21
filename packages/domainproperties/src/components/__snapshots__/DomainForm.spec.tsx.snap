@@ -439,6 +439,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                   className=""
                                 >
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={true}
                                     field={
                                       Immutable.Record {
@@ -1029,14 +1030,14 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                                       bsClass="btn"
                                                       bsStyle="default"
                                                       className="domain-row-button"
-                                                      disabled={true}
+                                                      disabled={false}
                                                       id="domainpropertiesrow-adv-0"
                                                       name="domainpropertiesrow-adv"
                                                       onClick={[Function]}
                                                     >
                                                       <button
                                                         className="domain-row-button btn btn-default"
-                                                        disabled={true}
+                                                        disabled={false}
                                                         id="domainpropertiesrow-adv-0"
                                                         name="domainpropertiesrow-adv"
                                                         onClick={[Function]}
@@ -1141,6 +1142,7 @@ exports[`DomainFormDisplay domain form add, expand, and delete field 1`] = `
                                             in={true}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -2521,6 +2523,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
                                   className=""
                                 >
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -3126,6 +3129,7 @@ exports[`DomainFormDisplay domain form updated field, cleared details 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -5535,6 +5539,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                   className=""
                                 >
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -6140,6 +6145,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -6989,6 +6995,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -7606,6 +7613,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -8452,6 +8460,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -9063,6 +9072,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -9909,6 +9919,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -10502,6 +10513,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -11288,6 +11300,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -11881,6 +11894,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -12730,6 +12744,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -13323,6 +13338,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -14273,6 +14289,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -14890,6 +14907,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -15736,6 +15754,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -16329,6 +16348,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -16902,6 +16922,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -17519,6 +17540,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -18092,6 +18114,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -18685,6 +18708,7 @@ exports[`DomainFormDisplay domain form with all field types 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -20420,6 +20444,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                   className=""
                                 >
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -21027,6 +21052,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -21876,6 +21902,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -22495,6 +22522,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -23281,6 +23309,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -23888,6 +23917,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >
@@ -24461,6 +24491,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                     </ConnectFunction>
                                   </DomainRow>
                                   <DomainRow
+                                    expandTransition={300}
                                     expanded={false}
                                     field={
                                       Immutable.Record {
@@ -25080,6 +25111,7 @@ exports[`DomainFormDisplay domain form with updated fields 1`] = `
                                             in={false}
                                             mountOnEnter={false}
                                             onExited={[Function]}
+                                            onExiting={[Function]}
                                             timeout={300}
                                             unmountOnExit={false}
                                           >

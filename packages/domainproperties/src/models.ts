@@ -801,7 +801,7 @@ export class AssayProtocolModel extends Record({
     }
 
     static create(raw: any): AssayProtocolModel {
-        let domains = List<DomainDesign>();
+        let domains = raw.domains || List<DomainDesign>();
         if (raw.domains && Utils.isArray(raw.domains)) {
             domains = List<DomainDesign>(
                 raw.domains.map((domain) => {

@@ -4,11 +4,11 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version 0.0.?
-*Released*: ? August 2019
-* Item 6000: Domain designer Advanced Settings.
+### version 0.0.31
+*Released*: 21 August 2019
+* Epic 6000: Domain designer Advanced Settings.
     - Advanced settings added to each domain property
-    - Various PHI and various display settings
+    - PHI and various display settings
     
 ### version 0.0.30
 *Released*: 18 August 2019

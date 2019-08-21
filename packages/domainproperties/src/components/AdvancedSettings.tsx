@@ -204,9 +204,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <div className='domain-adv-display-options'>Display Options</div>
                     <div>These options configure how and in which views this field will be visible.</div>
                     <Checkbox checked={hidden === false} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_HIDDEN)} id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>Show field on default view of the grid</Checkbox>
-                    <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on update form when updating a single row of data</Checkbox>
+                    <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on update form when updating a single row of data</Checkbox>
                     <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>Show on insert form when updating a single row of data</Checkbox>
-                    <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on details page for a single row</Checkbox>
+                    <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox} name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)} id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on details page for a single row</Checkbox>
                     <div className='domain-adv-misc-options'>Miscellaneous Options</div>
                     <div className='domain-adv-phi-row'>
                         <span className='domain-adv-phi'>PHI Level<LabelHelpTip title='PHI Level' body={this.getPhiHelpText} /></span>

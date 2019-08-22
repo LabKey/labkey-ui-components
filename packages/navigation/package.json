@@ -72,5 +72,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "d3414b9c3c37e2cd6e175f43fb0ecdc6572767a2"
+  "gitHead": "522a421ed38ca985a38208069243d6f8572beed3"
 }

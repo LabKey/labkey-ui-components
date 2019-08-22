@@ -7,6 +7,7 @@ Base components, models, and utility functions for LabKey applications and pages
 ### version ???
 *Released*: ???
 * move AssayProtocolModel (and related actions) from base to domainproperties
+* add FileAttachmentForm option to skipPreviewGrid display
 
 ### version 0.14.1
 *Released*: 21 August 2019

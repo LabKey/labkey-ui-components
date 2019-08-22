@@ -94,7 +94,7 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
 import { SearchResultCard } from './components/search/SearchResultCard'
 import { SearchResultsPanel } from './components/search/SearchResultsPanel'
-import { deleteSampleSet, getSampleDeleteConfirmationData, loadSelectedSamples } from './components/samples/actions'
+import { deleteSampleSet, getSampleDeleteConfirmationData, getSampleSet, loadSelectedSamples } from './components/samples/actions'
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
 import { AssayImportPanels } from './components/assay/AssayImportPanels'
@@ -221,6 +221,7 @@ export {
     SampleSetDetailsPanel,
     SampleSetDeleteConfirmModal,
     deleteSampleSet,
+    getSampleSet,
     createQueryGridModelFilteredBySample,
     loadSelectedSamples,
 

@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 import * as React from 'react';
+import {LabelHelpTip} from "../LabelHelpTip";
 
 interface AddEntityButtonProps {
     buttonClass?: string
     containerClass?: string
     entity?: string
     onClick: () => void
+    helperTitle?:string
+    helperBody?: any
 }
 
 export class AddEntityButton extends React.Component<AddEntityButtonProps, any> {
 
     static defaultProps = {
-        containerClass: 'form-group'
+        containerClass: 'form-group',
+        helperTitle: 'More Info',
     };
 
     render() {
-        const { buttonClass, containerClass, entity, onClick } = this.props;
+        const { buttonClass, containerClass, entity, onClick, helperBody, helperTitle } = this.props;
 
         return (
             <div className={containerClass}>
@@ -37,8 +41,9 @@ export class AddEntityButton extends React.Component<AddEntityButtonProps, any> 
                     <span className="container--action-button" onClick={onClick}>
                         <i className="fa fa-plus-circle container--addition-icon"/> Add {entity}
                     </span>
+                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle}/> : '' }
                 </div>
             </div>
-        )
+        );
     }
 }

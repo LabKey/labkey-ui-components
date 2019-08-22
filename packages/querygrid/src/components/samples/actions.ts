@@ -20,6 +20,7 @@ import { buildURL, naturalSort, QueryColumn, SchemaQuery, SCHEMAS } from '@glass
 
 import {
     DisplayObject,
+    IParentOption,
     ISampleSetDetails,
     ISampleSetOption,
     SampleIdCreationModel,
@@ -101,6 +102,31 @@ function extractFromRow(row: Map<string, any>): ISampleSetOption {
     }
 }
 
+export function initSampleSetSelects() :Promise<List<IParentOption>> {
+    return selectRows({
+        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+        columns: 'LSID,Name,RowId'
+    }).then(results => {
+        const sampleSets = fromJS(results.models[results.key]);
+        const sets = sampleSets.map(row =>
+        {
+            const name = row.getIn(['Name', 'value']);
+            return {
+                value: name.toLowerCase(),
+                label: name,
+                schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
+            };
+        }
+        ).sortBy(p => p.label, naturalSort);
+
+        return sets;
+    });
+}
+
+
+
 export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Partial<SampleIdCreationModel>> {
     return new Promise( (resolve) => {
 
@@ -157,6 +183,22 @@ export function createSampleSet(config: ISampleSetDetails): Promise<any> {
         return Ajax.request({
             url: buildURL('experiment', 'createSampleSetApi.api'),
             method: 'POST',
+            params: config,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function getSampleSet(config: ISampleSetDetails): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'getSampleSetApi.api'),
+            method: 'GET',
             params: config,
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);

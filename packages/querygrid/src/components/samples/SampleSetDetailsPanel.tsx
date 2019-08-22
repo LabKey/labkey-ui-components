@@ -1,11 +1,16 @@
 import * as React from 'react'
-import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
-import { Map } from 'immutable'
-import { Alert, WizardNavButtons } from "@glass/base";
+import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
+import {Map} from 'immutable'
+import { Alert, AddEntityButton, WizardNavButtons, generateId } from "@glass/base";
 
-import { createSampleSet, updateSampleSet } from "./actions";
-import { ISampleSetDetails } from "./models";
+import { createSampleSet, updateSampleSet, initSampleSetSelects } from "./actions";
+import {
+    IParentOption,
+    ISampleSetDetails,
+    ParentAlias,
+} from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
+import {SampleSetParentAliasRow} from "../../components/samples/SampleSetParentAliasRow";
 
 const UNKNOWN_ERROR_CREATE = 'An unknown error occurred creating the sample set.';
 const UNKNOWN_ERROR_UPDATE = 'An unknown error occurred updating the sample set.';
@@ -21,11 +26,15 @@ interface Props {
     onComplete: (response: any) => void
     beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
+    parentAliasInfoUrl?: string
+    parentAliasHelperText?: string
     data?: Map<string, any>
 }
 
 interface State {
-    formValues: {}
+    formValues: ISampleSetDetails
+    parentOptions: Array<IParentOption>
+    parentAliases: Map<string, ParentAlias>
     error: string
     submitting: boolean
 }
@@ -37,9 +46,61 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
         this.state = {
             formValues: undefined,
+            parentOptions: undefined,
+            parentAliases: undefined,
             error: undefined,
             submitting: false
         }
+    }
+
+    init(props: Props) {
+        let {parentOptions} = this.state;
+
+        if (!parentOptions) {
+            initSampleSetSelects().then((results) => {
+                const options = results.map(result => {
+                    return {
+                        label: result.query,
+                        value: 'materialInputs/' + result.query,
+                        query: result.query,
+                        schema: result.schema,
+                    } as IParentOption;
+                }).toArray();
+                this.setState(
+                    (state) => ({
+                    formValues: {
+                        ...state.formValues
+                    } as ISampleSetDetails,
+                    parentOptions: options,
+                }));
+            });
+
+            let parentAliases = Map() as Map<string, ParentAlias>;
+            if (props.data && props.data.get('importAliases'))
+            {
+                let importAliases = Map(props.data.get('importAliases')) || Map() as Map<string,string>;
+                importAliases.forEach((val, key) => {
+                    const newId = this.generateAliasId();
+                    parentAliases = parentAliases.set(newId, {
+                        id: newId,
+                        alias: key,
+                        parentValue: val,
+                    } as ParentAlias);
+                });
+            }
+
+            this.setState(
+                (state) => ({
+                    formValues: {
+                        ...state.formValues
+                    } as ISampleSetDetails,
+                    parentAliases,
+                }));
+        }
+    }
+
+    componentWillMount() {
+        this.init(this.props)
     }
 
     onFormChange = (evt: any) => {
@@ -62,12 +123,15 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             beforeFinish(formValues);
         }
 
+        const importAliases = this.getImportAliases();
+
         if (this.isExistingSampleSet()) {
             const config = {
                 isUpdate: true,
-                rowId: data.getIn(['RowId', 'value']),
+                rowId: data.get('rowId'),
                 nameExpression: this.getNameExpressionValue(),
-                description: this.getDescriptionValue()
+                description: this.getDescriptionValue(),
+                importAliasJSON: JSON.stringify(importAliases),
             } as ISampleSetDetails;
 
             updateSampleSet(config)
@@ -78,7 +142,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             const config = {
                 name: formValues[FORM_IDS.NAME],
                 nameExpression: this.getNameExpressionValue(),
-                description: this.getDescriptionValue()
+                description: this.getDescriptionValue(),
+                importAliasJSON: JSON.stringify(importAliases),
             } as ISampleSetDetails;
 
             createSampleSet(config)
@@ -86,6 +151,18 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 .catch((error) => this.onFinishFailure(error ? error.exception : UNKNOWN_ERROR_CREATE));
         }
     };
+
+    getImportAliases()
+    {
+        const {parentAliases} = this.state;
+        let aliases = {};
+        parentAliases.map((alias: ParentAlias) => {
+            aliases[alias.alias] = alias.parentValue;
+        });
+
+        return aliases;
+    }
+
 
     onFinishSuccess(response: any) {
         this.setSubmitting(false);
@@ -120,26 +197,95 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             return formValues[key] || defaultValue;
         }
         else if (data) {
-            return data.getIn([propName, 'value']) || defaultValue;
+            return data.get(propName) || defaultValue;
         }
 
         return defaultValue;
     }
 
     isExistingSampleSet(): boolean {
-        return this.getDataValue(null, 'RowId', undefined) !== undefined;
+        return this.getDataValue(null, 'rowId', undefined) !== undefined;
     }
 
     getNameExpressionValue(): string {
-        return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'NameExpression', '');
+        return this.getDataValue(FORM_IDS.NAME_EXPRESSION, 'nameExpression', '');
     }
 
     getDescriptionValue(): string {
-        return this.getDataValue(FORM_IDS.DESCRIPTION, 'Description', '');
+        return this.getDataValue(FORM_IDS.DESCRIPTION, 'description', '');
+    }
+
+    addParentAlias(): void {
+        let {parentAliases} = this.state;
+
+        const newId = this.generateAliasId();
+        parentAliases = parentAliases.set(newId, {
+            id: newId,
+            alias:'',
+            parentValue:''
+        });
+
+        this.setState({parentAliases});
+    }
+
+    //Generates a temporary id for add/delete of the import aliases
+    generateAliasId() {
+        return generateId("sampleset-parent-import-alias-");
+    }
+
+    parentAliasChanged(id:string, field: string, newValue: string) {
+
+        let {parentAliases} = this.state;
+        parentAliases.get(id)[field] = newValue;
+
+        this.setState({parentAliases});
+    }
+
+    renderParentAliases() {
+        const {parentAliases, parentOptions} = this.state;
+
+        if (!parentAliases || !parentOptions)
+            return [];
+
+        return parentAliases.valueSeq().map((parentAlias) =>
+            <SampleSetParentAliasRow key={parentAlias.id}
+                                             id={parentAlias.id}
+                                             parentAlias={parentAlias}
+                                             parentOptions={parentOptions}
+                                             onAliasChange={this.parentAliasChanged.bind(this)}
+                                             onRemove={this.removeParentAlias.bind(this)}
+            />);
+    }
+
+    removeParentAlias(id: string): void {
+        let {parentAliases} = this.state;
+        if (parentAliases.size === 0)
+            return;
+
+        parentAliases = parentAliases.remove(id);
+        this.setState((state) => ({
+            formValues: {
+                ...state.formValues,
+            } as ISampleSetDetails,
+            parentAliases,
+        }));
+    }
+
+    renderAddEntityHelper() {
+        const {parentAliasHelperText, parentAliasInfoUrl} = this.props;
+
+        return (
+            <>
+                <span>
+                    {parentAliasHelperText}
+                    <a href={parentAliasInfoUrl} target='_blank' />
+                </span>
+            </>
+        );
     }
 
     render() {
-        const { onCancel, nameExpressionInfoUrl } = this.props;
+        const { onCancel, nameExpressionInfoUrl, parentAliasInfoUrl } = this.props;
         const { submitting, error } = this.state;
 
         return (
@@ -185,7 +331,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     />
                                 </Col>
                             </Row>
-                            <Row>
+                            <Row className='margin-bottom'>
                                 <Col xs={3}>
                                     <LabelOverlay
                                         label={'Description'}
@@ -200,6 +346,16 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         onChange={this.onFormChange}
                                         value={this.getDescriptionValue()}
                                     />
+                                </Col>
+                            </Row>
+                            { this.renderParentAliases() }
+                            <Row>
+                                <Col xs={3}>
+                                </Col>
+                                <Col xs={9}>
+                                    <span>
+                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias.bind(this)} /> {/*helperBody={this.renderAddEntityHelper.bind(this)} />*/}
+                                    </span>
                                 </Col>
                             </Row>
                         </Form>

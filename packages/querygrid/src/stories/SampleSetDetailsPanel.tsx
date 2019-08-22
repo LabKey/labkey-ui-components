@@ -32,9 +32,15 @@ storiesOf('SampleSetDetailsPanel', module)
     })
     .add('for update', () => {
         const data = Map<string, any>(fromJS({
-            RowId: {value: 1},
-            Description: {value: 'The description for my existing sample set.'},
-            NameExpression: {value: 'S-${genId}-${randomId}'}
+            "lsid": "urn:lsid:labkey.com:SampleSet.Folder-6:Fruits",
+            "importAliases": {
+                "banana": "materialInputs/Fruits",
+                "apples": "materialInputs/Fruits"
+            },
+            "name": "Fruits",
+            "description": null,
+            "nameExpression": null,
+            "rowId": 1
         }));
 
         return <SampleSetDetailsPanel

@@ -278,14 +278,14 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             <>
                 <span>
                     {parentAliasHelperText}
-                    <a href={parentAliasInfoUrl} target='_blank' />
+                    &nbsp;(<a href={parentAliasInfoUrl} target='_blank' >more info</a>)
                 </span>
             </>
         );
     }
 
     render() {
-        const { onCancel, nameExpressionInfoUrl, parentAliasInfoUrl } = this.props;
+        const { onCancel, nameExpressionInfoUrl} = this.props;
         const { submitting, error } = this.state;
 
         return (
@@ -354,7 +354,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                 </Col>
                                 <Col xs={9}>
                                     <span>
-                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias.bind(this)} /> {/*helperBody={this.renderAddEntityHelper.bind(this)} />*/}
+                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias.bind(this)} helperBody={this.renderAddEntityHelper.bind(this)} />
                                     </span>
                                 </Col>
                             </Row>

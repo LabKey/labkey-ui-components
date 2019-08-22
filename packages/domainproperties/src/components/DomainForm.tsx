@@ -520,8 +520,38 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return name;
     }
 
+    renderHeaderContent() {
+        const { collapsible, markComplete } = this.props;
+        const { collapsed } = this.state;
+
+        return (
+            <>
+                <span>{this.getHeaderName()}</span>
+                {collapsible && collapsed &&
+                    <Tip caption="Expand Panel">
+                        <span className={'pull-right'} onClick={this.togglePanel}>
+                            <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                        </span>
+                    </Tip>
+                }
+                {collapsible && !collapsed &&
+                    <Tip caption="Collapse Panel">
+                        <span className={'pull-right'} onClick={this.togglePanel}>
+                            <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                        </span>
+                    </Tip>
+                }
+                {!collapsible && collapsed && markComplete &&
+                    <span className={'pull-right'} onClick={this.togglePanel}>
+                        <i className={'fa fa-check-square-o as-secondary-color'}/>
+                    </span>
+                }
+            </>
+        )
+    }
+
     render() {
-        const { domain, showHeader, collapsible, markComplete, panelCls } = this.props;
+        const { domain, showHeader, panelCls } = this.props;
         const { showConfirm, collapsed } = this.state;
 
         return (
@@ -530,26 +560,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
                     {showHeader &&
                         <Panel.Heading>
-                            <span>{this.getHeaderName()}</span>
-                            {collapsible && collapsed &&
-                                <Tip caption="Expand Panel">
-                                    <span className={'pull-right'} onClick={this.togglePanel}>
-                                        <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
-                                    </span>
-                                </Tip>
-                            }
-                            {collapsible && !collapsed &&
-                                <Tip caption="Collapse Panel">
-                                    <span className={'pull-right'} onClick={this.togglePanel}>
-                                        <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
-                                    </span>
-                                </Tip>
-                            }
-                            {!collapsible && collapsed && markComplete &&
-                                <span className={'pull-right'} onClick={this.togglePanel}>
-                                    <i className={'fa fa-check-square-o as-secondary-color'}/>
-                                </span>
-                            }
+                            {this.renderHeaderContent()}
                         </Panel.Heading>
                     }
                     {!collapsed &&

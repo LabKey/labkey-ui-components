@@ -416,10 +416,14 @@ export class DomainField extends Record({
             json.lookupContainer = null;
         }
 
-        // for some reason the property binding server side cares about casing here for 'URL'
+        // for some reason the property binding server side cares about casing here for 'URL' and 'PHI'
         if (json.URL !== undefined) {
             json.url = json.URL;
             delete json.URL;
+        }
+        if (json.PHI !== undefined) {
+            json.phi = json.PHI;
+            delete json.PHI;
         }
 
         // remove non-serializable fields

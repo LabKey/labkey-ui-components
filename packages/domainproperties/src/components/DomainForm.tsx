@@ -18,7 +18,7 @@ import { List, Map } from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle, faPlusSquare, faMinusSquare, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
 import { Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
@@ -46,6 +46,7 @@ interface IDomainFormInput {
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
     showInferFromFile?: boolean
+    panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
 }
 
@@ -520,13 +521,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     render() {
-        const { domain, showHeader, collapsible, markComplete } = this.props;
+        const { domain, showHeader, collapsible, markComplete, panelCls } = this.props;
         const { showConfirm, collapsed } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
-                <Panel className={"domain-form-panel"}>
+                <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
                     {showHeader &&
                         <Panel.Heading>
                             <span>{this.getHeaderName()}</span>
@@ -546,7 +547,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             }
                             {!collapsible && collapsed && markComplete &&
                                 <span className={'pull-right'} onClick={this.togglePanel}>
-                                    <FontAwesomeIcon icon={faCheckCircle}/>
+                                    <i className={'fa fa-check-square-o as-secondary-color'}/>
                                 </span>
                             }
                         </Panel.Heading>

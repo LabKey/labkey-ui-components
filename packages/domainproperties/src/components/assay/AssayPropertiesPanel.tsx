@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Col, Form, FormControl, Row, Panel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
 import { LabelHelpTip, Tip } from "@glass/base";
 
 import { AssayProtocolModel } from "../../models";
@@ -22,6 +22,7 @@ interface Props {
     initCollapsed: boolean
     collapsible?: boolean
     markComplete?: boolean
+    panelCls?: string
 }
 
 interface State {
@@ -228,11 +229,11 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderPanel() {
-        const { collapsible, markComplete } = this.props;
+        const { collapsible, markComplete, panelCls } = this.props;
         const { collapsed } = this.state;
 
         return (
-            <Panel className={"domain-form-panel"}>
+            <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
                 <Panel.Heading>
                     <span>Assay Properties</span>
                     {collapsible && collapsed &&
@@ -251,7 +252,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                     }
                     {!collapsible && collapsed && markComplete &&
                         <span className={'pull-right'} onClick={this.togglePanel}>
-                            <FontAwesomeIcon icon={faCheckCircle}/>
+                            <i className={'fa fa-check-square-o as-secondary-color'}/>
                         </span>
                     }
                 </Panel.Heading>

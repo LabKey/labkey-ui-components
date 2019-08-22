@@ -172,6 +172,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     collapsible={!isNew}
                     initCollapsed={currentPanelIndex !== 0}
                     markComplete={currentPanelIndex > 0}
+                    panelCls={isNew && currentPanelIndex === 0 ? 'panel-portal' : ''}
                 />
                 {protocolModel.domains.map((domain, i) => {
                     // optionally hide the Batch Fields domain from the UI (for sample management use case)
@@ -190,6 +191,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             collapsible={!isNew}
                             initCollapsed={!isNew || currentPanelIndex !== (i+1)}
                             markComplete={currentPanelIndex > (i+1)}
+                            panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-portal' : ''}
                             showInferFromFile={showInferFromFile}
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);

@@ -253,7 +253,7 @@ describe('DomainRow', () => {
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index)});
         expect(advButton.length).toEqual(0);
 
-        let sectionLabel = row.find({className: 'domain-field-section-heading'});
+        let sectionLabel = row.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -308,7 +308,7 @@ describe('DomainRow', () => {
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index), bsStyle: 'default'});
         expect(advButton.length).toEqual(1);
 
-        let sectionLabel = row.find({className: 'domain-field-section-heading'});
+        let sectionLabel = row.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
 
     });

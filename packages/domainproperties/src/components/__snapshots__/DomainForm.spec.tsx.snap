@@ -525,6 +525,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                       "display": "Text (String)",
                                                       "name": "string",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": "xsd:string",
                                                       "shortDisplay": "String",
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -533,6 +534,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": undefined,
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -541,6 +543,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                         "display": "Text (String)",
                                                         "name": "string",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": "xsd:string",
                                                         "shortDisplay": "String",
                                                       },
                                                       "rangeURI": undefined,
@@ -1112,6 +1115,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                         "display": "Text (String)",
                                                         "name": "string",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": "xsd:string",
                                                         "shortDisplay": "String",
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -1120,6 +1124,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": undefined,
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -1128,6 +1133,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                           "display": "Text (String)",
                                                           "name": "string",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": "xsd:string",
                                                           "shortDisplay": "String",
                                                         },
                                                         "rangeURI": undefined,
@@ -1165,7 +1171,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Text Options
                                                               </div>
@@ -1449,6 +1455,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                           "display": "Text (String)",
                                                           "name": "string",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": "xsd:string",
                                                           "shortDisplay": "String",
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -1457,6 +1464,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": undefined,
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -1465,6 +1473,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                             "display": "Text (String)",
                                                             "name": "string",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": "xsd:string",
                                                             "shortDisplay": "String",
                                                           },
                                                           "rangeURI": undefined,
@@ -1495,7 +1504,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -1525,7 +1534,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-0"
                                                                 name="domainpropertiesrow-description"
@@ -2520,6 +2529,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                       "display": "Integer",
                                                       "name": "int",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": "xsd:int",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -2528,6 +2538,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -2536,6 +2547,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -3010,6 +3022,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -3018,6 +3031,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -3026,6 +3040,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -3063,7 +3078,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Integer Options
                                                               </div>
@@ -3350,6 +3365,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -3358,6 +3374,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -3366,6 +3383,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                             "display": "Integer",
                                                             "name": "int",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                            "alternateRangeURI": "xsd:int",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -3396,7 +3414,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -3426,7 +3444,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-0"
                                                                 name="domainpropertiesrow-description"
@@ -5501,6 +5519,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Integer",
                                                       "name": "int",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": "xsd:int",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -5509,6 +5528,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -5517,6 +5537,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -5991,6 +6012,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -5999,6 +6021,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -6007,6 +6030,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -6044,7 +6068,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Integer Options
                                                               </div>
@@ -6331,6 +6355,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -6339,6 +6364,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -6347,6 +6373,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Integer",
                                                             "name": "int",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                            "alternateRangeURI": "xsd:int",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -6377,7 +6404,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -6407,7 +6434,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-0"
                                                                 name="domainpropertiesrow-description"
@@ -6960,6 +6987,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Text (String)",
                                                       "name": "string",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": "xsd:string",
                                                       "shortDisplay": "String",
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -6968,6 +6996,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -6976,6 +7005,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Text (String)",
                                                         "name": "string",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": "xsd:string",
                                                         "shortDisplay": "String",
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -7462,6 +7492,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Text (String)",
                                                         "name": "string",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": "xsd:string",
                                                         "shortDisplay": "String",
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -7470,6 +7501,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -7478,6 +7510,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Text (String)",
                                                           "name": "string",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": "xsd:string",
                                                           "shortDisplay": "String",
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -7515,7 +7548,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Text Options
                                                               </div>
@@ -7799,6 +7832,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Text (String)",
                                                           "name": "string",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": "xsd:string",
                                                           "shortDisplay": "String",
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -7807,6 +7841,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -7815,6 +7850,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Text (String)",
                                                             "name": "string",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": "xsd:string",
                                                             "shortDisplay": "String",
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -7845,7 +7881,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -7875,7 +7911,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-1"
                                                                 name="domainpropertiesrow-description"
@@ -8428,6 +8464,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Multi-Line Text",
                                                       "name": "multiLine",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -8436,6 +8473,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -8444,6 +8482,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Multi-Line Text",
                                                         "name": "multiLine",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
@@ -8924,6 +8963,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Multi-Line Text",
                                                         "name": "multiLine",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -8932,6 +8972,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -8940,6 +8981,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Multi-Line Text",
                                                           "name": "multiLine",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
@@ -8977,7 +9019,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Multi-line Text Field Options
                                                               </div>
@@ -9261,6 +9303,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Multi-Line Text",
                                                           "name": "multiLine",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -9269,6 +9312,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -9277,6 +9321,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Multi-Line Text",
                                                             "name": "multiLine",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                                            "alternateRangeURI": undefined,
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
@@ -9307,7 +9352,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -9337,7 +9382,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-2"
                                                                 name="domainpropertiesrow-description"
@@ -9890,6 +9935,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Boolean",
                                                       "name": "boolean",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                      "alternateRangeURI": "xsd:boolean",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -9898,6 +9944,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -9906,6 +9953,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Boolean",
                                                         "name": "boolean",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                        "alternateRangeURI": "xsd:boolean",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
@@ -10368,6 +10416,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Boolean",
                                                         "name": "boolean",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                        "alternateRangeURI": "xsd:boolean",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -10376,6 +10425,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -10384,6 +10434,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Boolean",
                                                           "name": "boolean",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                          "alternateRangeURI": "xsd:boolean",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
@@ -10421,7 +10472,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Boolean Field Options
                                                               </div>
@@ -10645,6 +10696,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Boolean",
                                                           "name": "boolean",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                          "alternateRangeURI": "xsd:boolean",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -10653,6 +10705,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -10661,6 +10714,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Boolean",
                                                             "name": "boolean",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                            "alternateRangeURI": "xsd:boolean",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
@@ -10691,7 +10745,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -10721,7 +10775,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-3"
                                                                 name="domainpropertiesrow-description"
@@ -11274,6 +11328,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Decimal",
                                                       "name": "double",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                      "alternateRangeURI": "xsd:double",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -11282,6 +11337,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -11290,6 +11346,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Decimal",
                                                         "name": "double",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                        "alternateRangeURI": "xsd:double",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -11752,6 +11809,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Decimal",
                                                         "name": "double",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                        "alternateRangeURI": "xsd:double",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -11760,6 +11818,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -11768,6 +11827,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Decimal",
                                                           "name": "double",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                          "alternateRangeURI": "xsd:double",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -11805,7 +11865,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Decimal Options
                                                               </div>
@@ -12092,6 +12152,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Decimal",
                                                           "name": "double",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                          "alternateRangeURI": "xsd:double",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -12100,6 +12161,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -12108,6 +12170,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Decimal",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                                            "alternateRangeURI": "xsd:double",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -12138,7 +12201,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -12168,7 +12231,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-4"
                                                                 name="domainpropertiesrow-description"
@@ -12721,6 +12784,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Date Time",
                                                       "name": "dateTime",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                      "alternateRangeURI": "xsd:dateTime",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -12729,6 +12793,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -12737,6 +12802,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Date Time",
                                                         "name": "dateTime",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                        "alternateRangeURI": "xsd:dateTime",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -13199,6 +13265,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Date Time",
                                                         "name": "dateTime",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                        "alternateRangeURI": "xsd:dateTime",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -13207,6 +13274,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -13215,6 +13283,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Date Time",
                                                           "name": "dateTime",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                          "alternateRangeURI": "xsd:dateTime",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -13253,7 +13322,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Date and Time Options
                                                               </div>
@@ -13640,6 +13709,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Date Time",
                                                           "name": "dateTime",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                          "alternateRangeURI": "xsd:dateTime",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -13648,6 +13718,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -13656,6 +13727,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Date Time",
                                                             "name": "dateTime",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                                            "alternateRangeURI": "xsd:dateTime",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -13686,7 +13758,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -13716,7 +13788,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-5"
                                                                 name="domainpropertiesrow-description"
@@ -14269,6 +14341,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Flag (String)",
                                                       "name": "flag",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -14277,6 +14350,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -14285,6 +14359,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Flag (String)",
                                                         "name": "flag",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -14771,6 +14846,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Flag (String)",
                                                         "name": "flag",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -14779,6 +14855,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -14787,6 +14864,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Flag (String)",
                                                           "name": "flag",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -14824,7 +14902,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Flag Options
                                                               </div>
@@ -15108,6 +15186,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Flag (String)",
                                                           "name": "flag",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -15116,6 +15195,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -15124,6 +15204,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Flag (String)",
                                                             "name": "flag",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": undefined,
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -15154,7 +15235,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -15184,7 +15265,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-6"
                                                                 name="domainpropertiesrow-description"
@@ -15737,6 +15818,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "File",
                                                       "name": "fileLink",
                                                       "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -15745,6 +15827,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -15753,6 +15836,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "File",
                                                         "name": "fileLink",
                                                         "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
@@ -16215,6 +16299,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "File",
                                                         "name": "fileLink",
                                                         "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -16223,6 +16308,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -16231,6 +16317,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "File",
                                                           "name": "fileLink",
                                                           "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
@@ -16279,6 +16366,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "File",
                                                           "name": "fileLink",
                                                           "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -16287,6 +16375,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -16295,6 +16384,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "File",
                                                             "name": "fileLink",
                                                             "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                                            "alternateRangeURI": undefined,
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
@@ -16325,7 +16415,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -16355,7 +16445,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-7"
                                                                 name="domainpropertiesrow-description"
@@ -16908,6 +16998,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Subject/Participant (String)",
                                                       "name": "ParticipantId",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -16916,6 +17007,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -16924,6 +17016,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Subject/Participant (String)",
                                                         "name": "ParticipantId",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -17410,6 +17503,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Subject/Participant (String)",
                                                         "name": "ParticipantId",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -17418,6 +17512,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -17426,6 +17521,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Subject/Participant (String)",
                                                           "name": "ParticipantId",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -17474,6 +17570,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Subject/Participant (String)",
                                                           "name": "ParticipantId",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -17482,6 +17579,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -17490,6 +17588,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Subject/Participant (String)",
                                                             "name": "ParticipantId",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": undefined,
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -17520,7 +17619,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -17550,7 +17649,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-8"
                                                                 name="domainpropertiesrow-description"
@@ -18103,6 +18202,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Attachment",
                                                       "name": "attachment",
                                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -18111,6 +18211,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -18119,6 +18220,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Attachment",
                                                         "name": "attachment",
                                                         "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
@@ -18581,6 +18683,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Attachment",
                                                         "name": "attachment",
                                                         "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -18589,6 +18692,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -18597,6 +18701,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Attachment",
                                                           "name": "attachment",
                                                           "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.labkey.org/exp/xml#attachment",
@@ -18645,6 +18750,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Attachment",
                                                           "name": "attachment",
                                                           "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -18653,6 +18759,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -18661,6 +18768,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                             "display": "Attachment",
                                                             "name": "attachment",
                                                             "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                            "alternateRangeURI": undefined,
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.labkey.org/exp/xml#attachment",
@@ -18691,7 +18799,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -18721,7 +18829,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-9"
                                                                 name="domainpropertiesrow-description"
@@ -20264,6 +20372,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Integer",
                                                       "name": "int",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": "xsd:int",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -20272,6 +20381,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -20280,6 +20390,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -20756,6 +20867,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -20764,6 +20876,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -20772,6 +20885,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -20809,7 +20923,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Integer Options
                                                               </div>
@@ -21096,6 +21210,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -21104,6 +21219,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -21112,6 +21228,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                             "display": "Integer",
                                                             "name": "int",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                            "alternateRangeURI": "xsd:int",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -21142,7 +21259,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -21172,7 +21289,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-0"
                                                                 name="domainpropertiesrow-description"
@@ -21725,6 +21842,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Boolean",
                                                       "name": "boolean",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                      "alternateRangeURI": "xsd:boolean",
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -21733,6 +21851,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -21741,6 +21860,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Text (String)",
                                                         "name": "string",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": "xsd:string",
                                                         "shortDisplay": "String",
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -22229,6 +22349,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Boolean",
                                                         "name": "boolean",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                        "alternateRangeURI": "xsd:boolean",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -22237,6 +22358,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -22245,6 +22367,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Text (String)",
                                                           "name": "string",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": "xsd:string",
                                                           "shortDisplay": "String",
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -22282,7 +22405,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Boolean Field Options
                                                               </div>
@@ -22506,6 +22629,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Boolean",
                                                           "name": "boolean",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                                          "alternateRangeURI": "xsd:boolean",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -22514,6 +22638,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -22522,6 +22647,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                             "display": "Text (String)",
                                                             "name": "string",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": "xsd:string",
                                                             "shortDisplay": "String",
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -22552,7 +22678,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -22582,7 +22708,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-1"
                                                                 name="domainpropertiesrow-description"
@@ -23135,6 +23261,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Subject/Participant (String)",
                                                       "name": "ParticipantId",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -23143,6 +23270,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -23151,6 +23279,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Integer",
                                                         "name": "int",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": "xsd:int",
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -23627,6 +23756,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Subject/Participant (String)",
                                                         "name": "ParticipantId",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -23635,6 +23765,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -23643,6 +23774,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Integer",
                                                           "name": "int",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": "xsd:int",
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -23691,6 +23823,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Subject/Participant (String)",
                                                           "name": "ParticipantId",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -23699,6 +23832,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -23707,6 +23841,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                             "display": "Integer",
                                                             "name": "int",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                                            "alternateRangeURI": "xsd:int",
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
@@ -23737,7 +23872,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -23767,7 +23902,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-2"
                                                                 name="domainpropertiesrow-description"
@@ -24320,6 +24455,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Attachment",
                                                       "name": "attachment",
                                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "lookupQueryValue": undefined,
@@ -24328,6 +24464,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                       "display": "Lookup",
                                                       "name": "lookup",
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": undefined,
                                                       "shortDisplay": undefined,
                                                     },
                                                     "original": Object {
@@ -24336,6 +24473,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Flag (String)",
                                                         "name": "flag",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -24824,6 +24962,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Attachment",
                                                         "name": "attachment",
                                                         "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "lookupQueryValue": undefined,
@@ -24832,6 +24971,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                         "display": "Lookup",
                                                         "name": "lookup",
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": undefined,
                                                         "shortDisplay": undefined,
                                                       },
                                                       "original": Object {
@@ -24840,6 +24980,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Flag (String)",
                                                           "name": "flag",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -24888,6 +25029,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Attachment",
                                                           "name": "attachment",
                                                           "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "lookupQueryValue": undefined,
@@ -24896,6 +25038,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           "display": "Lookup",
                                                           "name": "lookup",
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
                                                           "shortDisplay": undefined,
                                                         },
                                                         "original": Object {
@@ -24904,6 +25047,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                             "display": "Flag (String)",
                                                             "name": "flag",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": undefined,
                                                             "shortDisplay": undefined,
                                                           },
                                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -24934,7 +25078,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-12"
                                                             >
                                                               <div
-                                                                className="domain-field-section-heading"
+                                                                className="domain-field-section-heading margin-top"
                                                               >
                                                                 Name and Linking Options
                                                               </div>
@@ -24964,7 +25108,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                 Description
                                                               </div>
                                                               <textarea
-                                                                className="form-control domain-field-description"
+                                                                className="form-control domain-field-textarea"
                                                                 disabled={false}
                                                                 id="domainpropertiesrow-description-3"
                                                                 name="domainpropertiesrow-description"

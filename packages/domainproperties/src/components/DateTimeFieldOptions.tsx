@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { Col, FormControl, Row } from "react-bootstrap";
 import {isFieldFullyLocked} from "../propertiesUtil";
-import {createFormInputId, createFormInputName} from "../actions/actions";
+import {createFormInputId, createFormInputName, getNameFromId} from "../actions/actions";
 import {
     DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
     DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_SCALE
@@ -23,14 +23,14 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
 
         let value = evt.target.value;
 
-        if (evt.target.name === 'ExcludeFromShiftingOptions') {
+        if (getNameFromId(evt.target.id) === DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING) {
             value = evt.target.checked;
         }
 
         if (onChange) {
             onChange(evt.target.id, value);
         }
-    }
+    };
 
     getFormatHelpText = () => {
         let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";

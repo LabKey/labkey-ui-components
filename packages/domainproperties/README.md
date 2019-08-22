@@ -9,6 +9,12 @@ Domain property related components for LabKey domains
 * AssayPropertiesPanel for top level assay design properties for create/update
 * move AssayProtocolModel (and related actions) from base to domainproperties
 
+### version 0.0.31
+*Released*: 21 August 2019
+* Epic 6000: Domain designer Advanced Settings.
+    - Advanced settings added to each domain property
+    - PHI and various display settings
+    
 ### version 0.0.30
 *Released*: 18 August 2019
 * Epic 5859: Error validation and display in domain designer

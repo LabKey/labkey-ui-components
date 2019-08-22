@@ -11,6 +11,7 @@ import mock, { proxy } from 'xhr-mock';
 import { DomainDesign } from "../models";
 import { DomainFormImpl } from "../components/DomainForm";
 import { MockLookupProvider } from "../test/components/Lookup";
+import { PHILEVEL_RESTRICTED_PHI } from "../constants";
 
 import domainData from "../test/data/property-getDomain.json";
 import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
@@ -64,6 +65,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     {...this.props}
                     domain={domain}
                     onChange={this.onChange}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
                 />
             </MockLookupProvider>
         )

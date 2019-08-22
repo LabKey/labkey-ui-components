@@ -20,6 +20,7 @@ describe('DomainExpandedOptions', () => {
             field={field}
             index={1}
             onChange={jest.fn()}
+            onMultiChange={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -38,6 +39,7 @@ describe('DomainExpandedOptions', () => {
             field={field}
             index={1}
             onChange={jest.fn()}
+            onMultiChange={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -56,6 +58,7 @@ describe('DomainExpandedOptions', () => {
             field={field}
             index={1}
             onChange={jest.fn()}
+            onMultiChange={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -74,6 +77,7 @@ describe('DomainExpandedOptions', () => {
             field={field}
             index={1}
             onChange={jest.fn()}
+            onMultiChange={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();

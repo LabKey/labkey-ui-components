@@ -288,6 +288,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         const { onCancel, nameExpressionInfoUrl} = this.props;
         const { submitting, error } = this.state;
 
+        const moreInfoLink = nameExpressionInfoUrl ?
+            (<a target={'_blank'} href={nameExpressionInfoUrl}>more info</a>) :
+            '';
+
         return (
             <>
                 {error && <Alert>{error}</Alert>}
@@ -318,8 +322,9 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         label={'Name Expression'}
                                         type={'Text (String)'}
                                         description={'Expression that will be used for generating unique sample IDs for this sample set.'}
+                                        content={moreInfoLink}
+                                        canMouseOverTooltip={true}
                                     />
-                                    {nameExpressionInfoUrl && <><br/>(<a target={'_blank'} href={nameExpressionInfoUrl}>more info</a>)</>}
                                 </Col>
                                 <Col xs={9}>
                                     <FormControl

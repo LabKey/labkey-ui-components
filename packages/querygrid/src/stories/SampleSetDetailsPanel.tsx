@@ -27,7 +27,7 @@ storiesOf('SampleSetDetailsPanel', module)
         return <SampleSetDetailsPanel
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
-            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
         />
     })
     .add('for update', () => {

@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { text, boolean, withKnobs } from '@storybook/addon-knobs'
-import mock, { proxy } from 'xhr-mock';
 
 import { DomainDesign } from "../models";
 import { DomainFormImpl } from "../components/DomainForm";
@@ -20,16 +19,10 @@ import exceptionDataServer from "../test/data/property-domainExceptionFromServer
 import exceptionDataClient from "../test/data/property-domainExceptionClient.json";
 import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
 import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
-import inferDomainJson from '../test/data/property-inferDomain.json';
+import { initMocks } from "./mock";
 import './stories.scss'
 
-mock.setup();
-mock.post(/.*\/property\/inferDomain.*/, {
-    status: 200,
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(inferDomainJson)
-});
-mock.use(proxy);
+initMocks();
 
 interface Props {
     showInferFromFile?: boolean

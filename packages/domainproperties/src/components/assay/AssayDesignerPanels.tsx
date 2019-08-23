@@ -10,6 +10,7 @@ import DomainForm from "../DomainForm";
 const UNKNOWN_ERROR = 'An unknown error occurred saving the assay design.';
 
 interface Props {
+    onChange?: (model: AssayProtocolModel) => void
     onCancel: () => void
     beforeFinish?: (model: AssayProtocolModel) => void
     onComplete: (model: AssayProtocolModel) => void
@@ -60,14 +61,21 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     onDomainChange = (index: number, updatedDomain: DomainDesign) => {
+        const { onChange } = this.props;
         const { protocolModel } = this.state;
+
         const domains = protocolModel.domains.map((domain, i) => {
             return i === index ? updatedDomain : domain;
         });
+        const updatedModel = protocolModel.merge({domains}) as AssayProtocolModel;
 
         this.setState(() => ({
-            protocolModel: protocolModel.merge({domains}) as AssayProtocolModel
-        }));
+            protocolModel: updatedModel
+        }), () => {
+            if (onChange) {
+                onChange(updatedModel);
+            }
+        });
     };
 
     shouldSkipStep(stepIndex: number): boolean {
@@ -131,11 +139,19 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
 
     isValid(): boolean {
         const { protocolModel } = this.state;
-        return protocolModel.name !== undefined && protocolModel.name.length > 0;
+        return protocolModel.name !== undefined && protocolModel.name.trim().length > 0;
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
-        this.setState(() => ({protocolModel: model}));
+        const { onChange } = this.props;
+
+        this.setState(() => ({
+            protocolModel: model
+        }), () => {
+            if (onChange) {
+                onChange(model);
+            }
+        });
     };
 
     renderDomainPanelHeading(domain: DomainDesign) {
@@ -172,7 +188,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     collapsible={!isNew}
                     initCollapsed={currentPanelIndex !== 0}
                     markComplete={currentPanelIndex > 0}
-                    panelCls={isNew && currentPanelIndex === 0 ? 'panel-portal' : ''}
+                    panelCls={isNew && currentPanelIndex === 0 ? 'panel-active' : ''}
                 />
                 {protocolModel.domains.map((domain, i) => {
                     // optionally hide the Batch Fields domain from the UI (for sample management use case)
@@ -191,7 +207,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             collapsible={!isNew}
                             initCollapsed={!isNew || currentPanelIndex !== (i+1)}
                             markComplete={currentPanelIndex > (i+1)}
-                            panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-portal' : ''}
+                            panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);

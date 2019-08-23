@@ -323,8 +323,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (this.shouldShowInferFromFile()) {
             return (
-                <div className={'domain-form-add-link margin-top'} onClick={this.onAddField}>
-                    Or Start a New Design
+                <div className={'margin-top'}>
+                    or&nbsp;
+                    <span className={'domain-form-add-link'} onClick={this.onAddField}>
+                        Start a New Design
+                    </span>
                 </div>
             )
         }
@@ -332,9 +335,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <Row>
                     <Col xs={12}>
-                    <span className={"domain-form-add"} onClick={this.onAddField}>
-                        <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
-                    </span>
+                        <span className={"domain-form-add"} onClick={this.onAddField}>
+                            <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
+                        </span>
                     </Col>
                 </Row>
             )
@@ -409,7 +412,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     allowMultiple={false}
                     label={'Infer fields from file'}
                     previewGridProps={{
-                        previewCount: 3, // TODO what value to use here?
+                        previewCount: 3,
                         skipPreviewGrid: true,
                         onPreviewLoad: this.handleFilePreviewLoad
                     }}
@@ -421,7 +424,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
             return (
                 <Panel className='domain-form-no-field-panel'>
-                    {'No fields have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
+                    {'No properties have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
                     <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
                 </Panel>
             )
@@ -458,7 +461,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Row className='domain-form-hdr-row'>
                     {children ? children
                         : <p>Adjust fields and their properties that will be shown within this domain. Click a row
-                            to access additional options. Drag and drop rows to re-order them.</p>
+                            to access additional options. Drag and drop rows to reorder them.</p>
                     }
                 </Row>
                 {/*{this.renderSearchRow()}*/}

@@ -200,7 +200,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                     className="domain-form-hdr-row row"
                   >
                     <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
                     </p>
                   </div>
                 </Row>
@@ -2204,7 +2204,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                     className="domain-form-hdr-row row"
                   >
                     <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
                     </p>
                   </div>
                 </Row>
@@ -5194,7 +5194,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                     className="domain-form-hdr-row row"
                   >
                     <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
                     </p>
                   </div>
                 </Row>
@@ -19377,7 +19377,7 @@ exports[`DomainForm domain form with no fields 1`] = `
                     className="domain-form-hdr-row row"
                   >
                     <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
                     </p>
                   </div>
                 </Row>
@@ -19393,7 +19393,7 @@ exports[`DomainForm domain form with no fields 1`] = `
                     <div
                       className="domain-form-no-field-panel panel panel-default"
                     >
-                      No fields have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
+                      No properties have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
                       <a
                         href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
                         target="_blank"
@@ -20047,7 +20047,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                     className="domain-form-hdr-row row"
                   >
                     <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
                     </p>
                   </div>
                 </Row>
@@ -25656,7 +25656,7 @@ exports[`DomainForm with empty domain form 1`] = `
                     className="domain-form-hdr-row row"
                   >
                     <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to re-order them.
+                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
                     </p>
                   </div>
                 </Row>
@@ -25672,7 +25672,7 @@ exports[`DomainForm with empty domain form 1`] = `
                     <div
                       className="domain-form-no-field-panel panel panel-default"
                     >
-                      No fields have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
+                      No properties have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
                       <a
                         href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
                         target="_blank"

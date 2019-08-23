@@ -89,9 +89,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
     descriptionHelpTip() {
         return (
-            <>
-                <p>A short description for this assay design.</p>
-            </>
+            <p>A short description for this assay design.</p>
         )
     }
 
@@ -107,9 +105,11 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     editableResultsHelpTip() {
         return (
             <>
-                <p>If enabled, users with sufficient permissions can edit and delete at the individual
+                <p>
+                    If enabled, users with sufficient permissions can edit and delete at the individual
                     results row level after the initial import is complete.
-                    New result rows cannot be added to existing runs.</p>
+                    New result rows cannot be added to existing runs.
+                </p>
                 <p>These changes will be audited.</p>
             </>
         )
@@ -129,7 +129,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 }
                 <Row className={'margin-top'}>
                     <Col xs={3}>
-                        Name (Required)
+                        Name *
                         <LabelHelpTip
                             title='Name'
                             body={this.nameHelpTip}
@@ -175,7 +175,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
             <>
                 <Row className={'margin-top'}>
                     <Col xs={12}>
-                        <div style={{color: '#555555', fontWeight: 'bold'}}>Edit Settings</div>
+                        <div className={'domain-field-section-heading'}>Edit Settings</div>
                     </Col>
                 </Row>
                 <Row className={'margin-top'}>

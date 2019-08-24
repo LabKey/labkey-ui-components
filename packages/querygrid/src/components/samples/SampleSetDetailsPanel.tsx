@@ -184,9 +184,16 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     isFormValid(): boolean {
-        const { formValues } = this.state;
+        const { formValues, parentAliases, parentOptions } = this.state;
         const hasValidName = formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
-        return this.isExistingSampleSet() || hasValidName;
+        const hasInvalidAliases =
+            parentAliases && (parentAliases.size > 0 &&
+            parentAliases.find((alias) :boolean =>
+                !alias.alias || alias.alias === '' ||
+                !alias.parentValue || !parentOptions.find((opt)=> opt.value === alias.parentValue)
+        ));
+
+        return (this.isExistingSampleSet() || hasValidName) && !hasInvalidAliases;
     }
 
     getDataValue(key: string, propName: string, defaultValue: any): any {
@@ -285,7 +292,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     render() {
-        const { onCancel, nameExpressionInfoUrl} = this.props;
+        const { onCancel, nameExpressionInfoUrl } = this.props;
         const { submitting, error } = this.state;
 
         const moreInfoLink = nameExpressionInfoUrl ?

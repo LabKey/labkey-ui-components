@@ -201,7 +201,7 @@ export function getSampleSet(config: ISampleSetDetails): Promise<any> {
             method: 'GET',
             params: config,
             success: Utils.getCallbackWrapper((response) => {
-                resolve(response);
+                resolve(Map(response));
             }),
             failure: Utils.getCallbackWrapper((response) => {
                 reject(response);

@@ -44,12 +44,16 @@ export class SampleSetParentAliasRow extends React.Component<IParentAlias, Paren
 
         const {alias, parentValue} = parentAlias;
 
+        //TODO probably better to pass the option around instead of looking it up like this all the time
+        const optionValue = parentOptions.find((opt)=> opt.value === parentValue);
+
         return (<Row key={id} >
             <Col xs={3}> {/*Label*/}
                 <LabelOverlay
-                    label={'Parent Alias'}
+                    label={'Parent Alias *'}
                     labelClass={'sample-insert--parent-label'}
                     description='Column heading that indicates sample parentage during import'
+                    required={true}
                 />
             </Col>
             <Col xs={3} > {/*Alias*/}
@@ -69,8 +73,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAlias, Paren
                     onChange={this.onSelectChange}
                     options={parentOptions}
                     placeholder={'Select a Sample Set...'}
-                    value={parentValue ? parentValue : undefined} //undefined avoids getting the clearing x
-                    required={true}
+                    value={optionValue ? optionValue.value : undefined }
                 />
             </Col>
             <Col>

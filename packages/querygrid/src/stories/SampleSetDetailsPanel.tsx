@@ -38,9 +38,9 @@ storiesOf('SampleSetDetailsPanel', module)
                 "apples": "materialInputs/Fruits"
             },
             "name": "Fruits",
-            "description": null,
-            "nameExpression": null,
-            "rowId": 1
+            "description": 'This is only a test...',
+            "nameExpression": 'S-${genId}-${randomId}',
+            "rowId": 1,
         }));
 
         return <SampleSetDetailsPanel

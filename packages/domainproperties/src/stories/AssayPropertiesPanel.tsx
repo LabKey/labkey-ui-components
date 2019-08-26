@@ -11,7 +11,9 @@ import { AssayProtocolModel } from "../models";
 import { AssayPropertiesPanel } from "../components/assay/AssayPropertiesPanel"
 import './stories.scss'
 
-interface Props {}
+interface Props {
+    data: {}
+}
 
 interface State {
     model: AssayProtocolModel
@@ -23,7 +25,7 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            model: AssayProtocolModel.create({})
+            model: AssayProtocolModel.create(props.data)
         }
     }
 
@@ -36,6 +38,7 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
             <AssayPropertiesPanel
                 model={this.state.model}
                 onChange={this.onAssayPropertiesChange}
+                asPanel={boolean('asPanel', true)}
                 showEditSettings={boolean('showEditSettings', true)}
                 initCollapsed={boolean('initCollapsed', false)}
                 collapsible={boolean('collapsible', true)}
@@ -49,6 +52,21 @@ storiesOf("AssayPropertiesPanel", module)
     .addDecorator(withKnobs)
     .add("with knobs", () => {
         return (
-            <WrappedAssayPropertiesPanel/>
+            <WrappedAssayPropertiesPanel
+                data={{}}
+            />
+        )
+    })
+    .add("initial model", () => {
+        return (
+            <WrappedAssayPropertiesPanel
+                data={{
+                    protocolId: 0,
+                    name: 'name should not be editable',
+                    description: 'test description for this assay',
+                    editableRuns: true,
+                    editableResults: true
+                }}
+            />
         )
     });

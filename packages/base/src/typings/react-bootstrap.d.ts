@@ -161,38 +161,6 @@ declare module "react-bootstrap" {
 
     export class DropdownToggle extends React.Component<DropdownToggleProps, any> {}
 
-    interface ImageProps {
-        /**
-         * Sets image as responsive image
-         */
-        responsive?: boolean;
-
-        /**
-         * Sets image shape as rounded
-         */
-        rounded?: boolean;
-
-        /**
-         * Sets image shape as circle
-         */
-        circle?: boolean;
-
-        /**
-         * Sets image shape as thumbnail
-         */
-        thumbnail?: boolean;
-
-        src: string;
-
-        alt?: string;
-
-        width?: number | string;
-
-        height?: number | string;
-    }
-
-    export class Image extends React.Component<ImageProps, any> {}
-
     interface InputProps extends React.HTMLProps<HTMLElement> {
         labelClassName?: string;
         wrapperClassName?: string;

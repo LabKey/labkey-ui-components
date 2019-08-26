@@ -74,11 +74,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
       "domainException": undefined,
     }
   }
-  helpNoun="domain"
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-  initCollapsed={false}
   onChange={[Function]}
-  showHeader={true}
 >
   <LookupProvider>
     <DomainFormImpl
@@ -2004,6 +2000,56 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
 </DomainForm>
 `;
 
+exports[`DomainForm domain form headerPrefix and panelCls 1`] = `
+<div
+  className="domain-form-panel panel-primary panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <span>
+      headerPrefix and panelCls
+    </span>
+  </div>
+</div>
+`;
+
+exports[`DomainForm domain form initCollapsed 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <span>
+      collapsed with two fields (2)
+    </span>
+  </div>
+</div>
+`;
+
+exports[`DomainForm domain form initCollapsed and markComplete 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <span>
+      collapsed and markComplete (2)
+    </span>
+    <span
+      className="pull-right"
+      onClick={[Function]}
+    >
+      <i
+        className="fa fa-check-square-o as-secondary-color"
+      />
+    </span>
+  </div>
+</div>
+`;
+
 exports[`DomainForm domain form updated field, cleared details 1`] = `
 <DomainForm
   domain={
@@ -2078,11 +2124,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
       "domainException": undefined,
     }
   }
-  helpNoun="domain"
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-  initCollapsed={false}
   onChange={[MockFunction]}
-  showHeader={true}
 >
   <LookupProvider>
     <DomainFormImpl
@@ -4528,11 +4570,7 @@ exports[`DomainForm domain form with all field types 1`] = `
       "domainException": undefined,
     }
   }
-  helpNoun="domain"
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-  initCollapsed={false}
   onChange={[MockFunction]}
-  showHeader={true}
 >
   <LookupProvider>
     <DomainFormImpl
@@ -19312,11 +19350,7 @@ exports[`DomainForm domain form with no fields 1`] = `
       "domainException": undefined,
     }
   }
-  helpNoun="domain"
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-  initCollapsed={false}
   onChange={[MockFunction]}
-  showHeader={true}
 >
   <LookupProvider>
     <DomainFormImpl
@@ -19741,11 +19775,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
       "domainException": undefined,
     }
   }
-  helpNoun="domain"
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-  initCollapsed={false}
   onChange={[MockFunction]}
-  showHeader={true}
 >
   <LookupProvider>
     <DomainFormImpl
@@ -25579,189 +25609,249 @@ exports[`DomainForm domain form with updated fields 1`] = `
 `;
 
 exports[`DomainForm with empty domain form 1`] = `
-<DomainForm
-  domain={
-    Immutable.Record {
-      "name": undefined,
-      "description": undefined,
-      "domainURI": undefined,
-      "domainId": null,
-      "fields": Immutable.List [],
-      "indices": Immutable.List [],
-      "domainException": undefined,
-    }
-  }
-  helpNoun="domain"
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-  initCollapsed={false}
-  onChange={[MockFunction]}
-  showHeader={true}
+<div
+  className="domain-form-panel panel panel-default"
 >
-  <LookupProvider>
-    <DomainFormImpl
-      domain={
-        Immutable.Record {
-          "name": undefined,
-          "description": undefined,
-          "domainURI": undefined,
-          "domainId": null,
-          "fields": Immutable.List [],
-          "indices": Immutable.List [],
-          "domainException": undefined,
-        }
-      }
-      helpNoun="domain"
-      helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-      initCollapsed={false}
-      onChange={[MockFunction]}
-      showHeader={true}
+  <div
+    className="panel-heading"
+  >
+    <span>
+      Domain Properties
+    </span>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
     >
-      <Uncontrolled(Panel)
-        className="domain-form-panel"
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+      </p>
+    </div>
+    <div
+      className="domain-form-no-field-panel panel panel-default"
+    >
+      No properties have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
+      <a
+        href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        target="_blank"
       >
-        <Panel
-          bsClass="panel"
-          bsStyle="default"
-          className="domain-form-panel"
-          onToggle={[Function]}
+         creating domain designs 
+      </a>
+       in our documentation.
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <span
+          className="domain-form-add"
+          onClick={[Function]}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
+            data-icon="plus-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+           Add field
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainForm with showHeader, helpNoun, and helpURL 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+      </p>
+    </div>
+    <div
+      className="domain-form-no-field-panel panel panel-default"
+    >
+      No properties have been defined for this assay yet. Start by using the “Add Field” button below. Learn more about 
+      <a
+        href="https://www.labkey.com"
+        target="_blank"
+      >
+         creating assay designs 
+      </a>
+       in our documentation.
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <span
+          className="domain-form-add"
+          onClick={[Function]}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
+            data-icon="plus-circle"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+              fill="currentColor"
+              style={Object {}}
+            />
+          </svg>
+           Add field
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DomainForm with showInferFromFile 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    <span>
+      Domain Properties
+    </span>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="domain-form-hdr-row row"
+    >
+      <p>
+        Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+      </p>
+    </div>
+    <span
+      className="translator--toggle__wizard"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-12"
+        >
+          <label
+            className="control-label text-left"
+          >
+            <strong>
+              Infer fields from file
+            </strong>
+          </label>
+        </div>
+      </div>
+      <div
+        className="row"
+      >
+        <div
+          className="col-sm-12"
         >
           <div
-            className="domain-form-panel panel panel-default"
+            className="wizard-row--container"
           >
-            <PanelHeading
-              bsClass="panel"
-              componentClass="div"
-            >
+            <div>
               <div
-                className="panel-heading"
+                className="file-upload--container block"
               >
-                <span>
-                  Domain Properties
-                </span>
+                <label
+                  className="file-upload--label"
+                  htmlFor="fileUpload"
+                  onDragEnter={[Function]}
+                  onDragLeave={[Function]}
+                  onDragOver={[Function]}
+                  onDrop={[Function]}
+                >
+                  <i
+                    aria-hidden="true"
+                    className="fa fa-cloud-upload fa-2x cloud-logo"
+                  />
+                  Select file or drag and drop here
+                </label>
+                <input
+                  accept=".csv, .tsv, .txt, .xls, .xlsx"
+                  className="file-upload--input"
+                  id="fileUpload"
+                  multiple={false}
+                  name="fileUpload"
+                  onChange={[Function]}
+                  type="file"
+                />
               </div>
-            </PanelHeading>
-            <PanelBody
-              bsClass="panel"
-              collapsible={false}
-            >
-              <div
-                className="panel-body"
-              >
-                <Row
-                  bsClass="row"
-                  className="domain-form-hdr-row"
-                  componentClass="div"
-                >
-                  <div
-                    className="domain-form-hdr-row row"
-                  >
-                    <p>
-                      Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                    </p>
-                  </div>
-                </Row>
-                <Uncontrolled(Panel)
-                  className="domain-form-no-field-panel"
-                >
-                  <Panel
-                    bsClass="panel"
-                    bsStyle="default"
-                    className="domain-form-no-field-panel"
-                    onToggle={[Function]}
-                  >
-                    <div
-                      className="domain-form-no-field-panel panel panel-default"
-                    >
-                      No properties have been defined for this domain yet. Start by using the “Add Field” button below. Learn more about 
-                      <a
-                        href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                        target="_blank"
-                      >
-                         creating domain designs 
-                      </a>
-                       in our documentation.
-                    </div>
-                  </Panel>
-                </Uncontrolled(Panel)>
-                <Row
-                  bsClass="row"
-                  componentClass="div"
-                >
-                  <div
-                    className="row"
-                  >
-                    <Col
-                      bsClass="col"
-                      componentClass="div"
-                      xs={12}
-                    >
-                      <div
-                        className="col-xs-12"
-                      >
-                        <span
-                          className="domain-form-add"
-                          onClick={[Function]}
-                        >
-                          <FontAwesomeIcon
-                            border={false}
-                            className="domain-form-add-btn"
-                            fixedWidth={false}
-                            flip={null}
-                            icon={
-                              Object {
-                                "icon": Array [
-                                  512,
-                                  512,
-                                  Array [],
-                                  "f055",
-                                  "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                ],
-                                "iconName": "plus-circle",
-                                "prefix": "fas",
-                              }
-                            }
-                            inverse={false}
-                            listItem={false}
-                            mask={null}
-                            pull={null}
-                            pulse={false}
-                            rotation={null}
-                            size={null}
-                            spin={false}
-                            symbol={false}
-                            title=""
-                            transform={null}
-                          >
-                            <svg
-                              aria-hidden="true"
-                              className="svg-inline--fa fa-plus-circle fa-w-16 domain-form-add-btn"
-                              data-icon="plus-circle"
-                              data-prefix="fas"
-                              focusable="false"
-                              role="img"
-                              style={Object {}}
-                              viewBox="0 0 512 512"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm144 276c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92h-92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                fill="currentColor"
-                                style={Object {}}
-                              />
-                            </svg>
-                          </FontAwesomeIcon>
-                           Add field
-                        </span>
-                      </div>
-                    </Col>
-                  </div>
-                </Row>
-              </div>
-            </PanelBody>
+            </div>
           </div>
-        </Panel>
-      </Uncontrolled(Panel)>
-    </DomainFormImpl>
-  </LookupProvider>
-</DomainForm>
+        </div>
+      </div>
+    </span>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-9"
+      >
+        <div
+          className="file-form-formats"
+        >
+          <strong>
+            Supported formats include: 
+          </strong>
+          .csv, .tsv, .txt, .xls, .xlsx
+        </div>
+      </div>
+      <div
+        className="col-md-3"
+      >
+        <div
+          className="pull-right"
+        />
+      </div>
+    </div>
+    <div
+      className="margin-top"
+    >
+      or 
+      <span
+        className="domain-form-add-link"
+        onClick={[Function]}
+      >
+        Start a New Design
+      </span>
+    </div>
+  </div>
+</div>
 `;

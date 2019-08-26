@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 import * as React from "react";
 import {DomainDesign} from "../models";
 import DomainForm from "./DomainForm";
@@ -37,22 +35,67 @@ import {
 import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
+import renderer from 'react-test-renderer'
+import { FileAttachmentForm } from "@glass/base";
+import { DomainRow } from "./DomainRow";
+
+interface Props {
+    showInferFromFile?: boolean
+}
+
+class DomainFormContainer extends React.PureComponent<Props, any> {
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            domain: DomainDesign.create({})
+        };
+    }
+
+    onChange = (newDomain: DomainDesign) => {
+        this.setState(() => ({
+            domain: newDomain
+        }));
+    };
+
+    render() {
+        return (
+            <DomainForm
+                domain={this.state.domain}
+                showInferFromFile={this.props.showInferFromFile}
+                onChange={this.onChange}
+            />
+        )
+    }
+}
 
 describe('DomainForm', () => {
 
     test('with empty domain form', () => {
         const domain = DomainDesign.create({});
-        const form  = mount(<DomainForm
-            domain={domain}
-            helpNoun='domain'
-            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
-            showHeader={true}
-            initCollapsed={false}
-            onChange={jest.fn()}
-        />);
+        const tree = renderer.create(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+            />
+        );
 
-        expect(toJson(form)).toMatchSnapshot();
-        form.unmount();
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('with showHeader, helpNoun, and helpURL', () => {
+        const domain = DomainDesign.create({});
+        const tree = renderer.create(
+            <DomainForm
+                domain={domain}
+                helpNoun='assay'
+                helpURL='https://www.labkey.com'
+                showHeader={false}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
     test('domain form with no fields', () => {
@@ -66,10 +109,6 @@ describe('DomainForm', () => {
         });
         const form  = mount(<DomainForm
             domain={domain}
-            helpNoun='domain'
-            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
-            showHeader={true}
-            initCollapsed={false}
             onChange={jest.fn()}
         />);
 
@@ -153,10 +192,6 @@ describe('DomainForm', () => {
         });
         const form  = mount(<DomainForm
             domain={domain}
-            helpNoun='domain'
-            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
-            showHeader={true}
-            initCollapsed={false}
             onChange={jest.fn()}
         />);
 
@@ -209,11 +244,8 @@ describe('DomainForm', () => {
 
         const form = mount(<DomainForm
             domain={domain}
-            helpNoun='domain'
-            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
-            showHeader={true}
-            initCollapsed={false}
-            onChange={jest.fn()} />);
+            onChange={jest.fn()}
+        />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
@@ -243,12 +275,9 @@ describe('DomainForm', () => {
 
         const form = mount(<DomainForm
             domain={domain}
-            helpNoun='domain'
-            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
-            showHeader={true}
-            initCollapsed={false}
             key='domainForm'
-            onChange={jest.fn()} />);
+            onChange={jest.fn()}
+        />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
@@ -280,12 +309,7 @@ describe('DomainForm', () => {
 
         const form  = mount(<DomainForm
             domain={domain}
-            helpNoun='domain'
-            helpURL='https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields'
-            showHeader={true}
-            initCollapsed={false}
             onChange={changeHandler}
-
         />);
 
         // Add new row
@@ -327,5 +351,108 @@ describe('DomainForm', () => {
 
     });
 
+    test('domain form initCollapsed', () => {
+        const domain = DomainDesign.create({
+            name: "collapsed with two fields",
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            },{
+                name: 'string',
+                rangeURI: STRING_RANGE_URI,
+                propertyId: 2,
+                propertyURI: 'test'
+            }]
+        });
+
+        const tree  = renderer.create(
+            <DomainForm
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('domain form initCollapsed and markComplete', () => {
+        const domain = DomainDesign.create({
+            name: "collapsed and markComplete",
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            },{
+                name: 'string',
+                rangeURI: STRING_RANGE_URI,
+                propertyId: 2,
+                propertyURI: 'test'
+            }]
+        });
+
+        const tree  = renderer.create(
+            <DomainForm
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                markComplete={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('domain form headerPrefix and panelCls', () => {
+        const domain = DomainDesign.create({name: "Foo headerPrefix and panelCls"});
+
+        const tree  = renderer.create(
+            <DomainForm
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                headerPrefix={'Foo'} // this text should be removed from the panel header display text
+                panelCls={'panel-primary'}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('with showInferFromFile', () => {
+        const domain = DomainDesign.create({});
+        const tree = renderer.create(
+            <DomainForm
+                domain={domain}
+                showInferFromFile={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('test showInferFromFile click domain-form-add-link', () => {
+        const component = (
+            <DomainFormContainer
+                showInferFromFile={true}
+            />
+        );
+
+        const wrapper = mount(component);
+        expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
+        expect(wrapper.find('.domain-form-add-link')).toHaveLength(1);
+        wrapper.find('.domain-form-add-link').last().simulate('click');
+        expect(wrapper.find(FileAttachmentForm)).toHaveLength(0);
+        expect(wrapper.find('.domain-form-add-link')).toHaveLength(0);
+        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        wrapper.unmount();
+    });
 });
 

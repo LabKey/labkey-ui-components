@@ -32,10 +32,33 @@ interface ReportItemModalProps extends ReportConsumer{
     onClose?(): void,
 }
 
+class ReportMetadata extends React.PureComponent<ReportConsumer> {
+    render() {
+        const { description, type, createdBy } = this.props.report;
+
+        return (
+            <div className="report-item__metadata">
+                <div className="report-item__metadata-item">
+                    <label>Created By:</label>
+                    <span>{createdBy}</span>
+                </div>
+
+                <div className="report-item__metadata-item">
+                    <label>Type:</label>
+                    <span>{type}</span>
+                </div>
+
+                <div className="report-item__metadata-item">
+                    <label>Description:</label>
+                    <span>{description}</span>
+                </div>
+            </div>
+        );
+    }
+}
+
 class UnsupportedReportBody extends React.PureComponent<ReportConsumer> {
     render() {
-        const { description, runUrl, type, createdBy } = this.props.report;
-
         return (
             <Modal.Body>
                 <div className="alert alert-warning report-list__unsupported-preview">
@@ -48,27 +71,12 @@ class UnsupportedReportBody extends React.PureComponent<ReportConsumer> {
                         Server.
                     </p>
 
-                    <a href={runUrl} className="btn btn-warning">
+                    <a href={this.props.report.runUrl} className="btn btn-warning">
                         <span>View in LabKey</span>
                     </a>
                 </div>
 
-                <div className="report-item__metadata">
-                    <div className="report-item__metadata-item">
-                        <label>Created By:</label>
-                        <span>{createdBy}</span>
-                    </div>
-
-                    <div className="report-item__metadata-item">
-                        <label>Type:</label>
-                        <span>{type}</span>
-                    </div>
-
-                    <div className="report-item__metadata-item">
-                        <label>Description:</label>
-                        <span>{description}</span>
-                    </div>
-                </div>
+                <ReportMetadata report={this.props.report} />
             </Modal.Body>
         );
     }
@@ -91,7 +99,10 @@ class GridReportBody extends React.PureComponent<ReportConsumer> {
                         <p><a href={runUrl}>View grid in LabKey Server</a></p>
                         {appLink}
                     </div>
+
                     <PreviewGrid schemaQuery={schemaQuery} numCols={4} numRows={3} />
+
+                    <ReportMetadata report={this.props.report} />
                 </div>
             </Modal.Body>
         );

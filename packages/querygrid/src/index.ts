@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models'
+import { EditorModel, SearchResultsModel, getStateQueryGridModel } from './models';
 import {
     getSelected,
     getSelectedData,
@@ -30,7 +30,7 @@ import {
     searchUsingIndex,
     createQueryGridModelFilteredBySample,
     setSelected
-} from './actions'
+} from './actions';
 import {
     getEditorModel,
     getQueryGridModel,
@@ -38,7 +38,7 @@ import {
     removeQueryGridModel,
     setQueryColumnRenderers,
     setQueryMetadata
-} from './global'
+} from './global';
 import {
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
@@ -54,40 +54,47 @@ import {
     deleteRows,
     importData
 } from './query/api'
-import { MAX_EDITABLE_GRID_ROWS } from './constants'
-import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL'
-import { URLResolver } from './util/URLResolver'
-import { URLService } from './util/URLService'
-import { AppRouteResolver, AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver'
-import { QueryGridPanel } from './components/QueryGridPanel'
-import { EditableGridPanel } from './components/editable/EditableGridPanel'
+import { MAX_EDITABLE_GRID_ROWS } from './constants';
+import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
+import { URLResolver } from './util/URLResolver';
+import { URLService } from './util/URLService';
+import { AppRouteResolver, AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './util/AppURLResolver';
+import { QueryGridPanel } from './components/QueryGridPanel';
+import { EditableGridPanel } from './components/editable/EditableGridPanel';
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
-import { AliasRenderer } from './renderers/AliasRenderer'
-import { AppendUnits } from './renderers/AppendUnits'
-import { DefaultRenderer } from './renderers/DefaultRenderer'
-import { FileColumnRenderer } from './renderers/FileColumnRenderer'
-import { MultiValueRenderer } from './renderers/MultiValueRenderer'
-import { QueryInfoForm } from './components/forms/QueryInfoForm'
-import { LabelOverlay } from './components/forms/LabelOverlay'
-import { SelectInput } from './components/forms/input/SelectInput'
-import { QuerySelect } from './components/forms/QuerySelect'
-import { PageDetailHeader } from './components/forms/PageDetailHeader'
-import { DetailEditing } from './components/forms/detail/DetailEditing'
-import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer'
-import { Detail } from './components/forms/detail/Detail'
-import { PlacementType } from './components/editable/Controls'
-import { SchemaListing } from './components/listing/SchemaListing'
-import { QueriesListing } from './components/listing/QueriesListing'
-import { ReactSelectOption } from './components/forms/model'
-import { HeatMap } from './components/heatmap/HeatMap'
-import { SampleInsertPanel } from './components/samples/SampleInsertPanel'
-import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal'
-import { SearchResultCard } from './components/search/SearchResultCard'
-import { SearchResultsPanel } from './components/search/SearchResultsPanel'
-import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions'
-import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal'
-import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel'
+import { AliasRenderer } from './renderers/AliasRenderer';
+import { AppendUnits } from './renderers/AppendUnits';
+import { DefaultRenderer } from './renderers/DefaultRenderer';
+import { FileColumnRenderer } from './renderers/FileColumnRenderer';
+import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { QueryInfoForm } from './components/forms/QueryInfoForm';
+import { LabelOverlay } from './components/forms/LabelOverlay';
+import { SelectInput } from './components/forms/input/SelectInput';
+import { QuerySelect } from './components/forms/QuerySelect';
+import { PageDetailHeader } from './components/forms/PageDetailHeader';
+import { DetailEditing } from './components/forms/detail/DetailEditing';
+import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
+import { Detail } from './components/forms/detail/Detail';
+import { PlacementType } from './components/editable/Controls';
+import { SchemaListing } from './components/listing/SchemaListing';
+import { QueriesListing } from './components/listing/QueriesListing';
+import { ReactSelectOption } from './components/forms/model';
+import { HeatMap } from './components/heatmap/HeatMap';
+import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
+import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
+import { SearchResultCard } from './components/search/SearchResultCard';
+import { SearchResultsPanel } from './components/search/SearchResultsPanel';
+import { deleteSampleSet, getSampleDeleteConfirmationData } from './components/samples/actions';
+import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
+import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { PreviewGrid } from './components/PreviewGrid';
+import {
+    IReportItem,
+    flattenBrowseDataTreeResponse,
+    ReportURLMapper,
+    ReportTypes,
+} from './components/report-list/model';
+import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
 
 export {
     // global state functions
@@ -191,5 +198,15 @@ export {
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
-    searchUsingIndex
-}
+    searchUsingIndex,
+
+    // report-list
+    IReportItem,
+    flattenBrowseDataTreeResponse,
+    ReportURLMapper,
+    ReportTypes,
+    ReportListItem,
+    ReportItemModal,
+    ReportListProps,
+    ReportList,
+};

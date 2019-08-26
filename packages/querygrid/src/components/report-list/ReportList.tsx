@@ -17,9 +17,9 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Media, Image, Panel, Modal } from 'react-bootstrap'
 import { Set } from 'immutable';
-import { IReportItem, ReportTypes } from '../model';
-import { LoadingSpinner, SchemaQuery, AppURL } from '@glass/base';
-import { PreviewGrid } from '@glass/querygrid';
+import { IReportItem, ReportTypes } from './model';
+import { LoadingSpinner, SchemaQuery } from '@glass/base';
+import { PreviewGrid } from '../PreviewGrid';
 
 const GRID_REPORTS = Set([ReportTypes.Query, ReportTypes.Dataset]);
 const CHARTS = Set([ReportTypes.AutomaticPlot, ReportTypes.XYScatterPlot, ReportTypes.TimeChart]);

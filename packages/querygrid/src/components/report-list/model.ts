@@ -64,10 +64,10 @@ export type ReportURLMapper = (report: IReportItem) => AppURL
  * @param response: the body from the browseDataTree API Action
  * @param urlMapper: ReportURLMapper
  */
-export function flattenApiResponse(response: any, urlMapper: ReportURLMapper): Array<IReportItem> {
-    function _flattenApiResponse(all, item): Array<IReportItem> {
+export function flattenBrowseDataTreeResponse(response: any, urlMapper: ReportURLMapper): Array<IReportItem> {
+    function _flattenBrowseDataTreeResponse(all, item): Array<IReportItem> {
         if (item.hasOwnProperty('children')) {
-            return [...all, ...item.children.reduce(_flattenApiResponse, [])] as Array<IReportItem>;
+            return [...all, ...item.children.reduce(_flattenBrowseDataTreeResponse, [])] as Array<IReportItem>;
         } else {
             const appUrl = urlMapper(item);
 
@@ -79,5 +79,5 @@ export function flattenApiResponse(response: any, urlMapper: ReportURLMapper): A
         }
     }
 
-    return _flattenApiResponse([], response);
+    return _flattenBrowseDataTreeResponse([], response);
 }

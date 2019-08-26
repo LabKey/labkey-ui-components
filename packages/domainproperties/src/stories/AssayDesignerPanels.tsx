@@ -51,7 +51,6 @@ storiesOf("AssayDesignerPanels", module)
                 }]
             }]
         });
-        console.log(model.toJS());
 
         return (
             <AssayDesignerPanels

@@ -373,7 +373,6 @@ export class DomainField extends Record({
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
         let field = new DomainField(Object.assign({}, rawField, {
-        // return new DomainField(Object.assign({}, rawField, {
             dataType,
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
             lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),

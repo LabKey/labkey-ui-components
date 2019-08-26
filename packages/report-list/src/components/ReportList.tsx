@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 import * as React from 'react';
+import { Link } from 'react-router';
 import { Media, Image, Panel, Modal } from 'react-bootstrap'
 import { Set } from 'immutable';
-import { IReportItem } from '../model';
-import { LoadingSpinner, SchemaQuery } from '@glass/base'
+import { IReportItem, ReportTypes } from '../model';
+import { LoadingSpinner, SchemaQuery, AppURL } from '@glass/base';
 import { PreviewGrid } from '@glass/querygrid';
 
-export enum ReportTypes {
-    Query = 'Query',
-    Dataset = 'Dataset',
-    XYScatterPlot= 'XY Scatter Plot',
-    AutomaticPlot = 'Automatic Plot',
-    TimeChart = 'Time Chart',
-    CrosstabReport = 'Crosstab Report',
-    RReport = 'R Report',
-    ParticipantReport = 'Participant Report',
-}
 const GRID_REPORTS = Set([ReportTypes.Query, ReportTypes.Dataset]);
 const CHARTS = Set([ReportTypes.AutomaticPlot, ReportTypes.XYScatterPlot, ReportTypes.TimeChart]);
 
@@ -85,14 +76,20 @@ class UnsupportedReportBody extends React.PureComponent<ReportConsumer> {
 
 class GridReportBody extends React.PureComponent<ReportConsumer> {
     render () {
-        const { schemaName, queryName, viewName } = this.props.report;
+        const { schemaName, queryName, viewName, runUrl, appUrl } = this.props.report;
         const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
+        let appLink;
+
+        if (appUrl) {
+            appLink = <p><Link to={appUrl.toString()}>View grid in Biologics</Link></p>;
+        }
 
         return (
             <Modal.Body>
                 <div className="report-list_grid_preview">
                     <div>
-                        TODO: Render links
+                        <p><a href={runUrl}>View grid in LabKey Server</a></p>
+                        {appLink}
                     </div>
                     <PreviewGrid schemaQuery={schemaQuery} numCols={4} numRows={3} />
                 </div>
@@ -135,14 +132,8 @@ interface ReportListItemProps {
 export class ReportListItem extends React.PureComponent<ReportListItemProps> {
     onClick = () => this.props.onClick(this.props.report);
 
-    onLinkClicked = (e) => {
-        // We need to stop event propagation when clicking on a link or it will also trigger the onClick handler
-        e.stopPropagation();
-        return true;
-    };
-
     render() {
-        const { name, runUrl, icon, iconCls, createdBy } = this.props.report;
+        const { name, icon, iconCls, createdBy } = this.props.report;
         let createdByEl;
         let iconEl = <Image className="report-list-item__icon" src={icon} />;
 

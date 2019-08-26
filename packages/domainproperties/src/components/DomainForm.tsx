@@ -505,19 +505,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { collapsed } = this.state;
         let name = domain.name ? domain.name : "Domain Properties";
 
-        // prefer to use the suffix "Properties" over "Fields"
+        // optionally trim off a headerPrefix from the name display
+        if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
+            name = name.replace(headerPrefix + ' ', '');
+        }
+
+        // prefer to use the suffix "Properties" over "Fields" in panel heading
         if (name.endsWith(' Fields')) {
             name = name.substring(0, name.length - 7) + ' Properties';
+        }
+
+        // prefer "Results Properties" over "Data Properties"in assay case
+        if (name.endsWith('Data Properties')) {
+            name = name.replace('Data Properties', 'Results Properties');
         }
 
         // in collapsed view, add the field count to the header
         if (collapsed && domain.fields.size > 0) {
             name = name + ' (' + domain.fields.size + ')';
-        }
-
-        // optionally trim off a headerPrefix from the name display
-        if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
-            name = name.replace(headerPrefix + ' ', '');
         }
 
         return name;

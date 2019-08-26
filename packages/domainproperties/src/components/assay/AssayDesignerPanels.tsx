@@ -168,7 +168,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
             }
             else if (domain.isNameSuffixMatch('Data')) {
                 return (
-                    <p>Define the data properties that are set for individual rows within the imported run.</p>
+                    <p>Define the results properties that are set for individual rows within the imported run.</p>
                 )
             }
         }

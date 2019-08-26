@@ -108,7 +108,7 @@ describe('AssayDesignerPanels', () => {
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
             expect(getDomainPanelHeading(wrapper, 'Define the batch properties')).toHaveLength(batchActive ? 1 : 0);
             expect(getDomainPanelHeading(wrapper, 'Define the run properties')).toHaveLength(runActive ? 1 : 0);
-            expect(getDomainPanelHeading(wrapper, 'Define the data properties')).toHaveLength(resultsActive ? 1 : 0);
+            expect(getDomainPanelHeading(wrapper, 'Define the results properties')).toHaveLength(resultsActive ? 1 : 0);
         }
 
         const wrapper = mount(component);

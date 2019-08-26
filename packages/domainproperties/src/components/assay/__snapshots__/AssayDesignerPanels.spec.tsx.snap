@@ -248,7 +248,7 @@ Array [
       className="panel-heading"
     >
       <span>
-        Data Properties
+        Results Properties
       </span>
     </div>
   </div>,
@@ -532,7 +532,7 @@ Array [
       className="panel-heading"
     >
       <span>
-        Data Properties
+        Results Properties
       </span>
     </div>
   </div>,

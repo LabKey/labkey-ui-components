@@ -13,8 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { createFormInputId, getBannerMessages, updateDomainException } from "./actions";
-import {DomainDesign, DomainException, DomainField, DomainFieldError} from "../models";
+import { List } from "immutable";
+import { QueryColumn } from "@glass/base";
+
+import { createFormInputId, getBannerMessages, setDomainFields, updateDomainException } from "./actions";
+import {
+    DATETIME_TYPE,
+    DomainDesign,
+    DomainException,
+    DomainField,
+    DOUBLE_TYPE,
+    INTEGER_TYPE,
+    TEXT_TYPE
+} from "../models";
 import {
     DOMAIN_FIELD_PREFIX,
     FLAG_CONCEPT_URI,
@@ -58,7 +69,6 @@ describe("domain properties actions", () => {
     });
 
     test('server side error on the banner', () => {
-
         const fields = [];
         const field1 = 'column1';
         const field2 = 'modified';
@@ -128,7 +138,6 @@ describe("domain properties actions", () => {
     });
 
     test('client side warning on the banner', () => {
-
         const fields = [];
         fields.push({
             name: '#column#',
@@ -153,5 +162,27 @@ describe("domain properties actions", () => {
 
         let updatedDomain = updateDomainException(domain, 0, domainFieldError);
         expect(updatedDomain.domainException.get('errors').get(0)[0].message).toBe(message);
+    });
+
+    test('setDomainFields', () => {
+        const initDomain = DomainDesign.create({name: 'Foo', fields: [
+                {name:'text', rangeURI: TEXT_TYPE.rangeURI},
+                {name:'int', rangeURI: INTEGER_TYPE.rangeURI}
+            ]});
+        expect(initDomain.fields.size).toBe(2);
+        expect(initDomain.fields.get(0).rangeURI).toBe(TEXT_TYPE.rangeURI);
+        expect(initDomain.fields.get(1).rangeURI).toBe(INTEGER_TYPE.rangeURI);
+
+        const newFields = [
+            QueryColumn.create({name:'text', rangeURI: TEXT_TYPE.rangeURI}),
+            QueryColumn.create({name:'dbl', rangeURI: DOUBLE_TYPE.rangeURI}),
+            QueryColumn.create({name:'dt', rangeURI: DATETIME_TYPE.rangeURI})
+        ];
+
+        const updatedDomain = setDomainFields(initDomain, List<QueryColumn>(newFields));
+        expect(updatedDomain.fields.size).toBe(3);
+        expect(updatedDomain.fields.get(0).rangeURI).toBe(TEXT_TYPE.rangeURI);
+        expect(updatedDomain.fields.get(1).rangeURI).toBe(DOUBLE_TYPE.rangeURI);
+        expect(updatedDomain.fields.get(2).rangeURI).toBe(DATETIME_TYPE.rangeURI);
     });
 });

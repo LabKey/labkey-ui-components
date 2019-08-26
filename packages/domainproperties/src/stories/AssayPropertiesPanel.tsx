@@ -57,7 +57,7 @@ storiesOf("AssayPropertiesPanel", module)
             />
         )
     })
-    .add("initial model", () => {
+    .add("with model", () => {
         return (
             <WrappedAssayPropertiesPanel
                 data={{

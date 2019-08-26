@@ -37,6 +37,8 @@ storiesOf("AssayDesignerPanels", module)
             protocolId: 1,
             name: 'Test Assay Protocol',
             description: 'My assay protocol for you all to use.',
+            editableRuns: true,
+            editableResults: true,
             domains: [{
                 name: 'Sample Fields',
                 fields: [{

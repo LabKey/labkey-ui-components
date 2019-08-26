@@ -69,7 +69,7 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
             body = (
                 <>
                     <p>{stats}</p>
-                    <Grid bordered={false} columns={columns} data={data} />
+                    <Grid bordered={true} columns={columns} data={data} />
                 </>
             );
         }

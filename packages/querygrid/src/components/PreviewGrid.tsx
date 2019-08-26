@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { fromJS, List } from 'immutable';
-import { Grid, SchemaQuery, QueryInfo } from "@glass/base";
-import { getQueryDetails, selectRows } from "..";
+import { Grid, SchemaQuery, QueryInfo } from '@glass/base';
+import { getQueryDetails, selectRows } from '..';
 
 interface PreviewGridProps {
     schemaQuery: SchemaQuery,

@@ -66,14 +66,16 @@ class UnsupportedReportBody extends React.PureComponent<ReportConsumer> {
                         <span className="fa fa-exclamation-circle">&nbsp;</span>
                     </div>
 
-                    <p>
-                        This report is not currently supported. It is recommended that you view the report in LabKey
-                        Server.
-                    </p>
+                    <div>
+                        <p>
+                            This report is not currently supported. It is recommended that you view the report in LabKey
+                            Server.
+                        </p>
+                    </div>
 
-                    <a href={this.props.report.runUrl} className="btn btn-warning">
-                        <span>View in LabKey</span>
-                    </a>
+                    <div>
+                        <a href={this.props.report.runUrl} className="btn btn-warning">View in LabKey</a>
+                    </div>
                 </div>
 
                 <ReportMetadata report={this.props.report} />

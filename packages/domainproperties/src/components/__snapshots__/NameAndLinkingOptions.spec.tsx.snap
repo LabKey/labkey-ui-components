@@ -162,6 +162,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
               Import Aliases
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="Import Aliases"
               >
                 <span
@@ -321,6 +322,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
               URL
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="URL"
               >
                 <span

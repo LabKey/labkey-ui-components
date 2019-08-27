@@ -9,7 +9,7 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("No values", () => {
 
-        const parentAlias:ParentAlias = {alias: "", id: "", parentValue: ""};
+        const parentAlias:ParentAlias = {alias: "", id: "", parentValue: undefined};
 
         const component = (
             <SampleSetParentAliasRow  id={parentAlias.id}  onAliasChange={jest.fn()} onRemove={jest.fn()} parentAlias={parentAlias} parentOptions={[]}/>
@@ -21,7 +21,7 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("With values", () => {
 
-        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: "materialInputs/test"};
+        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/test", label:"Test Label"}};
         const option:IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/test"};
 
         const component = (
@@ -37,9 +37,9 @@ describe("<SampleSetParentAliasRow/>", () => {
         expect(wrapper.find('input[name="parentValue"]').props().value).toBe(parentAlias.parentValue);
     });
 
-    test("With select value not found", () => {
+    test("With parent value not an option in select", () => {
 
-        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: "materialInputs/test"};
+        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/test", label:"Test Label"}};
         const option:IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/notFound"};
 
         const component = (
@@ -57,7 +57,7 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("Simulate delete behavior", () => {
 
-        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: "materialInputs/option2"};
+        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/option2", label:"Test Label"}};
         const option1:IParentOption = {label: "option1", query: "sampleset", schema: "exp", value: "materialInputs/option1"};
         const option2:IParentOption = {label: "option2", query: "sampleset", schema: "exp", value: "materialInputs/option2"};
 
@@ -77,4 +77,47 @@ describe("<SampleSetParentAliasRow/>", () => {
         expect(mockRemove).toHaveBeenCalledWith(parentAlias.id);
     });
 
+    test("Simulate changed alias", () => {
+
+        const parentAlias: ParentAlias = {
+            alias: "testAlias",
+            id: "testId",
+            parentValue: {value: "materialInputs/option2", label: "Test Label"}
+        };
+        const option1: IParentOption = {
+            label: "option1",
+            query: "sampleset",
+            schema: "exp",
+            value: "materialInputs/option1"
+        };
+        const option2: IParentOption = {
+            label: "option2",
+            query: "sampleset",
+            schema: "exp",
+            value: "materialInputs/option2"
+        };
+
+        const mockChange = jest.fn();
+
+        const component = (
+            <SampleSetParentAliasRow id={parentAlias.id} onAliasChange={mockChange} onRemove={jest.fn()}
+                                     parentAlias={parentAlias} parentOptions={[option1, option2]}/>
+        );
+
+        const wrapper = mount(component);
+        expect(wrapper.find('input[name="alias"]').props().value).toBe(parentAlias.alias);
+        const aliasInput = wrapper.find('input[name="alias"]');
+        const selectInput = wrapper.find('input[role="combobox"]');
+        expect(mockChange).toHaveBeenCalledTimes(0);
+
+        aliasInput.simulate('change', {target:{name:'alias', value: 'change'}});
+        expect(mockChange).toHaveBeenCalledTimes(1);
+        expect(mockChange).toBeCalledWith('testId', 'alias', 'change');
+        mockChange.mockClear();
+
+        expect(mockChange).toHaveBeenCalledTimes(0);
+        selectInput.simulate('change', {target:{name:'parentValue', value: option2}});
+        expect(mockChange).toHaveBeenCalledTimes(1);
+        expect(mockChange).toBeCalledWith('testId', 'parentValue', option2);
+    });
 });

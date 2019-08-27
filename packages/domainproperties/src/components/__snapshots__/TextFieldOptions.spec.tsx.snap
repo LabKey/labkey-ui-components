@@ -56,6 +56,7 @@ exports[`TextFieldOptions Text data type 1`] = `
               Max Text Character Count
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="Max Text Length"
               >
                 <span

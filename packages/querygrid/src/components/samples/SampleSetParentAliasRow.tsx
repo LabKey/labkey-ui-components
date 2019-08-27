@@ -4,13 +4,14 @@ import {Col, FormControl, Row} from "react-bootstrap";
 import {LabelOverlay} from "../..";
 import { SelectInput } from "../forms/input/SelectInput";
 import {RemoveEntityButton} from "@glass/base";
+import classNames from "classnames";
 
 
 interface IParentAlias {
     id: string
     parentAlias: ParentAlias
     parentOptions?: Array<IParentOption>
-    onAliasChange: (id:string, alias:string, newValue: string) => void
+    onAliasChange: (id:string, alias:string, newValue: any) => void
     onRemove: (index: string) => void
 }
 
@@ -28,8 +29,8 @@ export class SampleSetParentAliasRow extends React.Component<IParentAlias, Paren
         this.props.onAliasChange(this.props.id, e.target.name, e.target.value);
     }
 
-    onSelectChange(name, value) {
-        this.props.onAliasChange(this.props.id, name, value);
+    onSelectChange(name: string, selectedValue: string, selectedOption: IParentOption) {
+        this.props.onAliasChange(this.props.id, name, selectedOption);
     }
 
     removeParentAlias() {
@@ -44,19 +45,17 @@ export class SampleSetParentAliasRow extends React.Component<IParentAlias, Paren
 
         const {alias, parentValue} = parentAlias;
 
-        //TODO probably better to pass the option around instead of looking it up like this all the time
-        const optionValue = parentOptions.find((opt)=> opt.value === parentValue);
+        const aliasBlank = !alias || alias.trim().length === 0;
 
         return (<Row key={id} >
-            <Col xs={3}> {/*Label*/}
+            <Col xs={3}> {/* TODO:Error/validation styling on label {className={classNames('parent-alias-label', {'has-error': aliasBlank || !optionValue})}> */}
                 <LabelOverlay
                     label={'Parent Alias *'}
-                    labelClass={'sample-insert--parent-label'}
                     description='Column heading that indicates sample parentage during import'
                     required={true}
                 />
             </Col>
-            <Col xs={3} > {/*Alias*/}
+            <Col xs={3} className={classNames({'has-error': aliasBlank})}>
                 <FormControl
                     name={"alias"}
                     type="text"
@@ -65,15 +64,15 @@ export class SampleSetParentAliasRow extends React.Component<IParentAlias, Paren
                     onChange={this.onChange}
                 />
             </Col>
-            <Col xs={5}>
+            <Col xs={5} className={classNames({'has-error': !parentValue})}>
                 <SelectInput
                     formsy={false}
-                    inputClass="sampleset-insert--parent-select" //TODO: Not sure why this styles better?
+                    inputClass={"sampleset-insert--parent-select"}
                     name={"parentValue"}
                     onChange={this.onSelectChange}
                     options={parentOptions}
                     placeholder={'Select a Sample Set...'}
-                    value={optionValue ? optionValue.value : undefined }
+                    value={parentValue ? parentValue.value : undefined }
                 />
             </Col>
             <Col>

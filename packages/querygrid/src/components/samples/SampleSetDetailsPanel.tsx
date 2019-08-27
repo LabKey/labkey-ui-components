@@ -66,36 +66,30 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                         schema: result.schema,
                     } as IParentOption;
                 }).toArray();
+
+                let parentAliases = Map() as Map<string, ParentAlias>;
+                if (props.data && props.data.get('importAliases'))
+                {
+                    let importAliases = Map(props.data.get('importAliases')) || Map() as Map<string,string>;
+                    importAliases.forEach((val, key) => {
+                        const newId = this.generateAliasId();
+                        parentAliases = parentAliases.set(newId, {
+                            id: newId,
+                            alias: key,
+                            parentValue: options.find(opt => opt.value === val),
+                        } as ParentAlias);
+                    });
+                }
+
                 this.setState(
                     (state) => ({
                     formValues: {
                         ...state.formValues
                     } as ISampleSetDetails,
                     parentOptions: options,
-                }));
-            });
-
-            let parentAliases = Map() as Map<string, ParentAlias>;
-            if (props.data && props.data.get('importAliases'))
-            {
-                let importAliases = Map(props.data.get('importAliases')) || Map() as Map<string,string>;
-                importAliases.forEach((val, key) => {
-                    const newId = this.generateAliasId();
-                    parentAliases = parentAliases.set(newId, {
-                        id: newId,
-                        alias: key,
-                        parentValue: val,
-                    } as ParentAlias);
-                });
-            }
-
-            this.setState(
-                (state) => ({
-                    formValues: {
-                        ...state.formValues
-                    } as ISampleSetDetails,
                     parentAliases,
                 }));
+            });
         }
     }
 
@@ -157,7 +151,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         const {parentAliases} = this.state;
         let aliases = {};
         parentAliases.map((alias: ParentAlias) => {
-            aliases[alias.alias] = alias.parentValue;
+            aliases[alias.alias] = alias.parentValue.value;
         });
 
         return aliases;
@@ -184,13 +178,12 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     isFormValid(): boolean {
-        const { formValues, parentAliases, parentOptions } = this.state;
+        const { formValues, parentAliases } = this.state;
         const hasValidName = formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
         const hasInvalidAliases =
-            parentAliases && (parentAliases.size > 0 &&
+            !!parentAliases && (parentAliases.size > 0 &&
             parentAliases.find((alias) :boolean =>
-                !alias.alias || alias.alias === '' ||
-                !alias.parentValue || !parentOptions.find((opt)=> opt.value === alias.parentValue)
+                !alias.alias || alias.alias.trim() === '' || !alias.parentValue
         ));
 
         return (this.isExistingSampleSet() || hasValidName) && !hasInvalidAliases;
@@ -229,7 +222,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         parentAliases = parentAliases.set(newId, {
             id: newId,
             alias:'',
-            parentValue:''
+            parentValue: undefined
         });
 
         this.setState({parentAliases});
@@ -240,7 +233,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         return generateId("sampleset-parent-import-alias-");
     }
 
-    parentAliasChanged(id:string, field: string, newValue: string) {
+    parentAliasChanged(id:string, field: string, newValue: any) {
 
         let {parentAliases} = this.state;
         parentAliases.get(id)[field] = newValue;
@@ -312,6 +305,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         type={'Text (String)'}
                                         description={'The name for this sample set. Note that this can\'t be changed after sample set creation.'}
                                         required={true}
+                                        // addLabelAsterisk={true}  //This causes weirdness, because default isFormsy and required...
                                     />
                                 </Col>
                                 <Col xs={9}>

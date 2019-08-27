@@ -891,6 +891,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                             Max Text Character Count
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Max Text Length"
                                             >
                                               <span
@@ -1271,6 +1272,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -1430,6 +1432,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span
@@ -2416,6 +2419,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             Format for Dates
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Format String"
                                             >
                                               <span
@@ -2545,6 +2549,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             Participant Date Shifting
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Participant Date Shifting"
                                             >
                                               <span
@@ -2899,6 +2904,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -3058,6 +3064,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span
@@ -4043,6 +4050,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                             Format Numeric Values
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Format Strings"
                                             >
                                               <span
@@ -4426,6 +4434,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -4585,6 +4594,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span
@@ -5701,6 +5711,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -5860,6 +5871,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span
@@ -6929,6 +6941,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                             Max Text Character Count
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Max Text Length"
                                             >
                                               <span
@@ -7309,6 +7322,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -7468,6 +7482,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span
@@ -8477,6 +8492,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                             Max Text Character Count
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Max Text Length"
                                             >
                                               <span
@@ -8857,6 +8873,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -9016,6 +9033,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span
@@ -10068,6 +10086,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                             Max Text Character Count
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Max Text Length"
                                             >
                                               <span
@@ -10448,6 +10467,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                             Import Aliases
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="Import Aliases"
                                             >
                                               <span
@@ -10607,6 +10627,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                             URL
                                             <LabelHelpTip
                                               body={[Function]}
+                                              id="tooltip"
                                               title="URL"
                                             >
                                               <span

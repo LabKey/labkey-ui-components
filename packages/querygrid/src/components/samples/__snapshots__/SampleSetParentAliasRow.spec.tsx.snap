@@ -9,7 +9,7 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
   >
      
     <span>
-      Parent Alias
+      Parent Alias *
        
       <i
         className="fa fa-question-circle"
@@ -22,9 +22,8 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
     </span>
   </div>
   <div
-    className="col-xs-3"
+    className="has-error col-xs-3"
   >
-     
     <input
       className="form-control"
       name="alias"
@@ -35,7 +34,7 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
     />
   </div>
   <div
-    className="col-xs-5"
+    className="has-error col-xs-5"
   >
     <div
       className="form-group row"
@@ -80,160 +79,6 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   onFocus={[Function]}
-                  required={true}
-                  role="combobox"
-                  style={
-                    Object {
-                      "boxSizing": "content-box",
-                      "width": "5px",
-                    }
-                  }
-                  value=""
-                />
-                <div
-                  style={
-                    Object {
-                      "height": 0,
-                      "left": 0,
-                      "overflow": "scroll",
-                      "position": "absolute",
-                      "top": 0,
-                      "visibility": "hidden",
-                      "whiteSpace": "pre",
-                    }
-                  }
-                >
-                  
-                </div>
-              </div>
-            </span>
-            <span
-              className="Select-arrow-zone"
-              onMouseDown={[Function]}
-            >
-              <span
-                className="Select-arrow"
-                onMouseDown={[Function]}
-              />
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    className=""
-  >
-    <div
-      className="sample-insert--remove-parent"
-    >
-      <span
-        className="container--action-button"
-        onClick={[Function]}
-      >
-        <i
-          className="fa fa-times container--removal-icon"
-        />
-        
-      </span>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<SampleSetParentAliasRow/> Simulate delete behavior 1`] = `
-<div
-  className="row"
->
-  <div
-    className="col-xs-3"
-  >
-     
-    <span>
-      Parent Alias
-       
-      <i
-        className="fa fa-question-circle"
-        onBlur={[Function]}
-        onClick={null}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
-      />
-    </span>
-  </div>
-  <div
-    className="col-xs-3"
-  >
-     
-    <input
-      className="form-control"
-      name="alias"
-      onChange={[Function]}
-      placeholder="Enter an Alias for import"
-      type="text"
-      value="testAlias"
-    />
-  </div>
-  <div
-    className="col-xs-5"
-  >
-    <div
-      className="form-group row"
-    >
-      <div
-        className="sampleset-insert--parent-select"
-      >
-        <div
-          className="Select Select--single is-clearable is-searchable has-value"
-        >
-          <input
-            disabled={false}
-            name="parentValue"
-            type="hidden"
-            value="materialInputs/option2"
-          />
-          <div
-            className="Select-control"
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            onTouchEnd={[Function]}
-            onTouchMove={[Function]}
-            onTouchStart={[Function]}
-          >
-            <span
-              className="Select-multi-value-wrapper"
-              id="react-select-7--value"
-            >
-              <div
-                className="Select-value"
-              >
-                <span
-                  aria-selected="true"
-                  className="Select-value-label"
-                  id="react-select-7--value-item"
-                  role="option"
-                >
-                  option2
-                </span>
-              </div>
-              <div
-                className="Select-input"
-                style={
-                  Object {
-                    "display": "inline-block",
-                  }
-                }
-              >
-                <input
-                  aria-activedescendant="react-select-7--value"
-                  aria-expanded="false"
-                  aria-haspopup="false"
-                  aria-owns=""
-                  id="selectinput-12"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
                   required={false}
                   role="combobox"
                   style={
@@ -262,24 +107,6 @@ exports[`<SampleSetParentAliasRow/> Simulate delete behavior 1`] = `
               </div>
             </span>
             <span
-              aria-label="Clear value"
-              className="Select-clear-zone"
-              onMouseDown={[Function]}
-              onTouchEnd={[Function]}
-              onTouchMove={[Function]}
-              onTouchStart={[Function]}
-              title="Clear value"
-            >
-              <span
-                className="Select-clear"
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "&times;",
-                  }
-                }
-              />
-            </span>
-            <span
               className="Select-arrow-zone"
               onMouseDown={[Function]}
             >
@@ -313,7 +140,7 @@ exports[`<SampleSetParentAliasRow/> Simulate delete behavior 1`] = `
 </div>
 `;
 
-exports[`<SampleSetParentAliasRow/> With select value not found 1`] = `
+exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`] = `
 <div
   className="row"
 >
@@ -322,7 +149,7 @@ exports[`<SampleSetParentAliasRow/> With select value not found 1`] = `
   >
      
     <span>
-      Parent Alias
+      Parent Alias *
        
       <i
         className="fa fa-question-circle"
@@ -337,7 +164,6 @@ exports[`<SampleSetParentAliasRow/> With select value not found 1`] = `
   <div
     className="col-xs-3"
   >
-     
     <input
       className="form-control"
       name="alias"
@@ -393,7 +219,7 @@ exports[`<SampleSetParentAliasRow/> With select value not found 1`] = `
                   onBlur={[Function]}
                   onChange={[Function]}
                   onFocus={[Function]}
-                  required={true}
+                  required={false}
                   role="combobox"
                   style={
                     Object {
@@ -481,7 +307,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
   >
      
     <span>
-      Parent Alias
+      Parent Alias *
        
       <i
         className="fa fa-question-circle"
@@ -496,7 +322,6 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
   <div
     className="col-xs-3"
   >
-     
     <input
       className="form-control"
       name="alias"

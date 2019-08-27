@@ -34,7 +34,7 @@ describe("<SampleSetParentAliasRow/>", () => {
         const wrapper = mount(component);
 
         expect(wrapper.find('input[name="alias"]').props().value).toBe(parentAlias.alias);
-        expect(wrapper.find('input[name="parentValue"]').props().value).toBe(parentAlias.parentValue);
+        expect(wrapper.find('input[name="parentValue"]').props().value).toBe(parentAlias.parentValue.value);
     });
 
     test("With parent value not an option in select", () => {

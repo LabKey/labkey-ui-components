@@ -39,6 +39,12 @@ interface State {
     submitting: boolean
 }
 
+const NEW_SAMPLE_SET_OPTION : IParentOption = {
+    label: '<This SampleSet>',
+    value: "<{{changeme}}>"
+};
+const IMPORT_PREFIX :string = 'materialInputs/';
+
 export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     constructor(props: Props) {
@@ -61,11 +67,16 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 const options = results.map(result => {
                     return {
                         label: result.query,
-                        value: 'materialInputs/' + result.query,
+                        value: IMPORT_PREFIX + result.query,
                         query: result.query,
                         schema: result.schema,
                     } as IParentOption;
                 }).toArray();
+
+                if(!this.isExistingSampleSet())
+                {
+                    options.push(NEW_SAMPLE_SET_OPTION);
+                }
 
                 let parentAliases = Map() as Map<string, ParentAlias>;
                 if (props.data && props.data.get('importAliases'))
@@ -151,7 +162,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         const {parentAliases} = this.state;
         let aliases = {};
         parentAliases.map((alias: ParentAlias) => {
-            aliases[alias.alias] = alias.parentValue.value;
+            let val = alias.parentValue !== NEW_SAMPLE_SET_OPTION ?
+                alias.parentValue.value:
+                IMPORT_PREFIX + this.getSampleSetName();
+            aliases[alias.alias] = val;
         });
 
         return aliases;
@@ -205,6 +219,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     isExistingSampleSet(): boolean {
         return this.getDataValue(null, 'rowId', undefined) !== undefined;
+    }
+
+    getSampleSetName(): string {
+        return this.getDataValue(FORM_IDS.NAME, 'name', '');
     }
 
     getNameExpressionValue(): string {

@@ -15,14 +15,21 @@
  */
 import * as React from 'react';
 import { Link } from 'react-router';
-import { Media, Image, Panel, Modal } from 'react-bootstrap'
+import { Image, Media, Modal, Panel } from 'react-bootstrap'
 import { Set } from 'immutable';
 import { IReportItem, ReportTypes } from './model';
 import { LoadingSpinner, SchemaQuery } from '@glass/base';
 import { PreviewGrid } from '../PreviewGrid';
 
 const GRID_REPORTS = Set([ReportTypes.Query, ReportTypes.Dataset]);
-const CHARTS = Set([ReportTypes.AutomaticPlot, ReportTypes.XYScatterPlot, ReportTypes.TimeChart]);
+const CHARTS = Set([
+    ReportTypes.AutomaticPlot,
+    ReportTypes.BarChart,
+    ReportTypes.BoxAndWhiskerPlot,
+    ReportTypes.PieChart,
+    ReportTypes.XYScatterPlot,
+    ReportTypes.XYSeriesLinePlot,
+]);
 
 interface ReportConsumer {
     report: IReportItem,
@@ -61,24 +68,24 @@ class UnsupportedReportBody extends React.PureComponent<ReportConsumer> {
     render() {
         return (
             <Modal.Body>
-                <div className="alert alert-warning report-list__unsupported-preview">
-                    <div className="unsupported-icon">
-                        <span className="fa fa-exclamation-circle">&nbsp;</span>
-                    </div>
+                <div className="report-list__unsupported-preview">
+                    <div className="alert alert-warning unsupported-alert">
+                        <div className="unsupported-alert__icon">
+                            <span className="fa fa-exclamation-circle"/>
+                        </div>
 
-                    <div>
-                        <p>
-                            This report is not currently supported. It is recommended that you view the report in LabKey
-                            Server.
+                        <p className="unsupported-alert__message">
+                            This report is not currently supported. It is recommended that you view the report in
+                            LabKey Server.
                         </p>
+
+                        <div className="unsupported-alert__view-link">
+                            <a href={this.props.report.runUrl} className="btn btn-warning">View in LabKey</a>
+                        </div>
                     </div>
 
-                    <div>
-                        <a href={this.props.report.runUrl} className="btn btn-warning">View in LabKey</a>
-                    </div>
+                    <ReportMetadata report={this.props.report} />
                 </div>
-
-                <ReportMetadata report={this.props.report} />
             </Modal.Body>
         );
     }
@@ -96,7 +103,7 @@ class GridReportBody extends React.PureComponent<ReportConsumer> {
 
         return (
             <Modal.Body>
-                <div className="report-list_grid_preview">
+                <div className="report-list__grid-preview">
                     <div>
                         <p><a href={runUrl}>View grid in LabKey Server</a></p>
                         {appLink}

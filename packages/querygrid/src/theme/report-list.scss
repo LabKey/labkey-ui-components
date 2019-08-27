@@ -33,13 +33,13 @@ img.report-list-item__icon {
 .report-list__message {
   padding: 1em;
 }
-.report-list__unsupported-preview {
+.unsupported-alert {
   display: flex;
 }
-.report-list__unsupported-preview > * {
+.unsupported-alert > * {
   margin: 0 0.2em;
 }
-.unsupported-icon {
+.unsupported-alert__icon {
   padding-top: 0.5em;
   padding-right: 0.5em;
 }

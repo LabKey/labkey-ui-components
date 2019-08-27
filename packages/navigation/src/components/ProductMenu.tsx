@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import { DropdownButton } from 'react-bootstrap'
 import { LoadingSpinner } from '@glass/base'
 
-import { ProductMenuModel } from '../model'
+import { MenuSectionModel, ProductMenuModel} from '../model'
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection'
 
 
 interface ProductMenuProps {
     model: ProductMenuModel
-    sectionConfigs?: Map<string, MenuSectionConfig>
+    sectionConfigs?: List<Map<string, MenuSectionConfig>>
     maxColumns?: number
 }
 
@@ -50,21 +50,16 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         });
     }
 
-    getSectionConfig(key: string) : MenuSectionConfig {
-        const { sectionConfigs } = this.props;
-        if (sectionConfigs && sectionConfigs.has(key)) {
-            return sectionConfigs.get(key)
-        }
-        else {
-            return new MenuSectionConfig();
-        }
+    getSectionModel(key: string) : MenuSectionModel {
+        return this.props.model.sections.find(section => section.key === key);
     }
 
     render() {
-        const { model } = this.props;
+        const { model, sectionConfigs } = this.props;
+        const { productId } = model;
 
         let containerCls = 'product-menu-content ';
-        let menuSectionCls = 'menu-section col-' + model.sections.size;
+        let menuSectionCls = 'menu-section col-' + sectionConfigs.size;
         let inside = <div className={menuSectionCls + " menu-loading"}><LoadingSpinner/></div>;
         if (model && model.isLoaded) {
             if (model.isError) {
@@ -75,10 +70,21 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
             {
                 inside = (
                     <>
-                        {model.sections.map(section => {
+                        {sectionConfigs.map((sectionConfig, ind) => {
                             return (
-                                <div key={section.key} className={menuSectionCls}>
-                                    <ProductMenuSection productId={model.productId} section={section} config={this.getSectionConfig(section.key)}/>
+                                <div key={ind} className={menuSectionCls}>
+                                    {
+                                        sectionConfig.entrySeq().map(([key, menuConfig]) => {
+                                            return (
+                                                <ProductMenuSection
+                                                    key={key}
+                                                    productId={productId}
+                                                    section={this.getSectionModel(key)}
+                                                    config={menuConfig}
+                                                />
+                                            );
+                                        })
+                                    }
                                 </div>
                             );
                         })}

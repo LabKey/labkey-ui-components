@@ -380,7 +380,7 @@ export class DomainField extends Record({
             lookupType,
             original: {
                 dataType,
-                rangeURI: rawField.rangeURI
+                rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
             }
         }));
 

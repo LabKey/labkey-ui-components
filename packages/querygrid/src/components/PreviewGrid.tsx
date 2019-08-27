@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fromJS, List } from 'immutable';
-import { Grid, SchemaQuery, QueryInfo } from '@glass/base';
+import { Grid, SchemaQuery, QueryInfo, LoadingSpinner } from '@glass/base';
 import { getQueryDetails, selectRows } from '..';
 
 interface PreviewGridProps {
@@ -57,7 +57,7 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
 
     render() {
         const { loading, data } = this.state;
-        let body = <div>Loading...</div>;
+        let body = <LoadingSpinner />;
 
         if (loading === false && data !== null) {
             const { numCols, numRows } = this.props;

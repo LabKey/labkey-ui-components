@@ -94,7 +94,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this.init(this.props)
+        this.init(this.props);
     }
 
     onFormChange = (evt: any) => {

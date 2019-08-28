@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fromJS, List } from 'immutable';
+import { Alert } from 'react-bootstrap';
 import { Grid, SchemaQuery, QueryInfo, LoadingSpinner } from '@glass/base';
 import { getQueryDetails, selectRows } from '..';
 
@@ -17,7 +18,8 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
             queryInfo: null,
             data: null,
             columns: null,
-            loading: null,
+            loading: false,
+            error: null,
         }
     }
 
@@ -25,6 +27,18 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
         this.setState(() => ({ loading: true }));
         const { numCols, numRows } = this.props;
         const { schemaName, queryName, viewName }= this.props.schemaQuery;
+
+        const handleFailure = (resp) => {
+            // Do we know for sure that the error response in getQueryDetails will look the same as selectRows? We may
+            // need to tweak this error handler to handle both cases, or just write one for each.
+            const error = resp.message ?
+                `Error loading data: ${resp.message}` :
+                'Unexpected error encountered while loading data';
+            this.setState(() => ({
+                error,
+                loading: false,
+            }));
+        };
 
         getQueryDetails({ schemaName, queryName }).then((queryInfo: QueryInfo) =>{
             const columns = queryInfo.getDisplayColumns(viewName).slice(0, numCols);
@@ -46,9 +60,10 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
                     data,
                     columns,
                     loading: false,
+                    error: null,
                 }));
-            });
-        });
+            }).catch(handleFailure);
+        }).catch(handleFailure);
     }
 
     componentDidMount(): void {
@@ -56,7 +71,7 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
     }
 
     render() {
-        const { loading, data } = this.state;
+        const { loading, data, error } = this.state;
         let body = <LoadingSpinner />;
 
         if (loading === false && data !== null) {
@@ -70,6 +85,14 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
                 <>
                     <p>{stats}</p>
                     <Grid bordered={true} columns={columns} data={data} />
+                </>
+            );
+        } else if (loading === false && error !== null) {
+            body = (
+                <>
+                    <Alert bsStyle="danger">
+                        {error}
+                    </Alert>
                 </>
             );
         }

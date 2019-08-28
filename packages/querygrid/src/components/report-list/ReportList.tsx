@@ -20,6 +20,8 @@ import { Set } from 'immutable';
 import { IReportItem, ReportTypes } from './model';
 import { LoadingSpinner, SchemaQuery } from '@glass/base';
 import { PreviewGrid } from '../PreviewGrid';
+import { Chart } from '../chart/Chart';
+import { DataViewInfo } from '../../models';
 
 const GRID_REPORTS = Set([ReportTypes.Query, ReportTypes.Dataset]);
 const CHARTS = Set([
@@ -37,6 +39,24 @@ interface ReportConsumer {
 
 interface ReportItemModalProps extends ReportConsumer{
     onClose?(): void,
+}
+
+class ReportLinks extends React.PureComponent<ReportConsumer> {
+    render() {
+        const { runUrl, appUrl } = this.props.report;
+        let appLink;
+
+        if (appUrl) {
+            appLink = <p><Link to={appUrl.toString()}>View grid in Biologics</Link></p>;
+        }
+
+        return (
+            <div className="report-item__links">
+                <p><a href={runUrl}>View grid in LabKey Server</a></p>
+                {appLink}
+            </div>
+        );
+    }
 }
 
 class ReportMetadata extends React.PureComponent<ReportConsumer> {
@@ -104,12 +124,25 @@ class GridReportBody extends React.PureComponent<ReportConsumer> {
         return (
             <Modal.Body>
                 <div className="report-list__grid-preview">
-                    <div>
-                        <p><a href={runUrl}>View grid in LabKey Server</a></p>
-                        {appLink}
-                    </div>
+                    <ReportLinks report={this.props.report} />
 
                     <PreviewGrid schemaQuery={schemaQuery} numCols={4} numRows={3} />
+
+                    <ReportMetadata report={this.props.report} />
+                </div>
+            </Modal.Body>
+        );
+    }
+}
+
+class ChartReportBody extends React.PureComponent<ReportConsumer, any> {
+    render() {
+        return (
+            <Modal.Body>
+                <div className="report-list__chart-preview">
+                    <ReportLinks report={this.props.report} />
+
+                    <Chart chart={new DataViewInfo(this.props.report)} />
 
                     <ReportMetadata report={this.props.report} />
                 </div>
@@ -127,7 +160,7 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
         if (GRID_REPORTS.contains(type as ReportTypes)) {
             BodyRenderer = GridReportBody;
         } else if (CHARTS.contains(type as ReportTypes)) {
-            // TODO: Set body renderer to visualization renderer.
+            BodyRenderer = ChartReportBody;
         }
 
         return (

@@ -7,6 +7,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
       "conceptURI": undefined,
       "defaultScale": undefined,
       "description": undefined,
+      "dimension": undefined,
       "excludeFromShifting": false,
       "format": undefined,
       "hidden": false,
@@ -15,14 +16,19 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
       "lookupContainer": undefined,
       "lookupQuery": undefined,
       "lookupSchema": undefined,
+      "measure": undefined,
+      "mvEnabled": false,
       "name": "key",
+      "PHI": undefined,
       "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
       "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+      "recommendedVariable": false,
       "required": false,
       "scale": undefined,
       "URL": undefined,
+      "shownInDetailsView": true,
       "shownInInsertView": true,
       "shownInUpdateView": true,
       "dataType": Immutable.Record {
@@ -57,6 +63,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
   }
   index={1}
   onChange={[MockFunction]}
+  onMultiChange={[MockFunction]}
 >
   <BooleanFieldOptions
     index={1}
@@ -277,6 +284,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -285,14 +293,19 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -724,6 +737,24 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
       </Row>
     </div>
   </NameAndLinkingOptions>
+  <Row
+    bsClass="row"
+    componentClass="div"
+    style={
+      Object {
+        "height": "20px",
+      }
+    }
+  >
+    <div
+      className="row"
+      style={
+        Object {
+          "height": "20px",
+        }
+      }
+    />
+  </Row>
 </DomainRowExpandedOptions>
 `;
 
@@ -734,6 +765,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
       "conceptURI": undefined,
       "defaultScale": undefined,
       "description": undefined,
+      "dimension": undefined,
       "excludeFromShifting": false,
       "format": undefined,
       "hidden": false,
@@ -742,14 +774,19 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
       "lookupContainer": undefined,
       "lookupQuery": undefined,
       "lookupSchema": undefined,
+      "measure": undefined,
+      "mvEnabled": false,
       "name": "key",
+      "PHI": undefined,
       "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "recommendedVariable": false,
       "required": false,
       "scale": undefined,
       "URL": undefined,
+      "shownInDetailsView": true,
       "shownInInsertView": true,
       "shownInUpdateView": true,
       "dataType": Immutable.Record {
@@ -784,6 +821,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
   }
   index={1}
   onChange={[MockFunction]}
+  onMultiChange={[MockFunction]}
 >
   <DateTimeFieldOptions
     excludeFromShifting={false}
@@ -1168,6 +1206,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -1176,14 +1215,19 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -1615,6 +1659,24 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
       </Row>
     </div>
   </NameAndLinkingOptions>
+  <Row
+    bsClass="row"
+    componentClass="div"
+    style={
+      Object {
+        "height": "20px",
+      }
+    }
+  >
+    <div
+      className="row"
+      style={
+        Object {
+          "height": "20px",
+        }
+      }
+    />
+  </Row>
 </DomainRowExpandedOptions>
 `;
 
@@ -1625,6 +1687,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
       "conceptURI": undefined,
       "defaultScale": undefined,
       "description": undefined,
+      "dimension": undefined,
       "excludeFromShifting": false,
       "format": undefined,
       "hidden": false,
@@ -1633,14 +1696,19 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
       "lookupContainer": undefined,
       "lookupQuery": undefined,
       "lookupSchema": undefined,
+      "measure": undefined,
+      "mvEnabled": false,
       "name": "key",
+      "PHI": undefined,
       "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
       "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+      "recommendedVariable": false,
       "required": false,
       "scale": undefined,
       "URL": undefined,
+      "shownInDetailsView": true,
       "shownInInsertView": true,
       "shownInUpdateView": true,
       "dataType": Immutable.Record {
@@ -1675,6 +1743,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
   }
   index={1}
   onChange={[MockFunction]}
+  onMultiChange={[MockFunction]}
 >
   <NumericFieldOptions
     index={1}
@@ -1958,6 +2027,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -1966,14 +2036,19 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -2405,6 +2480,24 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
       </Row>
     </div>
   </NameAndLinkingOptions>
+  <Row
+    bsClass="row"
+    componentClass="div"
+    style={
+      Object {
+        "height": "20px",
+      }
+    }
+  >
+    <div
+      className="row"
+      style={
+        Object {
+          "height": "20px",
+        }
+      }
+    />
+  </Row>
 </DomainRowExpandedOptions>
 `;
 
@@ -2415,6 +2508,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
       "conceptURI": undefined,
       "defaultScale": undefined,
       "description": undefined,
+      "dimension": undefined,
       "excludeFromShifting": false,
       "format": undefined,
       "hidden": false,
@@ -2423,14 +2517,19 @@ exports[`DomainExpandedOptions Text data type 1`] = `
       "lookupContainer": undefined,
       "lookupQuery": undefined,
       "lookupSchema": undefined,
+      "measure": undefined,
+      "mvEnabled": false,
       "name": "key",
+      "PHI": undefined,
       "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+      "recommendedVariable": false,
       "required": false,
       "scale": undefined,
       "URL": undefined,
+      "shownInDetailsView": true,
       "shownInInsertView": true,
       "shownInUpdateView": true,
       "dataType": Immutable.Record {
@@ -2465,6 +2564,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
   }
   index={1}
   onChange={[MockFunction]}
+  onMultiChange={[MockFunction]}
 >
   <TextFieldOptions
     index={1}
@@ -2745,6 +2845,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -2753,14 +2854,19 @@ exports[`DomainExpandedOptions Text data type 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -3192,5 +3298,23 @@ exports[`DomainExpandedOptions Text data type 1`] = `
       </Row>
     </div>
   </NameAndLinkingOptions>
+  <Row
+    bsClass="row"
+    componentClass="div"
+    style={
+      Object {
+        "height": "20px",
+      }
+    }
+  >
+    <div
+      className="row"
+      style={
+        Object {
+          "height": "20px",
+        }
+      }
+    />
+  </Row>
 </DomainRowExpandedOptions>
 `;

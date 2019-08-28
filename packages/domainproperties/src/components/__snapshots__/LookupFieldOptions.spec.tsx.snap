@@ -10,11 +10,13 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
     lookupQueryValue="Data"
     lookupSchema="exp"
     onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
     original={
       Immutable.Record {
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -23,14 +25,19 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -400,11 +407,13 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
     lookupQueryValue=""
     lookupSchema=""
     onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
     original={
       Immutable.Record {
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -413,14 +422,19 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -846,11 +860,13 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
     lookupQueryValue=""
     lookupSchema=""
     onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
     original={
       Immutable.Record {
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -859,14 +875,19 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {
@@ -1292,11 +1313,13 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
     lookupQueryValue=""
     lookupSchema="study"
     onChange={[MockFunction]}
+    onMultiChange={[MockFunction]}
     original={
       Immutable.Record {
         "conceptURI": undefined,
         "defaultScale": undefined,
         "description": undefined,
+        "dimension": undefined,
         "excludeFromShifting": false,
         "format": undefined,
         "hidden": false,
@@ -1305,14 +1328,19 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "measure": undefined,
+        "mvEnabled": false,
         "name": "key",
+        "PHI": undefined,
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "recommendedVariable": false,
         "required": false,
         "scale": undefined,
         "URL": undefined,
+        "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
         "dataType": Immutable.Record {

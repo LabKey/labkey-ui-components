@@ -1,12 +1,12 @@
 
 import * as React from "react";
 import {Col, Row} from "react-bootstrap";
-
-import {createFormInputId} from "../actions/actions";
+import { List } from "immutable";
+import {createFormInputId, getIndexFromId, getNameFromId} from "../actions/actions";
 import {
     DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA
 } from "../constants";
-import {IDomainField, ITypeDependentProps} from "../models";
+import {IDomainField, IFieldChange, ITypeDependentProps} from "../models";
 import {FolderSelect, QuerySelect, SchemaSelect} from "./Lookup/Fields";
 
 interface LookupFieldProps extends ITypeDependentProps {
@@ -14,17 +14,31 @@ interface LookupFieldProps extends ITypeDependentProps {
     lookupSchema: string
     lookupQueryValue: string
     original: Partial<IDomainField>
+    onMultiChange: (changes: List<IFieldChange>) => void
 }
 
 export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, any> {
 
 
     onFieldChange = (evt) => {
-        const { onChange } = this.props;
+        const { onMultiChange } = this.props;
+        const index = getIndexFromId(evt.target.id);
+        const name = getNameFromId(evt.target.id);
 
-        if (onChange) {
-            let value = evt.target.value;
-            onChange(evt.target.id, value);
+        let changes = List<IFieldChange>().asMutable();
+        changes.push({id: evt.target.id, value: evt.target.value} as IFieldChange);
+
+        if (name === DOMAIN_FIELD_LOOKUP_CONTAINER) {
+            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index), value: ''})
+            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''})
+        }
+
+        if (name === DOMAIN_FIELD_LOOKUP_SCHEMA) {
+            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''})
+        }
+
+        if (onMultiChange) {
+            onMultiChange(changes.asImmutable());
         }
     };
 

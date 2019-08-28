@@ -59,15 +59,17 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         const { productId } = model;
 
         let containerCls = 'product-menu-content ';
-        let menuSectionCls = 'menu-section col-' + sectionConfigs.size;
+        let menuSectionCls = 'menu-section col-' + model.sections.size;
         let inside = <div className={menuSectionCls + " menu-loading"}><LoadingSpinner/></div>;
         if (model && model.isLoaded) {
             if (model.isError) {
                 containerCls += ' error';
                 inside = <span>{model.message}</span>
             }
-            else
+            else if (sectionConfigs)
             {
+                menuSectionCls = 'menu-section col-' + sectionConfigs.size;
+
                 inside = (
                     <>
                         {sectionConfigs.map((sectionConfig, ind) => {
@@ -85,6 +87,19 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                                             );
                                         })
                                     }
+                                </div>
+                            );
+                        })}
+                    </>
+                );
+            }
+            else {
+                inside = (
+                    <>
+                        {model.sections.map(section => {
+                            return (
+                                <div key={section.key} className={menuSectionCls}>
+                                    <ProductMenuSection productId={model.productId} section={section} config={new MenuSectionConfig()}/>
                                 </div>
                             );
                         })}

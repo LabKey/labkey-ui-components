@@ -42,11 +42,12 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
-const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
-const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDeleteConfirmationData.json");
-const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
-const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
-const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
+import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
+import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
+import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
+import deleteSomeConfirmation from '../test/data/deleteSome-getMaterialDeleteConfirmationData.json';
+import sampleSetAllFieldTypesQueryInfo from '../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
+import visualizationConfig from '../test/data/visualization-getVisualization.json';
 
 export function initMocks() {
     mock.setup();
@@ -202,6 +203,12 @@ export function initMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*\/visualization\/.*\/getVisualization.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(visualizationConfig),
     });
 
     mock.use(proxy);

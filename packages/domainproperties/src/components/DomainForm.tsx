@@ -17,9 +17,8 @@ import * as React from "react";
 import { List} from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Alert, ConfirmModal } from "@glass/base";
+import { StickyContainer, Sticky } from "react-sticky";
+import {AddEntityButton, Alert, ConfirmModal} from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
@@ -28,8 +27,7 @@ import {
     getIndexFromId,
     handleDomainUpdates,
     getMaxPhiLevel,
-    removeField,
-    updateDomainField
+    removeField
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
@@ -49,6 +47,7 @@ interface IDomainFormState {
     expandTransition: number
     showConfirm: boolean
     maxPhiLevel: string
+    dragId?: number
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -79,6 +78,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             expandedRowIndex: undefined,
             expandTransition: EXPAND_TRANSITION,
             showConfirm: false,
+            dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI
         };
     }
@@ -205,8 +205,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
     };
 
-    onBeforeDragStart = () => {
+    onBeforeDragStart = (initial) => {
         const { domain, onChange } = this.props;
+        const id = initial.draggableId;
+        const idIndex = id ? getIndexFromId(id) : undefined;
+
+        this.setState(() => ({dragId: idIndex}));
 
         if (onChange) {
             onChange(domain, true);
@@ -220,6 +224,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let srcIndex = result.source.index;
         const id = result.draggableId;
         let idIndex = id ? getIndexFromId(id) : undefined;
+
+        this.setState(() => ({dragId: undefined}));
 
         if (result.destination) {
             destIndex = result.destination.index;
@@ -318,9 +324,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <Row>
                 <Col xs={12}>
-                    <span className={"domain-form-add"} onClick={this.onAddField}>
-                        <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
-                    </span>
+                    <AddEntityButton
+                        entity="Field"
+                        onClick={this.onAddField}/>
                 </Col>
             </Row>
         )
@@ -344,6 +350,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return undefined;
     };
 
+    draggingStyle = (style: any): any => {
+        let newStyle = {...style, zIndex: 1000};
+        // let newStyle = {...style, zIndex: 1000, width: '100%'};
+
+        // Sticking to top
+        if (style.top === 0) {
+            let newWidth = parseInt(style.width,10) + 30;  // Expand past panel padding
+            const width = newWidth + 'px';
+
+            return {...newStyle, width, marginLeft: '-15px', paddingLeft: '15px', boxShadow: '0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'}
+            // return {...newStyle, margin: '0 -16px', paddingLeft: '15px', boxShadow: '0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'}
+            // return {...newStyle, boxShadow: '0 8px 6px -6px #CCC'}
+        }
+
+        return newStyle;
+    }
+
     renderFieldRemoveConfirm() {
         return (
             <ConfirmModal
@@ -358,20 +381,22 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderRowHeaders() {
         return (
-            <Row className='domain-form-hdr-row'>
-                <Col xs={3}>
-                    <b>Field Name</b>
-                </Col>
-                <Col xs={2}>
-                    <b>Data Type</b>
-                </Col>
-                <Col xs={1}>
-                    <b>Required?</b>
-                </Col>
-                <Col xs={6}>
-                    <b>Details</b>
-                </Col>
-            </Row>
+            <div className='domain-floating-hdr'>
+                <Row className='domain-form-hdr-row'>
+                    <Col xs={3}>
+                        <b>Field Name</b>
+                    </Col>
+                    <Col xs={2}>
+                        <b>Data Type</b>
+                    </Col>
+                    <Col xs={1}>
+                        <b style={{marginLeft: '12px'}}>Required?</b>
+                    </Col>
+                    <Col xs={6}>
+                        <b>Details</b>
+                    </Col>
+                </Row>
+            </div>
         )
     }
 
@@ -409,7 +434,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader } = this.props;
-        const { showConfirm, expandedRowIndex, expandTransition, maxPhiLevel } = this.state;
+        const { showConfirm, expandedRowIndex, expandTransition, maxPhiLevel, dragId } = this.state;
 
         return (
             <>
@@ -428,7 +453,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 {this.renderSearchRow()}
                                 {domain.fields.size > 0 ?
                                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                                        {this.renderRowHeaders()}
+                                        <StickyContainer>
+                                            <Sticky>{({ style }) =>
+                                                <div style={this.draggingStyle(style)}>
+                                                    {this.renderRowHeaders()}
+                                                </div>}
+                                            </Sticky>
                                         <Droppable droppableId='domain-form-droppable'>
                                             {(provided) => (
                                                 <div ref={provided.innerRef}
@@ -446,6 +476,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                                 onExpand={this.onFieldExpandToggle}
                                                                 onDelete={this.onDeleteField}
                                                                 maxPhiLevel={maxPhiLevel}
+                                                                dragging={dragId === i}
                                                             />
                                                         }))}
                                                         {provided.placeholder}
@@ -453,6 +484,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 </div>
                                             )}
                                         </Droppable>
+                                        </StickyContainer>
                                     </DragDropContext>
                                     : this.renderEmptyDomain()
                                 }

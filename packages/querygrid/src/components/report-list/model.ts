@@ -43,6 +43,7 @@ export interface IReportItem {
     type: ReportTypes,
     visible: boolean,
     id: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?
+    reportId: string, // This is in the format of "db:953", not quite sure why we have an id and reportId.
     created?: Date,
     modified: Date,
     createdBy?: string,

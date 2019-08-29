@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
 import {Map} from 'immutable'
-import { Alert, AddEntityButton, WizardNavButtons, generateId } from "@glass/base";
+import {Alert, AddEntityButton, WizardNavButtons, generateId, naturalSort} from "@glass/base";
 
 import { createSampleSet, updateSampleSet, initSampleSetSelects } from "./actions";
 import {
@@ -40,7 +40,7 @@ interface State {
 }
 
 const NEW_SAMPLE_SET_OPTION : IParentOption = {
-    label: '<This SampleSet>',
+    label: '(Current SampleSet)',
     value: "<{{changeme}}>"
 };
 const IMPORT_PREFIX :string = 'materialInputs/';
@@ -64,19 +64,30 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
         if (!parentOptions) {
             initSampleSetSelects().then((results) => {
+                const isUpdate = this.isExistingSampleSet();
+                const name = this.getSampleSetName();
+
                 const options = results.map(result => {
+                    let label = result.query;
+
+                    // use the NEW_SAMPLE_SET_OPTION label for current
+                    if (isUpdate && result.query === name)
+                        label = NEW_SAMPLE_SET_OPTION.label;
+
                     return {
-                        label: result.query,
+                        label: label,
                         value: IMPORT_PREFIX + result.query,
                         query: result.query,
                         schema: result.schema,
                     } as IParentOption;
                 }).toArray();
 
-                if(!this.isExistingSampleSet())
+                if(!isUpdate)
                 {
                     options.push(NEW_SAMPLE_SET_OPTION);
                 }
+
+                options.sort((a,b) => naturalSort(a.label, b.label));
 
                 let parentAliases = Map() as Map<string, ParentAlias>;
                 if (props.data && props.data.get('importAliases'))

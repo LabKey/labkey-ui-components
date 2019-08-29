@@ -20,6 +20,7 @@ import { QueryGridModel, naturalSort, generateId } from '@glass/base'
 
 import { DataViewInfo } from '../../models'
 import { Chart } from './Chart'
+import { setReportId } from '../../actions';
 
 const emptyList = List<React.ReactNode>();
 
@@ -28,33 +29,21 @@ interface Props {
     charts: List<DataViewInfo>
 }
 
-interface State {
-    selectedChart?: DataViewInfo
-}
-
-export class ChartMenu extends React.PureComponent<Props, State> {
-
+export class ChartMenu extends React.PureComponent<Props> {
     dropId: string;
 
     constructor(props: Props) {
         super(props);
-
+        const reportId = props.model.urlParamValues.get('reportId');
         this.hideChart = this.hideChart.bind(this);
         this.showChart = this.showChart.bind(this);
-
-        this.state = {
-            selectedChart: undefined
-        };
-
+        this.getSelectedChart = this.getSelectedChart.bind(this);
         this.dropId = generateId('chartselector-');
     }
 
     createItem(chart: DataViewInfo, key: string): React.ReactNode {
         return (
-            <MenuItem
-                key={key}
-                onSelect={() => this.showChart(chart)}
-            >
+            <MenuItem key={key} onSelect={() => this.showChart(chart)}>
                 <i className={"pullLeft " + chart.iconCls} style={{width: '25px'}}/>
                 {chart.getLabel()}
             </MenuItem>
@@ -97,32 +86,32 @@ export class ChartMenu extends React.PureComponent<Props, State> {
     }
 
     showChart(chart: DataViewInfo) {
-        this.setState({
-            selectedChart: chart
-        });
+        setReportId(this.props.model, chart.reportId);
     }
 
     hideChart() {
-        this.setState({
-            selectedChart: undefined
-        });
+        setReportId(this.props.model,undefined);
+    }
+
+    getSelectedChart() {
+        let selectedChart;
+        const charts = this.props.charts;
+        const reportId = this.props.model.urlParamValues.get('reportId');
+
+        if (charts && reportId) {
+            selectedChart = charts.find((dataViewInfo) => dataViewInfo.reportId === reportId);
+        }
+
+        return selectedChart;
     }
 
     renderChartModal() {
         const { model } = this.props;
-        const { selectedChart } = this.state;
+        const selectedChart = this.getSelectedChart();
 
         return (
-            <Modal
-                bsSize="large"
-                show={selectedChart !== undefined}
-                keyboard={true}
-                onHide={this.hideChart}
-            >
-                <Modal.Header
-                    closeButton={true}
-                    closeLabel={"Close"}
-                >
+            <Modal bsSize="large" show={selectedChart !== undefined} keyboard={true} onHide={this.hideChart}>
+                <Modal.Header closeButton={true} closeLabel={"Close"}>
                     <Modal.Title>{selectedChart.getLabel()}</Modal.Title>
                     {selectedChart.description
                         ? <div><br/>{selectedChart.description}</div>
@@ -138,12 +127,12 @@ export class ChartMenu extends React.PureComponent<Props, State> {
 
     getChartButtonTitle() {
         const { charts, model } = this.props;
-        const chartsLoaded = charts && charts != null;
+        const chartsLoaded = charts !== undefined && charts !== null;
         return chartsLoaded || model.isError ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
     }
 
     render() {
-        const { selectedChart } = this.state;
+        const selectedChart = this.getSelectedChart();
         const chartItems = this.createMenuItems();
 
         return (
@@ -151,9 +140,11 @@ export class ChartMenu extends React.PureComponent<Props, State> {
                 <DropdownButton
                     id={this.dropId}
                     disabled={chartItems.size <= 1}
-                    title={this.getChartButtonTitle()}>
+                    title={this.getChartButtonTitle()}
+                >
                     {chartItems.toArray()}
                 </DropdownButton>
+
                 {selectedChart && this.renderChartModal()}
             </>
         )

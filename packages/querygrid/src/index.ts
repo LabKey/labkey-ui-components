@@ -89,11 +89,10 @@ import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDelet
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { PreviewGrid } from './components/PreviewGrid';
 import {
-    IReportItem,
     flattenBrowseDataTreeResponse,
     ReportURLMapper,
-    ReportTypes,
 } from './components/report-list/model';
+import { DataViewInfoTypes, IDataViewInfo} from './models';
 import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
 
 export {
@@ -200,11 +199,13 @@ export {
     SearchResultsPanel,
     searchUsingIndex,
 
+    // DataViewInfo
+    DataViewInfoTypes,
+    IDataViewInfo,
+
     // report-list
-    IReportItem,
     flattenBrowseDataTreeResponse,
     ReportURLMapper,
-    ReportTypes,
     ReportListItem,
     ReportItemModal,
     ReportListProps,

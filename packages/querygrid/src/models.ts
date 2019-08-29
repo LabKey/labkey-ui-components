@@ -29,6 +29,7 @@ import {
 import { genCellKey } from './actions'
 import { getQueryGridModel } from './global'
 import { DefaultGridLoader } from './components/GridLoader'
+import { AppURL } from '@glass/base/src';
 
 const emptyList = List<string>();
 
@@ -182,82 +183,115 @@ export function getStateQueryGridModel(
     return new QueryGridModel(modelProps);
 }
 
-// commented out attributes are not used in app
-export class DataViewInfo extends Record({
+export enum DataViewInfoTypes {
+    Query = 'Query',
+    Dataset = 'Dataset',
+    XYScatterPlot = 'XY Scatter Plot',
+    BarChart = 'Bar Chart',
+    PieChart = 'Pie Chart',
+    XYSeriesLinePlot = 'XY Series Line Plot',
+    BoxAndWhiskerPlot = 'Box and Whisker Plot',
+    AutomaticPlot = 'Automatic Plot',
+    TimeChart = 'Time Chart',
+    CrosstabReport = 'Crosstab Report',
+    RReport = 'R Report',
+    ParticipantReport = 'Participant Report',
+}
+
+/**
+ * IDataViewInfo is a client side implementation of the server-side class DataViewInfo. We currently only implement
+ * a subset of the fields that are used by the client.
+ */
+export interface IDataViewInfo {
+    name?: string,
+    description?: string,
+    detailsUrl?: string,
+    runUrl?: string, // This comes directly from the API response and is a link to LK Server
+    type?: DataViewInfoTypes,
+    visible?: boolean,
+    id?: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?
+    reportId?: string, // This is in the format of "db:953", not quite sure why we have an id and reportId.
+    created?: Date,
+    modified?: Date,
+    createdBy?: string,
+    modifiedBy?: string,
+    thumbnail?: string, // This is actually a URL, do we enforce that?
+    icon?: string,
+    iconCls?: string,
+    shared?: boolean,
+    schemaName?: string,
+    queryName?: string,
+    viewName?: string,
+
+    appUrl?: AppURL, // This is a client side only attribute. Used to navigate within a Single Page App.
+}
+
+interface DataViewClientMetadata extends IDataViewInfo {
+    // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
+    isLoading?: false,
+    isLoaded?: false,
+    error?: undefined
+}
+
+const DataViewInfoDefaultValues = {
     name: undefined,
+    description: undefined,
+    detailsUrl: undefined,
+    runUrl: undefined,
     type: undefined,
+    visible: undefined,
+    id: undefined,
     reportId: undefined,
+    created: undefined,
+    modified: undefined,
+    createdBy: undefined,
+    modifiedBy: undefined,
+    thumbnail: undefined,
+    icon: undefined,
+    iconCls: undefined,
     schemaName: undefined,
     queryName: undefined,
     shared: false,
-    iconCls: undefined,
-    description: undefined,
-    // container: undefined,
-    // access: undefined,
-    // detailsUrl: undefined,
-    // icon: undefined,
-    // runUrl: undefined,
-    // defaultThumbnailUrl: undefined,
-    // defaultIconCls: undefined,
-    // modified: undefined,
-    // modifiedBy: undefined,
-    // id: undefined,
-    // cratedByuserId: undefined,
-    // showInDashboard: undefined,
-    // thumbnail: undefined,
-    // visible: undefined,
-    // contentModified: undefined,
-    // author: undefined,
-    // created: undefined,
-    // dataType: undefined,
-    // readOnly: undefined,
-    // createdBy: undefined,
-    // allowCustomThumbnail: undefined,
-    // category: undefined,
 
-    // our stuff
+    // Client Side only attributes
     isLoading: false,
     isLoaded: false,
     error: undefined
-}) {
+};
+
+// commented out attributes are not used in app
+export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     name: string;
-    type: string;
+    description?: string;
+    detailsUrl: string;
+    runUrl: string;
+    type: DataViewInfoTypes;
+    visible: boolean;
+    id: string;
     reportId: string;
-    schemaName: string;
-    queryName: string;
-    shared: boolean;
+    created?: Date;
+    modified: Date;
+    createdBy?: string;
+    modifiedBy?: string;
+    thumbnail: string;
+    icon: string;
     iconCls: string;
-    description: string;
-    // container: string;
-    // access: any;
-    // detailsUrl: string;
-    // icon: string;
-    // runUrl: string;
-    // defaultThumbnailUrl: string;
-    // defaultIconCls: string;
-    // modified: date;
-    // modifiedBy: number;
-    // id: string;
-    // cratedByuserId: number;
-    // showInDashboard: boolean;
-    // thumbnail: string;
-    // visible: boolean;
-    // contentModified: date;
-    // author: string;
-    // created: date;
-    // dataType: string;
-    // readOnly: boolean;
-    // createdBy: number;
-    // allowCustomThumbnail: boolean;
-    // category: any;
+    shared: boolean;
+    schemaName?: string;
+    queryName?: string;
+    viewName?: string;
+
+    // Client Side only attributes
+    appUrl?: AppURL;
     isLoading: boolean;
     isLoaded: boolean;
     error: string;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: DataViewClientMetadata) {
         super(values);
     }
 
+    // TODO: remove the getters below, they're not necessary, consumers can safely access them via dot notation.
     getLabel() {
         return this.name;
     }

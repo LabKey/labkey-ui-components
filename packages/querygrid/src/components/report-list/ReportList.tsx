@@ -17,24 +17,23 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Image, Media, Modal, Panel } from 'react-bootstrap'
 import { Set } from 'immutable';
-import { IReportItem, ReportTypes } from './model';
 import { LoadingSpinner, SchemaQuery } from '@glass/base';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
-import { DataViewInfo } from '../../models';
+import { DataViewInfo, IDataViewInfo, DataViewInfoTypes } from '../../models';
 
-const GRID_REPORTS = Set([ReportTypes.Query, ReportTypes.Dataset]);
+const GRID_REPORTS = Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
 const CHARTS = Set([
-    ReportTypes.AutomaticPlot,
-    ReportTypes.BarChart,
-    ReportTypes.BoxAndWhiskerPlot,
-    ReportTypes.PieChart,
-    ReportTypes.XYScatterPlot,
-    ReportTypes.XYSeriesLinePlot,
+    DataViewInfoTypes.AutomaticPlot,
+    DataViewInfoTypes.BarChart,
+    DataViewInfoTypes.BoxAndWhiskerPlot,
+    DataViewInfoTypes.PieChart,
+    DataViewInfoTypes.XYScatterPlot,
+    DataViewInfoTypes.XYSeriesLinePlot,
 ]);
 
 interface ReportConsumer {
-    report: IReportItem,
+    report: IDataViewInfo,
 }
 
 interface ReportItemModalProps extends ReportConsumer{
@@ -157,9 +156,9 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
         const onClose = this.props.onClose;
         let BodyRenderer = UnsupportedReportBody;
 
-        if (GRID_REPORTS.contains(type as ReportTypes)) {
+        if (GRID_REPORTS.contains(type as DataViewInfoTypes)) {
             BodyRenderer = GridReportBody;
-        } else if (CHARTS.contains(type as ReportTypes)) {
+        } else if (CHARTS.contains(type as DataViewInfoTypes)) {
             BodyRenderer = ChartReportBody;
         }
 
@@ -178,8 +177,8 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
 }
 
 interface ReportListItemProps {
-    report: IReportItem,
-    onClick(IReportItem): void,
+    report: IDataViewInfo,
+    onClick(IDataViewInfo): void,
 }
 
 export class ReportListItem extends React.PureComponent<ReportListItemProps> {
@@ -215,8 +214,8 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
 
 export interface ReportListProps {
     loading: boolean,
-    reports: Array<IReportItem>,
-    onReportClicked(report: IReportItem): void,
+    reports: Array<IDataViewInfo>,
+    onReportClicked(report: IDataViewInfo): void,
 }
 
 export class ReportList extends React.PureComponent<ReportListProps> {
@@ -234,7 +233,7 @@ export class ReportList extends React.PureComponent<ReportListProps> {
         } else if (reports.length === 0) {
             body = <div className="report-list__message">No reports.</div>;
         } else {
-            const reportEls = reports.map((report: IReportItem) => {
+            const reportEls = reports.map((report: IDataViewInfo) => {
                 return <ReportListItem key={report.runUrl} report={report} onClick={onReportClicked} />;
             });
 

@@ -14,49 +14,9 @@
  * limitations under the License.
  */
 import { AppURL } from '@glass/base';
+import { IDataViewInfo } from '../../models';
 
-export enum ReportTypes {
-    Query = 'Query',
-    Dataset = 'Dataset',
-    XYScatterPlot = 'XY Scatter Plot',
-    BarChart = 'Bar Chart',
-    PieChart = 'Pie Chart',
-    XYSeriesLinePlot = 'XY Series Line Plot',
-    BoxAndWhiskerPlot = 'Box and Whisker Plot',
-    AutomaticPlot = 'Automatic Plot',
-    TimeChart = 'Time Chart',
-    CrosstabReport = 'Crosstab Report',
-    RReport = 'R Report',
-    ParticipantReport = 'Participant Report',
-}
-
-/**
- * IReportItem is a type based on the leaf nodes returned from the browseDataTree API. I purposely left off many other
- * fields that are returned from the API because we simply don't need them right now, possibly ever.
- */
-export interface IReportItem {
-    name: string,
-    description?: string,
-    detailsUrl: string,
-    runUrl: string, // This comes directly from the API response and is a link to LK Server
-    appUrl?: AppURL, // This is a URL generated from a URLResolver from the runURL
-    type: ReportTypes,
-    visible: boolean,
-    id: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?
-    reportId: string, // This is in the format of "db:953", not quite sure why we have an id and reportId.
-    created?: Date,
-    modified: Date,
-    createdBy?: string,
-    modifiedBy?: string,
-    thumbnail: string, // This is actually a URL, do we enforce that?
-    icon: string,
-    iconCls: string,
-    schemaName?: string,
-    queryName?: string,
-    viewName?: string,
-}
-
-export type ReportURLMapper = (report: IReportItem) => AppURL
+export type ReportURLMapper = (report: IDataViewInfo) => AppURL
 
 /**
  * FlattenResponse converts the repsonse body (a nested tree structure) from browseDataTree into a flat list of
@@ -65,10 +25,10 @@ export type ReportURLMapper = (report: IReportItem) => AppURL
  * @param response: the body from the browseDataTree API Action
  * @param urlMapper: ReportURLMapper
  */
-export function flattenBrowseDataTreeResponse(response: any, urlMapper: ReportURLMapper): Array<IReportItem> {
-    function _flattenBrowseDataTreeResponse(all, item): Array<IReportItem> {
+export function flattenBrowseDataTreeResponse(response: any, urlMapper: ReportURLMapper): Array<IDataViewInfo> {
+    function _flattenBrowseDataTreeResponse(all, item): Array<IDataViewInfo> {
         if (item.hasOwnProperty('children')) {
-            return [...all, ...item.children.reduce(_flattenBrowseDataTreeResponse, [])] as Array<IReportItem>;
+            return [...all, ...item.children.reduce(_flattenBrowseDataTreeResponse, [])] as Array<IDataViewInfo>;
         } else {
             const appUrl = urlMapper(item);
 

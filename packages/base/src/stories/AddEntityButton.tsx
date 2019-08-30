@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 
 import './stories.scss'
 import {AddEntityButton} from "..";
@@ -33,7 +33,7 @@ class WrappedAddEntityButton extends React.Component<any, State>
     }
 
     render() {
-        const { entity, buttonClass, containerClass, moreInfoUrl } = this.props;
+        const { entity, buttonClass, containerClass, getHelperBody, helperTitle } = this.props;
 
         return (
             <>
@@ -43,7 +43,8 @@ class WrappedAddEntityButton extends React.Component<any, State>
                     onClick={this.onClick.bind(this)}
                     buttonClass={buttonClass}
                     containerClass={containerClass}
-                    helperBody={moreInfoUrl} />
+                    helperTitle={helperTitle}
+                    helperBody={getHelperBody} />
             </>
         );
     }
@@ -52,9 +53,13 @@ class WrappedAddEntityButton extends React.Component<any, State>
 storiesOf("AddEntityButton", module)
     .addDecorator(withKnobs)
     .add("with knobs", () => {
-        return <WrappedAddEntityButton entity={"Entity"} />
-    })
-    .add("with More Info", () => {
-        return <WrappedAddEntityButton entity={"Entity"} moreInfoUrl={()=>"https://www.labkey.org"}/>
+        const entity = text("Entity", 'Entity', 'Entity');
+        const helperId = 'ToolTip';
+        const showHelper = boolean('Show tooltip', true, helperId);
+        const helperBody = text('HelperBody', "https://www.labkey.org", helperId);
+        const getHelperBody = showHelper ? () => helperBody : undefined;
+        const helperTitle = text('HelperTitle', undefined, helperId);
+
+        return <WrappedAddEntityButton entity={entity} helperTitle={helperTitle} getHelperBody={getHelperBody} />
     })
 ;

@@ -196,6 +196,7 @@ export enum DataViewInfoTypes {
     CrosstabReport = 'Crosstab Report',
     RReport = 'R Report',
     ParticipantReport = 'Participant Report',
+    SampleComparison = 'Sample Comparison',
 }
 
 /**

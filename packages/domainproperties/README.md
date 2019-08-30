@@ -4,6 +4,9 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version ???
+* updated jest snaps
+
 ### version 0.0.31
 *Released*: 21 August 2019
 * Epic 6000: Domain designer Advanced Settings.

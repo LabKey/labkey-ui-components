@@ -3,13 +3,13 @@ import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
 import {SampleSetParentAliasRow} from "./SampleSetParentAliasRow";
-import {IParentOption, ParentAlias} from "./models";
+import {IParentOption, IParentAlias} from "./models";
 
 describe("<SampleSetParentAliasRow/>", () => {
 
     test("No values", () => {
 
-        const parentAlias:ParentAlias = {alias: "", id: "", parentValue: undefined};
+        const parentAlias: IParentAlias = {alias: "", id: "", parentValue: undefined};
 
         const component = (
             <SampleSetParentAliasRow  id={parentAlias.id}  onAliasChange={jest.fn()} onRemove={jest.fn()} parentAlias={parentAlias} parentOptions={[]}/>
@@ -21,8 +21,8 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("With values", () => {
 
-        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/test", label:"Test Label"}};
-        const option:IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/test"};
+        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/test", label:"Test Label"}};
+        const option: IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/test"};
 
         const component = (
             <SampleSetParentAliasRow  id={parentAlias.id}  onAliasChange={jest.fn()} onRemove={jest.fn()} parentAlias={parentAlias} parentOptions={[option]} />
@@ -39,7 +39,7 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("With parent value not an option in select", () => {
 
-        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/test", label:"Test Label"}};
+        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/test", label:"Test Label"}};
         const option:IParentOption = {label: "test", query: "sampleset", schema: "exp", value: "materialInputs/notFound"};
 
         const component = (
@@ -57,9 +57,9 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("Simulate delete behavior", () => {
 
-        const parentAlias:ParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/option2", label:"Test Label"}};
-        const option1:IParentOption = {label: "option1", query: "sampleset", schema: "exp", value: "materialInputs/option1"};
-        const option2:IParentOption = {label: "option2", query: "sampleset", schema: "exp", value: "materialInputs/option2"};
+        const parentAlias: IParentAlias = {alias: "testAlias", id: "testId", parentValue: {value: "materialInputs/option2", label:"Test Label"}};
+        const option1: IParentOption = {label: "option1", query: "sampleset", schema: "exp", value: "materialInputs/option1"};
+        const option2: IParentOption = {label: "option2", query: "sampleset", schema: "exp", value: "materialInputs/option2"};
 
         const mockRemove = jest.fn();
 
@@ -79,7 +79,7 @@ describe("<SampleSetParentAliasRow/>", () => {
 
     test("Simulate changed alias", () => {
 
-        const parentAlias: ParentAlias = {
+        const parentAlias: IParentAlias = {
             alias: "testAlias",
             id: "testId",
             parentValue: {value: "materialInputs/option2", label: "Test Label"}

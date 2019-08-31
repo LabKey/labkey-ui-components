@@ -102,26 +102,29 @@ function extractFromRow(row: Map<string, any>): ISampleSetOption {
     }
 }
 
-export function initSampleSetSelects() :Promise<List<IParentOption>> {
+export function initSampleSetSelects(isUpdate: boolean, ssName: string, placeholderOption: IParentOption, prefix: string, ) :Promise<List<IParentOption>> {
     return selectRows({
         schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
         queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
-        columns: 'LSID,Name,RowId'
+        columns: 'LSID, Name, RowId'
     }).then(results => {
         const sampleSets = fromJS(results.models[results.key]);
-        const sets = sampleSets.map(row =>
-        {
+        const sets = sampleSets.map(row => {
             const name = row.getIn(['Name', 'value']);
+            let label = placeholderOption && name === ssName ? placeholderOption.label : name;
             return {
-                value: name.toLowerCase(),
-                label: name,
+                value: prefix + name,
+                label: label,
                 schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
                 query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
             };
-        }
-        ).sortBy(p => p.label, naturalSort);
+        });
 
-        return sets;
+        if(!isUpdate) {
+            sets.push(placeholderOption);
+        }
+
+        return sets.sortBy(p => p.label, naturalSort);
     });
 }
 

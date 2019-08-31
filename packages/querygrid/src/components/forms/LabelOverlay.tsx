@@ -49,27 +49,31 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
         this._popoverId = generateId();
     }
 
-    overlayBody(){
+    overlayBody = ():any => {
         const { column, required, content } = this.props;
         const description = this.props.description ? this.props.description : (column ? column.description : null);
         const type = this.props.type ? this.props.type : (column ? column.type : null);
 
-        return (<>
-            {description && <p><strong>Description: </strong>{description}</p>}
-            {type && <p><strong>Type: </strong>{type}</p>}
-            {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
-            {required && <p><small><i>This field is required.</i></small></p>}
-            {content}
-        </>);
-    }
+        return (
+            <>
+                {description && <p><strong>Description: </strong>{description}</p>}
+                {type && <p><strong>Type: </strong>{type}</p>}
+                {(column && column.fieldKey != column.caption) && <p><strong>Field Key: </strong>{column.fieldKey}</p>}
+                {required && <p><small><i>This field is required.</i></small></p>}
+                {content}
+            </>
+        );
+    };
 
     overlayContent() {
         const { column } = this.props;
         const label = this.props.label ? this.props.label : (column ? column.caption : null);
         const body = this.overlayBody();
-        return (<Popover id={this._popoverId} title={label} bsClass="popover">
-            {body}
-        </Popover>);
+        return (
+            <Popover id={this._popoverId} title={label} bsClass="popover">
+                {body}
+            </Popover>
+        );
     }
 
     getOverlay() {
@@ -80,7 +84,7 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                             overlay={this.overlayContent()}>
                 <i className="fa fa-question-circle"/>
             </OverlayTrigger>
-        ) : (<LabelHelpTip id={this._popoverId} title={label} body={this.overlayBody.bind(this)} placement={placement} />);
+        ) : (<LabelHelpTip id={this._popoverId} title={label} body={this.overlayBody} placement={placement} />);
     }
 
     render() {

@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
 import {Map} from 'immutable'
-import {Alert, AddEntityButton, WizardNavButtons, generateId, naturalSort} from "@glass/base";
+import {Alert, AddEntityButton, WizardNavButtons, generateId} from "@glass/base";
 
 import { createSampleSet, updateSampleSet, initSampleSetSelects } from "./actions";
 import {
     IParentOption,
     ISampleSetDetails,
-    ParentAlias,
+    IParentAlias,
 } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 import {SampleSetParentAliasRow} from "../../components/samples/SampleSetParentAliasRow";
@@ -34,7 +34,7 @@ interface Props {
 interface State {
     formValues: ISampleSetDetails
     parentOptions: Array<IParentOption>
-    parentAliases: Map<string, ParentAlias>
+    parentAliases: Map<string, IParentAlias>
     error: string
     submitting: boolean
 }
@@ -61,45 +61,24 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     init(props: Props) {
         let {parentOptions} = this.state;
+        const isUpdate = this.isExistingSampleSet();
+        const name = this.getSampleSetName();
 
         if (!parentOptions) {
-            initSampleSetSelects().then((results) => {
-                const isUpdate = this.isExistingSampleSet();
-                const name = this.getSampleSetName();
+            initSampleSetSelects(isUpdate, name, NEW_SAMPLE_SET_OPTION, IMPORT_PREFIX).then((results) => {
+                const options = results.toArray();
 
-                const options = results.map(result => {
-                    let label = result.query;
-
-                    // use the NEW_SAMPLE_SET_OPTION label for current
-                    if (isUpdate && result.query === name)
-                        label = NEW_SAMPLE_SET_OPTION.label;
-
-                    return {
-                        label: label,
-                        value: IMPORT_PREFIX + result.query,
-                        query: result.query,
-                        schema: result.schema,
-                    } as IParentOption;
-                }).toArray();
-
-                if(!isUpdate)
-                {
-                    options.push(NEW_SAMPLE_SET_OPTION);
-                }
-
-                options.sort((a,b) => naturalSort(a.label, b.label));
-
-                let parentAliases = Map() as Map<string, ParentAlias>;
+                let parentAliases = Map<string, IParentAlias>();
                 if (props.data && props.data.get('importAliases'))
                 {
-                    let importAliases = Map(props.data.get('importAliases')) || Map() as Map<string,string>;
+                    let importAliases = Map<string,string>(props.data.get('importAliases'));
                     importAliases.forEach((val, key) => {
-                        const newId = this.generateAliasId();
+                        const newId = SampleSetDetailsPanel.generateAliasId();
                         parentAliases = parentAliases.set(newId, {
                             id: newId,
                             alias: key,
                             parentValue: options.find(opt => opt.value === val),
-                        } as ParentAlias);
+                        } as IParentAlias);
                     });
                 }
 
@@ -172,11 +151,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     {
         const {parentAliases} = this.state;
         let aliases = {};
-        parentAliases.map((alias: ParentAlias) => {
-            let val = alias.parentValue !== NEW_SAMPLE_SET_OPTION ?
+        parentAliases.map((alias: IParentAlias) => {
+            aliases[alias.alias] = alias.parentValue !== NEW_SAMPLE_SET_OPTION ?
                 alias.parentValue.value:
                 IMPORT_PREFIX + this.getSampleSetName();
-            aliases[alias.alias] = val;
         });
 
         return aliases;
@@ -202,14 +180,27 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         }));
     }
 
+    /**
+     * Check if IParentAlias is invalid
+     * @param alias
+     */
+    static parentAliasInvalid(alias: IParentAlias): boolean {
+        if (!alias)
+            return true;
+
+        //return true if alias is null or blank; or if parentValue option is not set
+        return !alias.alias || alias.alias.trim() === '' || !alias.parentValue;
+    }
+
     isFormValid(): boolean {
         const { formValues, parentAliases } = this.state;
         const hasValidName = formValues !== undefined && formValues[FORM_IDS.NAME] !== undefined && formValues[FORM_IDS.NAME].length > 0;
+
+        //Check if there are any parent aliases, and if any are invalid (either field blank)
         const hasInvalidAliases =
-            !!parentAliases && (parentAliases.size > 0 &&
-            parentAliases.find((alias) :boolean =>
-                !alias.alias || alias.alias.trim() === '' || !alias.parentValue
-        ));
+            parentAliases
+            && parentAliases.size > 0
+            && parentAliases.find(SampleSetDetailsPanel.parentAliasInvalid);
 
         return (this.isExistingSampleSet() || hasValidName) && !hasInvalidAliases;
     }
@@ -244,10 +235,10 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         return this.getDataValue(FORM_IDS.DESCRIPTION, 'description', '');
     }
 
-    addParentAlias(): void {
+    addParentAlias = (): void => {
         let {parentAliases} = this.state;
 
-        const newId = this.generateAliasId();
+        const newId = SampleSetDetailsPanel.generateAliasId();
         parentAliases = parentAliases.set(newId, {
             id: newId,
             alias:'',
@@ -255,20 +246,20 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         });
 
         this.setState({parentAliases});
-    }
+    };
 
     //Generates a temporary id for add/delete of the import aliases
-    generateAliasId() {
+    static generateAliasId() {
         return generateId("sampleset-parent-import-alias-");
     }
 
-    parentAliasChanged(id:string, field: string, newValue: any) {
+    parentAliasChanges = (id:string, field: string, newValue: any): void => {
 
         let {parentAliases} = this.state;
         parentAliases.get(id)[field] = newValue;
 
         this.setState({parentAliases});
-    }
+    };
 
     renderParentAliases() {
         const {parentAliases, parentOptions} = this.state;
@@ -277,16 +268,18 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             return [];
 
         return parentAliases.valueSeq().map((parentAlias) =>
-            <SampleSetParentAliasRow key={parentAlias.id}
-                                             id={parentAlias.id}
-                                             parentAlias={parentAlias}
-                                             parentOptions={parentOptions}
-                                             onAliasChange={this.parentAliasChanged.bind(this)}
-                                             onRemove={this.removeParentAlias.bind(this)}
-            />);
+            <SampleSetParentAliasRow
+                key={parentAlias.id}
+                id={parentAlias.id}
+                parentAlias={parentAlias}
+                parentOptions={parentOptions}
+                onAliasChange={this.parentAliasChanges}
+                onRemove={this.removeParentAlias}
+            />
+        );
     }
 
-    removeParentAlias(id: string): void {
+    removeParentAlias = (id: string): void => {
         let {parentAliases} = this.state;
         if (parentAliases.size === 0)
             return;
@@ -298,27 +291,27 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             } as ISampleSetDetails,
             parentAliases,
         }));
-    }
+    };
 
-    renderAddEntityHelper() {
+    renderAddEntityHelper = ():any => {
         const {parentAliasHelperText, parentAliasInfoUrl} = this.props;
 
         return (
             <>
                 <span>
                     {parentAliasHelperText}
-                    &nbsp;(<a href={parentAliasInfoUrl} target='_blank' >more info</a>)
+                    <p><a href={parentAliasInfoUrl} target='_blank' >More info</a></p>
                 </span>
             </>
         );
-    }
+    };
 
     render() {
         const { onCancel, nameExpressionInfoUrl } = this.props;
         const { submitting, error } = this.state;
 
         const moreInfoLink = nameExpressionInfoUrl ?
-            (<a target={'_blank'} href={nameExpressionInfoUrl}>more info</a>) :
+            <p><a target={'_blank'} href={nameExpressionInfoUrl}>More info</a></p> :
             '';
 
         return (
@@ -334,7 +327,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         type={'Text (String)'}
                                         description={'The name for this sample set. Note that this can\'t be changed after sample set creation.'}
                                         required={true}
-                                        // addLabelAsterisk={true}  //This causes weirdness, because default isFormsy and required...
+                                        // addLabelAsterisk={true}  //This causes weirdness, because default isFormsy and required and the form isn't a FormsyForm...
                                     />
                                 </Col>
                                 <Col xs={9}>
@@ -389,7 +382,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                 </Col>
                                 <Col xs={9}>
                                     <span>
-                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias.bind(this)} helperBody={this.renderAddEntityHelper.bind(this)} />
+                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
                                     </span>
                                 </Col>
                             </Row>

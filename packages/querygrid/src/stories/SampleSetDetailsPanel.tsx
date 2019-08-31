@@ -28,6 +28,8 @@ storiesOf('SampleSetDetailsPanel', module)
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
+            parentAliasInfoUrl={text('parentAliasInfoUrl', undefined)}
+            parentAliasHelperText={text('parentAliasHelperText', undefined)}
         />
     })
     .add('for update', () => {
@@ -48,5 +50,7 @@ storiesOf('SampleSetDetailsPanel', module)
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
             nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            parentAliasInfoUrl={text('parentAliasInfoUrl', 'https://www.labkey.org')}
+            parentAliasHelperText={text('parentAliasHelperText', 'More Info')}
         />
     });

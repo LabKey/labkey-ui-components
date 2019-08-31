@@ -28,7 +28,7 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
       className="form-control"
       name="alias"
       onChange={[Function]}
-      placeholder="Enter an Alias for import"
+      placeholder="Enter an alias for import"
       type="text"
       value=""
     />
@@ -60,7 +60,7 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
               <div
                 className="Select-placeholder"
               >
-                Select a Sample Set...
+                Select a sample set...
               </div>
               <div
                 className="Select-input"
@@ -168,7 +168,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
       className="form-control"
       name="alias"
       onChange={[Function]}
-      placeholder="Enter an Alias for import"
+      placeholder="Enter an alias for import"
       type="text"
       value="testAlias"
     />
@@ -200,7 +200,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
               <div
                 className="Select-placeholder"
               >
-                Select a Sample Set...
+                Select a sample set...
               </div>
               <div
                 className="Select-input"
@@ -326,7 +326,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
       className="form-control"
       name="alias"
       onChange={[Function]}
-      placeholder="Enter an Alias for import"
+      placeholder="Enter an alias for import"
       type="text"
       value="testAlias"
     />

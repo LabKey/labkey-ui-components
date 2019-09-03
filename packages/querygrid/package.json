@@ -39,7 +39,7 @@
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
     "@glass/base": "0.15.0-fb-parentAliases.1",
-    "@glass/domainproperties": "0.0.32fb-parentAliases.1",
+    "@glass/domainproperties": "0.0.32-fb-parentAliases.1",
     "@glass/omnibox": "0.1.34-fb-parentAliases.1",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",

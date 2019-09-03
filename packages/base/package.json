@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.14.2-fb-assayDesignCreate.3",
+  "version": "0.15.0",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

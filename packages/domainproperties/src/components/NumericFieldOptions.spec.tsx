@@ -31,7 +31,7 @@ describe('NumericFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = numeric.find({className: 'domain-field-section-heading'});
+        const sectionLabel = numeric.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 

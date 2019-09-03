@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DomainRowDisplay client side warning on field 1`] = `
+exports[`DomainRow client side warning on field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -104,10 +104,11 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                     "shownInUpdateView": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
-                      "name": "string",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                      "shortDisplay": "String",
+                      "display": "Attachment",
+                      "name": "attachment",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
                     "lookupType": Immutable.Record {
@@ -115,17 +116,19 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Text (String)",
-                        "name": "string",
-                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                        "shortDisplay": "String",
+                        "display": "Attachment",
+                        "name": "attachment",
+                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                        "alternateRangeURI": undefined,
+                        "shortDisplay": undefined,
                       },
-                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "rangeURI": undefined,
                     },
                     "updatedField": false,
                     "isPrimaryKey": false,
@@ -253,10 +256,11 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                 "shownInUpdateView": true,
                                 "dataType": Immutable.Record {
                                   "conceptURI": undefined,
-                                  "display": "Text (String)",
-                                  "name": "string",
-                                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                  "shortDisplay": "String",
+                                  "display": "Attachment",
+                                  "name": "attachment",
+                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                  "alternateRangeURI": undefined,
+                                  "shortDisplay": undefined,
                                 },
                                 "lookupQueryValue": undefined,
                                 "lookupType": Immutable.Record {
@@ -264,17 +268,19 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
-                                    "name": "string",
-                                    "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                    "shortDisplay": "String",
+                                    "display": "Attachment",
+                                    "name": "attachment",
+                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "alternateRangeURI": undefined,
+                                    "shortDisplay": undefined,
                                   },
-                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                  "rangeURI": undefined,
                                 },
                                 "updatedField": false,
                                 "isPrimaryKey": false,
@@ -458,7 +464,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      value="string"
+                                      value="attachment"
                                     >
                                       <select
                                         className="form-control"
@@ -471,7 +477,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                         onFocus={[Function]}
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
-                                        value="string"
+                                        value="attachment"
                                       >
                                         <option
                                           key="0"
@@ -805,10 +811,11 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                   "shownInUpdateView": true,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
-                                    "name": "string",
-                                    "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                    "shortDisplay": "String",
+                                    "display": "Attachment",
+                                    "name": "attachment",
+                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "alternateRangeURI": undefined,
+                                    "shortDisplay": undefined,
                                   },
                                   "lookupQueryValue": undefined,
                                   "lookupType": Immutable.Record {
@@ -816,17 +823,19 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Text (String)",
-                                      "name": "string",
-                                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                      "shortDisplay": "String",
+                                      "display": "Attachment",
+                                      "name": "attachment",
+                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "alternateRangeURI": undefined,
+                                      "shortDisplay": undefined,
                                     },
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "rangeURI": undefined,
                                   },
                                   "updatedField": false,
                                   "isPrimaryKey": false,
@@ -837,279 +846,6 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                               onChange={[Function]}
                               onMultiChange={[Function]}
                             >
-                              <TextFieldOptions
-                                index={1}
-                                label="Text Options"
-                                lockType="NotLocked"
-                                onChange={[Function]}
-                              >
-                                <div>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <div
-                                            className="domain-field-section-heading"
-                                          >
-                                            Text Options
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded "
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded  row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <div
-                                            className="domain-field-label"
-                                          >
-                                            Max Text Character Count
-                                            <LabelHelpTip
-                                              body={[Function]}
-                                              title="Max Text Length"
-                                            >
-                                              <span
-                                                className="label-help-target"
-                                                onMouseOut={[Function]}
-                                                onMouseOver={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className="label-help-icon"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        512,
-                                                        512,
-                                                        Array [],
-                                                        "f059",
-                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                      ],
-                                                      "iconName": "question-circle",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size={null}
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                    data-icon="question-circle"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 512 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                                <Overlay
-                                                  animation={[Function]}
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
-                                                >
-                                                  <Overlay
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
-                                                    transition={[Function]}
-                                                  />
-                                                </Overlay>
-                                              </span>
-                                            </LabelHelpTip>
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        className="domain-text-options-col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="domain-text-options-col col-xs-12"
-                                        >
-                                          <input
-                                            checked={true}
-                                            className="domain-text-options-radio1 domain-field-float-left"
-                                            disabled={false}
-                                            id="domainpropertiesrow-maxLength-1"
-                                            name="domainpropertiesrow-maxLength"
-                                            onChange={[Function]}
-                                            type="radio"
-                                            value="maxLength"
-                                          />
-                                          <div
-                                            className="domain-text-label"
-                                          >
-                                            Allow max character count
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <input
-                                            checked={false}
-                                            className="domain-text-options-radio2 domain-field-float-left"
-                                            id="domainpropertiesrow-customLength-1"
-                                            name="domainpropertiesrow-customLength"
-                                            onChange={[Function]}
-                                            type="radio"
-                                            value="customLength"
-                                          />
-                                          <span
-                                            className="domain-text-options-length domain-field-float-left domain-text-label"
-                                          >
-                                            Set character count to
-                                          </span>
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            disabled={true}
-                                            id="domainpropertiesrow-scale-1"
-                                            name="domainpropertiesrow-scale"
-                                            onChange={[Function]}
-                                            style={
-                                              Object {
-                                                "width": "60px",
-                                              }
-                                            }
-                                            type="text"
-                                            value={4000}
-                                          >
-                                            <input
-                                              className="form-control"
-                                              disabled={true}
-                                              id="domainpropertiesrow-scale-1"
-                                              name="domainpropertiesrow-scale"
-                                              onChange={[Function]}
-                                              style={
-                                                Object {
-                                                  "width": "60px",
-                                                }
-                                              }
-                                              type="text"
-                                              value={4000}
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                </div>
-                              </TextFieldOptions>
                               <NameAndLinkingOptions
                                 field={
                                   Immutable.Record {
@@ -1142,10 +878,11 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                     "shownInUpdateView": true,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Text (String)",
-                                      "name": "string",
-                                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                      "shortDisplay": "String",
+                                      "display": "Attachment",
+                                      "name": "attachment",
+                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "alternateRangeURI": undefined,
+                                      "shortDisplay": undefined,
                                     },
                                     "lookupQueryValue": undefined,
                                     "lookupType": Immutable.Record {
@@ -1153,17 +890,19 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
                                       "dataType": Immutable.Record {
                                         "conceptURI": undefined,
-                                        "display": "Text (String)",
-                                        "name": "string",
-                                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                        "shortDisplay": "String",
+                                        "display": "Attachment",
+                                        "name": "attachment",
+                                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                        "alternateRangeURI": undefined,
+                                        "shortDisplay": undefined,
                                       },
-                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "rangeURI": undefined,
                                     },
                                     "updatedField": false,
                                     "isPrimaryKey": false,
@@ -1191,7 +930,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -1221,7 +960,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-1"
                                             name="domainpropertiesrow-description"
@@ -1608,7 +1347,7 @@ exports[`DomainRowDisplay client side warning on field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay date time field 1`] = `
+exports[`DomainRow date time field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -1715,6 +1454,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                       "display": "Date Time",
                       "name": "dateTime",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": "xsd:dateTime",
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -1723,6 +1463,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -1731,6 +1472,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                         "display": "Date Time",
                         "name": "dateTime",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                        "alternateRangeURI": "xsd:dateTime",
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -1854,6 +1596,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                   "display": "Date Time",
                                   "name": "dateTime",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                  "alternateRangeURI": "xsd:dateTime",
                                   "shortDisplay": undefined,
                                 },
                                 "lookupQueryValue": undefined,
@@ -1862,6 +1605,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
@@ -1870,6 +1614,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     "display": "Date Time",
                                     "name": "dateTime",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                    "alternateRangeURI": "xsd:dateTime",
                                     "shortDisplay": undefined,
                                   },
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -2332,6 +2077,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     "display": "Date Time",
                                     "name": "dateTime",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                    "alternateRangeURI": "xsd:dateTime",
                                     "shortDisplay": undefined,
                                   },
                                   "lookupQueryValue": undefined,
@@ -2340,6 +2086,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
@@ -2348,6 +2095,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       "display": "Date Time",
                                       "name": "dateTime",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                      "alternateRangeURI": "xsd:dateTime",
                                       "shortDisplay": undefined,
                                     },
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -2386,7 +2134,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Date and Time Options
                                           </div>
@@ -2773,6 +2521,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       "display": "Date Time",
                                       "name": "dateTime",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                      "alternateRangeURI": "xsd:dateTime",
                                       "shortDisplay": undefined,
                                     },
                                     "lookupQueryValue": undefined,
@@ -2781,6 +2530,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
@@ -2789,6 +2539,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                         "display": "Date Time",
                                         "name": "dateTime",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                        "alternateRangeURI": "xsd:dateTime",
                                         "shortDisplay": undefined,
                                       },
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
@@ -2819,7 +2570,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -2849,7 +2600,7 @@ exports[`DomainRowDisplay date time field 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-0"
                                             name="domainpropertiesrow-description"
@@ -3236,7 +2987,7 @@ exports[`DomainRowDisplay date time field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay decimal field 1`] = `
+exports[`DomainRow decimal field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -3343,6 +3094,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                       "display": "Decimal",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": "xsd:double",
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -3351,6 +3103,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -3359,6 +3112,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                         "display": "Decimal",
                         "name": "double",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                        "alternateRangeURI": "xsd:double",
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -3482,6 +3236,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                   "display": "Decimal",
                                   "name": "double",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                  "alternateRangeURI": "xsd:double",
                                   "shortDisplay": undefined,
                                 },
                                 "lookupQueryValue": undefined,
@@ -3490,6 +3245,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
@@ -3498,6 +3254,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     "display": "Decimal",
                                     "name": "double",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                    "alternateRangeURI": "xsd:double",
                                     "shortDisplay": undefined,
                                   },
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -3960,6 +3717,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     "display": "Decimal",
                                     "name": "double",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                    "alternateRangeURI": "xsd:double",
                                     "shortDisplay": undefined,
                                   },
                                   "lookupQueryValue": undefined,
@@ -3968,6 +3726,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
@@ -3976,6 +3735,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       "display": "Decimal",
                                       "name": "double",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                      "alternateRangeURI": "xsd:double",
                                       "shortDisplay": undefined,
                                     },
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -4013,7 +3773,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Decimal Options
                                           </div>
@@ -4300,6 +4060,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       "display": "Decimal",
                                       "name": "double",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                      "alternateRangeURI": "xsd:double",
                                       "shortDisplay": undefined,
                                     },
                                     "lookupQueryValue": undefined,
@@ -4308,6 +4069,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
@@ -4316,6 +4078,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                         "display": "Decimal",
                                         "name": "double",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                        "alternateRangeURI": "xsd:double",
                                         "shortDisplay": undefined,
                                       },
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
@@ -4346,7 +4109,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -4376,7 +4139,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-2"
                                             name="domainpropertiesrow-description"
@@ -4763,7 +4526,7 @@ exports[`DomainRowDisplay decimal field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay participant id field 1`] = `
+exports[`DomainRow participant id field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -4870,6 +4633,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                       "display": "Subject/Participant (String)",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
@@ -4878,6 +4642,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -4886,6 +4651,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                         "display": "Subject/Participant (String)",
                         "name": "ParticipantId",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "alternateRangeURI": undefined,
                         "shortDisplay": undefined,
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -5009,6 +4775,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                   "display": "Subject/Participant (String)",
                                   "name": "ParticipantId",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "lookupQueryValue": undefined,
@@ -5017,6 +4784,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
@@ -5025,6 +4793,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     "display": "Subject/Participant (String)",
                                     "name": "ParticipantId",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -5511,6 +5280,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     "display": "Subject/Participant (String)",
                                     "name": "ParticipantId",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "lookupQueryValue": undefined,
@@ -5519,6 +5289,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
@@ -5527,6 +5298,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       "display": "Subject/Participant (String)",
                                       "name": "ParticipantId",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -5575,6 +5347,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       "display": "Subject/Participant (String)",
                                       "name": "ParticipantId",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "lookupQueryValue": undefined,
@@ -5583,6 +5356,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
@@ -5591,6 +5365,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                         "display": "Subject/Participant (String)",
                                         "name": "ParticipantId",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                        "alternateRangeURI": undefined,
                                         "shortDisplay": undefined,
                                       },
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -5621,7 +5396,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -5651,7 +5426,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-0"
                                             name="domainpropertiesrow-description"
@@ -6038,7 +5813,7 @@ exports[`DomainRowDisplay participant id field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay server side error on reserved field 1`] = `
+exports[`DomainRow server side error on reserved field 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -6142,10 +5917,11 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                     "shownInUpdateView": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
-                      "name": "string",
-                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                      "shortDisplay": "String",
+                      "display": "Attachment",
+                      "name": "attachment",
+                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
                     },
                     "lookupQueryValue": undefined,
                     "lookupType": Immutable.Record {
@@ -6153,17 +5929,19 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Text (String)",
-                        "name": "string",
-                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                        "shortDisplay": "String",
+                        "display": "Attachment",
+                        "name": "attachment",
+                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                        "alternateRangeURI": undefined,
+                        "shortDisplay": undefined,
                       },
-                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                      "rangeURI": undefined,
                     },
                     "updatedField": false,
                     "isPrimaryKey": false,
@@ -6291,10 +6069,11 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                 "shownInUpdateView": true,
                                 "dataType": Immutable.Record {
                                   "conceptURI": undefined,
-                                  "display": "Text (String)",
-                                  "name": "string",
-                                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                  "shortDisplay": "String",
+                                  "display": "Attachment",
+                                  "name": "attachment",
+                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                  "alternateRangeURI": undefined,
+                                  "shortDisplay": undefined,
                                 },
                                 "lookupQueryValue": undefined,
                                 "lookupType": Immutable.Record {
@@ -6302,17 +6081,19 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
-                                    "name": "string",
-                                    "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                    "shortDisplay": "String",
+                                    "display": "Attachment",
+                                    "name": "attachment",
+                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "alternateRangeURI": undefined,
+                                    "shortDisplay": undefined,
                                   },
-                                  "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                  "rangeURI": undefined,
                                 },
                                 "updatedField": false,
                                 "isPrimaryKey": false,
@@ -6496,7 +6277,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                       onFocus={[Function]}
                                       onMouseOut={[Function]}
                                       onMouseOver={[Function]}
-                                      value="string"
+                                      value="attachment"
                                     >
                                       <select
                                         className="form-control"
@@ -6509,7 +6290,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                         onFocus={[Function]}
                                         onMouseOut={[Function]}
                                         onMouseOver={[Function]}
-                                        value="string"
+                                        value="attachment"
                                       >
                                         <option
                                           key="0"
@@ -6843,10 +6624,11 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                   "shownInUpdateView": true,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
-                                    "name": "string",
-                                    "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                    "shortDisplay": "String",
+                                    "display": "Attachment",
+                                    "name": "attachment",
+                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "alternateRangeURI": undefined,
+                                    "shortDisplay": undefined,
                                   },
                                   "lookupQueryValue": undefined,
                                   "lookupType": Immutable.Record {
@@ -6854,17 +6636,19 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Text (String)",
-                                      "name": "string",
-                                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                      "shortDisplay": "String",
+                                      "display": "Attachment",
+                                      "name": "attachment",
+                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "alternateRangeURI": undefined,
+                                      "shortDisplay": undefined,
                                     },
-                                    "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                    "rangeURI": undefined,
                                   },
                                   "updatedField": false,
                                   "isPrimaryKey": false,
@@ -6875,279 +6659,6 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                               onChange={[Function]}
                               onMultiChange={[Function]}
                             >
-                              <TextFieldOptions
-                                index={1}
-                                label="Text Options"
-                                lockType="NotLocked"
-                                onChange={[Function]}
-                              >
-                                <div>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <div
-                                            className="domain-field-section-heading"
-                                          >
-                                            Text Options
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded "
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded  row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <div
-                                            className="domain-field-label"
-                                          >
-                                            Max Text Character Count
-                                            <LabelHelpTip
-                                              body={[Function]}
-                                              title="Max Text Length"
-                                            >
-                                              <span
-                                                className="label-help-target"
-                                                onMouseOut={[Function]}
-                                                onMouseOver={[Function]}
-                                              >
-                                                <FontAwesomeIcon
-                                                  border={false}
-                                                  className="label-help-icon"
-                                                  fixedWidth={false}
-                                                  flip={null}
-                                                  icon={
-                                                    Object {
-                                                      "icon": Array [
-                                                        512,
-                                                        512,
-                                                        Array [],
-                                                        "f059",
-                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                      ],
-                                                      "iconName": "question-circle",
-                                                      "prefix": "fas",
-                                                    }
-                                                  }
-                                                  inverse={false}
-                                                  listItem={false}
-                                                  mask={null}
-                                                  pull={null}
-                                                  pulse={false}
-                                                  rotation={null}
-                                                  size={null}
-                                                  spin={false}
-                                                  symbol={false}
-                                                  title=""
-                                                  transform={null}
-                                                >
-                                                  <svg
-                                                    aria-hidden="true"
-                                                    className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                    data-icon="question-circle"
-                                                    data-prefix="fas"
-                                                    focusable="false"
-                                                    role="img"
-                                                    style={Object {}}
-                                                    viewBox="0 0 512 512"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                  >
-                                                    <path
-                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                      fill="currentColor"
-                                                      style={Object {}}
-                                                    />
-                                                  </svg>
-                                                </FontAwesomeIcon>
-                                                <Overlay
-                                                  animation={[Function]}
-                                                  placement="right"
-                                                  rootClose={false}
-                                                  show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
-                                                >
-                                                  <Overlay
-                                                    placement="right"
-                                                    rootClose={false}
-                                                    show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
-                                                    transition={[Function]}
-                                                  />
-                                                </Overlay>
-                                              </span>
-                                            </LabelHelpTip>
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        className="domain-text-options-col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="domain-text-options-col col-xs-12"
-                                        >
-                                          <input
-                                            checked={true}
-                                            className="domain-text-options-radio1 domain-field-float-left"
-                                            disabled={false}
-                                            id="domainpropertiesrow-maxLength-1"
-                                            name="domainpropertiesrow-maxLength"
-                                            onChange={[Function]}
-                                            type="radio"
-                                            value="maxLength"
-                                          />
-                                          <div
-                                            className="domain-text-label"
-                                          >
-                                            Allow max character count
-                                          </div>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                  <Row
-                                    bsClass="row"
-                                    className="domain-row-expanded"
-                                    componentClass="div"
-                                  >
-                                    <div
-                                      className="domain-row-expanded row"
-                                    >
-                                      <Col
-                                        bsClass="col"
-                                        componentClass="div"
-                                        xs={12}
-                                      >
-                                        <div
-                                          className="col-xs-12"
-                                        >
-                                          <input
-                                            checked={false}
-                                            className="domain-text-options-radio2 domain-field-float-left"
-                                            id="domainpropertiesrow-customLength-1"
-                                            name="domainpropertiesrow-customLength"
-                                            onChange={[Function]}
-                                            type="radio"
-                                            value="customLength"
-                                          />
-                                          <span
-                                            className="domain-text-options-length domain-field-float-left domain-text-label"
-                                          >
-                                            Set character count to
-                                          </span>
-                                          <FormControl
-                                            bsClass="form-control"
-                                            componentClass="input"
-                                            disabled={true}
-                                            id="domainpropertiesrow-scale-1"
-                                            name="domainpropertiesrow-scale"
-                                            onChange={[Function]}
-                                            style={
-                                              Object {
-                                                "width": "60px",
-                                              }
-                                            }
-                                            type="text"
-                                            value={4000}
-                                          >
-                                            <input
-                                              className="form-control"
-                                              disabled={true}
-                                              id="domainpropertiesrow-scale-1"
-                                              name="domainpropertiesrow-scale"
-                                              onChange={[Function]}
-                                              style={
-                                                Object {
-                                                  "width": "60px",
-                                                }
-                                              }
-                                              type="text"
-                                              value={4000}
-                                            />
-                                          </FormControl>
-                                        </div>
-                                      </Col>
-                                    </div>
-                                  </Row>
-                                </div>
-                              </TextFieldOptions>
                               <NameAndLinkingOptions
                                 field={
                                   Immutable.Record {
@@ -7180,10 +6691,11 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                     "shownInUpdateView": true,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Text (String)",
-                                      "name": "string",
-                                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                      "shortDisplay": "String",
+                                      "display": "Attachment",
+                                      "name": "attachment",
+                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "alternateRangeURI": undefined,
+                                      "shortDisplay": undefined,
                                     },
                                     "lookupQueryValue": undefined,
                                     "lookupType": Immutable.Record {
@@ -7191,17 +6703,19 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
                                       "dataType": Immutable.Record {
                                         "conceptURI": undefined,
-                                        "display": "Text (String)",
-                                        "name": "string",
-                                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-                                        "shortDisplay": "String",
+                                        "display": "Attachment",
+                                        "name": "attachment",
+                                        "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                        "alternateRangeURI": undefined,
+                                        "shortDisplay": undefined,
                                       },
-                                      "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                      "rangeURI": undefined,
                                     },
                                     "updatedField": false,
                                     "isPrimaryKey": false,
@@ -7229,7 +6743,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -7259,7 +6773,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-1"
                                             name="domainpropertiesrow-description"
@@ -7646,7 +7160,7 @@ exports[`DomainRowDisplay server side error on reserved field 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay string field test 1`] = `
+exports[`DomainRow string field test 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -7753,6 +7267,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                       "display": "Text (String)",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": "xsd:string",
                       "shortDisplay": "String",
                     },
                     "lookupQueryValue": undefined,
@@ -7761,6 +7276,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -7769,6 +7285,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                         "display": "Text (String)",
                         "name": "string",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "alternateRangeURI": "xsd:string",
                         "shortDisplay": "String",
                       },
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -7892,6 +7409,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                   "display": "Text (String)",
                                   "name": "string",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                  "alternateRangeURI": "xsd:string",
                                   "shortDisplay": "String",
                                 },
                                 "lookupQueryValue": undefined,
@@ -7900,6 +7418,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
@@ -7908,6 +7427,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                     "display": "Text (String)",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": "xsd:string",
                                     "shortDisplay": "String",
                                   },
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -8394,6 +7914,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                     "display": "Text (String)",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": "xsd:string",
                                     "shortDisplay": "String",
                                   },
                                   "lookupQueryValue": undefined,
@@ -8402,6 +7923,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
@@ -8410,6 +7932,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                       "display": "Text (String)",
                                       "name": "string",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": "xsd:string",
                                       "shortDisplay": "String",
                                     },
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -8447,7 +7970,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Text Options
                                           </div>
@@ -8731,6 +8254,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                       "display": "Text (String)",
                                       "name": "string",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": "xsd:string",
                                       "shortDisplay": "String",
                                     },
                                     "lookupQueryValue": undefined,
@@ -8739,6 +8263,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
@@ -8747,6 +8272,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                         "display": "Text (String)",
                                         "name": "string",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                        "alternateRangeURI": "xsd:string",
                                         "shortDisplay": "String",
                                       },
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -8777,7 +8303,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -8807,7 +8333,7 @@ exports[`DomainRowDisplay string field test 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-1"
                                             name="domainpropertiesrow-description"
@@ -9194,7 +8720,7 @@ exports[`DomainRowDisplay string field test 1`] = `
 </DragDropContext>
 `;
 
-exports[`DomainRowDisplay with empty domain form 1`] = `
+exports[`DomainRow with empty domain form 1`] = `
 <DragDropContext
   onDragEnd={[MockFunction]}
 >
@@ -9301,6 +8827,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                       "display": "Text (String)",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": "xsd:string",
                       "shortDisplay": "String",
                     },
                     "lookupQueryValue": undefined,
@@ -9309,6 +8836,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                       "display": "Lookup",
                       "name": "lookup",
                       "rangeURI": undefined,
+                      "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
                     "original": Object {
@@ -9317,6 +8845,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                         "display": "Text (String)",
                         "name": "string",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                        "alternateRangeURI": "xsd:string",
                         "shortDisplay": "String",
                       },
                       "rangeURI": undefined,
@@ -9440,6 +8969,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                   "display": "Text (String)",
                                   "name": "string",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                  "alternateRangeURI": "xsd:string",
                                   "shortDisplay": "String",
                                 },
                                 "lookupQueryValue": undefined,
@@ -9448,6 +8978,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                   "display": "Lookup",
                                   "name": "lookup",
                                   "rangeURI": undefined,
+                                  "alternateRangeURI": undefined,
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
@@ -9456,6 +8987,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     "display": "Text (String)",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": "xsd:string",
                                     "shortDisplay": "String",
                                   },
                                   "rangeURI": undefined,
@@ -9985,6 +9517,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     "display": "Text (String)",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                    "alternateRangeURI": "xsd:string",
                                     "shortDisplay": "String",
                                   },
                                   "lookupQueryValue": undefined,
@@ -9993,6 +9526,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                     "display": "Lookup",
                                     "name": "lookup",
                                     "rangeURI": undefined,
+                                    "alternateRangeURI": undefined,
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
@@ -10001,6 +9535,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       "display": "Text (String)",
                                       "name": "string",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": "xsd:string",
                                       "shortDisplay": "String",
                                     },
                                     "rangeURI": undefined,
@@ -10038,7 +9573,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Text Options
                                           </div>
@@ -10322,6 +9857,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       "display": "Text (String)",
                                       "name": "string",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                      "alternateRangeURI": "xsd:string",
                                       "shortDisplay": "String",
                                     },
                                     "lookupQueryValue": undefined,
@@ -10330,6 +9866,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                       "display": "Lookup",
                                       "name": "lookup",
                                       "rangeURI": undefined,
+                                      "alternateRangeURI": undefined,
                                       "shortDisplay": undefined,
                                     },
                                     "original": Object {
@@ -10338,6 +9875,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                         "display": "Text (String)",
                                         "name": "string",
                                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                        "alternateRangeURI": "xsd:string",
                                         "shortDisplay": "String",
                                       },
                                       "rangeURI": undefined,
@@ -10368,7 +9906,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                           className="col-xs-12"
                                         >
                                           <div
-                                            className="domain-field-section-heading"
+                                            className="domain-field-section-heading margin-top"
                                           >
                                             Name and Linking Options
                                           </div>
@@ -10398,7 +9936,7 @@ exports[`DomainRowDisplay with empty domain form 1`] = `
                                             Description
                                           </div>
                                           <textarea
-                                            className="form-control domain-field-description"
+                                            className="form-control domain-field-textarea"
                                             disabled={false}
                                             id="domainpropertiesrow-description-1"
                                             name="domainpropertiesrow-description"

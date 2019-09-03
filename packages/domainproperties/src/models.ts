@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { List, Record, fromJS } from "immutable";
+import { Utils } from "@labkey/api";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -62,12 +63,14 @@ export class PropDescType extends Record({
     display: undefined,
     name: undefined,
     rangeURI: undefined,
+    alternateRangeURI: undefined,
     shortDisplay: undefined
 }) implements IPropDescType {
     conceptURI: string;
     display: string;
     name: string;
     rangeURI: string;
+    alternateRangeURI: string;
     shortDisplay: string;
 
     static isLookup(name: string): boolean {
@@ -107,13 +110,13 @@ export class PropDescType extends Record({
     }
 }
 
-export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, shortDisplay: 'String'});
+export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
 export const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
 export const MULTILINE_TYPE = new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI});
-export const BOOLEAN_TYPE = new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI});
-export const INTEGER_TYPE = new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI});
-export const DOUBLE_TYPE = new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI});
-export const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI});
+export const BOOLEAN_TYPE = new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI, alternateRangeURI: 'xsd:boolean'});
+export const INTEGER_TYPE = new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
+export const DOUBLE_TYPE = new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI, alternateRangeURI: 'xsd:double'});
+export const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI, alternateRangeURI: 'xsd:dateTime'});
 export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
 export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI});
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
@@ -162,6 +165,14 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>;
     domainException: DomainException;
 
+    static init(name: string): DomainDesign {
+        // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
+        return DomainDesign.create({
+            name: name + ' Fields',
+            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-' + name + '.Folder-${Container.RowId}:${AssayName}'
+        });
+    }
+
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
@@ -188,6 +199,10 @@ export class DomainDesign extends Record({
     static serialize(dd: DomainDesign): any {
         let json = dd.toJS();
         json.fields = dd.fields.map(DomainField.serialize).toArray();
+
+        // remove non-serializable fields
+        delete json.domainException;
+
         return json;
     }
 
@@ -201,6 +216,10 @@ export class DomainDesign extends Record({
 
     hasException(): boolean {
         return (this.domainException !== undefined && this.domainException.errors !== undefined);
+    }
+
+    isNameSuffixMatch(name: string): boolean {
+        return this.name && this.name.endsWith(name + ' Fields');
     }
 }
 
@@ -354,7 +373,6 @@ export class DomainField extends Record({
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
         let field = new DomainField(Object.assign({}, rawField, {
-        // return new DomainField(Object.assign({}, rawField, {
             dataType,
             lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
             lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
@@ -362,7 +380,7 @@ export class DomainField extends Record({
             lookupType,
             original: {
                 dataType,
-                rangeURI: rawField.rangeURI
+                rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
             }
         }));
 
@@ -395,6 +413,16 @@ export class DomainField extends Record({
 
         if (json.lookupContainer === undefined) {
             json.lookupContainer = null;
+        }
+
+        // for some reason the property binding server side cares about casing here for 'URL' and 'PHI'
+        if (json.URL !== undefined) {
+            json.url = json.URL;
+            delete json.URL;
+        }
+        if (json.PHI !== undefined) {
+            json.phi = json.PHI;
+            delete json.PHI;
         }
 
         // remove non-serializable fields
@@ -502,7 +530,7 @@ export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
 function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
     let type: PropDescType;
 
-    if (!isFieldNew(rawField)) {
+    if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
@@ -512,6 +540,10 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
                 {
                     return true;
                 }
+            }
+            // handle alternateRangeURI which are returned from the server for inferDomain response
+            else if (type.alternateRangeURI && type.alternateRangeURI === rawField.rangeURI) {
+                return true;
             }
             // handle selected lookup option
             else if (type.isLookup() && rawField.lookupQuery && rawField.lookupQuery !== 'users') {
@@ -784,5 +816,81 @@ export class DomainFieldError extends Record({
 
     constructor(values?: {[key:string]: any}) {
         super(values);
+    }
+}
+
+export class AssayProtocolModel extends Record({
+    allowTransformationScript: false,
+    autoCopyTargetContainer: undefined,
+    availableDetectionMethods: undefined,
+    availableMetadataInputFormats: undefined,
+    availablePlateTemplates: undefined,
+    backgroundUpload: false,
+    description: undefined,
+    domains: undefined,
+    editableResults: false,
+    editableRuns: false,
+    metadataInputFormatHelp: undefined,
+    moduleTransformScripts: undefined,
+    name: undefined,
+    protocolId: undefined,
+    protocolParameters: undefined,
+    protocolTransformScripts: undefined,
+    providerName: undefined,
+    saveScriptFiles: false,
+    selectedDetectionMethod: undefined,
+    selectedMetadataInputFormat: undefined,
+    selectedPlateTemplate: undefined,
+    qcEnabled: undefined
+}) {
+    allowTransformationScript: boolean;
+    autoCopyTargetContainer: string;
+    availableDetectionMethods: any;
+    availableMetadataInputFormats: any;
+    availablePlateTemplates: any;
+    backgroundUpload: boolean;
+    description: string;
+    domains: List<DomainDesign>;
+    editableResults: boolean;
+    editableRuns: boolean;
+    metadataInputFormatHelp: any;
+    moduleTransformScripts: Array<any>;
+    name: string;
+    protocolId: number;
+    protocolParameters: any;
+    protocolTransformScripts: any;
+    providerName: string;
+    saveScriptFiles: boolean;
+    selectedDetectionMethod: any;
+    selectedMetadataInputFormat: any;
+    selectedPlateTemplate: any;
+    qcEnabled: boolean;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    static create(raw: any): AssayProtocolModel {
+        let domains = raw.domains || List<DomainDesign>();
+        if (raw.domains && Utils.isArray(raw.domains)) {
+            domains = List<DomainDesign>(
+                raw.domains.map((domain) => {
+                    return DomainDesign.create(domain);
+                })
+            );
+        }
+
+        return new AssayProtocolModel({
+            ...raw,
+            domains
+        });
+    }
+
+    getDomainByNameSuffix(name: string): DomainDesign {
+        if (this.domains.size > 0) {
+            return this.domains.find((domain) => {
+                return domain.isNameSuffixMatch(name);
+            });
+        }
     }
 }

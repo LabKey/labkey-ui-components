@@ -58,13 +58,13 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>Name and Linking Options</div>
+                        <div className={'domain-field-section-heading margin-top'}>Name and Linking Options</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={5}>
                         <div className={'domain-field-label'}>Description</div>
-                        <textarea className="form-control domain-field-description" rows={4} value={field.description || ''}
+                        <textarea className="form-control domain-field-textarea" rows={4} value={field.description || ''}
                                   id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                                   name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
                                   placeholder={'Add a description'}

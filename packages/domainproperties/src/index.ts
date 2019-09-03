@@ -13,25 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {fetchDomain, saveDomain, getBannerMessages} from "./actions/actions";
-import {DomainDesign, IBannerMessage} from "./models";
+import {createGeneralAssayDesign, fetchDomain, fetchProtocol, saveAssayDesign, saveDomain, getBannerMessages} from "./actions/actions";
+import {AssayProtocolModel, DomainDesign, IBannerMessage} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
+import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
+import {AssayDesignerPanels} from "./components/assay/AssayDesignerPanels";
+import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR} from "./constants";
 
 import './theme/index.scss'
-import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR} from "./constants";
 
 export {
     // components
     DomainForm,
     DomainFieldsDisplay,
+    AssayPropertiesPanel,
+    AssayDesignerPanels,
 
     // functions
     fetchDomain,
     saveDomain,
     getBannerMessages,
+    fetchProtocol,
+    createGeneralAssayDesign,
+    saveAssayDesign,
 
     // models
+    AssayProtocolModel,
     DomainDesign,
     IBannerMessage,
 

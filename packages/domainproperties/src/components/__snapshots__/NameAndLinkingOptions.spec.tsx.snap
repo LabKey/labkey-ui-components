@@ -36,6 +36,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "display": "Text (String)",
         "name": "string",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "alternateRangeURI": "xsd:string",
         "shortDisplay": "String",
       },
       "lookupQueryValue": undefined,
@@ -44,6 +45,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "display": "Lookup",
         "name": "lookup",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "alternateRangeURI": undefined,
         "shortDisplay": undefined,
       },
       "original": Object {
@@ -52,6 +54,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
           "display": "Text (String)",
           "name": "string",
           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "alternateRangeURI": "xsd:string",
           "shortDisplay": "String",
         },
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -82,7 +85,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             className="col-xs-12"
           >
             <div
-              className="domain-field-section-heading"
+              className="domain-field-section-heading margin-top"
             >
               Name and Linking Options
             </div>
@@ -112,7 +115,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
               Description
             </div>
             <textarea
-              className="form-control domain-field-description"
+              className="form-control domain-field-textarea"
               disabled={false}
               id="domainpropertiesrow-description-1"
               name="domainpropertiesrow-description"

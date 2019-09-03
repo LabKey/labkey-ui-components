@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.11.7-fb-parentAliases.2",
+  "version": "0.13.3-fb-parentAliases.2",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -38,8 +38,9 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.12.1-fb-parentAliases.1",
-    "@glass/omnibox": "0.1.30-fb-parentAliases.1",
+    "@glass/base": "0.15.0-fb-parentAliases.1",
+    "@glass/domainproperties": "0.0.32fb-parentAliases.1",
+    "@glass/omnibox": "0.1.34-fb-parentAliases.1",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",
@@ -88,5 +89,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "d3414b9c3c37e2cd6e175f43fb0ecdc6572767a2"
+  "gitHead": "522a421ed38ca985a38208069243d6f8572beed3"
 }

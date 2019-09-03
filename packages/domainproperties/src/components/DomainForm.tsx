@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { List} from "immutable";
+import { List, Map } from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Alert, ConfirmModal } from "@glass/base";
+import { faPlusCircle, faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
+import { Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
+import { DomainDesign, DomainField, DomainFieldError, IFieldChange} from "../models";
 import {
-    addField,
+    addDomainField,
     getIndexFromId,
     handleDomainUpdates,
     getMaxPhiLevel,
     removeField,
-    updateDomainField
+    setDomainFields
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
@@ -38,9 +38,15 @@ import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI} from "../co
 interface IDomainFormInput {
     domain: DomainDesign
     onChange: (newDomain: DomainDesign, dirty: boolean) => any
-    helpURL: string
-    helpNoun: string
-    showHeader: boolean
+    helpURL?: string
+    helpNoun?: string
+    showHeader?: boolean
+    initCollapsed?: boolean
+    collapsible?: boolean
+    markComplete?: boolean
+    headerPrefix?: string // used as a string to remove from the heading when using the domain.name
+    showInferFromFile?: boolean
+    panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
 }
 
@@ -48,6 +54,7 @@ interface IDomainFormState {
     expandedRowIndex: number
     expandTransition: number
     showConfirm: boolean
+    collapsed: boolean
     maxPhiLevel: string
 }
 
@@ -69,7 +76,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     static defaultProps = {
         helpNoun: 'domain',
         helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',
-        showHeader: true
+        showHeader: true,
+        initCollapsed: false
     };
 
     constructor(props) {
@@ -79,6 +87,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             expandedRowIndex: undefined,
             expandTransition: EXPAND_TRANSITION,
             showConfirm: false,
+            collapsed: props.initCollapsed,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI
         };
     }
@@ -96,7 +105,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
-    collapse = (): void => {
+    componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
+        // if not collapsible, allow the prop change to update the collapsed state
+        if (!this.props.collapsible && nextProps.initCollapsed !== this.props.initCollapsed) {
+            this.togglePanel(null, nextProps.initCollapsed);
+        }
+    }
+
+    togglePanel = (evt: any, collapsed?: boolean): void => {
+        this.setState((state) => ({
+            expandedRowIndex: undefined,
+            collapsed: collapsed !== undefined ? collapsed : !state.collapsed
+        }));
+    };
+
+    collapseRow = (): void => {
         if (this.isExpanded()) {
             this.setState({
                 expandedRowIndex: undefined,
@@ -105,7 +128,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    expand = (index: number): void => {
+    expandRow = (index: number): void => {
         const { domain } = this.props;
         const { expandedRowIndex } = this.state;
 
@@ -127,7 +150,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 expandTransition: EXPAND_TRANSITION_FAST
             })
         }
-    }
+    };
 
     isExpanded = (): boolean => {
         return this.state.expandedRowIndex !== undefined;
@@ -140,47 +163,36 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     onFieldExpandToggle = (index: number): void => {
         const { expandedRowIndex } = this.state;
 
-        expandedRowIndex === index ? this.collapse() : this.expand(index);
+        expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
+    onDomainChange(updatedDomain: DomainDesign) {
+        const { onChange } = this.props;
+
+        if (onChange) {
+            onChange(updatedDomain, true);
+        }
+    }
+
     onDeleteConfirm = () => {
-        const { domain, onChange } = this.props;
-        const { expandedRowIndex } = this.state;
-
-        const newDomain = removeField(domain, expandedRowIndex);
-
         this.setState({
             expandedRowIndex: undefined,
             showConfirm: false
         });
 
-        if (onChange) {
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
 
     onAddField = () => {
-        const {domain, onChange} = this.props;
-
-        const newDomain = addField(domain);
-
-        if (onChange) {
-            onChange(newDomain, true);
-        }
-
-        this.collapse();
+        this.onDomainChange(addDomainField(this.props.domain));
+        this.collapseRow();
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
-        const {domain, onChange} = this.props;
-
-        if (onChange) {
-            const newDomain = handleDomainUpdates(domain, changes);
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(handleDomainUpdates(this.props.domain, changes));
 
         if (expand) {
-            this.expand(index);
+            this.expandRow(index);
         }
     };
 
@@ -206,15 +218,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onBeforeDragStart = () => {
-        const { domain, onChange } = this.props;
-
-        if (onChange) {
-            onChange(domain, true);
-        }
+        this.onDomainChange(this.props.domain);
     };
 
     onDragEnd = (result) => {
-        const { domain, onChange } = this.props;
+        const { domain } = this.props;
 
         let destIndex = result.source.index;  // default behavior go back to original spot if out of bounds
         let srcIndex = result.source.index;
@@ -237,7 +245,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let expanded = this.state.expandedRowIndex;
 
         domain.fields.forEach((field, i) => {
-
             // move down
             if (i !== idIndex && srcIndex < destIndex) {
                 newFields.push(field);
@@ -283,9 +290,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainException: domainExceptionWithMovedErrors
         }) as DomainDesign;
 
-        if (onChange) {
-            onChange(newDomain, true);
-        }
+        this.onDomainChange(newDomain);
 
         this.fastExpand(expanded);
     };
@@ -314,16 +319,29 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return updatedErrorList as List<DomainFieldError>;
     };
 
-    getAddFieldButton() {
-        return (
-            <Row>
-                <Col xs={12}>
-                    <span className={"domain-form-add"} onClick={this.onAddField}>
-                        <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
+    renderAddFieldOption() {
+
+        if (this.shouldShowInferFromFile()) {
+            return (
+                <div className={'margin-top'}>
+                    or&nbsp;
+                    <span className={'domain-form-add-link'} onClick={this.onAddField}>
+                        Start a New Design
                     </span>
-                </Col>
-            </Row>
-        )
+                </div>
+            )
+        }
+        else {
+            return (
+                <Row>
+                    <Col xs={12}>
+                        <span className={"domain-form-add"} onClick={this.onAddField}>
+                            <FontAwesomeIcon icon={faPlusCircle} className={"domain-form-add-btn"}/> Add field
+                        </span>
+                    </Col>
+                </Row>
+            )
+        }
     }
 
     getFieldError(domain: DomainDesign, index: number) : DomainFieldError {
@@ -375,15 +393,42 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
-    renderEmptyDomain() {
-        const { helpURL, helpNoun } = this.props;
+    shouldShowInferFromFile(): boolean {
+        const { domain, showInferFromFile } = this.props;
+        return showInferFromFile && domain.fields.size === 0;
+    }
 
-        return (
-            <Panel className='domain-form-no-field-panel'>
-                {'No fields have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
-                <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
-            </Panel>
-        )
+    handleFilePreviewLoad = (response: InferDomainResponse) => {
+        this.onDomainChange(setDomainFields(this.props.domain, response.fields));
+    };
+
+    renderEmptyDomain() {
+        if (this.shouldShowInferFromFile()) {
+            return (
+                <FileAttachmentForm
+                    acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx"}
+                    showAcceptedFormats={true}
+                    allowDirectories={false}
+                    allowMultiple={false}
+                    label={'Infer fields from file'}
+                    previewGridProps={{
+                        previewCount: 3,
+                        skipPreviewGrid: true,
+                        onPreviewLoad: this.handleFilePreviewLoad
+                    }}
+                />
+            )
+        }
+        else {
+            const { helpURL, helpNoun } = this.props;
+
+            return (
+                <Panel className='domain-form-no-field-panel'>
+                    {'No properties have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
+                    <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
+                </Panel>
+            )
+        }
     }
 
     renderSearchRow() {
@@ -407,60 +452,133 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
+    renderForm() {
+        const { domain, children } = this.props;
+        const { expandedRowIndex, expandTransition, maxPhiLevel } = this.state;
+
+        return (
+            <>
+                <Row className='domain-form-hdr-row'>
+                    {children ? children
+                        : <p>Adjust fields and their properties that will be shown within this domain. Click a row
+                            to access additional options. Drag and drop rows to reorder them.</p>
+                    }
+                </Row>
+                {/*{this.renderSearchRow()}*/}
+                {domain.fields.size > 0 ?
+                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
+                        {this.renderRowHeaders()}
+                        <Droppable droppableId='domain-form-droppable'>
+                            {(provided) => (
+                                <div ref={provided.innerRef}
+                                     {...provided.droppableProps}>
+                                    <Form>
+                                        {(domain.fields.map((field, i) => {
+                                            return <DomainRow
+                                                key={'domain-row-key-' + i}
+                                                field={field}
+                                                fieldError={this.getFieldError(domain, i)}
+                                                index={i}
+                                                expanded={expandedRowIndex === i}
+                                                expandTransition={expandTransition}
+                                                onChange={this.onFieldsChange}
+                                                onExpand={this.onFieldExpandToggle}
+                                                onDelete={this.onDeleteField}
+                                                maxPhiLevel={maxPhiLevel}
+                                            />
+                                        }))}
+                                        {provided.placeholder}
+                                    </Form>
+                                </div>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                    : this.renderEmptyDomain()
+                }
+                {this.renderAddFieldOption()}
+            </>
+        )
+    }
+
+    getHeaderName(): string {
+        const { domain, headerPrefix } = this.props;
+        const { collapsed } = this.state;
+        let name = domain.name ? domain.name : "Domain Properties";
+
+        // optionally trim off a headerPrefix from the name display
+        if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
+            name = name.replace(headerPrefix + ' ', '');
+        }
+
+        // prefer to use the suffix "Properties" over "Fields" in panel heading
+        if (name.endsWith(' Fields')) {
+            name = name.substring(0, name.length - 7) + ' Properties';
+        }
+
+        // prefer "Results Properties" over "Data Properties"in assay case
+        if (name.endsWith('Data Properties')) {
+            name = name.replace('Data Properties', 'Results Properties');
+        }
+
+        // in collapsed view, add the field count to the header
+        if (collapsed && domain.fields.size > 0) {
+            name = name + ' (' + domain.fields.size + ')';
+        }
+
+        return name;
+    }
+
+    renderHeaderContent() {
+        const { collapsible, markComplete } = this.props;
+        const { collapsed } = this.state;
+
+        return (
+            <>
+                <span>{this.getHeaderName()}</span>
+                {collapsible && collapsed &&
+                    <Tip caption="Expand Panel">
+                        <span className={'pull-right'} onClick={this.togglePanel}>
+                            <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                        </span>
+                    </Tip>
+                }
+                {collapsible && !collapsed &&
+                    <Tip caption="Collapse Panel">
+                        <span className={'pull-right'} onClick={this.togglePanel}>
+                            <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                        </span>
+                    </Tip>
+                }
+                {!collapsible && collapsed && markComplete &&
+                    <span className={'pull-right'} onClick={this.togglePanel}>
+                        <i className={'fa fa-check-square-o as-secondary-color'}/>
+                    </span>
+                }
+            </>
+        )
+    }
+
     render() {
-        const { domain, showHeader } = this.props;
-        const { showConfirm, expandedRowIndex, expandTransition, maxPhiLevel } = this.state;
+        const { domain, showHeader, panelCls } = this.props;
+        const { showConfirm, collapsed } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
-                <Panel className={"domain-form-panel"}>
-                    {showHeader && <Panel.Heading>
-                        <div className={"panel-title"}>{"Field Properties" + (domain.name ? " - " + domain.name : '')}</div>
-                    </Panel.Heading>}
-                    <Panel.Body>
-                        {this.isValidDomain(domain) ? (
-                            <>
-                                <Row className='domain-form-hdr-row'>
-                                    <p>Adjust fields and their properties that will be shown within this domain. Click a row
-                                        to access additional options. Drag and drop rows to re-order them.</p>
-                                </Row>
-                                {this.renderSearchRow()}
-                                {domain.fields.size > 0 ?
-                                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                                        {this.renderRowHeaders()}
-                                        <Droppable droppableId='domain-form-droppable'>
-                                            {(provided) => (
-                                                <div ref={provided.innerRef}
-                                                     {...provided.droppableProps}>
-                                                    <Form>
-                                                        {(domain.fields.map((field, i) => {
-                                                            return <DomainRow
-                                                                key={'domain-row-key-' + i}
-                                                                field={field}
-                                                                fieldError={this.getFieldError(domain, i)}
-                                                                index={i}
-                                                                expanded={expandedRowIndex === i}
-                                                                expandTransition={expandTransition}
-                                                                onChange={this.onFieldsChange}
-                                                                onExpand={this.onFieldExpandToggle}
-                                                                onDelete={this.onDeleteField}
-                                                                maxPhiLevel={maxPhiLevel}
-                                                            />
-                                                        }))}
-                                                        {provided.placeholder}
-                                                    </Form>
-                                                </div>
-                                            )}
-                                        </Droppable>
-                                    </DragDropContext>
-                                    : this.renderEmptyDomain()
-                                }
-                                {this.getAddFieldButton()}
-                            </>
-                        ) :<Alert>Invalid domain design.</Alert>
-                        }
-                    </Panel.Body>
+                <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
+                    {showHeader &&
+                        <Panel.Heading>
+                            {this.renderHeaderContent()}
+                        </Panel.Heading>
+                    }
+                    {!collapsed &&
+                        <Panel.Body>
+                            {this.isValidDomain(domain)
+                                ? this.renderForm()
+                                :<Alert>Invalid domain design.</Alert>
+                            }
+                        </Panel.Body>
+                    }
                 </Panel>
             </>
         );

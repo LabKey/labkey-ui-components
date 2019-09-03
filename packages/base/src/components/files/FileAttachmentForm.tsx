@@ -247,13 +247,15 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             .then((response: InferDomainResponse) => {
                 this.updatePreviewStatus(null);
 
-                if (response.data.size > 1) {
-                    const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount);
-                    this.setState(() => ({previewData}));
-                    this.updateErrors(null);
-                }
-                else {
-                    this.updateErrors('No data found in the attached file.');
+                if (!previewGridProps.skipPreviewGrid) {
+                    if (response.data.size > 1) {
+                        const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount);
+                        this.setState(() => ({previewData}));
+                        this.updateErrors(null);
+                    }
+                    else {
+                        this.updateErrors('No data found in the attached file.');
+                    }
                 }
 
                 if (previewGridProps.onPreviewLoad) {

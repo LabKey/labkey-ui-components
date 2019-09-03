@@ -15,7 +15,8 @@
  */
 import {List, Map} from 'immutable'
 import {Filter} from '@labkey/api'
-import {AppURL, AssayProtocolModel, spliceURL, fetchProtocol, SCHEMAS} from '@glass/base'
+import {AppURL, spliceURL, SCHEMAS} from '@glass/base'
+import {AssayProtocolModel, fetchProtocol} from '@glass/domainproperties'
 
 import { getQueryDetails, selectRows } from "../query/api";
 

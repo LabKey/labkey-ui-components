@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.12.1-fb-parentAliases.1",
+  "version": "0.15.0-fb-parentAliases.1",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -79,5 +79,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "d3414b9c3c37e2cd6e175f43fb0ecdc6572767a2"
+  "gitHead": "522a421ed38ca985a38208069243d6f8572beed3"
 }

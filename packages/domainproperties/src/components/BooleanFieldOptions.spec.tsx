@@ -26,7 +26,7 @@ describe('BooleanFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = boolean.find({className: 'domain-field-section-heading'});
+        const sectionLabel = boolean.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 

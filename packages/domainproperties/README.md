@@ -4,8 +4,8 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.0.32
+*Released*: 3 September 2019
 * AssayPropertiesPanel for top level assay design properties for create/update (note: currently only supports the assay options relevant for the Sample Management app)
 * move AssayProtocolModel (and related actions) from base to domainproperties
 * add saveAssayDesign function which calls assay-saveProtocol.api

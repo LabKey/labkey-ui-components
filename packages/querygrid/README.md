@@ -4,9 +4,9 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
-* Package patch update for changes to @glass/base v???
+### version 0.13.3
+*Released*: 3 September 2019
+* Package patch update for changes to @glass/base v0.15.0
 
 ### version 0.13.2
 *Released*: 21 August 2019

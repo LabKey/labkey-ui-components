@@ -4,8 +4,8 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.4.6
+*Released*: 4 September 2019
 * support parsing url query params in MenuItemModel.create
 * change ProductMenu to support stacked menus
 

@@ -19,7 +19,7 @@ import { List, Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
     AddEntityButton,
-    Alert,
+    Alert, AppURL,
     capitalizeFirstChar,
     IGridLoader,
     IGridResponse,
@@ -644,6 +644,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel && insertModel.isInit) {
             const noun = insertModel.sampleCount == 1 ? "Sample" : "Samples";
+            const sampleSet = insertModel.getTargetSampleSetName();
+
             return (
                 <div className="form-group no-margin-bottom">
 
@@ -651,6 +653,12 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         <Button className={"test-loc-cancel-button"} onClick={this.onCancel}>Cancel</Button>
                     </div>
                     <div className="btn-group pull-right">
+                        <Button
+                            className={"test-loc-submit-button"}
+                            href={AppURL.create('samples', sampleSet, 'import').toHref()}
+                        >
+                            Import Samples from File
+                        </Button>
                         <Button
                             className={"test-loc-submit-button"}
                             bsStyle="success"
@@ -722,6 +730,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     columnMetadata={columnMetadata}
                                     onRowCountChange={this.onRowCountChange}
                                     model={queryGridModel}
+                                    initialEmptyRowCount={0}
+                                    emptyGridMsg={'Start by adding the quantity of samples you want to create'}
                                 />
                                 :
                                  !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null

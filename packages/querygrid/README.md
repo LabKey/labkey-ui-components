@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* add emptyGridMsg to EditableGrid
+* add import link to SampleInsertPanel
+
 ### version 0.13.3
 *Released*: 3 September 2019
 * Package patch update for changes to @glass/base v0.15.0

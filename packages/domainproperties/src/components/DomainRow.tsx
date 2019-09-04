@@ -19,7 +19,6 @@ import { List } from "immutable";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare, faTimes, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from "react-beautiful-dnd";
-import { Tip } from "@glass/base";
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -50,6 +49,7 @@ interface IDomainRowProps {
     field: DomainField
     index: number
     maxPhiLevel: string
+    availableTypes: List<PropDescType>
     onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any
     fieldError?: DomainFieldError
     onDelete: (any) => void
@@ -297,7 +297,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderBaseFields() {
-        const { index, field } = this.props;
+        const { index, field, availableTypes } = this.props;
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, index)}>
@@ -324,8 +324,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         onClick={this.onExpandOnly}
                     >
                         {
-                            resolveAvailableTypes(field).map((type, i) => (
-                                <option key={i} value={type.name}>{type.display}</option>
+                            resolveAvailableTypes(field, availableTypes).map(
+                                (type, i) => (<option key={i} value={type.name}>{type.display}</option>
                             ))
                         }
                     </FormControl>

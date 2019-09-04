@@ -21,7 +21,14 @@ import { StickyContainer, Sticky } from "react-sticky";
 import {AddEntityButton, Alert, ConfirmModal} from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
-import { DomainDesign, DomainField, DomainException, DomainFieldError, IFieldChange} from "../models";
+import {
+    DomainDesign,
+    DomainField,
+    DomainFieldError,
+    IFieldChange,
+    PropDescType,
+    PROP_DESC_TYPES, FLAG_TYPE, FILE_TYPE, ATTACHMENT_TYPE
+} from "../models";
 import {
     addField,
     getIndexFromId,
@@ -48,6 +55,7 @@ interface IDomainFormState {
     showConfirm: boolean
     maxPhiLevel: string
     dragId?: number
+    availableTypes: List<PropDescType>
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -79,7 +87,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             expandTransition: EXPAND_TRANSITION,
             showConfirm: false,
             dragId: undefined,
-            maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI
+            maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
+            availableTypes: this.getAvailableTypes()
         };
     }
 
@@ -95,6 +104,26 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 )
         }
     }
+
+    getAvailableTypes = (): List<PropDescType>  => {
+        const { domain } = this.props;
+
+        return PROP_DESC_TYPES.filter((type) => {
+            if (type === FLAG_TYPE && !domain.allowFlagProperties) {
+                return false;
+            }
+
+            if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
+                return false;
+            }
+
+            if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
+                return false;
+            }
+
+            return true;
+        }) as List<PropDescType>
+    };
 
     collapse = (): void => {
         if (this.isExpanded()) {
@@ -434,7 +463,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader } = this.props;
-        const { showConfirm, expandedRowIndex, expandTransition, maxPhiLevel, dragId } = this.state;
+        const { showConfirm, expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes } = this.state;
 
         return (
             <>
@@ -477,6 +506,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                                 onDelete={this.onDeleteField}
                                                                 maxPhiLevel={maxPhiLevel}
                                                                 dragging={dragId === i}
+                                                                availableTypes={availableTypes}
                                                             />
                                                         }))}
                                                         {provided.placeholder}

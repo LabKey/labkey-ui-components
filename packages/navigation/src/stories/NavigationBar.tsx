@@ -105,12 +105,12 @@ storiesOf('NavigationBar', module)
             sections
         });
 
-        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
-        sectionConfigs.set("fruits", new MenuSectionConfig({
+        let sectionConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
+        sectionConfigs.push(Map<string, MenuSectionConfig>().set("fruits", new MenuSectionConfig({
             emptyText: text("emptySectionText", "We have no bananas"),
             iconCls:  text('iconClass', "fas fa-user-circle"),
             iconURL: text("iconURL", undefined)
-        }));
+        })));
 
         return <NavigationBar
                 menuSectionConfigs={sectionConfigs}
@@ -189,28 +189,42 @@ storiesOf('NavigationBar', module)
             sections
         });
 
-        let sectionConfigs = Map<string, MenuSectionConfig>().asMutable();
-        sectionConfigs.set("fruits", new MenuSectionConfig({
+        let fruitsSectionConfigs = new MenuSectionConfig({
             iconCls:  text('Fruit Section iconClass', undefined, fruitGroup),
             iconURL: text("Fruit Section iconURL", "http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png", fruitGroup),
             maxItemsPerColumn: number("Max Fruits per column", 2, {}, fruitGroup),
             maxColumns: number("Max Fruit columns", 1, {}, fruitGroup),
-        }));
-        sectionConfigs.set("vegetables", new MenuSectionConfig( {
+        });
+
+        let vegetablesSectionConfigs = new MenuSectionConfig( {
             iconCls:  text('Veg Section iconClass', undefined, vegGroup),
             iconURL: text("Veg Section iconURL", "http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png", vegGroup),
             maxItemsPerColumn: number("Max veggies per column", 2, {}, vegGroup),
             maxColumns: number("Max veggie columns", 1, {}, vegGroup),
-        }));
-        sectionConfigs.set("user", new MenuSectionConfig({
+        });
+
+        let userSectionConfigs = new MenuSectionConfig({
             iconCls: text('userIconClass', 'fas fa-user-circle', "User")
-        }));
+        });
+
+
+        let threeColConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
+        threeColConfigs.push(Map<string, MenuSectionConfig>().set('fruits', fruitsSectionConfigs));
+        threeColConfigs.push(Map<string, MenuSectionConfig>().set('vegetables', vegetablesSectionConfigs));
+        threeColConfigs.push(Map<string, MenuSectionConfig>().set('user', userSectionConfigs));
+
+        let twoColConfigs = List<Map<string, MenuSectionConfig>>().asMutable();
+        twoColConfigs.push(Map<string, MenuSectionConfig>().set('fruits', fruitsSectionConfigs));
+        let vegAndUserSectionConfig = Map<string, MenuSectionConfig>().asMutable();
+        vegAndUserSectionConfig.set('vegetables', vegetablesSectionConfigs);
+        vegAndUserSectionConfig.set('user', userSectionConfigs);
+        twoColConfigs.push(vegAndUserSectionConfig);
 
         LABKEY['devMode'] = boolean('devMode', false, userGroup);
         const isSignedIn = boolean('User is signed in', true, userGroup);
 
         return <NavigationBar
-            menuSectionConfigs={sectionConfigs.asImmutable()}
+            menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}
             model={model}
             showSearchBox={false}
             user={

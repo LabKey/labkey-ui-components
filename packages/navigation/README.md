@@ -4,6 +4,11 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
+### version 0.4.6
+*Released*: 4 September 2019
+* support parsing url query params in MenuItemModel.create
+* change ProductMenu to support stacked menus
+
 ### version 0.4.5
 *Released*: 3 September 2019
 * Package patch update for changes to @glass/base v0.15.0

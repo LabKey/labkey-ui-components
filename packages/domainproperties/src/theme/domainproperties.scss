@@ -104,6 +104,24 @@
   color: $brand-success;
 }
 
+.domain-form-add-link {
+  color: $brand-primary;
+  cursor: pointer;
+
+  &:hover {
+    color: $brand-secondary;
+  }
+}
+
+.domain-form-expand-btn {
+  color: $gray-light;
+
+  &:hover {
+    color: $gray-base;
+    cursor: pointer;
+  }
+}
+
 .domain-form-no-field-panel {
   height: 53px;
   margin: 25px 0px 20px 0px;
@@ -130,7 +148,7 @@
 .domain-field-section-heading {
   color: $gray;
   font-weight: bold;
-  padding: 15px 0 5px 0;
+  padding: 0 0 5px 0;
 }
 
 .domain-field-label {
@@ -168,7 +186,7 @@
   float: left;
 }
 
-.domain-field-description {
+.domain-field-textarea {
   height: 85px !important;
   resize: none;
   margin-bottom: 2px;

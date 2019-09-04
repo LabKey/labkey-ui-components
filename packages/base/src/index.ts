@@ -16,9 +16,7 @@
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './models/constants'
 import { fetchGetQueries, fetchSchemas, processSchemas, SCHEMAS } from './models/schemas'
 import {
-    createGeneralAssayDesign,
     fetchAllAssays,
-    fetchProtocol,
     getServerFilePreview,
     importGeneralAssayRun,
     inferDomainFromFile,
@@ -28,7 +26,6 @@ import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayProtocolModel,
     AssayUploadTabs,
     Container,
     IGridLoader,
@@ -150,7 +147,6 @@ export {
 
     //models
     AppURL,
-    AssayProtocolModel,
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
@@ -213,11 +209,9 @@ export {
     Footer,
 
     // actions
-    fetchProtocol,
     fetchAllAssays,
     fetchSchemas,
     fetchGetQueries,
-    createGeneralAssayDesign,
     importGeneralAssayRun,
     inferDomainFromFile,
     getUserProperties,

@@ -37,7 +37,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.19",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@glass/base": "0.14.2-fb-domain-prioritized-updates.0",
+    "@glass/base": "0.15.0-fb-domain-prioritized-updates.0",
     "react-beautiful-dnd": "11.0.3",
     "react-transition-group": "4.2.2",
     "react-sticky": "6.0.3"
@@ -68,5 +68,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "3e6e7df581308f3fb362fe41c34b8154321b2fc1"
+  "gitHead": "522a421ed38ca985a38208069243d6f8572beed3"
 }

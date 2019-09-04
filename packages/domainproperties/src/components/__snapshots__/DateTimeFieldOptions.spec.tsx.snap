@@ -27,7 +27,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
             className="col-xs-12"
           >
             <div
-              className="domain-field-section-heading"
+              className="domain-field-section-heading margin-top"
             >
               Date and Time Field Options
             </div>

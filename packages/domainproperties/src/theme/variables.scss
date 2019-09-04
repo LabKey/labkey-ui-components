@@ -1,6 +1,9 @@
 
-$brand-danger:          #d9534f;
-$brand-success:         #5cb85c;
+//TODO: how to set or get these from the app instead or make sure the app can override them?
+$brand-primary: #2980b9;
+$brand-secondary: #236fa0;
+$brand-success: #5cb85c;
+$brand-danger: #d9534f;
 
 $gray-base:             #000 !default;
 $gray-darker:           lighten($gray-base, 13.5%) !default; // #222

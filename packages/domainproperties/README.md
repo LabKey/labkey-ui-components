@@ -4,6 +4,14 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.32
+*Released*: 3 September 2019
+* AssayPropertiesPanel for top level assay design properties for create/update (note: currently only supports the assay options relevant for the Sample Management app)
+* move AssayProtocolModel (and related actions) from base to domainproperties
+* add saveAssayDesign function which calls assay-saveProtocol.api
+* DomainForm updates for allowing panel expand/collapse, mark as complete, and infer from file empty state
+* AssayDesignerPanels component to wrap AssayPropertiesPanel with DomainForms for General assay domains (batch, run, data)
+
 ### version 0.0.31
 *Released*: 21 August 2019
 * Epic 6000: Domain designer Advanced Settings.

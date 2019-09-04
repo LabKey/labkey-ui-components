@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { List, Map } from "immutable";
-import { Domain, Query, Security, Ajax, ActionURL } from "@labkey/api";
-import { Container, naturalSort, SchemaDetails, processSchemas } from "@glass/base";
+import { Domain, Query, Security, Ajax, Utils, ActionURL } from "@labkey/api";
+import { Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn } from "@glass/base";
 
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -36,7 +36,8 @@ import {
     DomainException,
     DomainFieldError,
     IFieldChange,
-    IBannerMessage
+    IBannerMessage,
+    AssayProtocolModel
 } from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
@@ -250,7 +251,7 @@ export function getIndexFromId(id: string): number {
     return -1;
 }
 
-export function addField(domain: DomainDesign): DomainDesign {
+export function addDomainField(domain: DomainDesign): DomainDesign {
     return domain.merge({
         fields: domain.fields.push(DomainField.create({}, true))
     }) as DomainDesign;
@@ -532,4 +533,66 @@ function getWarningBannerMessage (domain: any) : any {
         }
     }
     return undefined;
-};
+}
+
+export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assay', 'getProtocol.api', { protocolId }),
+            success: Utils.getCallbackWrapper((data) => {
+                resolve(AssayProtocolModel.create(data.data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        })
+    });
+}
+
+export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>): DomainDesign {
+    return domain.merge({
+        fields: fields.map((field) => {
+            return DomainField.create({
+                name: field.name,
+                rangeURI: field.rangeURI
+            });
+        })
+    }) as DomainDesign;
+}
+
+export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
+    const dataDomain = setDomainFields(DomainDesign.init('Data'), fields);
+
+    const model = AssayProtocolModel.create({
+        providerName: 'General',
+        name,
+        description,
+        domains: List([
+            DomainDesign.init('Batch'),
+            DomainDesign.init('Run'),
+            dataDomain
+        ])
+    });
+
+    return saveAssayDesign(model);
+}
+
+export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
+    return new Promise((resolve, reject) => {
+        // need to serialize the DomainDesign objects to remove the unrecognized fields
+        const domains = model.domains.map((domain) => {
+            return DomainDesign.serialize(domain);
+        });
+
+        Ajax.request({
+            url: buildURL('assay', 'saveProtocol.api'),
+            jsonData: model.merge({domains}),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(AssayProtocolModel.create(response.data));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error.exception);
+            }, this, false)
+        });
+    });
+}

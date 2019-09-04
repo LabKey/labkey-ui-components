@@ -80,7 +80,7 @@ describe('LookupFieldOptions', () => {
         );
 
         // Verify section label
-        const sectionLabel = lookupField.find({className: 'domain-field-section-heading'});
+        const sectionLabel = lookupField.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_label);
 

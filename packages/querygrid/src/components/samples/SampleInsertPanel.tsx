@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button, Form, Panel } from 'react-bootstrap';
+import { Button, Form, Nav, NavItem, Panel } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
@@ -644,7 +644,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel && insertModel.isInit) {
             const noun = insertModel.sampleCount == 1 ? "Sample" : "Samples";
-            const sampleSet = insertModel.getTargetSampleSetName();
 
             return (
                 <div className="form-group no-margin-bottom">
@@ -653,12 +652,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         <Button className={"test-loc-cancel-button"} onClick={this.onCancel}>Cancel</Button>
                     </div>
                     <div className="btn-group pull-right">
-                        <Button
-                            className={"test-loc-submit-button"}
-                            href={AppURL.create('samples', sampleSet, 'import').toHref()}
-                        >
-                            Import Samples from File
-                        </Button>
                         <Button
                             className={"test-loc-submit-button"}
                             bsStyle="success"
@@ -711,11 +704,21 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         }
         const queryGridModel = this.getQueryGridModel();
 
+        const sampleSet = insertModel.getTargetSampleSetName();
+
         return (
             <>
                 <Panel>
                     <Panel.Body>
-                        <Form>
+                        <Nav className={'margin-bottom'} bsStyle="pills" activeKey={'grid'}>
+                            <NavItem eventKey={'grid'}>
+                                Create from grid
+                            </NavItem>
+                            <NavItem eventKey={'import'} href={AppURL.create('samples', sampleSet, 'import').toHref()}>
+                                Import Samples from File
+                            </NavItem>
+                        </Nav>
+                        <Form className={'margin-top'}>
                             {this.renderHeader()}
                             {queryGridModel && queryGridModel.isLoaded ?
                                 <EditableGridPanel

@@ -174,4 +174,8 @@ export enum KEYS {
 // This is used for filtering search results.  Since we first check for search hits containing
 // a data object, which exp.data objects and materials have, the most important elements of this
 // array are the types that don't have that data object.
-export const RELEVANT_SEARCH_RESULT_TYPES = ['data', 'experiment', 'material'];
+export const RELEVANT_SEARCH_RESULT_TYPES = ['data', 'experiment', 'material', 'materialSource'];
+
+export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
+
+export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';

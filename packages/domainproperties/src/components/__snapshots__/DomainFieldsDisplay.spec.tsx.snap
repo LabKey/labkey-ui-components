@@ -18,6 +18,9 @@ exports[`DomainFieldsDisplay with empty domain design 1`] = `
     <div
       className="table-responsive"
     >
+      <div
+        className="grid-messages"
+      />
       <table
         className="table table-striped table-bordered"
       >
@@ -128,6 +131,9 @@ exports[`DomainFieldsDisplay with title 1`] = `
     <div
       className="table-responsive"
     >
+      <div
+        className="grid-messages"
+      />
       <table
         className="table table-striped table-bordered"
       >
@@ -238,6 +244,9 @@ exports[`DomainFieldsDisplay without title 1`] = `
     <div
       className="table-responsive"
     >
+      <div
+        className="grid-messages"
+      />
       <table
         className="table table-striped table-bordered"
       >

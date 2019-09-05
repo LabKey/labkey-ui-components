@@ -1,10 +1,11 @@
 
 import * as React from 'react'
 import { Col, FormControl, Row } from "react-bootstrap";
-import { createFormInputId } from "../actions/actions";
+import {isFieldFullyLocked} from "../propertiesUtil";
+import {createFormInputId, createFormInputName, getNameFromId} from "../actions/actions";
 import {
     DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
-    DOMAIN_FIELD_FORMAT
+    DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_SCALE
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
 import {ITypeDependentProps} from "../models";
@@ -22,14 +23,14 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
 
         let value = evt.target.value;
 
-        if (evt.target.name === 'ExcludeFromShiftingOptions') {
+        if (getNameFromId(evt.target.id) === DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING) {
             value = evt.target.checked;
         }
 
         if (onChange) {
             onChange(evt.target.id, value);
         }
-    }
+    };
 
     getFormatHelpText = () => {
         let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";
@@ -54,13 +55,13 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
     }
 
     render() {
-        const { index, label, format, excludeFromShifting } = this.props;
+        const { index, label, format, excludeFromShifting, lockType } = this.props;
 
         return (
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <div className={'domain-field-section-heading margin-top'}>{label}</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -84,21 +85,24 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 <Row className='domain-row-expanded'>
                     <Col xs={2}>
                         <FormControl type="text"
-                                     value={format ? format : ''}
+                                     value={format || ''}
                                      onChange={this.onFieldChange}
+                                     disabled={isFieldFullyLocked(lockType)}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}/>
+                                     name={createFormInputName(DOMAIN_FIELD_FORMAT)}
+                        />
                     </Col>
                     <Col xs={1}/>
                     <Col xs={9}>
                         <input type='checkbox'
-                               name='ExcludeFromShiftingOptions'
+                               name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
                                className='domain-field-float-left domain-field-checkbox'
                                value='ExcludeFromShiftingOptions'
                                checked={excludeFromShifting}
                                onChange={this.onFieldChange}
+                               disabled={isFieldFullyLocked(lockType)}
                                id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
-                               key={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}/>
+                        />
                         <div className='domain-field-float-left domain-field-checkbox-label'>Do Not Shift Dates on Export or Publication</div>
                     </Col>
                 </Row>

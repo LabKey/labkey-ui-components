@@ -85,9 +85,9 @@ export function fetchSchemas(schemaName?: string): Promise<List<Map<string, Sche
             schemaName,
             success: function(schemas) {
                 resolve(
-                    resolveSchemas(schemas)
+                    processSchemas(schemas)
                         .filter(schema => {
-                            const start = schemaName ? schemaName.length + 1 : 0
+                            const start = schemaName ? schemaName.length + 1 : 0;
                             return schema.fullyQualifiedName.substring(start).indexOf('.') === -1;
                         })
                         .sortBy(schema => schema.schemaName.toLowerCase())
@@ -101,7 +101,7 @@ export function fetchSchemas(schemaName?: string): Promise<List<Map<string, Sche
     });
 }
 
-function resolveSchemas(schemas, allSchemas?: Map<string, SchemaDetails>): Map<string, SchemaDetails> {
+export function processSchemas(schemas: any, allSchemas?: Map<string, SchemaDetails>): Map<string, SchemaDetails> {
 
     let top = false;
     if (allSchemas === undefined) {
@@ -114,7 +114,7 @@ function resolveSchemas(schemas, allSchemas?: Map<string, SchemaDetails>): Map<s
             let schema = schemas[schemaName];
             allSchemas.set(schema.fullyQualifiedName.toLowerCase(), SchemaDetails.create(schema));
             if (schema.schemas !== undefined) {
-                resolveSchemas(schema.schemas, allSchemas);
+                processSchemas(schema.schemas, allSchemas);
             }
         }
     }

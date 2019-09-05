@@ -213,13 +213,19 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
         allFilters = allFilters.concat(queryFilters.toArray());
     }
 
+    // Include PKs plus useful-to-search-over columns and append the grid view's column list
+    let requiredColumns = model.queryInfo.pkCols.concat(['Name', 'Description', 'Alias']);
+    let columns = model.queryInfo.getDisplayColumns(schemaQuery.viewName).map(c => c.fieldKey).concat(requiredColumns);
+
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
     return searchRows({
         schemaName: schemaQuery.getSchema(),
         queryName: schemaQuery.getQuery(),
+        columns: columns.join(','),
         filterArray: allFilters,
         sort: displayColumn,
-        maxRows
+        maxRows,
+        includeTotalCount: 'f'
     }, filterVal, addExactFilter ? displayColumn : undefined);
 }
 
@@ -328,4 +334,29 @@ export function parseSelectedQuery(model: QuerySelectModelProps, data: Map<strin
     return data
         .map((result) => result.getIn([model.displayColumn, 'value']))
         .join(model.delimiter);
+}
+
+// "target" is not typed as an Element in base TypeScript library due to non-DOM events
+// Not exactly correct typings but suffices for the usages below
+// https://stackoverflow.com/q/28900077
+interface ITargetElementEvent {
+    keyCode: number
+    preventDefault(): void
+    target: HTMLInputElement
+}
+
+export function handleInputTab(evt: ITargetElementEvent): void {
+    if (evt.keyCode === 9) { // tab
+        const element = evt.target;
+        evt.preventDefault();
+        const s = element.selectionStart;
+        element.value = element.value.substring(0, s) + '\t' + element.value.substring(element.selectionEnd);
+        element.selectionEnd = s + 1;
+    }
+}
+
+export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
+    if (evt && evt.target && evt.target.type === 'textarea') {
+        handleInputTab(evt);
+    }
 }

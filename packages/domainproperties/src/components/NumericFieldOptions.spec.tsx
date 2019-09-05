@@ -1,6 +1,10 @@
 import {mount} from "enzyme";
 import {createFormInputId} from "../actions/actions";
-import {DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT} from "../constants";
+import {
+    DOMAIN_FIELD_DEFAULT_SCALE,
+    DOMAIN_FIELD_FORMAT,
+    DOMAIN_FIELD_NOT_LOCKED
+} from "../constants";
 import * as React from "react";
 import {NumericFieldOptions} from "./NumericFieldOptions";
 import toJson from "enzyme-to-json";
@@ -18,7 +22,8 @@ describe('NumericFieldOptions', () => {
             label: _section,
             format: _format,
             defaultScale: "LINEAR",
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         const numeric  = mount(<NumericFieldOptions
@@ -26,7 +31,7 @@ describe('NumericFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = numeric.find({className: 'domain-field-section-heading'});
+        const sectionLabel = numeric.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 
@@ -41,13 +46,13 @@ describe('NumericFieldOptions', () => {
         expect(formatField.props().value).toEqual(_format2);
 
         // Verify default scale field
-        let defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1)});
+        let defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1), className: 'form-control'});
         expect(defaultScale.length).toEqual(1);
         expect(defaultScale.props().value).toEqual("LINEAR");
 
         // Select LOG default scale
         numeric.setProps({defaultScale: "LOG"});
-        defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1)});
+        defaultScale = numeric.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE, 1), className: 'form-control'});
         expect(defaultScale.props().value).toEqual("LOG");
 
         expect(toJson(numeric)).toMatchSnapshot();

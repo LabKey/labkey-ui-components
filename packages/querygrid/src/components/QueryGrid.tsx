@@ -108,14 +108,14 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         }
     }
 
-    headerCell(column: GridColumn, i: number) {
+    headerCell(column: GridColumn, i: number, columnCount?: number) {
         const model = this.getModel(this.props);
 
         if (model.allowSelection && column.index && column.index.toLowerCase() === GRID_SELECTION_INDEX && !model.editable) {
             return headerSelectionCell(this.selectAll, model.selectedState, !model.isLoaded || model.totalRows === 0);
         }
 
-        return headerCell(this.sort, column, i, model.allowSelection, model.sortable);
+        return headerCell(this.sort, column, i, model.allowSelection, model.sortable, columnCount);
     }
 
     getColumns(): List<any> {

@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormStep/> currentStep 1`] = `
+Array [
+  <div
+    className="row"
+  >
+    <div
+      className="col-sm-12"
+    >
+      <ul
+        className="list-group clearfix"
+        style={
+          Object {
+            "listStyle": "none",
+          }
+        }
+      >
+        <li
+          className="list-group-item form-step-tab"
+          onClick={[Function]}
+        >
+          Tab 1
+        </li>
+        <li
+          className="list-group-item form-step-tab active"
+          onClick={[Function]}
+        >
+          Tab 2
+        </li>
+      </ul>
+      <div
+        className="clearfix"
+      />
+    </div>
+  </div>,
+  <div
+    className="form-step"
+  >
+    <div>
+      test0
+    </div>
+  </div>,
+  <div
+    className="form-step active"
+  >
+    <div>
+      test1
+    </div>
+  </div>,
+]
+`;
+
+exports[`<FormStep/> default props 1`] = `
+Array [
+  <div
+    className="row"
+  >
+    <div
+      className="col-sm-12"
+    >
+      <ul
+        className="list-group clearfix"
+        style={
+          Object {
+            "listStyle": "none",
+          }
+        }
+      >
+        <li
+          className="list-group-item form-step-tab active"
+          onClick={[Function]}
+        >
+          Tab 1
+        </li>
+        <li
+          className="list-group-item form-step-tab disabled"
+        >
+          Tab 2
+        </li>
+      </ul>
+      <div
+        className="clearfix"
+      />
+    </div>
+  </div>,
+  <div
+    className="form-step active"
+  >
+    <div>
+      test0
+    </div>
+  </div>,
+  <div
+    className="form-step"
+  >
+    <div>
+      test1
+    </div>
+  </div>,
+]
+`;

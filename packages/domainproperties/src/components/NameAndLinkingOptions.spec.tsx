@@ -19,7 +19,7 @@ describe('NameAndLinkingOptions', () => {
         const _importAliases = 'This is an alias';
         const _URL = 'This is a URL';
 
-        const field = new DomainField({
+        const field = DomainField.create({
             name: 'key',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,
@@ -37,7 +37,7 @@ describe('NameAndLinkingOptions', () => {
         />);
 
         // Verify section label
-        const sectionLabel = numeric.find({className: 'domain-field-section-heading'});
+        const sectionLabel = numeric.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Name and Linking Options');
 

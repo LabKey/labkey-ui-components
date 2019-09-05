@@ -42,11 +42,17 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
-import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
-import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
-import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
-import deleteSomeConfirmation from '../test/data/deleteSome-getMaterialDeleteConfirmationData.json';
-import sampleSetAllFieldTypesQueryInfo from '../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
+import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
+import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
+const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
+const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDeleteConfirmationData.json");
+const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
+const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
+const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
+const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json");
+const assayGpatQueryInfo= require("../test/data/assayGpat-getQueryDetails.json");
+const assayGpatRunData = require("../test/data/assayGpatRuns-getQuery.json");
+const filePreviewData = require("../test/data/property-getFilePreview.json");
 import visualizationConfig from '../test/data/visualization-getVisualization.json';
 
 export function initMocks() {
@@ -81,6 +87,11 @@ export function initMocks() {
             responseBody = sampleSet2QueryInfo;
         else if (lcSchemaName === 'assay.general.amino acids' && lcQueryName === 'runs')
             responseBody = assayRunsWithQCFlagsQueryInfo;
+        else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'data')
+            responseBody = assayDataQueryInfo;
+        else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'runs') {
+            responseBody = assayGpatQueryInfo;
+        }
 
         return res
             .status(200)
@@ -111,8 +122,9 @@ export function initMocks() {
             responseBody = nameExpressionSelectedQuery;
         else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
             responseBody = nameExpressionSelectedQuery;
-        else if (bodyParams.indexOf("&query.queryname=runs") > -1)
-            responseBody = assayRunsWithQCFlagsQuery;
+        else if (bodyParams.indexOf("&query.queryname=runs") > -1) {
+            responseBody = assayGpatRunData;
+        }
 
         return res
             .status(200)
@@ -198,6 +210,32 @@ export function initMocks() {
             responseBody = deleteSomeConfirmation;
         else if (selectionKey === 'deleteAll')
             responseBody = deleteAllConfirmation;
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
+        const bodyParams = req.body().toLowerCase();
+        let responseBody;
+        if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1))
+            responseBody = assayFileDuplicateCheck;
+        else if (bodyParams.indexOf(".xls") > -1)
+            responseBody= assayFileNoDuplicateCheck;
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody))
+    });
+
+    mock.get(/.*getFilePreview.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+        if (queryParams.file === "1949" || queryParams.file === "2010") {
+            responseBody = filePreviewData;
+        }
 
         return res
             .status(200)

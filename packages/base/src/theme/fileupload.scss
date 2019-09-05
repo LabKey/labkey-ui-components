@@ -51,6 +51,26 @@
   outline: 2px dashed $brand-success !important;
 }
 
+.file-upload--compact-label {
+  cursor: pointer;
+  color: #116596;
+  display: block;
+  font-weight: normal;
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+  margin-bottom: 0;
+  padding: 8px;
+}
+
+.file-upload--compact-label i {
+  display: inline-block;
+}
+
+.file-upload--error-message {
+  margin-left: 7px;
+  color: $brand-danger;
+}
+
 .cloud-logo {
   display: block !important;
   color: #116596;
@@ -61,4 +81,25 @@
   margin-left: -40px;
   margin-top: 5px;
   position: relative;
+}
+
+.attached-file--inline-container {
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+  padding: 8px;
+  position: relative;
+}
+
+.attached-file--icon {
+  color: darkgray;
+  font-size: 20px;
+  margin-right: 7px;
+}
+
+.attached-file--remove-icon {
+  color: $brand-danger;
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 20px;
+  cursor: pointer;
 }

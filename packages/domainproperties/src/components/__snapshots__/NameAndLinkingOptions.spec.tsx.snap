@@ -4,25 +4,64 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
 <NameAndLinkingOptions
   field={
     Immutable.Record {
+      "conceptURI": undefined,
+      "defaultScale": undefined,
+      "description": "This is a description",
+      "dimension": undefined,
+      "excludeFromShifting": false,
+      "format": undefined,
+      "hidden": false,
+      "importAliases": "This is an alias",
+      "label": "This is a label",
+      "lookupContainer": undefined,
+      "lookupQuery": undefined,
+      "lookupSchema": undefined,
+      "measure": undefined,
+      "mvEnabled": false,
+      "name": "key",
+      "PHI": undefined,
+      "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
-      "name": "key",
-      "description": "This is a description",
-      "label": "This is a label",
       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
-      "conceptURI": undefined,
+      "recommendedVariable": false,
       "required": false,
-      "lookupContainer": undefined,
-      "lookupSchema": undefined,
-      "lookupQuery": undefined,
       "scale": undefined,
-      "format": undefined,
-      "defaultScale": undefined,
-      "importAliases": "This is an alias",
       "URL": "This is a URL",
-      "updatedField": undefined,
-      "newField": undefined,
-      "excludeFromShifting": false,
+      "shownInDetailsView": true,
+      "shownInInsertView": true,
+      "shownInUpdateView": true,
+      "dataType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Text (String)",
+        "name": "string",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "alternateRangeURI": "xsd:string",
+        "shortDisplay": "String",
+      },
+      "lookupQueryValue": undefined,
+      "lookupType": Immutable.Record {
+        "conceptURI": undefined,
+        "display": "Lookup",
+        "name": "lookup",
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+        "alternateRangeURI": undefined,
+        "shortDisplay": undefined,
+      },
+      "original": Object {
+        "dataType": Immutable.Record {
+          "conceptURI": undefined,
+          "display": "Text (String)",
+          "name": "string",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "alternateRangeURI": "xsd:string",
+          "shortDisplay": "String",
+        },
+        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+      },
+      "updatedField": false,
+      "isPrimaryKey": false,
+      "lockType": "NotLocked",
     }
   }
   index={1}
@@ -46,7 +85,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             className="col-xs-12"
           >
             <div
-              className="domain-field-section-heading"
+              className="domain-field-section-heading margin-top"
             >
               Name and Linking Options
             </div>
@@ -76,9 +115,10 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
               Description
             </div>
             <textarea
-              className="form-control domain-field-description"
+              className="form-control domain-field-textarea"
+              disabled={false}
               id="domainpropertiesrow-description-1"
-              key="domainpropertiesrow-description-1"
+              name="domainpropertiesrow-description"
               onChange={[Function]}
               placeholder="Add a description"
               rows={4}
@@ -102,15 +142,18 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-label-1"
-              key="domainpropertiesrow-label-1"
+              name="domainpropertiesrow-label"
               onChange={[Function]}
               type="text"
               value="This is a label"
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-label-1"
+                name="domainpropertiesrow-label"
                 onChange={[Function]}
                 type="text"
                 value="This is a label"
@@ -238,15 +281,18 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-importAliases-1"
-              key="domainpropertiesrow-importAliases-1"
+              name="domainpropertiesrow-importAliases"
               onChange={[Function]}
               type="text"
               value="This is an alias"
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-importAliases-1"
+                name="domainpropertiesrow-importAliases"
                 onChange={[Function]}
                 type="text"
                 value="This is an alias"
@@ -394,15 +440,18 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-URL-1"
-              key="domainpropertiesrow-URL-1"
+              name="domainpropertiesrow-URL"
               onChange={[Function]}
               type="text"
               value="This is a URL"
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-URL-1"
+                name="domainpropertiesrow-URL"
                 onChange={[Function]}
                 type="text"
                 value="This is a URL"

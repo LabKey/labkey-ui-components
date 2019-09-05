@@ -2,9 +2,7 @@ import {mount} from "enzyme";
 import {createFormInputId} from "../actions/actions";
 import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
-    DOMAIN_FIELD_DEFAULT_SCALE,
-    DOMAIN_FIELD_FORMAT,
-    DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE
+    DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_SCALE
 } from "../constants";
 import * as React from "react";
 import toJson from "enzyme-to-json";
@@ -22,7 +20,8 @@ describe('TextFieldOptions', () => {
             index: 1,
             label: _section,
             scale: _scale,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         let textField  = mount(<TextFieldOptions
@@ -30,7 +29,7 @@ describe('TextFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = textField.find({className: 'domain-field-section-heading'});
+        const sectionLabel = textField.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 
@@ -49,7 +48,8 @@ describe('TextFieldOptions', () => {
             index: 1,
             label: _section,
             scale: _scale2,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
         textField  = mount(<TextFieldOptions
             {...props2}

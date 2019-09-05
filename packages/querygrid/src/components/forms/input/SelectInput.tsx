@@ -130,6 +130,7 @@ export interface SelectInputProps extends DisableableInputProps {
     saveOnBlur?: boolean
     selectedOptions?: ReactSelectOption | Array<ReactSelectOption>
     showLabel?: boolean
+    addLabelAsterisk?: boolean
     valueKey?: string
     onChange?: Function // this is getting confused with formsy on change, need to separate
     optionRenderer?: any
@@ -348,7 +349,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     }
 
     renderLabel(inputProps: any) {
-        const { allowDisable, label, multiple, name, required, showLabel } = this.props;
+        const { allowDisable, label, multiple, name, required, showLabel, addLabelAsterisk } = this.props;
         const { isDisabled } = this.state;
 
         if (showLabel && label !== undefined) {
@@ -361,8 +362,10 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                     id={inputProps.id}
                     fieldName={name}
                     labelOverlayProps={{
+                        inputId: name,
                         description,
                         label: label,
+                        addLabelAsterisk: addLabelAsterisk,
                         isFormsy: false,
                         required: required,
                         labelClass: !allowDisable ? 'control-label text-left col-sm-3 col-xs-12' : undefined
@@ -385,7 +388,6 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     renderSelect(inputProps: any) {
         const {
             addLabelText,
-            allowCreate,
             autoload,
             cache,
             clearable,

@@ -4,6 +4,7 @@ exports[`TextFieldOptions Text data type 1`] = `
 <TextFieldOptions
   index={1}
   label="Text Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
   scale={200}
 >
@@ -25,7 +26,7 @@ exports[`TextFieldOptions Text data type 1`] = `
             className="col-xs-12"
           >
             <div
-              className="domain-field-section-heading"
+              className="domain-field-section-heading margin-top"
             >
               Text Field Options
             </div>
@@ -192,9 +193,9 @@ exports[`TextFieldOptions Text data type 1`] = `
             <input
               checked={false}
               className="domain-text-options-radio1 domain-field-float-left"
+              disabled={false}
               id="domainpropertiesrow-maxLength-1"
-              key="domainpropertiesrow-maxLength-1"
-              name="TextLengthOptions"
+              name="domainpropertiesrow-maxLength"
               onChange={[Function]}
               type="radio"
               value="maxLength"
@@ -228,8 +229,7 @@ exports[`TextFieldOptions Text data type 1`] = `
               checked={true}
               className="domain-text-options-radio2 domain-field-float-left"
               id="domainpropertiesrow-customLength-1"
-              key="domainpropertiesrow-customLength-1"
-              name="TextLengthOptions"
+              name="domainpropertiesrow-customLength"
               onChange={[Function]}
               type="radio"
               value="customLength"
@@ -244,7 +244,7 @@ exports[`TextFieldOptions Text data type 1`] = `
               componentClass="input"
               disabled={false}
               id="domainpropertiesrow-scale-1"
-              key="domainpropertiesrow-scale-1"
+              name="domainpropertiesrow-scale"
               onChange={[Function]}
               style={
                 Object {
@@ -258,6 +258,7 @@ exports[`TextFieldOptions Text data type 1`] = `
                 className="form-control"
                 disabled={false}
                 id="domainpropertiesrow-scale-1"
+                name="domainpropertiesrow-scale"
                 onChange={[Function]}
                 style={
                   Object {

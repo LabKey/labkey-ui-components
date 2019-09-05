@@ -23,6 +23,7 @@ import {
     capitalizeFirstChar,
     IGridLoader,
     IGridResponse,
+    insertColumnFilter,
     LoadingSpinner,
     Progress,
     QueryColumn,
@@ -32,6 +33,8 @@ import {
     SchemaQuery,
     SCHEMAS
 } from '@glass/base';
+
+import { SAMPLE_UNIQUE_FIELD_KEY } from '../../constants'
 
 import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn, } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
@@ -173,7 +176,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         if (schemaQuery) {
             getQueryDetails(schemaQuery.toJS()).then(originalQueryInfo => {
                 let updatedModel = insertModel;
-                if (insertModel.sampleCount === 0 && !originalQueryInfo.isRequiredColumn("Name"))
+                if (insertModel.sampleCount === 0 && !originalQueryInfo.isRequiredColumn(SAMPLE_UNIQUE_FIELD_KEY))
                 {
                     updatedModel = updatedModel.set("sampleCount", 1) as SampleIdCreationModel;
                 }
@@ -251,7 +254,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const parentColName = [parentInputType, formattedQueryName].join('/');
 
         // 32671: Sample import and edit grid key ingredients on scientific name
-        let displayColumn = 'Name';
+        let displayColumn = SAMPLE_UNIQUE_FIELD_KEY;
         if (parent.schema && parent.query &&
             parent.schema.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.schemaName.toLowerCase() &&
             parent.query.toLowerCase() === SCHEMAS.DATA_CLASSES.INGREDIENTS.queryName.toLowerCase()) {
@@ -298,7 +301,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const { insertModel, originalQueryInfo } = this.state;
 
         if (originalQueryInfo) {
-            const nameIndex = Math.max(0, originalQueryInfo.columns.toList().findIndex((column) => (column.fieldKey === "Name")));
+            const nameIndex = Math.max(0, originalQueryInfo.columns.toList().findIndex((column) => (column.fieldKey === SAMPLE_UNIQUE_FIELD_KEY)));
             const newColumnIndex = nameIndex + insertModel.sampleParents.filter((parent) => parent.query !== undefined).count();
             const columns = originalQueryInfo.insertColumns(newColumnIndex, this.getParentColumns());
             return originalQueryInfo.merge({columns}) as QueryInfo;
@@ -404,15 +407,15 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         let columnMap = OrderedMap<string, QueryColumn>();
                         let fieldKey;
                         if (existingParent.index === 1)
-                            fieldKey = "Name";
+                            fieldKey = SAMPLE_UNIQUE_FIELD_KEY;
                         else {
                             const definedParents = insertModel.sampleParents.filter((parent) => parent.query !== undefined);
                             if (definedParents.size === 0)
-                                fieldKey = "Name";
+                                fieldKey = SAMPLE_UNIQUE_FIELD_KEY;
                             else {
                                 // want the first defined parent before the new parent's index
                                 const prevParent = definedParents.findLast((parent) => parent.index < existingParent.index);
-                                fieldKey = prevParent ? this.createParentColumnName(prevParent) : "Name";
+                                fieldKey = prevParent ? this.createParentColumnName(prevParent) : SAMPLE_UNIQUE_FIELD_KEY;
                             }
                         }
                         addColumns(queryGridModel, columnMap.set(column.fieldKey.toLowerCase(), column), fieldKey);
@@ -581,7 +584,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
         const editorModel = getEditorModel(queryGridModel.getId());
-        const errors =  editorModel.getValidationErrors(queryGridModel, "Name");
+        const errors =  editorModel.getValidationErrors(queryGridModel, SAMPLE_UNIQUE_FIELD_KEY);
         if (errors.length > 0) {
             this.setSubmitting(false);
             gridShowError(queryGridModel, {
@@ -630,7 +633,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     isNameRequired() {
         const queryGridModel = this.getQueryGridModel();
         if (queryGridModel) {
-            return queryGridModel.isRequiredColumn("Name");
+            return queryGridModel.isRequiredColumn(SAMPLE_UNIQUE_FIELD_KEY);
         }
         return false;
     }
@@ -680,6 +683,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const bulkUpdateProps = {
             title: "Bulk Creation of Samples",
             header: "Add a batch of samples that will share the properties set below.",
+            columnFilter: (colInfo) => {
+                return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== SAMPLE_UNIQUE_FIELD_KEY
+            }
         };
         let addControlProps = {
             nounSingular: "row",
@@ -690,7 +696,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             addControlProps['quickAddText'] = "Bypass the grid";
             addControlProps['onQuickAdd'] = this.deriveSampleIds;
 
-            columnMetadata = columnMetadata.set("Name", {
+            columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
                 readOnly: false,
                 placeholder: "[generated id]"
             })

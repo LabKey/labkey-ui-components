@@ -27,10 +27,10 @@ export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: 
     return rows;
 }
 
-export function fileMatchesAcceptedFormat(file: File, formatExtensionStr: string): Map<string, any> {
+export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: string): Map<string, any> {
     const acceptedFormatArray: Array<string> = formatExtensionStr.replace(/\s/g, '').split(',');
-    const dotIndex = file.name.lastIndexOf('.');
-    const extension = file.name.slice(dotIndex);
+    const dotIndex = fileName.lastIndexOf('.');
+    const extension = fileName.slice(dotIndex);
     const isMatch = acceptedFormatArray.indexOf(extension) >= 0;
 
     return fromJS({

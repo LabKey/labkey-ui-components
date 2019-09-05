@@ -23,6 +23,7 @@ import { QueryInfoForm } from "./QueryInfoForm";
 import { mount, shallow } from "enzyme";
 import { QueryFormInputs } from "./QueryFormInputs";
 import { Button, Modal, ModalTitle } from "react-bootstrap";
+import {TextInput} from "./input/TextInput";
 
 beforeAll(() => {
     initQueryGridState();
@@ -212,6 +213,75 @@ describe("QueryInfoForm", () => {
             expect(submitButton.props().disabled).toBe(true);
         });
     });
+
+    test("don't allow canSubmitNotDirty", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = shallow(
+                <QueryInfoForm
+                    includeCountField={false}
+                    checkRequiredFields={false}
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    onSubmit={jest.fn()}
+                    canSubmitNotDirty={false}
+                />
+            );
+
+            const submitButton = formWrapper.find(".test-loc-submit-button");
+            expect(submitButton.props().disabled).toBe(true);
+        });
+    });
+
+    test("customize column filter", () => {
+        const filter = (col) => {
+            return col.name === "extraTestColumn";
+        };
+
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = mount(
+                        <QueryInfoForm
+                            schemaQuery={schemaQuery}
+                            queryInfo={queryInfo}
+                            columnFilter={filter}
+                            onSubmit={jest.fn()}/>
+                    );
+
+            expect(formWrapper.find(TextInput)).toHaveLength(1);
+            formWrapper.unmount();
+        });
+    });
+
+    test("skip required check", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = mount(
+                <QueryInfoForm
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    checkRequiredFields={false}
+                    onSubmit={jest.fn()}/>
+            );
+
+            expect(formWrapper.text()).toContain('Extra Test Column Cancel');
+            formWrapper.unmount();
+        });
+    });
+
+    test("skip required check but show asterisk on label", () => {
+        return getQueryDetails(schemaQuery).then( (queryInfo) => {
+            const formWrapper = mount(
+                <QueryInfoForm
+                    schemaQuery={schemaQuery}
+                    queryInfo={queryInfo}
+                    checkRequiredFields={false}
+                    showLabelAsterisk={true}
+                    onSubmit={jest.fn()}/>
+            );
+
+            expect(formWrapper.text()).toContain('Extra Test Column  *');
+            formWrapper.unmount();
+        });
+    });
+
 
     // TODO the following tests require being able to interact with the form in order to make it
     // possible to submit the form.  Current attempts to do this interaction have been unsuccessful.

@@ -1312,7 +1312,8 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
             schemaName: lookup.schemaName,
             queryName: lookup.queryName,
             columns: [lookup.displayColumn,lookup.keyColumn].join(','),
-            maxRows
+            maxRows,
+            includeTotalCount: 'f'
         };
 
         if (values) {
@@ -1400,7 +1401,6 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
     let messages = List<CellMessage>();
 
     rowData.forEach((data, cn) => {
-
         const colIdx = colMin + cn;
         const col = columns.get(colIdx);
 

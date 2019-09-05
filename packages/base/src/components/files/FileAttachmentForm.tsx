@@ -32,6 +32,7 @@ interface FileAttachmentFormProps {
     allowDirectories?: boolean
     allowMultiple?: boolean
     cancelText?: string
+    initialFileNames?: Array<string>
     label?: string
     labelLong?: string
     onCancel?: () => any
@@ -82,9 +83,26 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.state = {
             attachedFiles: Map<string, File>(),
             errorMessage: undefined,
-            previewData: undefined,
             previewStatus: undefined
         };
+    }
+
+    componentWillMount() {
+        this.initPreviewData(this.props)
+    }
+
+    componentWillReceiveProps(nextProps: FileAttachmentFormProps) {
+        if (this.props.previewGridProps !== nextProps.previewGridProps) {
+            this.initPreviewData(nextProps);
+        }
+    }
+
+    initPreviewData(props: FileAttachmentFormProps) {
+        let previewData;
+        if (props.previewGridProps && props.previewGridProps.initialData) {
+            previewData = convertRowDataIntoPreviewData(props.previewGridProps.initialData.get('data'), props.previewGridProps.previewCount);
+            this.setState(() => ({previewData}));
+        }
     }
 
     determineFileSize(): number {
@@ -216,7 +234,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         // check if this usage has a set of formats which are supported for preview
         if (previewGridProps.acceptedFormats) {
-            const fileCheck = fileMatchesAcceptedFormat(file, previewGridProps.acceptedFormats);
+            const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
             // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
             if (!fileCheck.get('isMatch')) {
                 return;
@@ -229,13 +247,15 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             .then((response: InferDomainResponse) => {
                 this.updatePreviewStatus(null);
 
-                if (response.data.size > 1) {
-                    const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount);
-                    this.setState(() => ({previewData}));
-                    this.updateErrors(null);
-                }
-                else {
-                    this.updateErrors('No data found in the attached file.');
+                if (!previewGridProps.skipPreviewGrid) {
+                    if (response.data.size > 1) {
+                        const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount);
+                        this.setState(() => ({previewData}));
+                        this.updateErrors(null);
+                    }
+                    else {
+                        this.updateErrors('No data found in the attached file.');
+                    }
                 }
 
                 if (previewGridProps.onPreviewLoad) {
@@ -302,6 +322,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             acceptedFormats,
             allowDirectories,
             allowMultiple,
+            initialFileNames,
             label,
             labelLong,
             showButtons,
@@ -322,6 +343,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             allowDirectories={allowDirectories}
                             handleChange={this.handleFileChange}
                             handleRemoval={this.handleFileRemoval}
+                            initialFileNames={initialFileNames}
                             allowMultiple={allowMultiple}
                             labelLong={labelLong}/>
                     </FormSection>

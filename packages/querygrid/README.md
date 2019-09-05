@@ -4,6 +4,89 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.13.3
+*Released*: 3 September 2019
+* Package patch update for changes to @glass/base v0.15.0
+
+### version 0.13.2
+*Released*: 21 August 2019
+* Package patch update for changes to @glass/base v0.14.1
+
+### version 0.13.1
+*Released*: 19 August 2019
+* Allow showing * in required field's label when checkRequiredFields is false for QueryInfoForm or QueryFormInput
+
+### version 0.13.0
+*Released*: 16 August 2019
+* add deleteAssayDesign method, AssayDesignDeleteConfirmModal
+
+### version 0.12.0
+*Released*: 16 August 2019
+* add ImportWithRenameConfirmModal and checkForDuplicateAssayFiles method
+* add AssayReimportHeader component
+* add actions for getRunDataModel, getRunRow, getBatchDataModel, getBatchRow
+* update AssayImportPanels to accept an optional runId for pre-populating
+* add optional queryColumns parameter for Detail component to be able to modify the columns in the detail view
+* in RunDataPanel, support display of previous run's data when reimporting.
+* add param to support cascade delete of replaced runs in deleteAssayRuns API call
+
+### version 0.11.7
+*Released*: 15 August 2019
+* Issue 37827: update Detail and DetailEditing display columns
+
+### version 0.11.6
+*Released*: 13 August 2019
+* Package patch update for changes to @glass/base v0.12.0
+
+### version 0.11.5
+*Released*: 8 Aug 2019
+* Add "appEditable", "asSubPanel", "title", "cancelText", "onEditToggle", and "submitText" to DetailEditing
+* fix "Invalid prop 'value' of type 'number' supplied to 'Input'" error on bulk form
+
+### version 0.11.4
+*Released*: 5 Aug 2019
+* Issue 38097: improve lookup search perf using ~q filter
+
+### version 0.11.3
+*Released*: 31 July 2019
+* Package patch update for changes to @glass/base v0.11.1
+
+### version 0.11.2
+*Released*: 30 Jul 2019
+*  Update SearchResultCard to show Sample Sets
+
+### version 0.11.1
+*Released*: 25 July 2019
+* Issue 37993: add missing "isUpdate" parameter for call to updateSampleSet
+
+### version 0.11.0
+*Released*: 24 July 2019
+* port FormStep and related helpers from Biologics
+* port handleInputTab and handleTabKeyOnTextArea from Biologics
+* add AssayWizardModel, BatchPropertiesPanel, RunPropertiesPanel, and RunDataPanel from Biologics
+* port AssayUploadGridLoader, AssayUploadResultModel, uploadAssayRunFiles and importAssayRun from Biologics
+* add deleteAssayRuns method, AssayRunDeleteConfirmModal, and AssayResultDeleteConfirmModal
+* factor out AssayImportSubMenuItem and getImportItemsForAssayDefinitions and port from Biologics
+* port loadSelectedSamples from Biologics and export getSelection
+
+### version 0.10.3
+*Released*: 23 July 2019
+* Add columnFilter to QueryInfoForm
+
+### version 0.10.2
+*Released*: 23 July 2019
+* For QueryInfoForm, add ability to disable Submit until change is made
+* For QueryInfoForm, add onFormChange handler 
+
+### version 0.10.1
+*Released*: 17 July 2019
+* Fix @glass/base dependencies for omnibox package
+
+### version 0.10.0
+*Released*: 17 July 2019
+* add support for messages to QueryGrid
+* enables hot reloading of CSS in Storybook for all packages
+
 ### version 0.9.1
 *Released*: 17 June 2019
 *  Update package for changes to @glass/base v0.9.0

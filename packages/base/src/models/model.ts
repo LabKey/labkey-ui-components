@@ -259,7 +259,7 @@ export class QueryColumn extends Record({
     required: undefined,
     // selectable: undefined,
     shortCaption: undefined,
-    // shownInDetailsView: undefined,
+    shownInDetailsView: undefined,
     shownInInsertView: undefined,
     shownInUpdateView: undefined,
     sortable: true,
@@ -320,7 +320,7 @@ export class QueryColumn extends Record({
     required: boolean;
     // selectable: boolean;
     shortCaption: string;
-    // shownInDetailsView: boolean;
+    shownInDetailsView: boolean;
     shownInInsertView: boolean;
     shownInUpdateView: boolean;
     sortable: boolean;
@@ -593,15 +593,37 @@ export class QueryGridModel extends Record({
      * @returns {List<QueryColumn>}
      */
     getDisplayColumns(): List<QueryColumn> {
+        if (this.queryInfo)
+            return this.queryInfo.getDisplayColumns(this.view, this.omittedColumns);
+
+        return emptyColumns;
+    }
+
+    /**
+     * Returns the set of display columns for details view for this QueryGridModel based on its configuration.
+     * @returns {List<QueryColumn>}
+     */
+    getDetailsDisplayColumns(): List<QueryColumn> {
         if (this.queryInfo) {
-            let cols = this.queryInfo.getDisplayColumns(this.view);
+            return this.queryInfo
+                .getDisplayColumns(ViewInfo.DETAIL_NAME, this.omittedColumns)
+                .filter(c => !c.removeFromViews && c.shownInDetailsView)
+                .toList();
+        }
 
-            if (this.omittedColumns.size > 0) {
-                const lowerOmit = toLowerSafe(this.omittedColumns);
-                return cols.filter(c => c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase())).toList();
-            }
+        return emptyColumns;
+    }
 
-            return cols;
+    /**
+     * Returns the set of display columns for update view for this QueryGridModel based on its configuration.
+     * @returns {List<QueryColumn>}
+     */
+    getUpdateDisplayColumns(): List<QueryColumn> {
+        if (this.queryInfo) {
+            return this.queryInfo
+                .getDisplayColumns(ViewInfo.UPDATE_NAME, this.omittedColumns)
+                .filter(updateColumnFilter)
+                .toList();
         }
 
         return emptyColumns;
@@ -689,17 +711,21 @@ export class QueryGridModel extends Record({
     }
 
     getFilters(): List<Filter.IFilter> {
+        let filterList = List<Filter.IFilter>();
         if (this.queryInfo) {
             if (this.keyValue !== undefined) {
                 if (this.queryInfo.pkCols.size === 1) {
-                    return List([
+                    filterList = filterList.push(
                         Filter.create(this.queryInfo.pkCols.first(), this.keyValue)
-                    ]);
+                    );
+                } else {
+                    console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
                 }
-                console.warn('Too many keys. Unable to filter for specific keyValue.', this.queryInfo.pkCols.toJS());
             }
-
-            return this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray).toList();
+            // if a keyValue if provided, we may still have baseFilters to apply in the case that the default
+            // filter on a query view is a limiting filter and we want to expand the set of values returned (e.g., for assay runs
+            // that may have been replaced)
+            return filterList.concat(this.baseFilters.concat(this.queryInfo.getFilters(this.view)).concat(this.filterArray)).toList();
         }
 
         return this.baseFilters.concat(this.filterArray).toList();
@@ -1028,15 +1054,27 @@ export class QueryInfo extends Record({
         return column ? column.required : false;
     }
 
-    getDisplayColumns(view?: string): List<QueryColumn> {
+    getDisplayColumns(view?: string, omittedColumns?: List<string>): List<QueryColumn> {
 
         if (!view) {
             view = ViewInfo.DEFAULT_NAME;
         }
 
+        let lowerOmit;
+        if (omittedColumns)
+            lowerOmit = toLowerSafe(omittedColumns);
+
+        const colFilter = (c) => {
+            if (lowerOmit && lowerOmit.size > 0) {
+                return c && c.fieldKey && !lowerOmit.includes(c.fieldKey.toLowerCase());
+            }
+            return true;
+        };
+
         let viewInfo = this.getView(view);
         if (viewInfo) {
             return viewInfo.columns
+                .filter(colFilter)
                 .reduce((list, col) => {
                     let c = this.getColumn(col.fieldKey);
 
@@ -1270,6 +1308,7 @@ export class ViewInfo extends Record({
 
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';
+    static UPDATE_NAME = '~~UPDATE~~';
     // TODO seems like this should not be in the generic model, but we'll need a good way
     //  to define the override detail name.
     static BIO_DETAIL_NAME = 'BiologicsDetails';
@@ -1370,58 +1409,6 @@ export function updateColumnFilter(col: QueryColumn): boolean {
         col.userEditable === true &&
         col.fieldKeyArray.length === 1
     );
-}
-
-export class AssayProtocolModel extends Record({
-    allowTransformationScript: false,
-    autoCopyTargetContainer: undefined,
-    availableDetectionMethods: undefined,
-    availableMetadataInputFormats: undefined,
-    availablePlateTemplates: undefined,
-    backgroundUpload: false,
-    description: undefined,
-    // domains: undefined,
-    editableResults: false,
-    editableRuns: false,
-    metadataInputFormatHelp: undefined,
-    moduleTransformScripts: undefined,
-    name: undefined,
-    protocolId: undefined,
-    protocolParameters: undefined,
-    protocolTransformScripts: undefined,
-    providerName: undefined,
-    saveScriptFiles: false,
-    selectedDetectionMethod: undefined,
-    selectedMetadataInputFormat: undefined,
-    selectedPlateTemplate: undefined,
-    qcEnabled: undefined
-}) {
-    allowTransformationScript: boolean;
-    autoCopyTargetContainer: string;
-    availableDetectionMethods: any;
-    availableMetadataInputFormats: any;
-    availablePlateTemplates: any;
-    backgroundUpload: boolean;
-    description: string;
-    // domains: any;
-    editableResults: boolean;
-    editableRuns: boolean;
-    metadataInputFormatHelp: any;
-    moduleTransformScripts: Array<any>;
-    name: string;
-    protocolId: number;
-    protocolParameters: any;
-    protocolTransformScripts: any;
-    providerName: string;
-    saveScriptFiles: boolean;
-    selectedDetectionMethod: any;
-    selectedMetadataInputFormat: any;
-    selectedPlateTemplate: any;
-    qcEnabled: boolean;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
 }
 
 export enum AssayDomainTypes {
@@ -1647,6 +1634,22 @@ export class AssayDefinitionModel extends Record({
             }).join(' OR ') + ')';
             return Filter.create('*', whereClause, WHERE_FILTER_TYPE);
         }
+    }
+
+    getDomainColumns(type: AssayDomainTypes): OrderedMap<string, QueryColumn> {
+        let columns = OrderedMap<string, QueryColumn>();
+
+        if (this.domains && this.domains.size) {
+            const domainColumns = this.getDomainByType(type);
+
+            if (domainColumns && domainColumns.size) {
+                domainColumns.forEach(dc => {
+                    columns = columns.set(dc.fieldKey.toLowerCase(), dc);
+                });
+            }
+        }
+
+        return columns;
     }
 }
 

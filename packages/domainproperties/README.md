@@ -4,6 +4,59 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.32
+*Released*: 3 September 2019
+* AssayPropertiesPanel for top level assay design properties for create/update (note: currently only supports the assay options relevant for the Sample Management app)
+* move AssayProtocolModel (and related actions) from base to domainproperties
+* add saveAssayDesign function which calls assay-saveProtocol.api
+* DomainForm updates for allowing panel expand/collapse, mark as complete, and infer from file empty state
+* AssayDesignerPanels component to wrap AssayPropertiesPanel with DomainForms for General assay domains (batch, run, data)
+
+### version 0.0.31
+*Released*: 21 August 2019
+* Epic 6000: Domain designer Advanced Settings.
+    - Advanced settings added to each domain property
+    - PHI and various display settings
+    
+### version 0.0.30
+*Released*: 18 August 2019
+* Epic 5859: Error validation and display in domain designer
+    - Add/highlight/clear client side warnings on invalid names
+    - Add/highlight/clear server side errors
+    - Banner messages for both client and server side warnings/errors
+
+### version 0.0.29
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.14.0
+
+### version 0.0.28
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.13.0
+
+### version 0.0.27
+*Released*: 15 August 2019
+* Package patch update for changes to @glass/base v0.12.1
+
+### version 0.0.26
+*Released*: 13 August 2019
+* Package patch update for changes to @glass/base v0.12.0
+
+### version 0.0.25
+*Released*: 8 Aug 2019
+* Package patch update for changes to @glass/base v0.11.2
+
+### version 0.0.24
+*Released*: 31 July 2019
+* Item 5718: Domain designer lookup field support
+
+### version 0.0.23
+*Released*: 24 July 2019
+* Package patch update for changes to @glass/base v0.11.0
+
+### version 0.0.22
+*Released*: 17 July 2019
+* Package patch update for changes to @glass/base v0.10.0
+
 ### version 0.0.21
 *Released*: 17 July 2019
 * Epic 5862: Domain designer type dependent fields.
@@ -12,7 +65,7 @@ Domain property related components for LabKey domains
 
 ### version 0.0.20
 *Released*: 10 July 2019
-* Package patch update for changes to @glass/base v???
+* Package patch update for changes to @glass/base v0.8.2
 
 ### version 0.0.19
 *Released*: 10 July 2019

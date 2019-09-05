@@ -15,12 +15,12 @@
  */
 import * as React from 'react'
 import { ReactNode } from 'react'
-
+import { OrderedMap } from 'immutable'
 import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { LoadingSpinner, QueryInfo, SchemaQuery, Tip } from '@glass/base'
+import {LoadingSpinner, QueryColumn, QueryInfo, SchemaQuery, Tip} from '@glass/base'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
@@ -46,6 +46,8 @@ export interface QueryInfoFormProps {
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
     checkRequiredFields?: boolean
+    // if checkRequiredFields is false, showLabelAsterisk to show * for fields that are originally required
+    showLabelAsterisk?: boolean
     errorCallback?: (error: any) => any
     errorMessagePrefix?: string
     fieldValues?: any
@@ -54,11 +56,14 @@ export interface QueryInfoFormProps {
     maxCount?: number
     onCancel?: () => any
     onHide?: () => any
+    onFormChange?: () => any
+    canSubmitNotDirty?: boolean
     canSubmitForEdit?: boolean
     disableSubmitForEditMsg?: string
-    onSubmitForEdit?: (data: any) => Promise<any>
-    onSubmit?: (data: any) => Promise<any>
+    onSubmitForEdit?: (data: OrderedMap<string, any>) => Promise<any>
+    onSubmit?: (data: OrderedMap<string, any>) => Promise<any>
     onSuccess?: (data: any, submitForEdit: boolean) => any
+    columnFilter?: (col?: QueryColumn) => boolean
     queryInfo: QueryInfo
     renderFileInputs?: boolean
     schemaQuery: SchemaQuery
@@ -80,6 +85,7 @@ interface State {
     submitForEdit: boolean
     isSubmitted: boolean
     isSubmitting: boolean
+    isDirty: boolean
     errorMsg: string
     count: number
 }
@@ -88,6 +94,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     static defaultProps : Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
+        canSubmitNotDirty: true,
         includeCountField: true,
         checkRequiredFields: true,
         countText: "Quantity",
@@ -107,6 +114,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         this.disableSubmitButton = this.disableSubmitButton.bind(this);
         this.enableSubmitButton = this.enableSubmitButton.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleValidSubmit = this.handleValidSubmit.bind(this);
         this.onHide = this.onHide.bind(this);
         this.onCountChange = this.onCountChange.bind(this);
@@ -119,6 +127,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
+            isDirty: false,
             errorMsg: undefined,
             count: undefined,
             submitForEdit: false,
@@ -149,6 +158,20 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         }
     }
 
+    handleChange() {
+        const { onFormChange } = this.props;
+        if (Utils.isFunction(onFormChange)) {
+            onFormChange();
+        }
+
+        if (!this.state.isDirty)
+            this.setState(() => {
+                return {
+                    isDirty: true
+                }
+            });
+    }
+
     handleSubmitError(error: any) {
         console.error(error);
         this.setState({
@@ -157,19 +180,21 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
-    filterDisabledFields(data: any, requiredFields?: Array<string>) {
+    filterDisabledFields(data: any, requiredFields?: Array<string>): OrderedMap<string, any> {
         const fieldsToUpdate = this.props.queryInfo.columns.filter((column) => {
             const enabledKey = getFieldEnabledFieldName(column);
             return data[enabledKey] === undefined || data[enabledKey] === 'true';
         });
-        let filteredData = {};
+
+        let filteredData = OrderedMap<string, any>();
         for (let key in data) {
             if (data.hasOwnProperty(key) ) {
                 if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1 ) {
-                    filteredData[key] = data[key];
+                    filteredData = filteredData.set(key, data[key]);
                 }
             }
         }
+
         return filteredData;
     }
 
@@ -188,7 +213,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             this.setState({
                 errorMsg: undefined,
                 isSubmitted: true,
-                isSubmitting: false
+                isSubmitting: false,
+                isDirty: false
             });
             if (Utils.isFunction(onSuccess)) {
                 return onSuccess(data, submitForEdit);
@@ -263,9 +289,9 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     renderButtons() {
 
-        const { cancelText, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
+        const { cancelText, canSubmitNotDirty, canSubmitForEdit, disableSubmitForEditMsg, submitForEditText, submitText, isSubmittedText, isSubmittingText, onSubmit, onSubmitForEdit, pluralNoun, singularNoun } = this.props;
 
-        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit } = this.state;
+        const { count, canSubmit, isSubmitting, isSubmitted, submitForEdit, isDirty } = this.state;
 
         const inProgressText = isSubmitted ? isSubmittedText : (isSubmitting ? isSubmittingText : undefined);
         const suffix = (count > 1) ? pluralNoun : singularNoun;
@@ -309,7 +335,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <Button
                             className={"test-loc-submit-button"}
                             bsStyle="success"
-                            disabled={!canSubmit || count === 0}
+                            disabled={!canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
                             onClick={this.setSubmittingForSave}
                             type="submit">
                             {!submitForEdit && inProgressText ? inProgressText: submitText}{suffix ? ' ' + suffix : null}
@@ -322,7 +348,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields } = this.props;
+        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields, columnFilter } = this.props;
         const { count } = this.state;
 
 
@@ -343,6 +369,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         className="form-horizontal"
                         onValidSubmit={this.handleValidSubmit}
                         onValid={this.enableSubmitButton}
+                        onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}>
                         {includeCountField && (
                             <Input
@@ -366,7 +393,9 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             allowFieldDisable={allowFieldDisable}
                             initiallyDisableFields={initiallyDisableFields}
                             checkRequiredFields={checkRequiredFields}
+                            showLabelAsterisk={showLabelAsterisk}
                             queryInfo={queryInfo}
+                            columnFilter={columnFilter}
                             fieldValues={fieldValues}/>
                         {footer}
                         {this.renderButtons()}

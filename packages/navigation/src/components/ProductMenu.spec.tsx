@@ -16,10 +16,11 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme'
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { ProductMenu } from './ProductMenu';
 import { MenuSectionModel, ProductMenuModel } from '../model';
+import {MenuSectionConfig} from "./ProductMenuSection";
 
 describe("ProductMenu render", () => {
 
@@ -115,7 +116,7 @@ describe("ProductMenu render", () => {
         menuButton.unmount();
     });
 
-    test("multiple sections", () => {
+    test("multiple sections no sectionConfigs", () => {
         const productId = "testProduct3Columns";
 
         let sections = List<MenuSectionModel>().asMutable();
@@ -146,4 +147,52 @@ describe("ProductMenu render", () => {
         expect(menuButton).toMatchSnapshot();
         menuButton.unmount();
     });
+
+    test("multiple sections with sectionConfigs", () => {
+        const productId = "testProduct2Columns";
+
+        let sections = List<MenuSectionModel>().asMutable();
+        sections.push( MenuSectionModel.create({
+            label: "Sample Sets",
+            url: undefined,
+            items: sampleSetItems,
+            itemLimit: 2,
+            key: "samples"
+        }));
+        sections.push( MenuSectionModel.create({
+            label: "Assays",
+            items: assayItems,
+            key: "assays"
+        }));
+        sections.push(yourItemsSection);
+        const model = new ProductMenuModel(
+            {
+                productId: productId,
+                isLoaded: true,
+                isLoading: false,
+                sections: sections.asImmutable()
+            }
+        );
+
+        let sectionConfigs = List<Map<string, MenuSectionConfig>>().asImmutable();
+
+        let samplesSectionConfigs = Map<string, MenuSectionConfig>().set('samples', new MenuSectionConfig({
+            iconCls: 'test-icon-cls'
+        }));
+        sectionConfigs = sectionConfigs.push(samplesSectionConfigs);
+
+        let twoSectionConfig = Map<string, MenuSectionConfig>().set('assays', new MenuSectionConfig({
+            iconCls: 'test-icon-cls'
+        }));
+        twoSectionConfig.set('user', new MenuSectionConfig({
+            iconCls: 'test-icon-cls'
+        }));
+        sectionConfigs = sectionConfigs.push(twoSectionConfig);
+
+        const menuButton = mount(<ProductMenu model={model} sectionConfigs={sectionConfigs}/>);
+        expect(menuButton.find(".menu-section").length).toBe(2);
+        expect(menuButton).toMatchSnapshot();
+        menuButton.unmount();
+    });
+
 });

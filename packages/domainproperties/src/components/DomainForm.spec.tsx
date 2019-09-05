@@ -13,18 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 import * as React from "react";
-import renderer from 'react-test-renderer'
-import {DomainDesign, DomainField, DomainIndex} from "../models";
+import {DomainDesign} from "../models";
 import DomainForm from "./DomainForm";
-import {List} from "immutable";
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
-    DATETIME_RANGE_URI, DOMAIN_FIELD_ADV, DOMAIN_FIELD_DELETE, DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_PREFIX,
+    DATETIME_RANGE_URI,
+    DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_EXPAND,
+    DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_TYPE,
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
@@ -37,29 +35,77 @@ import {
 import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
+import renderer from 'react-test-renderer'
+import { FileAttachmentForm } from "@glass/base";
+import { DomainRow } from "./DomainRow";
 
+interface Props {
+    showInferFromFile?: boolean
+}
 
-describe('DomainFormDisplay', () => {
+class DomainFormContainer extends React.PureComponent<Props, any> {
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            domain: DomainDesign.create({})
+        };
+    }
+
+    onChange = (newDomain: DomainDesign) => {
+        this.setState(() => ({
+            domain: newDomain
+        }));
+    };
+
+    render() {
+        return (
+            <DomainForm
+                domain={this.state.domain}
+                showInferFromFile={this.props.showInferFromFile}
+                onChange={this.onChange}
+            />
+        )
+    }
+}
+
+describe('DomainForm', () => {
 
     test('with empty domain form', () => {
-        const domain = new DomainDesign();
-        const form  = mount(<DomainForm
-            domain={domain}
-            onChange={jest.fn()}
-        />);
+        const domain = DomainDesign.create({});
+        const tree = renderer.create(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+            />
+        );
 
-        expect(toJson(form)).toMatchSnapshot();
-        form.unmount();
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('with showHeader, helpNoun, and helpURL', () => {
+        const domain = DomainDesign.create({});
+        const tree = renderer.create(
+            <DomainForm
+                domain={domain}
+                helpNoun='assay'
+                helpURL='https://www.labkey.com'
+                showHeader={false}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
     test('domain form with no fields', () => {
-        const domain = new DomainDesign({
+        const domain = DomainDesign.create({
             name: "no fields",
             description: 'no field description',
             domainURI: 'test',
             domainId: 1,
-            fields: List<DomainField>(),
-            indices: List<DomainIndex>()
+            fields: [],
+            indices: []
         });
         const form  = mount(<DomainForm
             domain={domain}
@@ -72,87 +118,77 @@ describe('DomainFormDisplay', () => {
 
     test('domain form with all field types', () => {
 
-        let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        let fields = [];
+        fields.push({
             name: 'key',
             rangeURI: INT_RANGE_URI,
             propertyId: 1,
-            propertyURI: 'test',
-            key: 1
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'string',
             rangeURI: STRING_RANGE_URI,
             propertyId: 2,
-            propertyURI: 'test',
-            key: 2
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'multiline',
             rangeURI: MULTILINE_RANGE_URI,
             propertyId: 3,
-            propertyURI: 'test',
-            key: 3
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'boolean',
             rangeURI: BOOLEAN_RANGE_URI,
             propertyId: 4,
-            propertyURI: 'test',
-            key: 4
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'double',
             rangeURI: DOUBLE_RANGE_URI,
             propertyId: 5,
-            propertyURI: 'test',
-            key: 5
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'datetime',
             rangeURI: DATETIME_RANGE_URI,
             propertyId: 6,
-            propertyURI: 'test',
-            key: 6
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'flag',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 7,
-            propertyURI: 'test',
-            key: 7
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'file link',
             rangeURI: FILELINK_RANGE_URI,
             propertyId: 8,
-            propertyURI: 'test',
-            key: 8
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'participant id',
             rangeURI: STRING_RANGE_URI,
             conceptURI: PARTICIPANTID_CONCEPT_URI,
             propertyId: 9,
-            propertyURI: 'test',
-            key: 9
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'attachment',
             rangeURI: ATTACHMENT_RANGE_URI,
             propertyId: 10,
-            propertyURI: 'test',
-            key: 10
-        }));
+            propertyURI: 'test'
+        });
 
-        const domain = new DomainDesign({
+        const domain = DomainDesign.create({
             name: "all field types",
             description: 'description',
             domainURI: 'test',
             domainId: 1,
             fields: fields,
-            indices: List<DomainIndex>()
+            indices: []
         });
         const form  = mount(<DomainForm
             domain={domain}
@@ -164,104 +200,104 @@ describe('DomainFormDisplay', () => {
     });
 
     test('domain form with updated fields', () => {
-        let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        let fields = [];
+        fields.push({
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test',
-            key: 0
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'string changed to boolean',
             rangeURI: STRING_RANGE_URI,
             propertyId: 1,
-            propertyURI: 'test',
-            key: 1
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'int changed to participant',
             rangeURI: INT_RANGE_URI,
             propertyId: 2,
-            propertyURI: 'test',
-            key: 2
-        }));
-        fields.push(new DomainField({
+            propertyURI: 'test'
+        });
+        fields.push({
             name: 'flag changed to attachment',
             rangeURI: STRING_RANGE_URI,
             conceptURI: FLAG_CONCEPT_URI,
             propertyId: 3,
-            propertyURI: 'test',
-            key: 3
-        }));
+            propertyURI: 'test'
+        });
 
-        let domain = new DomainDesign({
+        let domain = DomainDesign.create({
             name: "update field types",
             description: 'description',
             domainURI: 'test',
             domainId: 1,
             fields: fields,
-            indices: List<DomainIndex>()
+            indices:[]
         });
 
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 1), "boolean");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 2), "ParticipantId");
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_TYPE, 3), "attachment");
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 1), value: "boolean"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 2), value: "ParticipantId"});
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_TYPE, 3), value: "attachment"});
+
+        const form = mount(<DomainForm
+            domain={domain}
+            onChange={jest.fn()}
+        />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('domain form updated field, cleared details', () => {
-        let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        let fields = [];
+        fields.push({
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test',
-            key: 0
-        }));
+            propertyURI: 'test'
+        });
 
-        let domain = new DomainDesign({
+        let domain = DomainDesign.create({
             name: "update field types",
             description: 'description',
             domainURI: 'test',
             domainId: 1,
-            // fields: fields,
-            fields: List<DomainIndex>(),
-            indices: List<DomainIndex>(),
+            fields: fields,
+            indices: [],
             key: 1
         });
 
-        domain = updateDomainField(domain, createFormInputId(DOMAIN_FIELD_NAME, 0), "newfieldname");
+        domain = updateDomainField(domain, {id: createFormInputId(DOMAIN_FIELD_NAME, 0), value: "newfieldname"});
         domain = clearFieldDetails(domain);
 
-        const form = mount(<DomainForm domain={domain} key='domainForm' onChange={jest.fn()} />);
+        const form = mount(<DomainForm
+            domain={domain}
+            key='domainForm'
+            onChange={jest.fn()}
+        />);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
     test('domain form add, expand, and delete field', () => {
-        let fields = List<DomainField>().asMutable();
-        fields.push(new DomainField({
+        let fields = [{
             name: 'fieldname',
             rangeURI: INT_RANGE_URI,
             propertyId: 0,
-            propertyURI: 'test',
-            key: 0
-        }));
+            propertyURI: 'test'
+        }];
 
-        const domain = new DomainDesign({
+        const domain = DomainDesign.create({
             name: "Add/remove field",
             description: 'Add field description',
             domainURI: 'test',
             domainId: 1,
             fields: fields,
-            indices: List<DomainIndex>()
+            indices: []
         });
 
         let updatedDomain;
@@ -274,7 +310,6 @@ describe('DomainFormDisplay', () => {
         const form  = mount(<DomainForm
             domain={domain}
             onChange={changeHandler}
-
         />);
 
         // Add new row
@@ -286,11 +321,11 @@ describe('DomainFormDisplay', () => {
         form.setProps({domain: updatedDomain, onChange: changeHandler});
 
         // Check new row is added
-        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 1)});
+        let expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)});
         expect(expandButton.length).toEqual(1);
 
         // Expand first row
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 0)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
 
@@ -305,9 +340,9 @@ describe('DomainFormDisplay', () => {
         form.setProps({domain: updatedDomain, onChange: changeHandler});
 
         // Ensure only one row and expand it
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 1)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 1)});
         expect(expandButton.length).toEqual(0);
-        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_ADV, 0)});
+        expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
         
@@ -316,5 +351,108 @@ describe('DomainFormDisplay', () => {
 
     });
 
+    test('domain form initCollapsed', () => {
+        const domain = DomainDesign.create({
+            name: "collapsed with two fields",
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            },{
+                name: 'string',
+                rangeURI: STRING_RANGE_URI,
+                propertyId: 2,
+                propertyURI: 'test'
+            }]
+        });
+
+        const tree  = renderer.create(
+            <DomainForm
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('domain form initCollapsed and markComplete', () => {
+        const domain = DomainDesign.create({
+            name: "collapsed and markComplete",
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            },{
+                name: 'string',
+                rangeURI: STRING_RANGE_URI,
+                propertyId: 2,
+                propertyURI: 'test'
+            }]
+        });
+
+        const tree  = renderer.create(
+            <DomainForm
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                markComplete={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('domain form headerPrefix and panelCls', () => {
+        const domain = DomainDesign.create({name: "Foo headerPrefix and panelCls"});
+
+        const tree  = renderer.create(
+            <DomainForm
+                domain={domain}
+                collapsible={false}
+                initCollapsed={true}
+                headerPrefix={'Foo'} // this text should be removed from the panel header display text
+                panelCls={'panel-primary'}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('with showInferFromFile', () => {
+        const domain = DomainDesign.create({});
+        const tree = renderer.create(
+            <DomainForm
+                domain={domain}
+                showInferFromFile={true}
+                onChange={jest.fn()}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('test showInferFromFile click domain-form-add-link', () => {
+        const component = (
+            <DomainFormContainer
+                showInferFromFile={true}
+            />
+        );
+
+        const wrapper = mount(component);
+        expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
+        expect(wrapper.find('.domain-form-add-link')).toHaveLength(1);
+        wrapper.find('.domain-form-add-link').last().simulate('click');
+        expect(wrapper.find(FileAttachmentForm)).toHaveLength(0);
+        expect(wrapper.find('.domain-form-add-link')).toHaveLength(0);
+        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        wrapper.unmount();
+    });
 });
 

@@ -1,7 +1,6 @@
 import {mount} from "enzyme";
-import {BooleanFieldOptions} from "./BooleanFieldOptions";
 import {createFormInputId} from "../actions/actions";
-import {DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT} from "../constants";
+import {DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED} from "../constants";
 import * as React from "react";
 import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import toJson from "enzyme-to-json";
@@ -19,7 +18,8 @@ describe('DateTimeFieldOptions', () => {
             label: _section,
             format: _format,
             excludeFromShifting: true,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         const dateTime  = mount(<DateTimeFieldOptions
@@ -27,7 +27,7 @@ describe('DateTimeFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = dateTime.find({className: 'domain-field-section-heading'});
+        const sectionLabel = dateTime.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 

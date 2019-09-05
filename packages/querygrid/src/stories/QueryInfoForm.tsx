@@ -39,6 +39,10 @@ function formSubmitForEdit(data: any) : Promise<any> {
     });
 }
 
+function onFormChange() {
+    console.log("form edit detected");
+}
+
 const SUBMIT_GROUP = "Submit";
 const TEXT_GROUP = "Text display";
 
@@ -204,6 +208,7 @@ storiesOf('QueryInfoForm', module)
             <QueryInfoForm
                 checkRequiredFields={false}
                 includeCountField={boolean("Include count field?", true)}
+                showLabelAsterisk={boolean("Show '*' for required field", false)}
                 maxCount={number("Max count", 100)}
                 queryInfo={model.queryInfo}
                 onSubmit={formSubmit}
@@ -261,6 +266,38 @@ storiesOf('QueryInfoForm', module)
         return (
             <QueryInfoFormPage
                 fieldValues={fieldValues}
+                schemaQuery={schemaQuery}
+            />
+        )
+    })
+    .add("toggle check change for submit", () => {
+        const modelId = "customizableForm";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+        gridInit(model, true);
+        return (
+            <QueryInfoForm
+                checkRequiredFields={false}
+                includeCountField={boolean("Include count field?", false)}
+                canSubmitNotDirty={boolean("Can submit without change?", false)}
+                onFormChange={boolean("Use onFormChange (check console log)?", true) ? onFormChange : null}
+                queryInfo={model.queryInfo}
+                onSubmit={formSubmit}
                 schemaQuery={schemaQuery}
             />
         )

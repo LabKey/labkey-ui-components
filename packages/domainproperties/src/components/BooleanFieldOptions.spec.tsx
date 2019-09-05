@@ -2,7 +2,7 @@ import {mount} from "enzyme";
 import * as React from "react";
 import {BooleanFieldOptions} from "./BooleanFieldOptions";
 import {createFormInputId} from "../actions/actions";
-import {DOMAIN_FIELD_FORMAT} from "../constants";
+import {DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED} from "../constants";
 import toJson from "enzyme-to-json";
 
 
@@ -17,7 +17,8 @@ describe('BooleanFieldOptions', () => {
             index: 1,
             label: _section,
             format: _format,
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            lockType: DOMAIN_FIELD_NOT_LOCKED
         };
 
         const boolean  = mount(<BooleanFieldOptions
@@ -25,7 +26,7 @@ describe('BooleanFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = boolean.find({className: 'domain-field-section-heading'});
+        const sectionLabel = boolean.find({className: 'domain-field-section-heading margin-top'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 

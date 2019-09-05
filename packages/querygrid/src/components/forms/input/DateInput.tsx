@@ -31,6 +31,7 @@ interface DateInputProps extends DisableableInputProps {
     showLabel?: boolean
     validatePristine?: boolean
     value?: string
+    addLabelAsterisk?: boolean
 }
 
 export class DateInput extends DisableableInput<DateInputProps, any> {
@@ -42,7 +43,8 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
         elementWrapperClassName: 'col-md-9 col-xs-12',
         labelClassName: 'control-label text-left col-xs-12',
         showLabel: true,
-        validatePristine: false
+        validatePristine: false,
+        addLabelAsterisk: false
     };
 
     render() {
@@ -58,7 +60,8 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             rowClassName,
             showLabel,
             validatePristine,
-            value
+            value,
+            addLabelAsterisk
         } = this.props;
 
         const props: TextInputProps = {
@@ -74,6 +77,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             rowClassName,
             showLabel,
             validatePristine,
+            addLabelAsterisk,
             value: value ? value : '' // to avoid uncontrolled -> controlled warnings
         };
 

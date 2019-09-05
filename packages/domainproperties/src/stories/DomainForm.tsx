@@ -5,15 +5,31 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import { text, boolean, withKnobs } from '@storybook/addon-knobs'
 
-import DomainForm from "../components/DomainForm";
 import { DomainDesign } from "../models";
-import data from "../test/data/property-getDomain.json";
+import { DomainFormImpl } from "../components/DomainForm";
+import { MockLookupProvider } from "../test/components/Lookup";
+import { PHILEVEL_RESTRICTED_PHI } from "../constants";
+
+import domainData from "../test/data/property-getDomain.json";
+import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
+import warningData from "../test/data/property-unexpectedCharInFieldName.json";
+import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
+import exceptionDataClient from "../test/data/property-domainExceptionClient.json";
+import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
+import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
+import { initMocks } from "./mock";
 import './stories.scss'
 
+initMocks();
+
 interface Props {
+    showInferFromFile?: boolean
+    initCollapsed?: boolean
+    markComplete?: boolean
     data: {}
+    exception?: {}
     helpNoun?: any
     helpURL?: any
 }
@@ -23,7 +39,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         super(props);
 
         this.state = {
-            domain: DomainDesign.create(props.data),
+            domain: DomainDesign.create(props.data, props.exception)
         };
     }
 
@@ -37,11 +53,14 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
         const { domain } = this.state;
 
         return (
-            <DomainForm
-                {...this.props}
-                domain={domain}
-                onChange={this.onChange}
-            />
+            <MockLookupProvider>
+                <DomainFormImpl
+                    {...this.props}
+                    domain={domain}
+                    onChange={this.onChange}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                />
+            </MockLookupProvider>
         )
     }
 }
@@ -57,10 +76,57 @@ storiesOf("DomainForm", module)
             />
         )
     })
+    .add("infer from file", () => {
+        return (
+            <DomainFormContainer
+                data={undefined}
+                showInferFromFile={boolean('showInferFromFile', true)}
+            />
+        )
+    })
     .add("with domain properties", () => {
         return (
             <DomainFormContainer
-                data={data}
+                data={domainData}
+            />
+        )
+    })
+    .add("initCollapsed and mark complete", () => {
+        return (
+            <DomainFormContainer
+                data={domainData}
+                initCollapsed={boolean('initCollapsed', true)}
+                markComplete={boolean('markComplete', false)}
+            />
+        )
+    })
+    .add("with server side errors", () => {
+        return (
+            <DomainFormContainer
+                data={errorData}
+                exception={exceptionDataServer}
+            />
+        )
+    })
+    .add("with client side warnings", () => {
+        return (
+            <DomainFormContainer
+                data={warningData}
+                exception={exceptionDataClient}
+            />
+        )
+    })
+    .add("with fully locked fields", () => {
+        return (
+            <DomainFormContainer
+                data={fullyLockedData}
+            />
+        )
+    })
+    .add("with partially locked fields", () => {
+        return (
+            <DomainFormContainer
+                data={partiallyLockedData}
             />
         )
     });

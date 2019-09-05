@@ -2,9 +2,10 @@
 
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId} from "../actions/actions";
+import {createFormInputId, createFormInputName} from "../actions/actions";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import {
-    DOMAIN_FIELD_FORMAT
+    DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_SCALE
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
 import {ITypeDependentProps} from "../models";
@@ -37,13 +38,13 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
     }
 
     render() {
-        const { index, label, format } = this.props;
+        const { index, label, format, lockType } = this.props;
 
         return (
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading'}>{label}</div>
+                        <div className={'domain-field-section-heading margin-top'}>{label}</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -57,10 +58,12 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                 <Row className='domain-row-expanded'>
                     <Col xs={2}>
                         <FormControl type="text"
-                                     value={format}
+                                     value={format || ''}
                                      onChange={this.onFieldChange}
                                      id={createFormInputId(DOMAIN_FIELD_FORMAT, index)}
-                                     key={createFormInputId(DOMAIN_FIELD_FORMAT, index)}/>
+                                     disabled={isFieldFullyLocked(lockType)}
+                                     name={createFormInputName(DOMAIN_FIELD_SCALE)}
+                        />
                     </Col>
                 </Row>
             </div>

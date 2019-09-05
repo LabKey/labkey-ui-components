@@ -6,6 +6,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
   format="#.##"
   index={1}
   label="Numeric Field Options"
+  lockType="NotLocked"
   onChange={[MockFunction]}
 >
   <div>
@@ -26,7 +27,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             className="col-xs-12"
           >
             <div
-              className="domain-field-section-heading"
+              className="domain-field-section-heading margin-top"
             >
               Numeric Field Options
             </div>
@@ -207,15 +208,18 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
+              disabled={false}
               id="domainpropertiesrow-format-1"
-              key="domainpropertiesrow-format-1"
+              name="domainpropertiesrow-format"
               onChange={[Function]}
               type="text"
               value="#.##"
             >
               <input
                 className="form-control"
+                disabled={false}
                 id="domainpropertiesrow-format-1"
+                name="domainpropertiesrow-format"
                 onChange={[Function]}
                 type="text"
                 value="#.##"
@@ -240,26 +244,37 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
           <div
             className="col-xs-2"
           >
-            <select
-              className="form-control"
+            <FormControl
+              bsClass="form-control"
+              componentClass="select"
+              disabled={false}
               id="domainpropertiesrow-defaultScale-1"
-              key="domainpropertiesrow-defaultScale-1"
+              name="domainpropertiesrow-defaultScale"
               onChange={[Function]}
               value="LOG"
             >
-              <option
-                key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
-                value="LINEAR"
-              >
-                LINEAR
-              </option>
-              <option
-                key="domainpropertiesrow-defaultScaleoption-LOG-1"
+              <select
+                className="form-control"
+                disabled={false}
+                id="domainpropertiesrow-defaultScale-1"
+                name="domainpropertiesrow-defaultScale"
+                onChange={[Function]}
                 value="LOG"
               >
-                LOG
-              </option>
-            </select>
+                <option
+                  key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
+                  value="LINEAR"
+                >
+                  LINEAR
+                </option>
+                <option
+                  key="domainpropertiesrow-defaultScaleoption-LOG-1"
+                  value="LOG"
+                >
+                  LOG
+                </option>
+              </select>
+            </FormControl>
           </div>
         </Col>
       </div>

@@ -4,6 +4,53 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
+### version 0.4.6
+*Released*: 4 September 2019
+* support parsing url query params in MenuItemModel.create
+* change ProductMenu to support stacked menus
+
+### version 0.4.5
+*Released*: 3 September 2019
+* Package patch update for changes to @glass/base v0.15.0
+
+### version 0.4.4
+*Released*: 21 August 2019
+* Package patch update for changes to @glass/base v0.14.1
+
+### version 0.4.3
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.14.0
+
+### version 0.4.2
+*Released*: 16 August 2019
+* Package patch update for changes to @glass/base v0.13.0
+
+### version 0.4.1
+*Released*: 15 August 2019
+* Package patch update for changes to @glass/base v0.12.1
+
+### version 0.4.0
+*Released*: 13 August 2019
+* Issue 38167: fix NavigationBar elements layout for bootstrap xs vs sm screen size
+* add hasSectionItems to ProductMenuModel
+
+### version 0.3.9
+*Released*: 8 Aug 2019
+* Package patch update for changes to @glass/base v0.11.2
+
+### version 0.3.8
+*Released*: 31 July 2019
+* Package patch update for changes to @glass/base v0.11.1
+
+### version 0.3.7
+*Released*: 24 July 2019
+* Package patch update for changes to @glass/base v0.11.0
+
+### version 0.3.6
+*Released*: 17 July 2019
+* Package patch update for changes to @glass/base v0.10.0
+* enables hot reloading of CSS in Storybook for all packages
+
 ### version 0.3.5
 *Released*: 17 July 2019
 * Package patch update for changes to @glass/base v0.9.0

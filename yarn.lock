@@ -1270,17 +1270,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@labkey/api@0.0.17":
-  version "0.0.17"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.17.tgz#ad0f0ad2a9570f1a13e3eea402042c7fdc0847ee"
-  integrity sha1-rQ8K0qlXDxoT4+6kAgQsf9wIR+4=
+"@labkey/api@0.0.20":
+  version "0.0.20"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.20.tgz#ef5548a54af5b7f3d810ce03de79c57c82fda6ec"
+  integrity sha1-71VIpUr1t/PYEM4D3nnFfIL9puw=
 
-"@labkey/dependencies@0.0.6":
-  version "0.0.6"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.6.tgz#f6b484411ee60833f5b8c47c28adbab9db9f4c6d"
-  integrity sha1-9rSEQR7mCDP1uMR8KK26udufTG0=
+"@labkey/dependencies@0.0.9":
+  version "0.0.9"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.9.tgz#606a44165afa73b96ebe68c62c543877c75c2b0c"
+  integrity sha1-YGpEFlr6c7luvmjGLFQ4d8dcKww=
   dependencies:
-    "@labkey/api" "0.0.17"
+    "@labkey/api" "0.0.20"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"
@@ -11088,6 +11088,16 @@ react-textarea-autosize@^7.1.0:
   dependencies:
     "@babel/runtime" "^7.1.2"
     prop-types "^15.6.0"
+
+react-transition-group@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.2.2.tgz#8b5252410180c27fd7eebf50b185256b41799b16"
+  integrity sha512-uP0tjqewtvjb7kGZFpZYPoD/NlVZmIgts9eTt1w35pAaEApPxQGv94lD3VkqyXf2aMqrSGwhs6EV/DLaoKbLSw==
+  dependencies:
+    "@babel/runtime" "^7.4.5"
+    dom-helpers "^3.4.0"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react-transition-group@^2.0.0, react-transition-group@^2.2.0, react-transition-group@^2.2.1:
   version "2.9.0"

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 import { Map } from 'immutable';
+import { AssayDefinitionModel, AssayDomainTypes, QueryInfo } from "@glass/base";
+
+import { AssayWizardModel } from "../../components/assay/models";
+import assayWizardJSON from './assayWizardModel.json';
 
 export const GRID_DATA = Map<any, Map<string, any>>({
     "1": Map<string, any>({
@@ -28,4 +32,13 @@ export const GRID_DATA = Map<any, Map<string, any>>({
     "Name": "name two",
     "Description": "second description"
 })
+});
+
+export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
+export const ASSAY_WIZARD_MODEL = new AssayWizardModel({
+    isInit: true,
+    assayDef: ASSAY_DEFINITION_MODEL,
+    batchColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.BATCH),
+    runColumns: ASSAY_DEFINITION_MODEL.getDomainColumns(AssayDomainTypes.RUN),
+    queryInfo: QueryInfo.create(assayWizardJSON.queryInfo)
 });

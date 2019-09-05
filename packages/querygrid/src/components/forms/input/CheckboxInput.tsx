@@ -28,6 +28,7 @@ interface CheckboxInputProps extends DisableableInputProps {
     rowClassName?: Array<any> | string
     showLabel?: boolean
     value?: any
+    addLabelAsterisk?: boolean
 
     // from formsy-react
     getErrorMessage?: Function
@@ -50,7 +51,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         this.onChange = this.onChange.bind(this);
 
         this.state = {
-            checked: props.value === true,
+            checked: props.value === true || props.value === "true",
             isDisabled: props.initiallyDisabled
         }
     }
@@ -72,7 +73,8 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
             label,
             name,
             queryColumn,
-            showLabel
+            showLabel,
+            addLabelAsterisk
         } = this.props;
         const { isDisabled } = this.state;
 
@@ -84,7 +86,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
             <div className="form-group row">
                 <FieldLabel
                     label={label}
-                    labelOverlayProps={{isFormsy: false}}
+                    labelOverlayProps={{isFormsy: false, inputId: queryColumn.name, addLabelAsterisk: addLabelAsterisk}}
                     showLabel={showLabel}
                     showToggle={allowDisable}
                     column={queryColumn}
@@ -95,6 +97,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 <div className={"col-sm-9 col-xs-12"}>
                     <input
                         disabled={this.state.isDisabled}
+
                         name={name ? name : queryColumn.name}
                         required={queryColumn.required}
                         type={"checkbox"}

@@ -11,9 +11,10 @@ import {
 } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 import {SampleSetParentAliasRow} from "../../components/samples/SampleSetParentAliasRow";
+import {SAMPLE_SET_DISPLAY_TEXT} from "../../constants";
 
-const UNKNOWN_ERROR_CREATE = 'An unknown error occurred creating the sample set.';
-const UNKNOWN_ERROR_UPDATE = 'An unknown error occurred updating the sample set.';
+const UNKNOWN_ERROR_CREATE = `An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
+const UNKNOWN_ERROR_UPDATE = `An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
 
 export const FORM_IDS = {
     NAME: 'sample-set-create-name',
@@ -40,7 +41,7 @@ interface State {
 }
 
 const NEW_SAMPLE_SET_OPTION : IParentOption = {
-    label: '(Current SampleSet)',
+    label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: "<{{changeme}}>"
 };
 const IMPORT_PREFIX :string = 'materialInputs/';
@@ -325,7 +326,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     <LabelOverlay
                                         label={'Name *'}
                                         type={'Text (String)'}
-                                        description={'The name for this sample set. Note that this can\'t be changed after sample set creation.'}
+                                        description={`The name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}. Note that this can\'t be changed after ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()} creation.`}
                                         required={true}
                                         // addLabelAsterisk={true}  //This causes weirdness, because default isFormsy and required and the form isn't a FormsyForm...
                                     />
@@ -334,7 +335,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     <FormControl
                                         id={FORM_IDS.NAME}
                                         type="text"
-                                        placeholder={'Enter a name for this sample set'}
+                                        placeholder={`Enter a name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}`}
                                         onChange={this.onFormChange}
                                     />
                                 </Col>
@@ -344,7 +345,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     <LabelOverlay
                                         label={'Name Expression'}
                                         type={'Text (String)'}
-                                        description={'Expression that will be used for generating unique sample IDs for this sample set.'}
+                                        description={`Expression that will be used for generating unique sample IDs for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
                                         content={moreInfoLink}
                                         canMouseOverTooltip={true}
                                     />
@@ -364,7 +365,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     <LabelOverlay
                                         label={'Description'}
                                         type={'Text (String)'}
-                                        description={'A short description for this sample set.'}
+                                        description={`A short description for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
                                     />
                                 </Col>
                                 <Col xs={9}>

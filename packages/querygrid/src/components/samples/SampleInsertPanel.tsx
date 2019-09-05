@@ -175,14 +175,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
             getQueryDetails(schemaQuery.toJS()).then(originalQueryInfo => {
-                let updatedModel = insertModel;
-                if (insertModel.sampleCount === 0 && !originalQueryInfo.isRequiredColumn(SAMPLE_UNIQUE_FIELD_KEY))
-                {
-                    updatedModel = updatedModel.set("sampleCount", 1) as SampleIdCreationModel;
-                }
                 this.setState(() => {
                     return {
-                        insertModel: updatedModel,
+                        insertModel: insertModel,
                         originalQueryInfo,
                     }
                 }, () => {
@@ -510,8 +505,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             <>
                 <div className="sample-insert--header">
                     <p>
-                        {textPrefix} parent types and enter data below for the samples that will be generated.&nbsp;
-                        {name && <>Specific parents can be chosen in the grid or bulk insert area.</>}
+                        Generate unique samples individually or in bulk using the bulk insert option.
+                    </p>
+                    <p>
+                        Assign properties, including parent samples, to your new samples.
                     </p>
                     {name && (
                         this.isNameRequired() ?
@@ -529,7 +526,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     <SelectInput
                         formsy={false}
                         inputClass="col-md-5 col-sm-9"
-                        label="Target Sample Set"
+                        label="Sample Type"
                         labelClass="col-md-3 col-sm-3 sample-insert--parent-label"
                         name="targetSampleSet"
                         placeholder={'Select a Sample Set...'}
@@ -694,9 +691,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
-            addControlProps['quickAddText'] = "Bypass the grid";
-            addControlProps['onQuickAdd'] = this.deriveSampleIds;
-
             columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
                 readOnly: false,
                 placeholder: "[generated id]"

@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { ReactNode } from "react";
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 import { User } from '@glass/base'
 
 import { ProductMenu } from "./ProductMenu";
@@ -27,7 +27,7 @@ import { ProductMenuModel } from "../model";
 interface NavigationBarProps {
     brand?: ReactNode
     projectName?: string
-    menuSectionConfigs?: Map<string, MenuSectionConfig>
+    menuSectionConfigs?: List<Map<string, MenuSectionConfig>>
     model: ProductMenuModel
     showSearchBox: boolean
     onSearch?: (form: any) => any

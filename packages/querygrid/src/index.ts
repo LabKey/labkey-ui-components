@@ -124,17 +124,11 @@ import {
     uploadAssayRunFiles
 } from './components/assay/actions'
 import { DEFAULT_LINEAGE_DISTANCE, DEFAULT_LINEAGE_DIRECTION } from './components/lineage/constants'
-import {
-    LineageGroupingOptions, ILineageGroupingOptions, Lineage, LineageDirections, LineageFilter, LineageNode,
-    LineageOptions, LineageGroupingGenerations, LineageGridModel, LineagePageModel, LineageResult, LineageNodeMetadata
-} from './components/lineage/models'
-import {
-    createLineageNodeCollections, LineageNodeCollection, VisGraphClusterNode, VisGraphCombinedNode, VisGraphNode,
-    VisGraphOptions, getLineageNodeTitle
-} from './components/lineage/vis/VisGraphGenerator'
-import { VisGraph } from './components/lineage/vis/VisGraph'
+import { Lineage, LineageDirections, LineageFilter, LineageOptions, LineageGroupingGenerations, LineageGridModel, LineagePageModel, LineageResult } from './components/lineage/models'
+import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
 import { getLineageDepthFirstNodeList } from './components/lineage/utils';
 import { fetchLineage, getLineageNodeMetadata } from './components/lineage/actions';
+import { LineageGraph } from './components/lineage/LineageGraph';
 import { LINEAGE_GRID_COLUMNS } from './components/lineage/Tag';
 
 export {
@@ -275,31 +269,22 @@ export {
     FormStep,
     FormTabs,
 
+    // TODO review after finish of port to see which are actually needed for export
     // lineage
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_DIRECTION,
     LINEAGE_GRID_COLUMNS,
-    LineageGroupingOptions,
-    ILineageGroupingOptions,
     LineageGroupingGenerations,
     Lineage,
     LineageDirections,
     LineageFilter,
-    LineageNode,
     LineageOptions,
-    LineageNodeCollection,
     LineageGridModel,
     LineagePageModel,
     LineageResult,
-    LineageNodeMetadata,
-    VisGraphClusterNode,
-    VisGraphCombinedNode,
+    LineageGraph,
     VisGraphNode,
-    VisGraphOptions,
-    VisGraph,
-    createLineageNodeCollections,
     fetchLineage,
     getLineageDepthFirstNodeList,
-    getLineageNodeTitle,
     getLineageNodeMetadata
 }

@@ -6,8 +6,9 @@ import { List, Map, fromJS, Iterable, Seq } from 'immutable'
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { buildURL, SchemaQuery, SCHEMAS } from "@glass/base";
 
-import { LineageNode, LineageNodeMetadata, LineageResult } from "./models";
+import { Lineage, LineageNode, LineageNodeMetadata, LineageResult } from "./models";
 import { ISelectRowsResult, selectRows } from "../../query/api";
+import { getLineageResult, updateLineageResult } from "../../global";
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 
@@ -114,4 +115,62 @@ export function getLineageNodeMetadata(lineage: LineageResult): Promise<LineageR
                 resolve(result);
             })
     });
+}
+
+export function loadLineageIfNeeded(seed: string, distance?: number) {
+    const existing = getLineageResult(seed);
+    if (existing) {
+        return;
+    }
+
+    fetchLineage(seed, distance)
+        .then(result => getLineageNodeMetadata(result))
+        .then(result => {
+            const updatedResult = resolveResultURLs(result);
+
+            // either update the global state to include the result or set it
+            let lineage = getLineageResult(seed);
+            if (lineage) {
+                updateLineageResult(seed, new Lineage({
+                    ...lineage,
+                    result: updatedResult
+                }));
+            }
+            else {
+                updateLineageResult(seed, new Lineage({
+                    result: updatedResult
+                }));
+            }
+        });
+}
+
+function resolveResultURLs(result: LineageResult): LineageResult {
+    const resolvedNodes = result.nodes.map((node) => {
+        if (node.type === 'Sample' || node.type === 'Data') {
+
+            let route = 'samples';
+            if (node.type === 'Data') {
+                route = 'registry';
+            }
+
+            if (node.cpasType) {
+                let parts = node.cpasType.split(':');
+                let namespace = parts[parts.length-2];
+                let name = parts[parts.length-1];
+
+                // TODO: we ought to be using the urlResolver here instead
+                // Lsid strings are 'application/x-www-form-urlencoded' encoded which replaces space with '+'
+                name = name.replace(/\+/g, ' ');
+
+                return node.merge({
+                    listURL: [route, name.toLowerCase()].join('/'),
+                    url: ['#', route, name.toLowerCase(), node.get('rowId')].join('/')
+                });
+            }
+        }
+
+        return node;
+    });
+
+    return result.set('nodes', resolvedNodes) as LineageResult;
 }

@@ -191,11 +191,22 @@ interface ReportListItemProps {
 export class ReportListItem extends React.PureComponent<ReportListItemProps> {
     onClick = () => this.props.onClick(this.props.report);
 
+    onLinkClicked = (e) => {
+        // We need to stop event propagation when clicking on a link or it will also trigger the onClick handler
+        e.stopPropagation();
+        return true;
+    };
+
     render() {
-        const { name, icon, iconCls, createdBy, type } = this.props.report;
+        const { name, icon, iconCls, createdBy, type, runUrl, appUrl } = this.props.report;
+        let nameEl = <a href={runUrl} onClick={this.onLinkClicked}>{name}</a>;
+
+        if (appUrl) {
+            nameEl = <Link to={appUrl.toString()} onClick={this.onLinkClicked}>{name}</Link>;
+        }
+
         const iconSrc = ICONS[type];
         const iconClassName = "report-list-item__icon";
-        let createdByEl;
         let iconEl = <Image className={iconClassName} src={icon} />;
 
         if (iconSrc !== undefined) {
@@ -203,6 +214,8 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
         } else if (iconCls) {
             iconEl = <span className={`${iconClassName} ${iconCls} fa-4x`} />
         }
+
+        let createdByEl;
 
         if (createdBy) {
             createdByEl = <p className="report-list-item__person">Created by: {createdBy}</p>;
@@ -215,7 +228,7 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
                 </Media.Left>
 
                 <Media.Body>
-                    <Media.Heading className="report-list-item__name">{name}</Media.Heading>
+                    <Media.Heading className="report-list-item__name">{nameEl}</Media.Heading>
                     {createdByEl}
                 </Media.Body>
             </Media.ListItem>

@@ -15,7 +15,16 @@
  */
 
 import * as React from "react";
-import {ATTACHMENT_TYPE, DATETIME_TYPE, DomainField, DomainFieldError, DOUBLE_TYPE, PARTICIPANT_TYPE, TEXT_TYPE} from "../models";
+import {
+    ATTACHMENT_TYPE,
+    DATETIME_TYPE,
+    DomainField,
+    DomainFieldError,
+    DOUBLE_TYPE,
+    PARTICIPANT_TYPE, PROP_DESC_TYPES,
+    PropDescType,
+    TEXT_TYPE
+} from "../models";
 import {DomainRow} from "./DomainRow";
 import { mount } from "enzyme"
 import {
@@ -70,6 +79,9 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -100,6 +112,9 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -143,6 +158,9 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -186,6 +204,9 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -229,6 +250,9 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -284,6 +308,9 @@ describe('DomainRow', () => {
                     expanded={true}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -340,10 +367,13 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         //test row highlighting for a warning
-        const warningRowClass = row.find({className: 'domain-field-row-warning '});
+        const warningRowClass = row.find({className: 'domain-field-row domain-row-border-warning'});
         expect(warningRowClass.length).toEqual(1);
 
         //test warning message
@@ -384,10 +414,13 @@ describe('DomainRow', () => {
                     expanded={false}
                     expandTransition={EXPAND_TRANSITION}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
                 />));
 
         //test row highlighting for error
-        const warningRowClass = row.find({className: 'domain-field-row-error '});
+        const warningRowClass = row.find({className: 'domain-field-row domain-row-border-error'});
         expect(warningRowClass.length).toEqual(1);
 
         //test error message

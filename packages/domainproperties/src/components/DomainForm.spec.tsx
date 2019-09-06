@@ -313,7 +313,7 @@ describe('DomainForm', () => {
         />);
 
         // Add new row
-        let findButton = form.find({className: 'domain-form-add'});
+        let findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
         expect(findButton.length).toEqual(1);
         findButton.simulate('click');
 

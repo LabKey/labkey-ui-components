@@ -126,11 +126,6 @@ class GridReportBody extends React.PureComponent<ReportConsumer> {
     render () {
         const { schemaName, queryName, viewName, runUrl, appUrl } = this.props.report;
         const schemaQuery = SchemaQuery.create(schemaName, queryName, viewName);
-        let appLink;
-
-        if (appUrl) {
-            appLink = <p><Link to={appUrl.toString()}>View grid in Biologics</Link></p>;
-        }
 
         return (
             <Modal.Body>

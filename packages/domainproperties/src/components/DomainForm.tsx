@@ -41,7 +41,7 @@ import {
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
-import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI} from "../constants";
+import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, LK_DOMAIN_HELP_URL, PHILEVEL_NOT_PHI} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -86,7 +86,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'domain',
-        helpURL: 'https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields',
+        helpURL: LK_DOMAIN_HELP_URL,
         showHeader: true,
         initCollapsed: false
     };
@@ -405,9 +405,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return undefined;
     };
 
-    draggingStyle = (style: any): any => {
+    stickyStyle = (style: any): any => {
         let newStyle = {...style, zIndex: 1000};
-        // let newStyle = {...style, zIndex: 1000, width: '100%'};
 
         // Sticking to top
         if (style.top === 0) {
@@ -415,8 +414,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             const width = newWidth + 'px';
 
             return {...newStyle, width, marginLeft: '-15px', paddingLeft: '15px', boxShadow: '0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'}
-            // return {...newStyle, margin: '0 -16px', paddingLeft: '15px', boxShadow: '0 2px 4px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24)'}
-            // return {...newStyle, boxShadow: '0 8px 6px -6px #CCC'}
         }
 
         return newStyle;
@@ -549,7 +546,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     </Col>
                     <Col xs={3}>
                         {this.props.helpURL &&
-                            <a className='domain-field-float-right' href={this.props.helpURL}>Learn more about this tool</a>
+                            <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about this tool</a>
                         }
                     </Col>
                 </Row>
@@ -578,7 +575,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
                             <Sticky>{({ style }) =>
-                                <div style={this.draggingStyle(style)}>
+                                <div style={this.stickyStyle(style)}>
                                     {this.renderRowHeaders()}
                                 </div>}
                             </Sticky>
@@ -590,7 +587,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                         {(domain.fields.map((field, i) => {
                                             // Need to preserve index so don't filter, instead just use empty div
                                             if (!field.visible)
-                                                return <div />;
+                                                return <div key={'domain-row-key-' + i} />;
 
                                             return <DomainRow
                                                 key={'domain-row-key-' + i}

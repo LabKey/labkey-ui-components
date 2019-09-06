@@ -86,6 +86,7 @@ export const NOT_HIGHLIGHT_GRAY = '#999999';
 // export const HIGHLIGHT_BLUE = '#3495D2';
 
 export const LK_URL_ENCODING_DOC = "https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding";
+export const LK_DOMAIN_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields";
 
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";

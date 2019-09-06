@@ -11,7 +11,7 @@ import {
 } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 import {SampleSetParentAliasRow} from "../../components/samples/SampleSetParentAliasRow";
-import {SAMPLE_SET_DISPLAY_TEXT} from "../../constants";
+import {PARENT_ALIAS_DOC_URL, PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT} from "../../constants";
 
 const UNKNOWN_ERROR_CREATE = `An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
 const UNKNOWN_ERROR_UPDATE = `An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
@@ -27,8 +27,6 @@ interface Props {
     onComplete: (response: any) => void
     beforeFinish?: (formValues: {}) => void
     nameExpressionInfoUrl?: string
-    parentAliasInfoUrl?: string
-    parentAliasHelperText?: string
     data?: Map<string, any>
 }
 
@@ -296,13 +294,11 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     };
 
     renderAddEntityHelper = ():any => {
-        const {parentAliasHelperText, parentAliasInfoUrl} = this.props;
-
         return (
             <>
                 <span>
-                    {parentAliasHelperText}
-                    <p><a href={parentAliasInfoUrl} target='_blank' >More info</a></p>
+                    {PARENT_ALIAS_HELPER_TEXT}
+                    <p><a href={PARENT_ALIAS_DOC_URL} target='_blank' >More info</a></p>
                 </span>
             </>
         );
@@ -330,6 +326,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         description={`The name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}. Note that this can\'t be changed after ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()} creation.`}
                                         required={true}
                                         // addLabelAsterisk={true}  //This causes weirdness, because default isFormsy and required and the form isn't a FormsyForm...
+                                        canMouseOverTooltip={true}
                                     />
                                 </Col>
                                 <Col xs={9}>
@@ -367,6 +364,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         label={'Description'}
                                         type={'Text (String)'}
                                         description={`A short description for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
+                                        canMouseOverTooltip={true}
                                     />
                                 </Col>
                                 <Col xs={9}>

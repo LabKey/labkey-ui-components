@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: TBD
+### version 0.15.1
+*Released*: 6 September 2019
 * Updated LabelHelpTip to make id attribute a property
 * Updated AddEntityButton to include LabelHelpTip and associated optional properties
 * added AddEntityButton story

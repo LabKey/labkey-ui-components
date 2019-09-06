@@ -5,6 +5,7 @@ import {LabelOverlay} from "../..";
 import { SelectInput } from "../forms/input/SelectInput";
 import {RemoveEntityButton} from "@glass/base";
 import classNames from "classnames";
+import {PARENT_ALIAS_HELPER_TEXT} from "../../constants";
 
 
 interface IParentAliasRow {
@@ -45,8 +46,9 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                 <Col xs={3}> {/* TODO:Error/validation styling on label {className={classNames('parent-alias-label', {'has-error': aliasBlank || !optionValue})}> */}
                     <LabelOverlay
                         label={'Parent Alias *'}
-                        description='Column heading that indicates sample parentage during import'
+                        description={PARENT_ALIAS_HELPER_TEXT}
                         required={true}
+                        canMouseOverTooltip={true}
                     />
                 </Col>
                 <Col xs={3} className={classNames({'has-error': aliasBlank})}>

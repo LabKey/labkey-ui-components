@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: TBD
+### version 0.13.4
+*Released*: 6 September 2019
 * Changes to support Epic #5692: parent alias component in Sample Management
   * Updated SampleSetDetailsPanel to enable adding import aliases
   * Added SampleSetAliasRow: UI component for rendering import parent aliases

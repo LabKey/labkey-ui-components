@@ -238,6 +238,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     addParentAlias = (): void => {
         let {parentAliases} = this.state;
+        parentAliases = parentAliases || Map<string, IParentAlias>();
 
         const newId = SampleSetDetailsPanel.generateAliasId();
         parentAliases = parentAliases.set(newId, {

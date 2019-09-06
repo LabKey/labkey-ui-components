@@ -109,22 +109,24 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, placehol
         columns: 'LSID, Name, RowId'
     }).then(results => {
         const sampleSets = fromJS(results.models[results.key]);
-        const sets = sampleSets.map(row => {
+
+        let sets = List<IParentOption>();
+        sampleSets.forEach(row => {
             const name = row.getIn(['Name', 'value']);
             let label = placeholderOption && name === ssName ? placeholderOption.label : name;
-            return {
+            sets = sets.push({
                 value: prefix + name,
                 label: label,
                 schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
                 query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
-            };
+            });
         });
 
         if(!isUpdate) {
-            sets.push(placeholderOption);
+            sets = sets.push(placeholderOption);
         }
 
-        return sets.sortBy(p => p.label, naturalSort);
+        return sets.sortBy(p => p.label, naturalSort) as List<IParentOption>;
     });
 }
 

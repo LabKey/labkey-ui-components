@@ -16,7 +16,7 @@
 import * as React from 'react';
 import { Map, fromJS } from "immutable";
 import { storiesOf } from "@storybook/react";
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 import { SampleSetDetailsPanel } from "../components/samples/SampleSetDetailsPanel";
 
 import './stories.scss'

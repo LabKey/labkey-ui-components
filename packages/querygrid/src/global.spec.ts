@@ -15,16 +15,24 @@
  */
 
 import {
-    resetQueryGridState, getCharts, getEditorModel, getLookupStore,
-    getQueryGridModel, getQueryGridModelsForSchema,
+    getCharts,
+    getEditorModel,
+    getLookupStore,
+    getQueryGridModel,
+    getQueryGridModelsForSchema,
     getQueryGridModelsForSchemaQuery,
-    removeQueryGridModel, updateCharts, updateEditorModel, updateLookupStore,
-    updateQueryGridModel, updateSelections
-} from "./global";
-import { QueryGridModel, SchemaQuery, GRID_CHECKBOX_OPTIONS, QueryColumn } from '@glass/base'
-import { List } from "immutable";
+    removeQueryGridModel,
+    resetQueryGridState,
+    updateCharts,
+    updateEditorModel,
+    updateLookupStore,
+    updateQueryGridModel,
+    updateSelections,
+} from './global';
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery } from '@glass/base'
+import { List } from 'immutable';
 
-import { DataViewInfo, EditorModel, LookupStore } from './models'
+import { DataViewInfo, DataViewInfoTypes, EditorModel, LookupStore } from './models'
 
 beforeEach(() => {
     resetQueryGridState();
@@ -147,14 +155,14 @@ describe("charts", () => {
         const dataViewInfo = List<DataViewInfo>().asMutable();
         dataViewInfo.push(new DataViewInfo({
             name: "chart1",
-            type: "bar chart"
+            type: DataViewInfoTypes.BarChart
         }));
         expect(getCharts(sqKey)).toBe(undefined);
         updateCharts(sqKey, dataViewInfo);
         expect(getCharts(sqKey).size).toBe(1);
         dataViewInfo.push(new DataViewInfo({
             name: "chart2",
-            type: "pie chart"
+            type: DataViewInfoTypes.PieChart
         }));
         updateCharts(sqKey, dataViewInfo);
         expect(getCharts(sqKey).size).toBe(2);

@@ -48,12 +48,14 @@
     "prop-types": "15.7.2",
     "react-bootstrap-toggle": "2.3.2",
     "react-router": "3.2.1",
-    "react-select": "1.0.0-rc.10"
+    "react-select": "1.0.0-rc.10",
+    "vis": "4.21.0"
   },
   "devDependencies": {
     "@types/history": "4.7.2",
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",
+    "@types/vis": "4.21.16",
     "bootstrap-sass": "3.4.1",
     "xhr-mock": "2.4.1"
   },

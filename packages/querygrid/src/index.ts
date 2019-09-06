@@ -123,6 +123,19 @@ import {
     importAssayRun,
     uploadAssayRunFiles
 } from './components/assay/actions'
+import { DEFAULT_LINEAGE_DISTANCE, DEFAULT_LINEAGE_DIRECTION } from './components/lineage/constants'
+import {
+    LineageGroupingOptions, ILineageGroupingOptions, Lineage, LineageDirections, LineageFilter, LineageNode,
+    LineageOptions, LineageGroupingGenerations, LineageGridModel, LineagePageModel, LineageResult, LineageNodeMetadata
+} from './components/lineage/models'
+import {
+    createLineageNodeCollections, LineageNodeCollection, VisGraphClusterNode, VisGraphCombinedNode, VisGraphNode,
+    VisGraphOptions, getLineageNodeTitle
+} from './components/lineage/vis/VisGraphGenerator'
+import { VisGraph } from './components/lineage/vis/VisGraph'
+import { getLineageDepthFirstNodeList } from './components/lineage/utils';
+import { fetchLineage, getLineageNodeMetadata } from './components/lineage/actions';
+import { LINEAGE_GRID_COLUMNS } from './components/lineage/Tag';
 
 export {
     // global state functions
@@ -260,5 +273,33 @@ export {
     withFormSteps,
     WithFormStepsProps,
     FormStep,
-    FormTabs
+    FormTabs,
+
+    // lineage
+    DEFAULT_LINEAGE_DISTANCE,
+    DEFAULT_LINEAGE_DIRECTION,
+    LINEAGE_GRID_COLUMNS,
+    LineageGroupingOptions,
+    ILineageGroupingOptions,
+    LineageGroupingGenerations,
+    Lineage,
+    LineageDirections,
+    LineageFilter,
+    LineageNode,
+    LineageOptions,
+    LineageNodeCollection,
+    LineageGridModel,
+    LineagePageModel,
+    LineageResult,
+    LineageNodeMetadata,
+    VisGraphClusterNode,
+    VisGraphCombinedNode,
+    VisGraphNode,
+    VisGraphOptions,
+    VisGraph,
+    createLineageNodeCollections,
+    fetchLineage,
+    getLineageDepthFirstNodeList,
+    getLineageNodeTitle,
+    getLineageNodeMetadata
 }

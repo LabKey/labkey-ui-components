@@ -219,7 +219,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onAddField = () => {
         this.onDomainChange(addDomainField(this.props.domain));
-        this.collapseRow();``
+        this.collapseRow();
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
@@ -517,24 +517,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 return field.set('visible', true);
             }
 
-            if (field.name.indexOf(value) !== -1) {
+            if (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
                 return field.set('visible', true);
             }
 
             return field.set('visible', false);
         });
 
-        if (value) {
-            this.setState(() => ({filtered: true}));
-        }
-        else {
-            this.setState(() => ({filtered: false}))
-        }
+        this.setState(() => ({filtered: value !== undefined && value.length > 0}));
 
         this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign);
     };
 
     renderDefaultHeader() {
+        const { domain } = this.props;
+
         return(
             <div>
                 <Row className='domain-form-hdr-margins'>
@@ -552,7 +549,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 </Row>
                 <Row>
                     <Col xs={3}>
-                        <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
+                        {domain.fields.size > 0 ?
+                            <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'}
+                                         onChange={this.onSearch}/>
+                            : <div/>
+                        }
                     </Col>
                 </Row>
             </div>

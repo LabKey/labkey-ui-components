@@ -6,7 +6,7 @@ exports[`<AddEntityButton /> Default properties 1`] = `
 >
   <div>
     <span
-      className="container--action-button"
+      className="container--action-button btn btn-default"
       onClick={
         [MockFunction] {
           "calls": Array [
@@ -38,7 +38,7 @@ exports[`<AddEntityButton /> Specify entity and classes 1`] = `
     className="test-button-class"
   >
     <span
-      className="container--action-button"
+      className="container--action-button btn btn-default"
       onClick={[MockFunction]}
     >
       <i

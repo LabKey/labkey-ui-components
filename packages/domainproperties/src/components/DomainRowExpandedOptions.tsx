@@ -75,7 +75,6 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                 <div className='domain-row-main'>
                     {this.typeDependentOptions()}
                     <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
-                    {/*<Row style={{height: '20px'}}/>*/}
                 </div>
             </div>
         );

@@ -8,6 +8,10 @@
   color: $gray;
 };
 
+.domain-form-hdr-margins {
+  padding: 0 0 15px 0;
+};
+
 .domain-form-search {
   margin-bottom: 20px;
 };
@@ -125,7 +129,7 @@
 .domain-form-no-field-panel {
   height: 53px;
   margin: 25px 0px 20px 0px;
-  padding: 20px;
+  padding: 15px 20px;
   box-shadow: inset 0 1px 3px 2px $gray-shadow;
 }
 
@@ -184,6 +188,10 @@
 
 .domain-field-float-left {
   float: left;
+}
+
+.domain-field-float-right {
+  float: right;
 }
 
 .domain-field-textarea {

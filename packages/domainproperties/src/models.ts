@@ -293,7 +293,7 @@ export interface IDomainField {
     shownInDetailsView?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
-
+    visible: boolean
     dataType: PropDescType
     lookupQueryValue: string;
     lookupType: PropDescType
@@ -331,7 +331,7 @@ export class DomainField extends Record({
     shownInDetailsView: true,
     shownInInsertView: true,
     shownInUpdateView: true,
-
+    visible: true,
     dataType: undefined,
     lookupQueryValue: undefined,
     lookupType: undefined,
@@ -368,7 +368,7 @@ export class DomainField extends Record({
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
-
+    visible: boolean;
     dataType: PropDescType;
     lookupQueryValue: string;
     lookupType: PropDescType;
@@ -440,6 +440,7 @@ export class DomainField extends Record({
         delete json.lookupType;
         delete json.original;
         delete json.updatedField;
+        delete json.visible;
 
         return json;
     }

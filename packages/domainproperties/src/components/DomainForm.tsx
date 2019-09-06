@@ -66,6 +66,7 @@ interface IDomainFormState {
     maxPhiLevel: string
     dragId?: number
     availableTypes: List<PropDescType>
+    filtered: boolean
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -100,7 +101,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
             availableTypes: this.getAvailableTypes(),
-            collapsed: props.initCollapsed
+            collapsed: props.initCollapsed,
+            filtered: false
         };
     }
 
@@ -217,7 +219,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onAddField = () => {
         this.onDomainChange(addDomainField(this.props.domain));
-        this.collapseRow();
+        this.collapseRow();``
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
@@ -479,12 +481,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             )
         }
         else {
-            const { helpURL, helpNoun } = this.props;
-
             return (
                 <Panel className='domain-form-no-field-panel'>
-                    {'No properties have been defined for this ' + helpNoun + ' yet. Start by using the “Add Field” button below. Learn more about '}
-                    <a href={helpURL} target={'_blank'}>{' creating ' + helpNoun + ' designs '}</a> in our documentation.
+                    Start by adding some properties using the "Add Field" button.
                 </Panel>
             )
         }
@@ -511,18 +510,68 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
+    onSearch = (evt) => {
+        const { domain } = this.props;
+        const { value } = evt.target;
+
+        const filteredFields = domain.fields.map( field => {
+            if (!value) {
+                return field.set('visible', true);
+            }
+
+            if (field.name.indexOf(value) !== -1) {
+                return field.set('visible', true);
+            }
+
+            return field.set('visible', false);
+        });
+
+        if (value) {
+            this.setState(() => ({filtered: true}));
+        }
+        else {
+            this.setState(() => ({filtered: false}))
+        }
+
+        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign);
+    };
+
+    renderDefaultHeader() {
+        return(
+            <div>
+                <Row className='domain-form-hdr-margins'>
+                    <Col xs={9}>
+                        <div className='domain-field-float-left'>Adjust fields and their properties that will be shown
+                            within this domain. Click a row
+                            to access additional options. Drag and drop rows to reorder them.
+                        </div>
+                    </Col>
+                    <Col xs={3}>
+                        {this.props.helpURL &&
+                            <a className='domain-field-float-right' href={this.props.helpURL}>Learn more about this tool</a>
+                        }
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={3}>
+                        <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
+                    </Col>
+                </Row>
+            </div>
+        )
+    }
+
     renderForm() {
         const { domain, children } = this.props;
-        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes } = this.state;
+        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
             <>
-                <Row className='domain-form-hdr-row'>
+                <div>
                     {children ? children
-                        : <p>Adjust fields and their properties that will be shown within this domain. Click a row
-                            to access additional options. Drag and drop rows to reorder them.</p>
+                        : this.renderDefaultHeader()
                     }
-                </Row>
+                </div>
                 {/*{this.renderSearchRow()}*/}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
@@ -538,6 +587,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                      {...provided.droppableProps}>
                                     <Form>
                                         {(domain.fields.map((field, i) => {
+                                            // Need to preserve index so don't filter, instead just use empty div
+                                            if (!field.visible)
+                                                return <div />;
+
                                             return <DomainRow
                                                 key={'domain-row-key-' + i}
                                                 field={field}
@@ -550,6 +603,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 onDelete={this.onDeleteField}
                                                 maxPhiLevel={maxPhiLevel}
                                                 dragging={dragId === i}
+                                                isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
                                             />
                                         }))}

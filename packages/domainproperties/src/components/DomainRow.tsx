@@ -54,6 +54,7 @@ interface IDomainRowProps {
     fieldError?: DomainFieldError
     onDelete: (any) => void
     onExpand: (index?: number) => void
+    isDragDisabled: boolean
 }
 
 interface IDomainRowState {
@@ -385,10 +386,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     render() {
         const { closing } = this.state;
-        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging } = this.props;
+        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, isDragDisabled } = this.props;
 
         return (
-            <Draggable draggableId={createFormInputId("domaindrag", index)} index={index}>
+            <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={isDragDisabled}>
                 {(provided) => (
                     <div className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
                          {...provided.draggableProps}

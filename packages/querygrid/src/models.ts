@@ -184,21 +184,34 @@ export function getStateQueryGridModel(
 }
 
 export enum DataViewInfoTypes {
-    Query = 'Query',
-    Dataset = 'Dataset',
-    XYScatterPlot = 'XY Scatter Plot',
-    BarChart = 'Bar Chart',
-    PieChart = 'Pie Chart',
-    XYSeriesLinePlot = 'XY Series Line Plot',
-    BoxAndWhiskerPlot = 'Box and Whisker Plot',
     AutomaticPlot = 'Automatic Plot',
-    TimeChart = 'Time Chart',
+    BarChart = 'Bar Chart',
+    BoxAndWhiskerPlot = 'Box and Whisker Plot',
     CrosstabReport = 'Crosstab Report',
-    RReport = 'R Report',
+    Dataset = 'Dataset',
     ParticipantReport = 'Participant Report',
+    PieChart = 'Pie Chart',
+    Query = 'Query',
+    RReport = 'R Report',
     SampleComparison = 'Sample Comparison',
+    TimeChart = 'Time Chart',
+    XYScatterPlot = 'XY Scatter Plot',
+    XYSeriesLinePlot = 'XY Series Line Plot',
 }
 
+type DataViewInfoType = DataViewInfoTypes.AutomaticPlot |
+    DataViewInfoTypes.BarChart |
+    DataViewInfoTypes.BoxAndWhiskerPlot |
+    DataViewInfoTypes.CrosstabReport |
+    DataViewInfoTypes.Dataset |
+    DataViewInfoTypes.ParticipantReport |
+    DataViewInfoTypes.PieChart |
+    DataViewInfoTypes.Query |
+    DataViewInfoTypes.RReport |
+    DataViewInfoTypes.SampleComparison |
+    DataViewInfoTypes.TimeChart |
+    DataViewInfoTypes.XYScatterPlot |
+    DataViewInfoTypes.XYSeriesLinePlot;
 /**
  * IDataViewInfo is a client side implementation of the server-side class DataViewInfo. We currently only implement
  * a subset of the fields that are used by the client.
@@ -208,7 +221,7 @@ export interface IDataViewInfo {
     description?: string,
     detailsUrl?: string,
     runUrl?: string, // This comes directly from the API response and is a link to LK Server
-    type?: DataViewInfoTypes,
+    type?: DataViewInfoType,
     visible?: boolean,
     id?: string, // This is actually a uuid from the looks of it, should we be more strict on the type here?
     reportId?: string, // This is in the format of "db:953", not quite sure why we have an id and reportId.
@@ -266,7 +279,7 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     description?: string;
     detailsUrl: string;
     runUrl: string;
-    type: DataViewInfoTypes;
+    type: DataViewInfoType;
     visible: boolean;
     id: string;
     reportId: string;
@@ -306,11 +319,12 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     }
 
     isVisChartType() {
-        return this.type === "Bar Chart"
-            || this.type === "Box and Whisker Plot"
-            || this.type === "Pie Chart"
-            || this.type === "XY Scatter Plot"
-            || this.type === "XY Series Line Plot";
+        return this.type === DataViewInfoTypes.AutomaticPlot
+            || this.type === DataViewInfoTypes.BarChart
+            || this.type === DataViewInfoTypes.BoxAndWhiskerPlot
+            || this.type === DataViewInfoTypes.PieChart
+            || this.type === DataViewInfoTypes.XYScatterPlot
+            || this.type === DataViewInfoTypes.XYSeriesLinePlot;
     }
 }
 

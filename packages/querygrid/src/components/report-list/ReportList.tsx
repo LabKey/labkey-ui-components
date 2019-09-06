@@ -17,7 +17,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Image, Media, Modal, Panel } from 'react-bootstrap'
 import { Set } from 'immutable';
-import { LoadingSpinner, SchemaQuery } from '@glass/base';
+import { LoadingSpinner, SchemaQuery, SVGIcon } from '@glass/base';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
 import { DataViewInfo, IDataViewInfo, DataViewInfoTypes } from '../../models';
@@ -31,6 +31,18 @@ const CHARTS = Set([
     DataViewInfoTypes.XYScatterPlot,
     DataViewInfoTypes.XYSeriesLinePlot,
 ]);
+const ICONS = {
+    [DataViewInfoTypes.AutomaticPlot]: 'xy_line',
+    [DataViewInfoTypes.BarChart]: 'bar_chart',
+    [DataViewInfoTypes.BoxAndWhiskerPlot]: 'box_plot',
+    [DataViewInfoTypes.Dataset]: 'custom_grid',
+    [DataViewInfoTypes.PieChart]: 'pie_chart',
+    [DataViewInfoTypes.Query]: 'custom_grid',
+    [DataViewInfoTypes.SampleComparison]: 'sample_comparison',
+    [DataViewInfoTypes.TimeChart]: 'xy_line',
+    [DataViewInfoTypes.XYScatterPlot]: 'xy_scatter',
+    [DataViewInfoTypes.XYSeriesLinePlot]: 'xy_line',
+};
 
 interface ReportConsumer {
     report: IDataViewInfo,
@@ -185,12 +197,16 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
     onClick = () => this.props.onClick(this.props.report);
 
     render() {
-        const { name, icon, iconCls, createdBy } = this.props.report;
+        const { name, icon, iconCls, createdBy, type } = this.props.report;
+        const iconSrc = ICONS[type];
+        const iconClassName = "report-list-item__icon";
         let createdByEl;
-        let iconEl = <Image className="report-list-item__icon" src={icon} />;
+        let iconEl = <Image className={iconClassName} src={icon} />;
 
-        if (iconCls) {
-            iconEl = <span className={`report-list-item__icon ${iconCls} fa-4x`} />
+        if (iconSrc !== undefined) {
+            iconEl = <SVGIcon className={iconClassName} height={null} iconDir="_images" iconSrc={iconSrc}/>
+        } else if (iconCls) {
+            iconEl = <span className={`${iconClassName} ${iconCls} fa-4x`} />
         }
 
         if (createdBy) {

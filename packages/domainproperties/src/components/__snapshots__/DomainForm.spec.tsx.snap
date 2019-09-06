@@ -28961,22 +28961,7 @@ exports[`DomainForm domain form with no fields 1`] = `
                           <div
                             className="col-xs-3"
                           >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
+                            <div />
                           </div>
                         </Col>
                       </div>
@@ -35521,22 +35506,7 @@ exports[`DomainForm with empty domain form 1`] = `
                           <div
                             className="col-xs-3"
                           >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
+                            <div />
                           </div>
                         </Col>
                       </div>
@@ -35652,13 +35622,7 @@ exports[`DomainForm with showHeader, helpNoun, and helpURL 1`] = `
           <div
             className="col-xs-3"
           >
-            <input
-              className="form-control"
-              id="domain-search-name"
-              onChange={[Function]}
-              placeholder="Search Fields"
-              type="text"
-            />
+            <div />
           </div>
         </div>
       </div>
@@ -35744,13 +35708,7 @@ exports[`DomainForm with showInferFromFile 1`] = `
           <div
             className="col-xs-3"
           >
-            <input
-              className="form-control"
-              id="domain-search-name"
-              onChange={[Function]}
-              placeholder="Search Fields"
-              type="text"
-            />
+            <div />
           </div>
         </div>
       </div>

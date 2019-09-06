@@ -89,7 +89,7 @@ describe('DomainForm', () => {
 
         // Search field
         const searchField = form.find({className: 'form-control', placeholder: 'Search Fields'});
-        expect(searchField.length).toEqual(1);
+        expect(searchField.length).toEqual(0);
 
         // Help link
         const helpLink = form.find({className: 'domain-field-float-right', href: LK_DOMAIN_HELP_URL});

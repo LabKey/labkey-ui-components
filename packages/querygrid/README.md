@@ -4,6 +4,9 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+* Add property to QueryGrid to allow for setting the active tab for multi-grid displays
+
 ### version 0.13.4
 *Released*: 6 September 2019
 * Package patch update for changes to @glass/base v0.15.1

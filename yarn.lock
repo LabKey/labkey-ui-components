@@ -1119,30 +1119,6 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@glass/base@0.15.0":
-  version "0.15.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.15.0.tgz#5456de7e224f43427ae4d3a0e4043130bd3294fd"
-  integrity sha1-VFbefiJPQ0J65NOg5AQxML0ylP0=
-  dependencies:
-    "@labkey/dependencies" "0.0.9"
-    bootstrap "3.4.1"
-    moment "2.24.0"
-    moment-jdateformatparser "1.1.0"
-    numeral "2.0.6"
-
-"@glass/domainproperties@0.0.32":
-  version "0.0.32"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.32.tgz#4264785cbd13e1c18571307e74b5584a4bbf5884"
-  integrity sha1-QmR4XL0T4cGFcTB+dLVYSku/WIQ=
-  dependencies:
-    "@fortawesome/fontawesome-free" "5.9.0"
-    "@fortawesome/fontawesome-svg-core" "1.2.19"
-    "@fortawesome/free-solid-svg-icons" "5.9.0"
-    "@fortawesome/react-fontawesome" "0.1.4"
-    "@glass/base" "0.15.0"
-    react-beautiful-dnd "11.0.3"
-    react-transition-group "4.2.2"
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"

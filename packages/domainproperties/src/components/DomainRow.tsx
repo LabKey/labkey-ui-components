@@ -294,7 +294,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { expanded, dragging } = this.props;
         const { hover, closing } = this.state;
 
-        return (<FontAwesomeIcon size='lg' color={(dragging || hover) && !expanded && !closing ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>)
+        return (<FontAwesomeIcon size='lg' color={(dragging || hover || expanded || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>)
     }
 
     renderBaseFields() {

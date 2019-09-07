@@ -70,6 +70,17 @@ export const SAMPLE_SETS = {
     SAMPLES:           SchemaQuery.create(SAMPLE_SET_SCHEMA, 'Samples')
 };
 
+// SAMPLE MANAGEMENT
+const SAMPLE_MANAGEMENT_SCHEMA = 'samplemanagement';
+export const SAMPLE_MANAGEMENT = {
+    SCHEMA: SAMPLE_MANAGEMENT_SCHEMA,
+    JOBS_LISTING: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, 'JobsListing'),
+    JOBS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, "Jobs"),
+    TASKS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, "Tasks"),
+    JOB_DEFINITIONS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, "JobDefinitions"),
+    TASK_DEFINITIONS: SchemaQuery.create(SAMPLE_MANAGEMENT_SCHEMA, "TaskDefinitions")
+};
+
 export const SCHEMAS = {
     ASSAY_TABLES: ASSAY_TABLES,
     EXP_TABLES: EXP_TABLES,

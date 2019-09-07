@@ -837,7 +837,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                     <FontAwesomeIcon
                                                       border={false}
                                                       className=""
-                                                      color="#999999"
+                                                      color="#2980B9"
                                                       fixedWidth={false}
                                                       flip={null}
                                                       icon={
@@ -868,7 +868,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                       <svg
                                                         aria-hidden="true"
                                                         className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
-                                                        color="#999999"
+                                                        color="#2980B9"
                                                         data-icon="grip-vertical"
                                                         data-prefix="fas"
                                                         focusable="false"

@@ -4,6 +4,15 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.33
+*Released*: 6 September 2019
+* Sticky field headers
+* Drag n drop handlers and updated drag n drop styling
+* Expand row on type or name field click
+* Updated header and empty domain state
+* Search field and handler
+* Remove attachment and file options where not applicable
+
 ### version 0.0.32
 *Released*: 3 September 2019
 * AssayPropertiesPanel for top level assay design properties for create/update (note: currently only supports the assay options relevant for the Sample Management app)

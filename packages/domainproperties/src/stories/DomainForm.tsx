@@ -100,7 +100,7 @@ storiesOf("DomainForm", module)
             />
         )
     })
-    .add("with server side errors", () => {
+    .add("with server side errors and no file or flag types", () => {
         return (
             <DomainFormContainer
                 data={errorData}
@@ -108,7 +108,7 @@ storiesOf("DomainForm", module)
             />
         )
     })
-    .add("with client side warnings", () => {
+    .add("with client side warnings and no attachment types", () => {
         return (
             <DomainFormContainer
                 data={warningData}

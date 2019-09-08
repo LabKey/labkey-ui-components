@@ -1,6 +1,6 @@
 {
   "name": "@glass/report-list",
-  "version": "0.1.24-fb-workflowGrids.2",
+  "version": "0.1.24-fb-workflowGrids.3",
   "description": "ReportList component and utility functions",
   "main": "dist/report-list.js",
   "module": "dist/report-list.es.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.15.2-fb-workflowGrids.2"
+    "@glass/base": "0.15.2-fb-workflowGrids.3"
   },
   "jest": {
     "globals": {
@@ -57,5 +57,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "5e79de6116399ebe73537ffef610a9e824679e4a"
+  "gitHead": "bff850bc1add486993de3b07cba8989671ac92f7"
 }

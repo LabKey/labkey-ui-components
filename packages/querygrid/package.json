@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.13.5-fb-workflowGrids.2",
+  "version": "0.13.5-fb-workflowGrids.3",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -38,9 +38,9 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.15.2-fb-workflowGrids.2",
-    "@glass/domainproperties": "0.0.34-fb-workflowGrids.2",
-    "@glass/omnibox": "0.1.36-fb-workflowGrids.2",
+    "@glass/base": "0.15.2-fb-workflowGrids.3",
+    "@glass/domainproperties": "0.0.34-fb-workflowGrids.3",
+    "@glass/omnibox": "0.1.36-fb-workflowGrids.3",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",
@@ -89,5 +89,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "5e79de6116399ebe73537ffef610a9e824679e4a"
+  "gitHead": "bff850bc1add486993de3b07cba8989671ac92f7"
 }

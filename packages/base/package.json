@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.15.2-fb-workflowGrids.2",
+  "version": "0.15.2-fb-workflowGrids.3",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -79,5 +79,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "5e79de6116399ebe73537ffef610a9e824679e4a"
+  "gitHead": "bff850bc1add486993de3b07cba8989671ac92f7"
 }

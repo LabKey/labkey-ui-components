@@ -1,6 +1,6 @@
 {
   "name": "@glass/navigation",
-  "version": "0.4.8-fb-workflowGrids.2",
+  "version": "0.4.8-fb-workflowGrids.3",
   "description": "Navigation elements and actions for an application and its pages",
   "main": "dist/navigation.cjs.js",
   "module": "dist/navigation.es.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.15.2-fb-workflowGrids.2",
+    "@glass/base": "0.15.2-fb-workflowGrids.3",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
     "react-router": "3.2.1"
@@ -72,5 +72,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "5e79de6116399ebe73537ffef610a9e824679e4a"
+  "gitHead": "bff850bc1add486993de3b07cba8989671ac92f7"
 }

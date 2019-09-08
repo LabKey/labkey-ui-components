@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, Set } from 'immutable'
-import { Filter } from '@labkey/api'
+import { Filter, Utils } from '@labkey/api'
 import { QueryGridModel, QueryColumn, naturalSort } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
@@ -224,17 +224,19 @@ export class FilterAction implements Action {
             return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
                 const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns);
 
-                if (column && activeFilterType && rawValue !== undefined) {
-                    const operator = resolveSymbol(activeFilterType);
-                    const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
-                    const display = this.getDisplayValue(column.shortCaption, operator, rawValue);
+                if (column && activeFilterType) {
+                    if (rawValue !== undefined || !activeFilterType.isDataValueRequired()) {
+                        const operator = resolveSymbol(activeFilterType);
+                        const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
+                        const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
 
-                    resolve({
-                        displayValue: display.displayValue,
-                        isReadOnly: display.isReadOnly,
-                        param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
-                        value: [`"${column.shortCaption}"`, operator, rawValue].join(' ')
-                    });
+                        resolve({
+                            displayValue: display.displayValue,
+                            isReadOnly: display.isReadOnly,
+                            param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
+                            value: [`"${column.shortCaption}"`, operator, rawValue].join(' ')
+                        });
+                    }
                 }
 
                 resolve({
@@ -249,46 +251,54 @@ export class FilterAction implements Action {
         return new Promise((resolve) => {
             return this.resolveColumns().then((columns) => {
 
-                let results: Array<ActionOption> = [];
+                let actionOptions: Array<ActionOption> = [];
                 const { activeFilterType, column, columnName, rawValue, filterTypes } = FilterAction.parseTokens(tokens, columns);
 
                 if (column) {
 
                     if (activeFilterType) {
-                        const operator = resolveSymbol(activeFilterType);
-
-                        return this.resolveValues(column, operator, rawValue).then(valueResults => {
-                            resolve(results.concat(valueResults));
+                        return this.resolveValues(column, activeFilterType, rawValue).then(valueResults => {
+                            resolve(actionOptions.concat(valueResults));
                         });
                     }
                     else if (filterTypes.length > 0) {
 
-                        let noSymbol = [];
-                        let displayNonSymbols = false;
+                        let noSymbolActionOptions: Array<ActionOption> = [];
+
                         for (let i=0; i < filterTypes.length; i++) {
 
-                            const symbol = filterTypes[i].getDisplaySymbol();
-                            const suffix = filterTypes[i].getURLSuffix();
+                            const type = filterTypes[i];
 
-                            // for now, only support options with displaySymbol
+                            // Do not currently support building multi-value filters
+                            if (type.isMultiValued()) {
+                                continue;
+                            }
+
+                            const symbol = type.getDisplaySymbol();
+                            const suffix = type.getURLSuffix();
+                            const isComplete = !type.isDataValueRequired();
+                            const nextLabel = isComplete ? undefined : ' value';
+
                             if (symbol != null) {
-                                results.push({
+                                actionOptions.push({
+                                    isComplete,
                                     label: `"${column.shortCaption}" ${symbol}`,
-                                    nextLabel: ' value',
+                                    nextLabel,
                                     value: symbol
                                 });
                             }
-                            else if (displayNonSymbols) {
-                                noSymbol.push({
+                            else if (suffix) {
+                                noSymbolActionOptions.push({
+                                    isComplete,
                                     label: `"${column.shortCaption}" ${suffix}`,
-                                    nextLabel: ' value',
+                                    nextLabel,
                                     value: suffix
                                 });
                             }
                         }
 
-                        if (noSymbol.length > 0) {
-                            results = results.concat(noSymbol);
+                        if (noSymbolActionOptions.length > 0) {
+                            actionOptions = actionOptions.concat(noSymbolActionOptions);
                         }
                     }
                 }
@@ -301,7 +311,7 @@ export class FilterAction implements Action {
                     }
 
                     columnSet.forEach(c => {
-                        results.push({
+                        actionOptions.push({
                             label: `"${c.shortCaption}" ...`,
                             value: `"${c.shortCaption}"`,
                             isComplete: false
@@ -309,7 +319,7 @@ export class FilterAction implements Action {
                     });
                 }
 
-                resolve(results);
+                resolve(actionOptions);
             });
         });
     }
@@ -339,13 +349,14 @@ export class FilterAction implements Action {
 
         if (filters.length > 0) {
             for (let i = 0; i < filters.length; i++) {
-                const columnName = filters[i].getColumnName();
+                const filter = filters[i];
+                const columnName = filter.getColumnName();
                 const column = parseColumns(columns, columnName).first();
                 const columnLabel = column ? column.shortCaption : columnName;
 
-                const operator = resolveSymbol(filters[i].getFilterType());
-                let rawValue = filters[i].getValue();
-                const display = this.getDisplayValue(columnLabel, operator, rawValue);
+                const operator = resolveSymbol(filter.getFilterType());
+                const rawValue = filter.getValue();
+                const display = this.getDisplayValue(columnLabel, filter.getFilterType(), rawValue);
 
                 results.push({
                     displayValue: display.displayValue,
@@ -359,11 +370,12 @@ export class FilterAction implements Action {
         return results;
     }
 
-    resolveValues(col: QueryColumn, operator: string, rawValue: any): Promise<Array<ActionOption>> {
+    resolveValues(col: QueryColumn, activeFilterType: Filter.IFilterType, rawValue: any): Promise<Array<ActionOption>> {
         return new Promise(resolve => {
             return this.resolveModel().then(model => {
                 let results: Array<ActionOption> = [];
                 const safeValue = rawValue ? rawValue.toString().toLowerCase() : '';
+                const operator = resolveSymbol(activeFilterType);
 
                 model.data
                     .reduce((prev, v) => {
@@ -419,19 +431,22 @@ export class FilterAction implements Action {
         });
     }
 
-    private getDisplayValue(columnName: string, operator: string, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
+    private getDisplayValue(columnName: string, filterType: Filter.IFilterType, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
         let isReadOnly = false;
 
-        let display : string;
-        let type = Filter.getFilterTypeForURLSuffix(operator);
-        if (type && type.isMultiValued()) {
-            if (rawValue instanceof String) {
+        let display: string;
+
+        if (!filterType.isDataValueRequired()) {
+            // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)
+        }
+        else if (filterType.isMultiValued()) {
+            if (Utils.isString(rawValue)) {
                 // TODO: port the IFilterType.parseValue to labkey-api-js
-                rawValue = rawValue.split(type.getMultiValueSeparator());
+                rawValue = rawValue.split(filterType.getMultiValueSeparator());
             }
 
-            if (!(rawValue instanceof Array)) {
-                throw new Error("Expected '" + type.getMultiValueSeparator() + "' string or an Array of values, got: " + rawValue);
+            if (!Utils.isArray(rawValue)) {
+                throw new Error("Expected '" + filterType.getMultiValueSeparator() + "' string or an Array of values, got: " + rawValue);
             }
 
             // TODO: This is just a stopgap to prevent rendering crazy long IN clauses. Pretty much any solution besides
@@ -443,14 +458,19 @@ export class FilterAction implements Action {
             else {
                 display = rawValue.join(', ');
             }
-
         }
         else {
-            display = ""+rawValue;
+            display = '' + rawValue;
+        }
+
+        const displayParts = [columnName, resolveSymbol(filterType)];
+
+        if (display) {
+            displayParts.push(display);
         }
 
         return {
-            displayValue: [columnName, operator, display].join(' '),
+            displayValue: displayParts.join(' '),
             isReadOnly
         };
     }

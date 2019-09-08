@@ -162,7 +162,17 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.
  * @returns {string}
  */
 function resolveSymbol(filterType: Filter.IFilterType): string {
-    return filterType.getDisplaySymbol() == null ? filterType.getURLSuffix() : filterType.getDisplaySymbol();
+    const symbol = filterType.getDisplaySymbol();
+    if (symbol) {
+        return symbol;
+    }
+
+    const displayText = filterType.getDisplayText();
+    if (displayText) {
+        return displayText;
+    }
+
+    return filterType.getURLSuffix();
 }
 
 export class FilterAction implements Action {
@@ -288,9 +298,10 @@ export class FilterAction implements Action {
                                 });
                             }
                             else if (suffix) {
+                                const text = type.getDisplayText() ? type.getDisplayText() : suffix;
                                 noSymbolActionOptions.push({
                                     isComplete,
-                                    label: `"${column.shortCaption}" ${suffix}`,
+                                    label: `"${column.shortCaption}" ${text.toLowerCase()}`,
                                     nextLabel,
                                     value: suffix
                                 });
@@ -434,7 +445,8 @@ export class FilterAction implements Action {
     private getDisplayValue(columnName: string, filterType: Filter.IFilterType, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
         let isReadOnly = false;
 
-        let display: string;
+        let value: string;
+        let displayParts = [columnName, resolveSymbol(filterType)];
 
         if (!filterType.isDataValueRequired()) {
             // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)
@@ -452,21 +464,19 @@ export class FilterAction implements Action {
             // TODO: This is just a stopgap to prevent rendering crazy long IN clauses. Pretty much any solution besides
             // showing all the values or this would be preferred. See 28884.
             if (rawValue.length > 3) {
-                display = `(${rawValue.length} values)`;
+                value = `(${rawValue.length} values)`;
                 isReadOnly = true;
             }
             else {
-                display = rawValue.join(', ');
+                value = rawValue.join(', ');
             }
         }
         else {
-            display = '' + rawValue;
+            value = '' + rawValue;
         }
 
-        const displayParts = [columnName, resolveSymbol(filterType)];
-
-        if (display) {
-            displayParts.push(display);
+        if (value) {
+            displayParts.push(value);
         }
 
         return {

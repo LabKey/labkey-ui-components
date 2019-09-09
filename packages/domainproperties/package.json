@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.33-fb-parentAliases.5",
+  "version": "0.0.33-fb-parentAliases.6",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -37,10 +37,10 @@
     "@fortawesome/fontawesome-svg-core": "1.2.19",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@glass/base": "0.15.1-fb-parentAliases.4",
+    "@glass/base": "0.15.1-fb-parentAliases.5",
     "react-beautiful-dnd": "11.0.3",
-    "react-transition-group": "4.2.2",
-    "react-sticky": "6.0.3"
+    "react-sticky": "6.0.3",
+    "react-transition-group": "4.2.2"
   },
   "devDependencies": {
     "@types/react-beautiful-dnd": "11.0.2"

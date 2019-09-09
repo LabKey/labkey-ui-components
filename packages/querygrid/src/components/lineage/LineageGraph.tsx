@@ -9,9 +9,9 @@ import { ActionURL } from '@labkey/api'
 import { AppURL, LoadingSpinner, QueryGridModel, SchemaQuery, SVGIcon, Theme } from '@glass/base'
 
 import { LineageNodeList, LineageSummary } from "./LineageSummary";
-import { ILineageGroupingOptions, Lineage, LineageDirections, LineageFilter, LineageGroupingOptions, LineageNode, LineageOptions } from "./models";
+import { ILineageGroupingOptions, Lineage, LineageFilter, LineageGroupingOptions, LineageNode, LineageOptions } from "./models";
 import { VisGraphClusterNode, VisGraphCombinedNode, VisGraphNode, VisGraphOptions, LineageNodeCollection, createLineageNodeCollections } from "./vis/VisGraphGenerator";
-import { DEFAULT_LINEAGE_DISTANCE } from "./constants";
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
 import { VisGraph } from "./vis/VisGraph";
 import { getStateQueryGridModel } from "../../models";
 import { gridInit } from '../../actions';
@@ -25,7 +25,7 @@ const requiredColumns = List(['Run']);
 interface LinageGraphProps {
     lsid: string
     navigate: (node: VisGraphNode) => any
-    members?: LineageDirections,
+    members?: LINEAGE_DIRECTIONS,
     distance?: number,
     filters?: List<LineageFilter>
     filterIn?: boolean

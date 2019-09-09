@@ -7,8 +7,7 @@ import { List } from 'immutable';
 import { BsStyleTypes, Button } from 'react-bootstrap';
 import { AppURL, GridColumn } from "@glass/base";
 
-import { LineageDirections } from "./models";
-import { DEFAULT_LINEAGE_DISTANCE } from "./constants";
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
 
 interface TagProps {
     bsStyle?: BsStyleTypes
@@ -31,7 +30,7 @@ export const LINEAGE_GRID_COLUMNS = List([
         cell: (name: string, node: Map<string, any>) => {
             const indent = node.get('distance') * 10;
             const dupeCount = node.get('duplicateCount');
-            const isParents = node.get('membersShown') === LineageDirections.Parent;
+            const isParents = node.get('membersShown') === LINEAGE_DIRECTIONS.Parent;
             const nodeDistance = node.get('distance');
 
             return (
@@ -61,7 +60,7 @@ export const LINEAGE_GRID_COLUMNS = List([
             const gen = (distance > 1) ? " generations" : " generation";
 
             return distance === 0 ? distance :
-                (node.get('membersShown') === LineageDirections.Parent ?
+                (node.get('membersShown') === LINEAGE_DIRECTIONS.Parent ?
                     <span title={distance + gen + " above seed"}>{distance}</span> :
                     <span title={distance + gen + " below seed"}>{distance}</span>)
         }
@@ -76,8 +75,8 @@ export const LINEAGE_GRID_COLUMNS = List([
                 seeds: lsid,
                 distance: lineageDistance ? lineageDistance : DEFAULT_LINEAGE_DISTANCE
             });
-            const parentUrl = baseURL.addParam('members', LineageDirections.Parent);
-            const childrenUrl = baseURL.addParam('members', LineageDirections.Children);
+            const parentUrl = baseURL.addParam('members', LINEAGE_DIRECTIONS.Parent);
+            const childrenUrl = baseURL.addParam('members', LINEAGE_DIRECTIONS.Children);
             const children = node.get('children');
             const parents = node.get('parents');
             const membersShown = node.get('membersShown');
@@ -86,7 +85,7 @@ export const LINEAGE_GRID_COLUMNS = List([
             return (
                 <div className="text-nowrap">
                     {parents.size > 0 ?
-                        ((membersShown === LineageDirections.Parent && nodeDistance === 0) ? (
+                        ((membersShown === LINEAGE_DIRECTIONS.Parent && nodeDistance === 0) ? (
                             <Button bsSize="xs" bsStyle="primary" className="btn-seed" disabled>
                                 <span className="fa fa-arrow-up"/>
                             </Button>
@@ -107,7 +106,7 @@ export const LINEAGE_GRID_COLUMNS = List([
                     }
                     <span style={{paddingRight: "5px"}}>&nbsp;</span>
                     {children.size > 0 ?
-                        ((membersShown === LineageDirections.Children && nodeDistance === 0) ? (
+                        ((membersShown === LINEAGE_DIRECTIONS.Children && nodeDistance === 0) ? (
                             <Button bsSize="xs" bsStyle="primary" className="btn-seed" disabled>
                                 <span className="fa fa-arrow-down"/>
                             </Button>

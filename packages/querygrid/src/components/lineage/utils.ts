@@ -5,7 +5,8 @@
 import { List, Map, OrderedSet, Set } from 'immutable'
 import { imageURL, Theme } from "@glass/base";
 
-import { LineageGroupingGenerations, ILineageGroupingOptions, LineageDirections, LineageLink, LineageNode } from './models'
+import { ILineageGroupingOptions, LineageLink, LineageNode } from './models'
+import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from "./constants";
 
 export function applyMultiLineLabel(name: string, cpasType: string, isBold?: boolean): string {
     let cpasTypeEnd = cpasType ? cpasType.substring(cpasType.lastIndexOf(':') + 1): '';
@@ -58,7 +59,7 @@ function imageFromIdentifier(iconURL: string, isSeed: boolean, isSelected: boole
  * Processes each depth for the graph of `nodes`. Returns a List of OrderedSet's for each depth. `options`
  * can be supplied which modify how depth processing occurs.
  */
-export function processDepth(options: ILineageGroupingOptions, nodes: Map<string, LineageNode>, lsid: string, dir: LineageDirections): List<OrderedSet<string>> {
+export function processDepth(options: ILineageGroupingOptions, nodes: Map<string, LineageNode>, lsid: string, dir: LINEAGE_DIRECTIONS): List<OrderedSet<string>> {
     let depths = List<OrderedSet<string>>().asMutable();
     let processed = Set<string>().asMutable();
 
@@ -71,18 +72,18 @@ export function processDepth(options: ILineageGroupingOptions, nodes: Map<string
  * This is a recursive function that will populate the `depths` List from `nodes` walking the graph in the `dir`
  * specified. Each depth is an OrderedSet of LSIDs found at that depth.
  */
-function _processDepth(options: ILineageGroupingOptions, nodes: Map<string, LineageNode>, lsid: string, depths: List<OrderedSet<string>>, processed: Set<string>, depth: number, dir: LineageDirections): void {
+function _processDepth(options: ILineageGroupingOptions, nodes: Map<string, LineageNode>, lsid: string, depths: List<OrderedSet<string>>, processed: Set<string>, depth: number, dir: LINEAGE_DIRECTIONS): void {
 
     if (processed.has(lsid)) {
         return;
     }
 
     // nearest only examines the first parent and child generations (depth = 1) from seed
-    if (options && options.generations === LineageGroupingGenerations.Nearest && depth + 1 > 1) {
+    if (options && options.generations === LINEAGE_GROUPING_GENERATIONS.Nearest && depth + 1 > 1) {
         return;
     }
     // specific will examine parent and child generations to the depths specified from seed
-    else if (options && options.generations === LineageGroupingGenerations.Specific && depth + 1 > (dir === LineageDirections.Parent ? options.parentDepth: options.childDepth) ) {
+    else if (options && options.generations === LINEAGE_GROUPING_GENERATIONS.Specific && depth + 1 > (dir === LINEAGE_DIRECTIONS.Parent ? options.parentDepth: options.childDepth) ) {
         return;
     }
 
@@ -108,7 +109,7 @@ function _processDepth(options: ILineageGroupingOptions, nodes: Map<string, Line
         });
 
         // if generations = 'multi' then as soon as we find a depth that has multiple nodes then we are done
-        if (options && options.generations === LineageGroupingGenerations.Multi && depthSet.size > 1) {
+        if (options && options.generations === LINEAGE_GROUPING_GENERATIONS.Multi && depthSet.size > 1) {
             return;
         }
 
@@ -119,7 +120,7 @@ function _processDepth(options: ILineageGroupingOptions, nodes: Map<string, Line
 }
 
 
-export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LineageDirections, maxDistance: number) : List<LineageNode> {
+export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number) : List<LineageNode> {
     let nodeList = List<LineageNode>().asMutable();
     nodeList.push(nodes.get(lsid).set('distance', 0));
 
@@ -133,7 +134,7 @@ export function getLineageDepthFirstNodeList(nodes: Map<string, LineageNode>, ls
 }
 
 
-function _getDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LineageDirections, maxDistance: number, distance: number) : List<LineageNode> {
+function _getDepthFirstNodeList(nodes: Map<string, LineageNode>, lsid: string, direction: LINEAGE_DIRECTIONS, maxDistance: number, distance: number) : List<LineageNode> {
     let nodeList = List<LineageNode>().asMutable();
     const nextNodes: List<LineageLink> = nodes.getIn([lsid, direction]);
     if (distance <= maxDistance) {

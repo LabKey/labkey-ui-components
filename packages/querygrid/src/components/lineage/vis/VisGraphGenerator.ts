@@ -6,16 +6,9 @@ import { List, Map, Record } from 'immutable'
 import { Filter, Utils } from '@labkey/api'
 import { DataSet, Edge, Network, Node } from 'vis'
 
-import {
-    LineageGroupingGenerations,
-    LineageGroupingOptions,
-    ILineageGroupingOptions,
-    LineageDirections,
-    LineageLink,
-    LineageNode,
-    LineageResult
-} from '../models'
+import { LineageGroupingOptions, ILineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models'
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils'
+import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from "../constants";
 
 export const DEFAULT_EDGE_PROPS = {
     arrows: {
@@ -211,10 +204,10 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
 
     result.mergedIn.forEach(startLsid => {
         // parents
-        processNodes(result.seed, startLsid, nodes, grouping, LineageDirections.Parent, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        processNodes(result.seed, startLsid, nodes, grouping, LINEAGE_DIRECTIONS.Parent, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
 
         // children
-        processNodes(result.seed, startLsid, nodes, grouping, LineageDirections.Children, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
+        processNodes(result.seed, startLsid, nodes, grouping, LINEAGE_DIRECTIONS.Children, visEdges, visNodes, combinedNodes, nodesInCombinedNode);
     });
 
     return new VisGraphOptions({
@@ -286,7 +279,7 @@ export function generate(result: LineageResult, grouping?: ILineageGroupingOptio
  *     - create edges from the node to all of edge targets
  */
 function processNodes(seed: string, startLisd: string, nodes: Map<string, LineageNode>,
-                      options: ILineageGroupingOptions, dir: LineageDirections,
+                      options: ILineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
                       visEdges: { [p: string]: Edge },
                       visNodes: { [p: string]: VisGraphNode|VisGraphCombinedNode },
                       combinedNodes: {[key:string]: VisGraphCombinedNode},
@@ -300,7 +293,7 @@ function processNodes(seed: string, startLisd: string, nodes: Map<string, Lineag
 }
 
 function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNode>,
-                       options: ILineageGroupingOptions, dir: LineageDirections,
+                       options: ILineageGroupingOptions, dir: LINEAGE_DIRECTIONS,
                        visEdges: {[key:string]: Edge},
                        visNodes: {[key:string]: VisGraphNode|VisGraphCombinedNode},
                        combinedNodes: {[key:string]: VisGraphCombinedNode},
@@ -331,20 +324,20 @@ function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNod
 
     if (options) {
         // Nearest only examines the first parent and child generations (depth = 1) from seed
-        if (options.generations === LineageGroupingGenerations.Nearest && depth + 1 > 1) {
+        if (options.generations === LINEAGE_GROUPING_GENERATIONS.Nearest && depth + 1 > 1) {
             // console.log("  ".repeat(depth) + "nearest. stop");
             return;
         }
 
         // Specific will examine parent and child generations to the depths specified from seed
-        if (options.generations === LineageGroupingGenerations.Specific && depth + 1 > (dir === LineageDirections.Parent ? options.parentDepth: options.childDepth) ) {
+        if (options.generations === LINEAGE_GROUPING_GENERATIONS.Specific && depth + 1 > (dir === LINEAGE_DIRECTIONS.Parent ? options.parentDepth: options.childDepth) ) {
             // console.log("  ".repeat(depth) + "specific depth. stop");
             return;
         }
 
         // Multi will stop when we hit a depth with multiple nodes.
         // NOTE: this checks the previous depth so any basic nodes at this depth will be created but it's edges won' be traversed.
-        if (options.generations === LineageGroupingGenerations.Multi) {
+        if (options.generations === LINEAGE_GROUPING_GENERATIONS.Multi) {
             let currentDepthSize = 0;
             if (depth > 0 && depthSets.length >= depth)
                 currentDepthSize = Object.keys(depthSets[depth-1]).length;
@@ -357,7 +350,7 @@ function _processNodes(seed: string, lsid: string, nodes: Map<string, LineageNod
 
     // examine the edges of the node in the desired direction
     let queue = [];
-    let edges = dir == LineageDirections.Parent ? node.parents : node.children;
+    let edges = dir == LINEAGE_DIRECTIONS.Parent ? node.parents : node.children;
     if (edges.size > 0) {
 
         // depthSets contains a list of cousin nodes at each depth
@@ -487,7 +480,7 @@ function addEdges(lsid: string, targetId: string|undefined,
                   visEdges: {[key:string]: Edge},
                   edges: List<LineageLink>,
                   nodesInCombinedNode: {[key:string]: Array<string>},
-                  dir: LineageDirections,
+                  dir: LINEAGE_DIRECTIONS,
                   depth: number)
 {
     // if current node is in a combined node, use the combined node's id as the edge source
@@ -523,17 +516,17 @@ function addEdges(lsid: string, targetId: string|undefined,
  * Create an edge between fromId <- toId when dir === Parent.
  */
 function addEdge(visEdges: {[key:string]: Edge}, dir, fromId, toId, depth?: number) {
-    const edgeId = dir === LineageDirections.Children ? makeEdgeId(fromId, toId) : makeEdgeId(toId, fromId);
+    const edgeId = dir === LINEAGE_DIRECTIONS.Children ? makeEdgeId(fromId, toId) : makeEdgeId(toId, fromId);
     if (visEdges[edgeId] === undefined) {
-        //console.log("  ".repeat(depth) + "creating new edge: " + fromId + (dir === LineageDirections.Children ? " -> " : " <- ") + toId);
+        //console.log("  ".repeat(depth) + "creating new edge: " + fromId + (dir === LINEAGE_DIRECTIONS.Children ? " -> " : " <- ") + toId);
         visEdges[edgeId] = {
             id: edgeId,
-            from: dir === LineageDirections.Children ? fromId : toId,
-            to: dir === LineageDirections.Children ? toId : fromId,
+            from: dir === LINEAGE_DIRECTIONS.Children ? fromId : toId,
+            to: dir === LINEAGE_DIRECTIONS.Children ? toId : fromId,
         };
     }
     else {
-        //console.log("  ".repeat(depth) + "edge already exists: " + fromId + (dir === LineageDirections.Children ? " -> " : " <- ") + toId);
+        //console.log("  ".repeat(depth) + "edge already exists: " + fromId + (dir === LINEAGE_DIRECTIONS.Children ? " -> " : " <- ") + toId);
     }
 }
 

@@ -8,8 +8,8 @@ import { Link } from "react-router";
 import { List } from 'immutable'
 import { LoadingSpinner, SVGIcon } from '@glass/base'
 
-import { LineageDirections, LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from "./models";
-import { DEFAULT_LINEAGE_DISTANCE } from "./constants";
+import { LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from "./models";
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
 import { createLineageNodeCollections, getLineageNodeTitle, LineageNodeCollection } from "./vis/VisGraphGenerator";
 import { loadLineageIfNeeded } from "./actions";
 
@@ -63,7 +63,7 @@ export class LineageSummary extends React.Component<Props, any> {
         const nodesByType = createLineageNodeCollections(nodes);
         const groups = Object.keys(nodesByType).sort();
 
-        const title = direction === LineageDirections.Parent ? "Parents" : "Children";
+        const title = direction === LINEAGE_DIRECTIONS.Parent ? "Parents" : "Children";
 
         return <>
             {groups.map(groupName =>
@@ -105,9 +105,9 @@ export class LineageSummary extends React.Component<Props, any> {
         const hasBoth = !this.empty(parents) && !this.empty(children);
 
         return <>
-            {this.renderNodeList(LineageDirections.Parent, lineage, parents, highlightNode)}
+            {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, lineage, parents, highlightNode)}
             {hasBoth && <hr/>}
-            {this.renderNodeList(LineageDirections.Children, lineage, children, highlightNode)}
+            {this.renderNodeList(LINEAGE_DIRECTIONS.Children, lineage, children, highlightNode)}
         </>;
     }
 }

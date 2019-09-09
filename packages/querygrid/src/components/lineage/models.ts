@@ -5,25 +5,14 @@
 import { List, Map, Record } from 'immutable'
 import { GridColumn, QueryInfo } from '@glass/base'
 
-import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants'
+import {
+    DEFAULT_LINEAGE_DIRECTION,
+    DEFAULT_LINEAGE_DISTANCE,
+    LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS
+} from './constants'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator'
 import { LINEAGE_GRID_COLUMNS } from "./Tag";
-
-export enum LineageDirections {
-    Children = 'children',
-    Parent = 'parents'
-}
-
-export enum LineageGroupingGenerations {
-    /** Include all nodes from the seed available in the lineage response (which has it's own depth option). */
-    All = 'all',
-    /** Include all nodes from the seed until a depth is found that contains multiple nodes. */
-    Multi = 'multi',
-    /** Include only the immediately connected nodes from the seed. */
-    Nearest = 'nearest',
-    /** Include all nodes from the seed up to the {@link ILineageGroupingOptions.parentDepth} or {@link ILineageGroupingOptions.childDepth} specified. */
-    Specific = 'specific'
-}
 
 /**
  * After the raw lineage result has been filtered, ILineageGroupingOptions determines
@@ -32,22 +21,22 @@ export enum LineageGroupingGenerations {
  */
 export interface ILineageGroupingOptions {
     /** Determines when to stop traversing generations of nodes. */
-    generations?: LineageGroupingGenerations
-    /** When {@link generations} is {@link LineageGroupingGenerations.Specific}, include this many generations along the parent axis. */
+    generations?: LINEAGE_GROUPING_GENERATIONS
+    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the parent axis. */
     parentDepth?: number
-    /** When {@link generations} is {@link LineageGroupingGenerations.Specific}, include this many generations along the child axis. */
+    /** When {@link generations} is {@link LINEAGE_GROUPING_GENERATIONS.Specific}, include this many generations along the child axis. */
     childDepth?: number
     /** When the number of parent or children edges is greater than or equal to this threshold, create a combined node. */
     combineSize?: number
 }
 
 export class LineageGroupingOptions extends Record({
-    generations: LineageGroupingGenerations.All,
+    generations: LINEAGE_GROUPING_GENERATIONS.All,
     parentDepth: DEFAULT_LINEAGE_DISTANCE+1,
     childDepth: DEFAULT_LINEAGE_DISTANCE,
     combineSize: 6
 }) {
-    generations?: LineageGroupingGenerations;
+    generations?: LINEAGE_GROUPING_GENERATIONS;
     parentDepth?: number;
     childDepth?: number;
     combineSize?: number;
@@ -292,8 +281,8 @@ export class LineageResult extends Record({
             if (matched) {
                 // walk the parents/children edges, adding any matching nodes
                 return m.set(lsid, node.merge({
-                    parents: LineageResult.prune(node, oldNodes, LineageDirections.Parent, field, value, filterIn),
-                    children: LineageResult.prune(node, oldNodes, LineageDirections.Children, field, value, filterIn)
+                    parents: LineageResult.prune(node, oldNodes, LINEAGE_DIRECTIONS.Parent, field, value, filterIn),
+                    children: LineageResult.prune(node, oldNodes, LINEAGE_DIRECTIONS.Children, field, value, filterIn)
                 }));
             }
             else {
@@ -341,7 +330,7 @@ export class LineageResult extends Record({
     }
 
     private static prune(node: LineageNode, nodes: Map<string, LineageNode>,
-                         dir: LineageDirections, field: string, value: any, filterIn: boolean): List<{lsid: string, role: string}> {
+                         dir: LINEAGE_DIRECTIONS, field: string, value: any, filterIn: boolean): List<{lsid: string, role: string}> {
         let newTree = [];
         const edges: List<LineageLink> = node.get(dir);
         let walked: {[key:string]: string} = {};
@@ -354,7 +343,7 @@ export class LineageResult extends Record({
     }
 
     private static pruneEdge(edge: LineageLink, nodes: Map<string, LineageNode>,
-                             dir: LineageDirections, field: string, value: any, filterIn: boolean, walked: {[key:string]: string}): Array<{lsid: string, role: string}> {
+                             dir: LINEAGE_DIRECTIONS, field: string, value: any, filterIn: boolean, walked: {[key:string]: string}): Array<{lsid: string, role: string}> {
         let heritage = [];
         let lsid = edge.lsid;
         const toNode = nodes.get(lsid);
@@ -498,7 +487,7 @@ export class LineageGridModel extends Record({
     isLoaded: boolean;
     isLoading: boolean;
     maxRows: number;
-    members?: LineageDirections;
+    members?: LINEAGE_DIRECTIONS;
     message?: string;
     nodeCounts: Map<string, number>;
     pageNumber: number;
@@ -539,7 +528,7 @@ export class LineagePageModel extends Record({
     grid: LineageGridModel;
     lastLocation: string;
     seeds: List<string>;
-    members: LineageDirections;
+    members: LINEAGE_DIRECTIONS;
 
     constructor(values?: {[key:string]: any}) {
         super(values);

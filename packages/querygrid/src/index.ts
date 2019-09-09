@@ -123,8 +123,8 @@ import {
     importAssayRun,
     uploadAssayRunFiles
 } from './components/assay/actions'
-import { DEFAULT_LINEAGE_DISTANCE, DEFAULT_LINEAGE_DIRECTION } from './components/lineage/constants'
-import { Lineage, LineageDirections, LineageFilter, LineageOptions, LineageGroupingGenerations, LineageGridModel, LineagePageModel, LineageResult } from './components/lineage/models'
+import { DEFAULT_LINEAGE_DISTANCE, DEFAULT_LINEAGE_DIRECTION, LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
+import { Lineage, LineageFilter, LineageOptions, LineageGridModel, LineagePageModel, LineageResult } from './components/lineage/models'
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
 import { getLineageDepthFirstNodeList } from './components/lineage/utils';
 import { fetchLineage, getLineageNodeMetadata } from './components/lineage/actions';
@@ -274,9 +274,9 @@ export {
     DEFAULT_LINEAGE_DISTANCE,
     DEFAULT_LINEAGE_DIRECTION,
     LINEAGE_GRID_COLUMNS,
-    LineageGroupingGenerations,
+    LINEAGE_DIRECTIONS,
+    LINEAGE_GROUPING_GENERATIONS,
     Lineage,
-    LineageDirections,
     LineageFilter,
     LineageOptions,
     LineageGridModel,

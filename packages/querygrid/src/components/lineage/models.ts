@@ -111,14 +111,13 @@ export class LineageNodeMetadata extends Record ({
             created = selectRowsMetadata.getIn(['Created', 'value']);
 
         let aliases;
-        let label;
         if (selectRowsMetadata.has('Alias')) {
             aliases = selectRowsMetadata.get('Alias').map(alias => alias.get('displayValue'));
         }
 
         return new LineageNodeMetadata({
             displayType: queryInfo.queryLabel,
-            iconURL: queryInfo.iconURL,
+            iconURL: queryInfo.getIconURL(),
             description,
             date: created,
             aliases

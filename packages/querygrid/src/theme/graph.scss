@@ -1,0 +1,49 @@
+.graph-ct {
+  position: relative;
+  height: 100%;
+}
+
+.graph-controls {
+  .btn i.fa {
+    color: black;
+  }
+}
+
+.graph-control-pan {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  .graph-control-pan-up {
+    position: absolute;
+    bottom: 33px;
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    right: 37px;
+  }
+}
+
+.graph-control-settings {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.graph-control-zoom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.show-on-hover {
+  display: none;
+}
+
+.lineage-name:hover .show-on-hover {
+  display: initial;
+}
+
+.lineage-name:hover .hide-on-hover {
+  display: none;
+}

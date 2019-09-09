@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Add getIconURL helper for QueryInfo
+
 ### version 0.15.1
 *Released*: 6 September 2019
 * Add standard button classes to AddEntityButton

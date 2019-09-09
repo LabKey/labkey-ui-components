@@ -70,11 +70,13 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
         const { field, index, onChange } = this.props;
 
         return(
-            <>
-                {this.typeDependentOptions()}
-                <NameAndLinkingOptions index={index} field={field} onChange={onChange} />
-                <Row style={{height: '20px'}}/>
-            </>
+            <div className='domain-row-container'>
+                <div className='domain-row-handle'/>
+                <div className='domain-row-main'>
+                    {this.typeDependentOptions()}
+                    <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                </div>
+            </div>
         );
     }
 }

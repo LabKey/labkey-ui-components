@@ -362,7 +362,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
           >
             <input
               checked={false}
-              className="domain-field-float-left domain-field-checkbox"
+              className="domain-field-float-left"
               disabled={false}
               id="domainpropertiesrow-excludeFromShifting-1"
               name="domainpropertiesrow-excludeFromShifting"

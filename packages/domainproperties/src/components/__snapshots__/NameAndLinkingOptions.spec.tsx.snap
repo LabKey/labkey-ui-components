@@ -31,6 +31,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "shownInDetailsView": true,
       "shownInInsertView": true,
       "shownInUpdateView": true,
+      "visible": true,
       "dataType": Immutable.Record {
         "conceptURI": undefined,
         "display": "Text (String)",

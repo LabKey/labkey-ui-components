@@ -4,9 +4,18 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.34
+*Released*: 9 September 2019
+* updated jest snaps
+
 ### version 0.0.33
 *Released*: 6 September 2019
-* updated jest snaps
+* Sticky field headers
+* Drag n drop handlers and updated drag n drop styling
+* Expand row on type or name field click
+* Updated header and empty domain state
+* Search field and handler
+* Remove attachment and file options where not applicable
 
 ### version 0.0.32
 *Released*: 3 September 2019

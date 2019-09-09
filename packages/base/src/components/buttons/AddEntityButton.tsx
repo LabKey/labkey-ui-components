@@ -38,7 +38,7 @@ export class AddEntityButton extends React.Component<AddEntityButtonProps, any> 
         return (
             <div className={containerClass}>
                 <div className={buttonClass}>
-                    <span className="container--action-button" onClick={onClick}>
+                    <span className="container--action-button btn btn-default" onClick={onClick}>
                         <i className="fa fa-plus-circle container--addition-icon"/> Add {entity}
                     </span>
                     {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle}/> : '' }

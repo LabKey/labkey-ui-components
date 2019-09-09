@@ -4,8 +4,12 @@
 }
 
 .domain-form-hdr-row {
-  margin: 0 0 5px 5px !important;
+  margin: 0 0 5px 40px !important;
   color: $gray;
+};
+
+.domain-form-hdr-margins {
+  padding: 0 0 15px 0;
 };
 
 .domain-form-search {
@@ -17,47 +21,67 @@
 }
 
 .domain-field-row {
-  border: 1px solid $gray-border;
+  border: 1px solid;
   border-radius: 2px;
   margin: 0 0 20px 0;
-  padding: 13px 10px 5px 15px;
+  background-color: white;
+  outline: none;
+};
+
+.domain-row-border-default {
+  border-color: $gray-border;
   box-shadow: inset 0 1px 3px 2px $gray-shadow;
-  background-color: white;
-};
+}
 
-.domain-field-row-warning {
-  border: 1px solid $yellow-border;
-  border-radius: 2px;
-  margin: 0 0 20px 0;
-  padding: 13px 10px 5px 15px;
-  box-shadow: inset 0 0 5px 0 $yellow-shadow, 0 0 5px 0 $yellow-shadow;
-  background-color: white;
-};
-
-.domain-field-row-error {
-  border: 1px solid $red-border;
-  border-radius: 2px;
-  margin: 0 0 20px 0;
-  padding: 13px 10px 5px 15px;
+.domain-row-border-error {
+  border-color: $red-border;
   box-shadow: inset 0 0 5px 0 $red-shadow, 0 0 5px 0 $red-shadow;
-  background-color: white;
-};
+}
+
+.domain-row-border-warning {
+  border-color: $yellow-border;
+  box-shadow: inset 0 0 5px 0 $yellow-shadow, 0 0 5px 0 $yellow-shadow;
+}
+
+.domain-row-border-dragging {
+  border-color: $blue-border;
+  box-shadow: inset 0 1px 3px 2px $gray-shadow, 0 0 0 1px $blue-border
+}
+
+.domain-field-row .row {
+  margin-right: 0;
+  margin-left: 0;
+}
 
 .domain-field-checkbox {
-  padding-left: 25%;
-  width: 12px;
-  margin: 8px 0 0 0;
+  padding-left: 22%;
+  margin: 5px 15px 0 0;
 };
 
 .domain-field-details {
   color: $gray-dark;
-  margin: 5px 0 0 0px;
+  display: table-cell;
+  vertical-align: top;
+};
+
+.domain-field-buttons-expanded {
+  display: table-cell;
+  width: 290px;
+};
+
+.domain-field-buttons {
+  display: table-cell;
+  width: 42px;
+};
+
+.domain-field-details-container {
+  display: table;
+  padding-left: 0;
 };
 
 .domain-field-icon {
   color: $gray-light;
-  padding: 18px 12px 0 12px;
-  margin: -13px 0 0 0;
+  padding: 5px 5px 0 20px;
   display: inline-block;
 
   &:hover {
@@ -81,7 +105,7 @@
 }
 
 .domain-form-add-btn {
-  color: $brand-success;
+  /* testing class */
 }
 
 .domain-form-add-link {
@@ -105,12 +129,12 @@
 .domain-form-no-field-panel {
   height: 53px;
   margin: 25px 0px 20px 0px;
-  padding: 20px;
+  padding: 15px 20px;
   box-shadow: inset 0 1px 3px 2px $gray-shadow;
 }
 
 .domain-row-expanded {
-  background-color: $gray-shadow;
+  background-color: $gray-lighter;
   margin-right: 0;
 }
 
@@ -158,16 +182,16 @@
 }
 
 .domain-field-checkbox-label {
-  margin: 3px 5px 0 0 !important;
+  margin: 0 0 0 8px !important;
   color: gray;
-}
-
-.domain-field-checkbox {
-  margin: 7px 5px 0 0 !important;
 }
 
 .domain-field-float-left {
   float: left;
+}
+
+.domain-field-float-right {
+  float: right;
 }
 
 .domain-field-textarea {
@@ -227,5 +251,46 @@ span.domain-adv-phi {
 
 .domain-adv-checkbox {
   cursor: default
+}
+
+.domain-floating-hdr {
+  padding-top: 28px;
+  background-color: white;
+  height: 60px;
+}
+
+.domain-row-handle {
+  padding-left: 8px;
+  border-width: 0 1px 0 0;
+  border-style: solid;
+  border-color: $gray-border;
+  display: table-cell;
+  width: 30px;
+  vertical-align: middle;
+  background-color: $gray-shadow;
+}
+
+.domain-row-empty-handle {
+  width: 30px;
+  display: table-cell;
+  background-color: $gray-shadow;
+}
+
+.domain-row-name {
+  width: 90%
+}
+
+.domain-row-container {
+  display: table;
+  width: 100%;
+}
+
+.domain-row-container-expanded {
+  border-bottom: 1px solid lightgray;
+}
+
+.domain-row-main {
+  display: table-cell;
+  padding: 15px 2px 10px 0;
 }
 

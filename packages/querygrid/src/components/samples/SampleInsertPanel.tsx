@@ -699,6 +699,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const queryGridModel = this.getQueryGridModel();
 
         const sampleSet = insertModel.getTargetSampleSetName();
+        const importLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import').toHref() : '#';
 
         return (
             <>
@@ -708,7 +709,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                             <NavItem eventKey={'grid'}>
                                 Create from grid
                             </NavItem>
-                            <NavItem eventKey={'import'} href={AppURL.create('samples', sampleSet, 'import').toHref()}>
+                            <NavItem eventKey={'import'} href={importLink}>
                                 Import Samples from File
                             </NavItem>
                         </Nav>

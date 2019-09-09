@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.15.1
+*Released*: 6 September 2019
+* Add standard button classes to AddEntityButton
+
 ### version 0.15.0
 *Released*: 3 September 2019
 * move AssayProtocolModel (and related actions) from base to domainproperties

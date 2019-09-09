@@ -96,9 +96,9 @@ describe("<SampleSetDetailsPanel/>", () => {
         const nameExpVal = 'S-${genId}';
         const descVal = 'My sample set description.';
         const data = Map<string, any>(fromJS({
-            RowId: {value: 1},
-            NameExpression: {value: nameExpVal},
-            Description: {value: descVal}
+            rowId: 1,
+            nameExpression: nameExpVal,
+            description: descVal
         }));
 
         const component = (

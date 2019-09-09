@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.15.1",
+  "version": "0.15.2",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -79,5 +79,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "522a421ed38ca985a38208069243d6f8572beed3"
+  "gitHead": "593926a19694f0efde5fe9a450cabc594901360b"
 }

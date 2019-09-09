@@ -164,7 +164,7 @@ Array [
               >
                 <div>
                   <span
-                    className="container--action-button"
+                    className="container--action-button btn btn-default"
                     onClick={[Function]}
                   >
                     <i
@@ -403,7 +403,7 @@ Array [
               >
                 <div>
                   <span
-                    className="container--action-button"
+                    className="container--action-button btn btn-default"
                     onClick={[Function]}
                   >
                     <i

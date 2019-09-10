@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.14.0-fb-reporting.3",
+  "version": "0.14.0-fb-reporting.4",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",

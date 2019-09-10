@@ -16,7 +16,7 @@
 import * as React from 'react';
 import { Map, fromJS } from "immutable";
 import { storiesOf } from "@storybook/react";
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
+import { text, withKnobs } from '@storybook/addon-knobs';
 import { SampleSetDetailsPanel } from "../components/samples/SampleSetDetailsPanel";
 
 import './stories.scss'
@@ -27,14 +27,20 @@ storiesOf('SampleSetDetailsPanel', module)
         return <SampleSetDetailsPanel
             onCancel={() => console.log('Cancel clicked')}
             onComplete={() => console.log('Create clicked')}
-            nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
+            nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://www.labkey.org')}
         />
     })
     .add('for update', () => {
         const data = Map<string, any>(fromJS({
-            RowId: {value: 1},
-            Description: {value: 'The description for my existing sample set.'},
-            NameExpression: {value: 'S-${genId}-${randomId}'}
+            "lsid": "urn:lsid:labkey.com:SampleSet.Folder-6:Fruits",
+            "importAliases": {
+                "banana": "materialInputs/Fruits",
+                "apples": "materialInputs/Fruits"
+            },
+            "name": "Fruits",
+            "description": 'This is only a test...',
+            "nameExpression": 'S-${genId}-${randomId}',
+            "rowId": 1,
         }));
 
         return <SampleSetDetailsPanel

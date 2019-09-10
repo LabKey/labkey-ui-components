@@ -56,6 +56,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
               Format for Boolean Values
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="Format Strings"
               >
                 <span

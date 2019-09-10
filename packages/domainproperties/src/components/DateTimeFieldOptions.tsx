@@ -96,7 +96,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                     <Col xs={9}>
                         <input type='checkbox'
                                name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
-                               className='domain-field-float-left domain-field-checkbox'
+                               className='domain-field-float-left'
                                value='ExcludeFromShiftingOptions'
                                checked={excludeFromShifting}
                                onChange={this.onFieldChange}

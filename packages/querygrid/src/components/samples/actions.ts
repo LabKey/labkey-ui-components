@@ -20,6 +20,7 @@ import { buildURL, naturalSort, QueryColumn, SchemaQuery, SCHEMAS } from '@glass
 
 import {
     DisplayObject,
+    IParentOption,
     ISampleSetDetails,
     ISampleSetOption,
     SampleIdCreationModel,
@@ -101,6 +102,36 @@ function extractFromRow(row: Map<string, any>): ISampleSetOption {
     }
 }
 
+export function initSampleSetSelects(isUpdate: boolean, ssName: string, placeholderOption: IParentOption, prefix: string, ) :Promise<List<IParentOption>> {
+    return selectRows({
+        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName,
+        columns: 'LSID, Name, RowId'
+    }).then(results => {
+        const sampleSets = fromJS(results.models[results.key]);
+
+        let sets = List<IParentOption>();
+        sampleSets.forEach(row => {
+            const name = row.getIn(['Name', 'value']);
+            let label = placeholderOption && name === ssName ? placeholderOption.label : name;
+            sets = sets.push({
+                value: prefix + name,
+                label: label,
+                schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                query: name, // Issue 33653: query name is case-sensitive for some data inputs (sample parents)
+            });
+        });
+
+        if(!isUpdate) {
+            sets = sets.push(placeholderOption);
+        }
+
+        return sets.sortBy(p => p.label, naturalSort) as List<IParentOption>;
+    });
+}
+
+
+
 export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Partial<SampleIdCreationModel>> {
     return new Promise( (resolve) => {
 
@@ -160,6 +191,22 @@ export function createSampleSet(config: ISampleSetDetails): Promise<any> {
             params: config,
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
+        });
+    });
+}
+
+export function getSampleSet(config: ISampleSetDetails): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('experiment', 'getSampleSetApi.api'),
+            method: 'GET',
+            params: config,
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(Map(response));
             }),
             failure: Utils.getCallbackWrapper((response) => {
                 reject(response);

@@ -27,7 +27,7 @@ import {
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
     FLAG_CONCEPT_URI,
-    INT_RANGE_URI,
+    INT_RANGE_URI, LK_DOMAIN_HELP_URL,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     STRING_RANGE_URI
@@ -73,14 +73,30 @@ describe('DomainForm', () => {
 
     test('with empty domain form', () => {
         const domain = DomainDesign.create({});
-        const tree = renderer.create(
-            <DomainForm
-                domain={domain}
-                onChange={jest.fn()}
-            />
-        );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        const form  = mount(<DomainForm
+            domain={domain}
+            onChange={jest.fn()}
+        />);
+
+        // Empty panel
+        const emptyHdrMsg = form.find({className: "domain-form-no-field-panel panel panel-default"});
+        expect(emptyHdrMsg.length).toEqual(1);
+
+        // Add button
+        const findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
+        expect(findButton.length).toEqual(1);
+
+        // Search field
+        const searchField = form.find({className: 'form-control', placeholder: 'Search Fields'});
+        expect(searchField.length).toEqual(0);
+
+        // Help link
+        const helpLink = form.find({className: 'domain-field-float-right', href: LK_DOMAIN_HELP_URL});
+        expect(helpLink.length).toEqual(1);
+
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('with showHeader, helpNoun, and helpURL', () => {
@@ -313,7 +329,7 @@ describe('DomainForm', () => {
         />);
 
         // Add new row
-        let findButton = form.find({className: 'domain-form-add'});
+        let findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
         expect(findButton.length).toEqual(1);
         findButton.simulate('click');
 
@@ -453,6 +469,132 @@ describe('DomainForm', () => {
         expect(wrapper.find('.domain-form-add-link')).toHaveLength(0);
         expect(wrapper.find(DomainRow)).toHaveLength(1);
         wrapper.unmount();
+    });
+
+    test('domain form header and search', () => {
+        let fields = [];
+        fields.push({
+            name: 'abc_fieldname',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 0,
+            propertyURI: 'test'
+        });
+        fields.push({
+            name: 'ab_fieldname',
+            rangeURI: STRING_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test'
+        });
+        fields.push({
+            name: 'abcd_fieldname',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 2,
+            propertyURI: 'test'
+        });
+        fields.push({
+            name: 'fieldname_abcd',
+            rangeURI: STRING_RANGE_URI,
+            conceptURI: FLAG_CONCEPT_URI,
+            propertyId: 3,
+            propertyURI: 'test'
+        });
+
+        let domain = DomainDesign.create({
+            name: "Search Domain",
+            description: 'description',
+            domainURI: 'test',
+            domainId: 1,
+            fields: fields,
+            indices:[]
+        });
+
+        let updatedDomain;
+        const changeHandler = (newDomain, dirty) => {
+            updatedDomain = newDomain.merge({
+                name: 'updated'
+            }) as DomainDesign;
+        };
+
+        const helpURL = "https://www.labkey.org/home/project-begin.view?";
+        const form = mount(<DomainForm
+            helpURL={helpURL}
+            domain={domain}
+            onChange={changeHandler}
+        />);
+
+        // Check help link
+        const helpLink = form.find({className: 'domain-field-float-right', href: helpURL});
+        expect(helpLink.length).toEqual(1);
+
+        // Search field test
+        const searchField = form.find({className: 'form-control', placeholder: 'Search Fields'});
+        expect(searchField.length).toEqual(1);
+        searchField.props().onChange({target: {value: "abcd"}});
+
+        // Update state.  This is controlled outside glass component so set it here.
+        form.setProps({domain: updatedDomain, onChange: changeHandler});
+
+        let filteredFields = form.find({className: 'domain-field-row domain-row-border-default'});
+        expect(filteredFields.length).toEqual(2);
+
+        searchField.props().onChange({target: {value: "abc"}});
+        form.setProps({domain: updatedDomain, onChange: changeHandler});
+        filteredFields = form.find({className: 'domain-field-row domain-row-border-default'});
+        expect(filteredFields.length).toEqual(3);
+
+        searchField.props().onChange({target: {value: ""}});
+        form.setProps({domain: updatedDomain, onChange: changeHandler});
+        filteredFields = form.find({className: 'domain-field-row domain-row-border-default'});
+        expect(filteredFields.length).toEqual(4);
+
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
+    });
+
+    test('domain form no file or attachment type', () => {
+        let domain = DomainDesign.create({
+            name: "Domain Name",
+            description: 'description',
+            domainURI: 'test',
+            domainId: 1,
+            fields: [],
+            allowFileLinkProperties: false,
+            allowAttachmentProperties: false,
+            allowFlagProperties: false,
+            indices:[]
+        });
+
+        let updatedDomain;
+        const changeHandler = (newDomain, dirty) => {
+            updatedDomain = newDomain.merge({
+                name: 'updated'
+            }) as DomainDesign;
+        };
+
+        const form  = mount(<DomainForm
+            domain={domain}
+            onChange={changeHandler}
+        />);
+
+        // Add new row
+        let findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
+        expect(findButton.length).toEqual(1);
+        findButton.simulate('click');
+
+        // Update state.  This is controlled outside glass component so set it here.
+        form.setProps({domain: updatedDomain, onChange: changeHandler});
+
+        // Get type field and verify available options
+        let typeField = form.find({id: createFormInputId(DOMAIN_FIELD_TYPE, 0), className: 'form-control'});
+        expect(typeField.length).toEqual(1);
+        expect(typeField.children().length).toEqual(9);  // Check number of options
+        expect(typeField.find({value: 'int'}).length).toEqual(1);  // sanity check
+        expect(typeField.find({value: 'flag'}).length).toEqual(0);
+        expect(typeField.find({value: 'fileLink'}).length).toEqual(0);
+        expect(typeField.find({value: 'attachment'}).length).toEqual(0);
+
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 });
 

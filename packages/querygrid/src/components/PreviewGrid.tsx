@@ -97,7 +97,6 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, PreviewGr
             }).then(({key, models, orderedModels}) => {
                 const rows = fromJS(models[key]);
                 const data = List(orderedModels[key]).map((id) => rows.get(id)).toList();
-                console.log(data.toJS()[0]);
                 this.setState(() => ({
                     queryInfo,
                     data,

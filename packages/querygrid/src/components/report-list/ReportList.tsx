@@ -207,9 +207,10 @@ export class ReportListItem extends React.PureComponent<ReportListItemProps> {
 
         const iconSrc = ICONS[type];
         const iconClassName = "report-list-item__icon";
+        const hasCustomIcon = icon.indexOf('reports-thumbnail.view') > -1;
         let iconEl = <Image className={iconClassName} src={icon} />;
 
-        if (iconSrc !== undefined) {
+        if (iconSrc !== undefined && !hasCustomIcon) {
             iconEl = <SVGIcon className={iconClassName} height={null} iconDir="_images" iconSrc={iconSrc}/>
         } else if (iconCls) {
             iconEl = <span className={`${iconClassName} ${iconCls} fa-4x`} />

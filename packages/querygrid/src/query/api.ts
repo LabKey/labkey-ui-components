@@ -75,8 +75,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
     return queryDetailsCache[key];
 }
 
-// Exported for tests.
-export function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
+function applyQueryMetadata(rawQueryInfo: any): QueryInfo {
     let queryInfo;
     const metadata = getQueryMetadata();
 
@@ -394,8 +393,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
     });
 }
 
-// Exported for tests
-export function handle132Response(json): Promise<any> {
+function handle132Response(json): Promise<any> {
     // TODO: Don't make this a promise. The only async thing this method does is call urlResolver.resolveSelectRows,
     //  which is a promise, but also does not need to be, nor should be.
     return new Promise((resolve) => {

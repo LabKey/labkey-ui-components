@@ -10,20 +10,62 @@ interface PreviewGridProps {
     numRows: number,
 }
 
-export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
+interface PreviewGridState {
+    queryInfo: QueryInfo,
+    data: any,
+    loading: boolean,
+    error: string,
+}
+
+type StatelessPreviewGridProps = PreviewGridProps & PreviewGridState;
+
+export class StatelessPreviewGrid extends React.PureComponent<StatelessPreviewGridProps> {
+    render() {
+        const { loading, data, error, queryInfo, numCols, numRows, schemaQuery } = this.props;
+        let body = <LoadingSpinner />;
+
+        if (loading === false && data !== null) {
+            const { viewName } = schemaQuery;
+            const allColumns = queryInfo.getDisplayColumns(viewName);
+            const columns = allColumns.slice(0, numCols).toList();
+            const stats = `Previewing first ${numRows} rows and ${columns.size} of ${allColumns.size} columns.`;
+            body = (
+                <>
+                    <p>{stats}</p>
+                    <Grid bordered={true} columns={columns} data={data} />
+                </>
+            );
+        } else if (loading === false && error !== null) {
+            body = (
+                <>
+                    <Alert bsStyle="danger">
+                        {error}
+                    </Alert>
+                </>
+            );
+        }
+
+        return (
+            <div className="preview-grid">
+                {body}
+            </div>
+        );
+    }
+}
+
+export class PreviewGrid extends React.PureComponent<PreviewGridProps, PreviewGridState> {
     constructor(props) {
         super(props);
 
         this.state = {
             queryInfo: null,
             data: null,
-            columns: null,
             loading: false,
             error: null,
         }
     }
 
-    fetchData() {
+    fetchData = () => {
         this.setState(() => ({ loading: true }));
         const { numCols, numRows } = this.props;
         const { schemaName, queryName, viewName }= this.props.schemaQuery;
@@ -55,52 +97,22 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, any> {
             }).then(({key, models, orderedModels}) => {
                 const rows = fromJS(models[key]);
                 const data = List(orderedModels[key]).map((id) => rows.get(id)).toList();
+                console.log(data.toJS()[0]);
                 this.setState(() => ({
                     queryInfo,
                     data,
-                    columns,
                     loading: false,
                     error: null,
                 }));
             }).catch(handleFailure);
         }).catch(handleFailure);
-    }
+    };
 
     componentDidMount(): void {
         this.fetchData();
     }
 
     render() {
-        const { loading, data, error } = this.state;
-        let body = <LoadingSpinner />;
-
-        if (loading === false && data !== null) {
-            const { numCols, numRows } = this.props;
-            const { viewName }= this.props.schemaQuery;
-            const { queryInfo } = this.state;
-            const allColumns = queryInfo.getDisplayColumns(viewName);
-            const columns = allColumns.slice(0, numCols);
-            const stats = `Previewing first ${numRows} rows and ${columns.size} of ${allColumns.size} columns.`;
-            body = (
-                <>
-                    <p>{stats}</p>
-                    <Grid bordered={true} columns={columns} data={data} />
-                </>
-            );
-        } else if (loading === false && error !== null) {
-            body = (
-                <>
-                    <Alert bsStyle="danger">
-                        {error}
-                    </Alert>
-                </>
-            );
-        }
-
-        return (
-            <div className="preview-grid">
-                {body}
-            </div>
-        );
+        return <StatelessPreviewGrid {...this.props} {...this.state} />;
     }
 }

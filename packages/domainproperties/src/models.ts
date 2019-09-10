@@ -143,6 +143,9 @@ interface IDomainDesign {
     description?: string
     domainURI: string
     domainId: number
+    allowFileLinkProperties: boolean
+    allowAttachmentProperties: boolean
+    allowFlagProperties: boolean
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
@@ -153,6 +156,9 @@ export class DomainDesign extends Record({
     description: undefined,
     domainURI: undefined,
     domainId: null,
+    allowFileLinkProperties: true,
+    allowAttachmentProperties: true,
+    allowFlagProperties: true,
     fields: List<DomainField>(),
     indices: List<DomainIndex>(),
     domainException: undefined
@@ -161,6 +167,9 @@ export class DomainDesign extends Record({
     description: string;
     domainURI: string;
     domainId: number;
+    allowFileLinkProperties: boolean;
+    allowAttachmentProperties: boolean;
+    allowFlagProperties: boolean;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
     domainException: DomainException;
@@ -284,7 +293,7 @@ export interface IDomainField {
     shownInDetailsView?: boolean
     shownInInsertView?: boolean
     shownInUpdateView?: boolean
-
+    visible: boolean
     dataType: PropDescType
     lookupQueryValue: string;
     lookupType: PropDescType
@@ -322,7 +331,7 @@ export class DomainField extends Record({
     shownInDetailsView: true,
     shownInInsertView: true,
     shownInUpdateView: true,
-
+    visible: true,
     dataType: undefined,
     lookupQueryValue: undefined,
     lookupType: undefined,
@@ -359,7 +368,7 @@ export class DomainField extends Record({
     shownInDetailsView?: boolean;
     shownInInsertView?: boolean;
     shownInUpdateView?: boolean;
-
+    visible: boolean;
     dataType: PropDescType;
     lookupQueryValue: string;
     lookupType: PropDescType;
@@ -431,6 +440,7 @@ export class DomainField extends Record({
         delete json.lookupType;
         delete json.original;
         delete json.updatedField;
+        delete json.visible;
 
         return json;
     }
@@ -497,10 +507,10 @@ function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
 }
 
-export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
+export function resolveAvailableTypes(field: DomainField, availableTypes: List<PropDescType>): List<PropDescType> {
     // field has not been saved -- display all propTypes
     if (field.isNew()) {
-        return PROP_DESC_TYPES;
+        return availableTypes;
     }
 
     // field has been saved -- display eligible propTypes
@@ -508,7 +518,7 @@ export function resolveAvailableTypes(field: DomainField): List<PropDescType> {
     const { rangeURI } = field.original;
 
     // field has been saved -- display eligible propTypes
-    return PROP_DESC_TYPES.filter((type) => {
+    return availableTypes.filter((type) => {
         if (type.isLookup()) {
             return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
         }

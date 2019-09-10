@@ -40,6 +40,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
+        "visible": true,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Integer",
@@ -440,6 +441,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
+        "visible": true,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Integer",
@@ -896,6 +898,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
+        "visible": true,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Integer",
@@ -1352,6 +1355,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "shownInDetailsView": true,
         "shownInInsertView": true,
         "shownInUpdateView": true,
+        "visible": true,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Integer",

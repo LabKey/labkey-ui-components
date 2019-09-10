@@ -57,6 +57,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
               Format Numeric Values
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="Format Strings"
               >
                 <span

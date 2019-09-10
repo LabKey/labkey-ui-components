@@ -57,6 +57,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
               Format for Dates
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="Format String"
               >
                 <span
@@ -186,6 +187,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
               Participant Date Shifting
               <LabelHelpTip
                 body={[Function]}
+                id="tooltip"
                 title="Participant Date Shifting"
               >
                 <span
@@ -360,7 +362,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
           >
             <input
               checked={false}
-              className="domain-field-float-left domain-field-checkbox"
+              className="domain-field-float-left"
               disabled={false}
               id="domainpropertiesrow-excludeFromShifting-1"
               name="domainpropertiesrow-excludeFromShifting"

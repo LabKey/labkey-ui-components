@@ -4,6 +4,9 @@
   "domainURI" : "urn:lsid:labkey.com:Study.Project-556:Study",
   "description" : null,
   "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
+  "allowFileLinkProperties": true,
+  "allowAttachmentProperties": false,
+  "allowFlagProperties": true,
   "fields" : [ {
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldText",
     "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",

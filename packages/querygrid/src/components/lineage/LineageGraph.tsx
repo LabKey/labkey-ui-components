@@ -30,6 +30,7 @@ interface LinageGraphProps {
     filters?: List<LineageFilter>
     filterIn?: boolean
     grouping?: ILineageGroupingOptions
+    hideLegacyLinks?: boolean
 }
 
 export class LineageGraph extends React.Component<LinageGraphProps, any> {
@@ -166,7 +167,7 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         const { selectedNodes, hoverNode } = this.state;
 
         if (!selectedNodes || selectedNodes.length == 0) {
-            return <em>nothing selected</em>;
+            return <em>Select a node from the graph to view the details.</em>;
         }
         else if (selectedNodes.length === 1) {
             const hoverNodeLsid = hoverNode && hoverNode.kind === 'node' && hoverNode.lineageNode && hoverNode.lineageNode.lsid;
@@ -187,14 +188,17 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         const lineageNode = node.lineageNode;
         const model = this.getNodeGridDataModel(lineageNode);
 
-        return <SelectedNodeDetail seed={seed}
-                                   node={lineageNode}
-                                   entityModel={model}
-                                   highlightNode={hoverNodeLsid}
-                                   isNodeInGraph={this.isNodeInGraph}
-                                   onNodeMouseOver={this.onSummaryNodeMouseOver}
-                                   onNodeMouseOut={this.onSummaryNodeMouseOut}
-                                   onNodeClick={this.onSummaryNodeClick}/>;
+        return <SelectedNodeDetail
+            seed={seed}
+            node={lineageNode}
+            entityModel={model}
+            highlightNode={hoverNodeLsid}
+            isNodeInGraph={this.isNodeInGraph}
+            onNodeMouseOver={this.onSummaryNodeMouseOver}
+            onNodeMouseOut={this.onSummaryNodeMouseOut}
+            onNodeClick={this.onSummaryNodeClick}
+            hideLegacyLinks={this.props.hideLegacyLinks}
+        />;
     }
 
     renderSelectedClusterNode(seed: string, hoverNodeLsid: string, node: VisGraphClusterNode) {
@@ -290,6 +294,7 @@ interface SelectedNodeProps {
     onNodeMouseOver?: (node: LineageNode) => void
     onNodeMouseOut?: (node: LineageNode) => void
     onNodeClick?: (node: LineageNode) => void
+    hideLegacyLinks?: boolean
 }
 
 // TODO: Refactor and share with ComponentDetailHOCImpl?
@@ -358,13 +363,12 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
     }
 
     render() {
-        const { seed, node, highlightNode } = this.props;
+        const { seed, node, highlightNode, hideLegacyLinks } = this.props;
         const url = node.url;
         const lineageUrl = url + '/lineage';
         const name = node.name;
         const isSeed = seed === node.lsid;
 
-        let iconURL = 'default';
         let description;
         let aliases;
         let displayType;
@@ -380,9 +384,6 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
         }
 
         const queryInfo = model.queryInfo;
-        if (queryInfo.iconURL)
-            iconURL = queryInfo.iconURL;
-
         let legacyRunLineageUrl;
         let legacyDetailsLineageUrl;
         const row = model.getRow();
@@ -410,7 +411,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                     <SVGIcon
                         iconDir={'_images'}
                         theme={Theme.ORANGE}
-                        iconSrc={iconURL}
+                        iconSrc={queryInfo.getIconURL()}
                         height="50px"
                         width="50px"/>
                 </i>
@@ -446,7 +447,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                 </div>
             </div>
 
-            {LABKEY.user && LABKEY.user.isAdmin && legacyRunLineageUrl && <div className="pull-right">
+            {!hideLegacyLinks && LABKEY.user && LABKEY.user.isAdmin && legacyRunLineageUrl && <div className="pull-right">
                 <small title='(admin only) old school lineage graphs, opens in new window'><em>
                     Legacy:&nbsp;
                     <a target='_blank' href={legacyRunLineageUrl} onClick={this.handleLinkClick}>run</a>

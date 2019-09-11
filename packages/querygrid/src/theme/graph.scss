@@ -35,15 +35,3 @@
   bottom: 0;
   left: 0;
 }
-
-.show-on-hover {
-  display: none;
-}
-
-.lineage-name:hover .show-on-hover {
-  display: initial;
-}
-
-.lineage-name:hover .hide-on-hover {
-  display: none;
-}

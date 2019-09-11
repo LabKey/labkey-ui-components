@@ -1,0 +1,16 @@
+
+.show-on-hover {
+  display: none;
+}
+
+.lineage-name:hover .show-on-hover {
+  display: initial;
+}
+
+.lineage-name:hover .hide-on-hover {
+  display: none;
+}
+
+.lineage-name h6 {
+  display: inline-block;
+}

@@ -233,7 +233,7 @@ export class LineageNodeList extends React.Component<LineageNodeListProps, Linea
     }
 
     render() {
-        const { title, nodes, listURL } = this.props;
+        const { title, nodes } = this.props;
         const { expanded } = this.state;
 
         let includeCollapseExpand = false;

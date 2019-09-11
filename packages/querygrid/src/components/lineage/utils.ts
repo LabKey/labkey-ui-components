@@ -36,10 +36,15 @@ export function getBackupImageFromLineageNode(lineageNode: LineageNode, isSeed: 
         iconURL = 'Samples';
     }
 
-    return imageFromIdentifier(iconURL, isSeed, isSelected);
+    // use labkey.org as a backup for images src
+    return 'https://labkey.org/_images/' + getImageNameWithTheme(iconURL, isSeed, isSelected);
 }
 
 function imageFromIdentifier(iconURL: string, isSeed: boolean, isSelected: boolean): string {
+    return imageURL('_images', getImageNameWithTheme(iconURL, isSeed, isSelected));
+}
+
+function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelected: boolean): string {
     // use seed and selected status to determine color of image used
     let theme = Theme.GRAY;
 
@@ -52,7 +57,7 @@ function imageFromIdentifier(iconURL: string, isSeed: boolean, isSelected: boole
 
     const suffix = theme === Theme.DEFAULT ? '' : '_' + Theme[theme];
 
-    return imageURL('_images', [iconURL, suffix, '.svg'].join('').toLowerCase());
+    return [iconURL, suffix, '.svg'].join('').toLowerCase();
 }
 
 /**

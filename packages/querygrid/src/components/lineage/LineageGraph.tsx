@@ -6,7 +6,7 @@ import * as OrigReact from 'react'
 import React from 'reactn'
 import { List } from 'immutable'
 import { ActionURL } from '@labkey/api'
-import { AppURL, LoadingSpinner, QueryGridModel, SchemaQuery, SVGIcon, Theme } from '@glass/base'
+import { Alert, AppURL, LoadingSpinner, QueryGridModel, SchemaQuery, SVGIcon, Theme } from '@glass/base'
 
 import { LineageNodeList, LineageSummary } from "./LineageSummary";
 import { ILineageGroupingOptions, Lineage, LineageFilter, LineageGroupingOptions, LineageNode, LineageOptions } from "./models";
@@ -236,6 +236,10 @@ class LineageGraphDisplay extends React.Component<LineageGraphDisplayProps, Line
         const { lineage, filters, filterIn, grouping } = this.props;
 
         if (lineage) {
+            if (lineage.error) {
+                return <Alert>{lineage.error}</Alert>
+            }
+
             const options = new LineageOptions({
                 filters,
                 filterIn,
@@ -442,7 +446,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
                 </div>
             </div>
 
-            {LABKEY.user.isAdmin && legacyRunLineageUrl && <div className="pull-right">
+            {LABKEY.user && LABKEY.user.isAdmin && legacyRunLineageUrl && <div className="pull-right">
                 <small title='(admin only) old school lineage graphs, opens in new window'><em>
                     Legacy:&nbsp;
                     <a target='_blank' href={legacyRunLineageUrl} onClick={this.handleLinkClick}>run</a>

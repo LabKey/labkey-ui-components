@@ -403,9 +403,11 @@ export class LineageOptions extends Record(LineageOptionDefaults) implements Lin
 export class Lineage extends Record({
     result: undefined,
     sampleStats: undefined,
+    error: undefined
 }) {
     result: LineageResult;
     sampleStats: any;
+    error?: string;
 
     constructor(values?: {[key:string]: any}) {
         super(values);

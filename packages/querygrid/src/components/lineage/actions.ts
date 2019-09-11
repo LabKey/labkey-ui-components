@@ -141,6 +141,11 @@ export function loadLineageIfNeeded(seed: string, distance?: number) {
                     result: updatedResult
                 }));
             }
+        })
+        .catch(reason => {
+            updateLineageResult(seed, new Lineage({
+                error: reason.message
+            }));
         });
 }
 

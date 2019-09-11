@@ -1364,6 +1364,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -1748,6 +1749,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -1907,6 +1909,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -2090,6 +2093,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -3759,6 +3763,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Format Numeric Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -4146,6 +4151,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -4305,6 +4311,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -5279,6 +5286,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -5623,6 +5631,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -5742,6 +5751,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -6664,6 +6674,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Format Numeric Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -7051,6 +7062,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -7210,6 +7222,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -8184,6 +8197,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -8568,6 +8582,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -8727,6 +8742,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -8910,6 +8926,7 @@ exports[`DomainForm domain form header and search 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -10275,6 +10292,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -10619,6 +10637,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -10738,6 +10757,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -10881,6 +10901,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -12183,6 +12204,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                                         Format Numeric Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -12570,6 +12592,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -12729,6 +12752,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -12912,6 +12936,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -15312,6 +15337,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Format Numeric Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -15699,6 +15725,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -15858,6 +15885,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -16832,6 +16860,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -17216,6 +17245,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -17375,6 +17405,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -18343,6 +18374,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -18727,6 +18759,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -18886,6 +18919,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -19836,6 +19870,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Format for Boolean Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -20160,6 +20195,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -20319,6 +20355,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -21269,6 +21306,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Format Numeric Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -21656,6 +21694,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -21815,6 +21854,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -22766,6 +22806,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Format for Dates
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format String"
                                                                         >
                                                                           <span
@@ -22895,6 +22936,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Participant Date Shifting
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Participant Date Shifting"
                                                                         >
                                                                           <span
@@ -23253,6 +23295,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -23412,6 +23455,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -24386,6 +24430,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Max Text Character Count
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Max Text Length"
                                                                         >
                                                                           <span
@@ -24770,6 +24815,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -24929,6 +24975,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -25990,6 +26037,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -26149,6 +26197,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -27234,6 +27283,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -27393,6 +27443,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -28454,6 +28505,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -28613,6 +28665,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -28796,6 +28849,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -29003,6 +29057,7 @@ exports[`DomainForm domain form with no fields 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -30673,6 +30728,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         Format Numeric Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -31060,6 +31116,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -31219,6 +31276,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -32195,6 +32253,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         Format for Boolean Values
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Format Strings"
                                                                         >
                                                                           <span
@@ -32519,6 +32578,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -32678,6 +32738,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -33753,6 +33814,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -33912,6 +33974,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -34999,6 +35062,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         Import Aliases
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="Import Aliases"
                                                                         >
                                                                           <span
@@ -35158,6 +35222,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                         URL
                                                                         <LabelHelpTip
                                                                           body={[Function]}
+                                                                          id="tooltip"
                                                                           title="URL"
                                                                         >
                                                                           <span
@@ -35341,6 +35406,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -35548,6 +35614,7 @@ exports[`DomainForm with empty domain form 1`] = `
                           buttonClass="domain-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
+                          helperTitle="More Info"
                           onClick={[Function]}
                         >
                           <div
@@ -35654,6 +35721,7 @@ exports[`DomainForm with showHeader, helpNoun, and helpURL 1`] = `
                Add 
               Field
             </span>
+            
           </div>
         </div>
       </div>

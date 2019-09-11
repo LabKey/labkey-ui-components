@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.34
+*Released*: 9 September 2019
+* updated jest snaps
+
 ### version 0.0.33
 *Released*: 6 September 2019
 * Sticky field headers

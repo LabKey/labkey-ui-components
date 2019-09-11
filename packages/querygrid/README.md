@@ -7,6 +7,18 @@ Query Grid for LabKey schema/query data views
 ### version ???
 * Add property to QueryGrid to allow for setting the active tab for multi-grid displays
 
+### version 0.13.5
+*Released*: 9 September 2019
+* Changes to support Epic #5692: parent alias component in Sample Management
+  * Updated SampleSetDetailsPanel to enable adding import aliases
+  * Added SampleSetAliasRow: UI component for rendering import parent aliases
+  * Added action initSampleSetSelects to get set of Options to use in selecting sample sets
+  * Added action to getSampleSet directly from MaterialSource because of alias mapping column
+  * Added ParentAlias model
+* Updated LabelOverlay to optionally use LabelHelpTip based on optional prop
+* Added some styles
+* updated test data
+  
 ### version 0.13.4
 *Released*: 6 September 2019
 * Package patch update for changes to @glass/base v0.15.1

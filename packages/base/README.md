@@ -8,6 +8,12 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * Add constants for sampleManagement schema
 
+### version 0.15.2
+*Released*: 9 September 2019
+* Updated LabelHelpTip to make id attribute a property
+* Updated AddEntityButton to include LabelHelpTip and associated optional properties
+* added AddEntityButton story
+
 ### version 0.15.1
 *Released*: 6 September 2019
 * Add standard button classes to AddEntityButton

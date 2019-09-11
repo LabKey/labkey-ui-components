@@ -47,6 +47,7 @@ exports[`<AddEntityButton /> Specify entity and classes 1`] = `
        Add 
       Test
     </span>
+    
   </div>
 </div>
 `;

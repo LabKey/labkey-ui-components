@@ -164,6 +164,19 @@
         "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=113"
       }
     }
+  }, {
+    "data" : {
+      "LSID" : {
+        "value" : "urn:lsid:labkey.com:SampleSet.Folder-60:Fruits"
+      },
+      "RowId" : {
+        "value" : 114
+      },
+      "Name" : {
+        "value" : "Fruits",
+        "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=114"
+      }
+    }
   } ],
-  "rowCount" : 3
+  "rowCount" : 4
 }

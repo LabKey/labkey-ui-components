@@ -132,6 +132,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     Format for Boolean Values
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Format Strings"
                     >
                       <span
@@ -456,6 +457,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     Import Aliases
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Import Aliases"
                     >
                       <span
@@ -615,6 +617,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     URL
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="URL"
                     >
                       <span
@@ -892,6 +895,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     Format for Dates
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Format String"
                     >
                       <span
@@ -1021,6 +1025,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     Participant Date Shifting
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Participant Date Shifting"
                     >
                       <span
@@ -1379,6 +1384,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     Import Aliases
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Import Aliases"
                     >
                       <span
@@ -1538,6 +1544,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                     URL
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="URL"
                     >
                       <span
@@ -1814,6 +1821,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                     Format Numeric Values
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Format Strings"
                     >
                       <span
@@ -2201,6 +2209,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                     Import Aliases
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Import Aliases"
                     >
                       <span
@@ -2360,6 +2369,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                     URL
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="URL"
                     >
                       <span
@@ -2636,6 +2646,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                     Max Text Character Count
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Max Text Length"
                     >
                       <span
@@ -3020,6 +3031,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                     Import Aliases
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="Import Aliases"
                     >
                       <span
@@ -3179,6 +3191,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                     URL
                     <LabelHelpTip
                       body={[Function]}
+                      id="tooltip"
                       title="URL"
                     >
                       <span

@@ -317,15 +317,19 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 {error && <Alert>{error}</Alert>}
                 <Panel>
                     <Panel.Body>
+                        <div className={'sample-insert--headerhelp'}>
+                            Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data.
+                        </div>
                         <Form>
                             {!this.isExistingSampleSet() && <Row className={'margin-bottom'}>
                                 <Col xs={3}>
                                     <LabelOverlay
-                                        label={'Name *'}
+                                        isFormsy={false}
+                                        labelClass={'sample-insert--overlaylabel'}
+                                        label={'Name'}
                                         type={'Text (String)'}
                                         description={`The name for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}. Note that this can\'t be changed after ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()} creation.`}
                                         required={true}
-                                        // addLabelAsterisk={true}  //This causes weirdness, because default isFormsy and required and the form isn't a FormsyForm...
                                         canMouseOverTooltip={true}
                                     />
                                 </Col>
@@ -338,6 +342,24 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                     />
                                 </Col>
                             </Row>}
+                            <Row className='margin-bottom'>
+                                <Col xs={3}>
+                                    <LabelOverlay
+                                        label={'Description'}
+                                        type={'Text (String)'}
+                                        description={`A short description for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
+                                        canMouseOverTooltip={true}
+                                    />
+                                </Col>
+                                <Col xs={9}>
+                                    <textarea
+                                        className="form-control"
+                                        id={FORM_IDS.DESCRIPTION}
+                                        onChange={this.onFormChange}
+                                        value={this.getDescriptionValue()}
+                                    />
+                                </Col>
+                            </Row>
                             <Row className={'margin-bottom'}>
                                 <Col xs={3}>
                                     <LabelOverlay
@@ -355,24 +377,6 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                         placeholder={'S-\${now:date}-\${batchRandomId}-\${randomId}'}
                                         onChange={this.onFormChange}
                                         value={this.getNameExpressionValue()}
-                                    />
-                                </Col>
-                            </Row>
-                            <Row className='margin-bottom'>
-                                <Col xs={3}>
-                                    <LabelOverlay
-                                        label={'Description'}
-                                        type={'Text (String)'}
-                                        description={`A short description for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
-                                        canMouseOverTooltip={true}
-                                    />
-                                </Col>
-                                <Col xs={9}>
-                                    <textarea
-                                        className="form-control"
-                                        id={FORM_IDS.DESCRIPTION}
-                                        onChange={this.onFormChange}
-                                        value={this.getDescriptionValue()}
                                     />
                                 </Col>
                             </Row>

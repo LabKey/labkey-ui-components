@@ -10,6 +10,8 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
       "seeAllURL": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
     }
   }
   maxColumns={1}
@@ -46,7 +48,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
 </ProductMenuSection>
 `;
 
-exports[`ProductMenuSection render empty section with empty text 1`] = `
+exports[`ProductMenuSection render empty section with empty text and create link 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
@@ -56,6 +58,12 @@ exports[`ProductMenuSection render empty section with empty text 1`] = `
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
       "seeAllURL": undefined,
+      "emptyURL": Immutable.Record {
+        "_baseUrl": "/sample/new",
+        "_filters": undefined,
+        "_params": undefined,
+      },
+      "emptyURLText": "Test empty link",
     }
   }
   maxColumns={1}
@@ -95,6 +103,16 @@ exports[`ProductMenuSection render empty section with empty text 1`] = `
     >
       Test empty text
     </li>
+    <li
+      className="empty-section-link"
+      key="emptyUrl"
+    >
+      <a
+        href="#/sample/new"
+      >
+        Test empty link
+      </a>
+    </li>
   </ul>
 </ProductMenuSection>
 `;
@@ -109,6 +127,8 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "maxItemsPerColumn": 12,
       "maxColumns": 1,
       "seeAllURL": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
     }
   }
   maxColumns={1}
@@ -209,6 +229,8 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "maxItemsPerColumn": 2,
       "maxColumns": 2,
       "seeAllURL": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
     }
   }
   maxColumns={1}
@@ -313,6 +335,8 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "maxItemsPerColumn": 2,
       "maxColumns": 2,
       "seeAllURL": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
     }
   }
   maxColumns={1}

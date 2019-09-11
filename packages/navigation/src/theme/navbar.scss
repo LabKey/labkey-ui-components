@@ -169,6 +169,12 @@
   color: $light-gray;
 }
 
+.empty-section-link {
+  a {
+    color: $brand-primary !important;
+  }
+}
+
 .navbar {
   .container {
     padding: 0;

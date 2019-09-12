@@ -4,8 +4,8 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.4.9
+*Released*: 12 September 2019
 * add to emptyURL and emptyURLText to MenuSectionConfig
 
 ### version 0.4.8

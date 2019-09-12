@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.13.7
+*Released*: 12 September 2019
+* SampleSetDetailsPanel fields touch up 
+
 ### version 0.13.6
 *Released*: 12 September 2019
 * add emptyGridMsg to EditableGrid

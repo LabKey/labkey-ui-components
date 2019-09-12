@@ -328,6 +328,8 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                             "seeAllURL": undefined,
+                            "emptyURL": undefined,
+                            "emptyURLText": "Get started...",
                           }
                         }
                         maxColumns={1}
@@ -422,6 +424,8 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                             "seeAllURL": undefined,
+                            "emptyURL": undefined,
+                            "emptyURLText": "Get started...",
                           }
                         }
                         maxColumns={1}
@@ -529,6 +533,8 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                             "seeAllURL": undefined,
+                            "emptyURL": undefined,
+                            "emptyURLText": "Get started...",
                           }
                         }
                         maxColumns={1}
@@ -714,6 +720,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "maxItemsPerColumn": 12,
           "maxColumns": 1,
           "seeAllURL": undefined,
+          "emptyURL": undefined,
+          "emptyURLText": "Get started...",
         },
       },
       Immutable.Map {
@@ -724,6 +732,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "maxItemsPerColumn": 12,
           "maxColumns": 1,
           "seeAllURL": undefined,
+          "emptyURL": undefined,
+          "emptyURLText": "Get started...",
         },
       },
     ]
@@ -844,6 +854,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                             "seeAllURL": undefined,
+                            "emptyURL": undefined,
+                            "emptyURLText": "Get started...",
                           }
                         }
                         key="samples"
@@ -943,6 +955,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                             "maxItemsPerColumn": 12,
                             "maxColumns": 1,
                             "seeAllURL": undefined,
+                            "emptyURL": undefined,
+                            "emptyURLText": "Get started...",
                           }
                         }
                         key="assays"

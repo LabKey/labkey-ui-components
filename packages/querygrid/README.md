@@ -7,6 +7,12 @@ Query Grid for LabKey schema/query data views
 ### version ???
 * Add property to QueryGrid to allow for setting the active tab for multi-grid displays
 
+### version 0.13.6
+*Released*: 12 September 2019
+* add emptyGridMsg to EditableGrid
+* SampleInsertPanel: add import link, update text, remove "bypass grid option", start with 0 rows
+* RunDataPanel: start with 0 rows 
+
 ### version 0.13.5
 *Released*: 9 September 2019
 * Changes to support Epic #5692: parent alias component in Sample Management

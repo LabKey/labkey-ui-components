@@ -130,6 +130,7 @@ import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
 import { getLineageDepthFirstNodeList } from './components/lineage/utils';
 import { fetchLineage, getLineageNodeMetadata } from './components/lineage/actions';
 import { LineageGraph } from './components/lineage/LineageGraph';
+import { LineageGrid } from './components/lineage/LineageGrid';
 import { LINEAGE_GRID_COLUMNS } from './components/lineage/Tag';
 
 export {
@@ -285,6 +286,7 @@ export {
     LineagePageModel,
     LineageResult,
     LineageGraph,
+    LineageGrid,
     VisGraphNode,
     fetchLineage,
     getLineageDepthFirstNodeList,

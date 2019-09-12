@@ -203,7 +203,14 @@ export function updateLineageResult(seed: string, lineage: Lineage) {
     });
 }
 
-// TODO add invalidate lineageResults?
+/**
+ * Invalidate the global state lineage results
+ */
+export function invalidateLineageResults(seed: string, lineage: Lineage) {
+    setGlobal({
+        QueryGrid_lineageResults: Map<string, Lineage>()
+    });
+}
 
 function getSelectedState(
     dataIds: List<string>,

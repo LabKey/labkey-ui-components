@@ -38,7 +38,8 @@ import {
     initQueryGridState,
     removeQueryGridModel,
     setQueryColumnRenderers,
-    setQueryMetadata
+    setQueryMetadata,
+    invalidateLineageResults
 } from './global'
 import {
     deleteRows,
@@ -287,5 +288,6 @@ export {
     VisGraphNode,
     fetchLineage,
     getLineageDepthFirstNodeList,
-    getLineageNodeMetadata
+    getLineageNodeMetadata,
+    invalidateLineageResults
 }

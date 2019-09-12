@@ -83,6 +83,7 @@ storiesOf('EditableGridPanel', module)
                 bsStyle={text("bsStyle", undefined, PANEL_GROUP)}
                 bordered={boolean("Bordered?", false, PANEL_GROUP)}
                 condensed={boolean("Condensed?", true, PANEL_GROUP)}
+                emptyGridMsg={text("Empty grid message", "Add rows to start", PANEL_GROUP)}
             />
         );
 

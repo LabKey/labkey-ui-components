@@ -326,8 +326,6 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     messages: result.messages,
                     caller
                 }));
-            } else {
-                console.log('Not resolving inside doResolve');
             }
         }
 

@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Map, OrderedMap } from 'immutable'
+import { Map } from 'immutable'
 import {
     QueryGridModel,
     IGridLoader,
     IGridResponse,
     AssayDomainTypes,
     AssayDefinitionModel,
-    GRID_EDIT_INDEX,
-    generateId
 } from '@glass/base'
 
 import { AssayWizardModel } from "./models";
-
-const EMPTY_GRID_ROW = OrderedMap<any, any>({
-    [[GRID_EDIT_INDEX, generateId()].join('|')]: Map<string, any>()
-});
 
 export class AssayUploadGridLoader implements IGridLoader {
 
@@ -48,7 +42,7 @@ export class AssayUploadGridLoader implements IGridLoader {
             const hasSamples = sampleColInResults && this.model.selectedSamples;
 
             // We only care about passing samples to the data grid if there is a sample column in the results domain.
-            const data = hasSamples ? this.model.selectedSamples : EMPTY_GRID_ROW;
+            const data = hasSamples ? this.model.selectedSamples : Map<string, any>();
 
             resolve({
                 data,

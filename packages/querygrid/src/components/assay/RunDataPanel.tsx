@@ -251,6 +251,8 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 nounPlural: "rows",
                                                 nounSingular: "row"
                                             }}
+                                            initialEmptyRowCount={0}
+                                            emptyGridMsg={'Start by adding the quantity of assay data rows you want to create'}
                                         />
                                     </FormStep>
                                 </div>

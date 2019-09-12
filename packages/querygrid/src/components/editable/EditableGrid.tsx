@@ -116,6 +116,7 @@ export interface EditableGridProps {
     model: QueryGridModel
     isSubmitting?: boolean
     onRowCountChange?: (rowCount?: number) => any
+    emptyGridMsg?: string
 }
 
 export interface EditableGridState {
@@ -193,7 +194,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         const { initialEmptyRowCount } = props;
         const model = this.getModel(props);
 
-        if (model.isLoaded && !model.isError && model.data.size === 0) {
+        if (model.isLoaded && !model.isError && model.data.size === 0 && this.props.initialEmptyRowCount > 0) {
             addRows(model, initialEmptyRowCount);
             this.onRowCountChange();
         }
@@ -205,7 +206,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             onRowCountChange();
         }
         const editorModel = this.getEditorModel();
-        if (editorModel.rowCount === 0) {
+        if (editorModel.rowCount === 0 && this.props.initialEmptyRowCount > 0) {
             addRows(this.getModel(this.props), this.props.initialEmptyRowCount);
         }
     }
@@ -574,7 +575,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     render() {
-        const { addControlProps, allowAdd, bordered, condensed, isSubmitting, striped } = this.props;
+        const { addControlProps, allowAdd, bordered, condensed, emptyGridMsg, isSubmitting, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {
@@ -596,6 +597,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             columns={this.generateColumns()}
                             condensed={condensed}
                             data={model.getDataEdit()}
+                            emptyText={emptyGridMsg}
                             headerCell={this.headerCell}
                             responsive={false}
                             rowKey={GRID_EDIT_INDEX}

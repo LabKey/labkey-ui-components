@@ -50,13 +50,13 @@ export class LineagePaging extends React.Component<LineagePagingProps, any> {
                     {showButtons && (
                         <div className="btn-group">
                             <Button
-                                href={getPageNumberChangeURL(location, model.pageNumber - 1).toHref()}
+                                href={getPageNumberChangeURL(location, model.seedNode.lsid, model.pageNumber - 1).toHref()}
                                 disabled={model.pageNumber <= 1}
                             >
                                 <i className="fa fa-chevron-left"/>
                             </Button>
                             <Button
-                                href={getPageNumberChangeURL(location, model.pageNumber + 1).toHref()}
+                                href={getPageNumberChangeURL(location, model.seedNode.lsid, model.pageNumber + 1).toHref()}
                                 disabled={max === total}
                             >
                                 <i className="fa fa-chevron-right"/>
@@ -78,7 +78,6 @@ class LineageButtons extends React.Component<LineageGridProps, any> {
     render() {
         const { model } = this.props;
         const location = getLocation();
-        const seeds = location.query.get('seeds');
         const members = location.query.get('members');
         const distance = location.query.get('distance');
 
@@ -90,7 +89,7 @@ class LineageButtons extends React.Component<LineageGridProps, any> {
             disableChildren = disableChildren || !model.seedNode.get('children') || (model.seedNode.get('children').size === 0);
 
             const baseURL = AppURL.create('lineage').addParams({
-                seeds,
+                seeds: model.seedNode.lsid,
                 distance: distance ? distance : DEFAULT_LINEAGE_DISTANCE
             });
 

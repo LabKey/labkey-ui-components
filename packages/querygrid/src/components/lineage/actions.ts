@@ -240,10 +240,14 @@ export function createGridModel(lineage: Lineage, members: LINEAGE_DIRECTIONS, d
     });
 }
 
-export function getPageNumberChangeURL(location: Location, pageNumber: number): AppURL {
+export function getPageNumberChangeURL(location: Location, seed: string, pageNumber: number): AppURL {
     let url = AppURL.create('lineage');
+
+    // use the seed lsid value from the param
+    url = url.addParam('seeds', seed);
+
     location.query.map((value: any, key: string) => {
-        if (key !== 'p') {
+        if (key !== 'p' && key !== 'seeds') {
             url = url.addParam(key, value);
         }
     });

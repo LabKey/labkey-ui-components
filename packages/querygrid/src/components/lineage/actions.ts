@@ -177,7 +177,8 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
         const sampleStats = computeSampleCounts(lineage, sampleSets);
 
         let updatedLineage = new Lineage({
-            ...lineage,
+            result: lineage.result,
+            error: lineage.error,
             sampleStats
         });
 

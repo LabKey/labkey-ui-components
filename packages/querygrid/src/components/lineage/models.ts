@@ -377,7 +377,7 @@ const LineageOptionDefaults = {
     filterIn: true,
     grouping: undefined,
     urlResolver: undefined
-}
+};
 
 interface LineageOptionParams {
     filters: List<LineageFilter>;

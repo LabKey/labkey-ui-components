@@ -131,6 +131,7 @@ import { getLineageDepthFirstNodeList } from './components/lineage/utils';
 import { fetchLineage, getLineageNodeMetadata } from './components/lineage/actions';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
+import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { LINEAGE_GRID_COLUMNS } from './components/lineage/Tag';
 
 export {
@@ -287,6 +288,7 @@ export {
     LineageResult,
     LineageGraph,
     LineageGrid,
+    SampleTypeLineageCounts,
     VisGraphNode,
     fetchLineage,
     getLineageDepthFirstNodeList,

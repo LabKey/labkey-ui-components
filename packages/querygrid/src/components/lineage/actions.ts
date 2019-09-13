@@ -161,6 +161,94 @@ export function loadLineageIfNeeded(seed: string, distance?: number): Promise<Li
         });
 }
 
+export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promise<Lineage> {
+    const existing = getLineageResult(seed);
+    if (existing && existing.sampleStats) {
+        return Promise.resolve(existing);
+    }
+
+    return Promise.all([
+        loadLineageIfNeeded(seed, distance),
+        fetchSampleSets()
+    ]).then(values => {
+        const lineage = values[0];
+        const sampleSets = values[1];
+        const seed = lineage.getSeed();
+        const sampleStats = computeSampleCounts(lineage, sampleSets);
+
+        let updatedLineage = new Lineage({
+            ...lineage,
+            sampleStats
+        });
+
+        updateLineageResult(seed, updatedLineage);
+        return updatedLineage;
+    });
+}
+
+function computeSampleCounts(lineage: Lineage, sampleSets: any) {
+
+    const { key, models } = sampleSets;
+    const nodes = lineage.result.nodes.toJS();
+
+    let rows = [];
+    let sampleRowIds = {};
+
+    for (let lsid in nodes) {
+        if (nodes.hasOwnProperty(lsid) && nodes[lsid].cpasType) {
+            const cpas = nodes[lsid].cpasType,
+                rowId = nodes[lsid].rowId;
+            // Add the rowId to an array to use as a URL filter
+            if (sampleRowIds[cpas]) {
+                sampleRowIds[cpas].push(rowId);
+            }
+            else {
+                sampleRowIds[cpas] = [rowId];
+            }
+        }
+    }
+
+    for (let row in models[key]) {
+        if (models[key].hasOwnProperty(row)) {
+            const _row = models[key][row];
+
+            let count = 0,
+                filteredURL;
+            let name = _row['Name'].value,
+                ids = sampleRowIds[_row['LSID'].value];
+
+            // if there were related samples, use the array of RowIds as a count and to build an AppURL and filter
+            if (ids) {
+                count = ids.length;
+
+                filteredURL = AppURL.create('samples', name).addFilters(
+                    Filter.create('RowId', ids, Filter.Types.IN)
+                ).toHref();
+            }
+
+            rows.push({
+                name: {
+                    value: _row['Name'].value,
+                    url: filteredURL
+                },
+                sampleCount: {
+                    value: count
+                },
+                modified: count > 0 ? _row['Modified'] : undefined
+            });
+        }
+    }
+
+    return fromJS(rows);
+}
+
+function fetchSampleSets() {
+    return selectRows({
+        schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
+        queryName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName
+    });
+}
+
 function resolveResultURLs(result: LineageResult): LineageResult {
     const resolvedNodes = result.nodes.map((node) => {
         if (node.type === 'Sample' || node.type === 'Data') {

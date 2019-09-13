@@ -116,7 +116,10 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                     rootCloseEvent="mousedown"
             >
                 <div className={containerCls} onClick={this.toggleMenu}>
-                {inside}
+                    <div>
+                        <div className="navbar-connector"/>
+                        {inside}
+                    </div>
                 </div>
             </DropdownButton>
         )

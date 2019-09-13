@@ -179,7 +179,51 @@
   .container {
     padding: 0;
   }
+
+  .navbar-left {
+    // Triangle pointing menu to header nav element
+    .navbar-connector {
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 10px 10px 10px;
+      border-color: transparent transparent #ffffff transparent;
+    }
+
+    .open .dropdown-menu {
+      top: 120%;
+    }
+  }
+
+  .navbar-right {
+    // Triangle pointing menu to header nav element
+    .navbar-connector {
+      position: absolute;
+      right: 18px;
+      top: -10px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 10px 10px 10px;
+      border-color: transparent transparent #ffffff transparent;
+    }
+
+    .open .dropdown-menu {
+      top: 125%;
+    }
+  }
 }
+
+
+
+//// move menu down to make room for the connector chevron above
+//.navbar .navbar-left .open .dropdown-menu {
+//  top: 120%;
+//}
+
 .sub-nav {
   border-radius: 0;
 }

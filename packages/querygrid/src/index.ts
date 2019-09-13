@@ -273,25 +273,12 @@ export {
     FormStep,
     FormTabs,
 
-    // TODO review after finish of port to see which are actually needed for export
     // lineage
-    DEFAULT_LINEAGE_DISTANCE,
-    DEFAULT_LINEAGE_DIRECTION,
-    LINEAGE_GRID_COLUMNS,
-    LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
-    Lineage,
     LineageFilter,
-    LineageOptions,
-    LineageGridModel,
-    LineagePageModel,
-    LineageResult,
     LineageGraph,
     LineageGrid,
     SampleTypeLineageCounts,
     VisGraphNode,
-    fetchLineage,
-    getLineageDepthFirstNodeList,
-    getLineageNodeMetadata,
     invalidateLineageResults
 }

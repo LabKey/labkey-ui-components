@@ -12,7 +12,9 @@ import { getLocation } from "../../util/URL";
 import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from "./constants";
 import { LINEAGE_GRID_COLUMNS } from "./Tag";
 
-interface Props {}
+interface Props {
+    lsid?: string
+}
 
 interface State {
     model: LineagePageModel
@@ -42,10 +44,9 @@ export class LineageGrid extends React.Component<Props, State> {
     init() {
         const location = getLocation();
         const distance = location.query.has('distance') ? location.query.get('distance') : DEFAULT_LINEAGE_DISTANCE;
-        const seed = this.getSeedFromParam();
 
         this.setGridLoading();
-        loadLineageIfNeeded(seed, distance)
+        loadLineageIfNeeded(this.getSeed(), distance)
             .then(lineage => {
                 if (lineage.error) {
                     this.setGridError(lineage);
@@ -54,6 +55,10 @@ export class LineageGrid extends React.Component<Props, State> {
                     this.setGridSuccess(lineage, distance);
                 }
             });
+    }
+
+    getSeed(): string {
+        return this.props.lsid ? this.props.lsid : this.getSeedFromParam();
     }
 
     getSeedFromParam(): string {
@@ -96,7 +101,7 @@ export class LineageGrid extends React.Component<Props, State> {
         this.setState((state) => ({
             model: state.model.merge({
                 grid: createGridModel(lineage, members, distance, LINEAGE_GRID_COLUMNS, pageNumber),
-                seeds: List(this.getSeedFromParam()),
+                seeds: List(this.getSeed()),
                 members,
                 distance
             }) as LineagePageModel
@@ -105,7 +110,7 @@ export class LineageGrid extends React.Component<Props, State> {
 
     getLineage(): Lineage {
         // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_lineageResults.get(this.getSeedFromParam());
+        return this.global.QueryGrid_lineageResults.get(this.getSeed());
     }
 
     render() {

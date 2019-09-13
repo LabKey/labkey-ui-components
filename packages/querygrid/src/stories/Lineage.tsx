@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 import * as React from 'react';
+import { Panel } from "react-bootstrap";
 import { List } from 'immutable'
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
 import { LineageGraph } from "../components/lineage/LineageGraph";
+import { LineageGrid } from "../components/lineage/LineageGrid";
+import { LINEAGE_GROUPING_GENERATIONS } from "../components/lineage/constants";
+import { LineageFilter } from "../components/lineage/models";
 import './stories.scss'
-import { LINEAGE_GROUPING_GENERATIONS, LineageFilter } from "..";
 
-storiesOf('LineageGraph', module)
+storiesOf('Lineage', module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add("LineageGraph", () => {
         return (
             <LineageGraph
                 lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
@@ -32,5 +35,16 @@ storiesOf('LineageGraph', module)
                 filters={List([new LineageFilter('type', ['Sample', 'Data'])])}
                 navigate={(node) => console.log(node)}
             />
+        )
+    })
+    .add("LineageGrid", () => {
+        return (
+            <Panel>
+                <Panel.Body>
+                    <LineageGrid
+                        lsid={'urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2'}
+                    />
+                </Panel.Body>
+            </Panel>
         )
     });

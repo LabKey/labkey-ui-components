@@ -188,6 +188,10 @@ $table-cell-selection-bg-color: #EDF3FF;
     padding: 5px;
   }
 
+  & > tbody > tr.grid-empty > td {
+      height: 24px;
+  }
+
   & > tbody > tr > td {
     border: 1px solid #dadada;
     line-height: 1;

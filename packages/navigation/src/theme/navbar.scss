@@ -71,7 +71,7 @@
 
 .product-menu-content {
   padding: 12px 15px 12px 0;
-  width: 740px;
+  width: 780px;
 
   &.error {
     color: $brand-danger;
@@ -167,6 +167,12 @@
 .empty-section {
   font-style: italic;
   color: $light-gray;
+}
+
+.empty-section-link {
+  a {
+    color: $brand-primary !important;
+  }
 }
 
 .navbar {

@@ -26,7 +26,9 @@ export class MenuSectionConfig extends Record({
     iconCls: undefined,
     maxItemsPerColumn: 12,
     maxColumns: 1,
-    seeAllURL: undefined
+    seeAllURL: undefined,
+    emptyURL: undefined,
+    emptyURLText: 'Get started...',
 }){
     emptyText?: string;
     iconURL?: string;
@@ -34,6 +36,8 @@ export class MenuSectionConfig extends Record({
     maxItemsPerColumn: number;
     maxColumns: number;
     seeAllURL?: AppURL;
+    emptyURL?: AppURL;
+    emptyURLText: string;
 }
 
 
@@ -50,6 +54,16 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         maxColumns: 1
     };
 
+    renderEmpty() {
+        const { config} = this.props;
+        return (
+            <>
+                {config.emptyText && <li key="empty" className="empty-section">{config.emptyText}</li>}
+                {config.emptyURL && <li key="emptyUrl" className="empty-section-link"><a href={config.emptyURL.toHref()}>{config.emptyURLText}</a></li>}
+            </>
+        )
+    }
+
     renderMenuItemsList(items, columnNumber: number = 1, totalColumns: number = 1, withOverflow: boolean = false)
     {
         const { config, section } = this.props;
@@ -57,7 +71,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         return (
             <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
                 {items.isEmpty()
-                    ? config.emptyText && <li key="empty" className="empty-section">{config.emptyText}</li>
+                    ? this.renderEmpty()
                     : items.sortBy(item => item.label, naturalSort).map(item => {
                         if (item.url) {
                             const url = item.url instanceof AppURL ? item.url.toHref() : item.url;

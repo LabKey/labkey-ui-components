@@ -152,11 +152,15 @@ export class LineageGridDisplay extends React.Component<LineageGridProps, any> {
 
         return model.data
             .slice(model.getOffset(), model.getMaxRowIndex())
-            .map(d => d.toMap().merge({
-                membersShown: model.members, // added so we can determine which lineage links to disable in the seed rows
-                lineageDistance: model.distance,  // added so we can create lineage links with the same distance as the current page
-                duplicateCount: model.nodeCounts.get(d.get('lsid')) - 1
-            }))
+            .map(d => d.toMap()
+                .merge({
+                    membersShown: model.members, // added so we can determine which lineage links to disable in the seed rows
+                    lineageDistance: model.distance,  // added so we can create lineage links with the same distance as the current page
+                    duplicateCount: model.nodeCounts.get(d.get('lsid')) - 1
+                })
+                // also merge the row's meta properties up so they can be shown in the grid columns
+                .merge(d.get('meta'))
+            )
             .toList();
     }
 

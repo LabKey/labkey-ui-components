@@ -351,6 +351,11 @@ export class URLResolver {
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
                             return row.set('url', this.mapURL({url, row, column, query}));
                         }
+                        else if (id.indexOf('assay') >= 0) {
+                            query = row.getIn(['title']);
+                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({url, row, column, query}));
+                        }
                         else if (id.indexOf('material') != -1 && row.hasIn(['data', 'sampleSet'])) {
                             query = row.getIn(['data', 'sampleSet', 'name']);
                             return row.set('url', this.mapURL({url, row, column, query}));

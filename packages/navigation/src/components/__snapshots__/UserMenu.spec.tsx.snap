@@ -31,6 +31,11 @@ exports[`UserMenu user logged in dev mode 1`] = `
     className="pull-right dropdown-menu"
     role="menu"
   >
+    <div
+      className="navbar-connector"
+      onKeyDown={[Function]}
+      onSelect={[Function]}
+    />
     <li
       className=""
       role="presentation"
@@ -135,6 +140,11 @@ exports[`UserMenu user logged in extra dev mode items 1`] = `
     className="pull-right dropdown-menu"
     role="menu"
   >
+    <div
+      className="navbar-connector"
+      onKeyDown={[Function]}
+      onSelect={[Function]}
+    />
     <li
       className=""
       role="presentation"
@@ -257,6 +267,11 @@ exports[`UserMenu user logged in extra items 1`] = `
     className="pull-right dropdown-menu"
     role="menu"
   >
+    <div
+      className="navbar-connector"
+      onKeyDown={[Function]}
+      onSelect={[Function]}
+    />
     <li
       className=""
       role="presentation"
@@ -373,6 +388,11 @@ exports[`UserMenu user logged in, but not in dev mode 1`] = `
     className="pull-right dropdown-menu"
     role="menu"
   >
+    <div
+      className="navbar-connector"
+      onKeyDown={[Function]}
+      onSelect={[Function]}
+    />
     <li
       className=""
       role="presentation"
@@ -452,6 +472,11 @@ exports[`UserMenu user not logged in 1`] = `
     className="pull-right dropdown-menu"
     role="menu"
   >
+    <div
+      className="navbar-connector"
+      onKeyDown={[Function]}
+      onSelect={[Function]}
+    />
     <li
       className=""
       role="presentation"

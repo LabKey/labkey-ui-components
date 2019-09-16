@@ -4,8 +4,8 @@ Application navigation elements and functions
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.4.10
+*Released*: 16 September 2019
 * add chevron above nav menu to connect button and product menu and avitar and icon menu
 
 ### version 0.4.9

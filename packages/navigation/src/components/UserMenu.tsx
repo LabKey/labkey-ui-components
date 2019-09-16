@@ -73,10 +73,13 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                                rounded={true}
                                height={32}
                                width={32}/> : <span className="navbar-item">
+
                                 <span className="user-name"><span className="fas fa-user-circle"/> {user.displayName} </span>
                             </span>}
                     </Dropdown.Toggle>
+
                     <Dropdown.Menu pullRight className="pull-right">
+                        <div className="navbar-connector"/>
                         {menuItems}
                         {extraUserItems}
                         {LABKEY.devMode ? (

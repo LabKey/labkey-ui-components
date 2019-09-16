@@ -8,6 +8,10 @@ Application navigation elements and functions
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.4.9
+*Released*: 12 September 2019
+* add to emptyURL and emptyURLText to MenuSectionConfig
+
 ### version 0.4.8
 *Released*: 9 September 2019
 * Package patch update for changes to @glass/base v0.15.2

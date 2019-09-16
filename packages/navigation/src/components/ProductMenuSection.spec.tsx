@@ -18,6 +18,7 @@ import { mount } from 'enzyme'
 import { List } from 'immutable';
 import { MenuSectionModel } from '../model';
 import { MenuSectionConfig, ProductMenuSection } from "./ProductMenuSection";
+import {AppURL} from "@glass/base";
 
 
 describe("ProductMenuSection render", () => {
@@ -93,7 +94,7 @@ describe("ProductMenuSection render", () => {
         expect(menuSection).toMatchSnapshot();
     });
 
-    test("empty section with empty text", () => {
+    test("empty section with empty text and create link", () => {
         let section = MenuSectionModel.create({
             label: "Sample Sets",
             items: List<MenuSectionModel>(),
@@ -101,7 +102,9 @@ describe("ProductMenuSection render", () => {
         });
         const menuSection = mount(<ProductMenuSection productId="testProduct" section={section} config={new MenuSectionConfig({
             emptyText: "Test empty text",
-            iconURL: "/testProduct/images/samples.svg"
+            iconURL: "/testProduct/images/samples.svg",
+            emptyURL: AppURL.create('sample', 'new'),
+            emptyURLText: "Test empty link"
         })}/>);
 
         expect(menuSection.find('li.empty-section').length).toBe(1);

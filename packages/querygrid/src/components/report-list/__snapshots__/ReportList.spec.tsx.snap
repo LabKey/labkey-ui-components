@@ -1,5 +1,125 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
+"<ReportItemModal report={{...}} onClose={[Function: noop]}>
+  <div className=\\"report-item-modal\\">
+    <Modal show={true} onHide={[Function: noop]} backdrop={true} keyboard={true} autoFocus={true} enforceFocus={true} restoreFocus={true} manager={{...}} renderBackdrop={[Function: renderBackdrop]} animation={true} dialogComponentClass={[Function: ModalDialog]} bsClass=\\"modal\\">
+      <Modal onHide={[Function: noop]} keyboard={true} autoFocus={true} enforceFocus={true} restoreFocus={true} manager={{...}} renderBackdrop={[Function: renderBackdrop]} show={true} containerClassName=\\"modal-open\\" transition={[Function: DialogTransition]} backdrop={true} backdropTransition={[Function: BackdropTransition]} backdropClassName=\\"modal-backdrop\\" onEntering={[Function: bound handleEntering]} onExited={[Function: bound handleExited]}>
+        <Portal container={[undefined]} onRendered={[Function]}>
+          <Portal containerInfo={{...}}>
+            <div role=\\"dialog\\" style={[undefined]} className={[undefined]}>
+              <BackdropTransition appear={true} in={true}>
+                <Fade appear={true} in={true} timeout={150} mountOnEnter={false} unmountOnExit={false}>
+                  <Transition appear={true} in={true} timeout={150} mountOnEnter={false} unmountOnExit={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
+                    <div style={[undefined]} className=\\"fade modal-backdrop in\\" onClick={[Function]} />
+                  </Transition>
+                </Fade>
+              </BackdropTransition>
+              <RefHolder>
+                <DialogTransition appear={true} unmountOnExit={true} in={true} onExit={[undefined]} onExiting={[undefined]} onExited={[Function]} onEnter={[undefined]} onEntering={[Function: bound handleEntering]} onEntered={[undefined]}>
+                  <Fade appear={true} unmountOnExit={true} in={true} onExit={[undefined]} onExiting={[undefined]} onExited={[Function]} onEnter={[undefined]} onEntering={[Function: bound handleEntering]} onEntered={[undefined]} timeout={300} mountOnEnter={false}>
+                    <Transition appear={true} unmountOnExit={true} in={true} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function]} onEnter={[Function: noop]} onEntering={[Function: bound handleEntering]} onEntered={[Function: noop]} timeout={300} mountOnEnter={false} enter={true} exit={true}>
+                      <ModalDialog bsClass=\\"modal\\" style={{...}} className=\\"fade in\\" onClick={[Function: bound handleDialogClick]} role=\\"document\\" tabIndex=\\"-1\\">
+                        <div onClick={[Function: bound handleDialogClick]} role=\\"dialog\\" tabIndex=\\"-1\\" style={{...}} className=\\"fade in modal\\">
+                          <div className=\\"modal-dialog\\">
+                            <div className=\\"modal-content\\" role=\\"document\\">
+                              <ModalHeader closeButton={true} closeLabel=\\"Close\\" bsClass=\\"modal-header\\">
+                                <div className=\\"modal-header\\">
+                                  <CloseButton label=\\"Close\\" onClick={[Function: noop]}>
+                                    <button type=\\"button\\" className=\\"close\\" onClick={[Function: noop]}>
+                                      <span aria-hidden=\\"true\\">
+                                        ×
+                                      </span>
+                                      <span className=\\"sr-only\\">
+                                        Close
+                                      </span>
+                                    </button>
+                                  </CloseButton>
+                                  <ModalTitle componentClass=\\"h4\\" bsClass=\\"modal-title\\">
+                                    <h4 className=\\"modal-title\\">
+                                      Chart View: Systolic vs Diastolic
+                                    </h4>
+                                  </ModalTitle>
+                                </div>
+                              </ModalHeader>
+                              <ChartReportBody report={{...}}>
+                                <ModalBody componentClass=\\"div\\" bsClass=\\"modal-body\\">
+                                  <div className=\\"modal-body\\">
+                                    <div className=\\"report-list__chart-preview\\">
+                                      <ReportLinks report={{...}}>
+                                        <div className=\\"report-item__links\\">
+                                          <p>
+                                            <a href=\\"/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A953&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS\\">
+                                              View grid in LabKey Server
+                                            </a>
+                                          </p>
+                                          <p>
+                                            <Link to=\\"/q/study/apx-1\\" onlyActiveOnIndex={false} style={{...}}>
+                                              <a style={{...}} onClick={[Function: bound handleClick]}>
+                                                View grid in Biologics
+                                              </a>
+                                            </Link>
+                                          </p>
+                                        </div>
+                                      </ReportLinks>
+                                      <Chart chart={{...}}>
+                                        <div id=\\"chart-1\\">
+                                          <LoadingSpinner msg=\\"Loading...\\" wrapperClassName=\\"\\">
+                                            <span className=\\"\\">
+                                              <i aria-hidden=\\"true\\" className=\\"fa fa-spinner fa-spin\\" />
+                                               
+                                              Loading...
+                                            </span>
+                                          </LoadingSpinner>
+                                        </div>
+                                      </Chart>
+                                      <ReportMetadata report={{...}}>
+                                        <div className=\\"report-item__metadata\\">
+                                          <div className=\\"report-item__metadata-item\\">
+                                            <label>
+                                              Created By:
+                                            </label>
+                                            <span>
+                                              Vader
+                                            </span>
+                                          </div>
+                                          <div className=\\"report-item__metadata-item\\">
+                                            <label>
+                                              Type:
+                                            </label>
+                                            <span>
+                                              XY Scatter Plot
+                                            </span>
+                                          </div>
+                                          <div className=\\"report-item__metadata-item\\">
+                                            <label>
+                                              Description:
+                                            </label>
+                                            <span />
+                                          </div>
+                                        </div>
+                                      </ReportMetadata>
+                                    </div>
+                                  </div>
+                                </ModalBody>
+                              </ChartReportBody>
+                            </div>
+                          </div>
+                        </div>
+                      </ModalDialog>
+                    </Transition>
+                  </Fade>
+                </DialogTransition>
+              </RefHolder>
+            </div>
+          </Portal>
+        </Portal>
+      </Modal>
+    </Modal>
+  </div>
+</ReportItemModal>"
+`;
+
 exports[`<ReportList /> Render loading 1`] = `
 <div
   className="panel panel-default"

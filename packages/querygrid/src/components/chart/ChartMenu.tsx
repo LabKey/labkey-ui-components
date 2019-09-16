@@ -22,8 +22,6 @@ import { DataViewInfo } from '../../models'
 import { Chart } from './Chart'
 import { setReportId } from '../../actions';
 
-const emptyList = List<React.ReactNode>();
-
 interface Props {
     model: QueryGridModel
     charts: List<DataViewInfo>
@@ -34,55 +32,45 @@ export class ChartMenu extends React.PureComponent<Props> {
 
     constructor(props: Props) {
         super(props);
-        const reportId = props.model.urlParamValues.get('reportId');
         this.hideChart = this.hideChart.bind(this);
         this.showChart = this.showChart.bind(this);
         this.getSelectedChart = this.getSelectedChart.bind(this);
         this.dropId = generateId('chartselector-');
     }
 
-    createItem(chart: DataViewInfo, key: string): React.ReactNode {
+    createItem(chart: DataViewInfo): React.ReactNode {
         return (
-            <MenuItem key={key} onSelect={() => this.showChart(chart)}>
+            <MenuItem key={chart.reportId} onSelect={() => this.showChart(chart)}>
                 <i className={"pullLeft " + chart.iconCls} style={{width: '25px'}}/>
                 {chart.getLabel()}
             </MenuItem>
-        )
+        );
     }
 
-    createMenuItems(): List<React.ReactNode> {
+    createMenuItems(): Array<React.ReactNode> {
         const { charts } = this.props;
+        const items = [];
 
         if (charts && !charts.isEmpty()) {
-            const items = List<React.ReactNode>().asMutable();
             const visCharts = charts.filter((chart) => chart.isVisChartType());
-
+            const comparator = chart => chart.getLabel();
             const privateCharts = visCharts.filter((chart) => !chart.isShared())
-                .sortBy(chart => chart.getLabel(), naturalSort);
+                .sortBy(comparator, naturalSort);
+            const publicCharts = visCharts.filter((chart) => chart.isShared())
+                .sortBy(comparator, naturalSort);
 
             if (privateCharts.size) {
                 items.push(<MenuItem header key="private-header">My Saved Charts</MenuItem>);
-
-                privateCharts.valueSeq().forEach((chart, i) => {
-                    items.push(this.createItem(chart, `private-${i}`));
-                })
+                privateCharts.valueSeq().forEach(chart => items.push(this.createItem(chart)));
             }
-
-            const publicCharts = visCharts.filter((chart) => chart.isShared())
-                .sortBy(chart => chart.getLabel(), naturalSort);
 
             if (publicCharts.size) {
                 items.push(<MenuItem header key="public-header">All Saved Charts</MenuItem>);
-
-                publicCharts.valueSeq().forEach((chart, i) => {
-                    items.push(this.createItem(chart, `public-${i}`));
-                })
+                publicCharts.valueSeq().forEach(chart => items.push(this.createItem(chart)));
             }
-
-            return items.asImmutable();
         }
 
-        return emptyList;
+        return items;
     }
 
     showChart(chart: DataViewInfo) {
@@ -139,10 +127,10 @@ export class ChartMenu extends React.PureComponent<Props> {
             <>
                 <DropdownButton
                     id={this.dropId}
-                    disabled={chartItems.size <= 1}
+                    disabled={chartItems.length === 0}
                     title={this.getChartButtonTitle()}
                 >
-                    {chartItems.toArray()}
+                    {chartItems}
                 </DropdownButton>
 
                 {selectedChart && this.renderChartModal()}

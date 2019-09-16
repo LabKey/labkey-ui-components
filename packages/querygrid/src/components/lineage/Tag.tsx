@@ -86,20 +86,20 @@ export const LINEAGE_GRID_COLUMNS = List([
                 <div className="text-nowrap">
                     {parents.size > 0 ?
                         ((membersShown === LINEAGE_DIRECTIONS.Parent && nodeDistance === 0) ? (
-                            <Button bsSize="xs" bsStyle="primary" className="btn-seed" disabled>
+                            <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
                                 <span className="fa fa-arrow-up"/>
                             </Button>
                         ) : (
                             <Button
                                 bsSize="xs"
                                 bsStyle="primary"
-                                className="btn-seed"
+                                className="lineage-btn-seed"
                                 href={parentUrl.toHref()}
                                 title={"Parents for " + node.get('name')}>
                                 <span className="fa fa-arrow-up"/>
                             </Button>
                         )) : (
-                            <Button bsSize="xs" bsStyle="primary" className="btn-seed" disabled>
+                            <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
                                 <span className="fa fa-arrow-up"/>
                             </Button>
                         )
@@ -107,20 +107,20 @@ export const LINEAGE_GRID_COLUMNS = List([
                     <span style={{paddingRight: "5px"}}>&nbsp;</span>
                     {children.size > 0 ?
                         ((membersShown === LINEAGE_DIRECTIONS.Children && nodeDistance === 0) ? (
-                            <Button bsSize="xs" bsStyle="primary" className="btn-seed" disabled>
+                            <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
                                 <span className="fa fa-arrow-down"/>
                             </Button>
                         ) : (
                             <Button
                                 bsSize="xs"
                                 bsStyle="primary"
-                                className="btn-seed"
+                                className="lineage-btn-seed"
                                 href={childrenUrl.toHref()}
                                 title={"Children for " + node.get('name')}>
                                 <span className="fa fa-arrow-down"/>
                             </Button>
                         )) : (
-                            <Button bsSize="xs" bsStyle="primary" className="btn-seed" disabled>
+                            <Button bsSize="xs" bsStyle="primary" className="lineage-btn-seed" disabled>
                                 <span className="fa fa-arrow-down"/>
                             </Button>
                         )

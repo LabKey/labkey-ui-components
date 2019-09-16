@@ -1216,9 +1216,6 @@ export class QueryInfo extends Record({
             if (this.schemaName === 'samples') {
                 iconURL = 'samples';
             }
-            else {
-                console.log(this.toJS());
-            }
         }
 
         return iconURL;

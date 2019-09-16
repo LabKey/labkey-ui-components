@@ -131,6 +131,7 @@ interface LineageNodeListState {
 
 const COLLAPSED_LIST_SHOW_COUNT = 4;
 
+// TODO move the inline styles to lineage.scss
 export class LineageNodeList extends React.Component<LineageNodeListProps, LineageNodeListState> {
 
     constructor(props) {

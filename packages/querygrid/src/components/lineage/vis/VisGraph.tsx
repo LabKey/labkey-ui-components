@@ -509,7 +509,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
         const graphHeight = window.innerHeight - 350;
 
         return (
-            <div className="graph-ct">
+            <div className="lineage-visgraph-ct">
                 <div ref="visgraph" style={{height: graphHeight}}/>
                 <GraphControls getNetwork={this.getNetwork}
                                lineageGridHref={this.props.lineageGridHref}
@@ -579,8 +579,8 @@ class GraphControls extends React.Component<GraphControlsProps, any> {
 
     render() {
         return (
-            <div className="graph-controls">
-                <div className="graph-control-settings">
+            <div className="lineage-visgraph-controls">
+                <div className="lineage-visgraph-control-settings">
                     <div className="btn-group">
                         <DropdownButton id="graph-control-dd" title={<i className="fa fa-undo"/>} pullRight>
                             <MenuItem onClick={() => this.graphReset(true)}>Reset view and select seed</MenuItem>
@@ -588,14 +588,14 @@ class GraphControls extends React.Component<GraphControlsProps, any> {
                         </DropdownButton>
                     </div>
                 </div>
-                <div className="graph-control-zoom">
+                <div className="lineage-visgraph-control-zoom">
                     <div className="btn-group">
                         <Button onClick={this.zoomOut}><i className="fa fa-search-minus"/></Button>
                         <Button onClick={this.zoomIn}><i className="fa fa-search-plus"/></Button>
                     </div>
                 </div>
-                <div className="graph-control-pan">
-                    <Button className="graph-control-pan-up" onClick={this.panUp}>
+                <div className="lineage-visgraph-control-pan">
+                    <Button className="lineage-visgraph-control-pan-up" onClick={this.panUp}>
                         <i className="fa fa-arrow-up"/>
                     </Button>
                     <div className="btn-group">

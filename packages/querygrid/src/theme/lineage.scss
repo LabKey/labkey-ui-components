@@ -15,7 +15,54 @@
   display: inline-block;
 }
 
-.btn-seed {
+.lineage-seed-info {
+  margin-top: 10px;
+}
+
+.lineage-seed-name {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.lineage-btn-seed {
   width: 37px;
   border-radius: 5px;
+}
+
+.lineage-visgraph-ct {
+  position: relative;
+  height: 100%;
+}
+
+.lineage-visgraph-controls {
+  .btn i.fa {
+    color: black;
+  }
+}
+
+.lineage-visgraph-control-pan {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  .lineage-visgraph-control-pan-up {
+    position: absolute;
+    bottom: 33px;
+    border-bottom: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    right: 37px;
+  }
+}
+
+.lineage-visgraph-control-settings {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.lineage-visgraph-control-zoom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }

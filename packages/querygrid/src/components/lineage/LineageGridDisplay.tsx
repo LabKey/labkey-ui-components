@@ -43,7 +43,7 @@ export class LineagePaging extends React.Component<LineagePagingProps, any> {
             <div className="col-xs-12">
                 <div className="paging pull-right text-nowrap">
                     {total !== 0 && (
-                        <span className="paging-counts" style={showButtons ? {paddingRight: '10px'} : {marginTop: '8px', display: 'inline-block'}} data-min={min} data-max={max} data-total={total}>
+                        <span className={showButtons ? 'paging-counts-with-buttons' : 'paging-counts-without-buttons'} data-min={min} data-max={max} data-total={total}>
                             {min === max ? <span>{max}</span> : <span>{max === 0 ? 0 : min}&nbsp;-&nbsp;{max}</span>} of {total}
                         </span>
                     )}
@@ -130,9 +130,9 @@ class LineageGridBar extends React.Component<LineageGridProps, any> {
                     <div className="col-sm-4">
                         <LineageButtons {...this.props} />
                     </div>
-                    <div className='text-center col-sm-4' style={{marginTop: '10px'}}>
+                    <div className='text-center col-sm-4 lineage-seed-info'>
                         Showing {model.members} from seed:
-                        <strong style={{marginLeft: '10px'}}>{model.seedNode.get('name')}</strong>
+                        <span className={'lineage-seed-name'}>{model.seedNode.get('name')}</span>
                     </div>
                     <div className="col-sm-4">
                         <LineagePaging model={model}/>

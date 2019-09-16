@@ -71,7 +71,8 @@ import {
     toggleDevTools,
     toLowerSafe,
     unorderedEqual,
-    valueIsEmpty
+    valueIsEmpty,
+    TESTS_ONLY_RESET_DOM_COUNT,
 } from './utils/utils'
 import { getActionErrorMessage } from './utils/messaging'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
@@ -257,6 +258,7 @@ export {
     unorderedEqual,
     valueIsEmpty,
     getActionErrorMessage,
+    TESTS_ONLY_RESET_DOM_COUNT,
 
     // url functions
     buildURL,

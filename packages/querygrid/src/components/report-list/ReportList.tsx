@@ -58,12 +58,12 @@ class ReportLinks extends React.PureComponent<ReportConsumer> {
         let appLink;
 
         if (appUrl) {
-            appLink = <p><Link to={appUrl.toString()}>View grid in Biologics</Link></p>;
+            appLink = <p><Link to={appUrl.toString()}>View in Biologics</Link></p>;
         }
 
         return (
             <div className="report-item__links">
-                <p><a href={runUrl}>View grid in LabKey Server</a></p>
+                <p><a href={runUrl}>View in LabKey Server</a></p>
                 {appLink}
             </div>
         );

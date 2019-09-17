@@ -27,6 +27,7 @@ import { Action, ActionOption, ActionValue, Value } from './Action'
 // construct symbol map
 let SYMBOL_MAP = Map<string /* symbol */, Map<string /* suffix */, Filter.IFilterType>>().asMutable();
 let SUFFIX_MAP = Map<string /* suffix */, Filter.IFilterType>().asMutable();
+let TEXT_MAP = Map<string /* displayText */, Filter.IFilterType>().asMutable();
 
 let TYPE_SET = Set<string>().asMutable();
 let TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
@@ -47,10 +48,16 @@ TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
 
             SYMBOL_MAP.get(symbol).set(suffix, type);
         }
+
+        let text = type.getDisplayText();
+        if (text) {
+            TEXT_MAP.set(text.toLowerCase(), type);
+        }
     }
 });
 SYMBOL_MAP = SYMBOL_MAP.asImmutable();
 SUFFIX_MAP = SUFFIX_MAP.asImmutable();
+TEXT_MAP = TEXT_MAP.asImmutable();
 TYPE_SET = undefined;
 
 /**
@@ -112,20 +119,30 @@ function resolveFieldKey(columnName: string, column?: QueryColumn): string {
     return fieldKey;
 }
 
+function matchingFilterTypes(filterTypes: Array<Filter.IFilterType>, token: string): Array<Filter.IFilterType> {
+    if (!token) {
+        return filterTypes;
+    }
+
+    token = token.toLowerCase();
+
+    return filterTypes.filter((type) => resolveSymbol(type).toLowerCase().indexOf(token) === 0);
+}
+
 /**
- * Given a symbol/suffix and a QueryColumn this will resolve the IFilterType based on the column
- * type matched against the symbol/suffix.
- * @param symbolOrSuffix
+ * Given a symbol/suffix/text and a QueryColumn this will resolve the IFilterType based on the column
+ * type matched against the symbol/suffix/text.
+ * @param token
  * @param column
  * @returns {IFilterType}
  */
-function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.IFilterType {
-    if (SUFFIX_MAP.has(symbolOrSuffix)) {
-        return SUFFIX_MAP.get(symbolOrSuffix);
+function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterType {
+    if (SUFFIX_MAP.has(token)) {
+        return SUFFIX_MAP.get(token);
     }
 
-    if (SYMBOL_MAP.has(symbolOrSuffix)) {
-        let symbolTypes = SYMBOL_MAP.get(symbolOrSuffix);
+    if (SYMBOL_MAP.has(token)) {
+        let symbolTypes = SYMBOL_MAP.get(token);
         let types = Filter.getFilterTypesForType(column.get('jsonType'));
 
         let value: Filter.IFilterType;
@@ -134,7 +151,7 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.
         for (let i=0; i < types.length; i++) {
             if (symbolTypes.has(types[i].getURLSuffix())) {
                 if (match) {
-                    console.warn(`Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${symbolOrSuffix}\".`);
+                    console.warn(`Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`);
                     match = false;
                     value = undefined;
                     break; // stop the loop, ambiguous
@@ -151,7 +168,12 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.
         }
     }
 
-    console.warn('Unable to resolve symbol/suffix: \"' + symbolOrSuffix + '\"');
+    const text = token.toLowerCase();
+    if (TEXT_MAP.has(text)) {
+        return TEXT_MAP.get(text);
+    }
+
+    console.warn(`Unable to resolve symbol/suffix/text "${token}"`);
 
     return undefined;
 }
@@ -189,7 +211,7 @@ export class FilterAction implements Action {
         this.urlPrefix = urlPrefix;
     }
 
-    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>): {
+    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>, isComplete?: boolean): {
         activeFilterType?: Filter.IFilterType
         columnName: string
         column?: QueryColumn
@@ -200,7 +222,6 @@ export class FilterAction implements Action {
             activeFilterType: undefined,
             column: undefined,
             columnName: undefined,
-            filterTypeValue: undefined,
             filterTypes: undefined,
             rawValue: undefined
         };
@@ -212,15 +233,24 @@ export class FilterAction implements Action {
             const column = parseColumns(columns, options.columnName).first();
             if (column) {
                 options.column = column;
-                options.filterTypes = Filter.getFilterTypesForType(column.get('jsonType')); // TODO: Need to filter this set
+                options.filterTypes = Filter.getFilterTypesForType(column.get('jsonType'));
 
                 if (tokens.length > 1) {
-
-                    options.filterTypeValue = tokens[1];
-                    options.activeFilterType = resolveFilterType(options.filterTypeValue, column);
+                    options.activeFilterType = resolveFilterType(tokens[1], column);
 
                     if (options.activeFilterType && tokens.length > 2) {
                         options.rawValue = tokens.slice(2).join(' ');
+                    }
+                    else {
+                        const part = tokens.slice(1).join(' ');
+                        const matchingTypes = matchingFilterTypes(options.filterTypes, part);
+
+                        if (isComplete && matchingTypes.length === 1) {
+                            options.activeFilterType = matchingTypes[0];
+                        }
+                        else {
+                            options.filterTypes = matchingTypes;
+                        }
                     }
                 }
             }
@@ -232,7 +262,7 @@ export class FilterAction implements Action {
     completeAction(tokens: Array<string>): Promise<Value> {
         return new Promise((resolve) => {
             return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
-                const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns);
+                const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns, true);
 
                 if (column && activeFilterType) {
                     if (rawValue !== undefined || !activeFilterType.isDataValueRequired()) {
@@ -301,9 +331,9 @@ export class FilterAction implements Action {
                                 const text = type.getDisplayText() ? type.getDisplayText() : suffix;
                                 noSymbolActionOptions.push({
                                     isComplete,
-                                    label: `"${column.shortCaption}" ${text.toLowerCase()}`,
+                                    label: `"${column.shortCaption}" "${text.toLowerCase()}"`,
                                     nextLabel,
-                                    value: suffix
+                                    value: `"${text.toLowerCase()}"`
                                 });
                             }
                         }

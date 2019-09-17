@@ -6,7 +6,7 @@ Query Grid for LabKey schema/query data views
 ### version 0.14.0
 *Released*: TBD
 * Move `report-list` package into `querygrid`
-    * Old README for `report-list` can be found [here](../../docs/legacy/report-list.md)
+    * Old README for `report-list` can be found [here](../../legacy-docs/report-list.md)
 * Add `PreviewGrid` component
 * Make QueryGridPanel components render charts based on URL parameter
     * Part of this change means we always render the omnibox below the other QueryGridPanel buttons

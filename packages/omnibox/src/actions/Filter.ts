@@ -173,8 +173,6 @@ function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterTy
         return TEXT_MAP.get(text);
     }
 
-    console.warn(`Unable to resolve symbol/suffix/text "${token}"`);
-
     return undefined;
 }
 

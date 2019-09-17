@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* initialize parents for SampleInsertPanel bulk insert
+
 ### version 0.13.7
 *Released*: 12 September 2019
 * SampleSetDetailsPanel fields touch up 

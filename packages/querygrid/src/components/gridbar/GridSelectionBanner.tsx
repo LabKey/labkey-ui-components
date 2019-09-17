@@ -40,32 +40,18 @@ export class GridSelectionBanner extends React.Component<Props, any> {
     render() {
         const { containerCls, model } = this.props;
         if (model && model.isLoaded) {
-            const {maxRows, selectedQuantity, selectedState, totalRows} = model;
+            const {maxRows, totalRows} = model;
 
-            const allOnModel = selectedQuantity === totalRows && totalRows > 0,
-                allOnPage = selectedState === GRID_CHECKBOX_OPTIONS.ALL,
-                hasMessage = (allOnModel || allOnPage) && totalRows > maxRows;
+            const selectedCount = model.getSelectedCount();
 
-            let message;
+            const allOnModel = selectedCount === totalRows && totalRows > 0;
 
-            if (allOnModel) {
-                message = (
-                    <span>All {selectedQuantity} selected</span>
-                )
-            } else if (allOnPage && !allOnModel) {
-                message = (
-                    <span>
-                    Selected all {selectedQuantity} on this page &nbsp;
-                        <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button>
-                </span>
-                )
-            }
-
-            if (hasMessage) {
-                return (
-                    <div className={containerCls}>{message}</div>
-                )
-            }
+            return (
+                <div className={containerCls}>
+                    {selectedCount} of {totalRows} selected &nbsp;
+                    {!allOnModel && totalRows > maxRows &&  <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button>}
+                </div>
+            )
         }
 
         return null;

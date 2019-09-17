@@ -23,6 +23,7 @@ import {
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
     IGridResponse,
+    intersect,
     naturalSort,
     not,
     QueryColumn,
@@ -207,7 +208,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
 
         setSelected(model.getId(), checked, pkValue).then(response => {
             const stringKey = pkValue !== undefined ? pkValue.toString(): pkValue;
-            const selected: List<string> = model.selectedIds;
+            const selected: List<string> = model.getSelected();
             let selectedState: GRID_CHECKBOX_OPTIONS;
 
             if (checked) {
@@ -232,11 +233,16 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                 selectedState = someSelected ? GRID_CHECKBOX_OPTIONS.SOME : GRID_CHECKBOX_OPTIONS.NONE;
             }
 
-            const selectedIds = checked ? selected.push(stringKey) : selected.delete(selected.findIndex(item => item === stringKey));
+            let filteredSelect = model.filteredSelectedIds;
+            if (model.isFiltered())
+                filteredSelect = checked ? filteredSelect.push(stringKey) : filteredSelect.delete(filteredSelect.findIndex(item => item === stringKey));
+
+            const selectedIds = checked ? model.selectedIds.push(stringKey) : model.selectedIds.delete(model.selectedIds.findIndex(item => item === stringKey));
 
             updateQueryGridModel(model, {
+                filteredSelectedIds: filteredSelect,
                 selectedState: selectedState,
-                selectedQuantity: response.count,
+                selectedQuantity: model.isFiltered() ? filteredSelect.size : response.count,
                 selectedIds: selectedIds
             });
         });
@@ -353,7 +359,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
-                newModel = updateQueryGridModel(newModel, {filterArray: List<any>()});
+                newModel = updateQueryGridModel(newModel, {filteredSelectedIds: List<string>(), filterArray: List<any>()});
             }
             else if (filters && filters.count()) {
                 let urls = filters.reduce((urls, filter: any) => {
@@ -444,13 +450,18 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
         }
 
         const { data, dataIds, totalRows, messages } = response;
+
+        // if filtered, find the selected ids that are in the set of (filtered) dataIds returned
+        const filteredIds = model.isFiltered() ? intersect(dataIds, model.selectedIds) : List<string>();
+
         newModel = updateQueryGridModel(newModel, {
+            filteredSelectedIds: filteredIds,
             isError: false,
             isLoading: false,
             isLoaded: true,
             message: undefined,
             messages,
-            selectedState: getSelectedState(dataIds, model.selectedIds, model.maxRows, totalRows),
+            selectedState: getSelectedState(dataIds, model.isFiltered() ? filteredIds : model.selectedIds, model.maxRows, totalRows),
             totalRows,
             data,
             dataIds
@@ -788,27 +799,50 @@ function setGridSelected(model: QueryGridModel, checked: boolean) {
 
     setSelected(modelId, checked, ids).then(response => {
         const dataIds = model.dataIds;
-        const currentSelected = model.selectedIds;
+        let selected = model.selectedIds;
+        let filteredSelected = model.filteredSelectedIds;
+
+        if (checked) {
+            selected = selected.merge(dataIds);
+            filteredSelected = filteredSelected.merge(dataIds);
+        }
+        else {
+            dataIds.forEach((id) => {
+                const selectedIdx = selected.indexOf(id);
+                if (selectedIdx >= 0) {
+                    selected = selected.delete(selectedIdx);
+                }
+                const filteredIdx = filteredSelected.indexOf(id);
+                if (filteredIdx >= 0) {
+                    filteredSelected = filteredSelected.delete(filteredIdx);
+                }
+            });
+        }
 
         updateQueryGridModel(model, {
-            selectedIds: checked ? currentSelected.merge(dataIds) : List<string>(),
-            selectedQuantity: response.count,
+            filteredSelectedIds: checked && model.isFiltered() ? filteredSelected : List<string>(),
+            selectedIds: selected,
+            selectedQuantity: model.isFiltered() ? filteredSelected.size : response.count,
             selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
         });
     });
 }
 
 function setGridUnselected(model: QueryGridModel) {
-    clearSelected(model.getId()).then(() => {
-        updateQueryGridModel(model, {
-            selectedIds: List<string>(),
-            selectedQuantity: 0,
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE
-        });
-    }).catch(err => {
-        const error = err ? err : {message: 'Something went wrong'};
-        gridShowError(model, error);
-    })
+
+    setGridSelected(model, false);
+    // }
+    //
+    // clearSelected(model.getId()).then(() => {
+    //     updateQueryGridModel(model, {
+    //         selectedIds: List<string>(),
+    //         selectedQuantity: 0,
+    //         selectedState: GRID_CHECKBOX_OPTIONS.NONE
+    //     });
+    // }).catch(err => {
+    //     const error = err ? err : {message: 'Something went wrong'};
+    //     gridShowError(model, error);
+    // })
 }
 
 interface ISelectionResponse {

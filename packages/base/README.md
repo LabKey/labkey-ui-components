@@ -8,6 +8,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 * Add filteredSelectedIds field to QueryGridModel for better support of selection on filtered grids
 
+### version 0.15.3
+*Released*: 17 September 2019
+* Add constants for sampleManagement schema
+
 ### version 0.15.2
 *Released*: 9 September 2019
 * Updated LabelHelpTip to make id attribute a property

@@ -3,6 +3,16 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+### version 0.14.0
+*Released*: TBD
+* Move `report-list` package into `querygrid`
+    * Old README for `report-list` can be found [here](../../docs/legacy/report-list.md)
+* Add `PreviewGrid` component
+* Make QueryGridPanel components render charts based on URL parameter
+    * Part of this change means we always render the omnibox below the other QueryGridPanel buttons
+* Update @glass/base dependency to TBD
+* Update @glass/domainproperties dependency to TBD
+* Update @glass/omnibox dependency to TBD
 
 ### version 0.13.5
 *Released*: 9 September 2019

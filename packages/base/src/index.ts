@@ -258,6 +258,8 @@ export {
     unorderedEqual,
     valueIsEmpty,
     getActionErrorMessage,
+    // TODO: Do not export TESTS_ONLY_RESET_DOM_COUNT, right now it's only exported because it's needed for snapshot
+    //  tests in the QueryGrid package.
     TESTS_ONLY_RESET_DOM_COUNT,
 
     // url functions

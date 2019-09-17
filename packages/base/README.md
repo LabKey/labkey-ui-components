@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.15.3
+*Released*: 17 September 2019
 * Add constants for sampleManagement schema
 
 ### version 0.15.2

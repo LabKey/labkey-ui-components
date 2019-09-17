@@ -28,11 +28,12 @@ export class StatelessPreviewGrid extends React.PureComponent<StatelessPreviewGr
             const { viewName } = schemaQuery;
             const allColumns = queryInfo.getDisplayColumns(viewName);
             const columns = allColumns.slice(0, numCols).toList();
-            const stats = `Previewing first ${numRows} rows and ${columns.size} of ${allColumns.size} columns.`;
+            const slicedData = data.slice(0, numRows).toList();
+            const stats = `Previewing first ${slicedData.size} rows and ${columns.size} of ${allColumns.size} columns.`;
             body = (
                 <>
                     <p>{stats}</p>
-                    <Grid bordered={true} columns={columns} data={data} />
+                    <Grid bordered={true} columns={columns} data={slicedData} />
                 </>
             );
         } else if (loading === false && error !== null) {

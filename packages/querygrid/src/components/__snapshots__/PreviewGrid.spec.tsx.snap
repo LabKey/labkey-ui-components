@@ -307,28 +307,6 @@ exports[`PreviewGrid render PreviewGrid with different numCols and numRows 1`] =
             }
           />
         </tr>
-        <tr>
-          <td
-            style={
-              Object {
-                "textAlign": "left",
-              }
-            }
-          >
-            <a
-              href="#/rd/expdata/41424"
-            >
-              PBS
-            </a>
-          </td>
-          <td
-            style={
-              Object {
-                "textAlign": "left",
-              }
-            }
-          />
-        </tr>
       </tbody>
     </table>
   </div>

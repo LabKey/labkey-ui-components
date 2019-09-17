@@ -1686,7 +1686,7 @@ export class InferDomainResponse extends Record({
             }
 
             if (rawModel.fields) {
-                fields = rawModel.fields.map((field) => QueryColumn.create(field));
+                fields = List(rawModel.fields.map((field) => QueryColumn.create(field)));
             }
         }
 

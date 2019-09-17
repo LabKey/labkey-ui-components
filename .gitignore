@@ -7,4 +7,3 @@
 *.log
 *.cache
 package-lock.json
-/docs

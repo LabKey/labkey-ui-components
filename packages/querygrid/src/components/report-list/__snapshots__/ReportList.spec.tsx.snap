@@ -50,20 +50,20 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                                         <div className=\\"report-item__links\\">
                                           <p>
                                             <a href=\\"/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A953&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS\\">
-                                              View grid in LabKey Server
+                                              View in LabKey Server
                                             </a>
                                           </p>
                                           <p>
                                             <Link to=\\"/q/study/apx-1\\" onlyActiveOnIndex={false} style={{...}}>
                                               <a style={{...}} onClick={[Function: bound handleClick]}>
-                                                View grid in Biologics
+                                                View in Biologics
                                               </a>
                                             </Link>
                                           </p>
                                         </div>
                                       </ReportLinks>
                                       <Chart chart={{...}}>
-                                        <div id=\\"chart-1\\">
+                                        <div id=\\"chart-0\\">
                                           <LoadingSpinner msg=\\"Loading...\\" wrapperClassName=\\"\\">
                                             <span className=\\"\\">
                                               <i aria-hidden=\\"true\\" className=\\"fa fa-spinner fa-spin\\" />

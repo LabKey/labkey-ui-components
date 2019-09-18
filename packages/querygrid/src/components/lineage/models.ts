@@ -61,6 +61,7 @@ export class LineageFilter {
     }
 }
 
+// TODO add jest test coverage for this function
 function mergeNodes(aNodes: List<any>, bNodes: List<any>): List<any> {
     let newNodes = aNodes.asMutable();
 

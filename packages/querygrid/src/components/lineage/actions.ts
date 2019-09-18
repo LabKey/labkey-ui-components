@@ -187,6 +187,7 @@ export function loadSampleStatsIfNeeded(seed: string, distance?: number): Promis
     });
 }
 
+// TODO add jest test coverage for this function
 function computeSampleCounts(lineage: Lineage, sampleSets: any) {
 
     const { key, models } = sampleSets;
@@ -250,6 +251,7 @@ function fetchSampleSets() {
     });
 }
 
+// TODO add jest test coverage for this function
 function resolveResultURLs(result: LineageResult): LineageResult {
     const resolvedNodes = result.nodes.map((node) => {
         if (node.type === 'Sample' || node.type === 'Data') {
@@ -288,8 +290,10 @@ export function getLocationString(location: Location): string {
         let sep = '';
         // all properties on the URL that are respected by LineagePageModel
         ['distance', 'members', 'p', 'seeds'].forEach((key) => {
-            loc += sep + key + '=' + location.query.get(key);
-            sep = '&';
+            if (location.query.has(key)) {
+                loc += sep + key + '=' + location.query.get(key);
+                sep = '&';
+            }
         });
     }
 

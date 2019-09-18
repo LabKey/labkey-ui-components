@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version XXX
 *Released*: XXX
-* Fix Issue 38127: All number fields are treated as double fields when imported from an xls for preview grid
+* Fix issue 38127: All number fields are treated as double fields when imported from an xls for preview grid
 
 ### version 0.15.3
 *Released*: 17 September 2019

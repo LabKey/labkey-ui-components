@@ -17,7 +17,7 @@ import React from 'reactn'
 import { Button } from 'react-bootstrap'
 import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/base'
 
-import { gridSelectAll } from '../../actions'
+import { gridClearAll, gridSelectAll } from '../../actions'
 
 interface Props {
     containerCls?: string
@@ -36,8 +36,7 @@ export class GridSelectionBanner extends React.Component<Props, any> {
     };
 
     clearAll = () => {
-        // TODO
-        console.log("clear all for filtered grid");
+        gridClearAll(this.props.model);
     };
 
     render() {
@@ -45,15 +44,17 @@ export class GridSelectionBanner extends React.Component<Props, any> {
         if (model && model.isLoaded) {
             const {maxRows, totalRows} = model;
 
-            const selectedCount = model.getSelectedInViewCount();
+            const selectedCount = model.selectedQuantity;
 
             const allOnModel = selectedCount === totalRows && totalRows > 0;
 
+            const clearText = selectedCount === 1 ? "Clear" : (selectedCount === 2) ? 'Clear both' : 'Clear all ' + selectedCount;
+
             return (
                 <div className={containerCls}>
-                    {selectedCount} of {totalRows} selected &nbsp;
-                    {!allOnModel && totalRows > maxRows &&  <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button>}
-                    {selectedCount > maxRows && <Button bsSize={'xsmall'} onClick={this.clearAll}>Clear all {selectedCount}</Button>}
+                    {selectedCount > 0 && <span className="QueryGrid-right-spacing">{selectedCount} of {totalRows} selected</span>}
+                    {!allOnModel && totalRows > maxRows &&  <span className="QueryGrid-right-spacing"> <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button></span>}
+                    {selectedCount > 0 && <Button bsSize={'xsmall'} onClick={this.clearAll}>{clearText}</Button>}
                 </div>
             )
         }

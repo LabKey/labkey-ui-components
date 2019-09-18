@@ -549,7 +549,6 @@ export class QueryGridModel extends Record({
     selectedIds: List<string>;
     selectedLoaded: boolean;
     selectedState: GRID_CHECKBOX_OPTIONS;
-    // TODO do we need this?
     selectedQuantity: number;
     title: string;
     totalRows: number;

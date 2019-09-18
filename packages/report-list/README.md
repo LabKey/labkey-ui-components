@@ -9,6 +9,10 @@ a list.
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.1.25
+*Released*: 17 September 2019
+* Package patch update for changes to @glass/base v0.15.3
+
 ### version 0.1.24
 *Released*: 9 September 2019
 * Package patch update for changes to @glass/base v0.15.2

@@ -38,9 +38,9 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.15.2-fb-lineagePort.2",
-    "@glass/domainproperties": "0.0.34-fb-lineagePort.2",
-    "@glass/omnibox": "0.1.36-fb-lineagePort.2",
+    "@glass/base": "0.15.3-fb-lineagePort.0",
+    "@glass/domainproperties": "0.0.35-fb-lineagePort.0",
+    "@glass/omnibox": "0.1.37-fb-lineagePort.0",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

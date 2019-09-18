@@ -8,9 +8,13 @@ Application navigation elements and functions
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.4.11
+*Released*: 17 September 2019
+* Package patch update for changes to @glass/base v0.15.3
+
 ### version 0.4.10
 *Released*: 16 September 2019
-* add chevron above nav menu to connect button and product menu and avitar and icon menu
+* add chevron above nav menu to connect button and product menu and avatar and user menu
 
 ### version 0.4.9
 *Released*: 12 September 2019

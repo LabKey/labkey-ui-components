@@ -33,6 +33,7 @@ interface Props {
     showTabs?: boolean
     showAllTabs?: boolean
     showGridBar?: boolean
+    activeTab?: number
 }
 
 interface State {
@@ -50,7 +51,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            activeTab: undefined // initially set to undefined until a tab is clicked
+            activeTab: props.activeTab // initially set to undefined until a tab is clicked
         };
     }
 

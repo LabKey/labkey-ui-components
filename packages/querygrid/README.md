@@ -8,6 +8,10 @@ Query Grid for LabKey schema/query data views
 *Released*: ???
 * Package patch update for changes to @glass/omnibox v???
 
+### version 0.13.8
+*Released*: 17 September 2019
+* Add property to QueryGrid to allow for setting the active tab for multi-grid displays
+
 ### version 0.13.7
 *Released*: 12 September 2019
 * SampleSetDetailsPanel fields touch up 

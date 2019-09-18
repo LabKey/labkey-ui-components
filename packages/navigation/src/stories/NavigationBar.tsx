@@ -7,7 +7,7 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { List, Map } from 'immutable'
-import { User } from '@glass/base'
+import {AppURL, User} from '@glass/base'
 
 import { MenuSectionConfig } from '../components/ProductMenuSection'
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../model'
@@ -109,7 +109,9 @@ storiesOf('NavigationBar', module)
         sectionConfigs.push(Map<string, MenuSectionConfig>().set("fruits", new MenuSectionConfig({
             emptyText: text("emptySectionText", "We have no bananas"),
             iconCls:  text('iconClass', "fas fa-user-circle"),
-            iconURL: text("iconURL", undefined)
+            iconURL: text("iconURL", undefined),
+            emptyURL: boolean("showEmptyURL", true) ? AppURL.create('fruit', 'new') : undefined,
+            emptyURLText: text('emptyURLText', "Define a new fruit")
         })));
 
         return <NavigationBar

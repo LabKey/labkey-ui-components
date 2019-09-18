@@ -71,7 +71,7 @@
 
 .product-menu-content {
   padding: 12px 15px 12px 0;
-  width: 740px;
+  width: 780px;
 
   &.error {
     color: $brand-danger;
@@ -169,11 +169,55 @@
   color: $light-gray;
 }
 
+.empty-section-link {
+  a {
+    color: $brand-primary !important;
+  }
+}
+
 .navbar {
   .container {
     padding: 0;
   }
+
+  .navbar-left {
+    // Triangle pointing menu to header nav element
+    .navbar-connector {
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 10px 10px 10px;
+      border-color: transparent transparent #ffffff transparent;
+    }
+
+    .open .dropdown-menu {
+      top: 120%;
+    }
+  }
+
+  .navbar-right {
+    // Triangle pointing menu to header nav element
+    .navbar-connector {
+      position: absolute;
+      right: 18px;
+      top: -10px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 10px 10px 10px;
+      border-color: transparent transparent #ffffff transparent;
+    }
+
+    .open .dropdown-menu {
+      top: 125%;
+    }
+  }
 }
+
+
 .sub-nav {
   border-radius: 0;
 }

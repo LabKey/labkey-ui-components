@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button, Form, Panel } from 'react-bootstrap';
+import { Button, Form, Nav, NavItem, Panel } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
 import {
     AddEntityButton,
-    Alert,
+    Alert, AppURL,
     capitalizeFirstChar,
     IGridLoader,
     IGridResponse,
@@ -175,14 +175,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const schemaQuery = insertModel.getSchemaQuery();
         if (schemaQuery) {
             getQueryDetails(schemaQuery.toJS()).then(originalQueryInfo => {
-                let updatedModel = insertModel;
-                if (insertModel.sampleCount === 0 && !originalQueryInfo.isRequiredColumn(SAMPLE_UNIQUE_FIELD_KEY))
-                {
-                    updatedModel = updatedModel.set("sampleCount", 1) as SampleIdCreationModel;
-                }
                 this.setState(() => {
                     return {
-                        insertModel: updatedModel,
+                        insertModel: insertModel,
                         originalQueryInfo,
                     }
                 }, () => {
@@ -510,8 +505,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             <>
                 <div className="sample-insert--header">
                     <p>
-                        {textPrefix} parent types and enter data below for the samples that will be generated.&nbsp;
-                        {name && <>Specific parents can be chosen in the grid or bulk insert area.</>}
+                        Generate unique samples individually or in bulk using the bulk insert option.
+                    </p>
+                    <p>
+                        Assign properties, including parent samples, to your new samples.
                     </p>
                     {name && (
                         this.isNameRequired() ?
@@ -529,7 +526,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     <SelectInput
                         formsy={false}
                         inputClass="col-md-5 col-sm-9"
-                        label="Target Sample Set"
+                        label="Sample Type"
                         labelClass="col-md-3 col-sm-3 sample-insert--parent-label"
                         name="targetSampleSet"
                         placeholder={'Select a Sample Set...'}
@@ -644,6 +641,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel && insertModel.isInit) {
             const noun = insertModel.sampleCount == 1 ? "Sample" : "Samples";
+
             return (
                 <div className="form-group no-margin-bottom">
 
@@ -693,9 +691,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
-            addControlProps['quickAddText'] = "Bypass the grid";
-            addControlProps['onQuickAdd'] = this.deriveSampleIds;
-
             columnMetadata = columnMetadata.set(SAMPLE_UNIQUE_FIELD_KEY, {
                 readOnly: false,
                 placeholder: "[generated id]"
@@ -703,11 +698,22 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         }
         const queryGridModel = this.getQueryGridModel();
 
+        const sampleSet = insertModel.getTargetSampleSetName();
+        const importLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import').toHref() : '#';
+
         return (
             <>
                 <Panel>
                     <Panel.Body>
-                        <Form>
+                        <Nav className={'margin-bottom'} bsStyle="pills" activeKey={'grid'}>
+                            <NavItem eventKey={'grid'}>
+                                Create from grid
+                            </NavItem>
+                            <NavItem eventKey={'import'} href={importLink}>
+                                Import Samples from File
+                            </NavItem>
+                        </Nav>
+                        <Form className={'margin-top'}>
                             {this.renderHeader()}
                             {queryGridModel && queryGridModel.isLoaded ?
                                 <EditableGridPanel
@@ -722,6 +728,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     columnMetadata={columnMetadata}
                                     onRowCountChange={this.onRowCountChange}
                                     model={queryGridModel}
+                                    initialEmptyRowCount={0}
+                                    emptyGridMsg={'Start by adding the quantity of samples you want to create'}
                                 />
                                 :
                                  !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null

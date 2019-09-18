@@ -1849,15 +1849,10 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
 
 export function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): EditorModel {
     let editorModel = getEditorModel(model.getId());
-    let updatedModel = model;
     if (count > 0) {
         if (model.editable) {
             if (rowData) {
-                const hasData = editorModel.hasData();
-                if (!hasData) {
-                    updatedModel = removeAllRows(model);
-                }
-                editorModel = updateEditorData(updatedModel, rowData.toList(), count, hasData ? updatedModel.getData().size : 0);
+                editorModel = updateEditorData(model, rowData.toList(), count, model.getData().size);
             }
             else {
                 editorModel = updateEditorModel(editorModel, {
@@ -1866,8 +1861,8 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
             }
         }
 
-        let data = updatedModel.data;
-        let dataIds = updatedModel.dataIds;
+        let data = model.data;
+        let dataIds = model.dataIds;
 
         for (let i = 0; i < count; i++) {
             // ensure we don't step on another ID
@@ -1877,7 +1872,7 @@ export function addRows(model: QueryGridModel, count?: number, rowData?: Map<str
             dataIds = dataIds.push(id);
         }
 
-        updateQueryGridModel(updatedModel, {
+        updateQueryGridModel(model, {
             data,
             dataIds,
             isError: false,

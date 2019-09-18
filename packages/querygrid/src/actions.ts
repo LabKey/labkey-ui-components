@@ -326,6 +326,14 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
     }
 }
 
+export function setReportId(model: QueryGridModel, reportId: string) {
+    if (model.bindURL) {
+        replaceParameters(getLocation(), Map<string, any>({
+            [model.createParam('reportId')]: reportId,
+        }));
+    }
+}
+
 export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Component) {
     if (model.allowSelection) {
         setGridUnselected(model);

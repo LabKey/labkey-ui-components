@@ -16,7 +16,6 @@ This repository defines all of the components available in the @glass scope. The
 | [@glass/navigation](packages/navigation/README.md) | Application navigation elements and functions |
 | [@glass/omnibox](packages/omnibox/README.md) | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 
 | [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views 
-| [@glass/report-list](packages/report-list/README.md) | Query Grid for LabKey schema/query data views 
 | [template](packages/template/README.md) | A template for creating new packages
 
 ## Using @glass npm packages

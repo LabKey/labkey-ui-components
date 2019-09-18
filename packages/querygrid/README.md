@@ -8,6 +8,20 @@ Query Grid for LabKey schema/query data views
 *Released*: XXX
 * Package patch update for changes to @glass/base vXXX
 
+### version 0.14.0
+*Released*: 18 September 2019
+* Move `report-list` package into `querygrid`
+    * Old README for `report-list` can be found [here](../../legacy-docs/report-list.md)
+* Update ReportList to improve rendering for Grids, Charts, and unsupported report types
+* Rename flattenApiResponse to flattenBrowseDataTreeResponse
+    * Also added a new argument called urlMapper `(report: IDataViewInfo) => AppURL`
+* Add `PreviewGrid` component
+* Make QueryGridPanel components render charts based on URL parameter
+    * Part of this change means we always render the omnibox below the other QueryGridPanel buttons
+* Update @glass/base dependency to 0.16.0
+* Update @glass/domainproperties dependency to 0.0.36
+* Update @glass/omnibox dependency to 0.1.38
+
 ### version 0.13.8
 *Released*: 17 September 2019
 * Add property to QueryGrid to allow for setting the active tab for multi-grid displays

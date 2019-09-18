@@ -5,7 +5,7 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { boolean, button, number, radios, select, text, withKnobs } from '@storybook/addon-knobs'
+import { withKnobs } from '@storybook/addon-knobs'
 
 import { Cards } from "../components/Cards";
 import './stories.scss'

@@ -40,7 +40,7 @@
   "dependencies": {
     "@glass/base": "0.15.3",
     "@glass/domainproperties": "0.0.35",
-    "@glass/omnibox": "0.1.37-fb-omniThings.2",
+    "@glass/omnibox": "0.1.37-fb-omniThings.3",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

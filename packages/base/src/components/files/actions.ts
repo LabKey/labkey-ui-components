@@ -18,7 +18,8 @@ export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: 
     let integerFieldInds = [];
     if (fields && fields.size > 0) {
         fields.forEach((field, ind) => {
-            if (field.get('rangeURI') && field.get('rangeURI').toLowerCase() === 'xsd:int') {
+            const rangeURI = field.get('rangeURI');
+            if (rangeURI && (rangeURI.toLowerCase() === 'xsd:int' || rangeURI.toLowerCase() === 'http://www.w3.org/2001/xmlschema#int')) {
                 integerFieldInds.push(ind);
             }
         })

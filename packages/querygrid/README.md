@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Update validation of sample set import aliases
+
 ### version 0.14.0
 *Released*: 18 September 2019
 * Move `report-list` package into `querygrid`

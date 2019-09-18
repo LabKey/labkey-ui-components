@@ -33,7 +33,7 @@ export function getBackupImageFromLineageNode(lineageNode: LineageNode, isSeed: 
 
     // Use default image specific for cpasType categories
     if (lineageNode.cpasType && lineageNode.cpasType.includes('SampleSet')) {
-        iconURL = 'Samples';
+        iconURL = 'samples';
     }
 
     // use labkey.org as a backup for images src
@@ -44,7 +44,7 @@ function imageFromIdentifier(iconURL: string, isSeed: boolean, isSelected: boole
     return imageURL('_images', getImageNameWithTheme(iconURL, isSeed, isSelected));
 }
 
-function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelected: boolean): string {
+export function getImageNameWithTheme(iconURL: string, isSeed: boolean, isSelected: boolean): string {
     // use seed and selected status to determine color of image used
     let theme = Theme.GRAY;
 

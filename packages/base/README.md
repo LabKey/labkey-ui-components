@@ -4,6 +4,15 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.16.0
+*Released*: 18 September 2019
+* Add TESTS_ONLY_RESET_DOM_COUNT
+    * This is a tests only method that allows us to reset the counter used to generate unique ids, this way snapshot
+    tests have the same results when run in a suite or individually.
+* QueryGridModel: Add `reportId` as a default URL param.
+* Remove incorrect ImageProps and Image definitions from react-bootstrap.d.ts
+* Remove unused imports in various stories.
+
 ### version 0.15.3
 *Released*: 17 September 2019
 * Add constants for sampleManagement schema

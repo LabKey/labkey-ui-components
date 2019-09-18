@@ -15,7 +15,7 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/base'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
@@ -218,16 +218,18 @@ interface IGridSelectionResponse {
  */
 export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse)  {
     const selectedIds = response.selectedIds;
-    const id = model.getId(),
-        selectedLoaded: any = true;
+    const id = model.getId();
+    const selectedLoaded: any = true;
 
     if (selectedIds !== undefined && selectedIds.size) {
         const { dataIds, maxRows, totalRows } = model;
-        const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
+        let viewSelected = selectedIds;
+        const selectedState = getSelectedState(dataIds, viewSelected, maxRows, totalRows);
         const updatedState = {
+            filteredSelectedIds: model.isFiltered() ? viewSelected : List<string>(),
             selectedIds,
             selectedLoaded,
-            selectedQuantity: selectedIds.size,
+            selectedQuantity: viewSelected.size,
             selectedState
         } as any;
 

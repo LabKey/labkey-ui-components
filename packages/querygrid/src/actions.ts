@@ -208,7 +208,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
 
         setSelected(model.getId(), checked, pkValue).then(response => {
             const stringKey = pkValue !== undefined ? pkValue.toString(): pkValue;
-            const selected: List<string> = model.getSelected();
+            const selected: List<string> = model.getSelectedInView();
             let selectedState: GRID_CHECKBOX_OPTIONS;
 
             if (checked) {
@@ -301,6 +301,7 @@ export function gridInvalidate(model: QueryGridModel, shouldInit: boolean = fals
     const newModel = updateQueryGridModel(model, {
         data: Map<any, List<any>>(),
         dataIds: List<any>(),
+        filteredSelectedIds: List<string>(),
         selectedIds: List<string>(),
         selectedQuantity: 0,
         selectedState: GRID_CHECKBOX_OPTIONS.NONE,
@@ -706,11 +707,12 @@ function fetchSelectedIfNeeded(model: QueryGridModel) {
 
             if (selectedIds !== undefined && selectedIds.size) {
                 const { dataIds, maxRows, totalRows } = model;
-                const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
+                const selectedState = getSelectedState(dataIds, model.getSelectedInView(), maxRows, totalRows);
 
+                // updating of filteredSelectedIds should not be needed, otherwise the getSelectedInView method doesn't do the right thing.
                 updateQueryGridModel(model, {
                     selectedLoaded: true,
-                    selectedQuantity: selectedIds.size,
+                    selectedQuantity: model.getSelectedInViewCount(),
                     selectedIds,
                     selectedState
                 });
@@ -730,6 +732,8 @@ interface IGetSelectedResponse {
     selected: Array<any>
 }
 
+// TODO this needs to be modified to be able to accept a filter and
+// return only the selected items from tha filter.
 export function getSelected(key: string): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -829,20 +833,20 @@ function setGridSelected(model: QueryGridModel, checked: boolean) {
 }
 
 function setGridUnselected(model: QueryGridModel) {
-
     setGridSelected(model, false);
-    // }
-    //
-    // clearSelected(model.getId()).then(() => {
-    //     updateQueryGridModel(model, {
-    //         selectedIds: List<string>(),
-    //         selectedQuantity: 0,
-    //         selectedState: GRID_CHECKBOX_OPTIONS.NONE
-    //     });
-    // }).catch(err => {
-    //     const error = err ? err : {message: 'Something went wrong'};
-    //     gridShowError(model, error);
-    // })
+}
+
+function unselectAll(model: QueryGridModel) {
+    clearSelected(model.getId()).then(() => {
+        updateQueryGridModel(model, {
+            selectedIds: List<string>(),
+            selectedQuantity: 0,
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE
+        });
+    }).catch(err => {
+        const error = err ? err : {message: 'Something went wrong'};
+        gridShowError(model, error);
+    })
 }
 
 interface ISelectionResponse {

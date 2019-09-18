@@ -29,20 +29,23 @@ export class GridSelectionBanner extends React.Component<Props, any> {
     constructor(props: Props) {
         super(props);
 
-        this.selectAll = this.selectAll.bind(this)
     }
 
-    selectAll()
-    {
+    selectAll = () => {
         gridSelectAll(this.props.model);
-    }
+    };
+
+    clearAll = () => {
+        // TODO
+        console.log("clear all for filtered grid");
+    };
 
     render() {
         const { containerCls, model } = this.props;
         if (model && model.isLoaded) {
             const {maxRows, totalRows} = model;
 
-            const selectedCount = model.getSelectedCount();
+            const selectedCount = model.getSelectedInViewCount();
 
             const allOnModel = selectedCount === totalRows && totalRows > 0;
 
@@ -50,6 +53,7 @@ export class GridSelectionBanner extends React.Component<Props, any> {
                 <div className={containerCls}>
                     {selectedCount} of {totalRows} selected &nbsp;
                     {!allOnModel && totalRows > maxRows &&  <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button>}
+                    {selectedCount > maxRows && <Button bsSize={'xsmall'} onClick={this.clearAll}>Clear all {selectedCount}</Button>}
                 </div>
             )
         }

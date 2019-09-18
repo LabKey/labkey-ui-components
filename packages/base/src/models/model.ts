@@ -738,12 +738,12 @@ export class QueryGridModel extends Record({
         return this.baseFilters.concat(this.filterArray).toList();
     }
 
-    getSelected(): List<string> {
+    getSelectedInView(): List<string> {
         return this.isFiltered() ? this.filteredSelectedIds : this.selectedIds
     }
 
-    getSelectedCount() : number {
-        return this.getSelected().size
+    getSelectedInViewCount() : number {
+        return this.getSelectedInView().size
     }
 
     getId(): string {

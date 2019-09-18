@@ -59,7 +59,7 @@ export class Export extends React.Component<Props, any> {
                     disabled={model.isError}
                 >
                     <MenuItem header>
-                        Export {model.selectedQuantity > 0 ? "Selected" : ""}
+                        Export {model.getSelectedInViewCount() > 0 ? "Selected" : ""}
                     </MenuItem>
                     <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.CSV)}>
                         <span className="fa fa-file-o"/>&nbsp;

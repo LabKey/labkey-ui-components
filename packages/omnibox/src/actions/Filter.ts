@@ -262,25 +262,25 @@ export class FilterAction implements Action {
             return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
                 const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns, true);
 
-                if (column && activeFilterType) {
-                    if (rawValue !== undefined || !activeFilterType.isDataValueRequired()) {
-                        const operator = resolveSymbol(activeFilterType);
-                        const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
-                        const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
+                if (column && activeFilterType &&
+                    (rawValue !== undefined || !activeFilterType.isDataValueRequired())) {
+                    const operator = resolveSymbol(activeFilterType);
+                    const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
+                    const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
 
-                        resolve({
-                            displayValue: display.displayValue,
-                            isReadOnly: display.isReadOnly,
-                            param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
-                            value: [`"${column.shortCaption}"`, operator, rawValue].join(' ')
-                        });
-                    }
+                    resolve({
+                        displayValue: display.displayValue,
+                        isReadOnly: display.isReadOnly,
+                        param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
+                        value: [`"${column.shortCaption}"`, operator, rawValue].join(' ')
+                    });
                 }
-
-                resolve({
-                    value: tokens.join(' '),
-                    isValid: false
-                });
+                else {
+                    resolve({
+                        value: tokens.join(' '),
+                        isValid: false
+                    });
+                }
             });
         });
     }

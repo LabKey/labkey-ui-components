@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.14.1
+*Released*: 19 September 2019
+* Pick up assay run and definition hits from search results
+
 ### version 0.14.0
 *Released*: 18 September 2019
 * Move `report-list` package into `querygrid`

@@ -675,6 +675,9 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
 
+        if (!queryGridModel)
+            return null;
+
         // format/process sample parent column and values, for now, only sample parents are populated
         const allRows = insertModel.getGridValues(queryGridModel.queryInfo);
 

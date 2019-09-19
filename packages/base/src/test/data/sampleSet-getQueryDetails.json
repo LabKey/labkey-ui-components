@@ -677,7 +677,6 @@
       "url": "\/labkey\/Sample%20Management\/query-exportExcelTemplate.view?schemaName=samples&query.queryName=NameExpr&headerType=DisplayFieldKey"
     }
   ],
-  "iconURL": false,
   "name": "NameExpr",
   "pkCols": [
     "RowId"

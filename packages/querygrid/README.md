@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.15.0
+*Released*: 19 September 2019
 * Port of Lineage components, models, actions from Biologics
 
 ### version 0.14.1

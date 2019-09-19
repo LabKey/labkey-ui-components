@@ -84,6 +84,37 @@ export class URLResolver {
                 }
             }),
 
+            new ActionMapper('experiment', 'showRunText', (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const rowId = params.rowId;
+                const url = ['workflow', rowId];
+                if (rowId !== undefined) {
+                    return AppURL.create(...url);
+                }
+            }),
+
+            // Fixme.  This is really sketchy since there is no corresponding URL in LKS
+            new ActionMapper('samplesworkflow', 'samples', (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const jobId = params.jobId;
+                const url = ['workflow', jobId, 'samples'];
+                if (jobId !== undefined) {
+                    return AppURL.create(...url);
+                }
+            }),
+
+            new ActionMapper('samplesworkflow', 'tasks', (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const jobId = params.jobId;
+                const url = ['workflow', jobId, 'tasks'];
+                if (jobId !== undefined) {
+                    return AppURL.create(...url);
+                }
+            }),
+
             new ActionMapper('assay', 'assayDetailRedirect', (row) => {
                 if (row.has('url')) {
                     const rowURL = row.get('url');
@@ -271,6 +302,8 @@ export class URLResolver {
      * @returns {Promise<T>}
      */
     public resolveSelectRows(json): Promise<any> {
+        // TODO: Do not return a Promise. This method doesn't actually do anything async, so it does not need to be a
+        //  promise.
         return new Promise((resolve) => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 

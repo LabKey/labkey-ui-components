@@ -71,7 +71,8 @@ import {
     toggleDevTools,
     toLowerSafe,
     unorderedEqual,
-    valueIsEmpty
+    valueIsEmpty,
+    TESTS_ONLY_RESET_DOM_COUNT,
 } from './utils/utils'
 import { getActionErrorMessage } from './utils/messaging'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
@@ -257,6 +258,9 @@ export {
     unorderedEqual,
     valueIsEmpty,
     getActionErrorMessage,
+    // TODO: Do not export TESTS_ONLY_RESET_DOM_COUNT, right now it's only exported because it's needed for snapshot
+    //  tests in the QueryGrid package.
+    TESTS_ONLY_RESET_DOM_COUNT,
 
     // url functions
     buildURL,

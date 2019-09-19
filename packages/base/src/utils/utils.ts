@@ -191,6 +191,12 @@ export function toggleDevTools() {
 let DOM_COUNT = 0;
 const DOM_PREFIX = 'labkey-app-';
 
+// Only exported to use with tests. Don't use this anywhere else. This is needed so we can use it in beforeEach for jest
+// snapshot tests. This way a snapshot will be identical when run as part of a test suite or run individually.
+export function TESTS_ONLY_RESET_DOM_COUNT() {
+    DOM_COUNT = 0;
+}
+
 // Generate an id with a dom-unique integer suffix
 export function generateId(prefix?: string): string {
     return (prefix ? prefix : DOM_PREFIX) + DOM_COUNT++;

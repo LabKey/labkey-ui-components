@@ -129,7 +129,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, bindURLProps(newModel), connectedComponent);
+        newModel = updateQueryGridModel(newModel, {...{selectedLoaded: false}, ...bindURLProps(newModel)}, connectedComponent);
         gridLoad(newModel, connectedComponent);
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@glass/navigation",
-  "version": "0.4.14-fb-gridSelection-37810.2",
+  "version": "0.4.14-fb-gridSelection-37810.3",
   "description": "Navigation elements and actions for an application and its pages",
   "main": "dist/navigation.cjs.js",
   "module": "dist/navigation.es.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.17.1-fb-gridSelection-37810.2",
+    "@glass/base": "0.17.1-fb-gridSelection-37810.3",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
     "react-router": "3.2.1"
@@ -72,5 +72,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "fa87bbf2056202afafb9bfdeacc049c2aafaf6a3"
+  "gitHead": "4edd31c934e5bea492455ec2cedc7b083cff4ba5"
 }

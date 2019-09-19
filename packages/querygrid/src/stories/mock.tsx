@@ -40,7 +40,6 @@ import nameExpressionSelectedQuery from "../test/data/nameExpressionSet-selected
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
-import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
@@ -53,6 +52,7 @@ const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json"
 const assayGpatQueryInfo= require("../test/data/assayGpat-getQueryDetails.json");
 const assayGpatRunData = require("../test/data/assayGpatRuns-getQuery.json");
 const filePreviewData = require("../test/data/property-getFilePreview.json");
+import visualizationConfig from '../test/data/visualization-getVisualization.json';
 const lineageData = require("../test/data/experiment-lineage.json");
 const samplesLineageQuery = require("../test/data/sampleLineage-getQuery.json");
 const expSystemSamplesLineageQuery = require("../test/data/expSystemSampleLineage-getQuery.json");
@@ -270,6 +270,12 @@ export function initMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*\/visualization\/.*\/getVisualization.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(visualizationConfig),
     });
 
     mock.use(proxy);

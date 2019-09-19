@@ -508,7 +508,7 @@ export class QueryGridModel extends Record({
     sorts: undefined,
     title: undefined,
     totalRows: 0,
-    urlParams: List<string>(['p']), // page number parameter
+    urlParams: List<string>(['p', 'reportId']), // page number and reportId parameters
     urlParamValues: Map<string, any>(),
     urlPrefix: undefined, // TODO we should give each new model a default prefix?
     view: undefined,

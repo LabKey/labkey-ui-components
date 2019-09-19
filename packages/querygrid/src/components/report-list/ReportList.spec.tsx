@@ -15,19 +15,37 @@
  */
 import * as React from 'react';
 import renderer from 'react-test-renderer';
+import { createMemoryHistory, Route, Router } from 'react-router';
 import { mount } from 'enzyme';
-import {ReportItemModal, ReportList, ReportListItem} from './ReportList';
-import { flattenApiResponse } from '../model';
-import exampleData from '../test_data/example_browse_data_tree_api.json';
-import { LoadingSpinner } from '@glass/base';
+import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
+import { flattenBrowseDataTreeResponse } from './model';
+import exampleData from '../../test/data/example_browse_data_tree_api.json';
+import { AppURL, LoadingSpinner } from '@glass/base';
+
+const history = createMemoryHistory();
 
 const noop = () => {};
 const messageSelector = '.report-list__message';
 const createdBySelector = '.report-list-item__person';
+const urlMapper = (report) => {
+    const { schemaName, queryName, viewName } = report;
+
+    if (!queryName) {
+        return null;
+    }
+
+    const parts = ['q', schemaName, queryName];
+
+    if (viewName) {
+        parts.push(viewName);
+    }
+
+    return AppURL.create(...parts);
+};
 
 describe('<ReportList />', () => {
     test('flattenApiResponse works with valid data', () => {
-        flattenApiResponse(exampleData);
+        flattenBrowseDataTreeResponse(exampleData, urlMapper);
     });
 
     test('Render with no data', () => {
@@ -48,7 +66,7 @@ describe('<ReportList />', () => {
     });
 
     test('Render with data', () => {
-        const reports = flattenApiResponse(exampleData);
+        const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
         const component = <ReportList loading={false} reports={reports} onReportClicked={noop}/>;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
@@ -58,7 +76,7 @@ describe('<ReportList />', () => {
     });
 
     test('onReportClicked should execute on click', () => {
-        const reports = flattenApiResponse(exampleData).slice(0, 1);
+        const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper).slice(0, 1);
         const onReportClicked = jest.fn();
         const component = <ReportList loading={false} reports={reports} onReportClicked={onReportClicked}/>;
         const wrapper = mount(component);
@@ -69,9 +87,13 @@ describe('<ReportList />', () => {
 
 describe('<ReportListItem />', () => {
     test('ReportListItem renders', () => {
-        const report = flattenApiResponse(exampleData)[0];
+        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
         const onClick = jest.fn();
-        const component = <ReportListItem report={report} onClick={onClick}/>;
+        const component = (
+            <Router history={history}>
+                <Route path="/"  component={() => (<ReportListItem report={report} onClick={onClick}/>)}/>
+            </Router>
+        );
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
@@ -79,12 +101,12 @@ describe('<ReportListItem />', () => {
         expect(wrapper.text()).toContain(report.createdBy);
         expect(wrapper.text()).toContain(report.name);
         // Enzyme prefixes relative URLs with http://localhost
-        const expectedHref = `http://localhost${report.runUrl}`;
+        const expectedHref = `http://localhost${report.appUrl.toString()}`;
         expect(wrapper.find('a').getDOMNode()).toHaveProperty('href', expectedHref);
     });
 
     test('ReportListItem does not render non-existent createdBy', () => {
-        const reports = flattenApiResponse(exampleData);
+        const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
         const report = reports.filter(r => !r.hasOwnProperty('createdBy'))[0];
         const component = <ReportListItem report={report} onClick={noop}/>;
         const wrapper = mount(component);
@@ -92,7 +114,7 @@ describe('<ReportListItem />', () => {
     });
 
     test('ReportListItem calls onClick when clicked', () => {
-        const report = flattenApiResponse(exampleData)[0];
+        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
         const onClick = jest.fn();
         const component = <ReportListItem report={report} onClick={onClick}/>;
         const wrapper = mount(component);
@@ -106,7 +128,7 @@ describe('<ReportListItem />', () => {
 
 describe('<ReportItemModal />', () => {
     test('ReportItemModal renders', () => {
-        const report = flattenApiResponse(exampleData)[0];
+        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
         const component = <ReportItemModal report={report} onClose={noop} />;
         const wrapper = mount(component);
         // Have to use mount + wrapper.debug for snapshot here because react-test-renderer does not work with

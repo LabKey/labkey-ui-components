@@ -302,6 +302,8 @@ export class URLResolver {
      * @returns {Promise<T>}
      */
     public resolveSelectRows(json): Promise<any> {
+        // TODO: Do not return a Promise. This method doesn't actually do anything async, so it does not need to be a
+        //  promise.
         return new Promise((resolve) => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 

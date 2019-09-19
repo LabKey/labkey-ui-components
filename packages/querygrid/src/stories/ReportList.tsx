@@ -13,22 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import data from "../test_data/example_browse_data_tree_api.json";
-import { flattenApiResponse } from "../model";
-import { ReportList, ReportItemModal } from "../components/ReportList";
-import "./stories.scss";
+import * as React from 'react';
+import { storiesOf } from '@storybook/react';
+import { Router, Route, createMemoryHistory } from 'react-router';
+import data from '../test/data/example_browse_data_tree_api.json';
+import { ReportList, ReportItemModal, flattenBrowseDataTreeResponse } from '../';
+import { AppURL } from '@glass/base';
+import './stories.scss';
 
-const exampleReports = flattenApiResponse(data);
+const history = createMemoryHistory();
+
+const exampleReports = flattenBrowseDataTreeResponse(data, (report) => {
+    const { schemaName, queryName, viewName } = report;
+
+    if (!queryName) {
+        return null;
+    }
+
+    const parts = ['q', schemaName, queryName];
+
+    if (viewName) {
+        parts.push(viewName);
+    }
+
+    return AppURL.create(...parts);
+});
+
+// initQueryGridState(fromJS({}));
 
 class ReportListContainer extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);
 
         this.state = {
-            selectedReport: null,
+            selectedReport: exampleReports[3],
         };
     }
 
@@ -54,7 +72,7 @@ class ReportListContainer extends React.PureComponent<any, any> {
 
         return (
             <>
-                <ReportList loading={false} reports={this.props.reports} onReportClicked={this.onReportClicked}/>
+                <ReportList loading={false} reports={exampleReports} onReportClicked={this.onReportClicked}/>
                 {modal}
             </>
         );
@@ -62,7 +80,6 @@ class ReportListContainer extends React.PureComponent<any, any> {
 }
 
 storiesOf('ReportList', module)
-    .addDecorator(withKnobs)
     .add('No Data', () =>{
         return <ReportList loading={false} reports={[]} onReportClicked={() =>{}}/>
     })
@@ -77,5 +94,11 @@ storiesOf('ReportList', module)
         return <ReportList loading={true} reports={[]} onReportClicked={() =>{}}/>
     })
     .add('With Modal', () =>{
-        return <ReportListContainer reports={exampleReports}/>;
+        // We have to wrap ReportListContainer in a Router and a Route because if we don't do that React Router Link
+        // objects will *not* render any attributes on anchor tags, like hrefs.
+        return (
+            <Router history={history}>
+                <Route path="/" component={ReportListContainer} />
+            </Router>
+        );
     });

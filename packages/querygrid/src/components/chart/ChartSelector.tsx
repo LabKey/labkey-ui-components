@@ -28,7 +28,7 @@ interface Props {
 
 export class ChartSelector extends React.Component<Props, any> {
 
-    componentWillMount() {
+    componentDidMount() {
         this.requestCharts(this.props);
     }
 

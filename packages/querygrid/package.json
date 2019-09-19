@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.13.8-fb-omniThings.1",
+  "version": "0.15.0-fb-omniThings.0",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -16,7 +16,7 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "prepare": "yarn build",
-    "storybook": "start-storybook -p 9001 -c .storybook",
+    "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter",
     "watch:build": "watch 'yarn build' ./src",
@@ -38,9 +38,9 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.15.3",
-    "@glass/domainproperties": "0.0.35",
-    "@glass/omnibox": "0.1.37-fb-omniThings.3",
+    "@glass/base": "0.17.0",
+    "@glass/domainproperties": "0.0.37",
+    "@glass/omnibox": "0.1.39-fb-omniThings.0",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",
@@ -48,12 +48,14 @@
     "prop-types": "15.7.2",
     "react-bootstrap-toggle": "2.3.2",
     "react-router": "3.2.1",
-    "react-select": "1.0.0-rc.10"
+    "react-select": "1.0.0-rc.10",
+    "vis": "4.21.0"
   },
   "devDependencies": {
     "@types/history": "4.7.2",
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",
+    "@types/vis": "4.21.16",
     "bootstrap-sass": "3.4.1",
     "xhr-mock": "2.4.1"
   },
@@ -89,5 +91,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "593926a19694f0efde5fe9a450cabc594901360b"
+  "gitHead": "e9a34eacd0466272332a6a3274bafdcddcfe84fe"
 }

@@ -8,6 +8,14 @@ Query Grid for LabKey schema/query data views
 *Released*: TBD
 * Update validation of sample set import aliases
 
+### version 0.15.0
+*Released*: 19 September 2019
+* Port of Lineage components, models, actions from Biologics
+
+### version 0.14.1
+*Released*: 19 September 2019
+* Pick up assay run and definition hits from search results
+
 ### version 0.14.0
 *Released*: 18 September 2019
 * Move `report-list` package into `querygrid`

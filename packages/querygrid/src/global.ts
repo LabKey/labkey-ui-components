@@ -19,6 +19,7 @@ import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, resolveSchemaQuery,
 
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
+import { Lineage } from './components/lineage/models';
 
 /**
  * Initialize the global state object for this package.
@@ -47,6 +48,7 @@ export function resetQueryGridState() {
     setGlobal({
         QueryGrid_charts: Map<string, List<DataViewInfo>>(),
         QueryGrid_editors: Map<string, EditorModel>(),
+        QueryGrid_lineageResults: Map<string, Lineage>(),
         QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
@@ -179,6 +181,34 @@ export function getCharts(schemaQueryKey: string) : List<DataViewInfo> {
 export function updateCharts(schemaQueryKey: string, dataViewInfos: List<DataViewInfo>) {
     setGlobal({
         QueryGrid_charts: getGlobalState('charts').set(schemaQueryKey, dataViewInfos)
+    });
+}
+
+/**
+ * Get the lineage results from the global state for a given seed / lsid
+ * @param seed Key for the lineage results map
+ */
+export function getLineageResult(seed: string) : Lineage {
+    return getGlobalState('lineageResults').get(seed);
+}
+
+/**
+ * Sets the global state lineage results for a given seed / lsid
+ * @param seed Key for the lineage results map
+ * @param lineage Lineage result object
+ */
+export function updateLineageResult(seed: string, lineage: Lineage) {
+    setGlobal({
+        QueryGrid_lineageResults: getGlobalState('lineageResults').set(seed, lineage)
+    });
+}
+
+/**
+ * Invalidate the global state lineage results
+ */
+export function invalidateLineageResults(seed: string, lineage: Lineage) {
+    setGlobal({
+        QueryGrid_lineageResults: Map<string, Lineage>()
     });
 }
 

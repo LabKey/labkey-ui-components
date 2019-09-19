@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.16.1-fb-gridSelection-37810.1",
+  "version": "0.17.1-fb-gridSelection-37810.1",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -79,5 +79,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "fa87bbf2056202afafb9bfdeacc049c2aafaf6a3"
+  "gitHead": "522a421ed38ca985a38208069243d6f8572beed3"
 }

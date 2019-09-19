@@ -8,6 +8,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 * Add isFiltered method to QueryGridModel for better support of selection on filtered grids
 
+### version 0.17.0
+*Released*: 19 September 2019
+* Add getIconURL helper for QueryInfo
+
 ### version 0.16.0
 *Released*: 18 September 2019
 * Add TESTS_ONLY_RESET_DOM_COUNT

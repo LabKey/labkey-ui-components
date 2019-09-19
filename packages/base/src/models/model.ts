@@ -933,7 +933,7 @@ export class QueryInfo extends Record({
     // indices: Map<string, any>(),
     // isInherited: false,
 
-    iconURL: false,
+    iconURL: 'default',
     // isMetadataOverrideable: false,
     // isTemporary: false,
     // isUserDefined: false,
@@ -1210,6 +1210,19 @@ export class QueryInfo extends Record({
             index++;
         });
         return columns;
+    }
+
+    getIconURL(): string {
+        let iconURL = this.iconURL;
+
+        // TODO better support for iconURL that doesn't come from queryInfo metadata
+        if (iconURL === 'default') {
+            if (this.schemaName === 'samples') {
+                iconURL = 'samples';
+            }
+        }
+
+        return iconURL;
     }
 }
 

@@ -301,7 +301,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       <td
                         colSpan={6}
                       >
-                        Start by adding the quantity of assay data rows you want to create
+                        Start by adding the quantity of assay data rows you want to create.
                       </td>
                     </tr>
                   </tbody>
@@ -631,7 +631,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       <td
                         colSpan={5}
                       >
-                        Start by adding the quantity of assay data rows you want to create
+                        Start by adding the quantity of assay data rows you want to create.
                       </td>
                     </tr>
                   </tbody>

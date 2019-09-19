@@ -206,12 +206,12 @@ describe("selections", () => {
         });
         updateSelections(model, { selectedIds: List(["1", "5"])});
         let updatedModel = getQueryGridModel(modelId);
-        expect(updatedModel.getSelectedInViewCount()).toBe(2);
+        expect(updatedModel.selectedQuantity).toBe(2);
         expect(updatedModel.selectedState).toBe(GRID_CHECKBOX_OPTIONS.ALL);
         expect(updatedModel.selectedLoaded).toBe(true);
         updateSelections(model, { selectedIds: List( ["7"])});
         updatedModel = getQueryGridModel(modelId);
-        expect(updatedModel.getSelectedInViewCount()).toBe(1);
+        expect(updatedModel.selectedQuantity).toBe(1);
         expect(updatedModel.selectedState).toBe(GRID_CHECKBOX_OPTIONS.SOME);
         expect(updatedModel.selectedLoaded).toBe(true);
     });

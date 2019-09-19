@@ -479,7 +479,6 @@ export class QueryGridModel extends Record({
     editable: false,
     editing: false,
     filterArray: List<Filter.IFilter>(),
-    filteredSelectedIds: emptyList,
     isError: false,
     isLoaded: false,
     isLoading: false,
@@ -526,7 +525,6 @@ export class QueryGridModel extends Record({
     editable: boolean;
     editing: boolean;
     filterArray: List<Filter.IFilter>;
-    filteredSelectedIds: List<string>;
     isError: boolean;
     isLoaded: boolean;
     isLoading: boolean;
@@ -546,10 +544,10 @@ export class QueryGridModel extends Record({
     showChartSelector: boolean;
     sortable: boolean;
     sorts: string;
-    selectedIds: List<string>;
+    selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not
     selectedLoaded: boolean;
     selectedState: GRID_CHECKBOX_OPTIONS;
-    selectedQuantity: number;
+    selectedQuantity: number; // should be the quantity in the current view, whether filtered or not
     title: string;
     totalRows: number;
     urlParams: List<string>;
@@ -735,14 +733,6 @@ export class QueryGridModel extends Record({
         }
 
         return this.baseFilters.concat(this.filterArray).toList();
-    }
-
-    getSelectedInView(): List<string> {
-        return this.isFiltered() ? this.filteredSelectedIds : this.selectedIds
-    }
-
-    getSelectedInViewCount() : number {
-        return this.getSelectedInView().size
     }
 
     getId(): string {

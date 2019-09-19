@@ -3,6 +3,9 @@
 LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.
 
 ## Release Notes ##
+### version ???
+*Released*: ???
+* Package patch update for changes to @glass/base v???
 
 ### version 0.1.38
 *Released*: 17 September 2019

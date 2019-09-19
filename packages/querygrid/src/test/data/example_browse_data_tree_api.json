@@ -181,7 +181,7 @@
           "icon": "/labkey/reports/grid.gif?revision=3",
           "runUrl": "/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=DEM-1&query.viewName=Abbreviated%20Demographics",
           "type": "Query",
-          "schemaName": "study",
+          "schemaName": "exp.data",
           "modified": "2019-04-04 15:19:13.465",
           "id": "34d3abe8-389a-1037-8b24-c3b0ee0fc90b",
           "iconCls": "fa fa-table",
@@ -196,7 +196,8 @@
           "leaf": true,
           "createdBy": "Vader",
           "name": "Abbreviated Demographics",
-          "queryName": "DEM-1",
+          "queryName": "mixtures",
+          "viewName": "~~default~~",
           "allowCustomThumbnail": false,
           "category": {
             "parent": -1,

@@ -53,7 +53,7 @@ const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json"
 const assayGpatQueryInfo= require("../test/data/assayGpat-getQueryDetails.json");
 const assayGpatRunData = require("../test/data/assayGpatRuns-getQuery.json");
 const filePreviewData = require("../test/data/property-getFilePreview.json");
-
+import visualizationConfig from '../test/data/visualization-getVisualization.json';
 
 export function initMocks() {
     mock.setup();
@@ -241,6 +241,12 @@ export function initMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*\/visualization\/.*\/getVisualization.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(visualizationConfig),
     });
 
     mock.use(proxy);

@@ -16,7 +16,7 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer'
 import { List } from 'immutable'
-import { QueryGridModel } from '@glass/base'
+import { QueryGridModel, TESTS_ONLY_RESET_DOM_COUNT } from '@glass/base'
 
 import { QueryGridPanel } from './QueryGridPanel'
 import { initQueryGridState, updateQueryGridModel } from '../global'
@@ -42,6 +42,11 @@ beforeAll(() => {
 jest.mock('../actions');
 
 describe("QueryGridPanel render", () => {
+    beforeEach(() => {
+        // Reset the DOM counter used to generate IDs. This way snapshot tests will produce the same output when run
+        // as a test suite or individually.
+        TESTS_ONLY_RESET_DOM_COUNT();
+    });
 
     test("no model", () => {
         const tree = renderer.create(<QueryGridPanel model={null}/>).toJSON();

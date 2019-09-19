@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 ### version ???
 *Released*: ???
 
-* Add filteredSelectedIds field to QueryGridModel for better support of selection on filtered grids
+* Add isFiltered method to QueryGridModel for better support of selection on filtered grids
 
 ### version 0.16.0
 *Released*: 18 September 2019

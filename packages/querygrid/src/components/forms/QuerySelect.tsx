@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { fromJS, List } from 'immutable'
-import { Filter, Utils } from '@labkey/api'
-import { SchemaQuery, QueryColumn } from '@glass/base'
+import * as React from 'react';
+import { fromJS, List } from 'immutable';
+import { Option } from 'react-select';
+import { Filter, Utils } from '@labkey/api';
+import { SchemaQuery, QueryColumn } from '@glass/base';
 
-import { DELIMITER, SelectInput } from './input/SelectInput'
-import { resolveDetailFieldValue } from './renderers'
-import { initSelect } from './actions'
-import { FOCUS_FLAG } from './constants'
-import { QuerySelectModel, ReactSelectOption } from './model'
+import { DELIMITER, SelectInput } from './input/SelectInput';
+import { resolveDetailFieldValue } from './renderers';
+import { initSelect } from './actions';
+import { FOCUS_FLAG } from './constants';
+import { QuerySelectModel } from './model';
 
 function getValue(model: QuerySelectModel, props: any): any {
     const { rawSelectedValue } = model;
@@ -56,11 +57,11 @@ function getValue(model: QuerySelectModel, props: any): any {
 
 // 33775: Provide a default no-op filter to a React Select to prevent "normal" filtering on the input when fetching
 // async query results. They have already been filtered.
-function noopFilterOptions(options: Array<ReactSelectOption>): Array<ReactSelectOption> {
+function noopFilterOptions(options: Array<Option>): Array<Option> {
     return options;
 }
 
-function renderPreviewOption(option: ReactSelectOption, model: QuerySelectModel): React.ReactNode {
+function renderPreviewOption(option: Option, model: QuerySelectModel): React.ReactNode {
     const { allResults, queryInfo } = model;
 
     if (queryInfo && allResults.size) {
@@ -216,7 +217,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         clearTimeout(this.querySelectTimer);
     }
 
-    filterOptions(options: Array<ReactSelectOption>, inputValue: string, currentValue: Array<ReactSelectOption>): Array<ReactSelectOption> {
+    filterOptions(options: Array<Option>, inputValue: string, currentValue: Array<Option>): Array<Option> {
         return this.props.filterOptions(options, inputValue, currentValue);
     }
 

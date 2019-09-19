@@ -220,7 +220,7 @@ export {
 
     // types
     PlacementType,
-    ReactSelectOption,
+    ReactSelectOption, // TODO: Remove all external usages of this and then delete this export.
     EditorModel,
 
     // samples-related

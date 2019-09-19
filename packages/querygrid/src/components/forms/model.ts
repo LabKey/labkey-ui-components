@@ -13,14 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Record } from 'immutable'
-import { Filter } from '@labkey/api'
-import { QueryInfo, SchemaQuery } from '@glass/base'
+import { List, Map, Record } from 'immutable';
+import { Option } from 'react-select';
+import { Filter } from '@labkey/api';
+import { QueryInfo, SchemaQuery } from '@glass/base';
 
-import { ISelectRowsResult } from '../../query/api'
-import { DELIMITER } from './input/SelectInput'
-import * as actions from './actions'
+import { ISelectRowsResult } from '../../query/api';
+import { DELIMITER } from './input/SelectInput';
+import * as actions from './actions';
 
+// TODO: Remove ReactSelectOption, and instead make consuming applications use the Option interface from ReactSelect
 // This is the same as ReactSelect Option
 export interface ReactSelectOption {
     label: string
@@ -29,6 +31,7 @@ export interface ReactSelectOption {
 
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>
+    containerPath?: string
     displayColumn: string
     delimiter: string
     id: string
@@ -49,6 +52,7 @@ export interface QuerySelectModelProps {
 export class QuerySelectModel extends Record({
     addExactFilter: true,
     allResults: Map<string, Map<string, any>>(),
+    containerPath: undefined,
     displayColumn: undefined,
     delimiter: DELIMITER,
     id: undefined,
@@ -87,11 +91,11 @@ export class QuerySelectModel extends Record({
         super(values);
     }
 
-    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): Array<ReactSelectOption> {
+    formatSavedResults(data?: Map<string, Map<string, any>>, token?: string): Array<Option> {
         return actions.formatSavedResults(this, data, token);
     }
 
-    getSelectedOptions(): ReactSelectOption | Array<ReactSelectOption> {
+    getSelectedOptions(): Option | Array<Option> {
         const options = actions.formatResults(this, this.selectedItems);
 
         if (this.multiple) {

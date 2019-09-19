@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import { fromJS, Map } from 'immutable'
+import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api'
 import { QueryInfo, similaritySortFactory } from '@glass/base'
 
 import { FOCUS_FLAG } from './constants'
 import { selectRows, searchRows, ISelectRowsResult, getQueryDetails } from '../../query/api'
 import { QuerySelectOwnProps } from './QuerySelect'
-import { QuerySelectModel, QuerySelectModelProps, ReactSelectOption } from './model'
+import { QuerySelectModel, QuerySelectModelProps } from './model'
 
 const emptyMap = Map<string, any>();
 
@@ -95,7 +96,7 @@ export function initSelect(props: QuerySelectOwnProps, model: QuerySelectModel):
                         const model = initQuerySelectModel(componentId, newProps, queryInfo);
 
                         if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                            let items: ReactSelectOption | Array<ReactSelectOption> = formatResults(model, model.selectedItems);
+                            let items: Option | Array<Option> = formatResults(model, model.selectedItems);
 
                             // mimic ReactSelect in that it will return a single option if multiple is not true
                             if (props.multiple === false) {
@@ -236,7 +237,7 @@ export function saveSearchResults(model: QuerySelectModel, searchResults: Map<st
     }) as QuerySelectModel;
 }
 
-export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): Array<ReactSelectOption> {
+export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): Array<Option> {
     if (!model.queryInfo || !results) {
         return [];
     }
@@ -256,7 +257,7 @@ export function formatResults(model: QuerySelectModel, results: Map<string, any>
  * @param {Map<string, Map<string, any>>} results can be optionally supplied to override model searchResults
  * @param {string} token an optional search token that will be used to sort the results
  */
-export function formatSavedResults(model: QuerySelectModel, results?: Map<string, Map<string, any>>, token?: string): Array<ReactSelectOption> {
+export function formatSavedResults(model: QuerySelectModel, results?: Map<string, Map<string, any>>, token?: string): Array<Option> {
     const { queryInfo, selectedItems, searchResults } = model;
 
     if (!queryInfo) {

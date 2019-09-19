@@ -15,11 +15,10 @@
  */
 import * as React from 'react'
 import { withFormsy } from 'formsy-react'
-import ReactSelect from 'react-select'
+import ReactSelect, { Option } from 'react-select'
 import { Utils } from '@labkey/api'
 import { generateId } from '@glass/base'
 
-import { ReactSelectOption } from '../model'
 import { FieldLabel } from '../FieldLabel'
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -128,7 +127,7 @@ export interface SelectInputProps extends DisableableInputProps {
     promptTextCreator?: (filterText:string) => string;
     required?: boolean
     saveOnBlur?: boolean
-    selectedOptions?: ReactSelectOption | Array<ReactSelectOption>
+    selectedOptions?: Option | Array<Option>
     showLabel?: boolean
     addLabelAsterisk?: boolean
     valueKey?: string

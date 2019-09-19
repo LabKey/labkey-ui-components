@@ -41,7 +41,7 @@ export class GridSelectionBanner extends React.Component<Props, any> {
 
     render() {
         const { containerCls, model } = this.props;
-        if (model && model.isLoaded) {
+        if (model && model.isLoaded && model.selectedLoaded) {
             const {maxRows, totalRows} = model;
 
             const selectedCount = model.selectedQuantity;

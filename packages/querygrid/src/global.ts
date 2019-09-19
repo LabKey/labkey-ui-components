@@ -226,7 +226,6 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
         let viewSelected = selectedIds;
         const selectedState = getSelectedState(dataIds, viewSelected, maxRows, totalRows);
         const updatedState = {
-            filteredSelectedIds: model.isFiltered() ? viewSelected : List<string>(),
             selectedIds,
             selectedLoaded,
             selectedQuantity: viewSelected.size,

@@ -142,7 +142,7 @@ export function gridClearAll(model: QueryGridModel) {
             selectedState: GRID_CHECKBOX_OPTIONS.NONE
         });
     }).catch(err => {
-        const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid'};
+        const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
         gridShowError(model, error);
     });
 }

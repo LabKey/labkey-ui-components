@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input 
+
 ### version 0.15.0
 *Released*: 19 September 2019
 * Port of Lineage components, models, actions from Biologics

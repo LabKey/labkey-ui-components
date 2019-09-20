@@ -134,6 +134,7 @@ export interface SelectInputProps extends DisableableInputProps {
     valueKey?: string
     onChange?: Function // this is getting confused with formsy on change, need to separate
     optionRenderer?: any
+    afterInputElement?: React.ReactNode // this can be used to render an element to the right of the input
 
     id?: any
     label?: React.ReactNode
@@ -466,10 +467,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
 
     render() {
-        const {
-            containerClass,
-            inputClass,
-        } = this.props;
+        const { containerClass, inputClass, afterInputElement} = this.props;
 
         const inputProps = {
             id: this.getId()
@@ -482,6 +480,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                     {this.renderSelect(inputProps)}
                     {this.renderError()}
                 </div>
+                {afterInputElement}
             </div>
         )
     }

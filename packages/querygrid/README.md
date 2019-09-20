@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.16.0
+*Released*: 20 September 2019
+* initialize parents for SampleInsertPanel bulk insert
+
 ### version 0.15.0
 *Released*: 19 September 2019
 * Port of Lineage components, models, actions from Biologics

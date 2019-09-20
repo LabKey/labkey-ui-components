@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.16.1
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
 ### version 0.16.0
 *Released*: 20 September 2019
 * initialize parents for SampleInsertPanel bulk insert

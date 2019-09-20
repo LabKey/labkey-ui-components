@@ -22,7 +22,7 @@ import { getVisualizationConfig } from '../../actions'
 
 interface Props {
     chart: DataViewInfo
-    model: QueryGridModel
+    model?: QueryGridModel
 }
 
 interface State {
@@ -94,24 +94,28 @@ export class Chart extends React.Component<Props, State> {
     renderChart() {
         const { model } = this.props;
         let { config } = this.state;
+        let processedConfig = config.toJS();
 
         if (config) {
-            let newConfig = config.toJS();
-
             // set the size of the SVG based on the plot el width (i.e. the model width)
-            newConfig.chartConfig.width = this.getPlotElement().width();
-            newConfig.chartConfig.height = newConfig.chartConfig.width * 9 / 16; // 16:9 aspect ratio
+            processedConfig.chartConfig.width = this.getPlotElement().width();
+            processedConfig.chartConfig.height = processedConfig.chartConfig.width * 9 / 16; // 16:9 aspect ratio
 
             // apply the baseFilters and filterArray from this model to the chart config queryConfig filterArray
-            if (model.baseFilters && !model.baseFilters.isEmpty()) {
-                model.baseFilters.forEach((filter) => newConfig.queryConfig.filterArray.push(filter));
+            if (model && model.baseFilters && !model.baseFilters.isEmpty()) {
+                model.baseFilters.forEach((filter) => processedConfig.queryConfig.filterArray.push(filter));
             }
-            if (model.filterArray && !model.filterArray.isEmpty()) {
-                model.filterArray.forEach((filter) => newConfig.queryConfig.filterArray.push(filter));
+
+            if (model && model.filterArray && !model.filterArray.isEmpty()) {
+                model.filterArray.forEach((filter) => processedConfig.queryConfig.filterArray.push(filter));
             }
 
             this.getPlotElement().html('');
-            LABKEY.vis.GenericChartHelper.renderChartSVG(this.state.divId, newConfig.queryConfig, newConfig.chartConfig);
+            LABKEY.vis.GenericChartHelper.renderChartSVG(
+                this.state.divId,
+                processedConfig.queryConfig,
+                processedConfig.chartConfig
+            );
         }
     }
 

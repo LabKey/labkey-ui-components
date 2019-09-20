@@ -40,7 +40,6 @@ import nameExpressionSelectedQuery from "../test/data/nameExpressionSet-selected
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
-import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
@@ -53,6 +52,13 @@ const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json"
 const assayGpatQueryInfo= require("../test/data/assayGpat-getQueryDetails.json");
 const assayGpatRunData = require("../test/data/assayGpatRuns-getQuery.json");
 const filePreviewData = require("../test/data/property-getFilePreview.json");
+import visualizationConfig from '../test/data/visualization-getVisualization.json';
+const lineageData = require("../test/data/experiment-lineage.json");
+const samplesLineageQuery = require("../test/data/sampleLineage-getQuery.json");
+const expSystemSamplesLineageQuery = require("../test/data/expSystemSampleLineage-getQuery.json");
+const expSystemLineageQuery = require("../test/data/expSystemLineage-getQuery.json");
+const expressionsystemsamplesQueryInfo = require("../test/data/expSystemSamples-getQueryDetails.json");
+const expressionsystemQueryInfo = require("../test/data/expSystem-getQueryDetails.json");
 
 
 export function initMocks() {
@@ -75,6 +81,10 @@ export function initMocks() {
             responseBody = assaysHeatMapQueryInfo;
         else if (lcSchemaName === 'samples' && lcQueryName === 'samples')
             responseBody = sampleSetQueryInfo;
+        else if (lcSchemaName === 'samples' && lcQueryName === 'expressionsystemsamples')
+            responseBody = expressionsystemsamplesQueryInfo;
+        else if (lcSchemaName === 'exp.data' && lcQueryName === 'expressionsystem')
+            responseBody = expressionsystemQueryInfo;
         else if (lcSchemaName === 'samples' && lcQueryName === 'samplesetwithallfieldtypes')
             responseBody = sampleSetAllFieldTypesQueryInfo;
         else if (lcSchemaName === 'lists' && lcQueryName === 'lookuplist')
@@ -112,6 +122,12 @@ export function initMocks() {
             responseBody = sampleSetHeatMapQuery;
         else if (bodyParams.indexOf("&query.queryname=assaysheatmap&") > -1)
             responseBody = assaysHeatMapQuery;
+        else if (bodyParams.indexOf("&query.queryname=samples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1)
+            responseBody = samplesLineageQuery;
+        else if (bodyParams.indexOf("&query.queryname=expressionsystemsamples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1)
+            responseBody = expSystemSamplesLineageQuery;
+        else if (bodyParams.indexOf("&schemaname=exp.data&") > -1 && bodyParams.indexOf("&query.queryname=expressionsystem&") > -1)
+            responseBody = expSystemLineageQuery;
         else if (bodyParams.indexOf("&query.queryname=samples&") > -1)
             responseBody = sampleDetailsQuery;
         else if (bodyParams.indexOf("&query.queryname=lookuplist&") > -1)
@@ -241,6 +257,25 @@ export function initMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.get(/.*lineage.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+        if (queryParams.lsid.indexOf('ES-1.2') > -1) {
+            responseBody = lineageData;
+        }
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*\/visualization\/.*\/getVisualization.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(visualizationConfig),
     });
 
     mock.use(proxy);

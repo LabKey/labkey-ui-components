@@ -23,25 +23,6 @@ import { ViewSelector } from "./ViewSelector";
 import { URLBox } from './URLBox'
 import { GridSelectionBanner } from "./GridSelectionBanner";
 
-const layouts = {
-    NO_BUTTONS: {
-        LEFT: false,
-        CENTER: 'col-sm-8 col-md-8',
-        RIGHT: 'col-sm-4 col-md-4',
-        MED_SM_LEFT: false,
-        MED_SM_CENTER: 'col-xs-12',
-        MED_SM_RIGHT: 'col-xs-12'
-    },
-    STANDARD: {
-        LEFT: 'col-sm-4 col-md-4',
-        CENTER: 'col-sm-4 col-md-4',
-        RIGHT: 'col-sm-4 col-md-4',
-        MED_SM_LEFT: 'col-md-7 col-sm-6 col-xs-12',
-        MED_SM_CENTER: 'col-md-12 col-xs-12',
-        MED_SM_RIGHT: 'col-md-5 col-sm-6 col-xs-12'
-    }
-};
-
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
 
@@ -60,10 +41,10 @@ interface QueryGridBarProps {
  * - a view selector (based on model.showViewSelector)
  * You may also provide a set of buttons to be displayed within the bar.
  */
-export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
-
+export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
         const { buttons, model } = this.props;
+        const buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
         const box = model && model.showSearchBox ? (
             <URLBox
@@ -76,97 +57,66 @@ export class QueryGridBar extends React.Component<QueryGridBarProps, any> {
         ) : null;
 
         const exportBtn = model ? (
-            <Export model={model}/>
+            <span style={{paddingLeft: '10px'}}>
+                <Export model={model}/>
+            </span>
         ) : null;
 
         const chart = model && model.showChartSelector ? (
-            <ChartSelector model={model}/>
+            <span style={buttonsNode ? {paddingLeft: '10px'} : {}}>
+                <ChartSelector model={model}/>
+            </span>
         ) : null;
 
         const view = model && model.showViewSelector ? (
-            <ViewSelector model={model}/>
+            <span style={{paddingLeft: '10px'}}>
+                <ViewSelector model={model}/>
+            </span>
         ) : null;
 
+        let leftContent;
+
+        if (buttons || chart) {
+            leftContent = (
+                <div className="col-md-6 col-sm-6 col-xs-12">
+                    <div className="btn-group">
+                        {buttonsNode}
+                    </div>
+
+                    {chart}
+                </div>
+            );
+        }
+
         const rightContent = (
-            <div className="paging pull-right text-nowrap">
-                {paging}
-                {exportBtn != null ? (
-                    <span style={{paddingLeft: '10px'}}>
-                        {exportBtn}
-                    </span>
-                ) : null}
-                {view !== null ? (
-                    <span style={{paddingLeft: '10px'}}>
-                        {view}
-                    </span>
-                ) : null}
+            <div className="col-md-6 col-sm-6 col-xs-12">
+                <div className="paging pull-right text-nowrap">
+                    {paging}
+
+                    {exportBtn}
+
+                    {view}
+                </div>
             </div>
         );
 
-        const layout = buttons || chart ? layouts.STANDARD : layouts.NO_BUTTONS;
-        const buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
-
-        const selectionDetails = <GridSelectionBanner containerCls="QueryGrid-bottom-spacing" model={model}/>;
-
         return (
-            <div>
-                {/* On most layouts, render side-by-side */}
-                <div className="hidden-md hidden-xs hidden-sm">
-                    <div className="row QueryGrid-bottom-spacing">
-                        {layout.LEFT && (
-                            <div className={layout.LEFT + ''}>
-                                <div className="btn-group">
-                                    {buttonsNode}
-                                </div>
-                                {chart !== null ? (
-                                    <span style={buttonsNode ? {paddingLeft: '10px'} : {}}>
-                                        {chart}
-                                    </span>
-                                ) : null}
-                            </div>
-                        )}
-                        <div className={layout.CENTER}>
-                            {box}
-                        </div>
-                        <div className={layout.RIGHT}>
-                            {rightContent}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-12">
-                            {selectionDetails}
-                        </div>
+            <div className="query-grid-bar">
+                <div className="row QueryGrid-bottom-spacing">
+                    {leftContent}
+
+                    {rightContent}
+                </div>
+
+                <div className="row QueryGrid-bottom-spacing">
+                    <div className="col-md-12 col-xs-12">
+                        {box}
                     </div>
                 </div>
 
-                {/* On medium and x-small layout, render two rows */}
-                <div className="visible-md visible-xs visible-sm">
-                    <div className="row QueryGrid-bottom-spacing">
-                        {layout.MED_SM_LEFT && (
-                            <div className={layout.MED_SM_LEFT + ''}>
-                                <div className="btn-group">
-                                    {buttonsNode}
-                                </div>
-                                {chart !== null ? (
-                                    <span style={buttonsNode ? {paddingLeft: '10px'} : {}}>
-                                        {chart}
-                                    </span>
-                                ) : null}
-                            </div>
-                        )}
-                        <div className={layout.MED_SM_RIGHT}>
-                            {rightContent}
-                        </div>
-                    </div>
-                    <div className="row QueryGrid-bottom-spacing">
-                        <div className={layout.MED_SM_CENTER}>
-                            {box}
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className={layout.MED_SM_CENTER}>
-                            {selectionDetails}
-                        </div>
+                <div className="row">
+                    <div className="col-md-12 col-xs-12">
+                        <GridSelectionBanner containerCls="QueryGrid-bottom-spacing" model={model}/>
                     </div>
                 </div>
             </div>

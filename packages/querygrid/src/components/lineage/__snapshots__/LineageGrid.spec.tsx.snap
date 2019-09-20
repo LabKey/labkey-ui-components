@@ -1,0 +1,2165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LineageGrid/> loading 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-md-12"
+  >
+    <div
+      className="table-responsive"
+    >
+      <div
+        className="grid-messages"
+      />
+      <table
+        className="table table-striped table-bordered table-condensed"
+      >
+        <thead>
+          <tr>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "270px",
+                }
+              }
+            >
+              Name
+            </th>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "60px",
+                }
+              }
+            >
+              Distance
+            </th>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "70px",
+                }
+              }
+            >
+              Change Seed
+            </th>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "62px",
+                }
+              }
+            >
+              Type
+            </th>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "134px",
+                }
+              }
+            >
+              Creation Date
+            </th>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "118px",
+                }
+              }
+            >
+              Description
+            </th>
+            <th
+              className="grid-header-cell"
+              onClick={[Function]}
+              style={
+                Object {
+                  "minWidth": "70px",
+                }
+              }
+            >
+              Alias
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            className="grid-loading"
+          >
+            <td
+              colSpan={7}
+            >
+              Loading...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<LineageGrid/> with data 1`] = `
+Array [
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-sm-4"
+    >
+      <div
+        className="text-nowrap"
+      >
+        <a
+          className="btn btn-success"
+          href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2&distance=3&members=parents"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          Show Parents
+        </a>
+        <span
+          style={
+            Object {
+              "margin": "0 10px",
+            }
+          }
+        >
+          <a
+            className="btn btn-success disabled"
+            href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2&distance=3&members=children"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            style={
+              Object {
+                "pointerEvents": "none",
+              }
+            }
+            tabIndex={-1}
+          >
+            Show Children
+          </a>
+        </span>
+      </div>
+    </div>
+    <div
+      className="text-center col-sm-4 lineage-seed-info"
+    >
+      Showing 
+      children
+       from seed:
+      <span
+        className="lineage-seed-name"
+      >
+        ES-1.2
+      </span>
+    </div>
+    <div
+      className="col-sm-4"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="paging pull-right text-nowrap"
+        >
+          <span
+            className="paging-counts-without-buttons"
+            data-max={15}
+            data-min={1}
+            data-total={15}
+          >
+            <span>
+              1
+               - 
+              15
+            </span>
+             of 
+            15
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12"
+    >
+      <div
+        className="table-responsive"
+      >
+        <div
+          className="grid-messages"
+        />
+        <table
+          className="table table-striped table-bordered table-condensed"
+        >
+          <thead>
+            <tr>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "270px",
+                  }
+                }
+              >
+                Name
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "60px",
+                  }
+                }
+              >
+                Distance
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "70px",
+                  }
+                }
+              >
+                Change Seed
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "62px",
+                  }
+                }
+              >
+                Type
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "134px",
+                  }
+                }
+              >
+                Creation Date
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "118px",
+                  }
+                }
+              >
+                Description
+              </th>
+              <th
+                className="grid-header-cell"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "minWidth": "70px",
+                  }
+                }
+              >
+                Alias
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "0px",
+                    }
+                  }
+                  title=""
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176707"
+                  >
+                    ES-1.2
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-success"
+                    >
+                      Seed
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                0
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.2"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <button
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    disabled={true}
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </button>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                test desc 123
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "10px",
+                    }
+                  }
+                  title=""
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176711"
+                  >
+                    ES-1.204
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-info"
+                    >
+                      1st 
+                      child
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="1 generation below seed"
+                >
+                  1
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.204&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.204"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <button
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    disabled={true}
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </button>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "10px",
+                    }
+                  }
+                  title=""
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176710"
+                  >
+                    ES-1.203
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-info"
+                    >
+                      1st 
+                      child
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="1 generation below seed"
+                >
+                  1
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.203"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.203&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for ES-1.203"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "20px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176713"
+                  >
+                    ES-1.3
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-primary"
+                    >
+                      2nd 
+                      child
+                    </span>
+                  </span>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="2 generations below seed"
+                >
+                  2
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.3"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for ES-1.3"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                asdf testing
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "30px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/samples/176719"
+                  >
+                    2015_01_08_B002
+                  </a>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="3 generations below seed"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for 2015_01_08_B002"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for 2015_01_08_B002"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "30px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/samples/176718"
+                  >
+                    2015_01_08_A001
+                  </a>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="3 generations below seed"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for 2015_01_08_A001"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for 2015_01_08_A001"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "10px",
+                    }
+                  }
+                  title=""
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176709"
+                  >
+                    ES-1.202
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-info"
+                    >
+                      1st 
+                      child
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="1 generation below seed"
+                >
+                  1
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.202"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.202&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for ES-1.202"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "20px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176713"
+                  >
+                    ES-1.3
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-primary"
+                    >
+                      2nd 
+                      child
+                    </span>
+                  </span>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="2 generations below seed"
+                >
+                  2
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.3"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for ES-1.3"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                asdf testing
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "30px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/samples/176719"
+                  >
+                    2015_01_08_B002
+                  </a>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="3 generations below seed"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for 2015_01_08_B002"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for 2015_01_08_B002"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "30px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/samples/176718"
+                  >
+                    2015_01_08_A001
+                  </a>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="3 generations below seed"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for 2015_01_08_A001"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for 2015_01_08_A001"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "10px",
+                    }
+                  }
+                  title=""
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176708"
+                  >
+                    ES-1.201
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-info"
+                    >
+                      1st 
+                      child
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="1 generation below seed"
+                >
+                  1
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.201"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.201&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for ES-1.201"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "20px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176713"
+                  >
+                    ES-1.3
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-primary"
+                    >
+                      2nd 
+                      child
+                    </span>
+                  </span>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="2 generations below seed"
+                >
+                  2
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.3"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.3&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for ES-1.3"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                asdf testing
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "30px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/samples/176719"
+                  >
+                    2015_01_08_B002
+                  </a>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="3 generations below seed"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for 2015_01_08_B002"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_B002&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for 2015_01_08_B002"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "30px",
+                    }
+                  }
+                  title="2 duplicates"
+                >
+                  <a
+                    href="#/samples/samples/176718"
+                  >
+                    2015_01_08_A001
+                  </a>
+                  <span
+                    className="pull-right hide-on-hover"
+                  >
+                    <span
+                      className="label label-warning"
+                    >
+                      Duplicate
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="3 generations below seed"
+                >
+                  3
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for 2015_01_08_A001"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.Samples:2015_01_08_A001&distance=3&members=children"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Children for 2015_01_08_A001"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </a>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+            <tr>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="lineage-name"
+                  style={
+                    Object {
+                      "textIndent": "10px",
+                    }
+                  }
+                  title=""
+                >
+                  <a
+                    href="#/samples/expressionsystemsamples/176712"
+                  >
+                    ES-1.205
+                  </a>
+                  <span
+                    className="pull-right show-on-hover"
+                  >
+                    <span
+                      className="label label-info"
+                    >
+                      1st 
+                      child
+                    </span>
+                  </span>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <span
+                  title="1 generation below seed"
+                >
+                  1
+                </span>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                <div
+                  className="text-nowrap"
+                >
+                  <a
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    href="#/lineage?seeds=urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.205&distance=3&members=parents"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    title="Parents for ES-1.205"
+                  >
+                    <span
+                      className="fa fa-arrow-up"
+                    />
+                  </a>
+                  <span
+                    style={
+                      Object {
+                        "paddingRight": "5px",
+                      }
+                    }
+                  >
+                     
+                  </span>
+                  <button
+                    className="lineage-btn-seed btn btn-xs btn-primary"
+                    disabled={true}
+                    type="button"
+                  >
+                    <span
+                      className="fa fa-arrow-down"
+                    />
+                  </button>
+                </div>
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                Expression System Samples
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              >
+                2019-08-15 14:12
+              </td>
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+              <td
+                style={
+                  Object {
+                    "textAlign": "left",
+                  }
+                }
+              />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
+`;

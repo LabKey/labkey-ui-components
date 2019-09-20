@@ -302,6 +302,8 @@ export class URLResolver {
      * @returns {Promise<T>}
      */
     public resolveSelectRows(json): Promise<any> {
+        // TODO: Do not return a Promise. This method doesn't actually do anything async, so it does not need to be a
+        //  promise.
         return new Promise((resolve) => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 
@@ -379,6 +381,11 @@ export class URLResolver {
                         }
                         else if (id.indexOf('materialSource') >= 0 ) {
                             query = row.getIn(['data', 'name']);
+                            url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
+                            return row.set('url', this.mapURL({url, row, column, query}));
+                        }
+                        else if (id.indexOf('assay') >= 0) {
+                            query = row.getIn(['title']);
                             url = url.substring(0, url.indexOf('&')); // URL includes documentID value, this will split off at the start of the docID
                             return row.set('url', this.mapURL({url, row, column, query}));
                         }

@@ -761,7 +761,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     onRowCountChange={this.onRowCountChange}
                                     model={queryGridModel}
                                     initialEmptyRowCount={0}
-                                    emptyGridMsg={'Start by adding the quantity of samples you want to create'}
+                                    emptyGridMsg={'Start by adding the quantity of samples you want to create.'}
                                 />
                                 :
                                  !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null

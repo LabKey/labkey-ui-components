@@ -69,6 +69,11 @@
     }
   } ],
   "rowCount" : 2,
+  "messages" : [ {
+    "area" : "view",
+    "type" : "WARNING",
+    "content" : "There are 1 rows not shown due to unapproved QC state"
+  } ],
   "metaData" : {
     "importTemplates" : [ {
       "label" : "Download Template",
@@ -77,11 +82,6 @@
     "root" : "rows",
     "totalProperty" : "rowCount",
     "description" : "Contains a row per Amino Acids run.",
-    "messages" : [ {
-      "area" : "view",
-      "type" : "WARNING",
-      "content" : "There are 1 rows not shown due to unapproved QC state"
-    } ],
     "id" : "RowId",
     "fields" : [ {
       "fieldKey" : [ "QCFlags" ],

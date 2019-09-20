@@ -4,9 +4,13 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
-* Package patch update for changes to @glass/base vXXX
+### version 0.0.38
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.0.37
+*Released*: 19 September 2019
+* Package patch update for changes to @glass/base v0.17.0
 
 ### version 0.0.36
 *Released*: 17 September 2019

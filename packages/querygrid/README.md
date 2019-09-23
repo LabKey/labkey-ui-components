@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.16.3
+*Released*: 23 September 2019
 * Update validation of sample set import aliases
 
 ### version 0.16.2

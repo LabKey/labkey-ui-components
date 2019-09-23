@@ -505,7 +505,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>) : Map<string, any> {
-        let allInsertCols = Map<string, any>().asMutable();
+        let allInsertCols = OrderedMap<string, any>().asMutable();
         model.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
         return allInsertCols.merge(data).asImmutable();
     }
@@ -556,6 +556,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
                 onSuccess={this.toggleBulkUpdate}
+                fieldValues={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.fieldValues : null}
                 columnFilter={this.props.bulkUpdateProps ? this.props.bulkUpdateProps.columnFilter : null}
                 queryInfo={model.queryInfo}
                 schemaQuery={model.queryInfo.schemaQuery}

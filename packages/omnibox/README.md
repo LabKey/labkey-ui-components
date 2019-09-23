@@ -6,7 +6,11 @@ LabKey component that takes a set of actions (like filter, sort, search) and exp
 
 ### version ???
 *Released*: ???
-* Issue 37558: Expose additional filter types
+* Issue 37558: Expose additional filter types to OmniBox component
+
+### version 0.1.40
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
 
 ### version 0.1.39
 *Released*: 19 September 2019

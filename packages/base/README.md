@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.18.0
+*Released*: 20 September 2019
+* Fix issue 38127: All number fields are treated as double fields when imported from an xls for preview grid
+
 ### version 0.17.0
 *Released*: 19 September 2019
 * Add getIconURL helper for QueryInfo

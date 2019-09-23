@@ -8,6 +8,14 @@ Query Grid for LabKey schema/query data views
 *Released*: ???
 * Package patch update for changes to @glass/omnibox v???
 
+### version 0.16.1
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.16.0
+*Released*: 20 September 2019
+* initialize parents for SampleInsertPanel bulk insert
+
 ### version 0.15.0
 *Released*: 19 September 2019
 * Port of Lineage components, models, actions from Biologics

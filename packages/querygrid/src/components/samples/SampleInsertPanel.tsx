@@ -671,6 +671,37 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         }
     }
 
+    getBulkFormValues() {
+        const { insertModel } = this.state;
+        const queryGridModel = this.getQueryGridModel();
+
+        if (!queryGridModel)
+            return null;
+
+        // format/process sample parent column and values, for now, only sample parents are populated
+        const allRows = insertModel.getGridValues(queryGridModel.queryInfo);
+
+        if (allRows.size > 0 ) {
+            let valueMap = Map<string, any>();
+            let values = '';
+            let sep = '';
+            const row = allRows.get(0); // for insert, use the first (and only) row data
+            row.keySeq().forEach(col => {
+                row
+                    .get(col)
+                    .forEach((val) => {
+                        values = values + sep + val.value;
+                        sep = ',';
+                    });
+                // for some reason selectinput errors out if values are supplied as array
+                valueMap = valueMap.set(col, values);
+            });
+            return valueMap.toObject();
+        }
+
+        return null;
+    };
+
     render() {
 
         const { insertModel, isSubmitting } = this.state;
@@ -683,7 +714,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             header: "Add a batch of samples that will share the properties set below.",
             columnFilter: (colInfo) => {
                 return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== SAMPLE_UNIQUE_FIELD_KEY
-            }
+            },
+            fieldValues: this.getBulkFormValues()
         };
         let addControlProps = {
             nounSingular: "row",

@@ -85,7 +85,6 @@ import { resolveDetailRenderer } from './components/forms/detail/DetailEditRende
 import { Detail } from './components/forms/detail/Detail';
 import { handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
-import { ReactSelectOption } from './components/forms/model';
 import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
@@ -220,7 +219,6 @@ export {
 
     // types
     PlacementType,
-    ReactSelectOption, // TODO: Remove all external usages of this and then delete this export.
     EditorModel,
 
     // samples-related

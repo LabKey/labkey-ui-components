@@ -22,13 +22,6 @@ import { ISelectRowsResult } from '../../query/api';
 import { DELIMITER } from './input/SelectInput';
 import * as actions from './actions';
 
-// TODO: Remove ReactSelectOption, and instead make consuming applications use the Option interface from ReactSelect
-// This is the same as ReactSelect Option
-export interface ReactSelectOption {
-    label: string
-    value: any
-}
-
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>
     containerPath?: string

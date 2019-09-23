@@ -152,15 +152,15 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     {
         const {parentAliases} = this.state;
 
-        let importAliasKeys = List<string>();
-        let importAliasValues = List<string>();
+        let importAliasKeys = [];
+        let importAliasValues = [];
 
         parentAliases.map((alias: IParentAlias) => {
-            importAliasKeys = importAliasKeys.push(alias.alias);
-            importAliasValues = importAliasValues.push(alias.parentValue.value);
+            importAliasKeys.push(alias.alias);
+            importAliasValues.push(alias.parentValue.value);
         });
 
-        return {importAliasKeys: importAliasKeys.toArray(), importAliasValues: importAliasValues.toArray()};
+        return {importAliasKeys, importAliasValues};
     }
 
 

@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.16.3
+*Released*: 23 September 2019
+* Update validation of sample set import aliases
+
 ### version 0.16.2
 *Released*: 23 September 2019
 * Package patch update for changes to @glass/omnibox v0.2.0

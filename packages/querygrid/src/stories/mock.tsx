@@ -122,8 +122,16 @@ export function initMocks() {
             responseBody = nameExpressionSelectedQuery;
         else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
             responseBody = nameExpressionSelectedQuery;
-        else if (bodyParams.indexOf("&query.queryname=runs") > -1) {
+        else if (
+            bodyParams.indexOf("schemaname=assay.general.gpat%201") > -1 &&
+            bodyParams.indexOf("queryname=runs") > -1
+        ) {
             responseBody = assayGpatRunData;
+        } else if (
+            bodyParams.indexOf("schemaname=assay.general.amino%20acids") > -1 &&
+            bodyParams.indexOf("queryname=runs") > -1
+        ) {
+            responseBody = assayRunsWithQCFlagsQuery;
         }
 
         return res

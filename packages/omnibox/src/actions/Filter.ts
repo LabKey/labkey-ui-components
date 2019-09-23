@@ -195,6 +195,14 @@ function resolveSymbol(filterType: Filter.IFilterType): string {
     return filterType.getURLSuffix();
 }
 
+export interface IFilterContext {
+    activeFilterType?: Filter.IFilterType
+    columnName?: string
+    column?: QueryColumn
+    filterTypes?: Array<Filter.IFilterType>
+    rawValue?: any
+}
+
 export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
@@ -209,22 +217,12 @@ export class FilterAction implements Action {
         this.urlPrefix = urlPrefix;
     }
 
-    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>, isComplete?: boolean): {
-        activeFilterType?: Filter.IFilterType
-        columnName: string
-        column?: QueryColumn
-        filterTypes?: Array<Filter.IFilterType>
-        rawValue: any
-    } {
-        let options = {
-            activeFilterType: undefined,
-            column: undefined,
-            columnName: undefined,
-            filterTypes: undefined,
-            rawValue: undefined
+    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
+        let options: IFilterContext = {
+            filterTypes: []
         };
 
-        if (tokens.length > 0) {
+        if (tokens && tokens.length > 0) {
             options.columnName = tokens[0];
 
             // see if the column is in our current domain

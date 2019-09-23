@@ -42,6 +42,9 @@
     "react-dom": "^16.0"
   },
   "jest": {
+    "globals": {
+      "LABKEY": {}
+    },
     "moduleFileExtensions": [
       "ts",
       "tsx",

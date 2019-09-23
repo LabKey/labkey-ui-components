@@ -4,9 +4,9 @@ LabKey component that takes a set of actions (like filter, sort, search) and exp
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
-* Issue 37558: Expose additional filter types to OmniBox component
+### version 0.2.0
+*Released*: 23 September 2019
+* Issue 37558: Expose additional filter types to OmniBox component (is blank, is not blank, contains, does not contain, starts with, does not start with)
 
 ### version 0.1.40
 *Released*: 20 September 2019

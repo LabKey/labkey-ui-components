@@ -4,9 +4,29 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version TBD
+*Released*: TBD
 * Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input 
+
+### version 0.16.4
+*Released*: 24 September 2019
+* Remove "DataOutputs/DataFileUrl" from re-import post data as it doesn't map to anything on the server side (automated test fix)
+
+### version 0.16.3
+*Released*: 23 September 2019
+* Update validation of sample set import aliases
+
+### version 0.16.2
+*Released*: 23 September 2019
+* Package patch update for changes to @glass/omnibox v0.2.0
+
+### version 0.16.1
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.16.0
+*Released*: 20 September 2019
+* initialize parents for SampleInsertPanel bulk insert
 
 ### version 0.15.0
 *Released*: 19 September 2019

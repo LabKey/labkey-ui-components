@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 import {Alert, AddEntityButton, WizardNavButtons, generateId} from "@glass/base";
 
 import { createSampleSet, updateSampleSet, initSampleSetSelects } from "./actions";
@@ -40,7 +40,7 @@ interface State {
 
 const NEW_SAMPLE_SET_OPTION : IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
-    value: "<{{changeme}}>"
+    value: "{{this_sample_set}}"
 };
 const IMPORT_PREFIX :string = 'materialInputs/';
 
@@ -117,7 +117,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             beforeFinish(formValues);
         }
 
-        const importAliases = this.getImportAliases();
+        const {importAliasKeys, importAliasValues } = this.getImportAliases();
 
         if (this.isExistingSampleSet()) {
             const config = {
@@ -125,7 +125,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 rowId: data.get('rowId'),
                 nameExpression: this.getNameExpressionValue(),
                 description: this.getDescriptionValue(),
-                importAliasJSON: JSON.stringify(importAliases),
+                importAliasKeys,
+                importAliasValues,
             } as ISampleSetDetails;
 
             updateSampleSet(config)
@@ -137,7 +138,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 name: formValues[FORM_IDS.NAME],
                 nameExpression: this.getNameExpressionValue(),
                 description: this.getDescriptionValue(),
-                importAliasJSON: JSON.stringify(importAliases),
+                importAliasKeys,
+                importAliasValues,
             } as ISampleSetDetails;
 
             createSampleSet(config)
@@ -149,14 +151,16 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
     getImportAliases()
     {
         const {parentAliases} = this.state;
-        let aliases = {};
+
+        let importAliasKeys = [];
+        let importAliasValues = [];
+
         parentAliases.map((alias: IParentAlias) => {
-            aliases[alias.alias] = alias.parentValue !== NEW_SAMPLE_SET_OPTION ?
-                alias.parentValue.value:
-                IMPORT_PREFIX + this.getSampleSetName();
+            importAliasKeys.push(alias.alias);
+            importAliasValues.push(alias.parentValue.value);
         });
 
-        return aliases;
+        return {importAliasKeys, importAliasValues};
     }
 
 

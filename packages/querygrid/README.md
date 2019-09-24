@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Fix for SMAssayReImportTest failures: remove "DataOutputs/DataFileUrl" on as re-import as it doesn't map to anything on the server side
+
 ### version 0.16.3
 *Released*: 23 September 2019
 * Update validation of sample set import aliases

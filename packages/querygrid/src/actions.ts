@@ -857,7 +857,11 @@ function setGridSelected(model: QueryGridModel, checked: boolean) {
         let selected = model.selectedIds;
 
         if (checked) {
-            selected = selected.merge(dataIds);
+            dataIds.forEach((id) => {
+                if (selected.indexOf(id) < 0) {
+                    selected = selected.push(id);
+                }
+            });
         }
         else {
             selected = removeAll(selected, dataIds);

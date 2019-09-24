@@ -740,27 +740,30 @@ interface IGetSelectedResponse {
     selected: Array<any>
 }
 
-function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getFilteredQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-
-        const filters = filterList.reduce((prev, next) => {
-            return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
-        }, {});
-
-        return {
-            ...{
-                schemaName,
-                queryName,
-                'query.selectionKey': key
-            },
-            ...filters
-        };
+        return getQueryFormParams(key, schemaName, queryName, filterList);
     }
     else {
         return {
             key
         }
     }
+}
+
+function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+    const filters = filterList.reduce((prev, next) => {
+        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
+    }, {});
+
+    return {
+        ...{
+            schemaName,
+            queryName,
+            'query.selectionKey': key
+        },
+        ...filters
+    };
 }
 
 /**
@@ -773,7 +776,7 @@ function getQueryFormParams(key: string, schemaName: string, queryName: string, 
 export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', getQueryFormParams(key, schemaName, queryName, filterList)),
+            url: buildURL('query', 'getSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -791,7 +794,7 @@ interface ISelectResponse {
 function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', getQueryFormParams(key, schemaName, queryName, filterList)),
+            url: buildURL('query', 'clearSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
             method: 'POST',
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);

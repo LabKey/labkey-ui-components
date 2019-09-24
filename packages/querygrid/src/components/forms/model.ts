@@ -64,6 +64,7 @@ export class QuerySelectModel extends Record({
 }) implements QuerySelectModelProps {
     addExactFilter: boolean;
     allResults: Map<string, Map<string, any>>;
+    containerPath: string;
     displayColumn: string;
     delimiter: string;
     id: string;

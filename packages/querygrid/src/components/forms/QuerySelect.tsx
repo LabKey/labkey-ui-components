@@ -143,7 +143,8 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     // optional
     allowDisable?: boolean
     initiallyDisabled?: boolean
-    containerClass?: string
+    containerClass?: string // The css class used by SelectInput, has nothing to do with LK containers.
+    containerPath?: string // The path to the LK container that the queries should be scoped to.
     displayColumn?: string
     fireQSChangeOnInit?: boolean
     loadOnChange?: boolean
@@ -164,7 +165,6 @@ interface QuerySelectStateProps {
 }
 
 export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelectStateProps> {
-
     static defaultProps: any = {
         delimiter: DELIMITER,
         fireQSChangeOnInit: false,

@@ -906,4 +906,8 @@ export class AssayProtocolModel extends Record({
             });
         }
     }
+
+    get container() {
+        return this.getIn(['domains', 0, 'container']);
+    }
 }

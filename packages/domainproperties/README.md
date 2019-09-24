@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.??
+*Released*: ?
+* Add container attribute to IDomainDesign and DomainDesign
+
 ### version 0.0.38
 *Released*: 20 September 2019
 * Package patch update for changes to @glass/base v0.18.0

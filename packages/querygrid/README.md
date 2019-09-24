@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.??.0
+*Released*: ?
+* Add containerPath to QuerySelect
+* Remove ReactSelectOption interface
+
 ### version 0.16.3
 *Released*: 23 September 2019
 * Update validation of sample set import aliases

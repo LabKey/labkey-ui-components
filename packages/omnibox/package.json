@@ -1,6 +1,6 @@
 {
   "name": "@glass/omnibox",
-  "version": "0.1.41-fb-gridSelection-37810.0",
+  "version": "0.2.1-fb-gridSelection-37810.0",
   "description": "A LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.",
   "main": "dist/omnibox.cjs.js",
   "module": "dist/omnibox.es.js",
@@ -14,6 +14,7 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "prepare": "yarn build",
+    "storybook": "start-storybook -p 9001 -c .storybook",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter"
   },
@@ -41,6 +42,9 @@
     "react-dom": "^16.0"
   },
   "jest": {
+    "globals": {
+      "LABKEY": {}
+    },
     "moduleFileExtensions": [
       "ts",
       "tsx",

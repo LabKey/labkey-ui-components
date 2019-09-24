@@ -357,7 +357,8 @@ export interface ISampleSetDetails {
     name: string
     nameExpression?: string
     description?: string
-    importAliasJSON?: string
+    importAliasKeys?: Array<string>
+    importAliasValues?: Array<string>
 }
 
 export interface IParentAlias {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, Set } from 'immutable'
-import { Filter } from '@labkey/api'
+import { Filter, Utils } from '@labkey/api'
 import { QueryGridModel, QueryColumn, naturalSort } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
@@ -27,6 +27,7 @@ import { Action, ActionOption, ActionValue, Value } from './Action'
 // construct symbol map
 let SYMBOL_MAP = Map<string /* symbol */, Map<string /* suffix */, Filter.IFilterType>>().asMutable();
 let SUFFIX_MAP = Map<string /* suffix */, Filter.IFilterType>().asMutable();
+let TEXT_MAP = Map<string /* displayText */, Filter.IFilterType>().asMutable();
 
 let TYPE_SET = Set<string>().asMutable();
 let TYPE_MAP = Map<string, Filter.IFilterType>(Filter.Types);
@@ -47,10 +48,16 @@ TYPE_MAP.valueSeq().forEach((type: Filter.IFilterType) => {
 
             SYMBOL_MAP.get(symbol).set(suffix, type);
         }
+
+        let text = type.getDisplayText();
+        if (text) {
+            TEXT_MAP.set(text.toLowerCase(), type);
+        }
     }
 });
 SYMBOL_MAP = SYMBOL_MAP.asImmutable();
 SUFFIX_MAP = SUFFIX_MAP.asImmutable();
+TEXT_MAP = TEXT_MAP.asImmutable();
 TYPE_SET = undefined;
 
 /**
@@ -112,20 +119,30 @@ function resolveFieldKey(columnName: string, column?: QueryColumn): string {
     return fieldKey;
 }
 
+function matchingFilterTypes(filterTypes: Array<Filter.IFilterType>, token: string): Array<Filter.IFilterType> {
+    if (!token) {
+        return filterTypes;
+    }
+
+    token = token.toLowerCase();
+
+    return filterTypes.filter((type) => resolveSymbol(type).toLowerCase().indexOf(token) === 0);
+}
+
 /**
- * Given a symbol/suffix and a QueryColumn this will resolve the IFilterType based on the column
- * type matched against the symbol/suffix.
- * @param symbolOrSuffix
+ * Given a symbol/suffix/text and a QueryColumn this will resolve the IFilterType based on the column
+ * type matched against the symbol/suffix/text.
+ * @param token
  * @param column
  * @returns {IFilterType}
  */
-function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.IFilterType {
-    if (SUFFIX_MAP.has(symbolOrSuffix)) {
-        return SUFFIX_MAP.get(symbolOrSuffix);
+function resolveFilterType(token: string, column: QueryColumn): Filter.IFilterType {
+    if (SUFFIX_MAP.has(token)) {
+        return SUFFIX_MAP.get(token);
     }
 
-    if (SYMBOL_MAP.has(symbolOrSuffix)) {
-        let symbolTypes = SYMBOL_MAP.get(symbolOrSuffix);
+    if (SYMBOL_MAP.has(token)) {
+        let symbolTypes = SYMBOL_MAP.get(token);
         let types = Filter.getFilterTypesForType(column.get('jsonType'));
 
         let value: Filter.IFilterType;
@@ -134,7 +151,7 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.
         for (let i=0; i < types.length; i++) {
             if (symbolTypes.has(types[i].getURLSuffix())) {
                 if (match) {
-                    console.warn(`Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${symbolOrSuffix}\".`);
+                    console.warn(`Column of type \"${column.get('jsonType')}\" has multiple filter for symbol \"${token}\".`);
                     match = false;
                     value = undefined;
                     break; // stop the loop, ambiguous
@@ -151,7 +168,10 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.
         }
     }
 
-    console.warn('Unable to resolve symbol/suffix: \"' + symbolOrSuffix + '\"');
+    const text = token.toLowerCase();
+    if (TEXT_MAP.has(text)) {
+        return TEXT_MAP.get(text);
+    }
 
     return undefined;
 }
@@ -162,7 +182,25 @@ function resolveFilterType(symbolOrSuffix: string, column: QueryColumn): Filter.
  * @returns {string}
  */
 function resolveSymbol(filterType: Filter.IFilterType): string {
-    return filterType.getDisplaySymbol() == null ? filterType.getURLSuffix() : filterType.getDisplaySymbol();
+    const symbol = filterType.getDisplaySymbol();
+    if (symbol) {
+        return symbol;
+    }
+
+    const displayText = filterType.getDisplayText();
+    if (displayText) {
+        return displayText;
+    }
+
+    return filterType.getURLSuffix();
+}
+
+export interface IFilterContext {
+    activeFilterType?: Filter.IFilterType
+    columnName?: string
+    column?: QueryColumn
+    filterTypes?: Array<Filter.IFilterType>
+    rawValue?: any
 }
 
 export class FilterAction implements Action {
@@ -179,38 +217,36 @@ export class FilterAction implements Action {
         this.urlPrefix = urlPrefix;
     }
 
-    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>): {
-        activeFilterType?: Filter.IFilterType
-        columnName: string
-        column?: QueryColumn
-        filterTypes?: Array<Filter.IFilterType>
-        rawValue: any
-    } {
-        let options = {
-            activeFilterType: undefined,
-            column: undefined,
-            columnName: undefined,
-            filterTypeValue: undefined,
-            filterTypes: undefined,
-            rawValue: undefined
+    static parseTokens(tokens: Array<string>, columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
+        let options: IFilterContext = {
+            filterTypes: []
         };
 
-        if (tokens.length > 0) {
+        if (tokens && tokens.length > 0) {
             options.columnName = tokens[0];
 
             // see if the column is in our current domain
             const column = parseColumns(columns, options.columnName).first();
             if (column) {
                 options.column = column;
-                options.filterTypes = Filter.getFilterTypesForType(column.get('jsonType')); // TODO: Need to filter this set
+                options.filterTypes = Filter.getFilterTypesForType(column.get('jsonType'));
 
                 if (tokens.length > 1) {
-
-                    options.filterTypeValue = tokens[1];
-                    options.activeFilterType = resolveFilterType(options.filterTypeValue, column);
+                    options.activeFilterType = resolveFilterType(tokens[1], column);
 
                     if (options.activeFilterType && tokens.length > 2) {
                         options.rawValue = tokens.slice(2).join(' ');
+                    }
+                    else {
+                        const part = tokens.slice(1).join(' ');
+                        const matchingTypes = matchingFilterTypes(options.filterTypes, part);
+
+                        if (isComplete && matchingTypes.length === 1) {
+                            options.activeFilterType = matchingTypes[0];
+                        }
+                        else {
+                            options.filterTypes = matchingTypes;
+                        }
                     }
                 }
             }
@@ -222,12 +258,13 @@ export class FilterAction implements Action {
     completeAction(tokens: Array<string>): Promise<Value> {
         return new Promise((resolve) => {
             return this.resolveColumns(true).then((columns: List<QueryColumn>) => {
-                const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns);
+                const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns, true);
 
-                if (column && activeFilterType && rawValue !== undefined) {
+                if (column && activeFilterType &&
+                    (rawValue !== undefined || !activeFilterType.isDataValueRequired())) {
                     const operator = resolveSymbol(activeFilterType);
                     const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
-                    const display = this.getDisplayValue(column.shortCaption, operator, rawValue);
+                    const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
 
                     resolve({
                         displayValue: display.displayValue,
@@ -236,11 +273,12 @@ export class FilterAction implements Action {
                         value: [`"${column.shortCaption}"`, operator, rawValue].join(' ')
                     });
                 }
-
-                resolve({
-                    value: tokens.join(' '),
-                    isValid: false
-                });
+                else {
+                    resolve({
+                        value: tokens.join(' '),
+                        isValid: false
+                    });
+                }
             });
         });
     }
@@ -249,46 +287,55 @@ export class FilterAction implements Action {
         return new Promise((resolve) => {
             return this.resolveColumns().then((columns) => {
 
-                let results: Array<ActionOption> = [];
+                let actionOptions: Array<ActionOption> = [];
                 const { activeFilterType, column, columnName, rawValue, filterTypes } = FilterAction.parseTokens(tokens, columns);
 
                 if (column) {
 
                     if (activeFilterType) {
-                        const operator = resolveSymbol(activeFilterType);
-
-                        return this.resolveValues(column, operator, rawValue).then(valueResults => {
-                            resolve(results.concat(valueResults));
+                        return this.resolveValues(column, activeFilterType, rawValue).then(valueResults => {
+                            resolve(actionOptions.concat(valueResults));
                         });
                     }
                     else if (filterTypes.length > 0) {
 
-                        let noSymbol = [];
-                        let displayNonSymbols = false;
+                        let noSymbolActionOptions: Array<ActionOption> = [];
+
                         for (let i=0; i < filterTypes.length; i++) {
 
-                            const symbol = filterTypes[i].getDisplaySymbol();
-                            const suffix = filterTypes[i].getURLSuffix();
+                            const type = filterTypes[i];
 
-                            // for now, only support options with displaySymbol
+                            // Do not currently support building multi-value filters
+                            if (type.isMultiValued()) {
+                                continue;
+                            }
+
+                            const symbol = type.getDisplaySymbol();
+                            const suffix = type.getURLSuffix();
+                            const isComplete = !type.isDataValueRequired();
+                            const nextLabel = isComplete ? undefined : ' value';
+
                             if (symbol != null) {
-                                results.push({
+                                actionOptions.push({
+                                    isComplete,
                                     label: `"${column.shortCaption}" ${symbol}`,
-                                    nextLabel: ' value',
+                                    nextLabel,
                                     value: symbol
                                 });
                             }
-                            else if (displayNonSymbols) {
-                                noSymbol.push({
-                                    label: `"${column.shortCaption}" ${suffix}`,
-                                    nextLabel: ' value',
-                                    value: suffix
+                            else if (suffix) {
+                                const text = type.getDisplayText() ? type.getDisplayText() : suffix;
+                                noSymbolActionOptions.push({
+                                    isComplete,
+                                    label: `"${column.shortCaption}" "${text.toLowerCase()}"`,
+                                    nextLabel,
+                                    value: `"${text.toLowerCase()}"`
                                 });
                             }
                         }
 
-                        if (noSymbol.length > 0) {
-                            results = results.concat(noSymbol);
+                        if (noSymbolActionOptions.length > 0) {
+                            actionOptions = actionOptions.concat(noSymbolActionOptions);
                         }
                     }
                 }
@@ -301,7 +348,7 @@ export class FilterAction implements Action {
                     }
 
                     columnSet.forEach(c => {
-                        results.push({
+                        actionOptions.push({
                             label: `"${c.shortCaption}" ...`,
                             value: `"${c.shortCaption}"`,
                             isComplete: false
@@ -309,7 +356,7 @@ export class FilterAction implements Action {
                     });
                 }
 
-                resolve(results);
+                resolve(actionOptions);
             });
         });
     }
@@ -339,13 +386,14 @@ export class FilterAction implements Action {
 
         if (filters.length > 0) {
             for (let i = 0; i < filters.length; i++) {
-                const columnName = filters[i].getColumnName();
+                const filter = filters[i];
+                const columnName = filter.getColumnName();
                 const column = parseColumns(columns, columnName).first();
                 const columnLabel = column ? column.shortCaption : columnName;
 
-                const operator = resolveSymbol(filters[i].getFilterType());
-                let rawValue = filters[i].getValue();
-                const display = this.getDisplayValue(columnLabel, operator, rawValue);
+                const operator = resolveSymbol(filter.getFilterType());
+                const rawValue = filter.getValue();
+                const display = this.getDisplayValue(columnLabel, filter.getFilterType(), rawValue);
 
                 results.push({
                     displayValue: display.displayValue,
@@ -359,11 +407,12 @@ export class FilterAction implements Action {
         return results;
     }
 
-    resolveValues(col: QueryColumn, operator: string, rawValue: any): Promise<Array<ActionOption>> {
+    resolveValues(col: QueryColumn, activeFilterType: Filter.IFilterType, rawValue: any): Promise<Array<ActionOption>> {
         return new Promise(resolve => {
             return this.resolveModel().then(model => {
                 let results: Array<ActionOption> = [];
                 const safeValue = rawValue ? rawValue.toString().toLowerCase() : '';
+                const operator = resolveSymbol(activeFilterType);
 
                 model.data
                     .reduce((prev, v) => {
@@ -419,38 +468,45 @@ export class FilterAction implements Action {
         });
     }
 
-    private getDisplayValue(columnName: string, operator: string, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
+    private getDisplayValue(columnName: string, filterType: Filter.IFilterType, rawValue: string | Array<string>): {displayValue: string, isReadOnly: boolean} {
         let isReadOnly = false;
 
-        let display : string;
-        let type = Filter.getFilterTypeForURLSuffix(operator);
-        if (type && type.isMultiValued()) {
-            if (rawValue instanceof String) {
+        let value: string;
+        let displayParts = [columnName, resolveSymbol(filterType)];
+
+        if (!filterType.isDataValueRequired()) {
+            // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)
+        }
+        else if (filterType.isMultiValued()) {
+            if (Utils.isString(rawValue)) {
                 // TODO: port the IFilterType.parseValue to labkey-api-js
-                rawValue = rawValue.split(type.getMultiValueSeparator());
+                rawValue = rawValue.split(filterType.getMultiValueSeparator());
             }
 
-            if (!(rawValue instanceof Array)) {
-                throw new Error("Expected '" + type.getMultiValueSeparator() + "' string or an Array of values, got: " + rawValue);
+            if (!Utils.isArray(rawValue)) {
+                throw new Error("Expected '" + filterType.getMultiValueSeparator() + "' string or an Array of values, got: " + rawValue);
             }
 
             // TODO: This is just a stopgap to prevent rendering crazy long IN clauses. Pretty much any solution besides
             // showing all the values or this would be preferred. See 28884.
             if (rawValue.length > 3) {
-                display = `(${rawValue.length} values)`;
+                value = `(${rawValue.length} values)`;
                 isReadOnly = true;
             }
             else {
-                display = rawValue.join(', ');
+                value = rawValue.join(', ');
             }
-
         }
         else {
-            display = ""+rawValue;
+            value = '' + rawValue;
+        }
+
+        if (value) {
+            displayParts.push(value);
         }
 
         return {
-            displayValue: [columnName, operator, display].join(' '),
+            displayValue: displayParts.join(' '),
             isReadOnly
         };
     }

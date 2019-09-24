@@ -38,7 +38,8 @@ import {
     initQueryGridState,
     removeQueryGridModel,
     setQueryColumnRenderers,
-    setQueryMetadata
+    setQueryMetadata,
+    invalidateLineageResults
 } from './global';
 import {
     deleteRows,
@@ -129,6 +130,12 @@ import {
 } from './components/report-list/model';
 import { DataViewInfoTypes, IDataViewInfo} from './models';
 import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
+import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
+import { LineageFilter } from './components/lineage/models'
+import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
+import { LineageGraph } from './components/lineage/LineageGraph';
+import { LineageGrid } from './components/lineage/LineageGrid';
+import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 
 export {
     // global state functions
@@ -280,4 +287,13 @@ export {
     ReportItemModal,
     ReportListProps,
     ReportList,
-};
+
+    // lineage
+    LINEAGE_GROUPING_GENERATIONS,
+    LineageFilter,
+    LineageGraph,
+    LineageGrid,
+    SampleTypeLineageCounts,
+    VisGraphNode,
+    invalidateLineageResults
+}

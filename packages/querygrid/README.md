@@ -4,6 +4,30 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.16.3
+*Released*: 23 September 2019
+* Update validation of sample set import aliases
+
+### version 0.16.2
+*Released*: 23 September 2019
+* Package patch update for changes to @glass/omnibox v0.2.0
+
+### version 0.16.1
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.16.0
+*Released*: 20 September 2019
+* initialize parents for SampleInsertPanel bulk insert
+
+### version 0.15.0
+*Released*: 19 September 2019
+* Port of Lineage components, models, actions from Biologics
+
+### version 0.14.1
+*Released*: 19 September 2019
+* Pick up assay run and definition hits from search results
+
 ### version 0.14.0
 *Released*: 18 September 2019
 * Move `report-list` package into `querygrid`

@@ -249,7 +249,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
                 if (!previewGridProps.skipPreviewGrid) {
                     if (response.data.size > 1) {
-                        const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount);
+                        const previewData = convertRowDataIntoPreviewData(response.data, previewGridProps.previewCount, response.fields);
                         this.setState(() => ({previewData}));
                         this.updateErrors(null);
                     }

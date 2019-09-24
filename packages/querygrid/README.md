@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.16.4
+*Released*: 24 September 2019
+* Remove "DataOutputs/DataFileUrl" from re-import post data as it doesn't map to anything on the server side (automated test fix)
+
 ### version 0.16.3
 *Released*: 23 September 2019
 * Update validation of sample set import aliases

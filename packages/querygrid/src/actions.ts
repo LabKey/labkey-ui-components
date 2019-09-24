@@ -129,7 +129,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, {...{selectedLoaded: false}, ...bindURLProps(newModel)}, connectedComponent);
+        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...bindURLProps(newModel)}, connectedComponent);
         gridLoad(newModel, connectedComponent);
     }
 }
@@ -740,19 +740,27 @@ interface IGetSelectedResponse {
     selected: Array<any>
 }
 
-function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) {
-    const filters = filterList.reduce((prev, next)=> {
-        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
-    }, {});
+function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+    if (schemaName && queryName && filterList && !filterList.isEmpty()) {
 
-    return {
-        ...{
-            schemaName,
-            queryName,
-            'query.selectionKey': key
-        },
-        ...filters
-    };
+        const filters = filterList.reduce((prev, next) => {
+            return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
+        }, {});
+
+        return {
+            ...{
+                schemaName,
+                queryName,
+                'query.selectionKey': key
+            },
+            ...filters
+        };
+    }
+    else {
+        return {
+            key
+        }
+    }
 }
 
 /**
@@ -763,15 +771,9 @@ function getQueryFormParams(key: string, schemaName: string, queryName: string, 
  * @param filterList list of filters to use
  */
 export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<IGetSelectedResponse> {
-    let params : any = {
-        key
-    };
-    if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        params = getQueryFormParams(key, schemaName, queryName, filterList);
-    }
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', params),
+            url: buildURL('query', 'getSelected.api', getQueryFormParams(key, schemaName, queryName, filterList)),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -787,15 +789,9 @@ interface ISelectResponse {
 }
 
 function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<ISelectResponse> {
-    let params : any = {
-        key
-    };
-    if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        params = getQueryFormParams(key, schemaName, queryName, filterList);
-    }
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', params),
+            url: buildURL('query', 'clearSelected.api', getQueryFormParams(key, schemaName, queryName, filterList)),
             method: 'POST',
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);

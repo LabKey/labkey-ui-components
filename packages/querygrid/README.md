@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.17.1
+*Released*: 25 September 2019
 * Fix editable grid Cell selected blur handling
 
 ### version 0.17.0

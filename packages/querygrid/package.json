@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.16.4",
+  "version": "0.17.0",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",

@@ -1207,6 +1207,13 @@ export function selectCell(modelId: string, colIdx: number, rowIdx: number, sele
     }
 }
 
+export function unfocusCellSelection(modelId: string) {
+    updateEditorModel(getEditorModel(modelId), {
+        selectedColIdx: -1,
+        selectedRowIdx: -1
+    });
+}
+
 function updateCellValues(model: EditorModel, cellKey: string, values: List<ValueDescriptor>) {
     updateEditorModel(model, {
         cellValues: model.cellValues.set(cellKey, values)

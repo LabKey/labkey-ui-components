@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.17.0
+*Released*: 25 September 2019
 * Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input 
 
 ### version 0.16.4

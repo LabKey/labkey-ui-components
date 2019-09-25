@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Issue 38373: remove inline style from assay results data text area input for white-space nowrap
+
 ### version 0.17.0
 *Released*: 25 September 2019
 * Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input 

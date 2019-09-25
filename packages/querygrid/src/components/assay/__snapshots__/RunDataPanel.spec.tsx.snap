@@ -168,11 +168,6 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   placeholder="Paste in a tab-separated set of values"
                   required={false}
                   rows={10}
-                  style={
-                    Object {
-                      "whiteSpace": "nowrap",
-                    }
-                  }
                   value=""
                 />
               </div>
@@ -532,11 +527,6 @@ exports[`<RunDataPanel/> default props 1`] = `
                   placeholder="Paste in a tab-separated set of values"
                   required={false}
                   rows={10}
-                  style={
-                    Object {
-                      "whiteSpace": "nowrap",
-                    }
-                  }
                   value=""
                 />
               </div>

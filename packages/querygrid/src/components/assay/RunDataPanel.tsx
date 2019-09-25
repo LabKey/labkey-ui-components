@@ -227,7 +227,6 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 onKeyDown={handleTabKeyOnTextArea}
                                                 placeholder="Paste in a tab-separated set of values"
                                                 rows={10}
-                                                style={{whiteSpace: 'nowrap'}}
                                                 value={wizardModel.dataText}
                                             />
                                         </Formsy>

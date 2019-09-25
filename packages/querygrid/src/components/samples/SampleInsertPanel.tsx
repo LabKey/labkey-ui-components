@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button, Form, Nav, NavItem, Panel } from 'react-bootstrap';
+import { Button, Form, Panel } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable'
+import { Link } from "react-router";
 import { Utils } from '@labkey/api'
 import {
     AddEntityButton,
@@ -500,7 +501,10 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
         // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
-        const textPrefix = name ? "Choose" : "Choose the target sample set, then choose";
+
+        const sampleSet = insertModel.getTargetSampleSetName();
+        const importFromFileLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import') : undefined;
+
         return (
             <>
                 <div className="sample-insert--header">
@@ -525,15 +529,19 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 {insertModel.isInit && (
                     <SelectInput
                         formsy={false}
-                        inputClass="col-md-5 col-sm-9"
+                        inputClass="col-md-6 col-sm-5 col-xs-12"
                         label="Sample Type"
-                        labelClass="col-md-3 col-sm-3 sample-insert--parent-label"
+                        labelClass="col-sm-3 col-xs-12 sample-insert--parent-label"
                         name="targetSampleSet"
                         placeholder={'Select a Sample Set...'}
                         onChange={this.changeTargetSampleSet}
                         options={insertModel.sampleSetOptions.toArray()}
                         required
-                        value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}/>
+                        value={insertModel && insertModel.hasTargetSampleSet() ? insertModel.targetSampleSet.label : undefined}
+                        afterInputElement={importFromFileLink &&
+                            <Link className={'col-md-3 col-sm-4 col-xs-12 sample-insert--link'} to={importFromFileLink.toString()}>Import Samples from File</Link>
+                        }
+                    />
                 )}
                 {insertModel.isError ? this.renderError() : (insertModel.hasTargetSampleSet() ? this.renderParentSelections() : '')}
             </>
@@ -703,7 +711,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     };
 
     render() {
-
         const { insertModel, isSubmitting } = this.state;
 
         if (!insertModel)
@@ -728,24 +735,14 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                 placeholder: "[generated id]"
             })
         }
-        const queryGridModel = this.getQueryGridModel();
 
-        const sampleSet = insertModel.getTargetSampleSetName();
-        const importLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import').toHref() : '#';
+        const queryGridModel = this.getQueryGridModel();
 
         return (
             <>
                 <Panel>
                     <Panel.Body>
-                        <Nav className={'margin-bottom'} bsStyle="pills" activeKey={'grid'}>
-                            <NavItem eventKey={'grid'}>
-                                Create from grid
-                            </NavItem>
-                            <NavItem eventKey={'import'} href={importLink}>
-                                Import Samples from File
-                            </NavItem>
-                        </Nav>
-                        <Form className={'margin-top'}>
+                        <Form>
                             {this.renderHeader()}
                             {queryGridModel && queryGridModel.isLoaded ?
                                 <EditableGridPanel

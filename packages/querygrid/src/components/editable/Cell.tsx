@@ -21,7 +21,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap'
 import { QueryColumn } from '@glass/base'
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events'
-import { focusCell, inDrag, modifyCell, selectCell } from '../../actions'
+import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions'
 import { CellMessage, EditorModel, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
@@ -47,6 +47,7 @@ export class Cell extends React.Component<Props, any> {
         super(props);
 
         this.handleBlur = this.handleBlur.bind(this);
+        this.handleSelectionBlur = this.handleSelectionBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleDblClick = this.handleDblClick.bind(this);
         this.handleKeys = this.handleKeys.bind(this);
@@ -62,6 +63,11 @@ export class Cell extends React.Component<Props, any> {
         if (!this.focused() && this.selected()) {
             this.displayEl.current.focus();
         }
+    }
+
+    handleSelectionBlur() {
+        if (this.selected())
+            unfocusCellSelection(this.props.modelId);
     }
 
     handleBlur(evt: any) {
@@ -257,6 +263,7 @@ export class Cell extends React.Component<Props, any> {
                 onKeyDown: this.handleKeys,
                 onMouseDown: this.handleSelect,
                 onMouseEnter: this.handleMouseEnter,
+                onBlur: this.handleSelectionBlur,
                 ref: this.displayEl,
                 tabIndex: -1
             };

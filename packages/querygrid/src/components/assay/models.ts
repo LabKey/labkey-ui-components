@@ -199,6 +199,11 @@ export class AssayWizardModel extends Record({
             throw new Error('Unsupported upload step! Current step: "' + currentStep + '"');
         }
 
+        // remove the "DataOutputs/DataFileUrl" from properties as it causes failures in AssayRunUploadContextImpl.addVocabularyProperties()
+        if (assayData.properties['DataOutputs/DataFileUrl']) {
+            delete assayData.properties['DataOutputs/DataFileUrl'];
+        }
+
         return assayData;
     }
 }

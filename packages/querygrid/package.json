@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.17.0-fb-gridSelection-37810.2",
+  "version": "0.17.1-fb-gridSelection-37810.2",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -40,7 +40,7 @@
   "dependencies": {
     "@glass/base": "0.19.0-fb-gridSelection-37810.0",
     "@glass/domainproperties": "0.0.39-fb-gridSelection-37810.0",
-    "@glass/omnibox": "0.1.41-fb-gridSelection-37810.0",
+    "@glass/omnibox": "0.2.1-fb-gridSelection-37810.0",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

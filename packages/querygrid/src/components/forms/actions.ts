@@ -26,7 +26,7 @@ import { QuerySelectModel, QuerySelectModelProps } from './model'
 const emptyMap = Map<string, any>();
 
 function selectShouldInit(model: QuerySelectModel): boolean {
-    // TODO: this is possibly the problem
+    // TODO: this is possibly the root of the problem where QuerySelects cannot handle a change to their SchemaQuery.
     //  Why do we even do another type of check here? We already do this type of check in componentWillReceiveProps
     //  Why put the logic in two places?
     if (!model) {

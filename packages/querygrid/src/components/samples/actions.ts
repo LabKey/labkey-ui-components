@@ -28,27 +28,40 @@ import {
     SampleSetParentType
 } from './models';
 import { getSelected, getSelection } from "../../actions";
-import { selectRows } from "../..";
+import { getQueryGridModel, selectRows } from "../..";
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
     return new Promise((resolve) => {
 
         if (selectionKey) {
             const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
+            const queryGridModel = getQueryGridModel(selectionKey);
 
-            getSelected(selectionKey).then((selectionResponse) => {
+            if (queryGridModel) {
                 return selectRows({
-                    schemaName: schemaQuery.schemaName,
-                    queryName: schemaQuery.queryName,
-                    columns: 'LSID,Name,RowId',
-                    filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]
-                }).then((samplesResponse) => {
-                    resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
+                            schemaName: schemaQuery.schemaName,
+                            queryName: schemaQuery.queryName,
+                            columns: 'LSID,Name,RowId',
+                            filterArray: [Filter.create('RowId', queryGridModel.selectedIds.toArray(), Filter.Types.IN)]
+                        }).then((samplesResponse) => {
+                            resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
+                        });
+            }
+            else {
+                getSelected(selectionKey).then((selectionResponse) => {
+                    return selectRows({
+                        schemaName: schemaQuery.schemaName,
+                        queryName: schemaQuery.queryName,
+                        columns: 'LSID,Name,RowId',
+                        filterArray: [Filter.create('RowId', selectionResponse.selected, Filter.Types.IN)]
+                    }).then((samplesResponse) => {
+                        resolve(resolveSampleSetParentTypeFromIds(schemaQuery, samplesResponse));
+                    });
+                }).catch(() => {
+                    console.warn('Unable to parse selectionKey', selectionKey);
+                    resolve(List<SampleSetParentType>());
                 });
-            }).catch(() => {
-                console.warn('Unable to parse selectionKey', selectionKey);
-                resolve(List<SampleSetParentType>());
-            });
+            }
         }
         else if (initialParents && initialParents.length > 0) {
             const parent = initialParents[0];

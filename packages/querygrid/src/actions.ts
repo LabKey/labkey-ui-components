@@ -23,6 +23,7 @@ import {
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
     IGridResponse,
+    intersect,
     naturalSort,
     not,
     QueryColumn,
@@ -53,11 +54,11 @@ import {
     DataViewInfo,
     EditorModel,
     EditorModelProps,
+    getStateQueryGridModel,
     LookupStore,
     SearchIdData,
     ValueDescriptor,
-    VisualizationConfigModel,
-    getStateQueryGridModel
+    VisualizationConfigModel
 } from './models'
 import { bindColumnRenderers } from './renderers'
 import {
@@ -128,26 +129,30 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, bindURLProps(newModel), connectedComponent);
+        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...bindURLProps(newModel)}, connectedComponent);
         gridLoad(newModel, connectedComponent);
     }
 }
 
+export function gridClearAll(model: QueryGridModel) {
+    clearSelected(model.getId(), model.schema, model.query, model.getFilters()).then(() => {
+       updateQueryGridModel(model, {
+            selectedIds:  List<string>(),
+            selectedQuantity: 0,
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE
+        });
+    }).catch(err => {
+        const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
+        gridShowError(model, error);
+    });
+}
+
 export function selectAll(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>): Promise<ISelectResponse> {
-
-    const filters = filterList.reduce((prev, next)=> {
-        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
-    }, {});
-
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'selectAll.api'),
             method: 'POST',
-            params: Object.assign({
-                schemaName,
-                queryName,
-                'query.selectionKey': key,
-            }, filters),
+            params: getQueryFormParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -166,7 +171,7 @@ export function gridSelectAll(model: QueryGridModel) {
     selectAll(id, model.schema, model.query, model.getFilters()).then(data => {
 
         if (data && data.count > 0) {
-            return getSelected(id).then(response => {
+            return getSelected(id, model.schema, model.query, model.getFilters()).then(response => {
                 updateSelections(model, {
                     selectedIds: List(response.selected)
                 })
@@ -232,11 +237,11 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                 selectedState = someSelected ? GRID_CHECKBOX_OPTIONS.SOME : GRID_CHECKBOX_OPTIONS.NONE;
             }
 
-            const selectedIds = checked ? selected.push(stringKey) : selected.delete(selected.findIndex(item => item === stringKey));
+            const selectedIds = checked ? model.selectedIds.push(stringKey) : model.selectedIds.delete(model.selectedIds.findIndex(item => item === stringKey));
 
             updateQueryGridModel(model, {
                 selectedState: selectedState,
-                selectedQuantity: response.count,
+                selectedQuantity: selectedIds.size,
                 selectedIds: selectedIds
             });
         });
@@ -345,6 +350,7 @@ export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Co
 export function reloadQueryGridModel(model: QueryGridModel) {
     const newModel = updateQueryGridModel(model, {
         isLoading: true,
+        selectedLoaded: false,
         ...bindURLProps(model)
     });
     gridLoad(newModel);
@@ -361,7 +367,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
-                newModel = updateQueryGridModel(newModel, {filterArray: List<any>()});
+                newModel = updateQueryGridModel(newModel, {selectedLoaded: false, filterArray: List<any>()});
             }
             else if (filters && filters.count()) {
                 let urls = filters.reduce((urls, filter: any) => {
@@ -373,7 +379,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
                 });
 
                 if (filtered.count() < model.filterArray.count()) {
-                    newModel = updateQueryGridModel(newModel, {filterArray: filtered});
+                    newModel = updateQueryGridModel(newModel, {selectedLoaded: false, filterArray: filtered});
                 }
             }
         }
@@ -388,7 +394,7 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
     else {
         if (filters.count()) {
-            let newModel = updateQueryGridModel(model, {filterArray: model.filterArray.merge(filters)});
+            let newModel = updateQueryGridModel(model, {selectedLoaded: false, filterArray: model.filterArray.merge(filters)});
             gridLoad(newModel);
         }
     }
@@ -451,14 +457,21 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
             loadDataForEditor(newModel, response);
         }
 
+        // data we have here is the filtered data, so totalRows is the number of items in the filtered grid.
+        // model.selectedIds, however, is the selection from the previous (likely unfiltered) grid.  We need to
+        // trigger a load of the selectedIds with the filter applied.
         const { data, dataIds, totalRows, messages } = response;
+
+        // if filtered, find the selected ids that are in the set of (filtered) dataIds returned
+        const filteredIds = model.isFiltered() ? intersect(dataIds, model.selectedIds) : List<string>();
+
         newModel = updateQueryGridModel(newModel, {
             isError: false,
             isLoading: false,
             isLoaded: true,
             message: undefined,
             messages,
-            selectedState: getSelectedState(dataIds, model.selectedIds, model.maxRows, totalRows),
+            selectedState: getSelectedState(dataIds, model.isFiltered() ? filteredIds : model.selectedIds, model.maxRows, totalRows),
             totalRows,
             data,
             dataIds
@@ -677,7 +690,7 @@ function bindQueryInfo(queryInfo: QueryInfo): QueryInfo {
 function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows: number, totalRows: number): GRID_CHECKBOX_OPTIONS {
 
     const selectedOnPage: number = dataIds.filter((id) => selected.indexOf(id) !== -1).size,
-        totalSelected: number = selected.size;
+        totalSelected: number = selected.size; // This needs to be the number selected in the current view
 
     if (
         maxRows === selectedOnPage ||
@@ -686,8 +699,8 @@ function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows
     ) {
         return GRID_CHECKBOX_OPTIONS.ALL;
     }
-    else if (totalSelected > 0) {
-        // if model has any selected show checkbox as indeterminate
+    else if (selectedOnPage > 0) {
+        // if model has any selected on the page show checkbox as indeterminate
         return GRID_CHECKBOX_OPTIONS.SOME;
     }
 
@@ -727,12 +740,43 @@ interface IGetSelectedResponse {
     selected: Array<any>
 }
 
-export function getSelected(key: string): Promise<IGetSelectedResponse> {
+function getFilteredQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+    if (schemaName && queryName && filterList && !filterList.isEmpty()) {
+        return getQueryFormParams(key, schemaName, queryName, filterList);
+    }
+    else {
+        return {
+            key
+        }
+    }
+}
+
+function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+    const filters = filterList.reduce((prev, next) => {
+        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
+    }, {});
+
+    return {
+        ...{
+            schemaName,
+            queryName,
+            'query.selectionKey': key
+        },
+        ...filters
+    };
+}
+
+/**
+ * Gets selected ids from a particular query view, optionally using the provided query parameters
+ * @param key the selection key associated with the grid
+ * @param schemaName name of the schema for the query grid
+ * @param queryName name of the query
+ * @param filterList list of filters to use
+ */
+export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', {
-                key,
-            }),
+            url: buildURL('query', 'getSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -747,12 +791,10 @@ interface ISelectResponse {
     count: number
 }
 
-function clearSelected(key: string): Promise<ISelectResponse> {
+function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', {
-                key,
-            }),
+            url: buildURL('query', 'clearSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
             method: 'POST',
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
@@ -764,6 +806,12 @@ function clearSelected(key: string): Promise<ISelectResponse> {
     });
 }
 
+/**
+ * Selects individual ids for a particular view
+ * @param key the selection key for the grid
+ * @param checked whether to set selected or unselected
+ * @param ids ids to change selection for
+ */
 export function setSelected(key: string, checked: boolean, ids: Array<string> | string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -785,6 +833,19 @@ export function setSelected(key: string, checked: boolean, ids: Array<string> | 
     })
 }
 
+function removeAll(selected: List<string>, toDelete: List<string>) : List<string> {
+    toDelete.forEach((id) => {
+        const idx = selected.indexOf(id);
+        if (idx >= 0) {
+            selected = selected.delete(idx);
+        }
+    });
+    return selected;
+}
+
+/**
+ * Selects all the items on the current page of the grid.
+ */
 function setGridSelected(model: QueryGridModel, checked: boolean) {
     const { dataIds } = model;
     const modelId = model.getId();
@@ -796,17 +857,32 @@ function setGridSelected(model: QueryGridModel, checked: boolean) {
 
     setSelected(modelId, checked, ids).then(response => {
         const dataIds = model.dataIds;
-        const currentSelected = model.selectedIds;
+        let selected = model.selectedIds;
+
+        if (checked) {
+            dataIds.forEach((id) => {
+                if (selected.indexOf(id) < 0) {
+                    selected = selected.push(id);
+                }
+            });
+        }
+        else {
+            selected = removeAll(selected, dataIds);
+        }
 
         updateQueryGridModel(model, {
-            selectedIds: checked ? currentSelected.merge(dataIds) : List<string>(),
-            selectedQuantity: response.count,
+            selectedIds: selected,
+            selectedQuantity: selected.size,
             selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
         });
     });
 }
 
 function setGridUnselected(model: QueryGridModel) {
+    setGridSelected(model, false);
+}
+
+export function unselectAll(model: QueryGridModel) {
     clearSelected(model.getId()).then(() => {
         updateQueryGridModel(model, {
             selectedIds: List<string>(),

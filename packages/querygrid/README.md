@@ -3,6 +3,10 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+### version 0.19.0
+*Released*: 26 September 2019
+* Update QueryGrid actions to account for filtering
+* Always show the GridSelectionBanner
 
 ### version 0.18.0
 *Released*: 26 September 2019

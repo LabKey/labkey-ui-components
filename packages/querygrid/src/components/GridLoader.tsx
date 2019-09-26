@@ -53,7 +53,7 @@ class GridLoader implements IGridLoader {
 
     fetchSelection(model: QueryGridModel): Promise<IGridSelectionResponse> {
         return new Promise((resolve, reject) => {
-            return getSelected(model.getId()).then(response => {
+            return getSelected(model.getId(), model.schema, model.query, model.filterArray).then(response => {
                 resolve({
                     selectedIds: List(response.selected)
                 })

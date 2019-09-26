@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Utils } from "@labkey/api"
+import { Ajax, Filter, Utils } from '@labkey/api';
 import { List, Map, Record } from 'immutable';
+import { Option } from 'react-select';
 import { buildURL, generateId, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, SCHEMAS } from '@glass/base';
 
-import { getEditorModel } from '../../global'
-import { insertRows } from '../../query/api'
-import { gridShowError } from '../../actions'
-import { ReactSelectOption } from '../forms/model'
+import { getEditorModel } from '../../global';
+import { insertRows } from '../../query/api';
+import { gridShowError } from '../../actions';
 
 export interface SampleInputProps {
     role: string
@@ -36,7 +36,7 @@ export interface IDerivePayload {
     targetSampleSet: string
 }
 
-export interface IParentOption extends ReactSelectOption {
+export interface IParentOption extends Option {
     query?: string
     schema?: string
 }
@@ -70,7 +70,7 @@ export class SampleSetParentType extends Record({
     }
 }
 
-export interface ISampleSetOption extends ReactSelectOption {
+export interface ISampleSetOption extends Option {
     lsid: string
     rowId: number
 }

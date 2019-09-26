@@ -93,6 +93,7 @@ interface IQuerySelectProps {
     value?: any
 }
 
+// FIXME: Rename this Component. It conflicts with @glass/querygrid/QuerySelect and they are completely different.
 export class QuerySelect extends React.PureComponent<IQuerySelectProps, any> {
 
     render() {

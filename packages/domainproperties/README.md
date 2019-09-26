@@ -8,6 +8,11 @@ Domain property related components for LabKey domains
 *Released*: ???
 * Package patch update for changes to @glass/base v???
 
+### version 0.0.39
+*Released*: 26 September 2019
+* Add container attribute to IDomainDesign and DomainDesign
+* Add container attribute to AssayProtocolModel
+
 ### version 0.0.38
 *Released*: 20 September 2019
 * Package patch update for changes to @glass/base v0.18.0

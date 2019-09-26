@@ -4,8 +4,8 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version 0.0.??
-*Released*: ?
+### version 0.0.39
+*Released*: 26 September 2019
 * Add container attribute to IDomainDesign and DomainDesign
 * Add container attribute to AssayProtocolModel
 

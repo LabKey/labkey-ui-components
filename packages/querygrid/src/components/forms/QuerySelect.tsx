@@ -112,6 +112,7 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
 interface InheritedSelectInputProps {
     addLabelText?: string
     allowCreate?: boolean
+    allowDisable?: boolean
     backspaceRemoves?: boolean
     clearCacheOnChange?: boolean
     clearable?: boolean
@@ -119,6 +120,7 @@ interface InheritedSelectInputProps {
     disabled?: boolean
     filterOptions?: (options, filterString, values) => any // from ReactSelect
     formsy?: boolean
+    initiallyDisabled?: boolean
     inputClass?: string
     joinValues?: boolean
     label?: React.ReactNode
@@ -141,8 +143,6 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     schemaQuery: SchemaQuery
 
     // optional
-    allowDisable?: boolean
-    initiallyDisabled?: boolean
     containerClass?: string // The css class used by SelectInput, has nothing to do with LK containers.
     containerPath?: string // The path to the LK container that the queries should be scoped to.
     displayColumn?: string
@@ -165,7 +165,7 @@ interface QuerySelectStateProps {
 }
 
 export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelectStateProps> {
-    static defaultProps: any = {
+    static defaultProps = {
         delimiter: DELIMITER,
         fireQSChangeOnInit: false,
         loadOnChange: false,
@@ -177,7 +177,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
 
     _mounted: boolean;
     querySelectTimer: number;
-    
+
     constructor(props: QuerySelectOwnProps) {
         super(props);
 

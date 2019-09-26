@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 import { fromJS, Map } from 'immutable'
+import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api'
 import { QueryInfo, similaritySortFactory } from '@glass/base'
 
 import { FOCUS_FLAG } from './constants'
 import { selectRows, searchRows, ISelectRowsResult, getQueryDetails } from '../../query/api'
 import { QuerySelectOwnProps } from './QuerySelect'
-import { QuerySelectModel, QuerySelectModelProps, ReactSelectOption } from './model'
+import { QuerySelectModel, QuerySelectModelProps } from './model'
 
 const emptyMap = Map<string, any>();
 
 function selectShouldInit(model: QuerySelectModel): boolean {
+    // TODO: this is possibly the root of the problem where QuerySelects cannot handle a change to their SchemaQuery.
+    //  Why do we even do another type of check here? We already do this type of check in componentWillReceiveProps
+    //  Why put the logic in two places?
     if (!model) {
         return true;
     }
@@ -57,13 +61,11 @@ function initDisplayColumn(queryInfo: QueryInfo, column?: string): string {
 }
 
 export function initSelect(props: QuerySelectOwnProps, model: QuerySelectModel): Promise<QuerySelectModel> {
-    return new Promise((resolve, reject) =>
-    {
-        const { componentId, schemaQuery } = props;
+    return new Promise((resolve, reject) => {
+        const { componentId, schemaQuery, containerPath } = props;
 
         if (selectShouldInit(model) && schemaQuery) {
             getQueryDetails(schemaQuery).then(queryInfo => {
-
                 const valueColumn = initValueColumn(queryInfo, props.valueColumn);
                 const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
 
@@ -80,6 +82,7 @@ export function initSelect(props: QuerySelectOwnProps, model: QuerySelectModel):
                     }
 
                     selectRows({
+                        containerPath,
                         schemaName: schemaQuery.schemaName,
                         queryName: schemaQuery.queryName,
                         filterArray: [filter]
@@ -95,7 +98,7 @@ export function initSelect(props: QuerySelectOwnProps, model: QuerySelectModel):
                         const model = initQuerySelectModel(componentId, newProps, queryInfo);
 
                         if (props.fireQSChangeOnInit && Utils.isFunction(props.onQSChange)) {
-                            let items: ReactSelectOption | Array<ReactSelectOption> = formatResults(model, model.selectedItems);
+                            let items: Option | Array<Option> = formatResults(model, model.selectedItems);
 
                             // mimic ReactSelect in that it will return a single option if multiple is not true
                             if (props.multiple === false) {
@@ -219,6 +222,7 @@ export function fetchSearchResults(model: QuerySelectModel, input: any): Promise
 
     // 35112: Explicitly request exact matches -- can be disabled via QuerySelectModel.addExactFilter = false
     return searchRows({
+        containerPath: model.containerPath,
         schemaName: schemaQuery.getSchema(),
         queryName: schemaQuery.getQuery(),
         columns: columns.join(','),
@@ -236,7 +240,7 @@ export function saveSearchResults(model: QuerySelectModel, searchResults: Map<st
     }) as QuerySelectModel;
 }
 
-export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): Array<ReactSelectOption> {
+export function formatResults(model: QuerySelectModel, results: Map<string, any>, token?: string): Array<Option> {
     if (!model.queryInfo || !results) {
         return [];
     }
@@ -256,7 +260,7 @@ export function formatResults(model: QuerySelectModel, results: Map<string, any>
  * @param {Map<string, Map<string, any>>} results can be optionally supplied to override model searchResults
  * @param {string} token an optional search token that will be used to sort the results
  */
-export function formatSavedResults(model: QuerySelectModel, results?: Map<string, Map<string, any>>, token?: string): Array<ReactSelectOption> {
+export function formatSavedResults(model: QuerySelectModel, results?: Map<string, Map<string, any>>, token?: string): Array<Option> {
     const { queryInfo, selectedItems, searchResults } = model;
 
     if (!queryInfo) {

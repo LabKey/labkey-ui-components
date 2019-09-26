@@ -65,7 +65,6 @@ class QuerySelectWrapper extends React.PureComponent<any, State> {
                 <QuerySelect
                     componentId={type + "_added"}
                     containerClass="row"
-                    // displayColumn={type === 'ingredients' ? 'scientificName' : undefined}
                     disabled={type === undefined || type === ''}
                     filterOptions={this.filterOptions}
                     formsy={false}

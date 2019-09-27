@@ -41,6 +41,7 @@ import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
+import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
 const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
@@ -138,8 +139,16 @@ export function initMocks() {
             responseBody = nameExpressionSelectedQuery;
         else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
             responseBody = nameExpressionSelectedQuery;
-        else if (bodyParams.indexOf("&query.queryname=runs") > -1) {
+        else if (
+            bodyParams.indexOf("schemaname=assay.general.gpat%201") > -1 &&
+            bodyParams.indexOf("queryname=runs") > -1
+        ) {
             responseBody = assayGpatRunData;
+        } else if (
+            bodyParams.indexOf("schemaname=assay.general.amino%20acids") > -1 &&
+            bodyParams.indexOf("queryname=runs") > -1
+        ) {
+            responseBody = assayRunsWithQCFlagsQuery;
         }
 
         return res

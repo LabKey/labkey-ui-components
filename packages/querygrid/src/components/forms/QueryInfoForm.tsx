@@ -378,13 +378,14 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 labelClassName={'control-label text-left'}
                                 name={"numItems"}
                                 max={maxCount}
+                                min={1}
                                 onChange={this.onCountChange}
                                 required={true}
                                 step={"1"}
                                 style={{width: '125px'}}
                                 type={"number"}
                                 validations={`isPositiveLt:${maxCount}`}
-                                value={count ? count.toString() : undefined}
+                                value={count ? count.toString() : 1}
                             />
                         )}
                         <hr/>

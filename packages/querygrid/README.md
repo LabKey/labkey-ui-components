@@ -3,6 +3,19 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+### version 0.19.0
+*Released*: 26 September 2019
+* Update QueryGrid actions to account for filtering
+* Always show the GridSelectionBanner
+
+### version 0.18.0
+*Released*: 26 September 2019
+* Add containerPath to QuerySelect
+* Remove ReactSelectOption interface
+
+### version 0.17.1
+*Released*: 25 September 2019
+* Fix editable grid Cell selected blur handling
 
 ### version TBD
 *Released*: TBD

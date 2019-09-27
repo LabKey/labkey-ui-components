@@ -3,6 +3,9 @@
 Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
+### version 0.19.0
+*Released*: 26 September 2019
+* Add isFiltered method to QueryGridModel for better support of selection on filtered grids
 
 ### version 0.18.0
 *Released*: 20 September 2019

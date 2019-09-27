@@ -544,10 +544,10 @@ export class QueryGridModel extends Record({
     showChartSelector: boolean;
     sortable: boolean;
     sorts: string;
-    selectedIds: List<string>;
+    selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not
     selectedLoaded: boolean;
     selectedState: GRID_CHECKBOX_OPTIONS;
-    selectedQuantity: number;
+    selectedQuantity: number; // should be the quantity in the current view, whether filtered or not
     title: string;
     totalRows: number;
     urlParams: List<string>;
@@ -708,6 +708,10 @@ export class QueryGridModel extends Record({
     getExportColumnsString(): string {
         // does not include required columns -- app only
         return this.getDisplayColumns().map(c => c.fieldKey).join(',');
+    }
+
+    isFiltered(): boolean {
+        return !this.getFilters().isEmpty()
     }
 
     getFilters(): List<Filter.IFilter> {

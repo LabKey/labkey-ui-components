@@ -21,7 +21,7 @@ import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDispl
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
     onCancel: () => any
-    rowId?: string
+    rowIds?: Array<string>
     selectionKey?: string
 }
 
@@ -42,8 +42,8 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        if (props.rowId === undefined && props.selectionKey === undefined) {
-            throw new Error("Either rowId or selectionKey must be provided in order to confirm deletion.");
+        if (props.rowIds === undefined && props.selectionKey === undefined) {
+            throw new Error("Either rowIds or selectionKey must be provided in order to confirm deletion.");
         }
 
         this.state = {
@@ -63,7 +63,7 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     init(props: Props) {
-        getSampleDeleteConfirmationData(props.selectionKey, props.rowId ? [props.rowId] : undefined)
+        getSampleDeleteConfirmationData(props.selectionKey, props.rowIds )
             .then((confirmationData) => {
                 if (this._mounted) {
                     this.setState(() => ({isLoading: false, confirmationData}));

@@ -535,10 +535,14 @@ function getWarningBannerMessage (domain: any) : any {
     return undefined;
 }
 
-export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
+export function fetchProtocol(protocolId?: number, providerName?: string): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'getProtocol.api', { protocolId }),
+            url: buildURL('assay', 'getProtocol.api', {
+                // give precedence to the protocolId if both are provided
+                protocolId,
+                providerName: protocolId ? undefined : providerName
+            }),
             success: Utils.getCallbackWrapper((data) => {
                 resolve(AssayProtocolModel.create(data.data));
             }),
@@ -560,6 +564,7 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
     }) as DomainDesign;
 }
 
+// TODO this should take in an AssayProtocolModel which uses the template from a getProtocol.api providerName=General call
 export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
     const dataDomain = setDomainFields(DomainDesign.init('Data'), fields);
 

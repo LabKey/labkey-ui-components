@@ -177,8 +177,8 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>;
     domainException: DomainException;
 
+    // TODO remove this as you can get the template assay design from the getProtocol.api using providerName
     static init(name: string): DomainDesign {
-        // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
         return DomainDesign.create({
             name: name + ' Fields',
             domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-' + name + '.Folder-${Container.RowId}:${AssayName}'
@@ -833,6 +833,10 @@ export class DomainFieldError extends Record({
 }
 
 export class AssayProtocolModel extends Record({
+    allowBackgroundUpload: false,
+    allowEditableResults: false,
+    allowQCStates: false,
+    allowSpacesInPath: false,
     allowTransformationScript: false,
     autoCopyTargetContainer: undefined,
     availableDetectionMethods: undefined,
@@ -856,11 +860,15 @@ export class AssayProtocolModel extends Record({
     selectedPlateTemplate: undefined,
     qcEnabled: undefined
 }) {
+    allowBackgroundUpload: boolean;
+    allowEditableResults: boolean;
+    allowQCStates: boolean;
+    allowSpacesInPath: boolean;
     allowTransformationScript: boolean;
     autoCopyTargetContainer: string;
-    availableDetectionMethods: any;
-    availableMetadataInputFormats: any;
-    availablePlateTemplates: any;
+    availableDetectionMethods: [];
+    availableMetadataInputFormats: {};
+    availablePlateTemplates: [];
     backgroundUpload: boolean;
     description: string;
     domains: List<DomainDesign>;
@@ -893,8 +901,12 @@ export class AssayProtocolModel extends Record({
             );
         }
 
+        // if this is not an existing assay, clear the name property so the user must set it
+        const name = !raw.protocolId ? undefined : raw.name;
+
         return new AssayProtocolModel({
             ...raw,
+            name,
             domains
         });
     }
@@ -909,5 +921,9 @@ export class AssayProtocolModel extends Record({
 
     get container() {
         return this.getIn(['domains', 0, 'container']);
+    }
+
+    isNew(): boolean {
+        return !this.protocolId;
     }
 }

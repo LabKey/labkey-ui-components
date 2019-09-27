@@ -150,9 +150,12 @@
 }
 
 .domain-field-section-heading {
-  color: $gray;
+  color: $gray-dark;
   font-weight: bold;
-  padding: 0 0 5px 0;
+}
+
+.domain-field-padding-top {
+  padding-top: 20px;
 }
 
 .domain-field-label {

@@ -39,7 +39,7 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
                 model={this.state.model}
                 onChange={this.onAssayPropertiesChange}
                 asPanel={boolean('asPanel', true)}
-                showEditSettings={boolean('showEditSettings', true)}
+                basePropertiesOnly={boolean('basePropertiesOnly', false)}
                 initCollapsed={boolean('initCollapsed', false)}
                 collapsible={boolean('collapsible', true)}
                 markComplete={boolean('markComplete', false)}
@@ -53,7 +53,16 @@ storiesOf("AssayPropertiesPanel", module)
     .add("with knobs", () => {
         return (
             <WrappedAssayPropertiesPanel
-                data={{}}
+                data={{
+                    allowBackgroundUpload: true,
+                    allowEditableResults: true,
+                    allowQCStates: true,
+                    allowSpacesInPath: true,
+                    allowTransformationScript: true,
+                    availablePlateTemplates: ['Template 1', 'Template 2'],
+                    availableDetectionMethods: ['Method 1', 'Method 2'],
+                    availableMetadataInputFormats: {MANUAL: 'Manual', FILE_BASED: 'File Based'}
+                }}
             />
         )
     })
@@ -61,11 +70,21 @@ storiesOf("AssayPropertiesPanel", module)
         return (
             <WrappedAssayPropertiesPanel
                 data={{
-                    protocolId: 0,
+                    protocolId: 1,
                     name: 'name should not be editable',
                     description: 'test description for this assay',
                     editableRuns: true,
-                    editableResults: true
+                    allowEditableResults: true,
+                    editableResults: true,
+                    allowBackgroundUpload: true,
+                    backgroundUpload: true,
+                    allowQCStates: true,
+                    qcEnabled: true,
+                    allowTransformationScript: true,
+                    //TODO add default transform scripts to model
+                    availablePlateTemplates: ['Template 1', 'Template 2'],
+                    availableDetectionMethods: ['Method 1', 'Method 2'],
+                    availableMetadataInputFormats: {MANUAL: 'Manual', FILE_BASED: 'File Based'}
                 }}
             />
         )

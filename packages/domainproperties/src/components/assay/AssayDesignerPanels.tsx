@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { List } from 'immutable'
 import { Alert, WizardNavButtons } from "@glass/base";
 
 import { AssayProtocolModel, DomainDesign } from "../../models";
@@ -14,7 +13,7 @@ interface Props {
     onCancel: () => void
     beforeFinish?: (model: AssayProtocolModel) => void
     onComplete: (model: AssayProtocolModel) => void
-    initModel?: AssayProtocolModel
+    initModel: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
 }
 
@@ -31,29 +30,13 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        let protocolModel = props.initModel;
-        if (!protocolModel) {
-            protocolModel = new AssayProtocolModel({
-                providerName: 'General',
-                domains: List([
-                    DomainDesign.init('Batch'),
-                    DomainDesign.init('Run'),
-                    DomainDesign.init('Data')
-                ])
-            });
-        }
-
-        this.panelCount = this.panelCount + protocolModel.domains.size;
+        this.panelCount = this.panelCount + props.initModel.domains.size;
 
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
-            protocolModel
+            protocolModel: props.initModel
         }
-    }
-
-    isNew(): boolean {
-        return this.state.protocolModel.protocolId === undefined;
     }
 
     isLastStep(): boolean {
@@ -79,16 +62,15 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     };
 
     shouldSkipStep(stepIndex: number): boolean {
-        const { hideEmptyBatchDomain } = this.props;
         const { protocolModel } = this.state;
         const index = stepIndex - 1; // subtract 1 because the first step is not a domain step (i.e. Assay Properties panel)
         const domain = protocolModel.domains.get(index);
 
-        if (hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch')) {
-            return true;
-        }
+        return this.shouldSkipBatchDomain(domain);
+    }
 
-        return false;
+    shouldSkipBatchDomain(domain: DomainDesign): boolean {
+        return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch');
     }
 
     onPrevious = () => {
@@ -155,6 +137,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     };
 
     renderDomainPanelHeading(domain: DomainDesign) {
+        //TODO move these to the AbstractAssayProvider in platform/assay and then just use the domains 'description' string for this text
         if (domain.name) {
             if (domain.isNameSuffixMatch('Batch')) {
                 return (
@@ -175,9 +158,9 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     render() {
-        const { onCancel, hideEmptyBatchDomain } = this.props;
+        const { onCancel } = this.props;
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;
-        const isNew = this.isNew();
+        const isNew = protocolModel.isNew();
         const finish = !isNew || this.isLastStep();
 
         return (
@@ -192,7 +175,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                 />
                 {protocolModel.domains.map((domain, i) => {
                     // optionally hide the Batch Fields domain from the UI (for sample management use case)
-                    if (hideEmptyBatchDomain && domain.isNameSuffixMatch('Batch')) {
+                    if (this.shouldSkipBatchDomain(domain)) {
                         return;
                     }
 
@@ -213,7 +196,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                                 this.onDomainChange(i, updatedDomain);
                             }}
                         >
-                            {this.renderDomainPanelHeading(domain)}
+                            <p>{domain.description}</p>
                         </DomainForm>
                     )
                 })}

@@ -3,6 +3,11 @@
 Query Grid for LabKey schema/query data views 
 
 ## Release Notes ##
+
+### version 0.19.1
+*Released*: 27 September 2019
+* Issue 38373: remove inline style from assay results data text area input for white-space nowrap
+
 ### version 0.19.0
 *Released*: 26 September 2019
 * Update QueryGrid actions to account for filtering

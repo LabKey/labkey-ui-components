@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Item 6199: support other assay provider types in AssayDesignerPanels and AssayPropertiesPanel
+
 ### version 0.0.40
 *Released*: 26 September 2019
 * Package patch update for changes to @glass/base v0.19.0

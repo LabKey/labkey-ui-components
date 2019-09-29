@@ -15,6 +15,7 @@ interface Props {
     onComplete: (model: AssayProtocolModel) => void
     initModel: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
+    basePropertiesOnly?: boolean
 }
 
 interface State {
@@ -158,7 +159,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     render() {
-        const { onCancel } = this.props;
+        const { onCancel, basePropertiesOnly } = this.props;
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;
         const isNew = protocolModel.isNew();
         const finish = !isNew || this.isLastStep();
@@ -171,6 +172,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     collapsible={!isNew}
                     initCollapsed={currentPanelIndex !== 0}
                     markComplete={currentPanelIndex > 0}
+                    basePropertiesOnly={basePropertiesOnly}
                     panelCls={isNew && currentPanelIndex === 0 ? 'panel-active' : ''}
                 />
                 {protocolModel.domains.map((domain, i) => {

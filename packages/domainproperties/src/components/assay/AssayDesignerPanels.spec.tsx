@@ -2,11 +2,12 @@ import * as React from "react";
 import {List} from "immutable";
 import {mount} from "enzyme";
 import renderer from 'react-test-renderer'
+import { FileAttachmentForm } from "@glass/base";
+
 import {AssayDesignerPanels} from "./AssayDesignerPanels";
 import { AssayProtocolModel, DomainDesign } from "../../models";
 import DomainForm from "../DomainForm";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
-import { FileAttachmentForm } from "@glass/base";
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -31,7 +32,7 @@ const EXISTING_MODEL = AssayProtocolModel.create({
     }]
 });
 
-const EMPTY_MODEL  = new AssayProtocolModel({
+const EMPTY_MODEL  = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
         DomainDesign.init('Batch'),

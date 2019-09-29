@@ -432,7 +432,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 {children}
                 {this.renderBasicProperties()}
                 {!basePropertiesOnly && this.renderImportSettings()}
-                {!basePropertiesOnly && this.renderEditSettings()}
+                {this.renderEditSettings()}
             </Form>
         )
     }

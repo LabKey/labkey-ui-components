@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer'
 import {AssayPropertiesPanel} from "./AssayPropertiesPanel";
 import { AssayProtocolModel, DomainDesign } from "../../models";
 
-const EMPTY_MODEL  = new AssayProtocolModel({
+const EMPTY_MODEL  = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
         DomainDesign.init('Batch'),

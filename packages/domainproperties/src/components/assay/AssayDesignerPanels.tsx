@@ -70,7 +70,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     shouldSkipBatchDomain(domain: DomainDesign): boolean {
-        return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch');
+        return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch') && domain.fields.size === 0;
     }
 
     onPrevious = () => {

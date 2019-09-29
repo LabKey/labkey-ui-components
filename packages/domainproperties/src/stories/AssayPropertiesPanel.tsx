@@ -9,6 +9,10 @@ import { text, boolean, withKnobs } from '@storybook/addon-knobs'
 
 import { AssayProtocolModel } from "../models";
 import { AssayPropertiesPanel } from "../components/assay/AssayPropertiesPanel"
+import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
+import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
+import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
+import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import './stories.scss'
 
 interface Props {
@@ -50,42 +54,23 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
 
 storiesOf("AssayPropertiesPanel", module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add("GPAT Template", () => {
         return (
-            <WrappedAssayPropertiesPanel
-                data={{
-                    allowBackgroundUpload: true,
-                    allowEditableResults: true,
-                    allowQCStates: true,
-                    allowSpacesInPath: true,
-                    allowTransformationScript: true,
-                    availablePlateTemplates: ['Template 1', 'Template 2'],
-                    availableDetectionMethods: ['Method 1', 'Method 2'],
-                    availableMetadataInputFormats: {MANUAL: 'Manual', FILE_BASED: 'File Based'}
-                }}
-            />
+            <WrappedAssayPropertiesPanel data={generalAssayTemplate.data}/>
         )
     })
-    .add("with model", () => {
+    .add("GPAT Saved Assay", () => {
         return (
-            <WrappedAssayPropertiesPanel
-                data={{
-                    protocolId: 1,
-                    name: 'name should not be editable',
-                    description: 'test description for this assay',
-                    editableRuns: true,
-                    allowEditableResults: true,
-                    editableResults: true,
-                    allowBackgroundUpload: true,
-                    backgroundUpload: true,
-                    allowQCStates: true,
-                    qcEnabled: true,
-                    allowTransformationScript: true,
-                    //TODO add default transform scripts to model
-                    availablePlateTemplates: ['Template 1', 'Template 2'],
-                    availableDetectionMethods: ['Method 1', 'Method 2'],
-                    availableMetadataInputFormats: {MANUAL: 'Manual', FILE_BASED: 'File Based'}
-                }}
-            />
+            <WrappedAssayPropertiesPanel data={generalAssaySaved.data}/>
+        )
+    })
+    .add("ELISpot Template", () => {
+        return (
+            <WrappedAssayPropertiesPanel data={elispotAssayTemplate.data}/>
+        )
+    })
+    .add("ELISpot Saved Assay", () => {
+        return (
+            <WrappedAssayPropertiesPanel data={elispotAssaySaved.data}/>
         )
     });

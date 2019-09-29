@@ -98,9 +98,9 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 {!basePropertiesOnly && this.renderSectionHeading('Basic Properties')}
                 {this.renderNameInput()}
                 {this.renderDescriptionInput()}
-                {!basePropertiesOnly && model.availablePlateTemplates && model.availablePlateTemplates.length > 0 && this.renderPlateTemplatesInput()}
-                {!basePropertiesOnly && model.availableDetectionMethods && model.availableDetectionMethods.length > 0 && this.renderDetectionMethodsInput()}
-                {!basePropertiesOnly && model.availableMetadataInputFormats && !Utils.isEmptyObj(model.availableMetadataInputFormats) && this.renderMetadataInputFormatsInput()}
+                {model.availablePlateTemplates && model.availablePlateTemplates.length > 0 && this.renderPlateTemplatesInput()}
+                {model.availableDetectionMethods && model.availableDetectionMethods.length > 0 && this.renderDetectionMethodsInput()}
+                {model.availableMetadataInputFormats && !Utils.isEmptyObj(model.availableMetadataInputFormats) && this.renderMetadataInputFormatsInput()}
                 {!basePropertiesOnly && model.allowQCStates && this.renderQCStatesInput()}
             </>
         )

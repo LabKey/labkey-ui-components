@@ -8,36 +8,43 @@ import { List } from 'immutable'
 import { storiesOf } from '@storybook/react'
 import { text, boolean, withKnobs } from '@storybook/addon-knobs'
 
-import { AssayProtocolModel, DomainDesign } from "../models";
+import { AssayProtocolModel } from "../models";
 import { AssayDesignerPanels } from "../components/assay/AssayDesignerPanels"
 import { initMocks } from "./mock";
+import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
+import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
+import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
+import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import './stories.scss'
 
 initMocks();
 
-storiesOf("AssayDesignerPanels", module)
-    .addDecorator(withKnobs)
-    .add("with knobs", () => {
-        const model  = new AssayProtocolModel({
-            providerName: 'General',
-            allowBackgroundUpload: true,
-            allowEditableResults: true,
-            allowQCStates: true,
-            allowSpacesInPath: true,
-            allowTransformationScript: true,
-            availablePlateTemplates: ['Template 1', 'Template 2'],
-            availableDetectionMethods: ['Method 1', 'Method 2'],
-            availableMetadataInputFormats: {MANUAL: 'Manual', FILE_BASED: 'File Based'},
-            domains: List([
-                DomainDesign.init('Batch'),
-                DomainDesign.init('Run'),
-                DomainDesign.init('Data')
-            ])
-        });
+interface Props {
+    data: {}
+}
 
+interface State {
+    model: AssayProtocolModel
+}
+
+class WrappedAssayDesignerPanels extends React.Component<Props, State> {
+
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            model: AssayProtocolModel.create(props.data)
+        }
+    }
+
+    onAssayPropertiesChange = (model: AssayProtocolModel) => {
+        this.setState(() => ({model}));
+    };
+
+    render() {
         return (
             <AssayDesignerPanels
-                initModel={model}
+                initModel={this.state.model}
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
                 onChange={(model: AssayProtocolModel) => {
                     console.log('change', model.toJS());
@@ -50,49 +57,28 @@ storiesOf("AssayDesignerPanels", module)
                 }}
             />
         )
-    })
-    .add("with initModel", () => {
-        const model = AssayProtocolModel.create({
-            protocolId: 1,
-            name: 'Test Assay Protocol',
-            description: 'My assay protocol for you all to use.',
-            allowBackgroundUpload: true,
-            allowEditableResults: true,
-            allowQCStates: true,
-            allowSpacesInPath: true,
-            allowTransformationScript: true,
-            editableRuns: true,
-            editableResults: true,
-            availablePlateTemplates: ['Template 1', 'Template 2'],
-            availableDetectionMethods: ['Method 1', 'Method 2'],
-            availableMetadataInputFormats: {MANUAL: 'Manual', FILE_BASED: 'File Based'},
-            domains: [{
-                name: 'Sample Fields',
-                fields: [{
-                    name: 'field1',
-                    rangeURI: 'xsd:string'
-                },{
-                    name: 'field2',
-                    rangeURI: 'xsd:int'
-                },{
-                    name: 'field3',
-                    rangeURI: 'xsd:dateTime'
-                }]
-            }]
-        });
+    }
+}
 
+storiesOf("AssayDesignerPanels", module)
+    .addDecorator(withKnobs)
+    .add("GPAT Template", () => {
         return (
-            <AssayDesignerPanels
-                initModel={model}
-                onChange={(model: AssayProtocolModel) => {
-                    console.log('change', model.toJS());
-                }}
-                onComplete={(model: AssayProtocolModel) => {
-                    console.log('complete clicked', model.toJS());
-                }}
-                onCancel={() => {
-                    console.log('cancel clicked');
-                }}
-            />
+            <WrappedAssayDesignerPanels data={generalAssayTemplate.data}/>
+        )
+    })
+    .add("GPAT Saved Assay", () => {
+        return (
+            <WrappedAssayDesignerPanels data={generalAssaySaved.data}/>
+        )
+    })
+    .add("ELISpot Template", () => {
+        return (
+            <WrappedAssayDesignerPanels data={elispotAssayTemplate.data}/>
+        )
+    })
+    .add("ELISpot Saved Assay", () => {
+        return (
+            <WrappedAssayDesignerPanels data={elispotAssaySaved.data}/>
         )
     });

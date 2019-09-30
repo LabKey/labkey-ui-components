@@ -302,8 +302,8 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 helpTipBody={() => {
                     return (
                         <p>
-                            TODO get info for help tooltip...there must be a doc page to link to as well.
-                            <a href="https://www.labkey.org/Documentation/wiki-page.view?name=editPlateTemplate" target="_blank">Edit Plate Templates</a>
+                            Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
+                            For additional information refer to the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=editPlateTemplate" target="_blank">help documentation</a>.
                         </p>
                     )
                 }}
@@ -333,13 +333,6 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 label={'Detection Method'}
                 required={true}
                 colSize={4}
-                helpTipBody={() => {
-                    return (
-                        <p>
-                            TODO get info for help tooltip...there must be a doc page to link to as well.
-                        </p>
-                    )
-                }}
             >
                 <FormControl
                     componentClass="select"

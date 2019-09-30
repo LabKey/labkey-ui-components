@@ -564,24 +564,6 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
     }) as DomainDesign;
 }
 
-// TODO this should take in an AssayProtocolModel which uses the template from a getProtocol.api providerName=General call
-export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
-    const dataDomain = setDomainFields(DomainDesign.init('Data'), fields);
-
-    const model = AssayProtocolModel.create({
-        providerName: 'General',
-        name,
-        description,
-        domains: List([
-            DomainDesign.init('Batch'),
-            DomainDesign.init('Run'),
-            dataDomain
-        ])
-    });
-
-    return saveAssayDesign(model);
-}
-
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         // need to serialize the DomainDesign objects to remove the unrecognized fields

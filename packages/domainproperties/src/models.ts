@@ -177,14 +177,6 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>;
     domainException: DomainException;
 
-    // TODO remove this as you can get the template assay design from the getProtocol.api using providerName
-    static init(name: string): DomainDesign {
-        return DomainDesign.create({
-            name: name + ' Fields',
-            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-' + name + '.Folder-${Container.RowId}:${AssayName}'
-        });
-    }
-
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();

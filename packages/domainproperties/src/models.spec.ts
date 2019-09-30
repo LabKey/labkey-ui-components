@@ -93,17 +93,8 @@ describe('PropDescType', () => {
 });
 
 describe('DomainDesign', () => {
-    test("init", () => {
-        const d = DomainDesign.init('Foo');
-        expect(d.name).toBe('Foo Fields');
-        expect(d.domainURI.indexOf(':AssayDomain-Foo.')).toBe(25);
-        expect(d.fields.size).toBe(0);
-        expect(d.indices.size).toBe(0);
-        expect(d.domainId).toBe(null);
-    });
-
     test("isNameSuffixMatch", () => {
-        const d = DomainDesign.init('Foo');
+        const d = DomainDesign.create({name: 'Foo Fields'});
         expect(d.isNameSuffixMatch('Foo')).toBeTruthy();
         expect(d.isNameSuffixMatch('foo')).toBeFalsy();
         expect(d.isNameSuffixMatch('Bar')).toBeFalsy();

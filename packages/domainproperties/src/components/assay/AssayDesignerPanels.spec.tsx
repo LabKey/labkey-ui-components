@@ -35,9 +35,9 @@ const EXISTING_MODEL = AssayProtocolModel.create({
 const EMPTY_MODEL  = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
-        DomainDesign.init('Batch'),
-        DomainDesign.init('Run'),
-        DomainDesign.init('Data')
+        DomainDesign.create({name: 'Batch Fields'}),
+        DomainDesign.create({name: 'Run Fields'}),
+        DomainDesign.create({name: 'Data Fields'})
     ])
 });
 
@@ -109,10 +109,6 @@ describe('AssayDesignerPanels', () => {
             return wrapper.findWhere(n => n.type() === 'button' && n.text() === text);
         }
 
-        function getDomainPanelHeading(wrapper: any, text: string) {
-            return wrapper.findWhere(n => n.type() === 'p' && n.text().indexOf(text) === 0);
-        }
-
         function verifyActivePanel(wrapper: any, assayPropsActive: boolean, batchActive: boolean, runActive: boolean, resultsActive: boolean) {
             expect(wrapper.find(AssayPropertiesPanel)).toHaveLength(1);
             expect(wrapper.find(DomainForm)).toHaveLength(3);
@@ -120,10 +116,6 @@ describe('AssayDesignerPanels', () => {
             expect(wrapper.find('input#' + nameInputId)).toHaveLength(assayPropsActive ? 1 : 0);
             expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
-            // TODO turn these back on after moving/updating the platform side for the domain text
-            // expect(getDomainPanelHeading(wrapper, 'Define the batch properties')).toHaveLength(batchActive ? 1 : 0);
-            // expect(getDomainPanelHeading(wrapper, 'Define the run properties')).toHaveLength(runActive ? 1 : 0);
-            // expect(getDomainPanelHeading(wrapper, 'Define the results properties')).toHaveLength(resultsActive ? 1 : 0);
         }
 
         const wrapper = mount(component);

@@ -8,9 +8,9 @@ import { AssayProtocolModel, DomainDesign } from "../../models";
 const EMPTY_MODEL  = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
-        DomainDesign.init('Batch'),
-        DomainDesign.init('Run'),
-        DomainDesign.init('Data')
+        DomainDesign.create({name: 'Batch Fields'}),
+        DomainDesign.create({name: 'Run Fields'}),
+        DomainDesign.create({name: 'Data Fields'})
     ])
 });
 

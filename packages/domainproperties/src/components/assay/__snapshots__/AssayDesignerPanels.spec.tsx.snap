@@ -7,6 +7,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Assay Properties 
@@ -247,6 +248,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Batch Properties
@@ -258,6 +260,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Run Properties
@@ -269,6 +272,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Results Properties
@@ -325,6 +329,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Assay Properties 
@@ -565,6 +570,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Run Properties
@@ -576,6 +582,7 @@ Array [
   >
     <div
       className="panel-heading"
+      onClick={[Function]}
     >
       <span>
         Results Properties
@@ -631,7 +638,8 @@ Array [
     className="domain-form-panel panel panel-default"
   >
     <div
-      className="panel-heading"
+      className="domain-heading-collapsible panel-heading"
+      onClick={[Function]}
     >
       <span>
         Assay Properties 
@@ -897,7 +905,8 @@ Array [
     className="domain-form-panel panel panel-default"
   >
     <div
-      className="panel-heading"
+      className="domain-heading-collapsible panel-heading"
+      onClick={[Function]}
     >
       <span>
         Sample Properties (3)
@@ -971,7 +980,8 @@ Array [
     className="domain-form-panel panel panel-default"
   >
     <div
-      className="panel-heading"
+      className="domain-heading-collapsible panel-heading"
+      onClick={[Function]}
     >
       <span>
         Assay Properties 
@@ -1237,7 +1247,8 @@ Array [
     className="domain-form-panel panel panel-default"
   >
     <div
-      className="panel-heading"
+      className="domain-heading-collapsible panel-heading"
+      onClick={[Function]}
     >
       <span>
         Batch Properties
@@ -1274,7 +1285,8 @@ Array [
     className="domain-form-panel panel panel-default"
   >
     <div
-      className="panel-heading"
+      className="domain-heading-collapsible panel-heading"
+      onClick={[Function]}
     >
       <span>
         Sample Properties (3)

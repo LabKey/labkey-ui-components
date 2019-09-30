@@ -161,6 +161,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Assay Properties 
@@ -404,6 +405,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Assay Properties 
@@ -411,7 +413,6 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
     </span>
     <span
       className="pull-right"
-      onClick={[Function]}
     >
       <i
         className="fa fa-check-square-o as-secondary-color"
@@ -427,6 +428,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Assay Properties 

@@ -137,27 +137,6 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
         });
     };
 
-    renderDomainPanelHeading(domain: DomainDesign) {
-        //TODO move these to the AbstractAssayProvider in platform/assay and then just use the domains 'description' string for this text
-        if (domain.name) {
-            if (domain.isNameSuffixMatch('Batch')) {
-                return (
-                    <p>Define the batch properties that are set once for each batch of runs imported at the same time.</p>
-                )
-            }
-            else if (domain.isNameSuffixMatch('Run')) {
-                return (
-                    <p>Define the run properties that are set once per run and apply to all rows in the run.</p>
-                )
-            }
-            else if (domain.isNameSuffixMatch('Data')) {
-                return (
-                    <p>Define the results properties that are set for individual rows within the imported run.</p>
-                )
-            }
-        }
-    }
-
     render() {
         const { onCancel, basePropertiesOnly } = this.props;
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;

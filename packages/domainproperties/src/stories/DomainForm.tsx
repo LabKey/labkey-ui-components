@@ -96,7 +96,7 @@ storiesOf("DomainForm", module)
             <DomainFormContainer
                 data={domainData}
                 initCollapsed={boolean('initCollapsed', true)}
-                markComplete={boolean('markComplete', false)}
+                markComplete={boolean('markComplete', true)}
             />
         )
     })

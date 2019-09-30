@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { List, Map } from "immutable";
+import { List } from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import {
@@ -29,6 +29,7 @@ import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
 import { AddEntityButton, Alert, FileAttachmentForm, ConfirmModal, InferDomainResponse, Tip } from "@glass/base";
+import { Utils } from "@labkey/api";
 
 import { DomainRow } from "./DomainRow";
 import {
@@ -146,11 +147,22 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
+    onPanelHeaderClick = (evt: any) => {
+        if (Utils.isString(evt.target.className) && evt.target.className.indexOf('domain-heading-collapsible') > -1 && this.props.collapsible) {
+            this.togglePanel(null);
+        }
+    };
+
     togglePanel = (evt: any, collapsed?: boolean): void => {
         this.setState((state) => ({
             expandedRowIndex: undefined,
             collapsed: collapsed !== undefined ? collapsed : !state.collapsed
-        }));
+        }), () => {
+            // clear the search/filter state if collapsed
+            if (this.state.collapsed) {
+                this.updateFilteredFields();
+            }
+        });
     };
 
     collapseRow = (): void => {
@@ -487,37 +499,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
-    renderSearchRow() {
-        return (
-            <Row className='domain-form-search'>
-                <Col xs={3}>
-                    <FormControl id={"dom-search-" + name} type="text" placeholder={'Filter Fields'}
-                                 disabled={true}/>
-                </Col>
-                <Col xs={1}/>
-                <Col xs={8} md={6} lg={4}>
-                    <Col xs={5} className='domain-zero-padding'>
-                        <span>Show Fields Defined By: </span>
-                    </Col>
-                    <Col xs={7} className='domain-zero-padding'>
-                        <FormControl id={"dom-user-" + name} type="text" placeholder={'User'}
-                                     disabled={true}/>
-                    </Col>
-                </Col>
-            </Row>
-        )
-    }
-
     onSearch = (evt) => {
-        const { domain } = this.props;
         const { value } = evt.target;
+        this.updateFilteredFields(value);
+    };
+
+    updateFilteredFields(value?: string) {
+        const { domain } = this.props;
 
         const filteredFields = domain.fields.map( field => {
-            if (!value) {
-                return field.set('visible', true);
-            }
-
-            if (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+            if (!value || (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1)) {
                 return field.set('visible', true);
             }
 
@@ -527,36 +518,33 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.setState(() => ({filtered: value !== undefined && value.length > 0}));
 
         this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign);
-    };
+    }
 
     renderDefaultHeader() {
-        const { domain } = this.props;
-
         return(
-            <div>
-                <Row className='domain-form-hdr-margins'>
-                    <Col xs={9}>
-                        <div className='domain-field-float-left'>Adjust fields and their properties that will be shown
-                            within this domain. Click a row
-                            to access additional options. Drag and drop rows to reorder them.
-                        </div>
-                    </Col>
-                    <Col xs={3}>
-                        {this.props.helpURL &&
-                            <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about this tool</a>
-                        }
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={3}>
-                        {domain.fields.size > 0 ?
-                            <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'}
-                                         onChange={this.onSearch}/>
-                            : <div/>
-                        }
-                    </Col>
-                </Row>
-            </div>
+            <Row className='domain-form-hdr-margins'>
+                <Col xs={9}>
+                    <div className='domain-field-float-left'>
+                        Adjust fields and their properties that will be shown within this domain.
+                        Click a row to access additional options. Drag and drop rows to reorder them.
+                    </div>
+                </Col>
+                <Col xs={3}>
+                    {this.props.helpURL &&
+                        <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about this tool</a>
+                    }
+                </Col>
+            </Row>
+        )
+    }
+
+    renderSearchField() {
+        return (
+            <Row>
+                <Col xs={3}>
+                    <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
+                </Col>
+            </Row>
         )
     }
 
@@ -566,12 +554,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                <div>
-                    {children ? children
-                        : this.renderDefaultHeader()
-                    }
-                </div>
-                {/*{this.renderSearchRow()}*/}
+                {children ? children : this.renderDefaultHeader()}
+                {domain.fields.size > 1 && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
@@ -640,8 +624,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             name = name.replace('Data Properties', 'Results Properties');
         }
 
-        // in collapsed view, add the field count to the header
-        if (collapsed && domain.fields.size > 0) {
+        // add the field count to the header, if not empty
+        if (domain.fields.size > 0) {
             name = name + ' (' + domain.fields.size + ')';
         }
 
@@ -670,7 +654,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     </Tip>
                 }
                 {!collapsible && collapsed && markComplete &&
-                    <span className={'pull-right'} onClick={this.togglePanel}>
+                    <span className={'pull-right'}>
                         <i className={'fa fa-check-square-o as-secondary-color'}/>
                     </span>
                 }
@@ -679,7 +663,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     render() {
-        const { domain, showHeader, panelCls } = this.props;
+        const { domain, showHeader, panelCls, collapsible } = this.props;
         const { showConfirm, collapsed } = this.state;
 
         return (
@@ -687,7 +671,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
                     {showHeader &&
-                        <Panel.Heading>
+                        <Panel.Heading onClick={this.onPanelHeaderClick} className={collapsible ? 'domain-heading-collapsible' : ''}>
                             {this.renderHeaderContent()}
                         </Panel.Heading>
                     }

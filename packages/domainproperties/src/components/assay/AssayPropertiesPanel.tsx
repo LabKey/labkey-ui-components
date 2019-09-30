@@ -59,6 +59,12 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         }
     }
 
+    onPanelHeaderClick = (evt: any) => {
+        if (Utils.isString(evt.target.className) && evt.target.className.indexOf('domain-heading-collapsible') > -1 && this.props.collapsible) {
+            this.togglePanel(null);
+        }
+    };
+
     togglePanel = (evt: any, collapsed?: boolean): void => {
         this.setState((state) => ({
             collapsed: collapsed !== undefined ? collapsed : !state.collapsed
@@ -444,7 +450,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
-                <Panel.Heading>
+                <Panel.Heading onClick={this.onPanelHeaderClick} className={collapsible ? 'domain-heading-collapsible' : ''}>
                     {this.renderHeader()}
                     {collapsible && collapsed &&
                         <Tip caption="Expand Panel">
@@ -461,7 +467,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                         </Tip>
                     }
                     {!collapsible && collapsed && markComplete &&
-                        <span className={'pull-right'} onClick={this.togglePanel}>
+                        <span className={'pull-right'}>
                             <i className={'fa fa-check-square-o as-secondary-color'}/>
                         </span>
                     }

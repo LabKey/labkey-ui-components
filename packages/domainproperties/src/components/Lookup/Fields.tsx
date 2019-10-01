@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { FormControl } from "react-bootstrap";
 import { Container, SchemaDetails } from "@glass/base";
 
-import { encodeLookup, PropDescType } from "../../models";
+import { decodeLookup, encodeLookup, PropDescType } from "../../models";
 
 import { ILookupContext, LookupContextConsumer } from "./Context";
 import {createFormInputName} from "../../actions/actions";
@@ -76,9 +76,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
         return (
             <FormControl {...this.props} componentClass="select">
-                {context.activeContainer && (
-                    <option key="_current" value={context.activeContainer.path}>Current Folder</option>
-                )}
+                {context.activeContainer && <option key="_current" value={context.activeContainer.path}>Current Folder</option>}
                 {containers.map((c) => <option key={c.id} value={c.path}>{c.path}</option>).toArray()}
             </FormControl>
         )
@@ -196,6 +194,7 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                 name={name}
                 onChange={onChange}
             >
+                {disabled && value && <option key="_disabled" value={value}>{decodeLookup(value).queryName}</option>}
                 {blankOption && <option key="_default" value={undefined}/>}
                 {loading && <option disabled key="_loading" value={value}>Loading...</option>}
                 {queries.map((q) => {
@@ -305,6 +304,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                 onChange={onChange}
                 placeholder="Select Schema"
             >
+                {disabled && value && <option key="_disabled" value={value}>{value}</option>}
                 {blankOption && <option key="_default" value={undefined}/>}
                 {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.fullyQualifiedName}</option>).toArray()}
                 {isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}

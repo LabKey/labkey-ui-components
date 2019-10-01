@@ -48,7 +48,6 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     render() {
         const { index, label, lookupContainer, lookupSchema, lookupQueryValue, original, lockType } = this.props;
         const disabled = lockType === DOMAIN_FIELD_PARTIALLY_LOCKED || lockType === DOMAIN_FIELD_FULLY_LOCKED;
-        //TODO when disabled, should we just show the value for the select? we don't need to actually load the select options
 
         return (
             <div>
@@ -58,7 +57,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                     </Col>
                 </Row>
                 <Row className="domain-row-expanded">
-                    <Col xs={2}>
+                    <Col xs={3}>
                         <div className="domain-field-label">From Folder</div>
                         <FolderSelect
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
@@ -68,7 +67,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             value={lookupContainer}
                         />
                     </Col>
-                    <Col xs={2}>
+                    <Col xs={3}>
                         <div className="domain-field-label">From Schema</div>
                         <SchemaSelect
                             containerPath={lookupContainer}
@@ -78,7 +77,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             onChange={this.onFieldChange}
                             value={lookupSchema}/>
                     </Col>
-                    <Col xs={2}>
+                    <Col xs={3}>
                         <div className="domain-field-label">Target Table</div>
                         <TargetTableSelect
                             containerPath={lookupContainer}

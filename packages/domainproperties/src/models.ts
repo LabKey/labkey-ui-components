@@ -30,7 +30,8 @@ import {
     PARTICIPANTID_CONCEPT_URI,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
-    USER_RANGE_URI
+    USER_RANGE_URI,
+    DOMAIN_FIELD_PARTIALLY_LOCKED
 } from "./constants";
 
 export interface IFieldChange {
@@ -163,7 +164,9 @@ export class DomainDesign extends Record({
     allowFlagProperties: true,
     fields: List<DomainField>(),
     indices: List<DomainIndex>(),
-    domainException: undefined
+    domainException: undefined,
+    mandatoryFieldNames: List<string>(),
+    reservedFieldNames: List<string>()
 }) implements IDomainDesign {
     name: string;
     container: string;
@@ -176,15 +179,22 @@ export class DomainDesign extends Record({
     fields: List<DomainField>;
     indices: List<DomainIndex>;
     domainException: DomainException;
+    mandatoryFieldNames: List<string>;
+    reservedFieldNames: List<string>;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
+        let mandatoryFieldNames = List<string>();
         let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
+            if (rawModel.mandatoryFieldNames) {
+                mandatoryFieldNames = List<string>(rawModel.mandatoryFieldNames.map((name) => name.toLowerCase()));
+            }
+
             if (rawModel.fields) {
-                fields = DomainField.fromJS(rawModel.fields);
+                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames);
             }
 
             if (rawModel.indices) {
@@ -372,9 +382,16 @@ export class DomainField extends Record({
     isPrimaryKey: boolean;
     lockType: string;
 
-    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean): DomainField {
+    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let dataType = resolveDataType(rawField);
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
+
+        // lockType can either come from the rawField, or be based on the domain's mandatoryFieldNames
+        const isMandatoryFieldMatch = mandatoryFieldNames !== undefined && mandatoryFieldNames.contains(rawField.name.toLowerCase());
+        let lockType = rawField.lockType || DOMAIN_FIELD_NOT_LOCKED;
+        if (lockType === DOMAIN_FIELD_NOT_LOCKED && isMandatoryFieldMatch) {
+            lockType = DOMAIN_FIELD_PARTIALLY_LOCKED;
+        }
 
         let field = new DomainField(Object.assign({}, rawField, {
             dataType,
@@ -382,6 +399,7 @@ export class DomainField extends Record({
             lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
             lookupSchema: rawField.lookupSchema === null ? undefined : rawField.lookupSchema,
             lookupType,
+            lockType,
             original: {
                 dataType,
                 rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
@@ -396,11 +414,11 @@ export class DomainField extends Record({
     }
 
 
-    static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
+    static fromJS(rawFields: Array<IDomainField>, mandatoryFieldNames?: List<string>): List<DomainField> {
         let fields = List<DomainField>().asMutable();
 
         for (let i=0; i < rawFields.length; i++) {
-            fields.push(DomainField.create(rawFields[i]));
+            fields.push(DomainField.create(rawFields[i], undefined, mandatoryFieldNames));
         }
 
         return fields.asImmutable();

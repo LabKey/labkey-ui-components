@@ -13,7 +13,7 @@ import {DomainField} from "../models";
 import {
     FolderSelectProps, IFolderSelectImplState,
     SchemaSelectProps, ISchemaSelectImplState,
-    QuerySelectProps, IQuerySelectImplState
+    TargetTableSelectProps, ITargetTableSelectImplState
 } from "./Lookup/Fields";
 import {LookupFieldOptions} from "./LookupFieldOptions";
 import {MockLookupProvider} from "../test/components/Lookup";
@@ -38,7 +38,7 @@ describe('LookupFieldOptions', () => {
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 
-    const queryFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<QuerySelectProps, IQuerySelectImplState> => {
+    const queryFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
         return field.find({
             id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index),
             name: createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)

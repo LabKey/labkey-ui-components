@@ -112,10 +112,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -234,10 +234,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -316,10 +316,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -523,10 +523,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -657,10 +657,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -766,10 +766,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -990,10 +990,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1124,10 +1124,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1233,10 +1233,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1457,10 +1457,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1591,10 +1591,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1697,10 +1697,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"

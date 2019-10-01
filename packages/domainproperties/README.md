@@ -7,6 +7,7 @@ Domain property related components for LabKey domains
 ### version TBD
 *Released*: TBD
 * Item 6199: support other assay provider types in AssayDesignerPanels and AssayPropertiesPanel
+    * TODO add more details here
 
 ### version 0.0.40
 *Released*: 26 September 2019

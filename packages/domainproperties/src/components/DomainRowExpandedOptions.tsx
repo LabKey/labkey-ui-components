@@ -23,6 +23,7 @@ import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import {LookupFieldOptions} from "./LookupFieldOptions";
 import {Row} from "react-bootstrap";
 import { List } from "immutable";
+import {ConditionalFormattingValidation} from "./ConditionalFormattingValidation";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField
@@ -72,9 +73,10 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
         return(
             <div className='domain-row-container'>
                 <div className='domain-row-handle'/>
-                <div className='domain-row-main'>
+                <div className='domain-row-container-expanded'>
                     {this.typeDependentOptions()}
                     <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                    <ConditionalFormattingValidation index={index} field={field} onChange={onChange}/>
                 </div>
             </div>
         );

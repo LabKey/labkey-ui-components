@@ -50,7 +50,6 @@ interface AdvancedSettingsState {
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
 
-
     constructor(props) {
         super(props);
 

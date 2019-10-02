@@ -37,7 +37,6 @@
     "facetingBehaviorType" : "AUTOMATIC",
     "scale" : 4000,
     "redactedText" : null,
-    "conditionalFormats" : [ ],
     "typeEditable" : true,
     "preventReordering" : false,
     "disableEditing" : false,
@@ -50,6 +49,25 @@
       "new" : true,
       "rowId" : 203522,
       "expression" : "~lte=4000"
+    }, {
+      "name" : "Test Validator",
+      "properties" : {
+        "failOnMatch" : "true"
+      },
+      "type" : "RegEx",
+      "errorMessage" : "Test Validation Failure",
+      "description" : "This is my validator description",
+      "new" : true,
+      "rowId" : 11266,
+      "expression" : "$[abc]"
+    } ],
+    "conditionalFormats" : [ {
+      "filter" : "format.column~startswith=0&format.column~doesnotstartwith=1",
+      "bold" : true,
+      "italic" : false,
+      "strikethrough" : false,
+      "textColor" : "FF6347",
+      "backgroundColor" : "000080"
     } ],
     "excludeFromShifting" : false,
     "URL" : null,
@@ -92,7 +110,16 @@
     "typeEditable" : true,
     "preventReordering" : false,
     "disableEditing" : false,
-    "propertyValidators" : [ ],
+    "propertyValidators" : [ {
+      "name" : "Test range validator",
+      "properties" : { },
+      "type" : "Range",
+      "errorMessage" : "Range validation failed",
+      "description" : "This is a range validator",
+      "new" : true,
+      "rowId" : 11267,
+      "expression" : "~gt=0&~lt=10"
+    } ],
     "excludeFromShifting" : false,
     "URL" : null,
     "PHI" : "Restricted"

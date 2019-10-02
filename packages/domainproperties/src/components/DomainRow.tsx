@@ -82,38 +82,36 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { expanded, field, index } = this.props;
+        const {expanded, field, index} = this.props;
         let details = [];
 
-        if (!expanded) {
-            if (field.hasErrors()) {
-                switch (field.getErrors()) {
-                    case FieldErrors.MISSING_SCHEMA_QUERY:
-                        details.push(
-                            <span key={details.length} style={{color: 'red'}}>
+        if (field.hasErrors()) {
+            switch (field.getErrors()) {
+                case FieldErrors.MISSING_SCHEMA_QUERY:
+                    details.push(
+                        <span key={details.length} style={{color: 'red'}}>
                                 A lookup requires a schema and table!
                             </span>);
-                        break;
-                    default:
-                        break;
-                }
+                    break;
+                default:
+                    break;
             }
-            else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
-                details.push([
-                    field.lookupContainer || 'Current Folder',
-                    field.lookupSchema,
-                    field.lookupQuery
-                ].join(' > '));
-            }
-            else if (field.isNew()) {
-                details.push('New field');
-            }
-            else if (field.updatedField) {
-                details.push('Updated');
-            }
-            else if (field.isPrimaryKey) {
-                details.push('Primary Key');
-            }
+        }
+        else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
+            details.push([
+                field.lookupContainer || 'Current Folder',
+                field.lookupSchema,
+                field.lookupQuery
+            ].join(' > '));
+        }
+        else if (field.isNew()) {
+            details.push('New field');
+        }
+        else if (field.updatedField) {
+            details.push('Updated');
+        }
+        else if (field.isPrimaryKey) {
+            details.push('Primary Key');
         }
 
         let period = '';
@@ -122,7 +120,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
 
         if (this.props.field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
-           details.push(period + 'Locked');
+            details.push(period + 'Locked');
         }
 
         if (details.length > 0) {
@@ -132,7 +130,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         if (this.props.fieldError) {
             details.push(period);
             const msg = this.props.fieldError.severity + ": " + this.props.fieldError.message;
-            details.push(<b key={field.name+"_"+index}>{msg}</b>);
+            details.push(<b key={field.name + "_" + index}>{msg}</b>);
         }
 
         return details;

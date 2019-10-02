@@ -51,6 +51,35 @@ export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
 export const DOMAIN_FIELD_CUSTOM_LENGTH = 'customLength';
 export const DOMAIN_FIELD_SCALE = 'scale';
 
+export const DOMAIN_COND_FORMAT = 'conditionalFormat';
+export const DOMAIN_REGEX_VALIDATOR = 'regexValidator';
+export const DOMAIN_RANGE_VALIDATOR = 'rangeValidator';
+
+export const DOMAIN_COND_FORMATS = 'conditionalFormats';
+export const DOMAIN_REGEX_VALIDATORS = 'regexValidators';
+export const DOMAIN_RANGE_VALIDATORS = 'rangeValidators';
+
+export const DOMAIN_VALIDATOR_EXPRESSION = 'expression';
+export const DOMAIN_VALIDATOR_DESCRIPTION = 'description';
+export const DOMAIN_VALIDATOR_ERRORMESSAGE = 'errorMessage';
+export const DOMAIN_VALIDATOR_FAILONMATCH = 'failOnMatch';
+export const DOMAIN_VALIDATOR_NAME = 'name';
+export const DOMAIN_VALIDATOR_REMOVE = 'removeValidator';
+
+export const DOMAIN_VALIDATOR_BOLD = 'bold';
+export const DOMAIN_VALIDATOR_ITALIC = 'italic';
+export const DOMAIN_VALIDATOR_STRIKETHROUGH = 'strikethrough';
+
+export const DOMAIN_CONDITIONAL_FORMAT_PREFIX = 'format.column';
+export const DOMAIN_CONDITION_FORMAT_TEXT_COLOR = 'textColor';
+export const DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR = 'backgroundColor';
+
+
+export const DOMAIN_FIRST_FILTER_TYPE = 'firstFilterType';
+export const DOMAIN_FIRST_FILTER_VALUE = 'firstFilterValue';
+export const DOMAIN_SECOND_FILTER_TYPE = 'secondFilterType';
+export const DOMAIN_SECOND_FILTER_VALUE = 'secondFilterValue';
+
 export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
 export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
 export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties

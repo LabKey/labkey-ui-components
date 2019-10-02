@@ -58,7 +58,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading margin-top'}>Name and Linking Options</div>
+                        <div className={'domain-field-section-heading domain-field-section-hdr'}>Name and Linking Options</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -87,9 +87,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                      name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
                                      onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
-                </Row>
-                <Row className='domain-row-expanded'>
-                    <Col xs={5}>
+                    <Col xs={4}>
                         <div className={'domain-field-label'}>
                             URL
                             <LabelHelpTip

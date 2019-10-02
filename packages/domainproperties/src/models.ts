@@ -97,6 +97,22 @@ export class PropDescType extends Record({
         super(values);
     }
 
+    getJsonType(): string {
+        switch(this.name) {
+            case 'boolean':
+                return 'boolean';
+            case 'int':
+                return 'int';
+            case 'double':
+                return 'float';
+            case 'dateTime':
+                return 'date';
+            default:
+                return 'string';
+
+        }
+    }
+
     isLookup(): boolean {
         return PropDescType.isLookup(this.name);
     }
@@ -264,9 +280,130 @@ export enum FieldErrors {
     MISSING_SCHEMA_QUERY
 }
 
-// Commented out properties are unused
+export interface IConditionalFormat {
+    formatFilter: string,
+    bold: boolean,
+    italic: boolean,
+    strikethrough: boolean,
+    textColor?: string,
+    backgroundColor?: string
+}
+
+export class ConditionalFormat extends Record({
+    formatFilter: undefined,
+    bold: false,
+    italic: false,
+    strikethrough: false,
+    textColor: undefined,
+    backgroundColor: undefined
+}) implements IConditionalFormat {
+    formatFilter: string;
+    bold: boolean;
+    italic: boolean;
+    strikethrough: boolean;
+    textColor?: string;
+    backgroundColor?: string;
+
+    constructor(values?: { [key: string]: any }) {
+
+        // filter is a reserved work on Records so change to formatFilter
+        if (values && !values.get('formatFilter')) {
+            values = values.set('formatFilter', values.get('filter'));
+        }
+        super(values);
+    }
+
+    static fromJS(rawCondFormat: Array<ConditionalFormat>): List<ConditionalFormat> {
+        let condFormats = List<ConditionalFormat>().asMutable();
+
+        for (let i=0; i < rawCondFormat.length; i++) {
+            condFormats.push(new ConditionalFormat(fromJS(rawCondFormat[i])));
+        }
+
+        return condFormats.asImmutable();
+    }
+
+    static serialize(cfs: Array<any>): any {
+
+        // Change formatFilter back to filter as that is what API is expecting
+        for (let i=0; i < cfs.length; i++) {
+            cfs[i].filter = cfs[i].formatFilter;
+            delete cfs[i].formatFilter;
+        }
+
+        return cfs;
+    }
+}
+
+export interface IPropertyValidatorProperties {
+    failOnMatch: boolean
+}
+
+export class PropertyValidatorProperties extends Record({
+    failOnMatch: false
+}) implements IPropertyValidatorProperties {
+    failOnMatch: boolean;
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    }
+}
+
+export interface IPropertyValidator {
+    type: string,
+    name: string,
+    properties: List<PropertyValidatorProperties>,
+    errorMessage?: string,
+    description?: string,
+    new: boolean,
+    rowId?: number,
+    expression?: string
+}
+
+export class PropertyValidator extends Record({
+    type: undefined,
+    name: undefined,
+    properties: List<PropertyValidatorProperties>(),
+    errorMessage: undefined,
+    description: undefined,
+    new : true,
+    rowId: undefined,
+    expression: undefined
+}) implements IPropertyValidator {
+    type: string;
+    name: string;
+    properties: List<PropertyValidatorProperties>;
+    errorMessage?: string;
+    description?: string;
+    new: boolean;
+    rowId?: number;
+    expression?: string;
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    }
+
+    static fromJS(rawPropertyValidator: Array<IPropertyValidator>, range: boolean): List<PropertyValidator> {
+        let propValidators = List<PropertyValidator>().asMutable();
+
+        let newPv;
+        for (let i=0; i < rawPropertyValidator.length; i++) {
+            if ( range && rawPropertyValidator[i].type === "Range" ||
+                !range && rawPropertyValidator[i].type === "RegEx")
+            {
+                newPv = new PropertyValidator(fromJS(rawPropertyValidator[i]));
+                newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
+                propValidators.push(newPv);
+            }
+        }
+
+        return propValidators.asImmutable();
+    }
+}
+
 export interface IDomainField {
     conceptURI?: string
+    conditionalFormats: List<ConditionalFormat>
     defaultScale?: string
     description?: string
     dimension?: boolean
@@ -285,7 +422,10 @@ export interface IDomainField {
     primaryKey?: boolean
     propertyId?: number
     propertyURI: string
+    propertyValidators: List<PropertyValidator>
+    rangeValidators: List<PropertyValidator>
     rangeURI: string
+    regexValidators: List<PropertyValidator>
     required?: boolean
     recommendedVariable?: boolean
     scale?: number
@@ -305,6 +445,7 @@ export interface IDomainField {
 
 export class DomainField extends Record({
     conceptURI: undefined,
+    conditionalFormats: List<ConditionalFormat>(),
     defaultScale: undefined,
     description: undefined,
     dimension: undefined,
@@ -323,7 +464,10 @@ export class DomainField extends Record({
     primaryKey: undefined,
     propertyId: undefined,
     propertyURI: undefined,
+    propertyValidators: List<PropertyValidator>(),
+    rangeValidators: List<PropertyValidator>(),
     rangeURI: undefined,
+    regexValidators: List<PropertyValidator>(),
     recommendedVariable: false,
     required: false,
     scale: undefined,
@@ -342,6 +486,7 @@ export class DomainField extends Record({
 
 }) implements IDomainField {
     conceptURI?: string;
+    conditionalFormats: List<ConditionalFormat>;
     defaultScale?: string;
     description?: string;
     dimension?: boolean;
@@ -360,7 +505,10 @@ export class DomainField extends Record({
     primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;
+    propertyValidators: List<PropertyValidator>;
+    rangeValidators: List<PropertyValidator>;
     rangeURI: string;
+    regexValidators: List<PropertyValidator>;
     recommendedVariable: boolean;
     required?: boolean;
     scale?: number;
@@ -377,7 +525,7 @@ export class DomainField extends Record({
     isPrimaryKey: boolean;
     lockType: string;
 
-    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean): DomainField {
+    static create(rawField: any, shouldApplyDefaultValues?: boolean): DomainField {
         let dataType = resolveDataType(rawField);
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
@@ -392,6 +540,15 @@ export class DomainField extends Record({
                 rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
             }
         }));
+
+        if (rawField.conditionalFormats) {
+            field = field.set("conditionalFormats", ConditionalFormat.fromJS(rawField.conditionalFormats)) as DomainField;
+        }
+
+        if (rawField.propertyValidators) {
+            field = field.set("rangeValidators", PropertyValidator.fromJS(rawField.propertyValidators, true)) as DomainField;
+            field = field.set("regexValidators", PropertyValidator.fromJS(rawField.propertyValidators, false)) as DomainField;
+        }
 
         if (shouldApplyDefaultValues) {
             field = DomainField.updateDefaultValues(field);
@@ -434,6 +591,19 @@ export class DomainField extends Record({
             delete json.PHI;
         }
 
+        if (json.conditionalFormats) {
+            json.conditionalFormats = ConditionalFormat.serialize(json.conditionalFormats);
+        }
+
+        json.propertyValidators = [];
+        if (json.rangeValidators) {
+            json.propertyValidators = json.propertyValidators.concat(json.rangeValidators);
+        }
+
+        if (json.regexValidators) {
+            json.propertyValidators = json.propertyValidators.concat(json.regexValidators);
+        }
+
         // remove non-serializable fields
         delete json.dataType;
         delete json.lookupQueryValue;
@@ -441,6 +611,8 @@ export class DomainField extends Record({
         delete json.original;
         delete json.updatedField;
         delete json.visible;
+        delete json.rangeValidators;
+        delete json.regexValidators;
 
         return json;
     }
@@ -463,6 +635,14 @@ export class DomainField extends Record({
 
     isNew(): boolean {
         return isFieldNew(this);
+    }
+
+    static hasRangeValidation(field: DomainField): boolean {
+        return (field.dataType === INTEGER_TYPE ||
+                field.dataType === DOUBLE_TYPE ||
+                field.dataType === DATETIME_TYPE ||
+                field.dataType === USERS_TYPE ||
+                field.dataType === LOOKUP_TYPE);
     }
 
     static updateDefaultValues(field: DomainField): DomainField {

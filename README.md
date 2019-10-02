@@ -181,12 +181,12 @@ conjunction with a copy command. The `watch` command can automatically build a p
 see the `packages/template/package.json` script declaration). You will then need to manually copy the `dist` directory
 created by the build into the application's `node_modules/@glass/<package_name>` directory.
                                   
-For example, for the navigation package, you could do:
-* ``cd packages/navigation``
+For example, for the querygrid package, you could do:
+* ``cd packages/querygrid``
 * ``yarn watch``
 * edit files
 * wait for recompile triggered by the `watch` to happen
-* ``cp -r dist /path/to/my_app/node_modules/\@glass/navigation``
+* ``cp -r dist /path/to/my_app/node_modules/\@glass/querygrid``
 
 ### Package Dependencies
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)

@@ -82,6 +82,11 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
             value = evt.target.checked;
         }
 
+        // special case for empty string, set as null instead
+        if (Utils.isString(value) && value.length === 0) {
+            value = null;
+        }
+
         this.props.onChange(model.merge({
             [id.replace(FORM_ID_PREFIX, '')]: value
         }));
@@ -105,9 +110,9 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 {!basePropertiesOnly && this.renderSectionHeading('Basic Properties')}
                 {this.renderNameInput()}
                 {this.renderDescriptionInput()}
-                {model.availablePlateTemplates && model.availablePlateTemplates.length > 0 && this.renderPlateTemplatesInput()}
-                {model.availableDetectionMethods && model.availableDetectionMethods.length > 0 && this.renderDetectionMethodsInput()}
-                {model.availableMetadataInputFormats && !Utils.isEmptyObj(model.availableMetadataInputFormats) && this.renderMetadataInputFormatsInput()}
+                {model.allowPlateTemplateSelection() && this.renderPlateTemplatesInput()}
+                {model.allowDetectionMethodSelection() && this.renderDetectionMethodsInput()}
+                {model.allowMetadataInputFormatSelection() && this.renderMetadataInputFormatsInput()}
                 {!basePropertiesOnly && model.allowQCStates && this.renderQCStatesInput()}
             </>
         )
@@ -321,6 +326,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                     onChange={this.onChange}
                     value={selectedPlateTemplate}
                 >
+                    <option key="_empty" value={null}/>
                     {
                         availablePlateTemplates.map((type, i) => (
                             <option key={i} value={type}>{type}</option>
@@ -347,6 +353,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                     onChange={this.onChange}
                     value={selectedDetectionMethod}
                 >
+                    <option key="_empty" value={null}/>
                     {
                         availableDetectionMethods.map((method, i) => (
                             <option key={i} value={method}>{method}</option>

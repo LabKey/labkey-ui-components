@@ -892,9 +892,9 @@ export class AssayProtocolModel extends Record({
     protocolTransformScripts: any;
     providerName: string;
     saveScriptFiles: boolean;
-    selectedDetectionMethod: any;
-    selectedMetadataInputFormat: any;
-    selectedPlateTemplate: any;
+    selectedDetectionMethod: string;
+    selectedMetadataInputFormat: string;
+    selectedPlateTemplate: string;
     qcEnabled: boolean;
 
     constructor(values?: {[key:string]: any}) {
@@ -935,5 +935,17 @@ export class AssayProtocolModel extends Record({
 
     isNew(): boolean {
         return !this.protocolId;
+    }
+
+    allowPlateTemplateSelection(): boolean {
+        return this.availablePlateTemplates && Utils.isArray(this.availablePlateTemplates);
+    }
+
+    allowDetectionMethodSelection(): boolean {
+        return this.availableDetectionMethods && Utils.isArray(this.availableDetectionMethods);
+    }
+
+    allowMetadataInputFormatSelection(): boolean {
+        return this.availableMetadataInputFormats && !Utils.isEmptyObj(this.availableMetadataInputFormats);
     }
 }

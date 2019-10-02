@@ -1451,7 +1451,7 @@
       "terms.fhcrc.org#XarTemplate.ApplicationLSID" : "${RunLSIDBase}:SimpleProtocol.InputStep",
       "terms.fhcrc.org#XarTemplate.ApplicationName" : "ELISpot Assay Test Protocol"
     },
-    "selectedPlateTemplate" : null,
+    "selectedPlateTemplate" : "EliSpot Plate Template",
     "availableMetadataInputFormats" : { },
     "metadataInputFormatHelp" : null,
     "selectedMetadataInputFormat" : "MANUAL",

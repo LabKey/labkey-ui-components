@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.20.0
+*Released*: ?? October 2019
+* Move `omnibox` package into `querygrid`
+    * Old README for `omnibox` can be found [here](../../legacy-docs/omnibox.md)
+
 ### version 0.19.1
 *Released*: 27 September 2019
 * Issue 38373: remove inline style from assay results data text area input for white-space nowrap

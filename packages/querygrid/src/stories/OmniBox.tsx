@@ -3,17 +3,44 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { Grid } from '@glass/base'
-import { storiesOf } from '@storybook/react'
-import { withKnobs } from '@storybook/addon-knobs'
+import * as React from 'react';
+import { fromJS, List, Map } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
+import { Grid, QueryColumn, QueryGridModel } from '@glass/base';
 
-import { OmniBox } from '../OmniBox'
-import { FilterAction, SearchAction, SortAction } from '..'
+import { OmniBox } from '..';
+import { FilterAction, SearchAction, SortAction } from '..';
+import rawColumnData from '../test/data/columns.json';
+import rawData from '../test/data/data.json';
+import './stories.scss';
 
-import { createMockActionContext } from '../test/Mock'
+export interface IActionContext {
+    columns: List<QueryColumn>
+    columnsByName: Map<string, QueryColumn>
+    model: QueryGridModel
+    resolveColumns: () => Promise<List<QueryColumn>>
+    resolveModel: () => Promise<QueryGridModel>
+}
 
-import './stories.scss'
+export const createMockActionContext = (dataKey: string): IActionContext => {
+    const columns = List<QueryColumn>(rawColumnData[dataKey].columns.map(col => QueryColumn.create(col)));
+    const columnsByName = columns.reduce((map, col) => map.set(col.name, col), Map<string, QueryColumn>());
+    const data = fromJS(rawData[dataKey]);
+
+    const model = new QueryGridModel({
+        dataIds: data.keySeq().toList(),
+        data
+    });
+
+    return {
+        columns,
+        columnsByName,
+        model,
+        resolveColumns: (): Promise<List<QueryColumn>> => Promise.resolve(columns),
+        resolveModel: (): Promise<QueryGridModel> => Promise.resolve(model)
+    }
+};
 
 const { model, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 

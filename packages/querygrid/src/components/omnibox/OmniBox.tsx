@@ -22,8 +22,6 @@ import { Action, ActionOption, ActionValue, ActionValueCollection } from './acti
 import { Option } from './Option'
 import { Value, valueClassName } from './Value'
 
-import './theme/index.scss'
-
 // Export for type declarations (.d.ts)
 export {
     Option,

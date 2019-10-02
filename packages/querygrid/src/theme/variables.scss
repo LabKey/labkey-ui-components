@@ -9,3 +9,71 @@ $gray-light:             lighten($gray-base, 46.7%) !default; // #777
 $brand-primary: #2980b9;
 $brand-secondary: #236fa0;
 $border-color: #cccccc;
+
+
+// Below are all of the variables for OmniBox
+@mixin border-top-radius($radius)
+{
+  border-top-right-radius: $radius;
+  border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius)
+{
+  border-bottom-right-radius: $radius;
+  border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius)
+{
+  border-bottom-right-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius)
+{
+  border-bottom-left-radius: $radius;
+  border-top-left-radius: $radius;
+}
+
+// control options
+$omnibox-input-bg:                  #fff;
+$omnibox-input-bg-disabled:         #f9f9f9;
+$omnibox-input-border-color:        #ccc;
+$omnibox-input-border-radius:       4px;
+$omnibox-input-border-focus:        #08c; // blue
+$omnibox-input-border-width:        1px;
+$omnibox-input-height:              36px;
+$omnibox-input-internal-height:     ($omnibox-input-height - ($omnibox-input-border-width * 2));
+$omnibox-input-placeholder:         #aaa;
+$omnibox-text-color:                #333;
+$omnibox-link-hover-color:          $omnibox-input-border-focus;
+
+$omnibox-padding-vertical:          8px;
+$omnibox-padding-horizontal:        4px;
+
+// menu options
+$omnibox-menu-zindex:               1000;
+$omnibox-menu-max-height:           200px;
+
+$omnibox-option-color:              lighten($omnibox-text-color, 20%);
+$omnibox-option-bg:                 $omnibox-input-bg;
+$omnibox-option-focused-color:      #ffffff;
+$omnibox-option-focused-bg:         #000000;
+$omnibox-option-selected-color:     #ffffff;
+$omnibox-option-selected-bg:        #000000;
+$omnibox-option-disabled-color:     lighten($omnibox-text-color, 60%);
+
+$omnibox-noresults-color:           lighten($omnibox-text-color, 40%);
+
+// select item
+$omnibox-item-border-radius:        2px;
+$omnibox-item-gutter:               5px;
+$omnibox-item-padding-vertical:     2px;
+$omnibox-item-padding-horizontal:   5px;
+$omnibox-item-font-size:            1em;
+$omnibox-item-color:                #08c; // pale blue
+$omnibox-item-bg:                   #f2f9fc;
+$omnibox-item-border-color:         darken($omnibox-item-bg, 10%);
+$omnibox-item-hover-color:          darken($omnibox-item-color, 5%); // pale blue
+$omnibox-item-hover-bg:             darken($omnibox-item-bg, 5%);
+$omnibox-item-disabled-color:       #333;
+$omnibox-item-disabled-bg:          #fcfcfc;
+$omnibox-item-disabled-border-color: darken($omnibox-item-disabled-bg, 10%);

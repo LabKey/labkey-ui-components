@@ -160,8 +160,8 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                         return;
                     }
 
-                    // allow empty domain to be inferred from a file for Data Fields
-                    const showInferFromFile = domain.isNameSuffixMatch('Data');
+                    // allow empty domain to be inferred from a file for Data Fields in General assay
+                    const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
 
                     return (
                         <DomainForm

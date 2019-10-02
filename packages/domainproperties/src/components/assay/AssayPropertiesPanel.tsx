@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Form, FormControl, Row, Panel, Button } from "react-bootstrap";
+import { Col, Form, FormControl, Row, Panel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
 import { Utils, ActionURL } from "@labkey/api";
@@ -20,6 +20,7 @@ const FORM_IDS = {
     PLATE_TEMPLATE: FORM_ID_PREFIX + 'selectedPlateTemplate',
     QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled'
 };
+const BOOLEAN_FIELDS = [FORM_IDS.BACKGROUND_UPLOAD, FORM_IDS.EDITABLE_RUNS, FORM_IDS.EDITABLE_RESULTS, FORM_IDS.QC_ENABLED];
 
 interface Props {
     model: AssayProtocolModel
@@ -77,7 +78,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         let value = evt.target.value;
 
         // special case for checkboxes to use "checked" property of target
-        if (id === FORM_IDS.EDITABLE_RUNS || id === FORM_IDS.EDITABLE_RESULTS) {
+        if (BOOLEAN_FIELDS.indexOf(id) > -1) {
             value = evt.target.checked;
         }
 

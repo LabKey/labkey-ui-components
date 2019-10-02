@@ -22,7 +22,7 @@ import { ProductMenu } from "./ProductMenu";
 import { SearchBox } from "./SearchBox";
 import { UserMenu } from "./UserMenu";
 import { MenuSectionConfig } from "./ProductMenuSection";
-import { ProductMenuModel } from "../model";
+import { ProductMenuModel } from "./model";
 
 interface NavigationBarProps {
     brand?: ReactNode

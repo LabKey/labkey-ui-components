@@ -17,7 +17,7 @@ import React from "reactn";
 import { Record } from 'immutable';
 import { AppURL, naturalSort } from '@glass/base'
 
-import { MenuSectionModel } from '../model';
+import { MenuSectionModel } from './model';
 
 
 export class MenuSectionConfig extends Record({

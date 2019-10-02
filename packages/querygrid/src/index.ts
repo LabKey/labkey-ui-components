@@ -142,7 +142,14 @@ import { SearchAction } from './components/omnibox/actions/Action';
 import { SortAction } from './components/omnibox/actions/Sort';
 import { ViewAction } from './components/omnibox/actions/View';
 import { OmniBox } from './components/omnibox/OmniBox';
-
+import { HeaderWrapper } from './components/navigation/HeaderWrapper';
+import { NavigationBar } from './components/navigation/NavigationBar';
+import { NavItem } from './components/navigation/NavItem';
+import { MenuSectionConfig } from './components/navigation/ProductMenuSection';
+import { ITab, SubNav } from './components/navigation/SubNav';
+import { Breadcrumb } from './components/navigation/Breadcrumb';
+import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
+import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
 
 export {
     // global state functions
@@ -314,5 +321,20 @@ export {
     ViewAction,
 
     // OmniBox components
-    OmniBox
+    OmniBox,
+
+    // Navigation types
+    MenuSectionConfig,
+    ProductMenuModel,
+    MenuSectionModel,
+    MenuItemModel,
+
+    // Navigation components
+    HeaderWrapper,
+    ITab,
+    NavItem,
+    NavigationBar,
+    SubNav,
+    Breadcrumb,
+    BreadcrumbCreate
 }

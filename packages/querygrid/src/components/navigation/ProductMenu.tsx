@@ -18,7 +18,7 @@ import { Map, List } from 'immutable';
 import { DropdownButton } from 'react-bootstrap'
 import { LoadingSpinner } from '@glass/base'
 
-import { MenuSectionModel, ProductMenuModel} from '../model'
+import { MenuSectionModel, ProductMenuModel} from './model'
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection'
 
 

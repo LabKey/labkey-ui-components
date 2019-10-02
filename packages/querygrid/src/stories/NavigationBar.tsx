@@ -9,9 +9,9 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { List, Map } from 'immutable'
 import {AppURL, User} from '@glass/base'
 
-import { MenuSectionConfig } from '../components/ProductMenuSection'
-import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../model'
-import { NavigationBar } from '../components/NavigationBar'
+import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
+import { NavigationBar } from '../components/navigation/NavigationBar';
 
 import './stories.scss'
 
@@ -224,19 +224,19 @@ storiesOf('NavigationBar', module)
 
         LABKEY['devMode'] = boolean('devMode', false, userGroup);
         const isSignedIn = boolean('User is signed in', true, userGroup);
-
-        return <NavigationBar
-            menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}
-            model={model}
-            showSearchBox={false}
-            user={
-                new User( {
-                    avatar: undefined,
-                    displayName: "Test User",
-                    isSignedIn,
-                    isGuest: !isSignedIn
-                })
-            }
-        />
+        const user = new User( {
+            avatar: undefined,
+            displayName: "Test User",
+            isSignedIn,
+            isGuest: !isSignedIn
+        });
+        return (
+            <NavigationBar
+                menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}
+                model={model}
+                showSearchBox={false}
+                user={user}
+            />
+        );
     })
 ;

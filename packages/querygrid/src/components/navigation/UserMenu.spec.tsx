@@ -13,20 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { List } from 'immutable'
-import renderer from 'react-test-renderer'
-import { User } from '@glass/base'
+import React from 'reactn';
+import { List } from 'immutable';
+import renderer from 'react-test-renderer';
+import { User } from '@glass/base';
 
-import { UserMenu } from './UserMenu'
-import { MenuSectionModel, ProductMenuModel } from '../model'
+import { UserMenu } from './UserMenu';
+import { MenuSectionModel, ProductMenuModel } from './model';
 
 beforeAll(() => {
     LABKEY.devMode = false;
 });
 
 describe("UserMenu", () => {
-
     let sections = List<MenuSectionModel>().asMutable();
     sections.push( MenuSectionModel.create({
         key: "user",

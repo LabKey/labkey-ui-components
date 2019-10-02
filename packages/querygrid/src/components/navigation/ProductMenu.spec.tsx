@@ -15,15 +15,15 @@
  */
 import React from 'reactn';
 import renderer from 'react-test-renderer';
+import toJson from "enzyme-to-json";
 import { mount } from 'enzyme'
 import { List, Map } from 'immutable';
 
 import { ProductMenu } from './ProductMenu';
-import { MenuSectionModel, ProductMenuModel } from '../model';
-import {MenuSectionConfig} from "./ProductMenuSection";
+import { MenuSectionModel, ProductMenuModel } from './model';
+import { MenuSectionConfig } from './ProductMenuSection';
 
 describe("ProductMenu render", () => {
-
     const sampleSetItems = List<MenuSectionModel>([
         {
             id: 1,
@@ -144,7 +144,7 @@ describe("ProductMenu render", () => {
 
         const menuButton = mount(<ProductMenu model={model} />);
         expect(menuButton.find(".menu-section").length).toBe(3);
-        expect(menuButton).toMatchSnapshot();
+        expect(toJson(menuButton)).toMatchSnapshot();
         menuButton.unmount();
     });
 
@@ -191,7 +191,7 @@ describe("ProductMenu render", () => {
 
         const menuButton = mount(<ProductMenu model={model} sectionConfigs={sectionConfigs}/>);
         expect(menuButton.find(".menu-section").length).toBe(2);
-        expect(menuButton).toMatchSnapshot();
+        expect(toJson(menuButton)).toMatchSnapshot();
         menuButton.unmount();
     });
 

@@ -15,14 +15,13 @@
  */
 import React from 'reactn';
 import { mount } from 'enzyme'
+import toJson from "enzyme-to-json";
 import { List } from 'immutable';
-import { MenuSectionModel } from '../model';
+import { MenuSectionModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from "./ProductMenuSection";
-import {AppURL} from "@glass/base";
-
+import { AppURL } from '@glass/base';
 
 describe("ProductMenuSection render", () => {
-
     const sampleSetItems = List<MenuSectionModel>([
         {
             id: 1,
@@ -91,7 +90,7 @@ describe("ProductMenuSection render", () => {
         })}/>);
 
         expect(menuSection.find('li').length).toBe(0);
-        expect(menuSection).toMatchSnapshot();
+        expect(toJson(menuSection)).toMatchSnapshot();
     });
 
     test("empty section with empty text and create link", () => {
@@ -109,7 +108,7 @@ describe("ProductMenuSection render", () => {
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
         expect(menuSection.contains("Test empty text")).toBe(true);
-        expect(menuSection).toMatchSnapshot();
+        expect(toJson(menuSection)).toMatchSnapshot();
     });
 
 
@@ -128,7 +127,7 @@ describe("ProductMenuSection render", () => {
             iconURL: "/testProduct3Columns/images/samples.svg"
         })} />);
         expect(menuSection.find('ul').length).toBe(1);
-        expect(menuSection).toMatchSnapshot();
+        expect(toJson(menuSection)).toMatchSnapshot();
         menuSection.unmount();
     });
 
@@ -150,7 +149,7 @@ describe("ProductMenuSection render", () => {
         const menuSection = mount(<ProductMenuSection section={section} productId={productId} config={sectionConfig}/>);
 
         expect(menuSection.find('ul').length).toBe(2);
-        expect(menuSection).toMatchSnapshot();
+        expect(toJson(menuSection)).toMatchSnapshot();
         menuSection.unmount();
     });
 
@@ -174,7 +173,7 @@ describe("ProductMenuSection render", () => {
         const menuSection = mount(<ProductMenuSection section={section} productId={productId} config={sectionConfig}/>);
         expect(menuSection.find('ul').length).toBe(2);
         expect(menuSection.find('span.overflow-link').length).toBe(1);
-        expect(menuSection).toMatchSnapshot();
+        expect(toJson(menuSection)).toMatchSnapshot();
         menuSection.unmount();
     })
 });

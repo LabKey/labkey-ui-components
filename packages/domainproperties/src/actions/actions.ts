@@ -535,13 +535,14 @@ function getWarningBannerMessage (domain: any) : any {
     return undefined;
 }
 
-export function fetchProtocol(protocolId?: number, providerName?: string): Promise<AssayProtocolModel> {
+export function fetchProtocol(protocolId?: number, providerName?: string, copy?: boolean): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('assay', 'getProtocol.api', {
                 // give precedence to the protocolId if both are provided
                 protocolId,
-                providerName: protocolId ? undefined : providerName
+                providerName: protocolId ? undefined : providerName,
+                copy: copy || false
             }),
             success: Utils.getCallbackWrapper((data) => {
                 resolve(AssayProtocolModel.create(data.data));

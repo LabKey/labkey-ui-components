@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { List, Map } from 'immutable'
-import { Filter } from '@labkey/api'
-import { QueryColumn } from '@glass/base'
+import * as React from 'react';
+import { List, Map } from 'immutable';
+import { Filter } from '@labkey/api';
+import { QueryColumn } from '@glass/base';
 
-import { ActionOption, Value } from './Action'
-import { FilterAction } from './Filter'
+import { ActionOption, Value } from './Action';
+import { FilterAction } from './Filter';
 
-import { createMockActionContext } from '../test/Mock'
+import { createMockActionContext } from '../../../test/OmniboxMock';
 
 const { columns, columnsByName, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 

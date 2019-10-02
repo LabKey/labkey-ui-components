@@ -11,36 +11,8 @@ import { Grid, QueryColumn, QueryGridModel } from '@glass/base';
 
 import { OmniBox } from '..';
 import { FilterAction, SearchAction, SortAction } from '..';
-import rawColumnData from '../test/data/columns.json';
-import rawData from '../test/data/data.json';
+import { createMockActionContext } from '../test/OmniboxMock';
 import './stories.scss';
-
-export interface IActionContext {
-    columns: List<QueryColumn>
-    columnsByName: Map<string, QueryColumn>
-    model: QueryGridModel
-    resolveColumns: () => Promise<List<QueryColumn>>
-    resolveModel: () => Promise<QueryGridModel>
-}
-
-export const createMockActionContext = (dataKey: string): IActionContext => {
-    const columns = List<QueryColumn>(rawColumnData[dataKey].columns.map(col => QueryColumn.create(col)));
-    const columnsByName = columns.reduce((map, col) => map.set(col.name, col), Map<string, QueryColumn>());
-    const data = fromJS(rawData[dataKey]);
-
-    const model = new QueryGridModel({
-        dataIds: data.keySeq().toList(),
-        data
-    });
-
-    return {
-        columns,
-        columnsByName,
-        model,
-        resolveColumns: (): Promise<List<QueryColumn>> => Promise.resolve(columns),
-        resolveModel: (): Promise<QueryGridModel> => Promise.resolve(model)
-    }
-};
 
 const { model, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 

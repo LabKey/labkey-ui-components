@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { EditorModel, getStateQueryGridModel, SearchResultsModel } from './models';
+import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
 import {
     addColumns,
     changeColumn,
@@ -36,10 +36,10 @@ import {
     getEditorModel,
     getQueryGridModel,
     initQueryGridState,
+    invalidateLineageResults,
     removeQueryGridModel,
     setQueryColumnRenderers,
-    setQueryMetadata,
-    invalidateLineageResults
+    setQueryMetadata
 } from './global';
 import {
     deleteRows,
@@ -57,7 +57,7 @@ import {
     updateRows
 } from './query/api';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
-import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
+import { buildQueryString, getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
 import {
@@ -94,7 +94,12 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
-import { deleteSampleSet, getSampleDeleteConfirmationData, getSampleSet, loadSelectedSamples } from './components/samples/actions';
+import {
+    deleteSampleSet,
+    getSampleDeleteConfirmationData,
+    getSampleSet,
+    loadSelectedSamples
+} from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
@@ -124,11 +129,7 @@ import {
     uploadAssayRunFiles
 } from './components/assay/actions';
 import { PreviewGrid } from './components/PreviewGrid';
-import {
-    flattenBrowseDataTreeResponse,
-    ReportURLMapper,
-} from './components/report-list/model';
-import { DataViewInfoTypes, IDataViewInfo} from './models';
+import { flattenBrowseDataTreeResponse, ReportURLMapper, } from './components/report-list/model';
 import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
 import { LineageFilter } from './components/lineage/models'
@@ -197,6 +198,7 @@ export {
     pushParameter,
     pushParameters,
     replaceParameters,
+    buildQueryString,
 
     // renderers
     AliasRenderer,

@@ -24,13 +24,24 @@ Array [
           className="row"
         >
           <div
-            className="col-xs-12"
+            className="col-xs-9"
           >
             <div
               className="domain-field-section-heading"
             >
               Basic Properties
             </div>
+          </div>
+          <div
+            className="col-xs-3"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              target="_blank"
+            >
+              Learn more about this tool
+            </a>
           </div>
         </div>
         <div
@@ -346,13 +357,24 @@ Array [
           className="row"
         >
           <div
-            className="col-xs-12"
+            className="col-xs-9"
           >
             <div
               className="domain-field-section-heading"
             >
               Basic Properties
             </div>
+          </div>
+          <div
+            className="col-xs-3"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              target="_blank"
+            >
+              Learn more about this tool
+            </a>
           </div>
         </div>
         <div
@@ -682,13 +704,24 @@ Array [
           className="row"
         >
           <div
-            className="col-xs-12"
+            className="col-xs-9"
           >
             <div
               className="domain-field-section-heading"
             >
               Basic Properties
             </div>
+          </div>
+          <div
+            className="col-xs-3"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              target="_blank"
+            >
+              Learn more about this tool
+            </a>
           </div>
         </div>
         <div
@@ -1024,13 +1057,24 @@ Array [
           className="row"
         >
           <div
-            className="col-xs-12"
+            className="col-xs-9"
           >
             <div
               className="domain-field-section-heading"
             >
               Basic Properties
             </div>
+          </div>
+          <div
+            className="col-xs-3"
+          >
+            <a
+              className="domain-field-float-right"
+              href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              target="_blank"
+            >
+              Learn more about this tool
+            </a>
           </div>
         </div>
         <div

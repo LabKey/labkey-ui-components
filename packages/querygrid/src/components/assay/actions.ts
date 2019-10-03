@@ -183,7 +183,7 @@ export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefi
         .sortBy(a => a.name, naturalSort)
         .filter((assay) => !targetSQ || assay.hasLookup(targetSQ))
         .forEach((assay) => {
-            const href = assay.getImportUrl(selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files, selectionKey);
+            const href = assay.getImportUrl(selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files, selectionKey, sampleModel.getFilters());
             items = items.set(assay, href);
         });
 

@@ -1529,14 +1529,19 @@ export class AssayDefinitionModel extends Record({
         return undefined;
     }
 
-    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
+    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string, filterList?: List<Filter.IFilter>) {
         let url;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
             url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
             if (dataTab)
                 url = url.addParam('dataTab', dataTab);
-            if (selectionKey)
+            if (filterList) {
+                filterList.forEach((filter) => {
+                    url = url.addParam(filter.getURLParameterName(), filter.getValue());
+                });
+            }
+            else if (selectionKey)
                 url = url.addParam('selectionKey', selectionKey);
             url = url.toHref();
         }

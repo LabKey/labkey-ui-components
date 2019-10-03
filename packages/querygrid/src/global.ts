@@ -81,8 +81,8 @@ export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List
     return getGlobalState('models').filter(model => model.getModelName() === modelName).toList();
 }
 
-export function getQueryGridModelsForGridId(gridId: string): List<QueryGridModel> {
-    const prefix = (gridId + '|').toLowerCase();
+export function getQueryGridModelsForGridId(gridIdPrefix: string): List<QueryGridModel> {
+    const prefix = (gridIdPrefix + '|').toLowerCase();
     return getGlobalState('models').filter(model => model.getId().indexOf(prefix) === 0).toList();
 }
 

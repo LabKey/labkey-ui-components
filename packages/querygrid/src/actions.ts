@@ -277,8 +277,8 @@ export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = 
     getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
-export function gridIdInvalidate(gridId: string, remove: boolean = false) {
-    getQueryGridModelsForGridId(gridId).map((model) => gridRemoveOrInvalidate(model, remove));
+export function gridIdInvalidate(gridIdPrefix: string, remove: boolean = false) {
+    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {

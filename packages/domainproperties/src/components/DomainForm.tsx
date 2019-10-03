@@ -520,20 +520,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign);
     }
 
-    renderDefaultHeader() {
+    readerPanelHeaderContent() {
+        const { helpURL, children } = this.props;
+
         return(
             <Row className='domain-form-hdr-margins'>
-                <Col xs={9}>
-                    <div className='domain-field-float-left'>
-                        Adjust fields and their properties that will be shown within this domain.
-                        Click a row to access additional options. Drag and drop rows to reorder them.
-                    </div>
-                </Col>
-                <Col xs={3}>
-                    {this.props.helpURL &&
-                        <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about this tool</a>
+                <Col xs={helpURL ? 9 : 12}>
+                    {children ? children
+                        : <div className='domain-field-float-left'>
+                            Adjust fields and their properties that will be shown within this domain.
+                            Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                     }
                 </Col>
+                {helpURL &&
+                    <Col xs={3}>
+                        <a className='domain-field-float-right' target="_blank" href={helpURL}>Learn more about this tool</a>
+                    </Col>
+                }
             </Row>
         )
     }
@@ -549,12 +553,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderForm() {
-        const { domain, children } = this.props;
+        const { domain } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
             <>
-                {children ? children : this.renderDefaultHeader()}
+                {this.readerPanelHeaderContent()}
                 {domain.fields.size > 1 && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>

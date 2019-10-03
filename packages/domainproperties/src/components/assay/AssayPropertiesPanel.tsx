@@ -7,6 +7,7 @@ import { Tip } from "@glass/base";
 
 import { AssayProtocolModel } from "../../models";
 import { AssayPropertiesInput } from "./AssayPropertiesInput";
+import { LK_ASSAY_DESIGNER_HELP_URL } from "../../constants";
 
 const FORM_ID_PREFIX = 'assay-design-';
 const FORM_IDS = {
@@ -31,6 +32,7 @@ interface Props {
     collapsible?: boolean
     markComplete?: boolean
     panelCls?: string
+    helpURL?: string
 }
 
 interface State {
@@ -42,7 +44,8 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     static defaultProps = {
         basePropertiesOnly: false,
         asPanel: true,
-        initCollapsed: false
+        initCollapsed: false,
+        helpURL: LK_ASSAY_DESIGNER_HELP_URL
     };
 
     constructor(props) {
@@ -92,14 +95,25 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         }));
     };
 
-    renderSectionHeading(title: string, paddingTop?: boolean) {
+    renderSectionHeading(title: string, paddingTop?: boolean, showHelpUrl?: boolean) {
         return (
             <Row>
-                <Col xs={12}>
+                <Col xs={showHelpUrl ? 9 : 12}>
                     <div className={'domain-field-section-heading' + (paddingTop ? ' domain-field-padding-top' : '')}>{title}</div>
                 </Col>
+                {showHelpUrl && this.renderHelpUrl()}
             </Row>
         )
+    }
+
+    renderHelpUrl() {
+        if (this.props.helpURL) {
+            return (
+                <Col xs={3}>
+                    <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about this tool</a>
+                </Col>
+            )
+        }
     }
 
     renderBasicProperties() {
@@ -107,7 +121,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                {!basePropertiesOnly && this.renderSectionHeading('Basic Properties')}
+                {!basePropertiesOnly && this.renderSectionHeading('Basic Properties', false, true)}
                 {this.renderNameInput()}
                 {this.renderDescriptionInput()}
                 {model.allowPlateTemplateSelection() && this.renderPlateTemplatesInput()}
@@ -436,7 +450,12 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <Form>
-                {children}
+                {!basePropertiesOnly ? children
+                    : <Row>
+                        <Col xs={9}>{children}</Col>
+                        {this.renderHelpUrl()}
+                    </Row>
+                }
                 {this.renderBasicProperties()}
                 {!basePropertiesOnly && this.renderImportSettings()}
                 {this.renderEditSettings()}

@@ -178,6 +178,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}
+                            helpURL={i > 0 ? null : undefined} // so we only show the helpURL link for the first assay domain
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}

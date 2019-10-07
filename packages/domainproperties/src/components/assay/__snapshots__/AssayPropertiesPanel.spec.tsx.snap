@@ -18,7 +18,7 @@ exports[`AssayPropertiesPanel asPanel and basePropertiesOnly 1`] = `
         href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
         target="_blank"
       >
-        Learn more about this tool
+        Learn more about designing assays
       </a>
     </div>
   </div>
@@ -212,7 +212,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
             target="_blank"
           >
-            Learn more about this tool
+            Learn more about designing assays
           </a>
         </div>
       </div>
@@ -490,7 +490,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
             href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
             target="_blank"
           >
-            Learn more about this tool
+            Learn more about designing assays
           </a>
         </div>
       </div>

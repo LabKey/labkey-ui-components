@@ -110,7 +110,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         if (this.props.helpURL) {
             return (
                 <Col xs={3}>
-                    <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about this tool</a>
+                    <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about designing assays</a>
                 </Col>
             )
         }
@@ -327,10 +327,15 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 colSize={4}
                 helpTipBody={() => {
                     return (
-                        <p>
-                            Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
-                            For additional information refer to the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=editPlateTemplate" target="_blank">help documentation</a>.
-                        </p>
+                        <>
+                            <p>
+                                Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
+                                For additional information refer to the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=editPlateTemplate" target="_blank">help documentation</a>.
+                            </p>
+                            <p>
+                                <small><i>This field is required.</i></small>
+                            </p>
+                        </>
                     )
                 }}
             >
@@ -424,6 +429,9 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                             </p>
                             <p>
                                 <strong>Combined File Upload (metadata & run data): </strong> Metadata and run data are combined into a single file upload.
+                            </p>
+                            <p>
+                                <small><i>This field is required.</i></small>
                             </p>
                         </>
                     )

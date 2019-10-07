@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.19.2
+*Released*: 7 October 2019
 * Export LookupSelectInput
 
 ### version 0.19.1

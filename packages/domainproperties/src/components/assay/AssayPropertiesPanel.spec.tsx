@@ -2,10 +2,11 @@ import * as React from "react";
 import {List} from "immutable";
 import {mount} from "enzyme";
 import renderer from 'react-test-renderer'
-import {AssayPropertiesPanel} from "./AssayPropertiesPanel";
+import { AssayPropertiesPanel, FORM_IDS } from "./AssayPropertiesPanel";
 import { AssayProtocolModel, DomainDesign } from "../../models";
+import { LK_DOMAIN_HELP_URL } from "../../constants";
 
-const EMPTY_MODEL  = AssayProtocolModel.create({
+const EMPTY_MODEL = AssayProtocolModel.create({
     providerName: 'General',
     domains: List([
         DomainDesign.create({name: 'Batch Fields'}),
@@ -27,11 +28,25 @@ describe('AssayPropertiesPanel', () => {
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test('asPanel and basePropertiesOnly', () => {
+    test('asPanel, helpURL, and basePropertiesOnly', () => {
         const tree = renderer.create(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 asPanel={false}
+                basePropertiesOnly={true}
+                helpURL={LK_DOMAIN_HELP_URL}
+                onChange={jest.fn}
+            />
+        );
+
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('without helpURL', () => {
+        const tree = renderer.create(
+            <AssayPropertiesPanel
+                model={EMPTY_MODEL}
+                helpURL={null}
                 basePropertiesOnly={true}
                 onChange={jest.fn}
             />
@@ -75,7 +90,7 @@ describe('AssayPropertiesPanel', () => {
     test('collapsible', () => {
         const component = (
             <AssayPropertiesPanel
-                model={EMPTY_MODEL}
+                model={AssayProtocolModel.create({protocolId: 1, name: 'With Name'})}
                 collapsible={true}
                 onChange={jest.fn}
             />
@@ -83,10 +98,73 @@ describe('AssayPropertiesPanel', () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('.panel-body')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
         expect(wrapper.find('.panel-body')).toHaveLength(0);
+        expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties (With Name)');
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
         expect(wrapper.find('.panel-body')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
         wrapper.unmount();
+    });
+
+    test('visible properties based on empty AssayProtocolModel', () => {
+        const simpleModelWrapper = mount(<AssayPropertiesPanel model={EMPTY_MODEL} onChange={jest.fn}/>);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.ASSAY_NAME).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.ASSAY_DESCRIPTION).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.QC_ENABLED).hostNodes()).toHaveLength(0);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.PLATE_TEMPLATE).hostNodes()).toHaveLength(0);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.DETECTION_METHOD).hostNodes()).toHaveLength(0);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.METADATA_INPUT_FORMAT).hostNodes()).toHaveLength(0);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.EDITABLE_RUNS).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.EDITABLE_RESULTS).hostNodes()).toHaveLength(0);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.BACKGROUND_UPLOAD).hostNodes()).toHaveLength(0);
+        simpleModelWrapper.unmount();
+    });
+
+    test('visible properties based on populated AssayProtocolModel', () => {
+        const model = AssayProtocolModel.create({
+            allowBackgroundUpload: true,
+            allowEditableResults: true,
+            allowQCStates: true,
+            availableDetectionMethods: ['a', 'b', 'c'],
+            availableMetadataInputFormats: {test1: 'abc'},
+            availablePlateTemplates: ['d','e','f'],
+        });
+
+        const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn}/>);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.ASSAY_NAME).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.ASSAY_DESCRIPTION).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.QC_ENABLED).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.PLATE_TEMPLATE).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.DETECTION_METHOD).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.METADATA_INPUT_FORMAT).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.EDITABLE_RUNS).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.EDITABLE_RESULTS).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.BACKGROUND_UPLOAD).hostNodes()).toHaveLength(1);
+        simpleModelWrapper.unmount();
+    });
+
+    test('visible properties for basePropertiesOnly based on populated AssayProtocolModel', () => {
+        const model = AssayProtocolModel.create({
+            allowBackgroundUpload: true,
+            allowEditableResults: true,
+            allowQCStates: true,
+            availableDetectionMethods: ['a', 'b', 'c'],
+            availableMetadataInputFormats: {test1: 'abc'},
+            availablePlateTemplates: ['d','e','f'],
+        });
+
+        const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn} basePropertiesOnly={true}/>);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.ASSAY_NAME).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.ASSAY_DESCRIPTION).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.QC_ENABLED).hostNodes()).toHaveLength(0);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.PLATE_TEMPLATE).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.DETECTION_METHOD).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.METADATA_INPUT_FORMAT).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.EDITABLE_RUNS).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.EDITABLE_RESULTS).hostNodes()).toHaveLength(1);
+        expect(simpleModelWrapper.find('#' + FORM_IDS.BACKGROUND_UPLOAD).hostNodes()).toHaveLength(0);
+        simpleModelWrapper.unmount();
     });
 });

@@ -10,7 +10,7 @@ import { AssayPropertiesInput } from "./AssayPropertiesInput";
 import { LK_ASSAY_DESIGNER_HELP_URL } from "../../constants";
 
 const FORM_ID_PREFIX = 'assay-design-';
-const FORM_IDS = {
+export const FORM_IDS = {
     ASSAY_NAME: FORM_ID_PREFIX + 'name',
     ASSAY_DESCRIPTION: FORM_ID_PREFIX + 'description',
     BACKGROUND_UPLOAD: FORM_ID_PREFIX + 'backgroundUpload',
@@ -475,7 +475,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         const { name } = this.props.model;
 
         return (
-            <span>Assay Properties {this.state.collapsed && name ? ' (' + name + ')' : ''}</span>
+            <span>Assay Properties{this.state.collapsed && name ? ' (' + name + ')' : ''}</span>
         )
     }
 

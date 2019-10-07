@@ -35,7 +35,7 @@ import {
 
 import { getQueryDetails, searchRows, selectRows } from './query/api'
 import { isEqual } from './query/filter'
-import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
+import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL'
 import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
@@ -901,6 +901,13 @@ interface ISelectionResponse {
     selected: Array<any>
 }
 
+export function getFilterListFromQuery(location: Location) : List<Filter.IFilter> {
+    const filters = Filter.getFiltersFromParametersObject(Object.assign({}, location.query));
+    if (filters.length > 0)
+        return List<Filter.IFilter>(filters);
+    return undefined;
+}
+
 export function getSelection(location: any): Promise<ISelectionResponse> {
     if (location && location.query && location.query.selectionKey) {
         const key = location.query.selectionKey;
@@ -916,7 +923,7 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                 });
             }
 
-            return getSelected(key).then((response) => {
+            return getSelected(key, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location)).then((response) => {
                 resolve({
                     resolved: true,
                     schemaQuery,

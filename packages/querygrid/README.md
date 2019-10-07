@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Ad getFilterListFromQuery
+* Add optional parameters to getSelection and pass through from getSelected so filters in the query string are used
+
 ### version 0.19.1
 *Released*: 27 September 2019
 * Issue 38373: remove inline style from assay results data text area input for white-space nowrap

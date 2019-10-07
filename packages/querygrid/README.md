@@ -6,8 +6,12 @@ Query Grid for LabKey schema/query data views
 
 ### version ???
 *Released*: ???
-* Ad getFilterListFromQuery
+* Add getFilterListFromQuery
 * Add optional parameters to getSelection and pass through from getSelected so filters in the query string are used
+
+### version 0.19.2
+*Released*: 7 October 2019
+* Export LookupSelectInput
 
 ### version 0.19.1
 *Released*: 27 September 2019

@@ -16,7 +16,6 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
-import mock, { proxy } from "xhr-mock";
 import { fromJS } from 'immutable';
 import { SchemaQuery } from "@glass/base";
 
@@ -25,27 +24,13 @@ import { getStateQueryGridModel } from "../../../models";
 import { getQueryGridModel, initQueryGridState } from "../../../global";
 import { gridInit } from "../../..";
 
-import sampleSetQueryInfo from '../../../test/data/samplesSet-getQueryDetails.json';
 import sampleDetailsQuery from '../../../test/data/sampleDetails-getQuery.json';
+import { initUnitTestMocks } from '../../../testHelpers';
 
 let MODEL_ID;
 
 beforeAll(() => {
-   LABKEY.container = {
-      path: '/testContainer' // just needs to be something so initMocks regexs will match
-   };
-
-   initQueryGridState();
-
-   mock.setup();
-   mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
-      return res
-          .status(200)
-          .headers({'Content-Type': 'application/json'})
-          .body(JSON.stringify(sampleSetQueryInfo));
-   });
-   mock.use(proxy);
-
+   initUnitTestMocks();
    const model = getStateQueryGridModel('jest-querygridmodel', SchemaQuery.create('samples', 'Samples'), {
       allowSelection: false,
       loader: {

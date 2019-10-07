@@ -15,50 +15,21 @@
  */
 import * as React from 'react';
 import { SchemaQuery } from "@glass/base";
-import mixturesQueryInfo from "../../test/data/mixtures-getQueryDetails.json";
-import mixtureQuery from "../../test/data/mixtures-getQuery.json";
-import { getQueryDetails, initQueryGridState } from "../..";
-import mock, { proxy } from "xhr-mock";
+import { getQueryDetails } from "../..";
 import { QueryInfoForm } from "./QueryInfoForm";
 import { mount, shallow } from "enzyme";
 import { QueryFormInputs } from "./QueryFormInputs";
 import { Button, Modal, ModalTitle } from "react-bootstrap";
 import {TextInput} from "./input/TextInput";
+import { initUnitTestMocks } from '../../testHelpers';
 
 beforeAll(() => {
-    initQueryGridState();
-
-    mock.setup();
-
-    mock.get(/.*\/query\/getQueryDetails.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesQueryInfo)
-    });
-
-    mock.post(/.*\/query\/getQuery.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixtureQuery)
-
-    });
-
-    mock.use(proxy);
-
-    LABKEY.contextPath = 'labkeyTest';
-
-    LABKEY.container = {
-        formats: {
-            dateFormat: "yyyy-MM-dd",
-            dateTimeFormat: "yyyy-MM-dd HH:mm",
-            numberFormat: null
-        }
-    }
+    initUnitTestMocks();
 });
 
 const schemaQuery = new SchemaQuery({
-    schemaName: "schema",
-    queryName: "q-snapshot"
+    schemaName: "exp.data",
+    queryName: "Mixtures"
 });
 
 describe("QueryInfoForm", () => {

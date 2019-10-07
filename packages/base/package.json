@@ -38,7 +38,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@labkey/dependencies": "0.0.9",
+    "@labkey/dependencies": "0.0.10-fb-jobCreation.1",
     "bootstrap": "3.4.1",
     "moment": "2.24.0",
     "moment-jdateformatparser": "1.1.0",

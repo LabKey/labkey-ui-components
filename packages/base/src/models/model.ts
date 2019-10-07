@@ -1536,12 +1536,12 @@ export class AssayDefinitionModel extends Record({
             url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
             if (dataTab)
                 url = url.addParam('dataTab', dataTab);
-            if (filterList) {
+            if (filterList && !filterList.isEmpty()) {
                 filterList.forEach((filter) => {
                     url = url.addParam(filter.getURLParameterName(), filter.getValue());
                 });
             }
-            else if (selectionKey)
+            if (selectionKey)
                 url = url.addParam('selectionKey', selectionKey);
             url = url.toHref();
         }

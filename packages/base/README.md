@@ -3,6 +3,11 @@
 Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
+
+### version ???
+*Released*: ???
+* Modify getImportURL for AssayDefinitionModel to use the sample model's filters if present
+
 ### version 0.19.0
 *Released*: 26 September 2019
 * Add isFiltered method to QueryGridModel for better support of selection on filtered grids

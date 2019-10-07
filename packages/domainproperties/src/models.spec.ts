@@ -159,4 +159,39 @@ describe('AssayProtocolModel', () => {
         expect(model.getDomainByNameSuffix('sample') === undefined).toBeTruthy();
         expect(model.getDomainByNameSuffix('Sample') === undefined).toBeFalsy();
     });
+
+    test("isNew", () => {
+        // name should get removed for the case where it is a "new" model (i.e. doesn't have a protocolId)
+        expect(AssayProtocolModel.create({protocolId: 1, name: 'Test'}).isNew()).toBeFalsy();
+        expect(AssayProtocolModel.create({protocolId: 0, name: 'Test'}).isNew()).toBeTruthy();
+        expect(AssayProtocolModel.create({name: 'Test'}).isNew()).toBeTruthy();
+    });
+
+    test("name removal for copy case", () => {
+        // name should get removed for the case where it is a "new" model (i.e. doesn't have a protocolId)
+        expect(AssayProtocolModel.create({protocolId: 1, name: 'Test'}).name).toBe('Test');
+        expect(AssayProtocolModel.create({protocolId: 0, name: 'Test'}).name).toBe(undefined);
+        expect(AssayProtocolModel.create({name: 'Test'}).name).toBe(undefined);
+    });
+
+    test("allowPlateTemplateSelection", () => {
+        expect(AssayProtocolModel.create({}).allowPlateTemplateSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availablePlateTemplates: 'test'}).allowPlateTemplateSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availablePlateTemplates: []}).allowPlateTemplateSelection()).toBeTruthy();
+        expect(AssayProtocolModel.create({availablePlateTemplates: ['a', 'b', 'c']}).allowPlateTemplateSelection()).toBeTruthy();
+    });
+
+    test("allowDetectionMethodSelection", () => {
+        expect(AssayProtocolModel.create({}).allowDetectionMethodSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableDetectionMethods: 'test'}).allowDetectionMethodSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableDetectionMethods: []}).allowDetectionMethodSelection()).toBeTruthy();
+        expect(AssayProtocolModel.create({availableDetectionMethods: ['a', 'b', 'c']}).allowDetectionMethodSelection()).toBeTruthy();
+    });
+
+    test("allowMetadataInputFormatSelection", () => {
+        expect(AssayProtocolModel.create({}).allowMetadataInputFormatSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableMetadataInputFormats: 'test'}).allowMetadataInputFormatSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableMetadataInputFormats: {}}).allowMetadataInputFormatSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableMetadataInputFormats: {test1: 'abc', test2: 'def'}}).allowMetadataInputFormatSelection()).toBeTruthy();
+    });
 });

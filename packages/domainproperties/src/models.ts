@@ -946,6 +946,6 @@ export class AssayProtocolModel extends Record({
     }
 
     allowMetadataInputFormatSelection(): boolean {
-        return this.availableMetadataInputFormats && !Utils.isEmptyObj(this.availableMetadataInputFormats);
+        return this.availableMetadataInputFormats && Utils.isObject(this.availableMetadataInputFormats) && !Utils.isEmptyObj(this.availableMetadataInputFormats);
     }
 }

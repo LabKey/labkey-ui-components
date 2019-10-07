@@ -4,6 +4,31 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.40
+*Released*: 26 September 2019
+* Package patch update for changes to @glass/base v0.19.0
+
+### version 0.0.39
+*Released*: 26 September 2019
+* Add container attribute to IDomainDesign and DomainDesign
+* Add container attribute to AssayProtocolModel
+
+### version 0.0.38
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.0.37
+*Released*: 19 September 2019
+* Package patch update for changes to @glass/base v0.17.0
+
+### version 0.0.36
+*Released*: 17 September 2019
+* Update @glass/base dependency to 0.16.0
+
+### version 0.0.35
+*Released*: 17 September 2019
+* Package patch update for changes to @glass/base v0.15.3
+
 ### version 0.0.34
 *Released*: 9 September 2019
 * updated jest snaps

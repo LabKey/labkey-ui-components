@@ -16,7 +16,6 @@ This repository defines all of the components available in the @glass scope. The
 | [@glass/navigation](packages/navigation/README.md) | Application navigation elements and functions |
 | [@glass/omnibox](packages/omnibox/README.md) | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 
 | [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views 
-| [@glass/report-list](packages/report-list/README.md) | Query Grid for LabKey schema/query data views 
 | [template](packages/template/README.md) | A template for creating new packages
 
 ## Using @glass npm packages
@@ -177,23 +176,9 @@ to create symbolic links to your local versions of the packages.  Once modificat
 link (or, you can remove it yourself manually).  Please note that you will likely want to use the ``--no-save`` option 
 when uninstalling to prevent your ``package.json`` file from being updated.
 
-For example, if making changes to the base package, you can do the following:
-* ``cd packages/base``
-* ``npm link``  (this creates a link to this directory in the ``lib/node_modules`` directory of the node version currently on your path)
-* ``cd my_application``
-* ``npm link @glass/base`` (note that the scope is required here)
-(Alternatively, you can do this in one command from `my_application` by specifying the directory to link from:
-``npm link /path/to/packages/base``)
-
-Then, when you no longer wish to reference the local installation, you can do
-* ``npm uninstall --no-save @glass/base``
-
-This will remove the link and will not reinstall a version of the node module from the repository.  For that, you'll
-need to use ``npm install``.
-
-We have had varying degrees of success with using `link`.  If modifying only one package within this repository, it will
-likely work just fine.  If you modify a package and something it depends on, this can produce some baffling type mismatch
-errors.  An alternative process that seems to work in this case, but is a bit more tedious is the use `yarn watch` in 
+:warning: We do not currently recommend the `npm link` approach. The glass-components repository will soon be refactored
+to a single package. At that time, we will update this doc information with the commands/steps for using `npm link`. 
+In the meantime, an alternative process that seems to work, but is a bit more tedious, is the use `yarn watch` in 
 conjunction with a copy command. The `watch` command can automatically build a package when the source code changes (
 see the `packages/template/package.json` script declaration). You will then need to manually copy the `dist` directory
 created by the build into the application's `node_modules/@glass/<package_name>` directory.

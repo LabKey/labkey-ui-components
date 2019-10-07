@@ -3,6 +3,30 @@
 Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
+### version 0.19.0
+*Released*: 26 September 2019
+* Add isFiltered method to QueryGridModel for better support of selection on filtered grids
+
+### version 0.18.0
+*Released*: 20 September 2019
+* Fix issue 38127: All number fields are treated as double fields when imported from an xls for preview grid
+
+### version 0.17.0
+*Released*: 19 September 2019
+* Add getIconURL helper for QueryInfo
+
+### version 0.16.0
+*Released*: 18 September 2019
+* Add TESTS_ONLY_RESET_DOM_COUNT
+    * This is a tests only method that allows us to reset the counter used to generate unique ids, this way snapshot
+    tests have the same results when run in a suite or individually.
+* QueryGridModel: Add `reportId` as a default URL param.
+* Remove incorrect ImageProps and Image definitions from react-bootstrap.d.ts
+* Remove unused imports in various stories.
+
+### version 0.15.3
+*Released*: 17 September 2019
+* Add constants for sampleManagement schema
 
 ### version 0.15.2
 *Released*: 9 September 2019

@@ -3,6 +3,29 @@
 LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid.
 
 ## Release Notes ##
+### version 0.2.1
+*Released*: 26 September 2019
+* Package patch update for changes to @glass/base v0.19.0
+
+### version 0.2.0
+*Released*: 23 September 2019
+* Issue 37558: Expose additional filter types to OmniBox component (is blank, is not blank, contains, does not contain, starts with, does not start with)
+
+### version 0.1.40
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.1.39
+*Released*: 19 September 2019
+* Package patch update for changes to @glass/base v0.17.0
+
+### version 0.1.38
+*Released*: 17 September 2019
+* Update @glass/base dependency to 0.16.0
+
+### version 0.1.37
+*Released*: 17 September 2019
+* Package patch update for changes to @glass/base v0.15.3
 
 ### version 0.1.36
 *Released*: 9 September 2019

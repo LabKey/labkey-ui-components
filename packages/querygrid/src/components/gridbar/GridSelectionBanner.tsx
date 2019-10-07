@@ -17,7 +17,7 @@ import React from 'reactn'
 import { Button } from 'react-bootstrap'
 import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/base'
 
-import { gridSelectAll } from '../../actions'
+import { gridClearAll, gridSelectAll } from '../../actions'
 
 interface Props {
     containerCls?: string
@@ -29,43 +29,34 @@ export class GridSelectionBanner extends React.Component<Props, any> {
     constructor(props: Props) {
         super(props);
 
-        this.selectAll = this.selectAll.bind(this)
     }
 
-    selectAll()
-    {
+    selectAll = () => {
         gridSelectAll(this.props.model);
-    }
+    };
+
+    clearAll = () => {
+        gridClearAll(this.props.model);
+    };
 
     render() {
         const { containerCls, model } = this.props;
-        if (model && model.isLoaded) {
-            const {maxRows, selectedQuantity, selectedState, totalRows} = model;
+        if (model && model.isLoaded && model.selectedLoaded) {
+            const {maxRows, totalRows} = model;
 
-            const allOnModel = selectedQuantity === totalRows && totalRows > 0,
-                allOnPage = selectedState === GRID_CHECKBOX_OPTIONS.ALL,
-                hasMessage = (allOnModel || allOnPage) && totalRows > maxRows;
+            const selectedCount = model.selectedQuantity;
 
-            let message;
+            const allOnModel = selectedCount === totalRows && totalRows > 0;
 
-            if (allOnModel) {
-                message = (
-                    <span>All {selectedQuantity} selected</span>
-                )
-            } else if (allOnPage && !allOnModel) {
-                message = (
-                    <span>
-                    Selected all {selectedQuantity} on this page &nbsp;
-                        <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button>
-                </span>
-                )
-            }
+            const clearText = selectedCount === 1 ? "Clear" : (selectedCount === 2) ? 'Clear both' : 'Clear all ' + selectedCount;
 
-            if (hasMessage) {
-                return (
-                    <div className={containerCls}>{message}</div>
-                )
-            }
+            return (
+                <div className={containerCls}>
+                    {selectedCount > 0 && <span className="QueryGrid-right-spacing">{selectedCount} of {totalRows} selected</span>}
+                    {!allOnModel && totalRows > maxRows &&  <span className="QueryGrid-right-spacing"> <Button bsSize={'xsmall'} onClick={this.selectAll}>Select all {totalRows}</Button></span>}
+                    {selectedCount > 0 && <Button bsSize={'xsmall'} onClick={this.clearAll}>{clearText}</Button>}
+                </div>
+            )
         }
 
         return null;

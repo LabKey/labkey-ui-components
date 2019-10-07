@@ -85,7 +85,7 @@ function setParameters(location: Location, params: Map<string, string | number>,
 
     let newParams = Map<string, string | number>(query).asMutable();
     params.forEach((value, key) => {
-        if (value === undefined || value === '') {
+        if (value === undefined) {
             newParams.delete(key);
         }
         else {

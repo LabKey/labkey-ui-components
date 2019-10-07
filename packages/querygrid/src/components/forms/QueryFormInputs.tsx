@@ -203,8 +203,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         allowDisable={allowFieldDisable}
                                         initiallyDisabled={initiallyDisableFields}
                                         componentId={id}
-                                        description={col.description}
-                                        destroyOnDismount={destroyOnDismount}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         joinValues={joinValues}
                                         label={col.caption}

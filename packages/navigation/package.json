@@ -1,6 +1,6 @@
 {
   "name": "@glass/navigation",
-  "version": "0.4.9",
+  "version": "0.4.15",
   "description": "Navigation elements and actions for an application and its pages",
   "main": "dist/navigation.cjs.js",
   "module": "dist/navigation.es.js",
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.15.2",
+    "@glass/base": "0.19.0",
     "@types/react-router": "3.0.13",
     "prop-types": "15.7.2",
     "react-router": "3.2.1"
@@ -72,5 +72,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "593926a19694f0efde5fe9a450cabc594901360b"
+  "gitHead": "4edd31c934e5bea492455ec2cedc7b083cff4ba5"
 }

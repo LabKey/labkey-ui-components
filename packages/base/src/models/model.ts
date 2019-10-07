@@ -508,7 +508,7 @@ export class QueryGridModel extends Record({
     sorts: undefined,
     title: undefined,
     totalRows: 0,
-    urlParams: List<string>(['p']), // page number parameter
+    urlParams: List<string>(['p', 'reportId']), // page number and reportId parameters
     urlParamValues: Map<string, any>(),
     urlPrefix: undefined, // TODO we should give each new model a default prefix?
     view: undefined,
@@ -544,10 +544,10 @@ export class QueryGridModel extends Record({
     showChartSelector: boolean;
     sortable: boolean;
     sorts: string;
-    selectedIds: List<string>;
+    selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not
     selectedLoaded: boolean;
     selectedState: GRID_CHECKBOX_OPTIONS;
-    selectedQuantity: number;
+    selectedQuantity: number; // should be the quantity in the current view, whether filtered or not
     title: string;
     totalRows: number;
     urlParams: List<string>;
@@ -708,6 +708,10 @@ export class QueryGridModel extends Record({
     getExportColumnsString(): string {
         // does not include required columns -- app only
         return this.getDisplayColumns().map(c => c.fieldKey).join(',');
+    }
+
+    isFiltered(): boolean {
+        return !this.getFilters().isEmpty()
     }
 
     getFilters(): List<Filter.IFilter> {
@@ -929,7 +933,7 @@ export class QueryInfo extends Record({
     // indices: Map<string, any>(),
     // isInherited: false,
 
-    iconURL: false,
+    iconURL: 'default',
     // isMetadataOverrideable: false,
     // isTemporary: false,
     // isUserDefined: false,
@@ -1206,6 +1210,19 @@ export class QueryInfo extends Record({
             index++;
         });
         return columns;
+    }
+
+    getIconURL(): string {
+        let iconURL = this.iconURL;
+
+        // TODO better support for iconURL that doesn't come from queryInfo metadata
+        if (iconURL === 'default') {
+            if (this.schemaName === 'samples') {
+                iconURL = 'samples';
+            }
+        }
+
+        return iconURL;
     }
 }
 
@@ -1686,7 +1703,7 @@ export class InferDomainResponse extends Record({
             }
 
             if (rawModel.fields) {
-                fields = rawModel.fields.map((field) => QueryColumn.create(field));
+                fields = List(rawModel.fields.map((field) => QueryColumn.create(field)));
             }
         }
 

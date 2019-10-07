@@ -168,11 +168,6 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                   placeholder="Paste in a tab-separated set of values"
                   required={false}
                   rows={10}
-                  style={
-                    Object {
-                      "whiteSpace": "nowrap",
-                    }
-                  }
                   value=""
                 />
               </div>
@@ -301,7 +296,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       <td
                         colSpan={6}
                       >
-                        Start by adding the quantity of assay data rows you want to create
+                        Start by adding the quantity of assay data rows you want to create.
                       </td>
                     </tr>
                   </tbody>
@@ -532,11 +527,6 @@ exports[`<RunDataPanel/> default props 1`] = `
                   placeholder="Paste in a tab-separated set of values"
                   required={false}
                   rows={10}
-                  style={
-                    Object {
-                      "whiteSpace": "nowrap",
-                    }
-                  }
                   value=""
                 />
               </div>
@@ -631,7 +621,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       <td
                         colSpan={5}
                       >
-                        Start by adding the quantity of assay data rows you want to create
+                        Start by adding the quantity of assay data rows you want to create.
                       </td>
                     </tr>
                   </tbody>

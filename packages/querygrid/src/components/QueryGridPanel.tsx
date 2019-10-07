@@ -33,6 +33,7 @@ interface Props {
     showTabs?: boolean
     showAllTabs?: boolean
     showGridBar?: boolean
+    activeTab?: number
 }
 
 interface State {
@@ -50,7 +51,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            activeTab: undefined // initially set to undefined until a tab is clicked
+            activeTab: props.activeTab // initially set to undefined until a tab is clicked
         };
     }
 
@@ -60,6 +61,11 @@ export class QueryGridPanel extends React.Component<Props, State> {
 
     componentWillReceiveProps(nextProps: Props) {
         this.initModel(nextProps);
+        if (this.state.activeTab != nextProps.activeTab) {
+            this.setState(() =>( {
+                activeTab: nextProps.activeTab
+            }));
+        }
     }
 
     initModel(props: Props) {
@@ -121,8 +127,6 @@ export class QueryGridPanel extends React.Component<Props, State> {
             const nonZeroSets = models.reduce((count, model) => (count + (model.totalRows > 0 ? 1 : 0)), 0);
             return nonZeroSets > 1;
         }
-
-        return false;
     }
 
     setActiveTab(id: number) {

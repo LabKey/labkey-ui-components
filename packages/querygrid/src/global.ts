@@ -15,10 +15,11 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery, resolveSchemaQuery } from '@glass/base'
+import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
+import { Lineage } from './components/lineage/models';
 
 /**
  * Initialize the global state object for this package.
@@ -47,6 +48,7 @@ export function resetQueryGridState() {
     setGlobal({
         QueryGrid_charts: Map<string, List<DataViewInfo>>(),
         QueryGrid_editors: Map<string, EditorModel>(),
+        QueryGrid_lineageResults: Map<string, Lineage>(),
         QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
@@ -182,6 +184,34 @@ export function updateCharts(schemaQueryKey: string, dataViewInfos: List<DataVie
     });
 }
 
+/**
+ * Get the lineage results from the global state for a given seed / lsid
+ * @param seed Key for the lineage results map
+ */
+export function getLineageResult(seed: string) : Lineage {
+    return getGlobalState('lineageResults').get(seed);
+}
+
+/**
+ * Sets the global state lineage results for a given seed / lsid
+ * @param seed Key for the lineage results map
+ * @param lineage Lineage result object
+ */
+export function updateLineageResult(seed: string, lineage: Lineage) {
+    setGlobal({
+        QueryGrid_lineageResults: getGlobalState('lineageResults').set(seed, lineage)
+    });
+}
+
+/**
+ * Invalidate the global state lineage results
+ */
+export function invalidateLineageResults(seed: string, lineage: Lineage) {
+    setGlobal({
+        QueryGrid_lineageResults: Map<string, Lineage>()
+    });
+}
+
 function getSelectedState(
     dataIds: List<string>,
     selected: List<string>,
@@ -218,16 +248,17 @@ interface IGridSelectionResponse {
  */
 export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse)  {
     const selectedIds = response.selectedIds;
-    const id = model.getId(),
-        selectedLoaded: any = true;
+    const id = model.getId();
+    const selectedLoaded: any = true;
 
     if (selectedIds !== undefined && selectedIds.size) {
         const { dataIds, maxRows, totalRows } = model;
-        const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
+        let viewSelected = selectedIds;
+        const selectedState = getSelectedState(dataIds, viewSelected, maxRows, totalRows);
         const updatedState = {
             selectedIds,
             selectedLoaded,
-            selectedQuantity: selectedIds.size,
+            selectedQuantity: viewSelected.size,
             selectedState
         } as any;
 

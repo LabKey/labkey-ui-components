@@ -4,6 +4,74 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.19.1
+*Released*: 27 September 2019
+* Issue 38373: remove inline style from assay results data text area input for white-space nowrap
+
+### version 0.19.0
+*Released*: 26 September 2019
+* Update QueryGrid actions to account for filtering
+* Always show the GridSelectionBanner
+
+### version 0.18.0
+*Released*: 26 September 2019
+* Add containerPath to QuerySelect
+* Remove ReactSelectOption interface
+
+### version 0.17.1
+*Released*: 25 September 2019
+* Fix editable grid Cell selected blur handling
+
+### version 0.17.0
+*Released*: 25 September 2019
+* Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input 
+
+### version 0.16.4
+*Released*: 24 September 2019
+* Remove "DataOutputs/DataFileUrl" from re-import post data as it doesn't map to anything on the server side (automated test fix)
+
+### version 0.16.3
+*Released*: 23 September 2019
+* Update validation of sample set import aliases
+
+### version 0.16.2
+*Released*: 23 September 2019
+* Package patch update for changes to @glass/omnibox v0.2.0
+
+### version 0.16.1
+*Released*: 20 September 2019
+* Package patch update for changes to @glass/base v0.18.0
+
+### version 0.16.0
+*Released*: 20 September 2019
+* initialize parents for SampleInsertPanel bulk insert
+
+### version 0.15.0
+*Released*: 19 September 2019
+* Port of Lineage components, models, actions from Biologics
+
+### version 0.14.1
+*Released*: 19 September 2019
+* Pick up assay run and definition hits from search results
+
+### version 0.14.0
+*Released*: 18 September 2019
+* Move `report-list` package into `querygrid`
+    * Old README for `report-list` can be found [here](../../legacy-docs/report-list.md)
+* Update ReportList to improve rendering for Grids, Charts, and unsupported report types
+* Rename flattenApiResponse to flattenBrowseDataTreeResponse
+    * Also added a new argument called urlMapper `(report: IDataViewInfo) => AppURL`
+* Add `PreviewGrid` component
+* Make QueryGridPanel components render charts based on URL parameter
+    * Part of this change means we always render the omnibox below the other QueryGridPanel buttons
+* Update @glass/base dependency to 0.16.0
+* Update @glass/domainproperties dependency to 0.0.36
+* Update @glass/omnibox dependency to 0.1.38
+
+### version 0.13.8
+*Released*: 17 September 2019
+* Add property to QueryGrid to allow for setting the active tab for multi-grid displays
+
 ### version 0.13.7
 *Released*: 12 September 2019
 * SampleSetDetailsPanel fields touch up 

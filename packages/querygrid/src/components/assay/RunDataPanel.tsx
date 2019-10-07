@@ -227,7 +227,6 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 onKeyDown={handleTabKeyOnTextArea}
                                                 placeholder="Paste in a tab-separated set of values"
                                                 rows={10}
-                                                style={{whiteSpace: 'nowrap'}}
                                                 value={wizardModel.dataText}
                                             />
                                         </Formsy>
@@ -252,7 +251,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 nounSingular: "row"
                                             }}
                                             initialEmptyRowCount={0}
-                                            emptyGridMsg={'Start by adding the quantity of assay data rows you want to create'}
+                                            emptyGridMsg={'Start by adding the quantity of assay data rows you want to create.'}
                                         />
                                     </FormStep>
                                 </div>

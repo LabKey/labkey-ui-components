@@ -156,6 +156,7 @@ export const PROP_DESC_TYPES = List([
 
 interface IDomainDesign {
     name: string
+    container: string
     description?: string
     domainURI: string
     domainId: number
@@ -171,6 +172,7 @@ interface IDomainDesign {
 
 export class DomainDesign extends Record({
     name: undefined,
+    container: undefined,
     description: undefined,
     domainURI: undefined,
     domainId: null,
@@ -184,6 +186,7 @@ export class DomainDesign extends Record({
     domainException: undefined
 }) implements IDomainDesign {
     name: string;
+    container: string;
     description: string;
     domainURI: string;
     domainId: number;
@@ -1116,5 +1119,9 @@ export class AssayProtocolModel extends Record({
                 return domain.isNameSuffixMatch(name);
             });
         }
+    }
+
+    get container() {
+        return this.getIn(['domains', 0, 'container']);
     }
 }

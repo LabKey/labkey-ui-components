@@ -78,6 +78,7 @@ import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { QueryInfoForm } from './components/forms/QueryInfoForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
+import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
 import { QuerySelect } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
@@ -212,6 +213,7 @@ export {
     QueryGridPanel,
     PreviewGrid,
     QueryInfoForm,
+    LookupSelectInput,
     SelectInput,
     QuerySelect,
     PageDetailHeader,

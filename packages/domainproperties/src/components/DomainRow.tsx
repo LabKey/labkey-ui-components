@@ -17,7 +17,7 @@ import * as React from "react";
 import {Row, Col, FormControl, Checkbox, Button, Collapse} from "react-bootstrap";
 import { List } from "immutable";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusSquare, faTimes, faGripVertical } from '@fortawesome/free-solid-svg-icons';
+import { faPlusSquare, faMinusSquare, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import { Draggable } from "react-beautiful-dnd";
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -43,6 +43,9 @@ import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 import {AdvancedSettings} from "./AdvancedSettings";
 
 interface IDomainRowProps {
+    domainId?: number
+    domainKind: string
+    helpNoun: string
     expanded: boolean
     dragging: boolean
     expandTransition: number
@@ -55,6 +58,8 @@ interface IDomainRowProps {
     onDelete: (any) => void
     onExpand: (index?: number) => void
     isDragDisabled: boolean
+    defaultDefaultValueType: string
+    defaultValueOptions: List<string>
 }
 
 interface IDomainRowState {
@@ -137,10 +142,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     };
 
     getDetails() {
-        const { index } = this.props;
+        const { index, expanded } = this.props;
+        const { closing } = this.state;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_DETAILS, index)} className='domain-field-details'>
+            <div id={createFormInputId(DOMAIN_FIELD_DETAILS, index)}
+                 className={(expanded || closing) ? 'domain-field-details-expanded' : 'domain-field-details'}>
                 {this.getDetailsText()}
             </div>
         )
@@ -347,11 +354,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     renderButtons() {
         const { expanded, index, field, dragging } = this.props;
-        const { hover } = this.state;
+        const { hover, closing } = this.state;
 
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
-                {expanded && (
+                {(expanded || closing) && (
                 <>
                     <Button
                         bsStyle="danger"
@@ -376,7 +383,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)}
                      onClick={this.onExpand}>
                     <FontAwesomeIcon size='lg' color={(dragging || hover) && !expanded ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
-                                     icon={expanded ? faTimes : faPlusSquare}/>
+                                     icon={expanded ? faMinusSquare : faPlusSquare}/>
                 </div>
             </div>
         )
@@ -384,7 +391,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     render() {
         const { closing } = this.state;
-        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, isDragDisabled } = this.props;
+        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, isDragDisabled, domainId,
+            helpNoun, domainKind, defaultDefaultValueType, defaultValueOptions } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={isDragDisabled}>
@@ -399,12 +407,25 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                          onMouseLeave={this.onMouseOut}
                     >
                         <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
-                            <AdvancedSettings index={index} maxPhiLevel={maxPhiLevel} field={field} onApply={this.onMultiFieldChange} show={this.state.showAdv} onHide={this.onHideAdvanced} label={field.name}/>
+                            <AdvancedSettings
+                                domainId={domainId}
+                                domainKind={domainKind}
+                                helpNoun={helpNoun}
+                                index={index}
+                                maxPhiLevel={maxPhiLevel}
+                                field={field}
+                                onApply={this.onMultiFieldChange}
+                                show={this.state.showAdv}
+                                onHide={this.onHideAdvanced}
+                                label={field.name}
+                                defaultDefaultValueType={defaultDefaultValueType}
+                                defaultValueOptions={defaultValueOptions}
+                            />
                             <div className='domain-row-handle'>
                                 {this.renderHandle()}
                             </div>
                             <div className='domain-row-main'>
-                                <Col xs={6} className='domain-zero-padding'>
+                                <Col xs={6} className='domain-row-base-fields'>
                                     {this.renderBaseFields()}
                                 </Col>
                                 <Col xs={6} className='domain-field-details-container'>

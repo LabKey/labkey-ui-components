@@ -7,6 +7,8 @@
   "allowFileLinkProperties": false,
   "allowAttachmentProperties": true,
   "allowFlagProperties": false,
+  "defaultDefaultValueType" : "FIXED_EDITABLE",
+  "defaultValueOptions" : [ "FIXED_EDITABLE", "LAST_ENTERED" ],
   "fields" : [ {
     "propertyId" : 392739,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldText",

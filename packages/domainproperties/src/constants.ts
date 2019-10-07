@@ -45,6 +45,11 @@ export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
 export const DOMAIN_FIELD_SHOWNININSERTVIEW = 'shownInInsertView';
 export const DOMAIN_FIELD_SHOWNINUPDATESVIEW = 'shownInUpdateView';
 export const DOMAIN_FIELD_CLIENT_SIDE_ERROR = 'error';
+export const DOMAIN_FIELD_DEFAULT_VALUE_TYPE = 'defaultValueType';
+export const DOMAIN_FIELD_DEFAULT_VALUE = 'defaultValue';
+export const DOMAIN_FIELD_DEFAULT_DISPLAY_VALUE = 'defaultDisplayValue';
+
+export const DOMAIN_URI_PREFIX = 'butt';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -128,6 +133,17 @@ export const DOMAIN_PHI_LEVELS = List([
     {label: 'Full PHI', value: PHILEVEL_FULL_PHI},
     {label: 'Restricted PHI', value: PHILEVEL_RESTRICTED_PHI}
 ]);
+
+export const DOMAIN_EDITABLE_DEFAULT = "FIXED_EDITABLE";
+export const DOMAIN_NON_EDITABLE_DEFAULT = "FIXED_NON_EDITABLE";
+export const DOMAIN_LAST_ENTERED_DEFAULT = "LAST_ENTERED";
+
+export const DOMAIN_DEFAULT_TYPES = {
+    [DOMAIN_EDITABLE_DEFAULT]: 'Editable default',
+    [DOMAIN_NON_EDITABLE_DEFAULT]: 'Fixed value',
+    [DOMAIN_LAST_ENTERED_DEFAULT]: 'Last entered'
+
+};
 
 export const DOMAIN_FIELD_COLS = List([
     new GridColumn({

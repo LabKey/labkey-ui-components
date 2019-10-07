@@ -30,7 +30,7 @@ import {
     PARTICIPANTID_CONCEPT_URI,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
-    USER_RANGE_URI
+    USER_RANGE_URI, DOMAIN_URI_PREFIX
 } from "./constants";
 
 export interface IFieldChange {
@@ -162,6 +162,8 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean
     allowAttachmentProperties: boolean
     allowFlagProperties: boolean
+    defaultDefaultValueType: string
+    defaultValueOptions: List<string>
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
@@ -175,6 +177,8 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: true,
     allowAttachmentProperties: true,
     allowFlagProperties: true,
+    defaultDefaultValueType: undefined,
+    defaultValueOptions: List<string>(),
     fields: List<DomainField>(),
     indices: List<DomainIndex>(),
     domainException: undefined
@@ -186,6 +190,8 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    defaultDefaultValueType: string;
+    defaultValueOptions: List<string>;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
     domainException: DomainException;
@@ -201,6 +207,7 @@ export class DomainDesign extends Record({
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
+        let defaultValueOptions = List<DomainField>().asMutable();
         let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
@@ -211,12 +218,24 @@ export class DomainDesign extends Record({
             if (rawModel.indices) {
                 indices = DomainIndex.fromJS(rawModel.indices);
             }
+
+            if (rawModel.defaultValueOptions)
+            {
+
+                for (let i = 0; i < rawModel.defaultValueOptions.length; i++)
+                {
+                    defaultValueOptions.push(rawModel.defaultValueOptions[i]);
+                }
+            }
+
+            defaultValueOptions = defaultValueOptions.asImmutable();
         }
 
         return new DomainDesign({
             ...rawModel,
             fields,
             indices,
+            defaultValueOptions,
             domainException
         })
     }
@@ -233,6 +252,12 @@ export class DomainDesign extends Record({
 
     constructor(values?: {[key:string]: any}) {
         super(values);
+    }
+
+    getDomainKind = () => {
+        const kind = this.domainURI.substring(DOMAIN_URI_PREFIX.length);
+
+        return kind.split('.')[0];
     }
 
     hasErrors(): boolean {
@@ -405,6 +430,9 @@ export interface IDomainField {
     conceptURI?: string
     conditionalFormats: List<ConditionalFormat>
     defaultScale?: string
+    defaultValueType?: string
+    defaultValue?: string
+    defaultDisplayValue?: string
     description?: string
     dimension?: boolean
     excludeFromShifting?: boolean
@@ -447,6 +475,9 @@ export class DomainField extends Record({
     conceptURI: undefined,
     conditionalFormats: List<ConditionalFormat>(),
     defaultScale: undefined,
+    defaultValueType: undefined,
+    defaultValue: undefined,
+    defaultDisplayValue: undefined,
     description: undefined,
     dimension: undefined,
     excludeFromShifting: false,
@@ -488,6 +519,9 @@ export class DomainField extends Record({
     conceptURI?: string;
     conditionalFormats: List<ConditionalFormat>;
     defaultScale?: string;
+    defaultValueType?: string;
+    defaultValue?: string;
+    defaultDisplayValue?: string;
     description?: string;
     dimension?: boolean;
     excludeFromShifting?: boolean;

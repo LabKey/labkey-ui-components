@@ -41,7 +41,13 @@ import {
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
-import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, LK_DOMAIN_HELP_URL, PHILEVEL_NOT_PHI} from "../constants";
+import {
+    DOMAIN_URI_PREFIX,
+    EXPAND_TRANSITION,
+    EXPAND_TRANSITION_FAST,
+    LK_DOMAIN_HELP_URL,
+    PHILEVEL_NOT_PHI
+} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -61,6 +67,7 @@ interface IDomainFormInput {
 interface IDomainFormState {
     expandedRowIndex: number
     expandTransition: number
+    domainKind: string
     showConfirm: boolean
     collapsed: boolean
     maxPhiLevel: string
@@ -97,6 +104,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.state = {
             expandedRowIndex: undefined,
             expandTransition: EXPAND_TRANSITION,
+            domainKind: props.domain.getDomainKind(),
             showConfirm: false,
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
@@ -561,8 +569,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderForm() {
-        const { domain, children } = this.props;
-        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
+        const { domain, children, helpNoun } = this.props;
+        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered, domainKind } = this.state;
 
         return (
             <>
@@ -591,6 +599,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 return <div key={'domain-row-key-' + i} />;
 
                                             return <DomainRow
+                                                domainId={domain.domainId}
+                                                domainKind={domainKind}
+                                                helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}
                                                 field={field}
                                                 fieldError={this.getFieldError(domain, i)}
@@ -604,6 +615,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 dragging={dragId === i}
                                                 isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
+                                                defaultDefaultValueType={domain.defaultDefaultValueType}
+                                                defaultValueOptions={domain.defaultValueOptions}
                                             />
                                         }))}
                                         {provided.placeholder}

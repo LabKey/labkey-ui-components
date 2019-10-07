@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as OrigReact from 'react'
-import React from 'reactn'
+import React, { withGlobal } from 'reactn'
 import classNames from 'classnames'
 import { List } from 'immutable'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
@@ -26,7 +26,7 @@ import { CellMessage, EditorModel, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
 
-interface Props {
+interface OwnProps {
     col: QueryColumn
     colIdx: number
     modelId: string
@@ -37,7 +37,47 @@ interface Props {
     rowIdx: number
 }
 
-export class Cell extends React.Component<Props, any> {
+interface StateProps {
+    focused: boolean
+    message: CellMessage
+    selected: boolean
+    selection: boolean
+    values: List<ValueDescriptor>
+}
+
+type Props = OwnProps & StateProps;
+
+/**
+ * withGlobal() creates a Higher-Order Component that passes the global
+ * state to the wrapped Component as props. In this case the global state is
+ * found on the EditorModel associated with this Cell. The advantage gained
+ * is two-fold:
+ * 1. Only updates to the properties in the global state that are relevant to the Cell
+ *    cause a change to the Cell's component props.
+ * 2. The Cell can take advantage of being React.PureComponent where only changes
+ *    to the component's props cause a re-render. Conversely, if the props are unchanged
+ *    (from a shallow equivalency check) then the component will not re-render.
+ *
+ * This mechanism is important for rendering performance of an EditableGrid containing
+ * many instances of these Cells.
+ */
+const CellHoC = withGlobal<OwnProps, StateProps, any>(
+    (global, ownProps: OwnProps) => {
+        const model: EditorModel = global.QueryGrid_editors.get(ownProps.modelId);
+        const c = ownProps.colIdx;
+        const r = ownProps.rowIdx;
+
+        return {
+            focused: model.isFocused(c, r),
+            message: model.getMessage(c, r),
+            selected: model.isSelected(c, r),
+            selection: model.inSelection(c, r),
+            values: model.getValue(c, r)
+        };
+    }
+);
+
+class CellImpl extends React.PureComponent<Props, any> {
 
     private changeTO: number;
     private clickTO: number;
@@ -60,14 +100,15 @@ export class Cell extends React.Component<Props, any> {
     // shouldComponentUpdate -- don't ever use this
 
     componentDidUpdate() {
-        if (!this.focused() && this.selected()) {
+        if (!this.props.focused && this.props.selected) {
             this.displayEl.current.focus();
         }
     }
 
     handleSelectionBlur() {
-        if (this.selected())
+        if (this.props.selected) {
             unfocusCellSelection(this.props.modelId);
+        }
     }
 
     handleBlur(evt: any) {
@@ -104,9 +145,7 @@ export class Cell extends React.Component<Props, any> {
     }
 
     handleKeys(event: React.KeyboardEvent<HTMLElement>) {
-        const { colIdx, modelId, rowIdx } = this.props;
-        const focused = this.focused();
-        const selected = this.selected();
+        const { colIdx, focused, modelId, rowIdx, selected } = this.props;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -182,7 +221,7 @@ export class Cell extends React.Component<Props, any> {
     }
 
     handleSelect(event) {
-        const { colIdx, modelId, rowIdx } = this.props;
+        const { colIdx, modelId, rowIdx, selected } = this.props;
 
         if (event.ctrlKey || event.metaKey) {
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.SINGLE);
@@ -191,60 +230,15 @@ export class Cell extends React.Component<Props, any> {
             cancelEvent(event);
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.AREA);
         }
-        else if (!this.selected()) {
+        else if (!selected) {
             selectCell(modelId, colIdx, rowIdx);
         }
     }
 
-    getModel(): EditorModel {
-        const { modelId } = this.props;
-
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_editors.get(modelId);
-    }
-
-    focused(): boolean {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.isFocused(colIdx, rowIdx) : false;
-    }
-
-    selected(): boolean {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.isSelected(colIdx, rowIdx) : false;
-    }
-
-    selection(): boolean {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.inSelection(colIdx, rowIdx) : false;
-    }
-
-    message(): CellMessage {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.getMessage(colIdx, rowIdx) : undefined;
-    }
-
-    values(): List<ValueDescriptor> {
-        const { colIdx, rowIdx } = this.props;
-        const model = this.getModel();
-
-        return model ? model.getValue(colIdx, rowIdx) : List<ValueDescriptor>();
-    }
-
     render() {
-        const { col, colIdx, modelId, placeholder, rowIdx } = this.props;
-        const message = this.message();
-        const selected = this.selected();
-        const values = this.values();
+        const { col, colIdx, focused, message, modelId, placeholder, rowIdx, selected, selection, values } = this.props;
 
-        if (!this.focused()) {
+        if (!focused) {
             let valueDisplay = values
                 .filter(vd => vd && vd.display !== undefined)
                 .reduce((v, vd, i) => v + (i > 0 ? ', ' : '') + vd.display, '');
@@ -254,7 +248,7 @@ export class Cell extends React.Component<Props, any> {
                 className: classNames('cellular-display', {
                     'cell-selected': selected,
                     'size-limited': col.isLookup(),
-                    'cell-selection': this.selection(),
+                    'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
                     'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined
@@ -319,3 +313,6 @@ export class Cell extends React.Component<Props, any> {
         return <input {...inputProps}/>;
     }
 }
+
+// reactn 1.0.0 do not support this mechanism as it does not export its interface types. Smash with "any". :-(
+export const Cell: any /*GlobalPureComponent<OwnProps, any>*/ = CellHoC(CellImpl);

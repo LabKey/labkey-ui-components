@@ -4,13 +4,14 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import * as React from 'react';
-import { fromJS, List, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import { Grid, QueryColumn, QueryGridModel } from '@glass/base';
+import { Grid } from '@glass/base';
 
 import { OmniBox } from '..';
-import { FilterAction, SearchAction, SortAction } from '..';
+import { SearchAction } from '../components/omnibox/actions/Search';
+import { FilterAction } from '../components/omnibox/actions/Filter';
+import { SortAction } from '../components/omnibox/actions/Sort';
 import { createMockActionContext } from '../test/OmniboxMock';
 import './stories.scss';
 

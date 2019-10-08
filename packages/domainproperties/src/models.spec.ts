@@ -194,4 +194,28 @@ describe('AssayProtocolModel', () => {
         expect(AssayProtocolModel.create({availableMetadataInputFormats: {}}).allowMetadataInputFormatSelection()).toBeFalsy();
         expect(AssayProtocolModel.create({availableMetadataInputFormats: {test1: 'abc', test2: 'def'}}).allowMetadataInputFormatSelection()).toBeTruthy();
     });
+
+    test("isValid", () => {
+        const base = {protocolId: 1, name: 'test'};
+
+        expect(AssayProtocolModel.create({...base, name: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: ''}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: 'test'}).isValid()).toBeTruthy();
+
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 1}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 'foo'}).isValid()).toBeTruthy();
+
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 1}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 'foo'}).isValid()).toBeTruthy();
+
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 1}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 'foo'}).isValid()).toBeTruthy();
+    });
 });

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Alert, WizardNavButtons } from "@glass/base";
-import { Utils } from "@labkey/api";
 
 import { AssayProtocolModel, DomainDesign } from "../../models";
 import { saveAssayDesign } from "../../actions/actions";
@@ -122,12 +121,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     isValid(): boolean {
-        const { protocolModel } = this.state;
-
-        return (protocolModel.name !== undefined && protocolModel.name.trim().length > 0)
-            && (!protocolModel.allowMetadataInputFormatSelection() || Utils.isString(protocolModel.selectedMetadataInputFormat))
-            && (!protocolModel.allowDetectionMethodSelection() || Utils.isString(protocolModel.selectedDetectionMethod))
-            && (!protocolModel.allowPlateTemplateSelection() || Utils.isString(protocolModel.selectedPlateTemplate));
+        return this.state.protocolModel.isValid();
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {

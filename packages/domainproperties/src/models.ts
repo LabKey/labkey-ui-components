@@ -948,4 +948,11 @@ export class AssayProtocolModel extends Record({
     allowMetadataInputFormatSelection(): boolean {
         return this.availableMetadataInputFormats && Utils.isObject(this.availableMetadataInputFormats) && !Utils.isEmptyObj(this.availableMetadataInputFormats);
     }
+
+    isValid(): boolean {
+        return (this.name !== undefined && this.name !==null && this.name.trim().length > 0)
+            && (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat))
+            && (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod))
+            && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate));
+    }
 }

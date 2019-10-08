@@ -252,7 +252,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        SampleID 
+                        Specimen ID 
                       </th>
                       <th
                         className="grid-header-cell"
@@ -287,6 +287,39 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       >
                         Date 
                       </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Healthy 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        File 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Text Area 
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -294,7 +327,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       className="grid-empty"
                     >
                       <td
-                        colSpan={6}
+                        colSpan={9}
                       >
                         Start by adding the quantity of assay data rows you want to create.
                       </td>
@@ -577,7 +610,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        SampleID 
+                        Specimen ID 
                       </th>
                       <th
                         className="grid-header-cell"
@@ -612,6 +645,39 @@ exports[`<RunDataPanel/> default props 1`] = `
                       >
                         Date 
                       </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Healthy 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        File 
+                      </th>
+                      <th
+                        className="grid-header-cell"
+                        onClick={[Function]}
+                        style={
+                          Object {
+                            "minWidth": "100px",
+                          }
+                        }
+                      >
+                        Text Area 
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -619,7 +685,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                       className="grid-empty"
                     >
                       <td
-                        colSpan={5}
+                        colSpan={8}
                       >
                         Start by adding the quantity of assay data rows you want to create.
                       </td>

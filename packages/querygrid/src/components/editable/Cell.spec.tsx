@@ -18,37 +18,19 @@ import { Map } from 'immutable';
 import { mount } from "enzyme";
 import { Cell } from "./Cell";
 import { QueryColumn, SchemaQuery } from "@glass/base";
-import { initQueryGridState } from "../../global";
 import mock, { proxy } from "xhr-mock";
 import { getStateQueryGridModel } from "../../models";
 import * as constants from "../../test/data/constants";
 import { gridInit } from "../../actions";
-import mixturesQueryInfo from "../../test/data/mixtures-getQueryDetails.json";
-import mixtureTypesQuery from "../../test/data/mixtureTypes-getQuery.json";
+import { initUnitTestMocks } from '../../testHelpers';
 
 const GRID_ID = "CellTestModel";
-const SCHEMA_NAME = "schema";
-const QUERY_NAME = "cellTestData";
+const SCHEMA_NAME = "lists";
+const QUERY_NAME = "MixtureTypes";
 const MODEL_ID = (GRID_ID + "|" + SCHEMA_NAME + "/" + QUERY_NAME).toLowerCase();
 
 beforeAll(() => {
-    LABKEY.contextPath = "labkeyjest";
-    mock.setup();
-
-    mock.get(/.*\/query\/getQueryDetails.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesQueryInfo)
-    });
-
-    mock.post(/.*\/query\/getQuery.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixtureTypesQuery)
-    });
-    mock.use(proxy);
-    initQueryGridState();
-
+    initUnitTestMocks();
     const schemaQuery = new SchemaQuery({
         schemaName: SCHEMA_NAME,
         queryName: QUERY_NAME
@@ -66,7 +48,6 @@ beforeAll(() => {
             }
         }
     });
-
     gridInit(model, true);
 });
 
@@ -83,15 +64,18 @@ const emptyRow = Map<any, any>();
 
 
 describe("Cell", () => {
-   test("default props", () => {
+   test("default props", (done) => {
        const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} row={emptyRow} rowIdx={2}/>);
-       expect(cell.find("div")).toHaveLength(1);
-       expect(cell.find("input")).toHaveLength(0);
-       cell.simulate('doubleClick');
-       cell.render();
-       expect(cell.find("div")).toHaveLength(0);
-       expect(cell.find("input")).toHaveLength(1);
-       cell.unmount();
+
+       setTimeout(() => {
+           expect(cell.find("div")).toHaveLength(1);
+           expect(cell.find("input")).toHaveLength(0);
+           cell.simulate('doubleClick');
+           cell.render();
+           expect(cell.find("div")).toHaveLength(0);
+           expect(cell.find("input")).toHaveLength(1);
+           done();
+       }, 25);
    });
 
    test("with placeholder", () => {

@@ -1,35 +1,11 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer'
-import mock, { proxy } from "xhr-mock";
 import { SchemaQuery } from '@glass/base';
-
-import { initQueryGridState, setQueryColumnRenderers } from '../global';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import mixturesQuery from '../test/data/mixtures-getQuery.json';
+import { initUnitTestMocks } from '../testHelpers';
 import { PreviewGrid, } from './PreviewGrid';
 
 beforeAll(() => {
-    initQueryGridState();
-
-    mock.setup();
-
-    mock.get(/.*\/getQueryDetails.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesQueryInfo)
-    });
-
-    mock.post(/.*\/getQuery.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesQuery)
-    });
-
-    mock.use(proxy);
-});
-
-afterAll(() => {
-    mock.reset();
+    initUnitTestMocks();
 });
 
 const SQ = SchemaQuery.create('exp.data', 'mixtures', '~~default~~');

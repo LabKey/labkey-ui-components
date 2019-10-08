@@ -1,30 +1,20 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer'
-import mock, { proxy } from "xhr-mock";
 import { AssayUploadTabs } from "@glass/base";
 
 import { RunDataPanel } from "./RunDataPanel";
-import { getQueryGridModel, initQueryGridState } from "../../global";
+import { getQueryGridModel } from "../../global";
 import { getStateQueryGridModel } from "../../models";
 import { gridInit } from "../../actions";
 import { withFormSteps, WithFormStepsProps } from "../forms/FormStep";
 import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
-
-import  assayDataQueryInfo from "../../test/data/assayData-getQueryDetails.json";
+import { initUnitTestMocks } from '../../testHelpers';
 
 let MODEL_ID_NOT_LOADED;
 let MODEL_ID_LOADED;
 
 beforeAll(() => {
-    initQueryGridState();
-
-    mock.setup();
-    mock.get(/.*\/query\/getQueryDetails.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(assayDataQueryInfo)
-    });
-    mock.use(proxy);
+    initUnitTestMocks();
 
     let model = getStateQueryGridModel('jest-test-0', ASSAY_WIZARD_MODEL.queryInfo.schemaQuery, {
         editable: true,
@@ -41,10 +31,6 @@ beforeAll(() => {
 
     gridInit(model, false);
     MODEL_ID_LOADED = model.getId();
-});
-
-afterAll(() => {
-    mock.reset();
 });
 
 interface OwnProps {

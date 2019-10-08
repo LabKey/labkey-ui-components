@@ -44,22 +44,22 @@ import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQ
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
-const deleteAllConfirmation = require("../test/data/deleteAll-getMaterialDeleteConfirmationData.json");
-const deleteNoneConfirmation = require("../test/data/deleteNone-getMaterialDeleteConfirmationData.json");
-const deleteOneConfirmation = require("../test/data/deleteOne-getMaterialDeleteConfirmationData.json");
-const deleteSomeConfirmation = require("../test/data/deleteSome-getMaterialDeleteConfirmationData.json");
-const sampleSetAllFieldTypesQueryInfo = require("../test/data/sampleSetAllFieldTypes-getQueryDetails.json");
-const assayDataQueryInfo = require("../test/data/assayData-getQueryDetails.json");
-const assayGpatQueryInfo= require("../test/data/assayGpat-getQueryDetails.json");
-const assayGpatRunData = require("../test/data/assayGpatRuns-getQuery.json");
-const filePreviewData = require("../test/data/property-getFilePreview.json");
+import deleteAllConfirmation from "../test/data/deleteAll-getMaterialDeleteConfirmationData.json";
+import deleteNoneConfirmation from "../test/data/deleteNone-getMaterialDeleteConfirmationData.json";
+import deleteOneConfirmation from "../test/data/deleteOne-getMaterialDeleteConfirmationData.json";
+import deleteSomeConfirmation from "../test/data/deleteSome-getMaterialDeleteConfirmationData.json";
+import sampleSetAllFieldTypesQueryInfo from "../test/data/sampleSetAllFieldTypes-getQueryDetails.json";
+import assayGpatRunsQueryInfo from "../test/data/assayGpatRuns-getQueryDetails.json";
+import assayGpatDataQueryInfo from "../test/data/assayGpatData-getQueryDetails.json";
+import assayGpatRunData from "../test/data/assayGpatRuns-getQuery.json";
+import filePreviewData from "../test/data/property-getFilePreview.json";
 import visualizationConfig from '../test/data/visualization-getVisualization.json';
-const lineageData = require("../test/data/experiment-lineage.json");
-const samplesLineageQuery = require("../test/data/sampleLineage-getQuery.json");
-const expSystemSamplesLineageQuery = require("../test/data/expSystemSampleLineage-getQuery.json");
-const expSystemLineageQuery = require("../test/data/expSystemLineage-getQuery.json");
-const expressionsystemsamplesQueryInfo = require("../test/data/expSystemSamples-getQueryDetails.json");
-const expressionsystemQueryInfo = require("../test/data/expSystem-getQueryDetails.json");
+import lineageData from "../test/data/experiment-lineage.json";
+import samplesLineageQuery from "../test/data/sampleLineage-getQuery.json";
+import expSystemSamplesLineageQuery from "../test/data/expSystemSampleLineage-getQuery.json";
+import expSystemLineageQuery from "../test/data/expSystemLineage-getQuery.json";
+import expressionsystemsamplesQueryInfo from "../test/data/expSystemSamples-getQueryDetails.json";
+import expressionsystemQueryInfo from "../test/data/expSystem-getQueryDetails.json";
 
 
 export function initMocks() {
@@ -70,38 +70,39 @@ export function initMocks() {
         let responseBody;
         let lcSchemaName = queryParams.schemaName.toLowerCase();
         let lcQueryName = queryParams.queryName.toLowerCase();
-        if (lcSchemaName === 'exp.data' && lcQueryName === 'mixtures')
+
+        if (lcSchemaName === 'exp.data' && lcQueryName === 'mixtures') {
             responseBody = mixturesQueryInfo;
-        else if (lcSchemaName === 'schema' && lcQueryName === 'gridwithoutdata')
+        } else if (lcSchemaName === 'schema' && lcQueryName === 'gridwithoutdata') {
             responseBody = mixturesQueryInfo;
-        else if (lcSchemaName === 'lists' && lcQueryName === 'mixturetypes')
+        } else if (lcSchemaName === 'lists' && lcQueryName === 'mixturetypes') {
             responseBody = mixtureTypesQueryInfo;
-        else if (lcSchemaName === 'exp' && lcQueryName === 'samplesetheatmap')
+        } else if (lcSchemaName === 'exp' && lcQueryName === 'samplesetheatmap') {
             responseBody = sampleSetHeatMapQueryInfo;
-        else if (lcSchemaName === 'exp' && lcQueryName === 'assaysheatmap')
+        } else if (lcSchemaName === 'exp' && lcQueryName === 'assaysheatmap') {
             responseBody = assaysHeatMapQueryInfo;
-        else if (lcSchemaName === 'samples' && lcQueryName === 'samples')
+        } else if (lcSchemaName === 'samples' && lcQueryName === 'samples') {
             responseBody = sampleSetQueryInfo;
-        else if (lcSchemaName === 'samples' && lcQueryName === 'expressionsystemsamples')
+        } else if (lcSchemaName === 'samples' && lcQueryName === 'expressionsystemsamples') {
             responseBody = expressionsystemsamplesQueryInfo;
-        else if (lcSchemaName === 'exp.data' && lcQueryName === 'expressionsystem')
+        } else if (lcSchemaName === 'exp.data' && lcQueryName === 'expressionsystem') {
             responseBody = expressionsystemQueryInfo;
-        else if (lcSchemaName === 'samples' && lcQueryName === 'samplesetwithallfieldtypes')
+        } else if (lcSchemaName === 'samples' && lcQueryName === 'samplesetwithallfieldtypes') {
             responseBody = sampleSetAllFieldTypesQueryInfo;
-        else if (lcSchemaName === 'lists' && lcQueryName === 'lookuplist')
+        } else if (lcSchemaName === 'lists' && lcQueryName === 'lookuplist') {
             responseBody = lookuplistQueryInfo;
-        else if (lcSchemaName === 'exp' && lcQueryName === 'samplesets')
+        } else if (lcSchemaName === 'exp' && lcQueryName === 'samplesets') {
             responseBody = sampleSetsQueryInfo;
-        else if (lcSchemaName === 'samples' && (lcQueryName === 'name expression set' || lcQueryName === 'name%20expression%20set'))
+        } else if (lcSchemaName === 'samples' && (lcQueryName === 'name expression set' || lcQueryName === 'name%20expression%20set')) {
             responseBody = nameExpressionQueryInfo;
-        else if (lcSchemaName === 'samples' && lcQueryName === 'sample set 2')
+        } else if (lcSchemaName === 'samples' && lcQueryName === 'sample set 2') {
             responseBody = sampleSet2QueryInfo;
-        else if (lcSchemaName === 'assay.general.amino acids' && lcQueryName === 'runs')
+        } else if (lcSchemaName === 'assay.general.amino acids' && lcQueryName === 'runs') {
             responseBody = assayRunsWithQCFlagsQueryInfo;
-        else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'data')
-            responseBody = assayDataQueryInfo;
-        else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'runs') {
-            responseBody = assayGpatQueryInfo;
+        } else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'data') {
+            responseBody = assayGpatDataQueryInfo;
+        } else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'runs') {
+            responseBody = assayGpatRunsQueryInfo;
         }
 
         return res
@@ -113,33 +114,34 @@ export function initMocks() {
     mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
-        if (bodyParams.indexOf("&query.queryname=mixtures&") > -1)
+
+        if (bodyParams.indexOf("&query.queryname=mixtures&") > -1) {
             responseBody = mixturesQuery;
-        else if (bodyParams.indexOf("&query.queryname=mixturetypes&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=mixturetypes&") > -1) {
             responseBody = mixtureTypesQuery;
-        else if (bodyParams.indexOf("&query.queryname=gridwithoutdata&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=gridwithoutdata&") > -1) {
             responseBody = noDataQuery;
-        else if (bodyParams.indexOf("&query.queryname=samplesetheatmap&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=samplesetheatmap&") > -1) {
             responseBody = sampleSetHeatMapQuery;
-        else if (bodyParams.indexOf("&query.queryname=assaysheatmap&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=assaysheatmap&") > -1) {
             responseBody = assaysHeatMapQuery;
-        else if (bodyParams.indexOf("&query.queryname=samples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=samples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1) {
             responseBody = samplesLineageQuery;
-        else if (bodyParams.indexOf("&query.queryname=expressionsystemsamples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=expressionsystemsamples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1) {
             responseBody = expSystemSamplesLineageQuery;
-        else if (bodyParams.indexOf("&schemaname=exp.data&") > -1 && bodyParams.indexOf("&query.queryname=expressionsystem&") > -1)
+        } else if (bodyParams.indexOf("&schemaname=exp.data&") > -1 && bodyParams.indexOf("&query.queryname=expressionsystem&") > -1) {
             responseBody = expSystemLineageQuery;
-        else if (bodyParams.indexOf("&query.queryname=samples&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=samples&") > -1) {
             responseBody = sampleDetailsQuery;
-        else if (bodyParams.indexOf("&query.queryname=lookuplist&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=lookuplist&") > -1) {
             responseBody = lookuplistQuery;
-        else if (bodyParams.indexOf("&query.queryname=samplesets&") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=samplesets&") > -1) {
             responseBody = sampleSetsQuery;
-        else if (bodyParams.indexOf("&query.queryname=name%2520expression%2520set") > -1 && bodyParams.indexOf("&query.rowid~in=459") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=name%2520expression%2520set") > -1 && bodyParams.indexOf("&query.rowid~in=459") > -1) {
             responseBody = nameExpressionSelectedQuery;
-        else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1)
+        } else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1) {
             responseBody = nameExpressionSelectedQuery;
-        else if (
+        } else if (
             bodyParams.indexOf("schemaname=assay.general.gpat%201") > -1 &&
             bodyParams.indexOf("queryname=runs") > -1
         ) {
@@ -160,10 +162,12 @@ export function initMocks() {
     mock.get(/.*\/query\/.*\/getSchemas.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        if (queryParams.schemaName === undefined)
+
+        if (queryParams.schemaName === undefined) {
             responseBody = getSchemasJson;
-        else if (queryParams.schemaName.toLowerCase() === 'assay')
+        } else if (queryParams.schemaName.toLowerCase() === 'assay') {
             responseBody = assayGetSchemasJson;
+        }
 
         return res
             .status(200)
@@ -174,9 +178,11 @@ export function initMocks() {
     mock.get(/.*\/query\/.*\/getQueries.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        if (queryParams.schemaName.toLowerCase() === 'assay')
-            responseBody = assayGetQueriesJson;
 
+        if (queryParams.schemaName.toLowerCase() === 'assay') {
+            responseBody = assayGetQueriesJson;
+        }
+        
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -186,9 +192,11 @@ export function initMocks() {
     mock.post(/.*\/query\/.*\/updateRows.*/,  (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
-        if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1)
+        
+        if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1) {
             responseBody = samplesUpdate;
-
+        }
+        
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -205,10 +213,12 @@ export function initMocks() {
     mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        if (queryParams.key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set")
+        
+        if (queryParams.key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
             responseBody = nameExpressionSelected;
-        else
+        } else {
             responseBody = mixturesSelected;
+        }
 
         return res
             .status(200)
@@ -227,15 +237,16 @@ export function initMocks() {
         const queryParams = req.url().query;
         let responseBody;
         let selectionKey = queryParams.dataRegionSelectionKey;
-        if (selectionKey === 'deleteNone')
+        if (selectionKey === 'deleteNone') {
             responseBody = deleteNoneConfirmation;
-        else if (selectionKey === 'deleteOne')
+        } else if (selectionKey === 'deleteOne') {
             responseBody = deleteOneConfirmation;
-        else if (selectionKey === 'deleteSome')
+        } else if (selectionKey === 'deleteSome') {
             responseBody = deleteSomeConfirmation;
-        else if (selectionKey === 'deleteAll')
+        } else if (selectionKey === 'deleteAll') {
             responseBody = deleteAllConfirmation;
-
+        }
+        
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -245,10 +256,13 @@ export function initMocks() {
     mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
-        if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1))
+        
+        if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1)) {
             responseBody = assayFileDuplicateCheck;
-        else if (bodyParams.indexOf(".xls") > -1)
+        } else if (bodyParams.indexOf(".xls") > -1) {
             responseBody= assayFileNoDuplicateCheck;
+        }
+        
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -258,6 +272,7 @@ export function initMocks() {
     mock.get(/.*getFilePreview.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
+        
         if (queryParams.file === "1949" || queryParams.file === "2010") {
             responseBody = filePreviewData;
         }

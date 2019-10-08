@@ -167,6 +167,8 @@
 .domain-row-button {
   font-size: 12px;
   margin-left: 12px;
+  height: 28px;
+  height: min-content;  /* Not supported in older browsers so leave px height as well */
 }
 
 .domain-row-remove-button {

@@ -112,12 +112,15 @@ export class ConditionalFormattingValidation extends React.PureComponent<Conditi
                         className="domain-validation-button"
                         name={createFormInputName(DOMAIN_COND_FORMAT)}
                         id={createFormInputId(DOMAIN_COND_FORMAT, index)}
-                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
+                        disabled={isFieldFullyLocked(field.lockType)}
                         onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}>
                         {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}
                     </Button>
                     {count === 0 ? <span className='domain-text-label'>None Set</span> :
-                        <a className='domain-validator-link' onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}>{'' + count + ' Active validator' + (count > 1 ? 's' : '')}</a>}
+                        <a className='domain-validator-link'
+                           onClick={ isFieldFullyLocked(field.lockType) ? () => {} : (range ? this.showHideRangeValidator : this.showHideRegexValidator)}>
+                            {'' + count + ' Active validator' + (count > 1 ? 's' : '')}
+                        </a>}
                 </div>
             </div>)
     };
@@ -135,12 +138,12 @@ export class ConditionalFormattingValidation extends React.PureComponent<Conditi
                         className="domain-validation-button"
                         name={createFormInputName(DOMAIN_COND_FORMAT)}
                         id={createFormInputId(DOMAIN_COND_FORMAT, index)}
-                        disabled={isFieldFullyLocked(field.lockType) || isFieldPartiallyLocked(field.lockType)}
+                        disabled={isFieldFullyLocked(field.lockType)}
                         onClick={this.showHideConditionalFormat}>
                         {count > 0 ? 'Edit Formats' : 'Add Format'}
                     </Button>
                     {count === 0 ? <span className='domain-text-label'>None Set</span> :
-                        <a className='domain-validator-link' onClick={this.showHideConditionalFormat}>{'' + count + ' Active format' + (count > 1 ? 's' : '')}</a>}
+                        <a className='domain-validator-link' onClick={ isFieldFullyLocked(field.lockType) ? () => {} : (this.showHideConditionalFormat)}>{'' + count + ' Active format' + (count > 1 ? 's' : '')}</a>}
                 </div>
             </div>)
     };

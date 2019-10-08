@@ -124,6 +124,10 @@ export class PropDescType extends Record({
     isString(): boolean {
         return PropDescType.isString(this.rangeURI);
     }
+
+    isFileType(): boolean {
+        return (this === FILE_TYPE || this === ATTACHMENT_TYPE )
+    }
 }
 
 export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});

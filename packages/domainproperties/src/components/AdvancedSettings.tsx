@@ -29,7 +29,6 @@ import {Alert, ConfirmModal, LabelHelpTip} from "@glass/base";
 
 interface AdvancedSettingsProps {
     domainId?: number
-    domainKind: string
     helpNoun: string
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
@@ -223,6 +222,12 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     showDefaultValues = () => {
+        const { field } = this.props;
+
+        // Not shown for file types
+        if (field.dataType.isFileType())
+            return false;
+
         return !this.props.defaultValueOptions.isEmpty();
     }
 

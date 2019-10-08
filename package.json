@@ -57,9 +57,7 @@
   },
   "workspaces": [
     "packages/base",
-    "packages/omnibox",
     "packages/querygrid",
-    "packages/navigation",
     "packages/domainproperties"
   ]
 }

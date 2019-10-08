@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version 0.??.0
-*Released*: ?? October 2019
+### version 0.20.0
+*Released*: 8 October 2019
 * Move `omnibox` package into `querygrid`
     * Old README for `omnibox` can be found [here](../../legacy-docs/omnibox.md)
 * Move `navigation` package into `querygrid`

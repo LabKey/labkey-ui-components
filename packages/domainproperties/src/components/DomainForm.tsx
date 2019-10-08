@@ -417,7 +417,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         return newStyle;
-    }
+    };
 
     renderFieldRemoveConfirm() {
         return (

@@ -17,9 +17,14 @@ import React from 'reactn'
 import { List, Map } from 'immutable'
 
 import { QueryColumn, QueryGridModel } from '@glass/base'
-import { OmniBox, Action, ActionValue, ActionValueCollection, FilterAction, SearchAction, SortAction, ViewAction } from '../..'
 
 import { getLocation, replaceParameters, Location } from "../../util/URL";
+import { OmniBox } from '../omnibox/OmniBox';
+import { Action, ActionValue, ActionValueCollection } from '../omnibox/actions/Action';
+import { FilterAction } from '../omnibox/actions/Filter';
+import { SearchAction } from '../omnibox/actions/Search';
+import { SortAction } from '../omnibox/actions/Sort';
+import { ViewAction } from '../omnibox/actions/View';
 
 const emptyList = List<QueryColumn>();
 
@@ -53,6 +58,8 @@ interface URLBoxState {
 export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
 
     static defaultProps = {
+        // TODO: There is only one consumer of URLBox (QueryGridPanel) and it never overrides this. Does it need to be
+        //  a prop? Probably not. We can probably simplify some code in this component if we remove it.
         actions: ['filter', 'search', 'sort', 'view']
     };
 

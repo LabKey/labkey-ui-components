@@ -137,11 +137,6 @@ import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
-import { Action, ActionValue, ActionValueCollection } from './components/omnibox/actions/Action';
-import { FilterAction } from './components/omnibox/actions/Filter';
-import { SearchAction } from './components/omnibox/actions/Action';
-import { SortAction } from './components/omnibox/actions/Sort';
-import { ViewAction } from './components/omnibox/actions/View';
 import { OmniBox } from './components/omnibox/OmniBox';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
@@ -312,15 +307,6 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
-
-    // Omnibox actions
-    Action,
-    ActionValue,
-    ActionValueCollection,
-    FilterAction,
-    SearchAction,
-    SortAction,
-    ViewAction,
 
     // OmniBox components
     OmniBox,

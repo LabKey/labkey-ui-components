@@ -27,8 +27,11 @@ import {
     ATTACHMENT_TYPE,
     USERS_TYPE,
     PARTICIPANT_TYPE,
-    DomainDesign, DomainField, AssayProtocolModel
+    DomainDesign,
+    DomainField,
+    AssayProtocolModel
 } from "./models";
+import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from "./constants";
 
 describe('PropDescType', () => {
     test("isInteger", () => {
@@ -99,6 +102,20 @@ describe('DomainDesign', () => {
         expect(d.isNameSuffixMatch('foo')).toBeFalsy();
         expect(d.isNameSuffixMatch('Bar')).toBeFalsy();
         expect(d.isNameSuffixMatch('bar')).toBeFalsy();
+    });
+
+    test("mandatoryFieldNames", () => {
+        const base = {name: 'Test Fields', fields: [{name: 'abc'},{name: 'def'}]};
+
+        let domain = DomainDesign.create({...base, mandatoryFieldNames: undefined});
+        expect(domain.fields.size).toBe(2);
+        expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
+        expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
+
+        domain = DomainDesign.create({...base, mandatoryFieldNames: ['abc', 'DEF']});
+        expect(domain.fields.size).toBe(2);
+        expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
+        expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
     });
 });
 

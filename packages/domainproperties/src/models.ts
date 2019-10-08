@@ -415,13 +415,13 @@ export class DomainField extends Record({
 
 
     static fromJS(rawFields: Array<IDomainField>, mandatoryFieldNames?: List<string>): List<DomainField> {
-        let fields = List<DomainField>().asMutable();
+        let fields = List<DomainField>();
 
         for (let i=0; i < rawFields.length; i++) {
-            fields.push(DomainField.create(rawFields[i], undefined, mandatoryFieldNames));
+            fields = fields.push(DomainField.create(rawFields[i], undefined, mandatoryFieldNames));
         }
 
-        return fields.asImmutable();
+        return fields;
     }
 
     static serialize(df: DomainField): any {

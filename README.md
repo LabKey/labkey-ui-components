@@ -73,10 +73,10 @@ Yarn should now be available on the command line.
 
 #### 2. Install lerna
 
-[Lerna](https://lerna.js.org/) is a tool for managing JavaScript projects with multiple packages. Our build is configured for a specific verison so you'll want to specify that when installing. Since yarn is already configured you can install globally:
+[Lerna](https://lerna.js.org/) is a tool for managing JavaScript projects with multiple packages. Our build is configured for a specific verison so you'll want to specify that when installing. It can also be installed via npm:
 
 ```sh
-yarn global add lerna@3.14.1
+npm install -g lerna@3.14.1
 ```
 
 Lerna should now be available on the command line.

@@ -8,3 +8,4 @@
 *.cache
 package-lock.json
 /docs
+/packages/*/.storybook-out

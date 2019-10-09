@@ -953,10 +953,20 @@ export class AssayProtocolModel extends Record({
         return this.availableMetadataInputFormats && Utils.isObject(this.availableMetadataInputFormats) && !Utils.isEmptyObj(this.availableMetadataInputFormats);
     }
 
+    areTransformScriptsValid(): boolean {
+        if (this.protocolTransformScripts === undefined || this.protocolTransformScripts.size === 0) {
+            return true;
+        }
+
+        // make sure we don't have any script inputs that are empty strings
+        return this.protocolTransformScripts.find((script, i) => script === undefined || script === null || script.length === 0) === undefined;
+    }
+
     isValid(): boolean {
         return (this.name !== undefined && this.name !==null && this.name.trim().length > 0)
             && (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat))
             && (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod))
-            && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate));
+            && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate))
+            && this.areTransformScriptsValid();
     }
 }

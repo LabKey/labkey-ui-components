@@ -9,7 +9,7 @@ Domain property related components for LabKey domains
 * Item 6199: support other assay provider types in AssayDesignerPanels and AssayPropertiesPanel
     * update fetchProtocol to work for getting template based on provider name and for copy assay scenario
     * remove default AssayProtocolModel creation from AssayDesignerPanels component and require a model be passed in as props
-    * AssayPropertiesPanel support for additional top-level properties (not yet all) and conditional display of those props based on provider type
+    * AssayPropertiesPanel support for additional top-level properties and conditional display of those props based on provider type
     * remove createGeneralAssayDesign helper in favor of saveAssayDesign (which takes an AssayProtocolModel)
     * better helpURL support for AssayDesignerPanels and AssayPropertiesPanel
     * support domain lookup field type support for locked fields (i.e. should show lookup option values, even if they are not in the virtual schema)

@@ -8,6 +8,7 @@ import {AssayDesignerPanels} from "./AssayDesignerPanels";
 import { AssayProtocolModel, DomainDesign } from "../../models";
 import DomainForm from "../DomainForm";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
+import { NameInput } from "./AssayPropertiesInput";
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -145,7 +146,7 @@ describe('AssayDesignerPanels', () => {
             expect(wrapper.find(AssayPropertiesPanel)).toHaveLength(1);
             expect(wrapper.find(DomainForm)).toHaveLength(3);
             expect(wrapper.find('.panel-body')).toHaveLength(1);
-            expect(wrapper.find('input#' + nameInputId)).toHaveLength(assayPropsActive ? 1 : 0);
+            expect(wrapper.find(NameInput)).toHaveLength(assayPropsActive ? 1 : 0);
             expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
         }

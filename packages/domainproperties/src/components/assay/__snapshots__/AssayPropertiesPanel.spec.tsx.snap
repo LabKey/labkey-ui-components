@@ -123,7 +123,7 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
       <div
         className="domain-field-section-heading domain-field-padding-top"
       >
-        Edit Settings
+        Editing Settings
       </div>
     </div>
   </div>
@@ -376,7 +376,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           <div
             className="domain-field-section-heading domain-field-padding-top"
           >
-            Edit Settings
+            Editing Settings
           </div>
         </div>
       </div>
@@ -654,7 +654,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           <div
             className="domain-field-section-heading domain-field-padding-top"
           >
-            Edit Settings
+            Editing Settings
           </div>
         </div>
       </div>
@@ -833,7 +833,7 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
           <div
             className="domain-field-section-heading domain-field-padding-top"
           >
-            Edit Settings
+            Editing Settings
           </div>
         </div>
       </div>

@@ -443,7 +443,7 @@
     "availableDetectionMethods" : null,
     "moduleTransformScripts" : [ ],
     "qcEnabled" : true,
-    "protocolTransformScripts" : [ ],
+    "protocolTransformScripts" : ["/path/to/transform.R", "/path/to/anotherTransform.pl"],
     "autoCopyTargetContainer" : null,
     "allowTransformationScript" : true,
     "allowBackgroundUpload" : true,

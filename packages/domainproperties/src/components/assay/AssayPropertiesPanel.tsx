@@ -1,13 +1,17 @@
 import * as React from 'react';
-import { Col, Form, FormControl, Row, Panel } from "react-bootstrap";
+import { Col, Form, Row, Panel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
-import { Utils, ActionURL } from "@labkey/api";
+import { Utils } from "@labkey/api";
 import { Tip } from "@glass/base";
 
 import { AssayProtocolModel } from "../../models";
-import { AssayPropertiesInput } from "./AssayPropertiesInput";
 import { LK_ASSAY_DESIGNER_HELP_URL } from "../../constants";
+import {
+    AutoCopyDataInput, BackgroundUploadInput, DescriptionInput, DetectionMethodsInput, EditableResultsInput,
+    EditableRunsInput, MetadataInputFormatsInput, NameInput, PlateTemplatesInput, QCStatesInput, SaveScriptDataInput,
+    TransformScriptsInput
+} from "./AssayPropertiesInput";
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -19,9 +23,14 @@ export const FORM_IDS = {
     EDITABLE_RESULTS: FORM_ID_PREFIX + 'editableResults',
     METADATA_INPUT_FORMAT: FORM_ID_PREFIX + 'selectedMetadataInputFormat',
     PLATE_TEMPLATE: FORM_ID_PREFIX + 'selectedPlateTemplate',
-    QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled'
+    PROTOCOL_TRANSFORM_SCRIPTS: FORM_ID_PREFIX + 'protocolTransformScripts',
+    QC_ENABLED: FORM_ID_PREFIX + 'qcEnabled',
+    SAVE_SCRIPT_FILES: FORM_ID_PREFIX + 'saveScriptFiles'
 };
-const BOOLEAN_FIELDS = [FORM_IDS.BACKGROUND_UPLOAD, FORM_IDS.EDITABLE_RUNS, FORM_IDS.EDITABLE_RESULTS, FORM_IDS.QC_ENABLED];
+const BOOLEAN_FIELDS = [
+    FORM_IDS.BACKGROUND_UPLOAD, FORM_IDS.EDITABLE_RUNS, FORM_IDS.EDITABLE_RESULTS,
+    FORM_IDS.QC_ENABLED, FORM_IDS.SAVE_SCRIPT_FILES
+];
 
 interface Props {
     model: AssayProtocolModel
@@ -75,8 +84,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         }));
     };
 
-    onChange = (evt) => {
-        const { model } = this.props;
+    onInputChange = (evt) => {
         const id = evt.target.id;
         let value = evt.target.value;
 
@@ -90,44 +98,27 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
             value = null;
         }
 
-        this.props.onChange(model.merge({
+        this.onValueChange(id, value);
+    };
+
+    onValueChange = (id, value) => {
+        this.props.onChange(this.props.model.merge({
             [id.replace(FORM_ID_PREFIX, '')]: value
         }));
     };
 
-    renderSectionHeading(title: string, paddingTop?: boolean, showHelpUrl?: boolean) {
-        return (
-            <Row>
-                <Col xs={showHelpUrl ? 9 : 12}>
-                    <div className={'domain-field-section-heading' + (paddingTop ? ' domain-field-padding-top' : '')}>{title}</div>
-                </Col>
-                {showHelpUrl && this.renderHelpUrl()}
-            </Row>
-        )
-    }
-
-    renderHelpUrl() {
-        if (this.props.helpURL) {
-            return (
-                <Col xs={3}>
-                    <a className='domain-field-float-right' target="_blank" href={this.props.helpURL}>Learn more about designing assays</a>
-                </Col>
-            )
-        }
-    }
-
     renderBasicProperties() {
-        const { model, basePropertiesOnly } = this.props;
+        const { model, basePropertiesOnly, helpURL } = this.props;
 
         return (
             <>
-                {!basePropertiesOnly && this.renderSectionHeading('Basic Properties', false, true)}
-                {this.renderNameInput()}
-                {this.renderDescriptionInput()}
-                {model.allowPlateTemplateSelection() && this.renderPlateTemplatesInput()}
-                {model.allowDetectionMethodSelection() && this.renderDetectionMethodsInput()}
-                {model.allowMetadataInputFormatSelection() && this.renderMetadataInputFormatsInput()}
-                {!basePropertiesOnly && model.allowQCStates && this.renderQCStatesInput()}
+                {!basePropertiesOnly && <SectionHeading title={'Basic Properties'} helpURL={helpURL}/>}
+                <NameInput model={model} onChange={this.onInputChange}/>
+                <DescriptionInput model={model} onChange={this.onInputChange}/>
+                {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange}/>}
+                {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange}/>}
+                {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange}/>}
+                {!basePropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
             </>
         )
     }
@@ -137,10 +128,11 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                {this.renderSectionHeading('Import Settings', true)}
-                {model.allowTransformationScript && this.renderTransformScriptsInput()}
-                {this.renderAutoCopyDataInput()}
-                {model.allowBackgroundUpload && this.renderBackgroundUploadInput()}
+                <SectionHeading title={'Import Settings'} paddingTop={true}/>
+                {<AutoCopyDataInput model={model} onChange={this.onInputChange}/>}
+                {model.allowBackgroundUpload && <BackgroundUploadInput model={model} onChange={this.onInputChange}/>}
+                {model.allowTransformationScript && <TransformScriptsInput model={model} onChange={this.onValueChange}/>}
+                {model.allowTransformationScript && <SaveScriptDataInput model={model} onChange={this.onInputChange}/>}
             </>
         )
     }
@@ -150,318 +142,22 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                {this.renderSectionHeading('Edit Settings', true)}
-                {this.renderEditableRunsInput()}
-                {model.allowEditableResults && this.renderEditableResultsInput()}
+                <SectionHeading title={'Editing Settings'} paddingTop={true}/>
+                {<EditableRunsInput model={model} onChange={this.onInputChange}/>}
+                {model.allowEditableResults && <EditableResultsInput model={model} onChange={this.onInputChange}/>}
             </>
         )
     }
 
-    renderNameInput() {
-        return (
-            <AssayPropertiesInput
-                label={'Name'}
-                required={true}
-                helpTipBody={() => {
-                    return (
-                        <>
-                            <p>The name for this assay design. Note that this can't be changed after the assay design is created.</p>
-                            <p><small><i>This field is required.</i></small></p>
-                        </>
-                    )
-                }}
-            >
-                <FormControl
-                    id={FORM_IDS.ASSAY_NAME}
-                    type="text"
-                    placeholder={'Enter a name for this assay'}
-                    value={this.props.model.name || ''}
-                    onChange={this.onChange}
-                    disabled={!this.props.model.isNew()}
-                />
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderDescriptionInput() {
-        return (
-            <AssayPropertiesInput
-                label={'Description'}
-                helpTipBody={() => {
-                    return (
-                        <p>A short description for this assay design.</p>
-                    )
-                }}
-            >
-                    <textarea
-                        className="form-control domain-field-textarea"
-                        id={FORM_IDS.ASSAY_DESCRIPTION}
-                        placeholder={'Add a description'}
-                        value={this.props.model.description || ''}
-                        onChange={this.onChange}
-                    />
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderEditableRunsInput() {
-        return (
-            <AssayPropertiesInput
-                label={'Editable Runs'}
-                helpTipBody={() => {
-                    return (
-                        <p>
-                            If enabled, users with sufficient permissions can edit values at the run level
-                            after the initial import is complete.
-                            These changes will be audited.
-                        </p>
-                    )
-                }}
-            >
-                <input
-                    type='checkbox'
-                    id={FORM_IDS.EDITABLE_RUNS}
-                    checked={this.props.model.editableRuns}
-                    onChange={this.onChange}
-                />
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderEditableResultsInput() {
-        return (
-            <AssayPropertiesInput
-                label={'Editable Results'}
-                helpTipBody={() => {
-                    return (
-                        <p>
-                            If enabled, users with sufficient permissions can edit and delete at the individual results row level after the initial import is complete.
-                            New result rows cannot be added to existing runs. These changes will be audited.
-                        </p>
-                    )
-                }}
-            >
-                <input
-                    type='checkbox'
-                    id={FORM_IDS.EDITABLE_RESULTS}
-                    checked={this.props.model.editableResults}
-                    onChange={this.onChange}
-                />
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderBackgroundUploadInput() {
-        return (
-            <AssayPropertiesInput
-                label={'Import in Background'}
-                helpTipBody={() => {
-                    return (
-                        <p>
-                            If enabled, assay imports will be processed as jobs in the data pipeline.
-                            If there are any errors during the import, they can be viewed from the log file for that job.
-                        </p>
-                    )
-                }}
-            >
-                <input
-                    type='checkbox'
-                    id={FORM_IDS.BACKGROUND_UPLOAD}
-                    checked={this.props.model.backgroundUpload}
-                    onChange={this.onChange}
-                />
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderQCStatesInput() {
-        return (
-            <AssayPropertiesInput
-                label={'QC States'}
-                helpTipBody={() => {
-                    return (
-                        <p>
-                            If enabled, QC states can be configured and assigned on a per run basis to control the visibility of imported run data.
-                            Users not in the QC Analyst role will not be able to view non-public data.
-                        </p>
-                    )
-                }}
-            >
-                <input
-                    type='checkbox'
-                    id={FORM_IDS.QC_ENABLED}
-                    checked={this.props.model.qcEnabled}
-                    onChange={this.onChange}
-                />
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderAutoCopyDataInput() {
-        const { autoCopyTargetContainer } = this.props.model;
-
-        return (
-            <AssayPropertiesInput
-                label={'Auto-Copy Data to Study'}
-                helpTipBody={() => {
-                    return (
-                        <p>
-                            When new runs are imported, automatically copy their data rows to the specified target study.
-                            Only rows that include subject and visit/date information will be copied.
-                        </p>
-                    )
-                }}
-            >
-                <div style={{opacity: 0.5}}>Coming soon</div>
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderPlateTemplatesInput() {
-        const { availablePlateTemplates, selectedPlateTemplate } = this.props.model;
-
-        return (
-            <AssayPropertiesInput
-                label={'Plate Template'}
-                required={true}
-                colSize={4}
-                helpTipBody={() => {
-                    return (
-                        <>
-                            <p>
-                                Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
-                                For additional information refer to the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=editPlateTemplate" target="_blank">help documentation</a>.
-                            </p>
-                            <p>
-                                <small><i>This field is required.</i></small>
-                            </p>
-                        </>
-                    )
-                }}
-            >
-                <FormControl
-                    componentClass="select"
-                    id={FORM_IDS.PLATE_TEMPLATE}
-                    onChange={this.onChange}
-                    value={selectedPlateTemplate}
-                >
-                    <option key="_empty" value={null}/>
-                    {
-                        availablePlateTemplates.map((type, i) => (
-                            <option key={i} value={type}>{type}</option>
-                        ))
-                    }
-                </FormControl>
-                <a href={ActionURL.buildURL('plate', 'plateTemplateList')} className={'labkey-text-link'}>Configure Templates</a>
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderDetectionMethodsInput() {
-        const { availableDetectionMethods, selectedDetectionMethod } = this.props.model;
-
-        return (
-            <AssayPropertiesInput
-                label={'Detection Method'}
-                required={true}
-                colSize={4}
-            >
-                <FormControl
-                    componentClass="select"
-                    id={FORM_IDS.DETECTION_METHOD}
-                    onChange={this.onChange}
-                    value={selectedDetectionMethod}
-                >
-                    <option key="_empty" value={null}/>
-                    {
-                        availableDetectionMethods.map((method, i) => (
-                            <option key={i} value={method}>{method}</option>
-                        ))
-                    }
-                </FormControl>
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderTransformScriptsInput() {
-        return (
-            <AssayPropertiesInput
-                label={'Transform Scripts'}
-                helpTipBody={() => {
-                    return (
-                        <>
-                            <p>
-                                The full path to the transform script file. Transform scripts run before the assay data is imported and can reshape the data file to match
-                                the expected import format. For help writing a transform script refer to
-                                the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=programmaticQC" target="_blank">Programmatic Quality Control & Transformations</a> guide.
-                            </p>
-                            <p>
-                                The extension of the script file identifies the script engine that will be used to run the validation script. For example,
-                                a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
-                                configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                                the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=configureScripting" target="_blank">help documentation</a>.
-                            </p>
-                        </>
-                    )
-                }}
-            >
-                <div style={{opacity: 0.5}}>Coming soon</div>
-            </AssayPropertiesInput>
-        )
-    }
-
-    renderMetadataInputFormatsInput() {
-        const { availableMetadataInputFormats, selectedMetadataInputFormat } = this.props.model;
-
-        return (
-            <AssayPropertiesInput
-                label={'Metadata Input Format'}
-                required={true}
-                colSize={4}
-                helpTipBody={() => {
-                    return (
-                        <>
-                            <p>
-                                <strong>Manual: </strong> Metadata is provided as form based manual entry.
-                            </p>
-                            <p>
-                                <strong>File Upload (metadata only): </strong> Metadata is provided from a file upload (separate from the run data file).
-                            </p>
-                            <p>
-                                <strong>Combined File Upload (metadata & run data): </strong> Metadata and run data are combined into a single file upload.
-                            </p>
-                            <p>
-                                <small><i>This field is required.</i></small>
-                            </p>
-                        </>
-                    )
-                }}
-            >
-                <FormControl
-                    componentClass="select"
-                    id={FORM_IDS.METADATA_INPUT_FORMAT}
-                    onChange={this.onChange}
-                    value={selectedMetadataInputFormat}
-                >
-                    {
-                        Object.keys(availableMetadataInputFormats).map((key, i) => (
-                            <option key={i} value={key}>{availableMetadataInputFormats[key]}</option>
-                        ))
-                    }
-                </FormControl>
-            </AssayPropertiesInput>
-        )
-    }
-
     renderForm() {
-        const { basePropertiesOnly, children } = this.props;
+        const { basePropertiesOnly, children, helpURL } = this.props;
 
         return (
             <Form>
                 {!basePropertiesOnly ? children
                     : <Row>
                         <Col xs={9}>{children}</Col>
-                        {this.renderHelpUrl()}
+                        {helpURL && <HelpURL helpURL={helpURL}/>}
                     </Row>
                 }
                 {this.renderBasicProperties()}
@@ -523,4 +219,35 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
             </>
         )
     }
+}
+
+interface SectionHeadingProps {
+    title: string
+    paddingTop?: boolean
+    helpURL?: string
+}
+
+function SectionHeading(props: SectionHeadingProps) {
+    return (
+        <Row>
+            <Col xs={props.helpURL ? 9 : 12}>
+                <div className={'domain-field-section-heading' + (props.paddingTop ? ' domain-field-padding-top' : '')}>
+                    {props.title}
+                </div>
+            </Col>
+            {props.helpURL && <HelpURL helpURL={props.helpURL}/>}
+        </Row>
+    )
+}
+
+interface HelpURLProps {
+    helpURL: string
+}
+
+function HelpURL(props: HelpURLProps) {
+    return (
+        <Col xs={3}>
+            <a className='domain-field-float-right' target="_blank" href={props.helpURL}>Learn more about designing assays</a>
+        </Col>
+    )
 }

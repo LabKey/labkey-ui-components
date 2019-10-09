@@ -885,11 +885,11 @@ export class AssayProtocolModel extends Record({
     editableResults: boolean;
     editableRuns: boolean;
     metadataInputFormatHelp: any;
-    moduleTransformScripts: Array<any>;
+    moduleTransformScripts: List<string>;
     name: string;
     protocolId: number;
     protocolParameters: any;
-    protocolTransformScripts: any;
+    protocolTransformScripts: List<string>;
     providerName: string;
     saveScriptFiles: boolean;
     selectedDetectionMethod: string;
@@ -909,6 +909,10 @@ export class AssayProtocolModel extends Record({
                     return DomainDesign.create(domain);
                 })
             );
+        }
+
+        if (raw.protocolTransformScripts && Utils.isArray(raw.protocolTransformScripts)) {
+            raw.protocolTransformScripts = List<string>(raw.protocolTransformScripts);
         }
 
         // if this is not an existing assay, clear the name property so the user must set it

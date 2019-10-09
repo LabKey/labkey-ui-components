@@ -44,7 +44,6 @@ import {AdvancedSettings} from "./AdvancedSettings";
 
 interface IDomainRowProps {
     domainId?: number
-    domainKind: string
     helpNoun: string
     expanded: boolean
     dragging: boolean
@@ -392,7 +391,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, isDragDisabled, domainId,
-            helpNoun, domainKind, defaultDefaultValueType, defaultValueOptions } = this.props;
+            helpNoun, defaultDefaultValueType, defaultValueOptions } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={isDragDisabled}>
@@ -409,7 +408,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
                             <AdvancedSettings
                                 domainId={domainId}
-                                domainKind={domainKind}
                                 helpNoun={helpNoun}
                                 index={index}
                                 maxPhiLevel={maxPhiLevel}

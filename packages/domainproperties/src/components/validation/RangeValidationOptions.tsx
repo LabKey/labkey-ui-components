@@ -2,8 +2,7 @@ import * as React from "react";
 import {Button, Checkbox, Col, Collapse, FormControl, Row} from "react-bootstrap";
 import {createFormInputId, createFormInputName, getNameFromId} from "../../actions/actions";
 import {
-    DOMAIN_VALIDATOR_DESCRIPTION, DOMAIN_VALIDATOR_ERRORMESSAGE,
-    DOMAIN_VALIDATOR_EXPRESSION, DOMAIN_VALIDATOR_FAILONMATCH, DOMAIN_VALIDATOR_NAME, DOMAIN_VALIDATOR_REMOVE,
+    DOMAIN_VALIDATOR_DESCRIPTION, DOMAIN_VALIDATOR_ERRORMESSAGE, DOMAIN_VALIDATOR_NAME, DOMAIN_VALIDATOR_REMOVE
 } from "../../constants";
 import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -157,10 +156,10 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
     };
 
     render() {
-        const { validatorIndex, expanded, dataType, validator, mvEnabled } = this.props;
+        const { validatorIndex, expanded, dataType, validator, mvEnabled, index } = this.props;
 
         return(
-            <div className='domain-validator-panel'>
+            <div className='domain-validator-panel' id={"domain-range-validator-" + index}>
                 {expanded &&
                 <div>
                     <Filters validatorIndex={validatorIndex}

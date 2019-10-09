@@ -81,21 +81,6 @@ export class ConditionalFormattingValidation extends React.PureComponent<Conditi
         this.setState(() => ({showRange: !this.state.showRange}));
     };
 
-    // getRangeValidatorModal = () => {
-    //     const { field, index } = this.props;
-    //     const { showRange } = this.state;
-    //
-    //     return ValidatorModal(RegexValidationOptions, {
-    //         title: 'Range Validator ' + (field.name ? ('for ' + field.name) : ''),
-    //         subTitle: 'Add New Validation Criteria:',
-    //         addName: 'Range Validator',
-    //         index: index,
-    //         show: showRange,
-    //         validators: field.rangeValidators,
-    //         onHide: this.showHideRangeValidator
-    //     })
-    // }
-
     renderValidator = (range: boolean) => {
         const { field, index } = this.props;
 

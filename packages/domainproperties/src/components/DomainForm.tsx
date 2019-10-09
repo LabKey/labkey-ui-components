@@ -67,7 +67,6 @@ interface IDomainFormInput {
 interface IDomainFormState {
     expandedRowIndex: number
     expandTransition: number
-    domainKind: string
     showConfirm: boolean
     collapsed: boolean
     maxPhiLevel: string
@@ -104,7 +103,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.state = {
             expandedRowIndex: undefined,
             expandTransition: EXPAND_TRANSITION,
-            domainKind: props.domain.getDomainKind(),
             showConfirm: false,
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
@@ -570,7 +568,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderForm() {
         const { domain, children, helpNoun } = this.props;
-        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered, domainKind } = this.state;
+        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
             <>
@@ -600,7 +598,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                                             return <DomainRow
                                                 domainId={domain.domainId}
-                                                domainKind={domainKind}
                                                 helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}
                                                 field={field}

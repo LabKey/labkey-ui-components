@@ -384,7 +384,7 @@ export class PropertyValidatorProperties extends Record({
 export interface IPropertyValidator {
     type: string,
     name: string,
-    properties: List<PropertyValidatorProperties>,
+    properties: PropertyValidatorProperties,
     errorMessage?: string,
     description?: string,
     new: boolean,
@@ -395,7 +395,7 @@ export interface IPropertyValidator {
 export class PropertyValidator extends Record({
     type: undefined,
     name: undefined,
-    properties: List<PropertyValidatorProperties>(),
+    properties: new PropertyValidatorProperties(),
     errorMessage: undefined,
     description: undefined,
     new : true,
@@ -404,7 +404,7 @@ export class PropertyValidator extends Record({
 }) implements IPropertyValidator {
     type: string;
     name: string;
-    properties: List<PropertyValidatorProperties>;
+    properties: PropertyValidatorProperties;
     errorMessage?: string;
     description?: string;
     new: boolean;

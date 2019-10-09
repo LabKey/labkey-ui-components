@@ -94,10 +94,10 @@ export function ValidatorModal(WrappedComponent: any) {
                     updatedValidators = validators.push(new ConditionalFormat());
                     break;
                 case DOMAIN_REGEX_VALIDATOR:
-                    updatedValidators = validators.push(new PropertyValidator());
+                    updatedValidators = validators.push(new PropertyValidator({type: 'RegEx'}));
                     break;
                 default:
-                    updatedValidators = validators.push(new PropertyValidator());
+                    updatedValidators = validators.push(new PropertyValidator({type: 'Range'}));
                     break;
             }
 

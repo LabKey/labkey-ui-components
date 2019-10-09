@@ -215,10 +215,10 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     }
 
     render() {
-        const { validatorIndex, expanded, dataType, validator, mvEnabled } = this.props;
+        const { validatorIndex, expanded, dataType, validator, mvEnabled, index } = this.props;
 
         return(
-            <div className='domain-validator-panel'>
+            <div className='domain-validator-panel' id={"domain-condition-format-" + index}>
                 {expanded &&
                 <div>
                     <Filters validatorIndex={validatorIndex}

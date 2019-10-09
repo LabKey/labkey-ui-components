@@ -271,7 +271,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             name={createFormInputName(DOMAIN_FIELD_DEFAULT_VALUE)}
                             id={createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE, index)}
                             onChange={this.handleChange}
-                            value={defaultValue !== undefined ? defaultValue : ''}
+                            value={defaultValue !== undefined && defaultValue !== null ? defaultValue : ''}
                             disabled={true}
                         />
                     </Col>

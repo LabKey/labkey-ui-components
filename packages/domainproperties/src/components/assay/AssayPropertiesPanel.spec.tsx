@@ -12,6 +12,7 @@ import {
     EditableResultsInput,
     EditableRunsInput,
     MetadataInputFormatsInput,
+    ModuleProvidedScriptsInput,
     NameInput,
     PlateTemplatesInput,
     QCStatesInput,
@@ -134,6 +135,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(BackgroundUploadInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
+        expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
         simpleModelWrapper.unmount();
     });
 
@@ -146,6 +148,7 @@ describe('AssayPropertiesPanel', () => {
             availableDetectionMethods: ['a', 'b', 'c'],
             availableMetadataInputFormats: {test1: 'abc'},
             availablePlateTemplates: ['d','e','f'],
+            moduleTransformScripts: ['validation.pl']
         });
 
         const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn}/>);
@@ -160,6 +163,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(BackgroundUploadInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(1);
+        expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(1);
         simpleModelWrapper.unmount();
     });
 
@@ -171,6 +175,7 @@ describe('AssayPropertiesPanel', () => {
             availableDetectionMethods: ['a', 'b', 'c'],
             availableMetadataInputFormats: {test1: 'abc'},
             availablePlateTemplates: ['d','e','f'],
+            moduleTransformScripts: ['validation.pl']
         });
 
         const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn} basePropertiesOnly={true}/>);
@@ -185,6 +190,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(BackgroundUploadInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
+        expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
         simpleModelWrapper.unmount();
     });
 });

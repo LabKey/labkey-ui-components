@@ -329,7 +329,7 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                 )
             }}
         >
-            {props.model.moduleTransformScripts.map((script) => <div>{script}</div>)}
+            {props.model.moduleTransformScripts.map((script, i) => <div key={i}>{script}</div>)}
         </AssayPropertiesInput>
     )
 }

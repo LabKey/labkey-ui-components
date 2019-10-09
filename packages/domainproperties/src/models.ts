@@ -953,13 +953,24 @@ export class AssayProtocolModel extends Record({
         return this.availableMetadataInputFormats && Utils.isObject(this.availableMetadataInputFormats) && !Utils.isEmptyObj(this.availableMetadataInputFormats);
     }
 
-    areTransformScriptsValid(): boolean {
+    validateTransformScripts(): string {
         if (this.protocolTransformScripts === undefined || this.protocolTransformScripts.size === 0) {
-            return true;
+            return undefined;
         }
 
         // make sure we don't have any script inputs that are empty strings
-        return this.protocolTransformScripts.find((script, i) => script === undefined || script === null || script.length === 0) === undefined;
+        const emptyScript = this.protocolTransformScripts.find((script, i) => script === undefined || script === null || script.length === 0);
+        if (emptyScript !== undefined) {
+            return 'Missing required transform script path.';
+        }
+
+        // if not allowSpacesInPath, the path to the script should not contain spaces when the Save Script Data check box is selected
+        if (!this.allowSpacesInPath && this.saveScriptFiles) {
+            const spacedScript = this.protocolTransformScripts.find((script, i) => script.indexOf(' ') > -1);
+            if (spacedScript !== undefined) {
+                return 'The path to the transform script should not contain spaces when the \'Save Script Data for Debugging\' check box is selected.'
+            }
+        }
     }
 
     isValid(): boolean {
@@ -967,6 +978,6 @@ export class AssayProtocolModel extends Record({
             && (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat))
             && (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod))
             && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate))
-            && this.areTransformScriptsValid();
+            && this.validateTransformScripts() === undefined;
     }
 }

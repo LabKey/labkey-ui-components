@@ -141,6 +141,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;
         const isNew = protocolModel.isNew();
         const finish = !isNew || this.isLastStep();
+        const transformScriptError = protocolModel.validateTransformScripts();
 
         return (
             <>
@@ -182,6 +183,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     )
                 })}
                 {error && <Alert>{error}</Alert>}
+                {transformScriptError && <Alert>{transformScriptError}</Alert>}
                 <WizardNavButtons
                     containerClassName=""
                     cancel={onCancel}

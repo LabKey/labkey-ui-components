@@ -914,6 +914,9 @@ export class AssayProtocolModel extends Record({
         if (raw.protocolTransformScripts && Utils.isArray(raw.protocolTransformScripts)) {
             raw.protocolTransformScripts = List<string>(raw.protocolTransformScripts);
         }
+        if (raw.moduleTransformScripts && Utils.isArray(raw.moduleTransformScripts)) {
+            raw.moduleTransformScripts = List<string>(raw.moduleTransformScripts);
+        }
 
         // if this is not an existing assay, clear the name property so the user must set it
         const name = !raw.protocolId ? undefined : raw.name;

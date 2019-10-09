@@ -8,8 +8,18 @@ import { Tip } from "@glass/base";
 import { AssayProtocolModel } from "../../models";
 import { LK_ASSAY_DESIGNER_HELP_URL } from "../../constants";
 import {
-    AutoCopyDataInput, BackgroundUploadInput, DescriptionInput, DetectionMethodsInput, EditableResultsInput,
-    EditableRunsInput, MetadataInputFormatsInput, NameInput, PlateTemplatesInput, QCStatesInput, SaveScriptDataInput,
+    AutoCopyDataInput,
+    BackgroundUploadInput,
+    DescriptionInput,
+    DetectionMethodsInput,
+    EditableResultsInput,
+    EditableRunsInput,
+    MetadataInputFormatsInput,
+    ModuleProvidedScriptsInput,
+    NameInput,
+    PlateTemplatesInput,
+    QCStatesInput,
+    SaveScriptDataInput,
     TransformScriptsInput
 } from "./AssayPropertiesInput";
 
@@ -133,6 +143,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 {model.allowBackgroundUpload && <BackgroundUploadInput model={model} onChange={this.onInputChange}/>}
                 {model.allowTransformationScript && <TransformScriptsInput model={model} onChange={this.onValueChange}/>}
                 {model.allowTransformationScript && <SaveScriptDataInput model={model} onChange={this.onInputChange}/>}
+                {model.moduleTransformScripts && model.moduleTransformScripts.size > 0 && <ModuleProvidedScriptsInput model={model}/>}
             </>
         )
     }

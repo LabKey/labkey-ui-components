@@ -1,8 +1,8 @@
-import { fromJS, List, Map } from 'immutable'
-import { QueryColumn, QueryGridModel } from '@glass/base'
+import { fromJS, List, Map } from 'immutable';
+import { QueryColumn, QueryGridModel } from '@glass/base';
 
-import rawColumnData from './data/columns.json'
-import rawData from './data/data.json'
+import rawColumnData from './data/columns.json';
+import rawData from './data/data.json';
 
 export interface IActionContext {
     columns: List<QueryColumn>

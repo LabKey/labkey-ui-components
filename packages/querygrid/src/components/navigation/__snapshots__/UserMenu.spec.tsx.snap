@@ -18,7 +18,7 @@ exports[`UserMenu user logged in dev mode 1`] = `
       alt="User Avatar"
       className="img-rounded"
       height={32}
-      src="undefined/_images/defaultavatar.png"
+      src="/labkey/_images/defaultavatar.png"
       width={32}
     />
      
@@ -71,7 +71,7 @@ exports[`UserMenu user logged in dev mode 1`] = `
       role="presentation"
     >
       <a
-        href="undefined/project/begin.view"
+        href="/labkey/project/begin.view"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="menuitem"
@@ -127,7 +127,7 @@ exports[`UserMenu user logged in extra dev mode items 1`] = `
       alt="User Avatar"
       className="img-rounded"
       height={32}
-      src="undefined/_images/defaultavatar.png"
+      src="/labkey/_images/defaultavatar.png"
       width={32}
     />
      
@@ -180,7 +180,7 @@ exports[`UserMenu user logged in extra dev mode items 1`] = `
       role="presentation"
     >
       <a
-        href="undefined/project/begin.view"
+        href="/labkey/project/begin.view"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="menuitem"
@@ -254,7 +254,7 @@ exports[`UserMenu user logged in extra items 1`] = `
       alt="User Avatar"
       className="img-rounded"
       height={32}
-      src="undefined/_images/defaultavatar.png"
+      src="/labkey/_images/defaultavatar.png"
       width={32}
     />
      
@@ -307,7 +307,7 @@ exports[`UserMenu user logged in extra items 1`] = `
       role="presentation"
     >
       <a
-        href="undefined/project/begin.view"
+        href="/labkey/project/begin.view"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="menuitem"
@@ -375,7 +375,7 @@ exports[`UserMenu user logged in, but not in dev mode 1`] = `
       alt="User Avatar"
       className="img-rounded"
       height={32}
-      src="undefined/_images/defaultavatar.png"
+      src="/labkey/_images/defaultavatar.png"
       width={32}
     />
      
@@ -428,7 +428,7 @@ exports[`UserMenu user logged in, but not in dev mode 1`] = `
       role="presentation"
     >
       <a
-        href="undefined/project/begin.view"
+        href="/labkey/project/begin.view"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="menuitem"
@@ -459,7 +459,7 @@ exports[`UserMenu user not logged in 1`] = `
       alt="User Avatar"
       className="img-rounded"
       height={32}
-      src="undefined/_images/defaultavatar.png"
+      src="/labkey/_images/defaultavatar.png"
       width={32}
     />
      
@@ -497,7 +497,7 @@ exports[`UserMenu user not logged in 1`] = `
       role="presentation"
     >
       <a
-        href="undefined/project/begin.view"
+        href="/labkey/project/begin.view"
         onClick={[Function]}
         onKeyDown={[Function]}
         role="menuitem"

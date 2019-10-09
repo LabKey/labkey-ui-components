@@ -138,9 +138,3 @@ export interface ActionOption {
     nextLabel?: string
     selectable?: boolean
 }
-
-// These exports allow for more straightforward import of the actions (one stop shop)
-export { FilterAction } from './Filter'
-export { SearchAction } from './Search'
-export { SortAction } from './Sort'
-export { ViewAction } from './View'

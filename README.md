@@ -13,8 +13,6 @@ This repository defines all of the components available in the @glass scope. The
 | --- | --- | 
 | [@glass/base](packages/base/README.md) | Base components, models, and utility functions for LabKey applications and pages
 | [@glass/domainproperties](packages/domainproperties/README.md) | Domain property related components for LabKey domains | 
-| [@glass/navigation](packages/navigation/README.md) | Application navigation elements and functions |
-| [@glass/omnibox](packages/omnibox/README.md) | LabKey component that takes a set of actions (like filter, sort, search) and exposes them as a single input for applying those actions to a QueryGrid | 
 | [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views 
 | [template](packages/template/README.md) | A template for creating new packages
 
@@ -183,12 +181,12 @@ conjunction with a copy command. The `watch` command can automatically build a p
 see the `packages/template/package.json` script declaration). You will then need to manually copy the `dist` directory
 created by the build into the application's `node_modules/@glass/<package_name>` directory.
                                   
-For example, for the navigation package, you could do:
-* ``cd packages/navigation``
+For example, for the querygrid package, you could do:
+* ``cd packages/querygrid``
 * ``yarn watch``
 * edit files
 * wait for recompile triggered by the `watch` to happen
-* ``cp -r dist /path/to/my_app/node_modules/\@glass/navigation``
+* ``cp -r dist /path/to/my_app/node_modules/\@glass/querygrid``
 
 ### Package Dependencies
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)

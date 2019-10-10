@@ -6,6 +6,7 @@ import { AssayPropertiesPanel, FORM_IDS } from "./AssayPropertiesPanel";
 import { AssayProtocolModel, DomainDesign } from "../../models";
 import { LK_DOMAIN_HELP_URL } from "../../constants";
 import {
+    AutoCopyDataInput,
     BackgroundUploadInput,
     DescriptionInput,
     DetectionMethodsInput,
@@ -136,6 +137,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
+        expect(simpleModelWrapper.find(AutoCopyDataInput)).toHaveLength(1);
         simpleModelWrapper.unmount();
     });
 
@@ -164,6 +166,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(1);
+        expect(simpleModelWrapper.find(AutoCopyDataInput)).toHaveLength(1);
         simpleModelWrapper.unmount();
     });
 
@@ -191,6 +194,7 @@ describe('AssayPropertiesPanel', () => {
         expect(simpleModelWrapper.find(TransformScriptsInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(SaveScriptDataInput)).toHaveLength(0);
         expect(simpleModelWrapper.find(ModuleProvidedScriptsInput)).toHaveLength(0);
+        expect(simpleModelWrapper.find(AutoCopyDataInput)).toHaveLength(0);
         simpleModelWrapper.unmount();
     });
 });

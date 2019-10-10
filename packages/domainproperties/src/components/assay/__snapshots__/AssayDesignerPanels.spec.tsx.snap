@@ -819,17 +819,18 @@ Array [
             </span>
           </div>
           <div
-            className="col-xs-9"
+            className="col-xs-6"
           >
-            <div
-              style={
-                Object {
-                  "opacity": 0.5,
-                }
-              }
+            <span
+              className=""
             >
-              Coming soon
-            </div>
+              <i
+                aria-hidden="true"
+                className="fa fa-spinner fa-spin"
+              />
+               
+              Loading...
+            </span>
           </div>
         </div>
         <div
@@ -1152,17 +1153,18 @@ Array [
             </span>
           </div>
           <div
-            className="col-xs-9"
+            className="col-xs-6"
           >
-            <div
-              style={
-                Object {
-                  "opacity": 0.5,
-                }
-              }
+            <span
+              className=""
             >
-              Coming soon
-            </div>
+              <i
+                aria-hidden="true"
+                className="fa fa-spinner fa-spin"
+              />
+               
+              Loading...
+            </span>
           </div>
         </div>
         <div
@@ -1499,17 +1501,18 @@ Array [
             </span>
           </div>
           <div
-            className="col-xs-9"
+            className="col-xs-6"
           >
-            <div
-              style={
-                Object {
-                  "opacity": 0.5,
-                }
-              }
+            <span
+              className=""
             >
-              Coming soon
-            </div>
+              <i
+                aria-hidden="true"
+                className="fa fa-spinner fa-spin"
+              />
+               
+              Loading...
+            </span>
           </div>
         </div>
         <div
@@ -1938,17 +1941,18 @@ Array [
             </span>
           </div>
           <div
-            className="col-xs-9"
+            className="col-xs-6"
           >
-            <div
-              style={
-                Object {
-                  "opacity": 0.5,
-                }
-              }
+            <span
+              className=""
             >
-              Coming soon
-            </div>
+              <i
+                aria-hidden="true"
+                className="fa fa-spinner fa-spin"
+              />
+               
+              Loading...
+            </span>
           </div>
         </div>
         <div

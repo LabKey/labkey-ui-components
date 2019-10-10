@@ -78,6 +78,7 @@ import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { QueryInfoForm } from './components/forms/QueryInfoForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
+import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
 import { QuerySelect } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
@@ -136,6 +137,15 @@ import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
+import { OmniBox } from './components/omnibox/OmniBox';
+import { HeaderWrapper } from './components/navigation/HeaderWrapper';
+import { NavigationBar } from './components/navigation/NavigationBar';
+import { NavItem } from './components/navigation/NavItem';
+import { MenuSectionConfig } from './components/navigation/ProductMenuSection';
+import { ITab, SubNav } from './components/navigation/SubNav';
+import { Breadcrumb } from './components/navigation/Breadcrumb';
+import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
+import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
 
 export {
     // global state functions
@@ -212,6 +222,7 @@ export {
     QueryGridPanel,
     PreviewGrid,
     QueryInfoForm,
+    LookupSelectInput,
     SelectInput,
     QuerySelect,
     PageDetailHeader,
@@ -295,5 +306,23 @@ export {
     LineageGrid,
     SampleTypeLineageCounts,
     VisGraphNode,
-    invalidateLineageResults
+    invalidateLineageResults,
+
+    // OmniBox components
+    OmniBox,
+
+    // Navigation types
+    MenuSectionConfig,
+    ProductMenuModel,
+    MenuSectionModel,
+    MenuItemModel,
+
+    // Navigation components
+    HeaderWrapper,
+    ITab,
+    NavItem,
+    NavigationBar,
+    SubNav,
+    Breadcrumb,
+    BreadcrumbCreate
 }

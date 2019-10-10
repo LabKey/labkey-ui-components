@@ -7,7 +7,6 @@
 @import "~react-select/scss/default";
 
 @import "~@glass/base/dist/base.css";
-@import "~@glass/omnibox/dist/omnibox.css";
 
 @import "variables";
 @import "grid";
@@ -19,3 +18,8 @@
 @import "assays";
 @import "lineage";
 @import "report-list";
+@import "control";
+@import "menu";
+@import "multi";
+@import "navbar";
+@import "breadcrumb";

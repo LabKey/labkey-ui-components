@@ -159,7 +159,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
         const { validatorIndex, expanded, dataType, validator, mvEnabled, index } = this.props;
 
         return(
-            <div className='domain-validator-panel' id={"domain-range-validator-" + index}>
+            <div className='domain-validator-panel' id={"domain-range-validator-" + validatorIndex}>
                 {expanded &&
                 <div>
                     <Filters validatorIndex={validatorIndex}

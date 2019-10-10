@@ -172,10 +172,10 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
     }
 
     render() {
-        const { validatorIndex, expanded, validator, index } = this.props;
+        const { validatorIndex, expanded, validator } = this.props;
 
         return(
-            <div className='domain-validator-panel' id={"domain-regex-validator-" + index}>
+            <div className='domain-validator-panel' id={"domain-regex-validator-" + validatorIndex}>
                 {expanded &&
                         <div>
                             {this.renderRowTextbox('Regular Expression:*', DOMAIN_VALIDATOR_EXPRESSION, validatorIndex, validator.expression,

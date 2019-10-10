@@ -567,14 +567,9 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
 
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
-        // need to serialize the DomainDesign objects to remove the unrecognized fields
-        const domains = model.domains.map((domain) => {
-            return DomainDesign.serialize(domain);
-        });
-
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api'),
-            jsonData: model.merge({domains}),
+            jsonData: AssayProtocolModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(AssayProtocolModel.create(response.data));
             }),
@@ -582,5 +577,19 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
                 reject(error.exception);
             }, this, false)
         });
+    });
+}
+
+export function getValidPublishTargets(): Promise<List<Container>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assay', 'getValidPublishTargets.api'),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(List<Container>(response.containers.map((container) => new Container(container))));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        })
     });
 }

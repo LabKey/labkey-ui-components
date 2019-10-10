@@ -849,6 +849,7 @@ export class AssayProtocolModel extends Record({
     allowSpacesInPath: false,
     allowTransformationScript: false,
     autoCopyTargetContainer: undefined,
+    autoCopyTargetContainerId: undefined,
     availableDetectionMethods: undefined,
     availableMetadataInputFormats: undefined,
     availablePlateTemplates: undefined,
@@ -875,7 +876,8 @@ export class AssayProtocolModel extends Record({
     allowQCStates: boolean;
     allowSpacesInPath: boolean;
     allowTransformationScript: boolean;
-    autoCopyTargetContainer: string;
+    autoCopyTargetContainer: {};
+    autoCopyTargetContainerId: string;
     availableDetectionMethods: [];
     availableMetadataInputFormats: {};
     availablePlateTemplates: [];
@@ -926,6 +928,20 @@ export class AssayProtocolModel extends Record({
             name,
             domains
         });
+    }
+
+    static serialize(model: AssayProtocolModel): any {
+        // need to serialize the DomainDesign objects to remove the unrecognized fields
+        const domains = model.domains.map((domain) => {
+            return DomainDesign.serialize(domain);
+        });
+
+        let json = model.merge({domains}).toJS();
+
+        // only need to serialize the id and not the autoCopyTargetContainer object
+        delete json.autoCopyTargetContainer;
+
+        return json;
     }
 
     getDomainByNameSuffix(name: string): DomainDesign {

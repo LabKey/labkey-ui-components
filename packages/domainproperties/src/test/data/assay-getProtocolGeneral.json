@@ -444,7 +444,7 @@
     "moduleTransformScripts" : [ ],
     "qcEnabled" : true,
     "protocolTransformScripts" : ["/path/to/transform.R", "/path/to/anotherTransform.pl"],
-    "autoCopyTargetContainer" : null,
+    "autoCopyTargetContainerId" : "DDFDA233-F0C8-1036-95AB-F5B7057CFF74",
     "allowTransformationScript" : true,
     "allowBackgroundUpload" : true,
     "allowEditableResults" : true,

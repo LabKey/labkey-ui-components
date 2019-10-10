@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Col, FormControl, Row } from "react-bootstrap";
 import { List } from "immutable";
-import { AddEntityButton, LabelHelpTip, RemoveEntityButton } from "@glass/base";
+import { AddEntityButton, Container, LabelHelpTip, LoadingSpinner, RemoveEntityButton } from "@glass/base";
 import { ActionURL } from "@labkey/api";
 
 import { AssayProtocolModel } from "../../models";
 import { FORM_IDS } from "./AssayPropertiesPanel";
+import { getValidPublishTargets } from "../../actions/actions";
 
 interface AssayPropertiesInputProps {
     label: string
@@ -286,22 +287,72 @@ export function BackgroundUploadInput(props: InputProps) {
     )
 }
 
-export function AutoCopyDataInput(props: InputProps) {
-    return (
-        <AssayPropertiesInput
-            label={'Auto-Copy Data to Study'}
-            helpTipBody={() => {
-                return (
-                    <p>
-                        When new runs are imported, automatically copy their data rows to the specified target study.
-                        Only rows that include subject and visit/date information will be copied.
-                    </p>
-                )
-            }}
-        >
-            <div style={{opacity: 0.5}}>Coming soon</div>
-        </AssayPropertiesInput>
-    )
+interface AutoCopyDataInputState {
+    containers: List<Container>
+}
+
+export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyDataInputState> {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            containers: undefined
+        };
+    }
+
+    componentWillMount() {
+        getValidPublishTargets()
+            .then((containers) => {
+                this.setState(() => ({containers}));
+            })
+            .catch((response) => {
+                console.error('Unable to load valid study targets for Auto-Copy Data to Study input.');
+                this.setState(() => ({containers: List<Container>()}));
+            });
+    }
+
+    render() {
+        const { model, onChange } = this.props;
+        const { containers } = this.state;
+
+        return (
+            <AssayPropertiesInput
+                label={'Auto-Copy Data to Study'}
+                colSize={6}
+                helpTipBody={() => {
+                    return (
+                        <>
+                            <p>
+                                When new runs are imported, automatically copy their data rows to the specified target study.
+                                Only rows that include subject and visit/date information will be copied.
+                            </p>
+                            <p>
+                                The user performing the import must have insert permission in the target study and the corresponding dataset.
+                            </p>
+                        </>
+                    )
+                }}
+            >
+                {containers === undefined
+                    ? <LoadingSpinner/>
+                    : <FormControl
+                        componentClass="select"
+                        id={FORM_IDS.AUTO_COPY_TARGET}
+                        onChange={onChange}
+                        value={model.autoCopyTargetContainerId || ''}
+                    >
+                        <option key="_empty" value={null}/>
+                        {
+                            containers.map((container, i) => (
+                                <option key={i} value={container.id}>{container.path}</option>
+                            ))
+                        }
+                    </FormControl>
+                }
+            </AssayPropertiesInput>
+        )
+    }
 }
 
 interface ModuleProvidedScriptsInputProps {
@@ -398,7 +449,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
             <>
                 {protocolTransformScripts.map((scriptPath, i) => {
                     return (
-                        <Row className={'margin-top'}>
+                        <Row key={'scriptrow-' + i} className={'margin-top'}>
                             {i === 0 ? this.renderLabel() : <Col xs={3}/>}
                             <Col xs={6}>
                                 <FormControl
@@ -411,7 +462,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             </Col>
                             <Col xs={3}>
                                 <RemoveEntityButton
-                                    key={'removescript-' + i}
+                                    key={'scriptremove-' + i}
                                     labelClass={''}
                                     onClick={() => {this.removeScript(i)}}
                                 />
@@ -425,16 +476,16 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         <AddEntityButton entity={'Script'} containerClass={''} onClick={this.addScript}/>
                     </Col>
                     {protocolTransformScripts.size > 0 && !model.isNew() &&
-                    <Col xs={3}>
-                                <span className={'pull-right'}>
-                                    <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', undefined, {rowId: model.protocolId})}
-                                       target={'_blank'}
-                                       className={'labkey-text-link'}
-                                    >
-                                        Download sample file
-                                    </a>
-                                </span>
-                    </Col>
+                        <Col xs={3}>
+                            <span className={'pull-right'}>
+                                <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', undefined, {rowId: model.protocolId})}
+                                   target={'_blank'}
+                                   className={'labkey-text-link'}
+                                >
+                                    Download sample file
+                                </a>
+                            </span>
+                        </Col>
                     }
                 </Row>
             </>

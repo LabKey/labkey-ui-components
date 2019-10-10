@@ -27,6 +27,7 @@ const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
     ASSAY_NAME: FORM_ID_PREFIX + 'name',
     ASSAY_DESCRIPTION: FORM_ID_PREFIX + 'description',
+    AUTO_COPY_TARGET: FORM_ID_PREFIX + 'autoCopyTargetContainerId',
     BACKGROUND_UPLOAD: FORM_ID_PREFIX + 'backgroundUpload',
     DETECTION_METHOD: FORM_ID_PREFIX + 'selectedDetectionMethod',
     EDITABLE_RUNS: FORM_ID_PREFIX + 'editableRuns',

@@ -72,11 +72,15 @@
   display: table-cell;
   height: 40px;
   overflow: hidden;
+  padding-top: 1%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 };
 
 .domain-field-details-expanded {
   color: $gray-dark;
   display: table-cell;
+  padding-top: 1%;
 };
 
 .domain-field-buttons-expanded {

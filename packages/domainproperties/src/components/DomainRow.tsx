@@ -36,7 +36,15 @@ import {
     DOMAIN_FIELD_TYPE,
     DOMAIN_FIELD_FULLY_LOCKED,
 } from "../constants";
-import { DomainField, IFieldChange, FieldErrors, DomainFieldError, PropDescType, resolveAvailableTypes } from "../models";
+import {
+    DomainField,
+    IFieldChange,
+    FieldErrors,
+    DomainFieldError,
+    PropDescType,
+    resolveAvailableTypes,
+    PROP_DESC_TYPES
+} from "../models";
 import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "../actions/actions";
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
@@ -65,6 +73,7 @@ interface IDomainRowState {
     showAdv: boolean
     closing: boolean
     hover: boolean
+    isDragDisabled: boolean
 }
 
 /**
@@ -78,7 +87,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.state = {
             showAdv: false,
             closing: false,
-            hover: false
+            hover: false,
+            isDragDisabled: props.isDragDisabled
         };
     }
 
@@ -248,10 +258,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     onShowAdvanced = (): any => {
         this.setState(() => ({showAdv: true}));
+
+        this.setDragDisabled(true);
     };
 
     onHideAdvanced = (): any => {
         this.setState(() => ({showAdv: false}));
+
+        this.setDragDisabled(false);
     };
 
     onMouseOver = (): any => {
@@ -287,11 +301,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     };
 
     onCollapsed = () : void => {
-        this.setState({closing: false});
+        this.setState(() =>({closing: false}));
     };
 
     onCollapsing = () : void => {
-        this.setState({closing: true})
+        this.setState(() => ({closing: true}));
+    };
+
+    setDragDisabled = (disabled: boolean) => {
+        const { isDragDisabled } = this.props;
+
+        this.setState(() => ({isDragDisabled: (disabled || isDragDisabled)}));
     };
 
     renderHandle() {
@@ -389,8 +409,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     render() {
-        const { closing } = this.state;
-        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, isDragDisabled, domainId,
+        const { closing, isDragDisabled, showAdv } = this.state;
+        const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId,
             helpNoun, defaultDefaultValueType, defaultValueOptions } = this.props;
 
         return (
@@ -413,7 +433,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 maxPhiLevel={maxPhiLevel}
                                 field={field}
                                 onApply={this.onMultiFieldChange}
-                                show={this.state.showAdv}
+                                show={showAdv}
                                 onHide={this.onHideAdvanced}
                                 label={field.name}
                                 defaultDefaultValueType={defaultDefaultValueType}
@@ -434,7 +454,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         </Row>
                             <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
-                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}/>
+                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange} setDragDisabled={this.setDragDisabled}/>
                                 </div>
                             </Collapse>
                     </div>

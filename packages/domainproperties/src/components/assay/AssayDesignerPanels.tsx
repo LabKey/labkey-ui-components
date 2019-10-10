@@ -16,6 +16,7 @@ interface Props {
     onComplete: (model: AssayProtocolModel) => void
     initModel?: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
+    containerTop?: number // This sets the top of the sticky header, default is 0
 }
 
 interface State {
@@ -175,7 +176,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     render() {
-        const { onCancel, hideEmptyBatchDomain } = this.props;
+        const { onCancel, hideEmptyBatchDomain, containerTop } = this.props;
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;
         const isNew = this.isNew();
         const finish = !isNew || this.isLastStep();
@@ -209,6 +210,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}
+                            containerTop={containerTop}
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}

@@ -20,6 +20,7 @@ interface ConditionalFormattingValidationProps {
     index: number,
     field: DomainField,
     onChange: (string, any) => any
+    setDragDisabled: (boolean) => any
 }
 
 export class ConditionalFormattingValidation extends React.PureComponent<ConditionalFormattingValidationProps, any> {
@@ -70,15 +71,27 @@ export class ConditionalFormattingValidation extends React.PureComponent<Conditi
     };
 
     showHideConditionalFormat = () => {
-        this.setState(() => ({showCondFormat: !this.state.showCondFormat}));
+        const { setDragDisabled } = this.props;
+        const { showCondFormat } = this.state;
+
+        this.setState(() => ({showCondFormat: !showCondFormat}));
+        setDragDisabled(!showCondFormat);
     };
 
     showHideRegexValidator = () => {
-        this.setState(() => ({showRegex: !this.state.showRegex}));
+        const { setDragDisabled } = this.props;
+        const { showRegex } = this.state;
+
+        this.setState(() => ({showRegex: !showRegex}));
+        setDragDisabled(!showRegex);
     };
 
     showHideRangeValidator = () => {
-        this.setState(() => ({showRange: !this.state.showRange}));
+        const { setDragDisabled } = this.props;
+        const { showRange } = this.state;
+
+        this.setState(() => ({showRange: !showRange}));
+        setDragDisabled(!showRange);
     };
 
     renderValidator = (range: boolean) => {

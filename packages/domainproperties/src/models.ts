@@ -30,7 +30,8 @@ import {
     PARTICIPANTID_CONCEPT_URI,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
-    USER_RANGE_URI, DOMAIN_URI_PREFIX
+    USER_RANGE_URI,
+    DOMAIN_URI_PREFIX
 } from "./constants";
 
 export interface IFieldChange {
@@ -56,6 +57,8 @@ interface IPropDescType {
     name: string
     rangeURI: string
     shortDisplay?: string
+    lookupSchema?: string
+    lookupQuery?: string
 }
 
 export class PropDescType extends Record({
@@ -64,7 +67,9 @@ export class PropDescType extends Record({
     name: undefined,
     rangeURI: undefined,
     alternateRangeURI: undefined,
-    shortDisplay: undefined
+    shortDisplay: undefined,
+    lookupSchema: undefined,
+    lookupQuery: undefined
 }) implements IPropDescType {
     conceptURI: string;
     display: string;
@@ -72,6 +77,12 @@ export class PropDescType extends Record({
     rangeURI: string;
     alternateRangeURI: string;
     shortDisplay: string;
+    lookupSchema?: string;
+    lookupQuery?: string;
+
+    static isUser(name: string): boolean {
+        return name === 'users';
+    }
 
     static isLookup(name: string): boolean {
         return name === 'lookup';
@@ -113,6 +124,10 @@ export class PropDescType extends Record({
         }
     }
 
+    isUser(): boolean {
+        return PropDescType.isUser(this.name);
+    }
+
     isLookup(): boolean {
         return PropDescType.isLookup(this.name);
     }
@@ -140,7 +155,7 @@ export const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date 
 export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
 export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI});
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
-export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI});
+export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: INT_RANGE_URI, lookupSchema: 'core', lookupQuery: 'users'});
 export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
@@ -612,7 +627,7 @@ export class DomainField extends Record({
     static serialize(df: DomainField): any {
         let json = df.toJS();
 
-        if (!df.dataType.isLookup()) {
+        if (!df.dataType.isLookup() && !df.dataType.isUser()) {
             json.lookupContainer = null;
             json.lookupQuery = null;
             json.lookupSchema = null;
@@ -643,6 +658,11 @@ export class DomainField extends Record({
 
         if (json.regexValidators) {
             json.propertyValidators = json.propertyValidators.concat(json.regexValidators);
+        }
+
+        // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
+        if (json.rangeURI === USER_RANGE_URI) {
+            json.rangeURI = INT_RANGE_URI;
         }
 
         // remove non-serializable fields
@@ -765,7 +785,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
-            if (type.rangeURI === rawField.rangeURI) {
+            if (type.rangeURI === rawField.rangeURI && !type.isUser()) {
                 if (!rawField.lookupQuery &&
                     ((!type.conceptURI && !rawField.conceptURI) || (type.conceptURI === rawField.conceptURI)))
                 {
@@ -781,7 +801,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
                 return true;
             }
             // handle selected users option
-            else if (type.name === 'users' && rawField.lookupQuery && rawField.lookupQuery === 'users') {
+            else if (type.isUser() && rawField.lookupQuery && rawField.lookupQuery === 'users') {
                 return true;
             }
 

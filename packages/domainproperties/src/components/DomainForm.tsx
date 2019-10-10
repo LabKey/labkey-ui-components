@@ -62,6 +62,7 @@ interface IDomainFormInput {
     showInferFromFile?: boolean
     panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
+    containerTop?: number // This sets the top of the sticky header, default is 0
 }
 
 interface IDomainFormState {
@@ -206,11 +207,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
-    onDomainChange(updatedDomain: DomainDesign) {
+    onDomainChange(updatedDomain: DomainDesign, dirty?: boolean) {
         const { onChange } = this.props;
 
         if (onChange) {
-            onChange(updatedDomain, true);
+            onChange(updatedDomain, dirty !== undefined ? dirty : true);
         }
     }
 
@@ -411,11 +412,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return undefined;
     };
 
-    stickyStyle = (style: any): any => {
-        let newStyle = {...style, zIndex: 1000};
+    stickyStyle = (style: any, isSticky: boolean): any => {
+        const { containerTop } = this.props;
+
+        let newStyle = {...style, zIndex: 1000, top: (containerTop ? containerTop : 0)};
 
         // Sticking to top
-        if (style.top === 0) {
+        if (isSticky) {
             let newWidth = parseInt(style.width,10) + 30;  // Expand past panel padding
             const width = newWidth + 'px';
 
@@ -493,27 +496,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
-    renderSearchRow() {
-        return (
-            <Row className='domain-form-search'>
-                <Col xs={3}>
-                    <FormControl id={"dom-search-" + name} type="text" placeholder={'Filter Fields'}
-                                 disabled={true}/>
-                </Col>
-                <Col xs={1}/>
-                <Col xs={8} md={6} lg={4}>
-                    <Col xs={5} className='domain-zero-padding'>
-                        <span>Show Fields Defined By: </span>
-                    </Col>
-                    <Col xs={7} className='domain-zero-padding'>
-                        <FormControl id={"dom-user-" + name} type="text" placeholder={'User'}
-                                     disabled={true}/>
-                    </Col>
-                </Col>
-            </Row>
-        )
-    }
-
     onSearch = (evt) => {
         const { domain } = this.props;
         const { value } = evt.target;
@@ -532,7 +514,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         this.setState(() => ({filtered: value !== undefined && value.length > 0}));
 
-        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign);
+        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
     };
 
     renderDefaultHeader() {
@@ -567,7 +549,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderForm() {
-        const { domain, children, helpNoun } = this.props;
+        const { domain, children, helpNoun, containerTop } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -577,12 +559,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         : this.renderDefaultHeader()
                     }
                 </div>
-                {/*{this.renderSearchRow()}*/}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
-                            <Sticky>{({ style }) =>
-                                <div style={this.stickyStyle(style)}>
+                            <Sticky topOffset={(containerTop ? ( -1 * containerTop) : 0)}>{({ style, isSticky }) =>
+                                <div style={this.stickyStyle(style, isSticky)}>
                                     {this.renderRowHeaders()}
                                 </div>}
                             </Sticky>

@@ -978,15 +978,15 @@ export class AssayProtocolModel extends Record({
         }
 
         // make sure we don't have any script inputs that are empty strings
-        const emptyScript = this.protocolTransformScripts.find((script, i) => script === undefined || script === null || script.length === 0);
-        if (emptyScript !== undefined) {
+        const hasEmptyScript = this.protocolTransformScripts.some((script, i) => script === undefined || script === null || script.length === 0);
+        if (hasEmptyScript) {
             return 'Missing required transform script path.';
         }
 
         // if not allowSpacesInPath, the path to the script should not contain spaces when the Save Script Data check box is selected
         if (!this.allowSpacesInPath && this.saveScriptFiles) {
-            const spacedScript = this.protocolTransformScripts.find((script, i) => script.indexOf(' ') > -1);
-            if (spacedScript !== undefined) {
+            const hasSpacedScript = this.protocolTransformScripts.some((script, i) => script.indexOf(' ') > -1);
+            if (hasSpacedScript) {
                 return 'The path to the transform script should not contain spaces when the \'Save Script Data for Debugging\' check box is selected.'
             }
         }

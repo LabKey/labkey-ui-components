@@ -58,7 +58,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <div className={'domain-field-label'}>
                             Format Numeric Values
                             <LabelHelpTip
@@ -66,7 +66,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                                 body={this.getFormatHelpText} />
                         </div>
                     </Col>
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <div className={'domain-field-label'}>Default Scale Type</div>
                     </Col>
                 </Row>
@@ -80,7 +80,6 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                                      disabled={isFieldFullyLocked(lockType)}
                         />
                     </Col>
-                    <Col xs={1} />
                     <Col xs={2}>
 
                         <FormControl componentClass="select"

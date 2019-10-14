@@ -62,9 +62,14 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
+                    <div>
                     <Col xs={5}>
                         <div className={'domain-field-label'}>Description</div>
-                        <textarea className="form-control domain-field-textarea" rows={4} value={field.description || ''}
+                        <FormControl
+                            componentClass='textarea'
+                            className="form-control domain-field-textarea"
+                                     rows={4}
+                                     value={field.description || ''}
                                   id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                                   name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
                                   placeholder={'Add a description'}
@@ -99,6 +104,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                      name={createFormInputName(DOMAIN_FIELD_URL)}
                                      onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
+                    </div>
                 </Row>
             </div>
         )

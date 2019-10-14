@@ -114,13 +114,11 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
             <Row>
                 <Col xs={12} className='domain-validation-display-checkbox-row'>
                     <Checkbox
-                        className='domain-validation-checkbox'
                         id={createFormInputId(name, validatorIndex)}
                         name={createFormInputName(name)}
                         checked={value}
                         onChange={this.onFieldChange}
-                    />
-                    <div>{label}</div>
+                    >{label}</Checkbox>
                 </Col>
             </Row>
         )

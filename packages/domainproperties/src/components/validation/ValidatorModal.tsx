@@ -142,32 +142,33 @@ export function ValidatorModal(WrappedComponent: any) {
                         <Modal.Title>{title}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className='domain-validation-subtitle'>{subTitle}</div>
-                        {validators.map((validator, i) =>
-                            <div key={i}>
-                                {/*<Collapse in={i === expanded} timeout={300} onExited={this.onCollapsed} onExiting={this.onCollapsing} onEntered={this.onCollapsed} onEntering={this.onCollapsing}>*/}
+                        <div className='domain-modal'>
+                            <div className='domain-validation-subtitle'>{subTitle}</div>
+                            {validators.map((validator, i) =>
+                                <div key={i}>
+                                    {/*<Collapse in={i === expanded} timeout={300} onExited={this.onCollapsed} onExiting={this.onCollapsing} onEntered={this.onCollapsed} onEntering={this.onCollapsing}>*/}
                                     {/*<div style={{minHeight: '50px'}}>*/}
-                                        <WrappedComponent
-                                            key={i}
-                                            validatorIndex={i}
-                                            validator={validator}
-                                            index={index}
-                                            expanded={(i === expanded)}
-                                            dataType={dataType}
-                                            mvEnabled={mvEnabled}
-                                            onExpand={this.onExpand}
-                                            onChange={this.onChange}
-                                            onDelete={this.onDelete}
-                                        />
+                                    <WrappedComponent
+                                        key={i}
+                                        validatorIndex={i}
+                                        validator={validator}
+                                        index={index}
+                                        expanded={(i === expanded)}
+                                        dataType={dataType}
+                                        mvEnabled={mvEnabled}
+                                        onExpand={this.onExpand}
+                                        onChange={this.onChange}
+                                        onDelete={this.onDelete}
+                                    />
                                     {/*</div>*/}
-                                {/*</Collapse>*/}
-                                {/*{i !== expanded && !collapsing &&*/}
+                                    {/*</Collapse>*/}
+                                    {/*{i !== expanded && !collapsing &&*/}
                                     {/*<WrappedComponent key={i} validatorIndex={i} validator={validator} index={index}*/}
-                                                      {/*expanded={(i === expanded) && !collapsing} onExpand={this.onExpand}/>*/}
-                                {/*// }*/}
-                            </div>
-                        )}
-
+                                    {/*expanded={(i === expanded) && !collapsing} onExpand={this.onExpand}/>*/}
+                                    {/*// }*/}
+                                </div>
+                            )}
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                         <div className={'domain-field-float-left'}>

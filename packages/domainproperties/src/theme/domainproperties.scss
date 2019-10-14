@@ -3,6 +3,17 @@
   min-width: 1000px;
 }
 
+.domain-form-panel input[type="checkbox"],
+.domain-form-panel input[type="radio"],
+.domain-modal input[type="checkbox"],
+.domain-modal input[type="radio"] {
+  width: 17px;
+  height: 17px;
+  position: relative;
+  top: 3px;
+  margin-right: 10px;
+}
+
 .domain-form-hdr-row {
   margin: 0 0 5px 40px !important;
   color: $gray;
@@ -202,15 +213,15 @@
 }
 
 .domain-text-options-radio1 {
-  margin: 4px 5px 5px 5px !important;
+  margin: 0 15px 5px 5px !important;
 }
 
 .domain-text-options-radio2 {
-  margin: 9px 5px 5px 5px !important;
+  margin: 5px 15px 5px 5px !important;
 }
 
 .domain-text-options-length {
-  margin: 6px 5px 0 0 !important;
+  margin: 6px 15px 0 0 !important;
 }
 
 .domain-text-label {
@@ -231,13 +242,27 @@
 }
 
 .domain-field-textarea {
-  height: 85px !important;
   resize: none;
-  margin-bottom: 2px;
+  padding-bottom: 2%;
 }
 
 .domain-help-table {
   border: 1px solid black;
+}
+
+.domain-field-lookup-validator-row {
+  display: inline-flex;
+  transform: translateY(50%);
+  margin-left: 10px;
+}
+
+.domain-field-lookup-validator-label {
+  margin: 3% 0 0 10px;
+  white-space: nowrap;
+}
+
+.domain-field-checkbox-margin {
+  margin-top: 2px;
 }
 
 .domain-adv-footer {
@@ -372,7 +397,7 @@
 }
 
 .domain-validation-failOnMatch-row {
-  margin: 5px 0 -5px 0;
+  margin-top: -14px;
 }
 
 .domain-validation-checkbox {

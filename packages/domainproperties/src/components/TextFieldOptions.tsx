@@ -73,7 +73,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     }
 
     render() {
-        const { index, label, scale, onChange, lockType } = this.props;
+        const { index, label, scale, lockType } = this.props;
         const { radio } = this.state;
 
         return (

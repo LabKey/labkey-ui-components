@@ -430,13 +430,15 @@ export class PropertyValidator extends Record({
         super(values);
     }
 
-    static fromJS(rawPropertyValidator: Array<IPropertyValidator>, range: boolean): List<PropertyValidator> {
+    static fromJS(rawPropertyValidator: Array<IPropertyValidator>, type: string): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>().asMutable();
 
         let newPv;
         for (let i=0; i < rawPropertyValidator.length; i++) {
-            if ( range && rawPropertyValidator[i].type === "Range" ||
-                !range && rawPropertyValidator[i].type === "RegEx")
+            if ( type === 'Range' && rawPropertyValidator[i].type === "Range" ||
+                 type === 'RegEx' && rawPropertyValidator[i].type === "RegEx" ||
+                 type === 'Lookup' && rawPropertyValidator[i].type === "Lookup"
+            )
             {
                 newPv = new PropertyValidator(fromJS(rawPropertyValidator[i]));
                 newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
@@ -465,6 +467,7 @@ export interface IDomainField {
     lookupContainer?: string
     lookupQuery?: string
     lookupSchema?: string
+    lookupValidator?: PropertyValidator
     measure?: boolean
     mvEnabled?: boolean
     name: string
@@ -510,6 +513,7 @@ export class DomainField extends Record({
     lookupContainer: undefined,
     lookupQuery: undefined,
     lookupSchema: undefined,
+    lookupValidator: undefined,
     measure: undefined,
     mvEnabled: false,
     name: undefined,
@@ -554,6 +558,7 @@ export class DomainField extends Record({
     lookupContainer?: string;
     lookupQuery?: string;
     lookupSchema?: string;
+    lookupValidator?: PropertyValidator;
     measure?: boolean;
     mvEnabled?: boolean;
     name: string;
@@ -602,8 +607,13 @@ export class DomainField extends Record({
         }
 
         if (rawField.propertyValidators) {
-            field = field.set("rangeValidators", PropertyValidator.fromJS(rawField.propertyValidators, true)) as DomainField;
-            field = field.set("regexValidators", PropertyValidator.fromJS(rawField.propertyValidators, false)) as DomainField;
+            field = field.set("rangeValidators", PropertyValidator.fromJS(rawField.propertyValidators, 'Range')) as DomainField;
+            field = field.set("regexValidators", PropertyValidator.fromJS(rawField.propertyValidators, 'RegEx')) as DomainField;
+
+            const lookups = PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup');
+            if (lookups && lookups.size > 0) {
+                field = field.set("lookupValidator", PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup').get(0)) as DomainField;
+            }
         }
 
         if (shouldApplyDefaultValues) {
@@ -660,6 +670,10 @@ export class DomainField extends Record({
             json.propertyValidators = json.propertyValidators.concat(json.regexValidators);
         }
 
+        if (json.lookupValidator) {
+            json.propertyValidators = json.propertyValidators.concat(json.lookupValidator);
+        }
+
         // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
         if (json.rangeURI === USER_RANGE_URI) {
             json.rangeURI = INT_RANGE_URI;
@@ -674,6 +688,7 @@ export class DomainField extends Record({
         delete json.visible;
         delete json.rangeValidators;
         delete json.regexValidators;
+        delete json.lookupValidator;
 
         return json;
     }

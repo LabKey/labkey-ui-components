@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from "react";
-import {DomainField, IFieldChange} from "../models";
+import {DomainField, IFieldChange, PropDescType} from "../models";
 import {NameAndLinkingOptions} from "./NameAndLinkingOptions";
 import {TextFieldOptions} from "./TextFieldOptions";
 import {BooleanFieldOptions} from "./BooleanFieldOptions";
@@ -59,6 +59,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                            lookupContainer={field.lookupContainer}
                                            lookupSchema={field.lookupSchema}
                                            lookupQueryValue={field.lookupQueryValue}
+                                           lookupValidator={field.lookupValidator}
                                            original={field.original}
                                            onChange={onChange}
                                            onMultiChange={onMultiChange}

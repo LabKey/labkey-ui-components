@@ -70,6 +70,7 @@ export const DOMAIN_VALIDATOR_ERRORMESSAGE = 'errorMessage';
 export const DOMAIN_VALIDATOR_FAILONMATCH = 'failOnMatch';
 export const DOMAIN_VALIDATOR_NAME = 'name';
 export const DOMAIN_VALIDATOR_REMOVE = 'removeValidator';
+export const DOMAIN_VALIDATOR_LOOKUP = 'lookupValidator';
 
 export const DOMAIN_VALIDATOR_BOLD = 'bold';
 export const DOMAIN_VALIDATOR_ITALIC = 'italic';

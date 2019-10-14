@@ -61,14 +61,15 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                 <Col xs={this.labelWidth} />
                 <Col xs={this.fieldWidth} className='domain-validation-failOnMatch-row'>
                     <Checkbox
-                        className='domain-validation-checkbox'
+                        // className='domain-validation-checkbox'
                         id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, validatorIndex)}
                         name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
                         checked={value}
                         onChange={this.onChange}
-                    />
+                    >
                     Fail validation when pattern matches field value
                     <LabelHelpTip title='Fail when pattern matches?' body={this.failOnMatchTooltip}/>
+                    </Checkbox>
                 </Col>
             </Row>
         )

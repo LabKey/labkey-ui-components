@@ -148,6 +148,7 @@ import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
+import { getUsers, IUser, UserSelectInput } from './components/forms/input/UserSelectInput';
 
 export {
     // global state functions
@@ -229,6 +230,7 @@ export {
     LookupSelectInput,
     SelectInput,
     QuerySelect,
+    UserSelectInput,
     PageDetailHeader,
     DetailEditing,
     Detail,
@@ -242,6 +244,10 @@ export {
     // types
     PlacementType,
     EditorModel,
+
+    // user-related
+    getUsers,
+    IUser,
 
     // samples-related
     SampleInsertPanel,

@@ -1,5 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
   "files": [
     "../base/src/typings/react-bootstrap.d.ts",
     "../base/src/typings/main.d.ts",

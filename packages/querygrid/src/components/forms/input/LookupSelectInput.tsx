@@ -15,6 +15,7 @@
  */
 import * as React from 'react'
 import {Map, fromJS} from 'immutable'
+import { Filter } from '@labkey/api'
 import { QueryColumn, QueryLookup, naturalSort, generateId, LoadingSpinner, resolveKey } from '@glass/base'
 
 import { SelectInput, SelectInputProps } from "./SelectInput";
@@ -26,12 +27,12 @@ interface SelectOption {
     value: any
 }
 
-function formatOptions(lookup: QueryLookup, models: Map<string, any>): Array<SelectOption> {
+function formatOptions(lookup: QueryLookup, models: Map<string, any>, doSort: boolean=true): Array<SelectOption> {
     if (!models) {
         return [];
     }
 
-    return models.map(model => {
+    const mappedModel = models.map(model => {
         let fieldKey = lookup.displayColumn;
 
         if (fieldKey.indexOf('/') > -1) {
@@ -44,7 +45,11 @@ function formatOptions(lookup: QueryLookup, models: Map<string, any>): Array<Sel
                    model.getIn([fieldKey, 'value']),
             value: model.getIn([lookup.keyColumn, 'value'])
         };
-    }).sortBy(model => model.label, naturalSort).toArray();
+    });
+    if (doSort)
+        return mappedModel.sortBy(model => model.label, naturalSort).toArray();
+    else
+        return mappedModel.toArray();
 }
 
 interface StateProps {
@@ -53,6 +58,8 @@ interface StateProps {
 
 interface OwnProps extends SelectInputProps {
     queryColumn: QueryColumn
+    filterArray?:  Array<Filter.IFilter>
+    sort?: string
 }
 
 export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
@@ -71,7 +78,7 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
     }
 
     componentWillMount() {
-        const { queryColumn } = this.props;
+        const { queryColumn, filterArray, sort } = this.props;
         const { options } = this.state;
 
         if (!queryColumn || !queryColumn.isLookup()) {
@@ -84,10 +91,10 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         const { schemaName, queryName } = queryColumn.lookup;
 
         if (!options) {
-            selectRows({schemaName, queryName})
+            selectRows({schemaName, queryName, filterArray, sort})
                 .then(response => {
                     const models = Map<string, any>(fromJS(response.models));
-                    const options = formatOptions(queryColumn.lookup, models.get(resolveKey(schemaName, queryName)));
+                    const options = formatOptions(queryColumn.lookup, models.get(resolveKey(schemaName, queryName)), sort === undefined);
                     this.setState(() => ({options}));
                 }
             );

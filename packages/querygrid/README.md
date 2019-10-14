@@ -8,6 +8,7 @@ Query Grid for LabKey schema/query data views
 *Released*: ???
 * Add getFilterListFromQuery
 * Add optional parameters to getSelection and pass through from getSelected so filters in the query string are used
+* Add optional properties for LookupSelectInput to allow filtering and sorting of options
 
 ### version 0.20.0
 *Released*: 8 October 2019

@@ -41,6 +41,7 @@ import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 import {AdvancedSettings} from "./AdvancedSettings";
+import {SCHEMAS} from "@glass/base";
 
 interface IDomainRowProps {
     expanded: boolean
@@ -97,6 +98,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     default:
                         break;
                 }
+            }
+            else if(field.dataType.isSample()) {
+                let detailsText = field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName && field.lookupQuery === SCHEMAS.EXP_TABLES.MATERIALS.queryName ?
+                    'All Samples':  //TODO: text feels awkward.
+                    field.lookupQuery;
+                details.push(detailsText);
             }
             else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
                 details.push([

@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { List } from 'immutable'
+import { Map, List } from 'immutable'
 import { Alert, WizardNavButtons } from "@glass/base";
 
-import { AssayProtocolModel, DomainDesign } from "../../models";
-import { saveAssayDesign } from "../../actions/actions";
+import {AssayProtocolModel, DomainDesign, HeaderRenderer} from "../../models";
+import {saveAssayDesign} from "../../actions/actions";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import DomainForm from "../DomainForm";
 
@@ -16,6 +16,8 @@ interface Props {
     onComplete: (model: AssayProtocolModel) => void
     initModel?: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
+    appDomainHeaders?: Map<string, HeaderRenderer>
+    appIsValid?: (model: AssayProtocolModel) => boolean
 }
 
 interface State {
@@ -138,9 +140,15 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     isValid(): boolean {
+        const { appIsValid } = this.props;
+        const { protocolModel } = this.state;
+        return appIsValid ? this.isNameSet() && appIsValid(protocolModel) : this.isNameSet();
+    }
+
+    isNameSet = ():boolean => {
         const { protocolModel } = this.state;
         return protocolModel.name !== undefined && protocolModel.name.trim().length > 0;
-    }
+    };
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
         const { onChange } = this.props;
@@ -168,11 +176,22 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
             }
             else if (domain.isNameSuffixMatch('Data')) {
                 return (
-                    <p>Define the results properties that are set for individual rows within the imported run.</p>
+                    <>
+                        <p>Define the results properties that are set for individual rows within the imported run.</p>
+                    </>
                 )
             }
         }
     }
+
+    getAppDomainHeaderRenderer = (domain: DomainDesign): HeaderRenderer =>  {
+        const {appDomainHeaders} = this.props;
+
+        if (!appDomainHeaders)
+            return undefined;
+
+        return appDomainHeaders.filter((v,k) => domain.isNameSuffixMatch(k)).first();
+    };
 
     render() {
         const { onCancel, hideEmptyBatchDomain } = this.props;
@@ -197,7 +216,8 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     }
 
                     // allow empty domain to be inferred from a file for Data Fields
-                    const showInferFromFile = domain.isNameSuffixMatch('Data');
+                    const isDataDomain = domain.isNameSuffixMatch('Data');
+                    const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
                     return (
                         <DomainForm
@@ -208,10 +228,12 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             initCollapsed={!isNew || currentPanelIndex !== (i+1)}
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
-                            showInferFromFile={showInferFromFile}
+                            showInferFromFile={isDataDomain}
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}
+                            appDomainHeaderRenderer={appDomainHeaderRenderer}
+                            protocolModel={protocolModel}
                         >
                             {this.renderDomainPanelHeading(domain)}
                         </DomainForm>
@@ -219,14 +241,16 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                 })}
                 {error && <Alert>{error}</Alert>}
                 <WizardNavButtons
-                    containerClassName=""
                     cancel={onCancel}
-                    finish={true}
-                    canFinish={this.isValid()}
-                    isFinishing={submitting}
-                    finishText={finish ? 'Finish' : 'Next'}
-                    nextStep={finish ? this.onFinish : this.onNext}
+                    canFinish={this.isValid()}  //if finished call isValid, otherwise isNameSet
+                    canNextStep={this.isNameSet()}
                     canPreviousStep={!submitting && currentPanelIndex > 0}
+                    containerClassName=""
+                    finish={finish}
+                    includeNext={!finish}
+                    isFinishing={submitting}
+                    nextStep={finish ? this.onFinish : this.onNext}
+                    nextStyle={'success'}
                     previousStep={isNew ? this.onPrevious : undefined}
                 />
             </>

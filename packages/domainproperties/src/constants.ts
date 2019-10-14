@@ -45,6 +45,8 @@ export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
 export const DOMAIN_FIELD_SHOWNININSERTVIEW = 'shownInInsertView';
 export const DOMAIN_FIELD_SHOWNINUPDATESVIEW = 'shownInUpdateView';
 export const DOMAIN_FIELD_CLIENT_SIDE_ERROR = 'error';
+export const DOMAIN_FIELD_SAMPLE_TYPE = 'sampleTypeSelect';
+
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -78,6 +80,7 @@ export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
+export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
 export const MAX_TEXT_LENGTH = 4000;
 

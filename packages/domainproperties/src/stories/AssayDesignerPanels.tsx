@@ -40,7 +40,7 @@ storiesOf("AssayDesignerPanels", module)
             editableRuns: true,
             editableResults: true,
             domains: [{
-                name: 'Sample Fields',
+                name: 'Run Properties',
                 fields: [{
                     name: 'field1',
                     rangeURI: 'xsd:string'
@@ -50,6 +50,21 @@ storiesOf("AssayDesignerPanels", module)
                 },{
                     name: 'field3',
                     rangeURI: 'xsd:dateTime'
+                }]
+            },{
+                name: 'Results Properties',
+                fields: [{
+                    name: 'Name',
+                    rangeURI: 'xsd:string'
+                },{
+                    name: 'Index',
+                    rangeURI: 'xsd:int'
+                },{
+                    name: 'Date',
+                    rangeURI: 'xsd:dateTime'
+                },{
+                    name: 'Location',
+                    rangeURI: 'xsd:string'
                 }]
             }]
         });

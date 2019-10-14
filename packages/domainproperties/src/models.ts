@@ -30,8 +30,10 @@ import {
     PARTICIPANTID_CONCEPT_URI,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
-    USER_RANGE_URI
+    USER_RANGE_URI,
+    SAMPLE_TYPE_CONCEPT_URI,
 } from "./constants";
+import {SCHEMAS} from "@glass/base";
 
 export interface IFieldChange {
     id: string,
@@ -73,6 +75,10 @@ export class PropDescType extends Record({
     alternateRangeURI: string;
     shortDisplay: string;
 
+    static isSample(conceptURI: string): boolean {
+        return conceptURI === SAMPLE_TYPE_CONCEPT_URI;
+    }
+
     static isLookup(name: string): boolean {
         return name === 'lookup';
     }
@@ -97,16 +103,23 @@ export class PropDescType extends Record({
         super(values);
     }
 
+    //TODO: shouldn't this check the alternateRangeURI too?
     isLookup(): boolean {
         return PropDescType.isLookup(this.name);
     }
 
+    //TODO: shouldn't this check the alternateRangeURI too?
     isInteger(): boolean {
         return PropDescType.isInteger(this.rangeURI);
     }
 
+    //TODO: shouldn't this check the alternateRangeURI too?
     isString(): boolean {
         return PropDescType.isString(this.rangeURI);
+    }
+
+    isSample(): boolean {
+        return PropDescType.isSample(this.conceptURI)
     }
 }
 
@@ -122,6 +135,7 @@ export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', ra
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
 export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI});
 export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
+export const SAMPLE_TYPE = new PropDescType({name: 'sample', display: 'Sample', rangeURI: STRING_RANGE_URI, conceptURI: SAMPLE_TYPE_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -135,7 +149,8 @@ export const PROP_DESC_TYPES = List([
     ATTACHMENT_TYPE,
     USERS_TYPE,
     PARTICIPANT_TYPE,
-    LOOKUP_TYPE
+    LOOKUP_TYPE,
+    SAMPLE_TYPE,
 ]);
 
 interface IDomainDesign {
@@ -267,6 +282,14 @@ export enum FieldErrors {
     MISSING_SCHEMA_QUERY
 }
 
+interface ILookupConfig {
+    lookupContainer?: string
+    lookupQuery?: string
+    lookupSchema?: string
+    lookupQueryValue?: string;
+    lookupType?: PropDescType
+}
+
 // Commented out properties are unused
 export interface IDomainField {
     conceptURI?: string
@@ -381,17 +404,14 @@ export class DomainField extends Record({
     lockType: string;
 
     static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean): DomainField {
-        let dataType = resolveDataType(rawField);
-        let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
-
-        let field = new DomainField(Object.assign({}, rawField, {
-            dataType,
-            lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
-            lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
-            lookupSchema: rawField.lookupSchema === null ? undefined : rawField.lookupSchema,
-            lookupType,
+        let baseField = DomainField.resolveBaseProperties(rawField);
+        const {dataType} = baseField;
+        const lookup = DomainField.resolveLookupConfig(rawField, dataType);
+        let field = new DomainField(Object.assign(baseField, rawField, {
+            ...lookup,
             original: {
                 dataType,
+                conceptURI: rawField.conceptURI,
                 rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
             }
         }));
@@ -403,21 +423,54 @@ export class DomainField extends Record({
         return field;
     }
 
+    private static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
+        let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
+        let lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
+        let lookupSchema = rawField.lookupSchema === null ? undefined : resolveLookupSchema(rawField, dataType);
+        let lookupQuery = rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
+        let lookupQueryValue = encodeLookup(lookupQuery, lookupType);
+
+        return {
+            lookupContainer,
+            lookupSchema,
+            lookupQuery,
+            lookupType,
+            lookupQueryValue,
+        };
+    }
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
         let fields = List<DomainField>().asMutable();
 
         for (let i=0; i < rawFields.length; i++) {
-            fields.push(DomainField.create(rawFields[i]));
+            let field = DomainField.create(rawFields[i]);
+            fields.push(field); //DomainField.create(rawFields[i]));
         }
 
         return fields.asImmutable();
     }
 
+    static resolveBaseProperties(raw: Partial<IDomainField>): Partial<IDomainField> {
+        let dataType = resolveDataType(raw);
+
+        let field = {dataType} as IDomainField;
+
+        //Infer SampleId as SAMPLE_TYPE for sample manager and mark required
+        if (isFieldNew(raw) && raw.name) {
+            if (raw.name.localeCompare('SampleId', 'en', {sensitivity: 'accent'}) === 0) {
+                field.dataType = SAMPLE_TYPE;
+                field.conceptURI = SAMPLE_TYPE.conceptURI;
+                field.required = true;
+            }
+        }
+
+        return field;
+    }
+
     static serialize(df: DomainField): any {
         let json = df.toJS();
 
-        if (!df.dataType.isLookup()) {
+        if (!(df.dataType.isLookup() || df.dataType.isSample()) ) {
             json.lookupContainer = null;
             json.lookupQuery = null;
             json.lookupSchema = null;
@@ -482,7 +535,7 @@ export class DomainField extends Record({
             case DOMAIN_FIELD_MEASURE:
                 return (type === INTEGER_TYPE || type === DOUBLE_TYPE);
             case DOMAIN_FIELD_DIMENSION:
-                return (type === LOOKUP_TYPE || type === USERS_TYPE);
+                return (type === LOOKUP_TYPE || type === USERS_TYPE || type === SAMPLE_TYPE);
             default:
                 return false
         }
@@ -506,6 +559,39 @@ export function encodeLookup(queryName: string, type: PropDescType): string {
     return undefined;
 }
 
+function resolveLookupSchema(rawField: Partial<IDomainField>, dataType: PropDescType): string {
+    if (rawField.lookupSchema)
+        return rawField.lookupSchema;
+
+    if (dataType === SAMPLE_TYPE )
+        return SCHEMAS.EXP_TABLES.SCHEMA;
+
+    return undefined;
+}
+
+export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?: string): DomainField {
+
+    let { queryName, rangeURI = STRING_RANGE_URI } = decodeLookup(sampleQueryValue);
+    let lookupType = field.lookupType || LOOKUP_TYPE;
+    let sampleField = 'all' === sampleQueryValue ?
+        {
+            lookupSchema: SCHEMAS.EXP_TABLES.SCHEMA,
+            lookupQuery: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+            lookupQueryValue: sampleQueryValue,
+            lookupType: field.lookupType.set('rangeURI', rangeURI),
+            rangeURI: STRING_RANGE_URI,
+        }:
+        {
+            lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            lookupQuery: queryName,
+            lookupQueryValue: sampleQueryValue || 'all',
+            lookupType: lookupType.set('rangeURI', rangeURI),
+            rangeURI: rangeURI,
+        };
+
+    return field.merge(sampleField) as DomainField;
+}
+
 function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
 }
@@ -522,7 +608,7 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
 
     // field has been saved -- display eligible propTypes
     return availableTypes.filter((type) => {
-        if (type.isLookup()) {
+        if (type.isLookup() || type.isSample()) {
             return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
         }
 
@@ -544,6 +630,9 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
     let type: PropDescType;
 
     if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
+        if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI)
+            return SAMPLE_TYPE;
+
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
@@ -558,6 +647,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
             else if (type.alternateRangeURI && type.alternateRangeURI === rawField.rangeURI) {
                 return true;
             }
+
             // handle selected lookup option
             else if (type.isLookup() && rawField.lookupQuery && rawField.lookupQuery !== 'users') {
                 return true;
@@ -910,4 +1000,15 @@ export class AssayProtocolModel extends Record({
     get container() {
         return this.getIn(['domains', 0, 'container']);
     }
+}
+
+export type HeaderRenderer = (config:IAppDomainHeader) => any
+
+export interface IAppDomainHeader {
+    domain: DomainDesign
+    onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
+    onAddField?: (fieldConfig: Partial<IDomainField>) => void
+    protocolModel: AssayProtocolModel
+    // onRemoveField?:() => void
+    onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
 }

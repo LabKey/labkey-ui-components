@@ -23,6 +23,7 @@ interface Props {
     isFinishing?: boolean
     isFinishingText?: string
     nextStep?: Function
+    nextStyle?: string
     previousStep?: Function
     singularNoun?: string
 }
@@ -39,7 +40,8 @@ export class WizardNavButtons extends React.Component<Props, any> {
         finishText: 'Finish',
         includeNext: true,
         isFinishedText: 'Finished',
-        isFinishingText: 'Finishing...'
+        isFinishingText: 'Finishing...',
+        nextStyle: undefined,
     };
 
     render() {
@@ -61,6 +63,7 @@ export class WizardNavButtons extends React.Component<Props, any> {
             isFinishing,
             isFinishingText,
             nextStep,
+            nextStyle,
             previousStep,
             singularNoun
         } = this.props;
@@ -90,7 +93,7 @@ export class WizardNavButtons extends React.Component<Props, any> {
                             <Button onClick={previousStep} disabled={!canPreviousStep}>Back</Button>
                         )}
                         {(!finish && includeNext) && (
-                            <Button type="submit" onClick={nextStep} disabled={!canNextStep}>Next</Button>
+                            <Button bsStyle={nextStyle} type="submit" onClick={nextStep} disabled={!canNextStep}>Next</Button>
                         )}
                         {children}
                         {finish && (

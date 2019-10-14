@@ -23,7 +23,14 @@ import {
     DomainFieldError,
     IFieldChange,
     PropDescType,
-    PROP_DESC_TYPES, FLAG_TYPE, FILE_TYPE, ATTACHMENT_TYPE
+    PROP_DESC_TYPES,
+    FLAG_TYPE,
+    FILE_TYPE,
+    ATTACHMENT_TYPE,
+    IDomainField,
+    IAppDomainHeader,
+    HeaderRenderer,
+    AssayProtocolModel,
 } from "../models";
 import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -41,7 +48,12 @@ import {
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
-import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, LK_DOMAIN_HELP_URL, PHILEVEL_NOT_PHI} from "../constants";
+import {
+    EXPAND_TRANSITION,
+    EXPAND_TRANSITION_FAST,
+    LK_DOMAIN_HELP_URL,
+    PHILEVEL_NOT_PHI
+} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -54,8 +66,10 @@ interface IDomainFormInput {
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
     showInferFromFile?: boolean
+    appDomainHeaderRenderer?: HeaderRenderer
     panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
+    protocolModel?: AssayProtocolModel
 }
 
 interface IDomainFormState {
@@ -218,7 +232,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onAddField = () => {
-        this.onDomainChange(addDomainField(this.props.domain));
+        this.applyAddField();
+    };
+
+    applyAddField = (config?: Partial<IDomainField>) => {
+        this.onDomainChange(addDomainField(this.props.domain, config));
         this.collapseRow();
     };
 
@@ -483,7 +501,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Panel className='domain-form-no-field-panel'>
                     Start by adding some properties using the "Add Field" button.
                 </Panel>
-            )
+            );
         }
     }
 
@@ -560,8 +578,19 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
+    renderAppDomainHeader = () => {
+        const {appDomainHeaderRenderer} = this.props;
+        const config = {
+                ...this.props,
+            onChange: this.onFieldsChange,
+            onAddField: this.applyAddField
+        } as IAppDomainHeader;
+
+        return appDomainHeaderRenderer(config);
+    };
+
     renderForm() {
-        const { domain, children } = this.props;
+        const { domain, children, appDomainHeaderRenderer } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -570,6 +599,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     {children ? children
                         : this.renderDefaultHeader()
                     }
+                    {appDomainHeaderRenderer && this.renderAppDomainHeader()}
                 </div>
                 {/*{this.renderSearchRow()}*/}
                 {domain.fields.size > 0 ?

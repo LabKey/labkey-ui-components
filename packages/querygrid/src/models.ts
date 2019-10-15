@@ -48,6 +48,8 @@ interface IStateModelProps {
     title?: string
     urlPrefix?: string
     omittedColumns?: List<string>
+    showChartSelector?: boolean
+    showViewSelector?: boolean
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -176,6 +178,14 @@ export function getStateQueryGridModel(
 
             if (props.omittedColumns !== undefined) {
                 modelProps.omittedColumns = props.omittedColumns;
+            }
+
+            if (props.showChartSelector !== undefined) {
+                modelProps.showChartSelector = props.showChartSelector;
+            }
+
+            if (props.showViewSelector !== undefined) {
+                modelProps.showViewSelector = props.showViewSelector;
             }
         }
     }

@@ -10,6 +10,7 @@ Query Grid for LabKey schema/query data views
 * Add optional parameters to getSelection and pass through from getSelected so filters in the query string are used
 * Add optional properties for LookupSelectInput to allow filtering and sorting of options
 * Port UserSelect (as UserSelectInput) from Biologics
+* Add showViewSelector and showChartSelector parameters queryGrid initialization properties
 
 ### version 0.20.0
 *Released*: 8 October 2019

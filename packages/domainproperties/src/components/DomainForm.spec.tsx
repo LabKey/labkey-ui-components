@@ -587,7 +587,7 @@ describe('DomainForm', () => {
         // Get type field and verify available options
         let typeField = form.find({id: createFormInputId(DOMAIN_FIELD_TYPE, 0), className: 'form-control'});
         expect(typeField.length).toEqual(1);
-        expect(typeField.children().length).toEqual(9);  // Check number of options
+        expect(typeField.children().length).toEqual(10);  // Check number of options
         expect(typeField.find({value: 'int'}).length).toEqual(1);  // sanity check
         expect(typeField.find({value: 'flag'}).length).toEqual(0);
         expect(typeField.find({value: 'fileLink'}).length).toEqual(0);

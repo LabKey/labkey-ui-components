@@ -169,6 +169,14 @@ exports[`DomainRow client side warning on field 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -222,6 +230,7 @@ exports[`DomainRow client side warning on field 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
                         "display": "Attachment",
@@ -379,6 +388,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
                                     "display": "Attachment",
@@ -658,6 +668,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                           >
                                             Lookup
                                           </option>
+                                          <option
+                                            key="12"
+                                            value="sample"
+                                          >
+                                            Sample
+                                          </option>
                                         </select>
                                       </FormControl>
                                     </div>
@@ -873,6 +889,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
                                       "display": "Attachment",
@@ -950,6 +967,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
                                             "display": "Attachment",
@@ -1558,6 +1576,14 @@ exports[`DomainRow date time field 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -1611,6 +1637,7 @@ exports[`DomainRow date time field 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
                         "display": "Date Time",
@@ -1758,6 +1785,7 @@ exports[`DomainRow date time field 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
                                     "display": "Date Time",
@@ -2178,6 +2206,7 @@ exports[`DomainRow date time field 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
                                       "display": "Date Time",
@@ -2634,6 +2663,7 @@ exports[`DomainRow date time field 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
                                             "display": "Date Time",
@@ -3242,6 +3272,14 @@ exports[`DomainRow decimal field 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -3295,6 +3333,7 @@ exports[`DomainRow decimal field 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
                         "display": "Decimal",
@@ -3442,6 +3481,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
                                     "display": "Decimal",
@@ -3862,6 +3902,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
                                       "display": "Decimal",
@@ -4216,6 +4257,7 @@ exports[`DomainRow decimal field 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
                                             "display": "Decimal",
@@ -4824,6 +4866,14 @@ exports[`DomainRow participant id field 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -4877,6 +4927,7 @@ exports[`DomainRow participant id field 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                       "dataType": Immutable.Record {
                         "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                         "display": "Subject/Participant (String)",
@@ -5024,6 +5075,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                   "dataType": Immutable.Record {
                                     "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                     "display": "Subject/Participant (String)",
@@ -5261,6 +5313,12 @@ exports[`DomainRow participant id field 1`] = `
                                           >
                                             Lookup
                                           </option>
+                                          <option
+                                            key="5"
+                                            value="sample"
+                                          >
+                                            Sample
+                                          </option>
                                         </select>
                                       </FormControl>
                                     </div>
@@ -5468,6 +5526,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                     "dataType": Immutable.Record {
                                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                       "display": "Subject/Participant (String)",
@@ -5545,6 +5604,7 @@ exports[`DomainRow participant id field 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                           "dataType": Immutable.Record {
                                             "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                             "display": "Subject/Participant (String)",
@@ -6153,6 +6213,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -6206,6 +6274,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
                         "display": "Attachment",
@@ -6363,6 +6432,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
                                     "display": "Attachment",
@@ -6642,6 +6712,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           >
                                             Lookup
                                           </option>
+                                          <option
+                                            key="12"
+                                            value="sample"
+                                          >
+                                            Sample
+                                          </option>
                                         </select>
                                       </FormControl>
                                     </div>
@@ -6857,6 +6933,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
                                       "display": "Attachment",
@@ -6934,6 +7011,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
                                             "display": "Attachment",
@@ -7542,6 +7620,14 @@ exports[`DomainRow string field test 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -7595,6 +7681,7 @@ exports[`DomainRow string field test 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
                         "display": "Text (String)",
@@ -7742,6 +7829,7 @@ exports[`DomainRow string field test 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
                                     "display": "Text (String)",
@@ -7979,6 +8067,12 @@ exports[`DomainRow string field test 1`] = `
                                           >
                                             Lookup
                                           </option>
+                                          <option
+                                            key="5"
+                                            value="sample"
+                                          >
+                                            Sample
+                                          </option>
                                         </select>
                                       </FormControl>
                                     </div>
@@ -8186,6 +8280,7 @@ exports[`DomainRow string field test 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
                                       "display": "Text (String)",
@@ -8537,6 +8632,7 @@ exports[`DomainRow string field test 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
                                             "display": "Text (String)",
@@ -9145,6 +9241,14 @@ exports[`DomainRow with empty domain form 1`] = `
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                      "display": "Sample",
+                      "name": "sample",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                    },
                   ]
                 }
                 dragging={false}
@@ -9198,6 +9302,7 @@ exports[`DomainRow with empty domain form 1`] = `
                       "shortDisplay": undefined,
                     },
                     "original": Object {
+                      "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
                         "display": "Text (String)",
@@ -9345,6 +9450,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "shortDisplay": undefined,
                                 },
                                 "original": Object {
+                                  "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
                                     "display": "Text (String)",
@@ -9623,6 +9729,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                           >
                                             Lookup
                                           </option>
+                                          <option
+                                            key="12"
+                                            value="sample"
+                                          >
+                                            Sample
+                                          </option>
                                         </select>
                                       </FormControl>
                                     </div>
@@ -9832,6 +9944,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "shortDisplay": undefined,
                                   },
                                   "original": Object {
+                                    "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
                                       "display": "Text (String)",
@@ -10183,6 +10296,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                           "shortDisplay": undefined,
                                         },
                                         "original": Object {
+                                          "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
                                             "display": "Text (String)",

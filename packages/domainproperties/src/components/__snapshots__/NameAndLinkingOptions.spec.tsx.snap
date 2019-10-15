@@ -50,6 +50,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "shortDisplay": undefined,
       },
       "original": Object {
+        "conceptURI": undefined,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Text (String)",

@@ -541,7 +541,7 @@ export function fetchProtocol(protocolId?: number, providerName?: string, copy?:
             url: buildURL('assay', 'getProtocol.api', {
                 // give precedence to the protocolId if both are provided
                 protocolId,
-                providerName: protocolId ? undefined : providerName,
+                providerName: protocolId !== undefined ? undefined : providerName,
                 copy: copy || false
             }),
             success: Utils.getCallbackWrapper((data) => {

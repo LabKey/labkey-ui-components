@@ -25,7 +25,13 @@ Array [
         >
           <div
             className="col-xs-9"
-          />
+          >
+            <div
+              className="domain-field-section-heading"
+            >
+              Basic Properties
+            </div>
+          </div>
           <div
             className="col-xs-3"
           >
@@ -283,11 +289,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -319,7 +320,13 @@ Array [
         >
           <div
             className="col-xs-9"
-          />
+          >
+            <div
+              className="domain-field-section-heading"
+            >
+              Basic Properties
+            </div>
+          </div>
           <div
             className="col-xs-3"
           >
@@ -538,11 +545,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -576,11 +578,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -1308,11 +1305,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -1672,11 +1664,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -1748,11 +1735,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -2112,11 +2094,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -2150,11 +2127,6 @@ Array [
       </span>
       <span
         className="pull-right"
-        onBlur={[Function]}
-        onClick={[Function]}
-        onFocus={[Function]}
-        onMouseOut={[Function]}
-        onMouseOver={[Function]}
       >
         <svg
           aria-hidden="true"

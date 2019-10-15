@@ -3,7 +3,6 @@ import { Col, Form, Row, Panel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
 import { Utils } from "@labkey/api";
-import { Tip } from "@glass/base";
 
 import { AssayProtocolModel } from "../../models";
 import { LK_ASSAY_DESIGNER_HELP_URL } from "../../constants";
@@ -84,7 +83,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     onPanelHeaderClick = (evt: any) => {
-        if (Utils.isString(evt.target.className) && evt.target.className.indexOf('domain-heading-collapsible') > -1 && this.props.collapsible) {
+        if (this.props.collapsible) {
             this.togglePanel(null);
         }
     };
@@ -123,7 +122,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                {!basePropertiesOnly && <SectionHeading title={'Basic Properties'} helpURL={helpURL}/>}
+                <SectionHeading title={'Basic Properties'} helpURL={helpURL}/>
                 <NameInput model={model} onChange={this.onInputChange}/>
                 <DescriptionInput model={model} onChange={this.onInputChange}/>
                 {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange}/>}
@@ -162,14 +161,13 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderForm() {
-        const { basePropertiesOnly, children, helpURL } = this.props;
+        const { basePropertiesOnly, children } = this.props;
 
         return (
             <Form>
-                {!basePropertiesOnly ? children
-                    : <Row>
-                        <Col xs={9}>{children}</Col>
-                        {helpURL && <HelpURL helpURL={helpURL}/>}
+                {children &&
+                    <Row>
+                        <Col xs={12}>{children}</Col>
                     </Row>
                 }
                 {this.renderBasicProperties()}
@@ -196,18 +194,14 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 <Panel.Heading onClick={this.onPanelHeaderClick} className={collapsible ? 'domain-heading-collapsible' : ''}>
                     {this.renderHeader()}
                     {collapsible && collapsed &&
-                        <Tip caption="Expand Panel">
-                            <span className={'pull-right'} onClick={this.togglePanel}>
-                                <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
-                            </span>
-                        </Tip>
+                        <span className={'pull-right'}>
+                            <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                        </span>
                     }
                     {collapsible && !collapsed &&
-                        <Tip caption="Collapse Panel">
-                            <span className={'pull-right'} onClick={this.togglePanel}>
-                                <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
-                            </span>
-                        </Tip>
+                        <span className={'pull-right'}>
+                            <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                        </span>
                     }
                     {!collapsible && collapsed && markComplete &&
                         <span className={'pull-right'}>

@@ -28,8 +28,7 @@ import {
 import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
-import { AddEntityButton, Alert, FileAttachmentForm, ConfirmModal, InferDomainResponse, Tip } from "@glass/base";
-import { Utils } from "@labkey/api";
+import { AddEntityButton, Alert, FileAttachmentForm, ConfirmModal, InferDomainResponse } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import {
@@ -54,6 +53,7 @@ interface IDomainFormInput {
     collapsible?: boolean
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
+    showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
     panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
@@ -89,6 +89,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         helpNoun: 'domain',
         helpURL: LK_DOMAIN_HELP_URL,
         showHeader: true,
+        showHeaderFieldCount: true,
         initCollapsed: false
     };
 
@@ -148,7 +149,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     onPanelHeaderClick = (evt: any) => {
-        if (Utils.isString(evt.target.className) && evt.target.className.indexOf('domain-heading-collapsible') > -1 && this.props.collapsible) {
+        if (this.props.collapsible) {
             this.togglePanel(null);
         }
     };
@@ -609,8 +610,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     getHeaderName(): string {
-        const { domain, headerPrefix } = this.props;
-        const { collapsed } = this.state;
+        const { domain, headerPrefix, showHeaderFieldCount } = this.props;
         let name = domain.name ? domain.name : "Domain Properties";
 
         // optionally trim off a headerPrefix from the name display
@@ -629,7 +629,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         // add the field count to the header, if not empty
-        if (domain.fields.size > 0) {
+        if (showHeaderFieldCount && domain.fields.size > 0) {
             name = name + ' (' + domain.fields.size + ')';
         }
 
@@ -644,18 +644,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <>
                 <span>{this.getHeaderName()}</span>
                 {collapsible && collapsed &&
-                    <Tip caption="Expand Panel">
-                        <span className={'pull-right'} onClick={this.togglePanel}>
-                            <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
-                        </span>
-                    </Tip>
+                    <span className={'pull-right'}>
+                        <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                    </span>
                 }
                 {collapsible && !collapsed &&
-                    <Tip caption="Collapse Panel">
-                        <span className={'pull-right'} onClick={this.togglePanel}>
-                            <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
-                        </span>
-                    </Tip>
+                    <span className={'pull-right'}>
+                        <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                    </span>
                 }
                 {!collapsible && collapsed && markComplete &&
                     <span className={'pull-right'}>

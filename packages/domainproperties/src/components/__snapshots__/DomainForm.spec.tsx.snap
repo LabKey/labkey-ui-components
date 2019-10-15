@@ -169,6 +169,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
       initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -2635,6 +2636,7 @@ exports[`DomainForm domain form header and search 1`] = `
       initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -9158,6 +9160,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
       initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -11053,6 +11056,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -14156,6 +14160,7 @@ exports[`DomainForm domain form with all field types 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -28852,6 +28857,7 @@ exports[`DomainForm domain form with no fields 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -29535,6 +29541,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -35399,6 +35406,7 @@ exports[`DomainForm with empty domain form 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"

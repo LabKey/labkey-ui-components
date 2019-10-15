@@ -59,6 +59,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     domain={domain}
                     onChange={this.onChange}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    showHeaderFieldCount={false}
                 />
             </MockLookupProvider>
         )

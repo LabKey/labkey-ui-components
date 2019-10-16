@@ -108,8 +108,8 @@ import {
     generateNameWithTimestamp,
     getDateFormat,
     getUnFormattedNumber,
-    getFormattedDate,
-    getFormattedDateTime
+    formatDate,
+    formatDateTime
 } from './utils/Date';
 import { SVGIcon, Theme } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
@@ -234,8 +234,8 @@ export {
     datePlaceholder,
     getDateFormat,
     getUnFormattedNumber,
-    getFormattedDate,
-    getFormattedDateTime,
+    formatDate,
+    formatDateTime,
     generateNameWithTimestamp,
 
     // images

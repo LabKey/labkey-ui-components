@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version XXX
 *Released*: XXX
-* Export getFormattedDate, getFormattedDateTime
+* Add formatDate, formatDateTime
 
 ### version 0.19.0
 *Released*: 26 September 2019

@@ -53,12 +53,20 @@ function getNumberFormat(): string {
 }
 
 // format input/value using look and feel settings
-export function getFormattedDate(d) {
+function getFormattedDate(d) {
     return d ? moment(d, getDateFormat()) : d;
 }
 
-export function getFormattedDateTime(d) {
+function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
+}
+
+export function formatDate(date : Date) {
+    return date ? moment(date).formatWithJDF(getDateFormat()) : null;
+}
+
+export function formatDateTime(date : Date) {
+    return date ? moment(date).formatWithJDF(getDateTimeFormat()) : null;
 }
 
 function getFormattedNumber(n) {

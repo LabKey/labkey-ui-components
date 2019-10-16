@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* Add getUrlString to MenuItemModel
+
 ### version 0.20.0
 *Released*: 8 October 2019
 * Move `omnibox` package into `querygrid`

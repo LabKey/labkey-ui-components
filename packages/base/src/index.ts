@@ -103,7 +103,14 @@ import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { dismissNotifications, initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/ConfirmModal'
-import { datePlaceholder, generateNameWithTimestamp, getDateFormat, getUnFormattedNumber } from './utils/Date';
+import {
+    datePlaceholder,
+    generateNameWithTimestamp,
+    getDateFormat,
+    getUnFormattedNumber,
+    getFormattedDate,
+    getFormattedDateTime
+} from './utils/Date';
 import { SVGIcon, Theme } from './components/SVGIcon';
 import { CreatedModified } from './components/CreatedModified';
 import {
@@ -227,6 +234,8 @@ export {
     datePlaceholder,
     getDateFormat,
     getUnFormattedNumber,
+    getFormattedDate,
+    getFormattedDateTime,
     generateNameWithTimestamp,
 
     // images

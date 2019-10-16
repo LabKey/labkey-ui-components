@@ -53,11 +53,11 @@ function getNumberFormat(): string {
 }
 
 // format input/value using look and feel settings
-function getFormattedDate(d) {
+export function getFormattedDate(d) {
     return d ? moment(d, getDateFormat()) : d;
 }
 
-function getFormattedDateTime(d) {
+export function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
 }
 

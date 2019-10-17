@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import moment from 'moment-jdateformatparser'
+import 'moment-timezone';
 import numeral from 'numeral'
 import { QueryColumn } from "../models/model";
 

@@ -17,6 +17,7 @@ initMocks();
 storiesOf("AssayDesignerPanels", module)
     .addDecorator(withKnobs)
     .add("with knobs", () => {
+        const isValid = boolean('AppDesignValid', true);
         return (
             <AssayDesignerPanels
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
@@ -28,6 +29,10 @@ storiesOf("AssayDesignerPanels", module)
                 }}
                 onCancel={() => {
                     console.log('cancel clicked');
+                }}
+                appIsValid={()=>{
+                    //Disables Finish button if false
+                    return isValid;
                 }}
             />
         )

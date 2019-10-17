@@ -233,7 +233,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                                 this.onDomainChange(i, updatedDomain);
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
-                            protocolModel={protocolModel}
+                            modelDomains={protocolModel.domains}
                         >
                             {this.renderDomainPanelHeading(domain)}
                         </DomainForm>

@@ -69,7 +69,7 @@ interface IDomainFormInput {
     appDomainHeaderRenderer?: HeaderRenderer
     panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
-    protocolModel?: AssayProtocolModel
+    modelDomains?: List<DomainDesign> //Set of domains that encompass the full protocol, that may impact validation or alerts
 }
 
 interface IDomainFormState {
@@ -579,9 +579,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderAppDomainHeader = () => {
-        const {appDomainHeaderRenderer} = this.props;
+        const {appDomainHeaderRenderer, modelDomains} = this.props;
         const config = {
-                ...this.props,
+            modelDomains,
             onChange: this.onFieldsChange,
             onAddField: this.applyAddField
         } as IAppDomainHeader;

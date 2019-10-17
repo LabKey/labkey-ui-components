@@ -113,10 +113,9 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                                      onChange={this.onFieldChange}
                                      value={value || 'All Samples'}>
                             {loading && <option disabled key="_loading" value={value}>Loading...</option>}
-                            <option
+                            {!loading && <option
                                 key={createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index, index)}
-                                value={'all'}>All Samples</option>
-
+                                value={'all'}>All Samples</option>}
                             {sampleTypes
                                 .filter(st=>st.type.isString())  //Remove rowId duplicates
                                 .map((st) => {

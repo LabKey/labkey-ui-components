@@ -443,8 +443,7 @@ export class DomainField extends Record({
         let fields = List<DomainField>().asMutable();
 
         for (let i=0; i < rawFields.length; i++) {
-            let field = DomainField.create(rawFields[i]);
-            fields.push(field); //DomainField.create(rawFields[i]));
+            fields.push(DomainField.create(rawFields[i]));
         }
 
         return fields.asImmutable();
@@ -1006,9 +1005,8 @@ export type HeaderRenderer = (config:IAppDomainHeader) => any
 
 export interface IAppDomainHeader {
     domain: DomainDesign
+    modelDomains?: List<DomainDesign>
     onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
-    protocolModel: AssayProtocolModel
-    // onRemoveField?:() => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
 }

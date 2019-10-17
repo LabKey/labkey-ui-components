@@ -24,10 +24,20 @@ interface FileColumnRendererState {
     showModal?: boolean
 }
 
-export class FileColumnRenderer extends React.Component<FileColumnRendererProps, FileColumnRendererState> {
+function isImage(value) {
+    const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png'];
+    const parts = value.split('.');
+    const extensionType = parts[parts.length - 1].toLowerCase();
 
+    return validImageExtensions.indexOf(extensionType) > -1;
+}
+
+export class FileColumnRenderer extends React.Component<FileColumnRendererProps, FileColumnRendererState> {
     constructor(props) {
         super(props);
+
+        this.onHide = this.onHide.bind(this);
+        this.onImageClick = this.onImageClick.bind(this);
 
         this.state = {
             showModal: false
@@ -46,70 +56,51 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
         });
     }
 
-    verifyImage() {
-        const { data } = this.props;
-        const file = data.get('displayValue');
-
-        const validImageExtensions = ['jpg', 'jpeg', 'bmp', 'gif', 'png'],
-            extensionLength = file.split('.').length,
-            extensionType = file.split('.')[extensionLength - 1];
-
-        return validImageExtensions.indexOf(extensionType) > -1;
-    }
-
     renderFileType() {
         const { data } = this.props;
-        if (data && data.has('displayValue')) {
-            if (this.verifyImage()) {
-                return (
-                    <div>
-                        <img src={data.get('url')}
-                             alt={data.get('displayValue')+' image'}
-                             title={data.get('displayValue')}
-                             onClick={this.onImageClick.bind(this)}
-                             className="file-renderer-img"
-                        />
-                        <Modal bsSize="large"
-                               show={this.state.showModal}
-                               onHide={this.onHide.bind(this)}
-                        >
-                            <Modal.Header closeButton>
-                                <Modal.Title>
-                                    {data.get('displayValue')}
-                                </Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <img src={data.get('url')}
-                                     alt={data.get('displayValue')+' image'}
-                                     title={data.get('displayValue')}
-                                     className="file-renderer-img__modal"
-                                />
-                            </Modal.Body>
-                        </Modal>
-                    </div>
-                )
-            }
 
-            let content = (
-                <span>
-                    {data.get('displayValue')}&nbsp;<i className="fa fa-file-o"/>
-                </span>
-            );
-
-            if (data.get('url')) {
-                return (
-                    <a href={data.get('url')}>
-                        {content}
-                    </a>
-                );
-            }
-
-            return content;
+        if (!data || !data.has('displayValue')) {
+            return null;
         }
+
+        const url = data.get('url');
+        const displayValue = data.get('displayValue');
+
+        if (isImage(displayValue)) {
+            const alt = `${displayValue} image`;
+            return (
+                <>
+                    <img
+                        src={url}
+                        alt={alt}
+                        title={displayValue}
+                        onClick={this.onImageClick}
+                        className="file-renderer-img"
+                    />
+
+                    <Modal bsSize="large" show={this.state.showModal} onHide={this.onHide}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{displayValue}</Modal.Title>
+                        </Modal.Header>
+
+                        <Modal.Body>
+                            <img src={url} alt={alt} title={displayValue} className="file-renderer-img__modal" />
+                        </Modal.Body>
+                    </Modal>
+                </>
+            );
+        }
+
+        const content = <span>{displayValue}&nbsp;<i className="fa fa-file-o"/></span>;
+
+        if (url) {
+            return <a href={url}>{content}</a>;
+        }
+
+        return content;
     }
 
     render() {
-
         return (
             <div>
                 {this.renderFileType()}

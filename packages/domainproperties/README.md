@@ -4,8 +4,8 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.0.41
+*Released*: 17 October 2019
 * Item 6199: support other assay provider types in AssayDesignerPanels and AssayPropertiesPanel
     * update fetchProtocol to work for getting template based on provider name and for copy assay scenario
     * remove default AssayProtocolModel creation from AssayDesignerPanels component and require a model be passed in as props

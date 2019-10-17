@@ -3,6 +3,10 @@
 Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
+### version TBD
+*Released*: TBD
+* Added optional styling property for WizardNavButtons.tsx
+
 ### version 0.19.0
 *Released*: 26 September 2019
 * Add isFiltered method to QueryGridModel for better support of selection on filtered grids

@@ -399,3 +399,8 @@ $table-cell-selection-bg-color: #EDF3FF;
 .QueryGrid-right-spacing {
   padding-right: 15px;
 }
+
+// Image Modal for FileColumnRenderer
+.file-renderer-img__modal {
+  max-width: 100%;
+}

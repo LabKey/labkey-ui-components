@@ -61,12 +61,22 @@ function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
 }
 
-export function formatDate(date : Date) {
-    return date ? moment(date).formatWithJDF(getDateFormat()) : null;
+export function formatDate(date : Date, timezone?: string) {
+    if (!date)
+        return null;
+    let _date = moment(date);
+    if (timezone)
+        _date = _date.tz(timezone);
+    return _date.formatWithJDF(getDateFormat());
 }
 
-export function formatDateTime(date : Date) {
-    return date ? moment(date).formatWithJDF(getDateTimeFormat()) : null;
+export function formatDateTime(date : Date, timezone?: string) {
+    if (!date)
+        return null;
+    let _date = moment(date);
+    if (timezone)
+        _date = _date.tz(timezone);
+    return _date.formatWithJDF(getDateTimeFormat());
 }
 
 function getFormattedNumber(n) {

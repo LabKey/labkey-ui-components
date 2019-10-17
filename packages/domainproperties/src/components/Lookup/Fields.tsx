@@ -195,15 +195,15 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
                 onChange={onChange}
             >
                 {disabled && value && <option key="_disabled" value={value}>{decodeLookup(value).queryName}</option>}
-                {blankOption && <option key="_default" value={undefined}/>}
                 {loading && <option disabled key="_loading" value={value}>Loading...</option>}
+                {blankOption && <option key="_default" value={undefined}/>}
                 {queries.map((q) => {
                     let encoded = encodeLookup(q.name, q.type);
                     return (
                         <option key={encoded} value={encoded}>{q.name} ({q.type.shortDisplay || q.type.display})</option>
                     )
                 }).toArray()}
-                {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
+                {!loading && isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>
         )
     }
@@ -288,7 +288,7 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
 
     render() {
         const { id, onChange, value, name, disabled } = this.props;
-        const { schemas } = this.state;
+        const { schemas, loading } = this.state;
 
         const isEmpty = schemas.size === 0;
         const hasValue = !!value;
@@ -305,9 +305,10 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
                 placeholder="Select Schema"
             >
                 {disabled && value && <option key="_disabled" value={value}>{value}</option>}
+                {loading && <option disabled key="_loading" value={value}>Loading...</option>}
                 {blankOption && <option key="_default" value={undefined}/>}
                 {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.fullyQualifiedName}</option>).toArray()}
-                {isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
+                {!loading && isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
             </FormControl>
         )
     }

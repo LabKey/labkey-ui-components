@@ -303,9 +303,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     >
                       <option
                         disabled={true}
-                        key="_empty"
+                        key="_loading"
+                        value="exp"
                       >
-                        (No schemas)
+                        Loading...
                       </option>
                     </select>
                   </FormControl>
@@ -391,12 +392,6 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                         value="Data"
                       >
                         Loading...
-                      </option>
-                      <option
-                        disabled={true}
-                        key="_empty"
-                      >
-                        (No tables)
                       </option>
                     </select>
                   </FormControl>

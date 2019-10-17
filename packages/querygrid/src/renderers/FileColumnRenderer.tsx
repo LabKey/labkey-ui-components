@@ -35,28 +35,20 @@ function isImage(value) {
 export class FileColumnRenderer extends React.Component<FileColumnRendererProps, FileColumnRendererState> {
     constructor(props) {
         super(props);
-
-        this.onHide = this.onHide.bind(this);
-        this.onImageClick = this.onImageClick.bind(this);
-
         this.state = {
             showModal: false
-        }
+        };
     }
 
-    onHide() {
-        this.setState({
-            showModal: false
-        });
-    }
+    onHide = () => {
+        this.setState({ showModal: false });
+    };
 
-    onImageClick() {
-        this.setState({
-            showModal: true
-        });
-    }
+    onImageClick = () => {
+        this.setState({ showModal: true });
+    };
 
-    renderFileType() {
+    render() {
         const { data } = this.props;
 
         if (!data || !data.has('displayValue')) {
@@ -98,13 +90,5 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
         }
 
         return content;
-    }
-
-    render() {
-        return (
-            <div>
-                {this.renderFileType()}
-            </div>
-        )
     }
 }

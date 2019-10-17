@@ -13753,6 +13753,68 @@ exports[`DomainForm domain form with all field types 1`] = `
           "isPrimaryKey": false,
           "lockType": "NotLocked",
         },
+        Immutable.Record {
+          "conceptURI": "http://www.labkey.org/exp/xml#sample",
+          "defaultScale": undefined,
+          "description": undefined,
+          "dimension": undefined,
+          "excludeFromShifting": false,
+          "format": undefined,
+          "hidden": false,
+          "importAliases": undefined,
+          "label": undefined,
+          "lookupContainer": undefined,
+          "lookupQuery": "Materials",
+          "lookupSchema": "exp",
+          "measure": undefined,
+          "mvEnabled": false,
+          "name": "sample",
+          "PHI": undefined,
+          "primaryKey": undefined,
+          "propertyId": 11,
+          "propertyURI": "test",
+          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          "recommendedVariable": false,
+          "required": false,
+          "scale": undefined,
+          "URL": undefined,
+          "shownInDetailsView": true,
+          "shownInInsertView": true,
+          "shownInUpdateView": true,
+          "visible": true,
+          "dataType": Immutable.Record {
+            "conceptURI": "http://www.labkey.org/exp/xml#sample",
+            "display": "Sample",
+            "name": "sample",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+            "alternateRangeURI": undefined,
+            "shortDisplay": undefined,
+          },
+          "lookupQueryValue": "http://www.w3.org/2001/XMLSchema#string|Materials",
+          "lookupType": Immutable.Record {
+            "conceptURI": undefined,
+            "display": "Lookup",
+            "name": "lookup",
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+            "alternateRangeURI": undefined,
+            "shortDisplay": undefined,
+          },
+          "original": Object {
+            "conceptURI": "http://www.labkey.org/exp/xml#sample",
+            "dataType": Immutable.Record {
+              "conceptURI": "http://www.labkey.org/exp/xml#sample",
+              "display": "Sample",
+              "name": "sample",
+              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+              "alternateRangeURI": undefined,
+              "shortDisplay": undefined,
+            },
+            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+          },
+          "updatedField": false,
+          "isPrimaryKey": false,
+          "lockType": "NotLocked",
+        },
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
@@ -14388,6 +14450,68 @@ exports[`DomainForm domain form with all field types 1`] = `
                   "shortDisplay": undefined,
                 },
                 "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+              },
+              "updatedField": false,
+              "isPrimaryKey": false,
+              "lockType": "NotLocked",
+            },
+            Immutable.Record {
+              "conceptURI": "http://www.labkey.org/exp/xml#sample",
+              "defaultScale": undefined,
+              "description": undefined,
+              "dimension": undefined,
+              "excludeFromShifting": false,
+              "format": undefined,
+              "hidden": false,
+              "importAliases": undefined,
+              "label": undefined,
+              "lookupContainer": undefined,
+              "lookupQuery": "Materials",
+              "lookupSchema": "exp",
+              "measure": undefined,
+              "mvEnabled": false,
+              "name": "sample",
+              "PHI": undefined,
+              "primaryKey": undefined,
+              "propertyId": 11,
+              "propertyURI": "test",
+              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+              "recommendedVariable": false,
+              "required": false,
+              "scale": undefined,
+              "URL": undefined,
+              "shownInDetailsView": true,
+              "shownInInsertView": true,
+              "shownInUpdateView": true,
+              "visible": true,
+              "dataType": Immutable.Record {
+                "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                "display": "Sample",
+                "name": "sample",
+                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                "alternateRangeURI": undefined,
+                "shortDisplay": undefined,
+              },
+              "lookupQueryValue": "http://www.w3.org/2001/XMLSchema#string|Materials",
+              "lookupType": Immutable.Record {
+                "conceptURI": undefined,
+                "display": "Lookup",
+                "name": "lookup",
+                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                "alternateRangeURI": undefined,
+                "shortDisplay": undefined,
+              },
+              "original": Object {
+                "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                "dataType": Immutable.Record {
+                  "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                  "display": "Sample",
+                  "name": "sample",
+                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                  "alternateRangeURI": undefined,
+                  "shortDisplay": undefined,
+                },
+                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
               },
               "updatedField": false,
               "isPrimaryKey": false,
@@ -29107,6 +29231,1498 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                           className="form-control"
                                                                           disabled={false}
                                                                           id="domainpropertiesrow-URL-9"
+                                                                          name="domainpropertiesrow-URL"
+                                                                          onChange={[Function]}
+                                                                          type="text"
+                                                                          value=""
+                                                                        />
+                                                                      </FormControl>
+                                                                    </div>
+                                                                  </Col>
+                                                                </div>
+                                                              </Row>
+                                                            </div>
+                                                          </NameAndLinkingOptions>
+                                                        </div>
+                                                      </div>
+                                                    </DomainRowExpandedOptions>
+                                                  </div>
+                                                </Transition>
+                                              </Collapse>
+                                            </div>
+                                          </Draggable>
+                                        </ConnectFunction>
+                                      </DomainRow>
+                                      <DomainRow
+                                        availableTypes={
+                                          Immutable.List [
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Text (String)",
+                                              "name": "string",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": "xsd:string",
+                                              "shortDisplay": "String",
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Multi-Line Text",
+                                              "name": "multiLine",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#multiLine",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Boolean",
+                                              "name": "boolean",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#boolean",
+                                              "alternateRangeURI": "xsd:boolean",
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Integer",
+                                              "name": "int",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+                                              "alternateRangeURI": "xsd:int",
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Decimal",
+                                              "name": "double",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                                              "alternateRangeURI": "xsd:double",
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Date Time",
+                                              "name": "dateTime",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                                              "alternateRangeURI": "xsd:dateTime",
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": "http://www.labkey.org/exp/xml#flag",
+                                              "display": "Flag (String)",
+                                              "name": "flag",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "File",
+                                              "name": "fileLink",
+                                              "rangeURI": "http://cpas.fhcrc.org/exp/xml#fileLink",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Attachment",
+                                              "name": "attachment",
+                                              "rangeURI": "http://www.labkey.org/exp/xml#attachment",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "User",
+                                              "name": "users",
+                                              "rangeURI": "http://www.labkey.org/exp/xml#int",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
+                                              "display": "Subject/Participant (String)",
+                                              "name": "ParticipantId",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Lookup",
+                                              "name": "lookup",
+                                              "rangeURI": undefined,
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            Immutable.Record {
+                                              "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                              "display": "Sample",
+                                              "name": "sample",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                          ]
+                                        }
+                                        dragging={false}
+                                        expandTransition={300}
+                                        expanded={false}
+                                        field={
+                                          Immutable.Record {
+                                            "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                            "defaultScale": undefined,
+                                            "description": undefined,
+                                            "dimension": undefined,
+                                            "excludeFromShifting": false,
+                                            "format": undefined,
+                                            "hidden": false,
+                                            "importAliases": undefined,
+                                            "label": undefined,
+                                            "lookupContainer": undefined,
+                                            "lookupQuery": "Materials",
+                                            "lookupSchema": "exp",
+                                            "measure": undefined,
+                                            "mvEnabled": false,
+                                            "name": "sample",
+                                            "PHI": undefined,
+                                            "primaryKey": undefined,
+                                            "propertyId": 11,
+                                            "propertyURI": "test",
+                                            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                            "recommendedVariable": false,
+                                            "required": false,
+                                            "scale": undefined,
+                                            "URL": undefined,
+                                            "shownInDetailsView": true,
+                                            "shownInInsertView": true,
+                                            "shownInUpdateView": true,
+                                            "visible": true,
+                                            "dataType": Immutable.Record {
+                                              "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                              "display": "Sample",
+                                              "name": "sample",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            "lookupQueryValue": "http://www.w3.org/2001/XMLSchema#string|Materials",
+                                            "lookupType": Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Lookup",
+                                              "name": "lookup",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                            },
+                                            "original": Object {
+                                              "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                              "dataType": Immutable.Record {
+                                                "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                "display": "Sample",
+                                                "name": "sample",
+                                                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                "alternateRangeURI": undefined,
+                                                "shortDisplay": undefined,
+                                              },
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                            },
+                                            "updatedField": false,
+                                            "isPrimaryKey": false,
+                                            "lockType": "NotLocked",
+                                          }
+                                        }
+                                        index={10}
+                                        isDragDisabled={false}
+                                        key="domain-row-key-10"
+                                        maxPhiLevel="NotPHI"
+                                        onChange={[Function]}
+                                        onDelete={[Function]}
+                                        onExpand={[Function]}
+                                      >
+                                        <ConnectFunction
+                                          disableInteractiveElementBlocking={false}
+                                          draggableId="domainpropertiesrow-domaindrag-10"
+                                          index={10}
+                                          isDragDisabled={false}
+                                          shouldRespectForcePress={false}
+                                        >
+                                          <Draggable
+                                            disableInteractiveElementBlocking={false}
+                                            draggableId="domainpropertiesrow-domaindrag-10"
+                                            drop={[Function]}
+                                            dropAnimationFinished={[Function]}
+                                            index={10}
+                                            isDragDisabled={false}
+                                            lift={[Function]}
+                                            mapped={
+                                              Object {
+                                                "combineTargetFor": null,
+                                                "offset": Object {
+                                                  "x": 0,
+                                                  "y": 0,
+                                                },
+                                                "shouldAnimateDisplacement": true,
+                                                "snapshot": Object {
+                                                  "combineTargetFor": null,
+                                                  "combineWith": null,
+                                                  "draggingOver": null,
+                                                  "dropAnimation": null,
+                                                  "isDragging": false,
+                                                  "isDropAnimating": false,
+                                                  "mode": null,
+                                                },
+                                                "type": "SECONDARY",
+                                              }
+                                            }
+                                            move={[Function]}
+                                            moveByWindowScroll={[Function]}
+                                            moveDown={[Function]}
+                                            moveLeft={[Function]}
+                                            moveRight={[Function]}
+                                            moveUp={[Function]}
+                                            shouldRespectForcePress={false}
+                                          >
+                                            <div
+                                              aria-roledescription="Draggable item. Press space bar to lift"
+                                              className="domain-field-row domain-row-border-default"
+                                              data-react-beautiful-dnd-drag-handle="0"
+                                              data-react-beautiful-dnd-draggable="0"
+                                              draggable={true}
+                                              onBlur={[Function]}
+                                              onDragStart={[Function]}
+                                              onFocus={[Function]}
+                                              onKeyDown={[Function]}
+                                              onMouseDown={[Function]}
+                                              onMouseEnter={[Function]}
+                                              onMouseLeave={[Function]}
+                                              onTouchStart={[Function]}
+                                              onTransitionEnd={null}
+                                              style={
+                                                Object {
+                                                  "transform": null,
+                                                  "transition": null,
+                                                }
+                                              }
+                                              tabIndex={10}
+                                            >
+                                              <Row
+                                                bsClass="row"
+                                                className="domain-row-container"
+                                                componentClass="div"
+                                                key="domainpropertiesrow-domainrow-10"
+                                              >
+                                                <div
+                                                  className="domain-row-container row"
+                                                >
+                                                  <AdvancedSettings
+                                                    field={
+                                                      Immutable.Record {
+                                                        "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                        "defaultScale": undefined,
+                                                        "description": undefined,
+                                                        "dimension": undefined,
+                                                        "excludeFromShifting": false,
+                                                        "format": undefined,
+                                                        "hidden": false,
+                                                        "importAliases": undefined,
+                                                        "label": undefined,
+                                                        "lookupContainer": undefined,
+                                                        "lookupQuery": "Materials",
+                                                        "lookupSchema": "exp",
+                                                        "measure": undefined,
+                                                        "mvEnabled": false,
+                                                        "name": "sample",
+                                                        "PHI": undefined,
+                                                        "primaryKey": undefined,
+                                                        "propertyId": 11,
+                                                        "propertyURI": "test",
+                                                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "recommendedVariable": false,
+                                                        "required": false,
+                                                        "scale": undefined,
+                                                        "URL": undefined,
+                                                        "shownInDetailsView": true,
+                                                        "shownInInsertView": true,
+                                                        "shownInUpdateView": true,
+                                                        "visible": true,
+                                                        "dataType": Immutable.Record {
+                                                          "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                          "display": "Sample",
+                                                          "name": "sample",
+                                                          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
+                                                          "shortDisplay": undefined,
+                                                        },
+                                                        "lookupQueryValue": "http://www.w3.org/2001/XMLSchema#string|Materials",
+                                                        "lookupType": Immutable.Record {
+                                                          "conceptURI": undefined,
+                                                          "display": "Lookup",
+                                                          "name": "lookup",
+                                                          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "alternateRangeURI": undefined,
+                                                          "shortDisplay": undefined,
+                                                        },
+                                                        "original": Object {
+                                                          "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                          "dataType": Immutable.Record {
+                                                            "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                            "display": "Sample",
+                                                            "name": "sample",
+                                                            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": undefined,
+                                                            "shortDisplay": undefined,
+                                                          },
+                                                          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        },
+                                                        "updatedField": false,
+                                                        "isPrimaryKey": false,
+                                                        "lockType": "NotLocked",
+                                                      }
+                                                    }
+                                                    index={10}
+                                                    label="sample"
+                                                    maxPhiLevel="NotPHI"
+                                                    onApply={[Function]}
+                                                    onHide={[Function]}
+                                                    show={false}
+                                                  >
+                                                    <Modal
+                                                      animation={true}
+                                                      autoFocus={true}
+                                                      backdrop={true}
+                                                      bsClass="modal"
+                                                      dialogComponentClass={[Function]}
+                                                      enforceFocus={true}
+                                                      keyboard={true}
+                                                      manager={
+                                                        ModalManager {
+                                                          "add": [Function],
+                                                          "containers": Array [],
+                                                          "data": Array [],
+                                                          "handleContainerOverflow": true,
+                                                          "hideSiblingNodes": true,
+                                                          "isTopModal": [Function],
+                                                          "modals": Array [],
+                                                          "remove": [Function],
+                                                        }
+                                                      }
+                                                      onEnter={[Function]}
+                                                      onHide={[Function]}
+                                                      renderBackdrop={[Function]}
+                                                      restoreFocus={true}
+                                                      show={false}
+                                                    >
+                                                      <Modal
+                                                        autoFocus={true}
+                                                        backdrop={true}
+                                                        backdropClassName="modal-backdrop"
+                                                        backdropTransition={[Function]}
+                                                        containerClassName="modal-open"
+                                                        enforceFocus={true}
+                                                        keyboard={true}
+                                                        manager={
+                                                          ModalManager {
+                                                            "add": [Function],
+                                                            "containers": Array [],
+                                                            "data": Array [],
+                                                            "handleContainerOverflow": true,
+                                                            "hideSiblingNodes": true,
+                                                            "isTopModal": [Function],
+                                                            "modals": Array [],
+                                                            "remove": [Function],
+                                                          }
+                                                        }
+                                                        onEnter={[Function]}
+                                                        onEntering={[Function]}
+                                                        onExited={[Function]}
+                                                        onHide={[Function]}
+                                                        renderBackdrop={[Function]}
+                                                        restoreFocus={true}
+                                                        show={false}
+                                                        transition={[Function]}
+                                                      />
+                                                    </Modal>
+                                                  </AdvancedSettings>
+                                                  <div
+                                                    className="domain-row-handle"
+                                                  >
+                                                    <FontAwesomeIcon
+                                                      border={false}
+                                                      className=""
+                                                      color="#999999"
+                                                      fixedWidth={false}
+                                                      flip={null}
+                                                      icon={
+                                                        Object {
+                                                          "icon": Array [
+                                                            320,
+                                                            512,
+                                                            Array [],
+                                                            "f58e",
+                                                            "M96 32H32C14.33 32 0 46.33 0 64v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zM288 32h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32z",
+                                                          ],
+                                                          "iconName": "grip-vertical",
+                                                          "prefix": "fas",
+                                                        }
+                                                      }
+                                                      inverse={false}
+                                                      listItem={false}
+                                                      mask={null}
+                                                      pull={null}
+                                                      pulse={false}
+                                                      rotation={null}
+                                                      size="lg"
+                                                      spin={false}
+                                                      symbol={false}
+                                                      title=""
+                                                      transform={null}
+                                                    >
+                                                      <svg
+                                                        aria-hidden="true"
+                                                        className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                                        color="#999999"
+                                                        data-icon="grip-vertical"
+                                                        data-prefix="fas"
+                                                        focusable="false"
+                                                        role="img"
+                                                        style={Object {}}
+                                                        viewBox="0 0 320 512"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                      >
+                                                        <path
+                                                          d="M96 32H32C14.33 32 0 46.33 0 64v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160H32c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zM288 32h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32V64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32zm0 160h-64c-17.67 0-32 14.33-32 32v64c0 17.67 14.33 32 32 32h64c17.67 0 32-14.33 32-32v-64c0-17.67-14.33-32-32-32z"
+                                                          fill="currentColor"
+                                                          style={Object {}}
+                                                        />
+                                                      </svg>
+                                                    </FontAwesomeIcon>
+                                                  </div>
+                                                  <div
+                                                    className="domain-row-main"
+                                                  >
+                                                    <Col
+                                                      bsClass="col"
+                                                      className="domain-zero-padding"
+                                                      componentClass="div"
+                                                      xs={6}
+                                                    >
+                                                      <div
+                                                        className="domain-zero-padding col-xs-6"
+                                                      >
+                                                        <div
+                                                          id="domainpropertiesrow-row-10"
+                                                        >
+                                                          <Col
+                                                            bsClass="col"
+                                                            componentClass="div"
+                                                            xs={6}
+                                                          >
+                                                            <div
+                                                              className="col-xs-6"
+                                                            >
+                                                              <FormControl
+                                                                bsClass="form-control"
+                                                                componentClass="input"
+                                                                disabled={false}
+                                                                id="domainpropertiesrow-name-10"
+                                                                name="domainpropertiesrow-name"
+                                                                onChange={[Function]}
+                                                                onClick={[Function]}
+                                                                type="text"
+                                                                value="sample"
+                                                              >
+                                                                <input
+                                                                  className="form-control"
+                                                                  disabled={false}
+                                                                  id="domainpropertiesrow-name-10"
+                                                                  name="domainpropertiesrow-name"
+                                                                  onChange={[Function]}
+                                                                  onClick={[Function]}
+                                                                  type="text"
+                                                                  value="sample"
+                                                                />
+                                                              </FormControl>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            bsClass="col"
+                                                            componentClass="div"
+                                                            xs={4}
+                                                          >
+                                                            <div
+                                                              className="col-xs-4"
+                                                            >
+                                                              <FormControl
+                                                                bsClass="form-control"
+                                                                componentClass="select"
+                                                                disabled={false}
+                                                                id="domainpropertiesrow-type-10"
+                                                                name="domainpropertiesrow-type"
+                                                                onChange={[Function]}
+                                                                onClick={[Function]}
+                                                                value="sample"
+                                                              >
+                                                                <select
+                                                                  className="form-control"
+                                                                  disabled={false}
+                                                                  id="domainpropertiesrow-type-10"
+                                                                  name="domainpropertiesrow-type"
+                                                                  onChange={[Function]}
+                                                                  onClick={[Function]}
+                                                                  value="sample"
+                                                                >
+                                                                  <option
+                                                                    key="0"
+                                                                    value="string"
+                                                                  >
+                                                                    Text (String)
+                                                                  </option>
+                                                                  <option
+                                                                    key="1"
+                                                                    value="multiLine"
+                                                                  >
+                                                                    Multi-Line Text
+                                                                  </option>
+                                                                  <option
+                                                                    key="2"
+                                                                    value="flag"
+                                                                  >
+                                                                    Flag (String)
+                                                                  </option>
+                                                                  <option
+                                                                    key="3"
+                                                                    value="ParticipantId"
+                                                                  >
+                                                                    Subject/Participant (String)
+                                                                  </option>
+                                                                  <option
+                                                                    key="4"
+                                                                    value="lookup"
+                                                                  >
+                                                                    Lookup
+                                                                  </option>
+                                                                  <option
+                                                                    key="5"
+                                                                    value="sample"
+                                                                  >
+                                                                    Sample
+                                                                  </option>
+                                                                </select>
+                                                              </FormControl>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            bsClass="col"
+                                                            componentClass="div"
+                                                            xs={2}
+                                                          >
+                                                            <div
+                                                              className="col-xs-2"
+                                                            >
+                                                              <div
+                                                                className="domain-field-checkbox"
+                                                              >
+                                                                <Checkbox
+                                                                  bsClass="checkbox"
+                                                                  checked={false}
+                                                                  className="domain-field-checkbox"
+                                                                  disabled={false}
+                                                                  id="domainpropertiesrow-required-10"
+                                                                  inline={false}
+                                                                  name="domainpropertiesrow-required"
+                                                                  onChange={[Function]}
+                                                                  title=""
+                                                                >
+                                                                  <div
+                                                                    className="domain-field-checkbox checkbox"
+                                                                  >
+                                                                    <label
+                                                                      title=""
+                                                                    >
+                                                                      <input
+                                                                        checked={false}
+                                                                        disabled={false}
+                                                                        id="domainpropertiesrow-required-10"
+                                                                        name="domainpropertiesrow-required"
+                                                                        onChange={[Function]}
+                                                                        type="checkbox"
+                                                                      />
+                                                                    </label>
+                                                                  </div>
+                                                                </Checkbox>
+                                                              </div>
+                                                            </div>
+                                                          </Col>
+                                                        </div>
+                                                      </div>
+                                                    </Col>
+                                                    <Col
+                                                      bsClass="col"
+                                                      className="domain-field-details-container"
+                                                      componentClass="div"
+                                                      xs={6}
+                                                    >
+                                                      <div
+                                                        className="domain-field-details-container col-xs-6"
+                                                      >
+                                                        <div
+                                                          className="domain-field-details"
+                                                          id="domainpropertiesrow-details-10"
+                                                        >
+                                                          All Samples
+                                                        </div>
+                                                        <div
+                                                          className="domain-field-buttons"
+                                                        >
+                                                          <div
+                                                            className="domain-field-icon"
+                                                            id="domainpropertiesrow-expand-10"
+                                                            onClick={[Function]}
+                                                          >
+                                                            <FontAwesomeIcon
+                                                              border={false}
+                                                              className=""
+                                                              color="#999999"
+                                                              fixedWidth={false}
+                                                              flip={null}
+                                                              icon={
+                                                                Object {
+                                                                  "icon": Array [
+                                                                    448,
+                                                                    512,
+                                                                    Array [],
+                                                                    "f0fe",
+                                                                    "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                                                  ],
+                                                                  "iconName": "plus-square",
+                                                                  "prefix": "fas",
+                                                                }
+                                                              }
+                                                              inverse={false}
+                                                              listItem={false}
+                                                              mask={null}
+                                                              pull={null}
+                                                              pulse={false}
+                                                              rotation={null}
+                                                              size="lg"
+                                                              spin={false}
+                                                              symbol={false}
+                                                              title=""
+                                                              transform={null}
+                                                            >
+                                                              <svg
+                                                                aria-hidden="true"
+                                                                className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                                                color="#999999"
+                                                                data-icon="plus-square"
+                                                                data-prefix="fas"
+                                                                focusable="false"
+                                                                role="img"
+                                                                style={Object {}}
+                                                                viewBox="0 0 448 512"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                              >
+                                                                <path
+                                                                  d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                                                  fill="currentColor"
+                                                                  style={Object {}}
+                                                                />
+                                                              </svg>
+                                                            </FontAwesomeIcon>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </Col>
+                                                  </div>
+                                                </div>
+                                              </Row>
+                                              <Collapse
+                                                appear={false}
+                                                dimension="height"
+                                                getDimensionValue={[Function]}
+                                                in={false}
+                                                mountOnEnter={false}
+                                                onExited={[Function]}
+                                                onExiting={[Function]}
+                                                timeout={300}
+                                                unmountOnExit={false}
+                                              >
+                                                <Transition
+                                                  appear={false}
+                                                  aria-expanded={null}
+                                                  enter={true}
+                                                  exit={true}
+                                                  in={false}
+                                                  mountOnEnter={false}
+                                                  onEnter={[Function]}
+                                                  onEntered={[Function]}
+                                                  onEntering={[Function]}
+                                                  onExit={[Function]}
+                                                  onExited={[Function]}
+                                                  onExiting={[Function]}
+                                                  timeout={300}
+                                                  unmountOnExit={false}
+                                                >
+                                                  <div
+                                                    aria-expanded={null}
+                                                    className="collapse"
+                                                  >
+                                                    <DomainRowExpandedOptions
+                                                      field={
+                                                        Immutable.Record {
+                                                          "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                          "defaultScale": undefined,
+                                                          "description": undefined,
+                                                          "dimension": undefined,
+                                                          "excludeFromShifting": false,
+                                                          "format": undefined,
+                                                          "hidden": false,
+                                                          "importAliases": undefined,
+                                                          "label": undefined,
+                                                          "lookupContainer": undefined,
+                                                          "lookupQuery": "Materials",
+                                                          "lookupSchema": "exp",
+                                                          "measure": undefined,
+                                                          "mvEnabled": false,
+                                                          "name": "sample",
+                                                          "PHI": undefined,
+                                                          "primaryKey": undefined,
+                                                          "propertyId": 11,
+                                                          "propertyURI": "test",
+                                                          "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          "recommendedVariable": false,
+                                                          "required": false,
+                                                          "scale": undefined,
+                                                          "URL": undefined,
+                                                          "shownInDetailsView": true,
+                                                          "shownInInsertView": true,
+                                                          "shownInUpdateView": true,
+                                                          "visible": true,
+                                                          "dataType": Immutable.Record {
+                                                            "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                            "display": "Sample",
+                                                            "name": "sample",
+                                                            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": undefined,
+                                                            "shortDisplay": undefined,
+                                                          },
+                                                          "lookupQueryValue": "http://www.w3.org/2001/XMLSchema#string|Materials",
+                                                          "lookupType": Immutable.Record {
+                                                            "conceptURI": undefined,
+                                                            "display": "Lookup",
+                                                            "name": "lookup",
+                                                            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                            "alternateRangeURI": undefined,
+                                                            "shortDisplay": undefined,
+                                                          },
+                                                          "original": Object {
+                                                            "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                            "dataType": Immutable.Record {
+                                                              "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                              "display": "Sample",
+                                                              "name": "sample",
+                                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              "alternateRangeURI": undefined,
+                                                              "shortDisplay": undefined,
+                                                            },
+                                                            "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                          },
+                                                          "updatedField": false,
+                                                          "isPrimaryKey": false,
+                                                          "lockType": "NotLocked",
+                                                        }
+                                                      }
+                                                      index={10}
+                                                      onChange={[Function]}
+                                                      onMultiChange={[Function]}
+                                                    >
+                                                      <div
+                                                        className="domain-row-container"
+                                                      >
+                                                        <div
+                                                          className="domain-row-handle"
+                                                        />
+                                                        <div
+                                                          className="domain-row-main"
+                                                        >
+                                                          <SampleFieldOptions
+                                                            index={10}
+                                                            label="Sample Options"
+                                                            lockType="NotLocked"
+                                                            onChange={[Function]}
+                                                            original={
+                                                              Object {
+                                                                "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                                "dataType": Immutable.Record {
+                                                                  "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                                  "display": "Sample",
+                                                                  "name": "sample",
+                                                                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                                  "alternateRangeURI": undefined,
+                                                                  "shortDisplay": undefined,
+                                                                },
+                                                                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                              }
+                                                            }
+                                                            value="http://www.w3.org/2001/XMLSchema#string|Materials"
+                                                          >
+                                                            <div>
+                                                              <Row
+                                                                bsClass="row"
+                                                                className="domain-row-expanded"
+                                                                componentClass="div"
+                                                              >
+                                                                <div
+                                                                  className="domain-row-expanded row"
+                                                                >
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={12}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-12"
+                                                                    >
+                                                                      <div
+                                                                        className="domain-field-section-heading margin-top"
+                                                                      >
+                                                                        Sample Options
+                                                                      </div>
+                                                                    </div>
+                                                                  </Col>
+                                                                </div>
+                                                              </Row>
+                                                              <Row
+                                                                bsClass="row"
+                                                                className="domain-row-expanded"
+                                                                componentClass="div"
+                                                              >
+                                                                <div
+                                                                  className="domain-row-expanded row"
+                                                                >
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={2}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-2"
+                                                                    >
+                                                                      <div
+                                                                        className="domain-field-label"
+                                                                      >
+                                                                        Sample lookup to
+                                                                        <LabelHelpTip
+                                                                          body={[Function]}
+                                                                          id="tooltip"
+                                                                          title="Format Strings"
+                                                                        >
+                                                                          <span
+                                                                            className="label-help-target"
+                                                                            onMouseOut={[Function]}
+                                                                            onMouseOver={[Function]}
+                                                                          >
+                                                                            <FontAwesomeIcon
+                                                                              border={false}
+                                                                              className="label-help-icon"
+                                                                              fixedWidth={false}
+                                                                              flip={null}
+                                                                              icon={
+                                                                                Object {
+                                                                                  "icon": Array [
+                                                                                    512,
+                                                                                    512,
+                                                                                    Array [],
+                                                                                    "f059",
+                                                                                    "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                                  ],
+                                                                                  "iconName": "question-circle",
+                                                                                  "prefix": "fas",
+                                                                                }
+                                                                              }
+                                                                              inverse={false}
+                                                                              listItem={false}
+                                                                              mask={null}
+                                                                              pull={null}
+                                                                              pulse={false}
+                                                                              rotation={null}
+                                                                              size={null}
+                                                                              spin={false}
+                                                                              symbol={false}
+                                                                              title=""
+                                                                              transform={null}
+                                                                            >
+                                                                              <svg
+                                                                                aria-hidden="true"
+                                                                                className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                data-icon="question-circle"
+                                                                                data-prefix="fas"
+                                                                                focusable="false"
+                                                                                role="img"
+                                                                                style={Object {}}
+                                                                                viewBox="0 0 512 512"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                              >
+                                                                                <path
+                                                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                  fill="currentColor"
+                                                                                  style={Object {}}
+                                                                                />
+                                                                              </svg>
+                                                                            </FontAwesomeIcon>
+                                                                            <Overlay
+                                                                              animation={[Function]}
+                                                                              placement="right"
+                                                                              rootClose={false}
+                                                                              show={false}
+                                                                              target={
+                                                                                <span
+                                                                                  class="label-help-target"
+                                                                                >
+                                                                                  <svg
+                                                                                    aria-hidden="true"
+                                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                    data-icon="question-circle"
+                                                                                    data-prefix="fas"
+                                                                                    focusable="false"
+                                                                                    role="img"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                  >
+                                                                                    <path
+                                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                      fill="currentColor"
+                                                                                    />
+                                                                                  </svg>
+                                                                                </span>
+                                                                              }
+                                                                            >
+                                                                              <Overlay
+                                                                                placement="right"
+                                                                                rootClose={false}
+                                                                                show={false}
+                                                                                target={
+                                                                                  <span
+                                                                                    class="label-help-target"
+                                                                                  >
+                                                                                    <svg
+                                                                                      aria-hidden="true"
+                                                                                      class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                      data-icon="question-circle"
+                                                                                      data-prefix="fas"
+                                                                                      focusable="false"
+                                                                                      role="img"
+                                                                                      viewBox="0 0 512 512"
+                                                                                      xmlns="http://www.w3.org/2000/svg"
+                                                                                    >
+                                                                                      <path
+                                                                                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                        fill="currentColor"
+                                                                                      />
+                                                                                    </svg>
+                                                                                  </span>
+                                                                                }
+                                                                                transition={[Function]}
+                                                                              />
+                                                                            </Overlay>
+                                                                          </span>
+                                                                        </LabelHelpTip>
+                                                                      </div>
+                                                                    </div>
+                                                                  </Col>
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={6}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-6"
+                                                                    >
+                                                                      <FormControl
+                                                                        bsClass="form-control"
+                                                                        componentClass="select"
+                                                                        disabled={false}
+                                                                        id="domainpropertiesrow-sampleTypeSelect-10"
+                                                                        key="domainpropertiesrow-sampleTypeSelect-10"
+                                                                        name="domainpropertiesrow-sampleTypeSelect"
+                                                                        onChange={[Function]}
+                                                                        value="http://www.w3.org/2001/XMLSchema#string|Materials"
+                                                                      >
+                                                                        <select
+                                                                          className="form-control"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-sampleTypeSelect-10"
+                                                                          name="domainpropertiesrow-sampleTypeSelect"
+                                                                          onChange={[Function]}
+                                                                          value="http://www.w3.org/2001/XMLSchema#string|Materials"
+                                                                        >
+                                                                          <option
+                                                                            disabled={true}
+                                                                            key="_loading"
+                                                                            value="http://www.w3.org/2001/XMLSchema#string|Materials"
+                                                                          >
+                                                                            Loading...
+                                                                          </option>
+                                                                        </select>
+                                                                      </FormControl>
+                                                                    </div>
+                                                                  </Col>
+                                                                </div>
+                                                              </Row>
+                                                            </div>
+                                                          </SampleFieldOptions>
+                                                          <NameAndLinkingOptions
+                                                            field={
+                                                              Immutable.Record {
+                                                                "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                                "defaultScale": undefined,
+                                                                "description": undefined,
+                                                                "dimension": undefined,
+                                                                "excludeFromShifting": false,
+                                                                "format": undefined,
+                                                                "hidden": false,
+                                                                "importAliases": undefined,
+                                                                "label": undefined,
+                                                                "lookupContainer": undefined,
+                                                                "lookupQuery": "Materials",
+                                                                "lookupSchema": "exp",
+                                                                "measure": undefined,
+                                                                "mvEnabled": false,
+                                                                "name": "sample",
+                                                                "PHI": undefined,
+                                                                "primaryKey": undefined,
+                                                                "propertyId": 11,
+                                                                "propertyURI": "test",
+                                                                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                                "recommendedVariable": false,
+                                                                "required": false,
+                                                                "scale": undefined,
+                                                                "URL": undefined,
+                                                                "shownInDetailsView": true,
+                                                                "shownInInsertView": true,
+                                                                "shownInUpdateView": true,
+                                                                "visible": true,
+                                                                "dataType": Immutable.Record {
+                                                                  "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                                  "display": "Sample",
+                                                                  "name": "sample",
+                                                                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                                  "alternateRangeURI": undefined,
+                                                                  "shortDisplay": undefined,
+                                                                },
+                                                                "lookupQueryValue": "http://www.w3.org/2001/XMLSchema#string|Materials",
+                                                                "lookupType": Immutable.Record {
+                                                                  "conceptURI": undefined,
+                                                                  "display": "Lookup",
+                                                                  "name": "lookup",
+                                                                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                                  "alternateRangeURI": undefined,
+                                                                  "shortDisplay": undefined,
+                                                                },
+                                                                "original": Object {
+                                                                  "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                                  "dataType": Immutable.Record {
+                                                                    "conceptURI": "http://www.labkey.org/exp/xml#sample",
+                                                                    "display": "Sample",
+                                                                    "name": "sample",
+                                                                    "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                                    "alternateRangeURI": undefined,
+                                                                    "shortDisplay": undefined,
+                                                                  },
+                                                                  "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                                },
+                                                                "updatedField": false,
+                                                                "isPrimaryKey": false,
+                                                                "lockType": "NotLocked",
+                                                              }
+                                                            }
+                                                            index={10}
+                                                            onChange={[Function]}
+                                                          >
+                                                            <div>
+                                                              <Row
+                                                                bsClass="row"
+                                                                className="domain-row-expanded"
+                                                                componentClass="div"
+                                                              >
+                                                                <div
+                                                                  className="domain-row-expanded row"
+                                                                >
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={12}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-12"
+                                                                    >
+                                                                      <div
+                                                                        className="domain-field-section-heading margin-top"
+                                                                      >
+                                                                        Name and Linking Options
+                                                                      </div>
+                                                                    </div>
+                                                                  </Col>
+                                                                </div>
+                                                              </Row>
+                                                              <Row
+                                                                bsClass="row"
+                                                                className="domain-row-expanded"
+                                                                componentClass="div"
+                                                              >
+                                                                <div
+                                                                  className="domain-row-expanded row"
+                                                                >
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={5}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-5"
+                                                                    >
+                                                                      <div
+                                                                        className="domain-field-label"
+                                                                      >
+                                                                        Description
+                                                                      </div>
+                                                                      <textarea
+                                                                        className="form-control domain-field-textarea"
+                                                                        disabled={false}
+                                                                        id="domainpropertiesrow-description-10"
+                                                                        name="domainpropertiesrow-description"
+                                                                        onChange={[Function]}
+                                                                        placeholder="Add a description"
+                                                                        rows={4}
+                                                                        value=""
+                                                                      />
+                                                                    </div>
+                                                                  </Col>
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={3}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-3"
+                                                                    >
+                                                                      <div
+                                                                        className="domain-field-label"
+                                                                      >
+                                                                        Label
+                                                                      </div>
+                                                                      <FormControl
+                                                                        bsClass="form-control"
+                                                                        componentClass="input"
+                                                                        disabled={false}
+                                                                        id="domainpropertiesrow-label-10"
+                                                                        name="domainpropertiesrow-label"
+                                                                        onChange={[Function]}
+                                                                        type="text"
+                                                                        value=""
+                                                                      >
+                                                                        <input
+                                                                          className="form-control"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-label-10"
+                                                                          name="domainpropertiesrow-label"
+                                                                          onChange={[Function]}
+                                                                          type="text"
+                                                                          value=""
+                                                                        />
+                                                                      </FormControl>
+                                                                      <div
+                                                                        className="domain-field-label"
+                                                                      >
+                                                                        Import Aliases
+                                                                        <LabelHelpTip
+                                                                          body={[Function]}
+                                                                          id="tooltip"
+                                                                          title="Import Aliases"
+                                                                        >
+                                                                          <span
+                                                                            className="label-help-target"
+                                                                            onMouseOut={[Function]}
+                                                                            onMouseOver={[Function]}
+                                                                          >
+                                                                            <FontAwesomeIcon
+                                                                              border={false}
+                                                                              className="label-help-icon"
+                                                                              fixedWidth={false}
+                                                                              flip={null}
+                                                                              icon={
+                                                                                Object {
+                                                                                  "icon": Array [
+                                                                                    512,
+                                                                                    512,
+                                                                                    Array [],
+                                                                                    "f059",
+                                                                                    "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                                  ],
+                                                                                  "iconName": "question-circle",
+                                                                                  "prefix": "fas",
+                                                                                }
+                                                                              }
+                                                                              inverse={false}
+                                                                              listItem={false}
+                                                                              mask={null}
+                                                                              pull={null}
+                                                                              pulse={false}
+                                                                              rotation={null}
+                                                                              size={null}
+                                                                              spin={false}
+                                                                              symbol={false}
+                                                                              title=""
+                                                                              transform={null}
+                                                                            >
+                                                                              <svg
+                                                                                aria-hidden="true"
+                                                                                className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                data-icon="question-circle"
+                                                                                data-prefix="fas"
+                                                                                focusable="false"
+                                                                                role="img"
+                                                                                style={Object {}}
+                                                                                viewBox="0 0 512 512"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                              >
+                                                                                <path
+                                                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                  fill="currentColor"
+                                                                                  style={Object {}}
+                                                                                />
+                                                                              </svg>
+                                                                            </FontAwesomeIcon>
+                                                                            <Overlay
+                                                                              animation={[Function]}
+                                                                              placement="right"
+                                                                              rootClose={false}
+                                                                              show={false}
+                                                                              target={
+                                                                                <span
+                                                                                  class="label-help-target"
+                                                                                >
+                                                                                  <svg
+                                                                                    aria-hidden="true"
+                                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                    data-icon="question-circle"
+                                                                                    data-prefix="fas"
+                                                                                    focusable="false"
+                                                                                    role="img"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                  >
+                                                                                    <path
+                                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                      fill="currentColor"
+                                                                                    />
+                                                                                  </svg>
+                                                                                </span>
+                                                                              }
+                                                                            >
+                                                                              <Overlay
+                                                                                placement="right"
+                                                                                rootClose={false}
+                                                                                show={false}
+                                                                                target={
+                                                                                  <span
+                                                                                    class="label-help-target"
+                                                                                  >
+                                                                                    <svg
+                                                                                      aria-hidden="true"
+                                                                                      class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                      data-icon="question-circle"
+                                                                                      data-prefix="fas"
+                                                                                      focusable="false"
+                                                                                      role="img"
+                                                                                      viewBox="0 0 512 512"
+                                                                                      xmlns="http://www.w3.org/2000/svg"
+                                                                                    >
+                                                                                      <path
+                                                                                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                        fill="currentColor"
+                                                                                      />
+                                                                                    </svg>
+                                                                                  </span>
+                                                                                }
+                                                                                transition={[Function]}
+                                                                              />
+                                                                            </Overlay>
+                                                                          </span>
+                                                                        </LabelHelpTip>
+                                                                      </div>
+                                                                      <FormControl
+                                                                        bsClass="form-control"
+                                                                        componentClass="input"
+                                                                        disabled={false}
+                                                                        id="domainpropertiesrow-importAliases-10"
+                                                                        name="domainpropertiesrow-importAliases"
+                                                                        onChange={[Function]}
+                                                                        type="text"
+                                                                        value=""
+                                                                      >
+                                                                        <input
+                                                                          className="form-control"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-importAliases-10"
+                                                                          name="domainpropertiesrow-importAliases"
+                                                                          onChange={[Function]}
+                                                                          type="text"
+                                                                          value=""
+                                                                        />
+                                                                      </FormControl>
+                                                                    </div>
+                                                                  </Col>
+                                                                </div>
+                                                              </Row>
+                                                              <Row
+                                                                bsClass="row"
+                                                                className="domain-row-expanded"
+                                                                componentClass="div"
+                                                              >
+                                                                <div
+                                                                  className="domain-row-expanded row"
+                                                                >
+                                                                  <Col
+                                                                    bsClass="col"
+                                                                    componentClass="div"
+                                                                    xs={5}
+                                                                  >
+                                                                    <div
+                                                                      className="col-xs-5"
+                                                                    >
+                                                                      <div
+                                                                        className="domain-field-label"
+                                                                      >
+                                                                        URL
+                                                                        <LabelHelpTip
+                                                                          body={[Function]}
+                                                                          id="tooltip"
+                                                                          title="URL"
+                                                                        >
+                                                                          <span
+                                                                            className="label-help-target"
+                                                                            onMouseOut={[Function]}
+                                                                            onMouseOver={[Function]}
+                                                                          >
+                                                                            <FontAwesomeIcon
+                                                                              border={false}
+                                                                              className="label-help-icon"
+                                                                              fixedWidth={false}
+                                                                              flip={null}
+                                                                              icon={
+                                                                                Object {
+                                                                                  "icon": Array [
+                                                                                    512,
+                                                                                    512,
+                                                                                    Array [],
+                                                                                    "f059",
+                                                                                    "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                                                  ],
+                                                                                  "iconName": "question-circle",
+                                                                                  "prefix": "fas",
+                                                                                }
+                                                                              }
+                                                                              inverse={false}
+                                                                              listItem={false}
+                                                                              mask={null}
+                                                                              pull={null}
+                                                                              pulse={false}
+                                                                              rotation={null}
+                                                                              size={null}
+                                                                              spin={false}
+                                                                              symbol={false}
+                                                                              title=""
+                                                                              transform={null}
+                                                                            >
+                                                                              <svg
+                                                                                aria-hidden="true"
+                                                                                className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                data-icon="question-circle"
+                                                                                data-prefix="fas"
+                                                                                focusable="false"
+                                                                                role="img"
+                                                                                style={Object {}}
+                                                                                viewBox="0 0 512 512"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                              >
+                                                                                <path
+                                                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                  fill="currentColor"
+                                                                                  style={Object {}}
+                                                                                />
+                                                                              </svg>
+                                                                            </FontAwesomeIcon>
+                                                                            <Overlay
+                                                                              animation={[Function]}
+                                                                              placement="right"
+                                                                              rootClose={false}
+                                                                              show={false}
+                                                                              target={
+                                                                                <span
+                                                                                  class="label-help-target"
+                                                                                >
+                                                                                  <svg
+                                                                                    aria-hidden="true"
+                                                                                    class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                    data-icon="question-circle"
+                                                                                    data-prefix="fas"
+                                                                                    focusable="false"
+                                                                                    role="img"
+                                                                                    viewBox="0 0 512 512"
+                                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                                  >
+                                                                                    <path
+                                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                      fill="currentColor"
+                                                                                    />
+                                                                                  </svg>
+                                                                                </span>
+                                                                              }
+                                                                            >
+                                                                              <Overlay
+                                                                                placement="right"
+                                                                                rootClose={false}
+                                                                                show={false}
+                                                                                target={
+                                                                                  <span
+                                                                                    class="label-help-target"
+                                                                                  >
+                                                                                    <svg
+                                                                                      aria-hidden="true"
+                                                                                      class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                                      data-icon="question-circle"
+                                                                                      data-prefix="fas"
+                                                                                      focusable="false"
+                                                                                      role="img"
+                                                                                      viewBox="0 0 512 512"
+                                                                                      xmlns="http://www.w3.org/2000/svg"
+                                                                                    >
+                                                                                      <path
+                                                                                        d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                                                        fill="currentColor"
+                                                                                      />
+                                                                                    </svg>
+                                                                                  </span>
+                                                                                }
+                                                                                transition={[Function]}
+                                                                              />
+                                                                            </Overlay>
+                                                                          </span>
+                                                                        </LabelHelpTip>
+                                                                      </div>
+                                                                      <FormControl
+                                                                        bsClass="form-control"
+                                                                        componentClass="input"
+                                                                        disabled={false}
+                                                                        id="domainpropertiesrow-URL-10"
+                                                                        name="domainpropertiesrow-URL"
+                                                                        onChange={[Function]}
+                                                                        type="text"
+                                                                        value=""
+                                                                      >
+                                                                        <input
+                                                                          className="form-control"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-URL-10"
                                                                           name="domainpropertiesrow-URL"
                                                                           onChange={[Function]}
                                                                           type="text"

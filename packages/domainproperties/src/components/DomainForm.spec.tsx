@@ -30,6 +30,7 @@ import {
     INT_RANGE_URI, LK_DOMAIN_HELP_URL,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
+    SAMPLE_TYPE_CONCEPT_URI,
     STRING_RANGE_URI
 } from "../constants";
 import {mount} from "enzyme";
@@ -195,6 +196,13 @@ describe('DomainForm', () => {
             name: 'attachment',
             rangeURI: ATTACHMENT_RANGE_URI,
             propertyId: 10,
+            propertyURI: 'test'
+        });
+        fields.push({
+            name: 'sample',
+            rangeURI: STRING_RANGE_URI,
+            conceptURI: SAMPLE_TYPE_CONCEPT_URI,
+            propertyId: 11,
             propertyURI: 'test'
         });
 

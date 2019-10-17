@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {createGeneralAssayDesign, fetchDomain, fetchProtocol, saveAssayDesign, saveDomain, getBannerMessages} from "./actions/actions";
-import {AssayProtocolModel, DomainDesign, IBannerMessage} from "./models";
+import {fetchDomain, fetchProtocol, saveAssayDesign, saveDomain, getBannerMessages, setDomainFields} from "./actions/actions";
+import {AssayProtocolModel, DomainDesign, IBannerMessage, DomainField} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
 import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
@@ -35,12 +35,13 @@ export {
     saveDomain,
     getBannerMessages,
     fetchProtocol,
-    createGeneralAssayDesign,
     saveAssayDesign,
+    setDomainFields,
 
     // models
     AssayProtocolModel,
     DomainDesign,
+    DomainField,
     IBannerMessage,
 
     // constants

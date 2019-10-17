@@ -112,10 +112,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -123,6 +123,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -151,6 +152,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -181,6 +183,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -210,6 +213,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -230,10 +234,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -242,6 +246,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -271,6 +276,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -279,6 +285,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -287,6 +294,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -295,9 +303,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     >
                       <option
                         disabled={true}
-                        key="_empty"
+                        key="_loading"
+                        value="exp"
                       >
-                        (No schemas)
+                        Loading...
                       </option>
                     </select>
                   </FormControl>
@@ -308,18 +317,19 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -327,7 +337,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 schemaName="exp"
                 value="Data"
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     Object {
@@ -351,6 +361,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -382,16 +393,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       >
                         Loading...
                       </option>
-                      <option
-                        disabled={true}
-                        key="_empty"
-                      >
-                        (No tables)
-                      </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
             </div>
           </Col>
         </div>
@@ -513,10 +518,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -524,6 +529,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -552,6 +558,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -582,6 +589,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -611,6 +619,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -643,10 +652,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -655,6 +664,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -684,6 +694,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -692,6 +703,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -700,6 +712,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -748,18 +761,19 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -767,7 +781,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 schemaName=""
                 value=""
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject"
                   context={
                     Object {
@@ -791,6 +805,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -847,8 +862,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
             </div>
           </Col>
         </div>
@@ -970,10 +985,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -981,6 +996,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -1009,6 +1025,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -1039,6 +1056,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -1068,6 +1086,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -1100,10 +1119,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1112,6 +1131,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -1141,6 +1161,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -1149,6 +1170,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -1157,6 +1179,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -1205,18 +1228,19 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -1224,7 +1248,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 schemaName=""
                 value=""
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject"
                   context={
                     Object {
@@ -1248,6 +1272,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -1304,8 +1329,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
             </div>
           </Col>
         </div>
@@ -1427,10 +1452,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1438,6 +1463,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -1466,6 +1492,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -1496,6 +1523,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -1525,6 +1553,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -1557,10 +1586,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
@@ -1569,6 +1598,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -1598,6 +1628,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -1606,6 +1637,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -1614,6 +1646,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -1659,18 +1692,19 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           <Col
             bsClass="col"
             componentClass="div"
-            xs={2}
+            xs={3}
           >
             <div
-              className="col-xs-2"
+              className="col-xs-3"
             >
               <div
                 className="domain-field-label"
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -1678,7 +1712,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 schemaName="study"
                 value=""
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     Object {
@@ -1702,6 +1736,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -1758,8 +1793,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
             </div>
           </Col>
         </div>

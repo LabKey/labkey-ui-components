@@ -30,7 +30,8 @@ import {
     PARTICIPANTID_CONCEPT_URI,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
-    USER_RANGE_URI
+    USER_RANGE_URI,
+    DOMAIN_FIELD_PARTIALLY_LOCKED
 } from "./constants";
 
 export interface IFieldChange {
@@ -163,7 +164,9 @@ export class DomainDesign extends Record({
     allowFlagProperties: true,
     fields: List<DomainField>(),
     indices: List<DomainIndex>(),
-    domainException: undefined
+    domainException: undefined,
+    mandatoryFieldNames: List<string>(),
+    reservedFieldNames: List<string>()
 }) implements IDomainDesign {
     name: string;
     container: string;
@@ -176,23 +179,22 @@ export class DomainDesign extends Record({
     fields: List<DomainField>;
     indices: List<DomainIndex>;
     domainException: DomainException;
-
-    static init(name: string): DomainDesign {
-        // TODO: can these domainURI template values be filled in by the saveProtocol API and not provided here?
-        return DomainDesign.create({
-            name: name + ' Fields',
-            domainURI: 'urn:lsid:${LSIDAuthority}:AssayDomain-' + name + '.Folder-${Container.RowId}:${AssayName}'
-        });
-    }
+    mandatoryFieldNames: List<string>;
+    reservedFieldNames: List<string>;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
+        let mandatoryFieldNames = List<string>();
         let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
+            if (rawModel.mandatoryFieldNames) {
+                mandatoryFieldNames = List<string>(rawModel.mandatoryFieldNames.map((name) => name.toLowerCase()));
+            }
+
             if (rawModel.fields) {
-                fields = DomainField.fromJS(rawModel.fields);
+                fields = DomainField.fromJS(rawModel.fields, mandatoryFieldNames);
             }
 
             if (rawModel.indices) {
@@ -380,9 +382,16 @@ export class DomainField extends Record({
     isPrimaryKey: boolean;
     lockType: string;
 
-    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean): DomainField {
+    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let dataType = resolveDataType(rawField);
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
+
+        // lockType can either come from the rawField, or be based on the domain's mandatoryFieldNames
+        const isMandatoryFieldMatch = mandatoryFieldNames !== undefined && mandatoryFieldNames.contains(rawField.name.toLowerCase());
+        let lockType = rawField.lockType || DOMAIN_FIELD_NOT_LOCKED;
+        if (lockType === DOMAIN_FIELD_NOT_LOCKED && isMandatoryFieldMatch) {
+            lockType = DOMAIN_FIELD_PARTIALLY_LOCKED;
+        }
 
         let field = new DomainField(Object.assign({}, rawField, {
             dataType,
@@ -390,6 +399,7 @@ export class DomainField extends Record({
             lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
             lookupSchema: rawField.lookupSchema === null ? undefined : rawField.lookupSchema,
             lookupType,
+            lockType,
             original: {
                 dataType,
                 rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
@@ -404,14 +414,14 @@ export class DomainField extends Record({
     }
 
 
-    static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
-        let fields = List<DomainField>().asMutable();
+    static fromJS(rawFields: Array<IDomainField>, mandatoryFieldNames?: List<string>): List<DomainField> {
+        let fields = List<DomainField>();
 
         for (let i=0; i < rawFields.length; i++) {
-            fields.push(DomainField.create(rawFields[i]));
+            fields = fields.push(DomainField.create(rawFields[i], undefined, mandatoryFieldNames));
         }
 
-        return fields.asImmutable();
+        return fields;
     }
 
     static serialize(df: DomainField): any {
@@ -833,8 +843,13 @@ export class DomainFieldError extends Record({
 }
 
 export class AssayProtocolModel extends Record({
+    allowBackgroundUpload: false,
+    allowEditableResults: false,
+    allowQCStates: false,
+    allowSpacesInPath: false,
     allowTransformationScript: false,
     autoCopyTargetContainer: undefined,
+    autoCopyTargetContainerId: undefined,
     availableDetectionMethods: undefined,
     availableMetadataInputFormats: undefined,
     availablePlateTemplates: undefined,
@@ -856,27 +871,32 @@ export class AssayProtocolModel extends Record({
     selectedPlateTemplate: undefined,
     qcEnabled: undefined
 }) {
+    allowBackgroundUpload: boolean;
+    allowEditableResults: boolean;
+    allowQCStates: boolean;
+    allowSpacesInPath: boolean;
     allowTransformationScript: boolean;
-    autoCopyTargetContainer: string;
-    availableDetectionMethods: any;
-    availableMetadataInputFormats: any;
-    availablePlateTemplates: any;
+    autoCopyTargetContainer: {};
+    autoCopyTargetContainerId: string;
+    availableDetectionMethods: [];
+    availableMetadataInputFormats: {};
+    availablePlateTemplates: [];
     backgroundUpload: boolean;
     description: string;
     domains: List<DomainDesign>;
     editableResults: boolean;
     editableRuns: boolean;
     metadataInputFormatHelp: any;
-    moduleTransformScripts: Array<any>;
+    moduleTransformScripts: List<string>;
     name: string;
     protocolId: number;
     protocolParameters: any;
-    protocolTransformScripts: any;
+    protocolTransformScripts: List<string>;
     providerName: string;
     saveScriptFiles: boolean;
-    selectedDetectionMethod: any;
-    selectedMetadataInputFormat: any;
-    selectedPlateTemplate: any;
+    selectedDetectionMethod: string;
+    selectedMetadataInputFormat: string;
+    selectedPlateTemplate: string;
     qcEnabled: boolean;
 
     constructor(values?: {[key:string]: any}) {
@@ -893,10 +913,35 @@ export class AssayProtocolModel extends Record({
             );
         }
 
+        if (raw.protocolTransformScripts && Utils.isArray(raw.protocolTransformScripts)) {
+            raw.protocolTransformScripts = List<string>(raw.protocolTransformScripts);
+        }
+        if (raw.moduleTransformScripts && Utils.isArray(raw.moduleTransformScripts)) {
+            raw.moduleTransformScripts = List<string>(raw.moduleTransformScripts);
+        }
+
+        // if this is not an existing assay, clear the name property so the user must set it
+        const name = !raw.protocolId ? undefined : raw.name;
+
         return new AssayProtocolModel({
             ...raw,
+            name,
             domains
         });
+    }
+
+    static serialize(model: AssayProtocolModel): any {
+        // need to serialize the DomainDesign objects to remove the unrecognized fields
+        const domains = model.domains.map((domain) => {
+            return DomainDesign.serialize(domain);
+        });
+
+        let json = model.merge({domains}).toJS();
+
+        // only need to serialize the id and not the autoCopyTargetContainer object
+        delete json.autoCopyTargetContainer;
+
+        return json;
     }
 
     getDomainByNameSuffix(name: string): DomainDesign {
@@ -909,5 +954,49 @@ export class AssayProtocolModel extends Record({
 
     get container() {
         return this.getIn(['domains', 0, 'container']);
+    }
+
+    isNew(): boolean {
+        return !this.protocolId;
+    }
+
+    allowPlateTemplateSelection(): boolean {
+        return this.availablePlateTemplates && Utils.isArray(this.availablePlateTemplates);
+    }
+
+    allowDetectionMethodSelection(): boolean {
+        return this.availableDetectionMethods && Utils.isArray(this.availableDetectionMethods);
+    }
+
+    allowMetadataInputFormatSelection(): boolean {
+        return this.availableMetadataInputFormats && Utils.isObject(this.availableMetadataInputFormats) && !Utils.isEmptyObj(this.availableMetadataInputFormats);
+    }
+
+    validateTransformScripts(): string {
+        if (this.protocolTransformScripts === undefined || this.protocolTransformScripts.size === 0) {
+            return undefined;
+        }
+
+        // make sure we don't have any script inputs that are empty strings
+        const hasEmptyScript = this.protocolTransformScripts.some((script, i) => script === undefined || script === null || script.length === 0);
+        if (hasEmptyScript) {
+            return 'Missing required transform script path.';
+        }
+
+        // if not allowSpacesInPath, the path to the script should not contain spaces when the Save Script Data check box is selected
+        if (!this.allowSpacesInPath && this.saveScriptFiles) {
+            const hasSpacedScript = this.protocolTransformScripts.some((script, i) => script.indexOf(' ') > -1);
+            if (hasSpacedScript) {
+                return 'The path to the transform script should not contain spaces when the \'Save Script Data for Debugging\' check box is selected.'
+            }
+        }
+    }
+
+    isValid(): boolean {
+        return (this.name !== undefined && this.name !==null && this.name.trim().length > 0)
+            && (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat))
+            && (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod))
+            && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate))
+            && this.validateTransformScripts() === undefined;
     }
 }

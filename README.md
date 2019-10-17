@@ -2,9 +2,9 @@
 
 This repository defines all of the components available in the @glass scope. These React components, utility functions, and models comprise the LabKey Glass UI framework.
 
-:warning: **Private** :warning: LabKey Glass components are intended for internal use only.  
-
-:construction: **Warning** :construction: LabKey Glass is under development so these components should be considered unstable. Once they're ready we'll officially push the components as version 1.0.0.
+:construction: **Warning** :construction: 
+LabKey Glass is under development so these components should be considered unstable and are very likely to change. Once they're ready, we'll officially push the components as version 1.0.0.
+:construction: **Warning** :construction:
 
 ## Package listing
 
@@ -198,8 +198,7 @@ command to show which packages are out of date and then compare to the spreadshe
 been investigation into the cost of upgrading packages that are out of date.  
  
 ### Documentation
-We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/glass-components/), which is **publicly available on the internet**, 
-so there should be no references to secrets or clients left in the documentation.  
+We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/glass-components/), which is **publicly available on the internet**.  
 
 All exported components, methods, interfaces, etc. should include 
 documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/) to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.

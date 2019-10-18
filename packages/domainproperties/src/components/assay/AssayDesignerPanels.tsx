@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Map, List } from 'immutable'
+import { Map } from 'immutable'
 import { Alert, WizardNavButtons } from "@glass/base";
 
 import {AssayProtocolModel, DomainDesign, HeaderRenderer} from "../../models";
@@ -14,8 +14,9 @@ interface Props {
     onCancel: () => void
     beforeFinish?: (model: AssayProtocolModel) => void
     onComplete: (model: AssayProtocolModel) => void
-    initModel?: AssayProtocolModel
+    initModel: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
+    basePropertiesOnly?: boolean
     appDomainHeaders?: Map<string, HeaderRenderer>
     appIsValid?: (model: AssayProtocolModel) => boolean
 }
@@ -33,29 +34,13 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        let protocolModel = props.initModel;
-        if (!protocolModel) {
-            protocolModel = new AssayProtocolModel({
-                providerName: 'General',
-                domains: List([
-                    DomainDesign.init('Batch'),
-                    DomainDesign.init('Run'),
-                    DomainDesign.init('Data')
-                ])
-            });
-        }
-
-        this.panelCount = this.panelCount + protocolModel.domains.size;
+        this.panelCount = this.panelCount + props.initModel.domains.size;
 
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
-            protocolModel
+            protocolModel: props.initModel
         }
-    }
-
-    isNew(): boolean {
-        return this.state.protocolModel.protocolId === undefined;
     }
 
     isLastStep(): boolean {
@@ -81,16 +66,15 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     };
 
     shouldSkipStep(stepIndex: number): boolean {
-        const { hideEmptyBatchDomain } = this.props;
         const { protocolModel } = this.state;
         const index = stepIndex - 1; // subtract 1 because the first step is not a domain step (i.e. Assay Properties panel)
         const domain = protocolModel.domains.get(index);
 
-        if (hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch')) {
-            return true;
-        }
+        return this.shouldSkipBatchDomain(domain);
+    }
 
-        return false;
+    shouldSkipBatchDomain(domain: DomainDesign): boolean {
+        return this.props.hideEmptyBatchDomain && domain && domain.isNameSuffixMatch('Batch') && domain.fields.size === 0;
     }
 
     onPrevious = () => {
@@ -142,13 +126,8 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     isValid(): boolean {
         const { appIsValid } = this.props;
         const { protocolModel } = this.state;
-        return appIsValid ? this.isNameSet() && appIsValid(protocolModel) : this.isNameSet();
+        return appIsValid ? protocolModel.isValid() && appIsValid(protocolModel) : protocolModel.isValid();
     }
-
-    isNameSet = ():boolean => {
-        const { protocolModel } = this.state;
-        return protocolModel.name !== undefined && protocolModel.name.trim().length > 0;
-    };
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
         const { onChange } = this.props;
@@ -162,28 +141,6 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
         });
     };
 
-    renderDomainPanelHeading(domain: DomainDesign) {
-        if (domain.name) {
-            if (domain.isNameSuffixMatch('Batch')) {
-                return (
-                    <p>Define the batch properties that are set once for each batch of runs imported at the same time.</p>
-                )
-            }
-            else if (domain.isNameSuffixMatch('Run')) {
-                return (
-                    <p>Define the run properties that are set once per run and apply to all rows in the run.</p>
-                )
-            }
-            else if (domain.isNameSuffixMatch('Data')) {
-                return (
-                    <>
-                        <p>Define the results properties that are set for individual rows within the imported run.</p>
-                    </>
-                )
-            }
-        }
-    }
-
     getAppDomainHeaderRenderer = (domain: DomainDesign): HeaderRenderer =>  {
         const {appDomainHeaders} = this.props;
 
@@ -194,10 +151,11 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, hideEmptyBatchDomain } = this.props;
+        const { onCancel, basePropertiesOnly } = this.props;
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;
-        const isNew = this.isNew();
+        const isNew = protocolModel.isNew();
         const finish = !isNew || this.isLastStep();
+        const transformScriptError = protocolModel.validateTransformScripts();
 
         return (
             <>
@@ -207,16 +165,17 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     collapsible={!isNew}
                     initCollapsed={currentPanelIndex !== 0}
                     markComplete={currentPanelIndex > 0}
+                    basePropertiesOnly={basePropertiesOnly}
                     panelCls={isNew && currentPanelIndex === 0 ? 'panel-active' : ''}
                 />
                 {protocolModel.domains.map((domain, i) => {
                     // optionally hide the Batch Fields domain from the UI (for sample management use case)
-                    if (hideEmptyBatchDomain && domain.isNameSuffixMatch('Batch')) {
+                    if (this.shouldSkipBatchDomain(domain)) {
                         return;
                     }
 
-                    // allow empty domain to be inferred from a file for Data Fields
-                    const isDataDomain = domain.isNameSuffixMatch('Data');
+                    // allow empty domain to be inferred from a file for Data Fields in General assay
+                    const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
                     return (
@@ -228,22 +187,24 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             initCollapsed={!isNew || currentPanelIndex !== (i+1)}
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
-                            showInferFromFile={isDataDomain}
+                            showInferFromFile={showInferFromFile}
+                            helpURL={i > 0 ? null : undefined} // so we only show the helpURL link for the first assay domain
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                         >
-                            {this.renderDomainPanelHeading(domain)}
+                            <p>{domain.description}</p>
                         </DomainForm>
                     )
                 })}
                 {error && <Alert>{error}</Alert>}
+                {transformScriptError && <Alert>{transformScriptError}</Alert>}
                 <WizardNavButtons
                     cancel={onCancel}
                     canFinish={this.isValid()}  //if finished call isValid, otherwise isNameSet
-                    canNextStep={this.isNameSet()}
+                    canNextStep={protocolModel.isValid()}
                     canPreviousStep={!submitting && currentPanelIndex > 0}
                     containerClassName=""
                     finish={finish}

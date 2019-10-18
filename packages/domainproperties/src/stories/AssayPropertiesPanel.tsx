@@ -9,6 +9,10 @@ import { text, boolean, withKnobs } from '@storybook/addon-knobs'
 
 import { AssayProtocolModel } from "../models";
 import { AssayPropertiesPanel } from "../components/assay/AssayPropertiesPanel"
+import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
+import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
+import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
+import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import './stories.scss'
 
 interface Props {
@@ -39,7 +43,7 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
                 model={this.state.model}
                 onChange={this.onAssayPropertiesChange}
                 asPanel={boolean('asPanel', true)}
-                showEditSettings={boolean('showEditSettings', true)}
+                basePropertiesOnly={boolean('basePropertiesOnly', false)}
                 initCollapsed={boolean('initCollapsed', false)}
                 collapsible={boolean('collapsible', true)}
                 markComplete={boolean('markComplete', false)}
@@ -50,23 +54,23 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
 
 storiesOf("AssayPropertiesPanel", module)
     .addDecorator(withKnobs)
-    .add("with knobs", () => {
+    .add("GPAT Template", () => {
         return (
-            <WrappedAssayPropertiesPanel
-                data={{}}
-            />
+            <WrappedAssayPropertiesPanel data={generalAssayTemplate.data}/>
         )
     })
-    .add("with model", () => {
+    .add("GPAT Saved Assay", () => {
         return (
-            <WrappedAssayPropertiesPanel
-                data={{
-                    protocolId: 0,
-                    name: 'name should not be editable',
-                    description: 'test description for this assay',
-                    editableRuns: true,
-                    editableResults: true
-                }}
-            />
+            <WrappedAssayPropertiesPanel data={generalAssaySaved.data}/>
+        )
+    })
+    .add("ELISpot Template", () => {
+        return (
+            <WrappedAssayPropertiesPanel data={elispotAssayTemplate.data}/>
+        )
+    })
+    .add("ELISpot Saved Assay", () => {
+        return (
+            <WrappedAssayPropertiesPanel data={elispotAssaySaved.data}/>
         )
     });

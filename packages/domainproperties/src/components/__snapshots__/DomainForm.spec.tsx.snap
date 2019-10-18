@@ -78,6 +78,8 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[Function]}
@@ -160,6 +162,8 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
           ],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -167,6 +171,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
       initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -182,13 +187,16 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
-                  updated
+                  updated (1)
                 </span>
               </div>
             </PanelHeading>
@@ -199,87 +207,48 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
                 <DragDropContext
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
@@ -2415,6 +2384,8 @@ exports[`DomainForm domain form header and search 1`] = `
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   helpURL="https://www.labkey.org/home/project-begin.view?"
@@ -2684,6 +2655,8 @@ exports[`DomainForm domain form header and search 1`] = `
           ],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -2691,6 +2664,7 @@ exports[`DomainForm domain form header and search 1`] = `
       initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -2706,13 +2680,16 @@ exports[`DomainForm domain form header and search 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
-                  updated
+                  updated (4)
                 </span>
               </div>
             </PanelHeading>
@@ -2723,87 +2700,83 @@ exports[`DomainForm domain form header and search 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/home/project-begin.view?"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/home/project-begin.view?"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
+                <Row
+                  bsClass="row"
+                  componentClass="div"
+                >
+                  <div
+                    className="row"
+                  >
+                    <Col
+                      bsClass="col"
+                      componentClass="div"
+                      xs={3}
+                    >
+                      <div
+                        className="col-xs-3"
+                      >
+                        <FormControl
+                          bsClass="form-control"
+                          componentClass="input"
+                          id="domain-search-name"
+                          onChange={[Function]}
+                          placeholder="Search Fields"
+                          type="text"
+                        >
+                          <input
+                            className="form-control"
+                            id="domain-search-name"
+                            onChange={[Function]}
+                            placeholder="Search Fields"
+                            type="text"
+                          />
+                        </FormControl>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
                 <DragDropContext
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
@@ -9072,6 +9045,7 @@ exports[`DomainForm domain form headerPrefix and panelCls 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       headerPrefix and panelCls
@@ -9086,6 +9060,7 @@ exports[`DomainForm domain form initCollapsed 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       collapsed with two fields (2)
@@ -9100,13 +9075,13 @@ exports[`DomainForm domain form initCollapsed and markComplete 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       collapsed and markComplete (2)
     </span>
     <span
       className="pull-right"
-      onClick={[Function]}
     >
       <i
         className="fa fa-check-square-o as-secondary-color"
@@ -9194,6 +9169,8 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[Function]}
@@ -9276,6 +9253,8 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
           ],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -9283,6 +9262,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
       initCollapsed={false}
       onChange={[Function]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -9298,13 +9278,16 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
-                  updated
+                  updated (1)
                 </span>
               </div>
             </PanelHeading>
@@ -9315,87 +9298,48 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
                 <DragDropContext
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
@@ -11141,6 +11085,8 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[MockFunction]}
@@ -11223,6 +11169,8 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
           ],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -11230,6 +11178,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -11245,13 +11194,16 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
-                  update field types
+                  update field types (1)
                 </span>
               </div>
             </PanelHeading>
@@ -11262,87 +11214,48 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
                 <DragDropContext
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
@@ -13818,6 +13731,8 @@ exports[`DomainForm domain form with all field types 1`] = `
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[MockFunction]}
@@ -14520,6 +14435,8 @@ exports[`DomainForm domain form with all field types 1`] = `
           ],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -14527,6 +14444,7 @@ exports[`DomainForm domain form with all field types 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -14542,13 +14460,16 @@ exports[`DomainForm domain form with all field types 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
-                  all field types
+                  all field types (11)
                 </span>
               </div>
             </PanelHeading>
@@ -14559,87 +14480,83 @@ exports[`DomainForm domain form with all field types 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
+                <Row
+                  bsClass="row"
+                  componentClass="div"
+                >
+                  <div
+                    className="row"
+                  >
+                    <Col
+                      bsClass="col"
+                      componentClass="div"
+                      xs={3}
+                    >
+                      <div
+                        className="col-xs-3"
+                      >
+                        <FormControl
+                          bsClass="form-control"
+                          componentClass="input"
+                          id="domain-search-name"
+                          onChange={[Function]}
+                          placeholder="Search Fields"
+                          type="text"
+                        >
+                          <input
+                            className="form-control"
+                            id="domain-search-name"
+                            onChange={[Function]}
+                            placeholder="Search Fields"
+                            type="text"
+                          />
+                        </FormControl>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
                 <DragDropContext
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
@@ -30830,6 +30747,8 @@ exports[`DomainForm domain form with no fields 1`] = `
       "fields": Immutable.List [],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[MockFunction]}
@@ -30849,6 +30768,8 @@ exports[`DomainForm domain form with no fields 1`] = `
           "fields": Immutable.List [],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -30856,6 +30777,7 @@ exports[`DomainForm domain form with no fields 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -30871,10 +30793,13 @@ exports[`DomainForm domain form with no fields 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
                   no fields
@@ -30888,72 +30813,48 @@ exports[`DomainForm domain form with no fields 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <div />
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
                 <Uncontrolled(Panel)
                   className="domain-form-no-field-panel"
                 >
@@ -31289,6 +31190,8 @@ exports[`DomainForm domain form with updated fields 1`] = `
       ],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[MockFunction]}
@@ -31557,6 +31460,8 @@ exports[`DomainForm domain form with updated fields 1`] = `
           ],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -31564,6 +31469,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -31579,13 +31485,16 @@ exports[`DomainForm domain form with updated fields 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
-                  update field types
+                  update field types (4)
                 </span>
               </div>
             </PanelHeading>
@@ -31596,87 +31505,83 @@ exports[`DomainForm domain form with updated fields 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <FormControl
-                              bsClass="form-control"
-                              componentClass="input"
-                              id="domain-search-name"
-                              onChange={[Function]}
-                              placeholder="Search Fields"
-                              type="text"
-                            >
-                              <input
-                                className="form-control"
-                                id="domain-search-name"
-                                onChange={[Function]}
-                                placeholder="Search Fields"
-                                type="text"
-                              />
-                            </FormControl>
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
+                <Row
+                  bsClass="row"
+                  componentClass="div"
+                >
+                  <div
+                    className="row"
+                  >
+                    <Col
+                      bsClass="col"
+                      componentClass="div"
+                      xs={3}
+                    >
+                      <div
+                        className="col-xs-3"
+                      >
+                        <FormControl
+                          bsClass="form-control"
+                          componentClass="input"
+                          id="domain-search-name"
+                          onChange={[Function]}
+                          placeholder="Search Fields"
+                          type="text"
+                        >
+                          <input
+                            className="form-control"
+                            id="domain-search-name"
+                            onChange={[Function]}
+                            placeholder="Search Fields"
+                            type="text"
+                          />
+                        </FormControl>
+                      </div>
+                    </Col>
+                  </div>
+                </Row>
                 <DragDropContext
                   onBeforeDragStart={[Function]}
                   onDragEnd={[Function]}
@@ -37471,6 +37376,8 @@ exports[`DomainForm with empty domain form 1`] = `
       "fields": Immutable.List [],
       "indices": Immutable.List [],
       "domainException": undefined,
+      "mandatoryFieldNames": Immutable.List [],
+      "reservedFieldNames": Immutable.List [],
     }
   }
   onChange={[MockFunction]}
@@ -37490,6 +37397,8 @@ exports[`DomainForm with empty domain form 1`] = `
           "fields": Immutable.List [],
           "indices": Immutable.List [],
           "domainException": undefined,
+          "mandatoryFieldNames": Immutable.List [],
+          "reservedFieldNames": Immutable.List [],
         }
       }
       helpNoun="domain"
@@ -37497,6 +37406,7 @@ exports[`DomainForm with empty domain form 1`] = `
       initCollapsed={false}
       onChange={[MockFunction]}
       showHeader={true}
+      showHeaderFieldCount={true}
     >
       <Uncontrolled(Panel)
         className="domain-form-panel"
@@ -37512,10 +37422,13 @@ exports[`DomainForm with empty domain form 1`] = `
           >
             <PanelHeading
               bsClass="panel"
+              className=""
               componentClass="div"
+              onClick={[Function]}
             >
               <div
                 className="panel-heading"
+                onClick={[Function]}
               >
                 <span>
                   Domain Properties
@@ -37529,72 +37442,48 @@ exports[`DomainForm with empty domain form 1`] = `
               <div
                 className="panel-body"
               >
-                <div>
-                  <div>
-                    <Row
-                      bsClass="row"
-                      className="domain-form-hdr-margins"
+                <Row
+                  bsClass="row"
+                  className="domain-form-hdr-margins"
+                  componentClass="div"
+                >
+                  <div
+                    className="domain-form-hdr-margins row"
+                  >
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={9}
                     >
                       <div
-                        className="domain-form-hdr-margins row"
+                        className="col-xs-9"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={9}
+                        <div
+                          className="domain-field-float-left"
                         >
-                          <div
-                            className="col-xs-9"
-                          >
-                            <div
-                              className="domain-field-float-left"
-                            >
-                              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-                            </div>
-                          </div>
-                        </Col>
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
-                        >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <a
-                              className="domain-field-float-right"
-                              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                              target="_blank"
-                            >
-                              Learn more about this tool
-                            </a>
-                          </div>
-                        </Col>
+                          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
+                        </div>
                       </div>
-                    </Row>
-                    <Row
-                      bsClass="row"
+                    </Col>
+                    <Col
+                      bsClass="col"
                       componentClass="div"
+                      xs={3}
                     >
                       <div
-                        className="row"
+                        className="col-xs-3"
                       >
-                        <Col
-                          bsClass="col"
-                          componentClass="div"
-                          xs={3}
+                        <a
+                          className="domain-field-float-right"
+                          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                          target="_blank"
                         >
-                          <div
-                            className="col-xs-3"
-                          >
-                            <div />
-                          </div>
-                        </Col>
+                          Learn more about this tool
+                        </a>
                       </div>
-                    </Row>
+                    </Col>
                   </div>
-                </div>
+                </Row>
                 <Uncontrolled(Panel)
                   className="domain-form-no-field-panel"
                 >
@@ -37673,41 +37562,28 @@ exports[`DomainForm with showHeader, helpNoun, and helpURL 1`] = `
   <div
     className="panel-body"
   >
-    <div>
-      <div>
+    <div
+      className="domain-form-hdr-margins row"
+    >
+      <div
+        className="col-xs-9"
+      >
         <div
-          className="domain-form-hdr-margins row"
+          className="domain-field-float-left"
         >
-          <div
-            className="col-xs-9"
-          >
-            <div
-              className="domain-field-float-left"
-            >
-              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-            </div>
-          </div>
-          <div
-            className="col-xs-3"
-          >
-            <a
-              className="domain-field-float-right"
-              href="https://www.labkey.com"
-              target="_blank"
-            >
-              Learn more about this tool
-            </a>
-          </div>
+          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
         </div>
-        <div
-          className="row"
+      </div>
+      <div
+        className="col-xs-3"
+      >
+        <a
+          className="domain-field-float-right"
+          href="https://www.labkey.com"
+          target="_blank"
         >
-          <div
-            className="col-xs-3"
-          >
-            <div />
-          </div>
-        </div>
+          Learn more about this tool
+        </a>
       </div>
     </div>
     <div
@@ -37752,6 +37628,7 @@ exports[`DomainForm with showInferFromFile 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Domain Properties
@@ -37760,41 +37637,28 @@ exports[`DomainForm with showInferFromFile 1`] = `
   <div
     className="panel-body"
   >
-    <div>
-      <div>
+    <div
+      className="domain-form-hdr-margins row"
+    >
+      <div
+        className="col-xs-9"
+      >
         <div
-          className="domain-form-hdr-margins row"
+          className="domain-field-float-left"
         >
-          <div
-            className="col-xs-9"
-          >
-            <div
-              className="domain-field-float-left"
-            >
-              Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
-            </div>
-          </div>
-          <div
-            className="col-xs-3"
-          >
-            <a
-              className="domain-field-float-right"
-              href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-              target="_blank"
-            >
-              Learn more about this tool
-            </a>
-          </div>
+          Adjust fields and their properties that will be shown within this domain. Click a row to access additional options. Drag and drop rows to reorder them.
         </div>
-        <div
-          className="row"
+      </div>
+      <div
+        className="col-xs-3"
+      >
+        <a
+          className="domain-field-float-right"
+          href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+          target="_blank"
         >
-          <div
-            className="col-xs-3"
-          >
-            <div />
-          </div>
-        </div>
+          Learn more about this tool
+        </a>
       </div>
     </div>
     <span

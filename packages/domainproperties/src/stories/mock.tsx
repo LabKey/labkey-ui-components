@@ -16,6 +16,7 @@
 import mock, { proxy } from 'xhr-mock';
 const getMaxPhiLevelJson = require("../test/data/security-GetMaxPhiLevel.json");
 const inferDomainJson = require('../test/data/property-inferDomain.json');
+const getValidPublishTargetsJson = require('../test/data/assay-getValidPublishTargets.json');
 
 export function initMocks() {
     mock.setup();
@@ -30,6 +31,12 @@ export function initMocks() {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(getMaxPhiLevelJson)
+    });
+
+    mock.get(/.*\/assay\/getValidPublishTargets.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getValidPublishTargetsJson)
     });
 
     mock.use(proxy);

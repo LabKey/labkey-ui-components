@@ -542,10 +542,15 @@ function getWarningBannerMessage (domain: any) : any {
     return undefined;
 }
 
-export function fetchProtocol(protocolId: number): Promise<AssayProtocolModel> {
+export function fetchProtocol(protocolId?: number, providerName?: string, copy?: boolean): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: buildURL('assay', 'getProtocol.api', { protocolId }),
+            url: buildURL('assay', 'getProtocol.api', {
+                // give precedence to the protocolId if both are provided
+                protocolId,
+                providerName: protocolId !== undefined ? undefined : providerName,
+                copy: copy || false
+            }),
             success: Utils.getCallbackWrapper((data) => {
                 resolve(AssayProtocolModel.create(data.data));
             }),
@@ -567,33 +572,11 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
     }) as DomainDesign;
 }
 
-export function createGeneralAssayDesign(name: string, description: string, fields: List<QueryColumn>): Promise<AssayProtocolModel> {
-    const dataDomain = setDomainFields(DomainDesign.init('Data'), fields);
-
-    const model = AssayProtocolModel.create({
-        providerName: 'General',
-        name,
-        description,
-        domains: List([
-            DomainDesign.init('Batch'),
-            DomainDesign.init('Run'),
-            dataDomain
-        ])
-    });
-
-    return saveAssayDesign(model);
-}
-
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
-        // need to serialize the DomainDesign objects to remove the unrecognized fields
-        const domains = model.domains.map((domain) => {
-            return DomainDesign.serialize(domain);
-        });
-
         Ajax.request({
             url: buildURL('assay', 'saveProtocol.api'),
-            jsonData: model.merge({domains}),
+            jsonData: AssayProtocolModel.serialize(model),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(AssayProtocolModel.create(response.data));
             }),
@@ -601,5 +584,19 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
                 reject(error.exception);
             }, this, false)
         });
+    });
+}
+
+export function getValidPublishTargets(): Promise<List<Container>> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('assay', 'getValidPublishTargets.api'),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(List<Container>(response.containers.map((container) => new Container(container))));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                reject(error);
+            })
+        })
     });
 }

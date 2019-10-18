@@ -61,6 +61,8 @@ import expSystemSamplesLineageQuery from "../test/data/expSystemSampleLineage-ge
 import expSystemLineageQuery from "../test/data/expSystemLineage-getQuery.json";
 import expressionsystemsamplesQueryInfo from "../test/data/expSystemSamples-getQueryDetails.json";
 import expressionsystemQueryInfo from "../test/data/expSystem-getQueryDetails.json";
+import assayImageFieldRunsQueryInfo from "../test/data/assayImageFieldRuns-getQueryDetails.json";
+import assayImageFieldRunsQuery from "../test/data/assayImageFieldRuns-getQuery.json";
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
@@ -69,6 +71,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.gpat 1': {
         'data': assayGpatDataQueryInfo,
         'runs': assayGpatRunsQueryInfo,
+    },
+    'assay.general.imagefieldassay': {
+        'runs': assayImageFieldRunsQueryInfo,
     },
     'exp': {
         'samplesetheatmap': sampleSetHeatMapQueryInfo,
@@ -102,6 +107,9 @@ const QUERY_RESPONSES = fromJS({
     },
     'assay.general.gpat 1': {
         'runs': assayGpatRunData,
+    },
+    'assay.general.imagefieldassay': {
+        'runs': assayImageFieldRunsQuery,
     },
     'exp': {
         'samplesetheatmap': sampleSetHeatMapQuery,

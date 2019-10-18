@@ -409,7 +409,7 @@ export class DomainField extends Record({
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
         const {dataType} = baseField;
         const lookup = DomainField.resolveLookupConfig(rawField, dataType);
-        let field = new DomainField(Object.assign(baseField, rawField, {
+        let field = new DomainField(Object.assign(rawField, baseField, {
             ...lookup,
             original: {
                 dataType,

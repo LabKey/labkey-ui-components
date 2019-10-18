@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import mock, { proxy } from 'xhr-mock';
+import { fromJS } from 'immutable';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
 import mixtureTypesQuery from '../test/data/mixtureTypes-getQuery.json';
@@ -61,49 +62,79 @@ import expSystemLineageQuery from "../test/data/expSystemLineage-getQuery.json";
 import expressionsystemsamplesQueryInfo from "../test/data/expSystemSamples-getQueryDetails.json";
 import expressionsystemQueryInfo from "../test/data/expSystem-getQueryDetails.json";
 
+const QUERY_DETAILS_RESPONSES = fromJS({
+    'assay.general.amino acids': {
+        'runs': assayRunsWithQCFlagsQueryInfo,
+    },
+    'assay.general.gpat 1': {
+        'data': assayGpatDataQueryInfo,
+        'runs': assayGpatRunsQueryInfo,
+    },
+    'exp': {
+        'samplesetheatmap': sampleSetHeatMapQueryInfo,
+        'assaysheatmap': assaysHeatMapQueryInfo,
+        'samplesets': sampleSetsQueryInfo,
+    },
+    'exp.data': {
+        'mixtures': mixturesQueryInfo,
+        'expressionsystem': expressionsystemQueryInfo,
+    },
+    'lists': {
+        'mixturetypes': mixtureTypesQueryInfo,
+        'lookuplist': lookuplistQueryInfo,
+    },
+    'samples': {
+        'samples': sampleSetQueryInfo,
+        'sample set 2': sampleSet2QueryInfo,
+        'expressionsystemsamples': expressionsystemsamplesQueryInfo,
+        'samplesetwithallfieldtypes': sampleSetAllFieldTypesQueryInfo,
+        'name expression set': nameExpressionQueryInfo,
+        'name%20expression%20set': nameExpressionQueryInfo,
+    },
+    'schema': {
+        'gridwithoutdata': mixturesQueryInfo,
+    }
+});
+
+const QUERY_RESPONSES = fromJS({
+    'assay.general.amino acids': {
+        'runs': assayRunsWithQCFlagsQuery,
+    },
+    'assay.general.gpat 1': {
+        'runs': assayGpatRunData,
+    },
+    'exp': {
+        'samplesetheatmap': sampleSetHeatMapQuery,
+        'assaysheatmap': assaysHeatMapQuery,
+        'samplesets': sampleSetsQuery,
+    },
+    'exp.data': {
+        'mixtures': mixturesQuery,
+        'expressionsystem': expSystemLineageQuery
+    },
+    'lists': {
+        'mixturetypes': mixtureTypesQuery,
+        'lookuplist': lookuplistQuery,
+    },
+    'samples': {
+        'samples': sampleDetailsQuery,
+        'expressionsystemsamples': expSystemSamplesLineageQuery,
+        'samplesetwithallfieldtypes': samplesLineageQuery,
+        'name expression set': nameExpressionSelectedQuery,
+    },
+    'schema': {
+        'gridwithoutdata': noDataQuery,
+    }
+});
 
 export function initMocks() {
     mock.setup();
 
     mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
         const queryParams = req.url().query;
-        let responseBody;
-        let lcSchemaName = queryParams.schemaName.toLowerCase();
-        let lcQueryName = queryParams.queryName.toLowerCase();
-
-        if (lcSchemaName === 'exp.data' && lcQueryName === 'mixtures') {
-            responseBody = mixturesQueryInfo;
-        } else if (lcSchemaName === 'schema' && lcQueryName === 'gridwithoutdata') {
-            responseBody = mixturesQueryInfo;
-        } else if (lcSchemaName === 'lists' && lcQueryName === 'mixturetypes') {
-            responseBody = mixtureTypesQueryInfo;
-        } else if (lcSchemaName === 'exp' && lcQueryName === 'samplesetheatmap') {
-            responseBody = sampleSetHeatMapQueryInfo;
-        } else if (lcSchemaName === 'exp' && lcQueryName === 'assaysheatmap') {
-            responseBody = assaysHeatMapQueryInfo;
-        } else if (lcSchemaName === 'samples' && lcQueryName === 'samples') {
-            responseBody = sampleSetQueryInfo;
-        } else if (lcSchemaName === 'samples' && lcQueryName === 'expressionsystemsamples') {
-            responseBody = expressionsystemsamplesQueryInfo;
-        } else if (lcSchemaName === 'exp.data' && lcQueryName === 'expressionsystem') {
-            responseBody = expressionsystemQueryInfo;
-        } else if (lcSchemaName === 'samples' && lcQueryName === 'samplesetwithallfieldtypes') {
-            responseBody = sampleSetAllFieldTypesQueryInfo;
-        } else if (lcSchemaName === 'lists' && lcQueryName === 'lookuplist') {
-            responseBody = lookuplistQueryInfo;
-        } else if (lcSchemaName === 'exp' && lcQueryName === 'samplesets') {
-            responseBody = sampleSetsQueryInfo;
-        } else if (lcSchemaName === 'samples' && (lcQueryName === 'name expression set' || lcQueryName === 'name%20expression%20set')) {
-            responseBody = nameExpressionQueryInfo;
-        } else if (lcSchemaName === 'samples' && lcQueryName === 'sample set 2') {
-            responseBody = sampleSet2QueryInfo;
-        } else if (lcSchemaName === 'assay.general.amino acids' && lcQueryName === 'runs') {
-            responseBody = assayRunsWithQCFlagsQueryInfo;
-        } else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'data') {
-            responseBody = assayGpatDataQueryInfo;
-        } else if (lcSchemaName === 'assay.general.gpat 1' && lcQueryName === 'runs') {
-            responseBody = assayGpatRunsQueryInfo;
-        }
+        const schemaName = queryParams.schemaName.toLowerCase();
+        const queryName = queryParams.queryName.toLowerCase();
+        const responseBody = QUERY_DETAILS_RESPONSES.getIn([schemaName, queryName]);
 
         return res
             .status(200)
@@ -112,45 +143,22 @@ export function initMocks() {
     });
 
     mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
-        const bodyParams = req.body().toLowerCase();
-        let responseBody;
+        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
+            const [name, value] = param.split('=');
+            result[name] = value;
+            return result;
+        }, {}) as any;
+        const queryName = params['query.queryName'].toLowerCase();
+        const schemaName = params.schemaName.toLowerCase();
+        let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
 
-        if (bodyParams.indexOf("&query.queryname=mixtures&") > -1) {
-            responseBody = mixturesQuery;
-        } else if (bodyParams.indexOf("&query.queryname=mixturetypes&") > -1) {
-            responseBody = mixtureTypesQuery;
-        } else if (bodyParams.indexOf("&query.queryname=gridwithoutdata&") > -1) {
-            responseBody = noDataQuery;
-        } else if (bodyParams.indexOf("&query.queryname=samplesetheatmap&") > -1) {
-            responseBody = sampleSetHeatMapQuery;
-        } else if (bodyParams.indexOf("&query.queryname=assaysheatmap&") > -1) {
-            responseBody = assaysHeatMapQuery;
-        } else if (bodyParams.indexOf("&query.queryname=samples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1) {
+        if (!responseBody) {
+            console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);
+        }
+
+        if (schemaName === 'samples' && queryName === 'samples' && params.hasOwnProperty('query.rowId~in')) {
+            // Used in lineage stories.
             responseBody = samplesLineageQuery;
-        } else if (bodyParams.indexOf("&query.queryname=expressionsystemsamples&") > -1 && bodyParams.indexOf("&query.rowid~in=") > -1) {
-            responseBody = expSystemSamplesLineageQuery;
-        } else if (bodyParams.indexOf("&schemaname=exp.data&") > -1 && bodyParams.indexOf("&query.queryname=expressionsystem&") > -1) {
-            responseBody = expSystemLineageQuery;
-        } else if (bodyParams.indexOf("&query.queryname=samples&") > -1) {
-            responseBody = sampleDetailsQuery;
-        } else if (bodyParams.indexOf("&query.queryname=lookuplist&") > -1) {
-            responseBody = lookuplistQuery;
-        } else if (bodyParams.indexOf("&query.queryname=samplesets&") > -1) {
-            responseBody = sampleSetsQuery;
-        } else if (bodyParams.indexOf("&query.queryname=name%2520expression%2520set") > -1 && bodyParams.indexOf("&query.rowid~in=459") > -1) {
-            responseBody = nameExpressionSelectedQuery;
-        } else if (bodyParams.indexOf("&query.queryname=name%20expression%20set") > -1) {
-            responseBody = nameExpressionSelectedQuery;
-        } else if (
-            bodyParams.indexOf("schemaname=assay.general.gpat%201") > -1 &&
-            bodyParams.indexOf("queryname=runs") > -1
-        ) {
-            responseBody = assayGpatRunData;
-        } else if (
-            bodyParams.indexOf("schemaname=assay.general.amino%20acids") > -1 &&
-            bodyParams.indexOf("queryname=runs") > -1
-        ) {
-            responseBody = assayRunsWithQCFlagsQuery;
         }
 
         return res

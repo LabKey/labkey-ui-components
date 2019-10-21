@@ -3,7 +3,7 @@ import { List } from "immutable";
 import { FormControl } from "react-bootstrap";
 import { Container, SchemaDetails } from "@glass/base";
 
-import { encodeLookup, PropDescType } from "../../models";
+import { decodeLookup, encodeLookup, PropDescType } from "../../models";
 
 import { ILookupContext, LookupContextConsumer } from "./Context";
 import {createFormInputName} from "../../actions/actions";
@@ -23,6 +23,7 @@ interface IFolderSelectProps {
     id: string
     onChange: (any) => any
     value?: any
+    disabled?: boolean
 }
 
 export class FolderSelect extends React.PureComponent<IFolderSelectProps, any> {
@@ -75,37 +76,35 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
         return (
             <FormControl {...this.props} componentClass="select">
-                {context.activeContainer && (
-                    <option key="_current" value={context.activeContainer.path}>Current Folder</option>
-                )}
+                {context.activeContainer && <option key="_current" value={context.activeContainer.path}>Current Folder</option>}
                 {containers.map((c) => <option key={c.id} value={c.path}>{c.path}</option>).toArray()}
             </FormControl>
         )
     }
 }
 
-interface IQuerySelectProps {
+interface ITargetTableSelectProps {
     containerPath: string
     id: string
     lookupURI?: string
     onChange: (any) => any
     schemaName: string
     value?: any
+    disabled?: boolean
 }
 
-// FIXME: Rename this Component. It conflicts with @glass/querygrid/QuerySelect and they are completely different.
-export class QuerySelect extends React.PureComponent<IQuerySelectProps, any> {
+export class TargetTableSelect extends React.PureComponent<ITargetTableSelectProps, any> {
 
     render() {
         return (
             <LookupContextConsumer>
-                {(context) => <QuerySelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)}/>}
+                {(context) => <TargetTableSelectImpl {...this.props} context={context} name={createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)}/>}
             </LookupContextConsumer>
         );
     }
 }
 
-export interface IQuerySelectImplState {
+export interface ITargetTableSelectImplState {
     containerPath?: string
     loading?: boolean
     prevPath?: string
@@ -113,9 +112,9 @@ export interface IQuerySelectImplState {
     queries?: List<{name: string, type: PropDescType}>
 }
 
-export type QuerySelectProps = IQuerySelectProps & ILookupProps;
+export type TargetTableSelectProps = ITargetTableSelectProps & ILookupProps;
 
-class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImplState> {
+class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITargetTableSelectImplState> {
 
     constructor(props) {
         super(props);
@@ -129,8 +128,8 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         };
     }
 
-    static getDerivedStateFromProps(nextProps: QuerySelectProps, prevState: IQuerySelectImplState): IQuerySelectImplState {
-        if (QuerySelectImpl.isChanged(nextProps, prevState)) {
+    static getDerivedStateFromProps(nextProps: TargetTableSelectProps, prevState: ITargetTableSelectImplState): ITargetTableSelectImplState {
+        if (TargetTableSelectImpl.isChanged(nextProps, prevState)) {
             return {
                 prevPath: nextProps.containerPath,
                 prevSchemaName: nextProps.schemaName
@@ -141,7 +140,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         return null;
     }
 
-    static isChanged(props: Readonly<QuerySelectProps>, state: Readonly<IQuerySelectImplState>): boolean {
+    static isChanged(props: Readonly<TargetTableSelectProps>, state: Readonly<ITargetTableSelectImplState>): boolean {
         return (props.containerPath !== state.prevPath || props.schemaName !== state.prevSchemaName)
     }
 
@@ -149,8 +148,8 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         this.loadData();
     }
 
-    componentDidUpdate(prevProps: Readonly<QuerySelectProps>, prevState: Readonly<IQuerySelectImplState>, snapshot?: any): void {
-        if (QuerySelectImpl.isChanged(prevProps, this.state)) {
+    componentDidUpdate(prevProps: Readonly<TargetTableSelectProps>, prevState: Readonly<ITargetTableSelectImplState>, snapshot?: any): void {
+        if (TargetTableSelectImpl.isChanged(prevProps, this.state)) {
             this.loadData();
         }
     }
@@ -179,7 +178,7 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
     }
 
     render() {
-        const { id, onChange, value, name } = this.props;
+        const { id, onChange, value, name, disabled } = this.props;
         const { loading, queries } = this.state;
 
         const isEmpty = queries.size === 0;
@@ -189,21 +188,22 @@ class QuerySelectImpl extends React.Component<QuerySelectProps, IQuerySelectImpl
         return (
             <FormControl
                 componentClass="select"
-                disabled={loading}
+                disabled={loading || disabled}
                 value={value}
                 id={id}
                 name={name}
                 onChange={onChange}
             >
-                {blankOption && <option key="_default" value={undefined}/>}
+                {disabled && value && <option key="_disabled" value={value}>{decodeLookup(value).queryName}</option>}
                 {loading && <option disabled key="_loading" value={value}>Loading...</option>}
+                {blankOption && <option key="_default" value={undefined}/>}
                 {queries.map((q) => {
                     let encoded = encodeLookup(q.name, q.type);
                     return (
                         <option key={encoded} value={encoded}>{q.name} ({q.type.shortDisplay || q.type.display})</option>
                     )
                 }).toArray()}
-                {isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
+                {!loading && isEmpty && <option disabled key="_empty" value={undefined}>(No tables)</option>}
             </FormControl>
         )
     }
@@ -214,6 +214,7 @@ interface ISchemaSelectProps {
     id: string
     onChange: (any) => any
     value?: any
+    disabled?: boolean
 }
 
 export class SchemaSelect extends React.PureComponent<ISchemaSelectProps, any> {
@@ -286,8 +287,8 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
     }
 
     render() {
-        const { id, onChange, value, name } = this.props;
-        const { schemas } = this.state;
+        const { id, onChange, value, name, disabled } = this.props;
+        const { schemas, loading } = this.state;
 
         const isEmpty = schemas.size === 0;
         const hasValue = !!value;
@@ -296,15 +297,18 @@ class SchemaSelectImpl extends React.Component<SchemaSelectProps, ISchemaSelectI
         return (
             <FormControl
                 componentClass="select"
+                disabled={disabled}
                 value={value}
                 id={id}
                 name={name}
                 onChange={onChange}
                 placeholder="Select Schema"
             >
+                {disabled && value && <option key="_disabled" value={value}>{value}</option>}
+                {loading && <option disabled key="_loading" value={value}>Loading...</option>}
                 {blankOption && <option key="_default" value={undefined}/>}
                 {schemas.map((s) => <option key={s.fullyQualifiedName} value={s.fullyQualifiedName}>{s.fullyQualifiedName}</option>).toArray()}
-                {isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
+                {!loading && isEmpty && <option disabled key="_empty" value={undefined}>(No schemas)</option>}
             </FormControl>
         )
     }

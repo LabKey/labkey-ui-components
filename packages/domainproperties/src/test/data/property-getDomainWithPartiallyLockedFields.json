@@ -41,7 +41,6 @@
     "typeEditable" : true,
     "preventReordering" : false,
     "disableEditing" : false,
-    "lockType" : "PartiallyLocked",
     "propertyValidators" : [ {
       "type" : "Length",
       "name" : "Text Length",
@@ -92,7 +91,6 @@
     "typeEditable" : true,
     "preventReordering" : false,
     "disableEditing" : false,
-    "lockType" : "PartiallyLocked",
     "propertyValidators" : [ ],
     "excludeFromShifting" : false,
     "URL" : null,
@@ -269,5 +267,6 @@
   "indices" : [ ],
   "schemaName" : null,
   "queryName" : null,
-  "templateDescription" : null
+  "templateDescription" : null,
+  "mandatoryFieldNames" : ["fieldtext", "FieldInteger"]
 }

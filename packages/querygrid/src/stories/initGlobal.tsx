@@ -19,8 +19,9 @@ import { initNotificationsState, SCHEMAS } from "@glass/base";
 import { initQueryGridState } from "../global";
 import { initBrowserHistoryState } from "../util/global";
 import { initMocks } from "./mock";
+import { FileColumnRenderer } from '..';
 
-initQueryGridState(fromJS({
+const QUERY_METADATA = fromJS({
     // hideEmptyChartSelector: true,
     // hideEmptyViewSelector: true,
     concepts: {
@@ -52,9 +53,13 @@ initQueryGridState(fromJS({
             }
         }
     }
-}));
+});
 
+const COLUMN_RENDERERS = fromJS({
+    filecolumnrenderer: FileColumnRenderer,
+});
+
+initQueryGridState(QUERY_METADATA, COLUMN_RENDERERS);
 initBrowserHistoryState();
 initNotificationsState();
-
 initMocks();

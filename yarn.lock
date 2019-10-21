@@ -1119,17 +1119,6 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@glass/base@0.15.2":
-  version "0.15.2"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.15.2.tgz#4b3b8e571275f54c0703c19fc4fc42d255e25bff"
-  integrity sha1-SzuOVxJ19UwHA8GfxPxC0lXiW/8=
-  dependencies:
-    "@labkey/dependencies" "0.0.9"
-    bootstrap "3.4.1"
-    moment "2.24.0"
-    moment-jdateformatparser "1.1.0"
-    numeral "2.0.6"
-
 "@glass/domainproperties@0.0.40":
   version "0.0.40"
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.40.tgz#c06001253796f915f644ae3f045d6036a3a89f1b"

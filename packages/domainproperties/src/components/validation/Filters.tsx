@@ -2,6 +2,7 @@ import * as React from "react";
 import {Col, FormControl, Row} from "react-bootstrap";
 import {createFormInputId, createFormInputName, getNameFromId} from "../../actions/actions";
 import {
+    DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIRST_FILTER_TYPE,
     DOMAIN_FIRST_FILTER_VALUE,
     DOMAIN_SECOND_FILTER_TYPE, DOMAIN_SECOND_FILTER_VALUE,
@@ -9,12 +10,13 @@ import {
 
 import { Filter } from '@labkey/api';
 import {ReactElement} from "react";
+import {JsonType, PropertyValidator} from "../../models";
 
 interface FiltersProps {
     validatorIndex: number
     expression?: string
     mvEnabled: boolean
-    type: string
+    type: JsonType
     range?: boolean
     prefix?: string
     firstFilterTypeLabel?: string
@@ -38,9 +40,6 @@ interface FilterSet {
     secondFilterType?: string
     secondFilterValue?: string
 }
-
-// TODO make this type available from @labkey/api Filter
-export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
 
 export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
@@ -93,25 +92,45 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
         let filters;
         if (!range) {
-            filters = Filter.getFilterTypesForType(type as JsonType, mvEnabled);
+            filters = Filter.getFilterTypesForType(type, mvEnabled);
         }
         else {
             filters = this.getRangeFilters();
         }
 
         filterTypes = filterTypes.concat(filters.map((type) => {
-            return {name: type.getLongDisplayText(), value: type.getURLSuffix()}
+            const suffix = type.getURLSuffix();
+            return {name: type.getLongDisplayText(), value: (suffix ? suffix : DOMAIN_FILTER_HASANYVALUE)}
         }));
 
         return filterTypes;
     };
 
+    static isValid = (expression: string, prefix?: string) => {
+        const filterSet = Filters.parseFilterString(expression, prefix);
+
+        let valid = false;
+        if (filterSet.firstFilterType) {
+            valid = !!Filters.validFilter(filterSet.firstFilterType, filterSet.firstFilterValue);
+        }
+
+        if (valid && filterSet.secondFilterType) {
+            valid = !!Filters.validFilter(filterSet.secondFilterType, filterSet.secondFilterValue);
+        }
+
+        return valid;
+    };
+
+    static validFilter = (type: string, value: string) => {
+        return (type && (value || !Filters.isDataValueRequiredForType(type)));
+    };
+
     static describeExpression = (expression: string, prefix?: string): string => {
         const filterSet = Filters.parseFilterString(expression, prefix);
 
-        let expressionString = '';
-        if (filterSet.firstFilterType) {
-            const firstType = Filter.getFilterTypeForURLSuffix(filterSet.firstFilterType);
+        let expressionString = 'Invalid expression';
+        if (Filters.validFilter(filterSet.firstFilterType, filterSet.firstFilterValue)) {
+            const firstType = Filters.getFilterFromPrefix(filterSet.firstFilterType);
             expressionString = firstType.getDisplayText();
 
             if (filterSet.firstFilterValue) {
@@ -119,8 +138,8 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
             }
         }
 
-        if (filterSet.secondFilterType) {
-            const secondType = Filter.getFilterTypeForURLSuffix(filterSet.secondFilterType);
+        if (Filters.validFilter(filterSet.secondFilterType, filterSet.secondFilterValue)) {
+            const secondType = Filters.getFilterFromPrefix(filterSet.secondFilterType);
             expressionString += ' and ' + secondType.getDisplayText();
 
             if (filterSet.secondFilterValue) {
@@ -129,7 +148,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         }
 
         return expressionString;
-    }
+    };
 
     static parseSingleFilter = (filterString: string, prefix?: string): {type: string, value: string} => {
         const parts = filterString.split('=');
@@ -157,7 +176,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
         if (!parts || parts.length < 1) {
             return ({
-                firstFilterType: '',
+                firstFilterType: 'eq',
                 firstFilterValue: '',
                 secondFilterType: '',
                 secondFilterValue: ''
@@ -191,13 +210,52 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         return filterString;
     };
 
+    static getFilterFromPrefix = (type: string) => {
+
+        let filter;
+
+        // Has Any Value has a value of "", which doesn't seem to resolve well in the api
+        if (type === DOMAIN_FILTER_HASANYVALUE) {
+            filter = Filter.Types.HAS_ANY_VALUE;
+        }
+        else if (type) {
+            filter = Filter.getFilterTypeForURLSuffix(type);
+        }
+
+        return filter;
+    };
+
+    static isDataValueRequiredForType = (type?: string) => {
+        const filter = Filters.getFilterFromPrefix(type);
+        if (filter) {
+            return filter.isDataValueRequired();
+        }
+
+        return true;
+    };
+
+    isDataValueRequired = (second?: boolean) => {
+        const { filterSet } = this.state;
+        const type = filterSet[(second ? 'secondFilterType' : 'firstFilterType')];
+
+        return Filters.isDataValueRequiredForType(type);
+    };
+
     onChange = (evt) => {
         const { onChange } = this.props;
 
         let value = evt.target.value;
         let name = getNameFromId(evt.target.id);
 
-        const updatedFilters = {...this.state['filterSet'], [name]: value};
+        let updatedFilters = {...this.state['filterSet'], [name]: value};
+
+        // Clear filter value for value not required types
+        if (name === DOMAIN_FIRST_FILTER_TYPE || name === DOMAIN_SECOND_FILTER_TYPE) {
+            if (!Filters.isDataValueRequiredForType(value)) {
+                updatedFilters = {...updatedFilters, [(name === DOMAIN_FIRST_FILTER_TYPE ? DOMAIN_FIRST_FILTER_VALUE : DOMAIN_SECOND_FILTER_VALUE)]: ""};
+            }
+        }
+
         this.setState(() => ({filterSet: updatedFilters}));
 
         onChange(this.getFilterString(updatedFilters));
@@ -238,7 +296,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 componentClass="select"
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_TYPE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_TYPE)}
-                                value={filterSet.firstFilterType ? filterSet.firstFilterType : (type === 'date' ? 'dateeq' : 'eq')}
+                                value={filterSet.firstFilterType !== undefined ? filterSet.firstFilterType : (type === 'date' ? 'dateeq' : 'eq')}
                                 onChange={this.onChange}
                                 required
                             >
@@ -264,6 +322,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_VALUE)}
                                 value={filterSet.firstFilterValue}
+                                disabled={!this.isDataValueRequired(false)}
                                 required
                                 onChange={this.onChange}
                             />
@@ -308,6 +367,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_VALUE)}
                                 value={filterSet.secondFilterValue}
+                                disabled={!this.isDataValueRequired(true)}
                                 onChange={this.onChange}
                             />
                         </div>

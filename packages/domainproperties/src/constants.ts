@@ -86,6 +86,8 @@ export const DOMAIN_FIRST_FILTER_VALUE = 'firstFilterValue';
 export const DOMAIN_SECOND_FILTER_TYPE = 'secondFilterType';
 export const DOMAIN_SECOND_FILTER_VALUE = 'secondFilterValue';
 
+export const DOMAIN_FILTER_HASANYVALUE = 'HAS_ANY_VALUE';
+
 export const DOMAIN_FIELD_NOT_LOCKED = "NotLocked"; // not locked, can change all properties
 export const DOMAIN_FIELD_PARTIALLY_LOCKED = "PartiallyLocked"; // can't change name and type, for example, but can change other properties
 export const DOMAIN_FIELD_FULLY_LOCKED = "FullyLocked"; // can't change any properties

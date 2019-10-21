@@ -227,7 +227,38 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             return false;
 
         return !this.props.defaultValueOptions.isEmpty();
-    }
+    };
+
+    renderDisplayOptions = () => {
+        const { hidden, shownInDetailsView, shownInInsertView, shownInUpdateView } = this.state;
+        const { index } = this.props;
+
+        return (
+            <>
+                <div className='domain-adv-display-options'>Display Options</div>
+                <div>These options configure how and in which views this field will be visible.</div>
+                <Checkbox checked={hidden === false} onChange={this.handleCheckbox}
+                          name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
+                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>Show field on default view of
+                    the
+                    grid</Checkbox>
+                <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox}
+                          name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on update form
+                    when updating a single row of data</Checkbox>
+                <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox}
+                          name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>Show on insert form
+                    when
+                    updating a single row of data</Checkbox>
+                <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox}
+                          name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on details
+                    page
+                    for a single row</Checkbox>
+            </>
+        )
+    };
 
     renderDefaultValues = () => {
         const { index, defaultValueOptions } = this.props;
@@ -273,16 +304,89 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     };
 
-    render() {
-        const { show, label, index, maxPhiLevel, field } = this.props;
-        const { hidden, shownInDetailsView, shownInInsertView, shownInUpdateView, measure, dimension, mvEnabled,
-            recommendedVariable, PHI } = this.state;
+    renderMiscOptions = () => {
+        const { index, maxPhiLevel, field } = this.props;
+        const { measure, dimension, mvEnabled, recommendedVariable, PHI } = this.state;
 
         // Filter phi levels available
         const phiIndex = this.getMaxPhiLevelIndex(maxPhiLevel);
         const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
             return index <= phiIndex;
         });
+
+        return (
+            <>
+                <div className='domain-adv-misc-options'>Miscellaneous Options</div>
+                <Row>
+                    <Col xs={3}>
+                        <span>PHI Level<LabelHelpTip title='PHI Level' body={this.getPhiHelpText}/></span>
+                    </Col>
+                    <Col xs={6}>
+                        <FormControl
+                            componentClass="select"
+                            name={createFormInputName(DOMAIN_FIELD_PHI)}
+                            id={createFormInputId(DOMAIN_FIELD_PHI, index)}
+                            onChange={this.handleChange}
+                            value={PHI}
+                        >
+                            {
+                                phiLevels.map((level, i) => (
+                                    <option key={i} value={level.value}>{level.label}</option>
+                                ))
+                            }
+                        </FormControl>
+                    </Col>
+                    <Col xs={3}/>
+                </Row>
+                {PropDescType.isMeasureDimension(field.rangeURI) &&
+                <>
+                    <Checkbox
+                            checked={measure === true}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_MEASURE)}
+                            id={createFormInputId(DOMAIN_FIELD_MEASURE, index)}
+                    >
+                        Make this field available as a measure<LabelHelpTip title='Measure'
+                                                                            body={this.getMeasureHelpText}/>
+                    </Checkbox>
+                    <Checkbox
+                            checked={dimension === true}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
+                            id={createFormInputId(DOMAIN_FIELD_DIMENSION, index)}
+                    >
+                        Make this field available as a dimension<LabelHelpTip title='Data Dimension'
+                                                                              body={this.getDimensionHelpText}/>
+                    </Checkbox>
+                </>
+                }
+                <Checkbox
+                    checked={recommendedVariable === true}
+                    onChange={this.handleCheckbox}
+                    name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
+                    id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, index)}
+                >
+                    Make this field a recommended variable<LabelHelpTip title='Recommended Variable'
+                                                                        body={this.getRecommendedVariableHelpText}/>
+                </Checkbox>
+
+                {PropDescType.isMvEnableable(field.rangeURI) &&
+                <Checkbox
+                        checked={mvEnabled === true}
+                        onChange={this.handleCheckbox}
+                        name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
+                        id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
+                >
+                    Track reason for missing data values<LabelHelpTip title='Missing Value Indicators'
+                                                                      body={this.getMissingValueHelpText}/>
+                </Checkbox>
+                }
+            </>
+        )
+    };
+
+    render() {
+        const { show, label } = this.props;
 
         return (
             <>
@@ -295,95 +399,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Modal.Header>
                     <Modal.Body>
                         <div className='domain-modal'>
-                            <div className='domain-adv-display-options'>Display Options</div>
-                            <div>These options configure how and in which views this field will be visible.</div>
-                            <Checkbox checked={hidden === false} onChange={this.handleCheckbox}
-                                      name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
-                                      id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>Show field on default view of
-                                the
-                                grid</Checkbox>
-                            <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox}
-                                      name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
-                                      id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on update form
-                                when updating a single row of data</Checkbox>
-                            <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox}
-                                      name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
-                                      id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>Show on insert form
-                                when
-                                updating a single row of data</Checkbox>
-                            <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox}
-                                      name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
-                                      id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on details
-                                page
-                                for a single row</Checkbox>
+                            {this.renderDisplayOptions()}
                             {this.showDefaultValues() &&
                             this.renderDefaultValues()
                             }
-                            <div className='domain-adv-misc-options'>Miscellaneous Options</div>
-                            <Row>
-                                <Col xs={3}>
-                                    <span>PHI Level<LabelHelpTip title='PHI Level' body={this.getPhiHelpText}/></span>
-                                </Col>
-                                <Col xs={6}>
-                                    <FormControl
-                                        componentClass="select"
-                                        name={createFormInputName(DOMAIN_FIELD_PHI)}
-                                        id={createFormInputId(DOMAIN_FIELD_PHI, index)}
-                                        onChange={this.handleChange}
-                                        value={PHI}
-                                    >
-                                        {
-                                            phiLevels.map((level, i) => (
-                                                <option key={i} value={level.value}>{level.label}</option>
-                                            ))
-                                        }
-                                    </FormControl>
-                                </Col>
-                                <Col xs={3}/>
-                            </Row>
-                            {PropDescType.isMeasureDimension(field.rangeURI) &&
-                            <>
-                                <Checkbox
-                                        checked={measure === true}
-                                        onChange={this.handleCheckbox}
-                                        name={createFormInputName(DOMAIN_FIELD_MEASURE)}
-                                        id={createFormInputId(DOMAIN_FIELD_MEASURE, index)}
-                                >
-                                    Make this field available as a measure<LabelHelpTip title='Measure'
-                                                                                        body={this.getMeasureHelpText}/>
-                                </Checkbox>
-                                <Checkbox
-                                        checked={dimension === true}
-                                        onChange={this.handleCheckbox}
-                                        name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
-                                        id={createFormInputId(DOMAIN_FIELD_DIMENSION, index)}
-                                >
-                                    Make this field available as a dimension<LabelHelpTip title='Data Dimension'
-                                                                                          body={this.getDimensionHelpText}/>
-                                </Checkbox>
-                            </>
-                            }
-                            <Checkbox
-                                checked={recommendedVariable === true}
-                                onChange={this.handleCheckbox}
-                                name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
-                                id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, index)}
-                            >
-                                Make this field a recommended variable<LabelHelpTip title='Recommended Variable'
-                                                                                    body={this.getRecommendedVariableHelpText}/>
-                            </Checkbox>
-
-                            {PropDescType.isMvEnableable(field.rangeURI) &&
-                            <Checkbox
-                                    checked={mvEnabled === true}
-                                    onChange={this.handleCheckbox}
-                                    name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                                    id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
-                            >
-                                Track reason for missing data values<LabelHelpTip title='Missing Value Indicators'
-                                                                                  body={this.getMissingValueHelpText}/>
-                            </Checkbox>
-                            }
+                            {this.renderMiscOptions()}
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

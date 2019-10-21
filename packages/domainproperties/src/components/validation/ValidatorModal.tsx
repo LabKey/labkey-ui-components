@@ -85,6 +85,14 @@ export function ValidatorModal(WrappedComponent: any) {
             }))
         };
 
+        isValid = (validators: List<PropertyValidator | ConditionalFormat>) => {
+
+            if (!validators || validators.size < 1)
+                return true;
+
+            return !(!!validators.find((val) => (WrappedComponent.isValid(val) === false)))
+        };
+
         addEmpty = (validators: List<PropertyValidator | ConditionalFormat>) => {
             const { type } = this.props;
 
@@ -182,7 +190,9 @@ export function ValidatorModal(WrappedComponent: any) {
                                 Cancel
                             </Button>
                             <Button onClick={this.handleApply} bsClass='btn btn-success'
-                                    className='domain-adv-footer domain-adv-apply-btn'>
+                                    className='domain-adv-footer domain-adv-apply-btn'
+                                disabled={!this.isValid(validators)}
+                            >
                                 Apply
                             </Button>
                         </div>

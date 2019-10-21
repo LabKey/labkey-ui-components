@@ -16,14 +16,20 @@ import {RegexValidationOptions} from "./validation/RegexValidationOptions";
 import {RangeValidationOptions} from "./validation/RangeValidationOptions";
 import {ConditionalFormatOptions} from "./validation/ConditionalFormatOptions";
 
-interface ConditionalFormattingValidationProps {
+interface ConditionalFormattingAndValidationProps {
     index: number,
     field: DomainField,
     onChange: (string, any) => any
     setDragDisabled: (boolean) => any
 }
 
-export class ConditionalFormattingValidation extends React.PureComponent<ConditionalFormattingValidationProps, any> {
+interface ConditionalFormattingAndValidationState {
+    showCondFormat: boolean,
+    showRegex: boolean,
+    showRange: boolean
+}
+
+export class ConditionalFormattingAndValidation extends React.PureComponent<ConditionalFormattingAndValidationProps, ConditionalFormattingAndValidationState> {
 
     constructor(props) {
         super(props);
@@ -74,24 +80,22 @@ export class ConditionalFormattingValidation extends React.PureComponent<Conditi
         const { setDragDisabled } = this.props;
         const { showCondFormat } = this.state;
 
-        this.setState(() => ({showCondFormat: !showCondFormat}));
-        setDragDisabled(!showCondFormat);
+        this.setState((state) => ({showCondFormat: !state.showCondFormat}), setDragDisabled(!showCondFormat));
+
     };
 
     showHideRegexValidator = () => {
         const { setDragDisabled } = this.props;
         const { showRegex } = this.state;
 
-        this.setState(() => ({showRegex: !showRegex}));
-        setDragDisabled(!showRegex);
+        this.setState((state) => ({showRegex: !state.showRegex}), setDragDisabled(!showRegex));
     };
 
     showHideRangeValidator = () => {
         const { setDragDisabled } = this.props;
         const { showRange } = this.state;
 
-        this.setState(() => ({showRange: !showRange}));
-        setDragDisabled(!showRange);
+        this.setState((state) => ({showRange: !state.showRange}), setDragDisabled(!showRange));
     };
 
     renderValidator = (range: boolean) => {
@@ -103,13 +107,13 @@ export class ConditionalFormattingValidation extends React.PureComponent<Conditi
         return (
             <div className={range ? '' : 'domain-validation-group'}>
                 <div className={'domain-field-label domain-no-wrap'}>{'Create ' + (range ? 'Range': 'Regular') + ' Expression Validator'}
-                    <LabelHelpTip title={'Add ' + range ? 'Range' : 'Regex' + ' Validator'} body={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}/>
+                    <LabelHelpTip title={'Add ' + (range ? 'Range' : 'Regex') + ' Validator'} body={range ? this.getRangeValidatorHelpText : this.getRegexValidatorHelpText}/>
                 </div>
                 <div>
                     <Button
                         className="domain-validation-button"
-                        name={createFormInputName(DOMAIN_COND_FORMAT)}
-                        id={createFormInputId(DOMAIN_COND_FORMAT, index)}
+                        name={createFormInputName((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR))}
+                        id={createFormInputId((range ? DOMAIN_RANGE_VALIDATOR : DOMAIN_REGEX_VALIDATOR), index)}
                         disabled={isFieldFullyLocked(field.lockType)}
                         onClick={range ? this.showHideRangeValidator : this.showHideRegexValidator}>
                         {count > 0 ? (range ? 'Edit Ranges' : 'Edit Regex') : (range ? 'Add Range' : 'Add Regex')}

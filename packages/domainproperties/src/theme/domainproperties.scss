@@ -261,6 +261,12 @@
   white-space: nowrap;
 }
 
+.domain-validator-error-msg {
+  color: red;
+  margin-top: 3%;
+  margin-right: 20px;
+}
+
 .domain-field-checkbox-margin {
   margin-top: 2px;
 }
@@ -446,6 +452,11 @@
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.domain-validator-modal-apply {
+  display: inline-flex;
+  float: right;
 }
 
 .domain-color-preview {

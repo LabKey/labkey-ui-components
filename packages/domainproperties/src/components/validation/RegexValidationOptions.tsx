@@ -26,6 +26,9 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
     labelWidth = 4;
     fieldWidth = 8;
 
+    static isValid = (validator: PropertyValidator) => {
+        return (!!validator.get("expression") && !!validator.get("name"))
+    };
 
     renderRowTextbox(label: string, name: string, validatorIndex: number, value: string, tooltipTitle?: string, tooltipBody?: () => any) {
         return (

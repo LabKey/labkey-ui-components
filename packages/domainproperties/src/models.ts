@@ -31,8 +31,10 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
     USER_RANGE_URI,
-    DOMAIN_URI_PREFIX
+    DOMAIN_URI_PREFIX, DOMAIN_FILTER_HASANYVALUE
 } from "./constants";
+
+import { Filter } from '@labkey/api';
 
 export interface IFieldChange {
     id: string,
@@ -50,6 +52,8 @@ export interface ITypeDependentProps {
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     lockType: string
 }
+
+export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
 
 interface IPropDescType {
     conceptURI: string
@@ -108,7 +112,7 @@ export class PropDescType extends Record({
         super(values);
     }
 
-    getJsonType(): string {
+    getJsonType(): JsonType {
         switch(this.name) {
             case 'boolean':
                 return 'boolean';
@@ -229,7 +233,7 @@ export class DomainDesign extends Record({
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
-        let defaultValueOptions = List<DomainField>().asMutable();
+        let defaultValueOptions = List<DomainField>();
         let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
@@ -246,11 +250,9 @@ export class DomainDesign extends Record({
 
                 for (let i = 0; i < rawModel.defaultValueOptions.length; i++)
                 {
-                    defaultValueOptions.push(rawModel.defaultValueOptions[i]);
+                    defaultValueOptions = defaultValueOptions.push(rawModel.defaultValueOptions[i]);
                 }
             }
-
-            defaultValueOptions = defaultValueOptions.asImmutable();
         }
 
         return new DomainDesign({
@@ -308,13 +310,13 @@ export class DomainIndex extends Record({
     type: 'primary' | 'unique';
 
     static fromJS(rawIndices: Array<IDomainIndex>): List<DomainIndex> {
-        let indices = List<DomainIndex>().asMutable();
+        let indices = List<DomainIndex>();
 
         for (let i=0; i < rawIndices.length; i++) {
-            indices.push(new DomainIndex(fromJS(rawIndices[i])));
+            indices = indices.push(new DomainIndex(fromJS(rawIndices[i])));
         }
 
-        return indices.asImmutable();
+        return indices;
     }
 
     constructor(values?: {[key:string]: any}) {
@@ -353,28 +355,28 @@ export class ConditionalFormat extends Record({
 
     constructor(values?: { [key: string]: any }) {
 
-        // filter is a reserved work on Records so change to formatFilter
+        // filter is a reserved work on Records so change to formatFilter and update for HASANYVALUE lacking a filter symbol
         if (values && !values.get('formatFilter')) {
-            values = values.set('formatFilter', values.get('filter'));
+            values = values.set('formatFilter', values.get('filter').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '='));
         }
         super(values);
     }
 
     static fromJS(rawCondFormat: Array<ConditionalFormat>): List<ConditionalFormat> {
-        let condFormats = List<ConditionalFormat>().asMutable();
+        let condFormats = List<ConditionalFormat>();
 
         for (let i=0; i < rawCondFormat.length; i++) {
-            condFormats.push(new ConditionalFormat(fromJS(rawCondFormat[i])));
+            condFormats = condFormats.push(new ConditionalFormat(fromJS(rawCondFormat[i])));
         }
 
-        return condFormats.asImmutable();
+        return condFormats;
     }
 
     static serialize(cfs: Array<any>): any {
 
         // Change formatFilter back to filter as that is what API is expecting
         for (let i=0; i < cfs.length; i++) {
-            cfs[i].filter = cfs[i].formatFilter;
+            cfs[i].filter = cfs[i].formatFilter.replace(DOMAIN_FILTER_HASANYVALUE, '');
             delete cfs[i].formatFilter;
         }
 
@@ -431,7 +433,7 @@ export class PropertyValidator extends Record({
     }
 
     static fromJS(rawPropertyValidator: Array<IPropertyValidator>, type: string): List<PropertyValidator> {
-        let propValidators = List<PropertyValidator>().asMutable();
+        let propValidators = List<PropertyValidator>();
 
         let newPv;
         for (let i=0; i < rawPropertyValidator.length; i++) {
@@ -441,12 +443,25 @@ export class PropertyValidator extends Record({
             )
             {
                 newPv = new PropertyValidator(fromJS(rawPropertyValidator[i]));
+
+                // Special case for filters HAS ANY VALUE not having a symbol
+                newPv = newPv.set('expression', newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')) as PropertyValidator;
+
                 newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
-                propValidators.push(newPv);
+                propValidators = propValidators.push(newPv);
             }
         }
 
-        return propValidators.asImmutable();
+        return propValidators;
+    }
+
+    static serialize(pvs: Array<any>): any {
+
+        for (let i=0; i < pvs.length; i++) {
+            pvs[i].expression = pvs[i].expression.replace(DOMAIN_FILTER_HASANYVALUE, '');
+        }
+
+        return pvs;
     }
 }
 
@@ -625,13 +640,13 @@ export class DomainField extends Record({
 
 
     static fromJS(rawFields: Array<IDomainField>): List<DomainField> {
-        let fields = List<DomainField>().asMutable();
+        let fields = List<DomainField>();
 
         for (let i=0; i < rawFields.length; i++) {
-            fields.push(DomainField.create(rawFields[i]));
+            fields = fields.push(DomainField.create(rawFields[i]));
         }
 
-        return fields.asImmutable();
+        return fields;
     }
 
     static serialize(df: DomainField): any {
@@ -663,11 +678,11 @@ export class DomainField extends Record({
 
         json.propertyValidators = [];
         if (json.rangeValidators) {
-            json.propertyValidators = json.propertyValidators.concat(json.rangeValidators);
+            json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.rangeValidators));
         }
 
         if (json.regexValidators) {
-            json.propertyValidators = json.propertyValidators.concat(json.regexValidators);
+            json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.regexValidators));
         }
 
         if (json.lookupValidator) {
@@ -914,7 +929,7 @@ export class QueryInfoLite extends Record({
     }
 
     getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
-        let infos = List<{name: string, type: PropDescType}>().asMutable();
+        let infos = List<{name: string, type: PropDescType}>();
         let pkCols = this.getPkColumns()
             .filter(col => col.name.toLowerCase() !== 'container')
             .toList();
@@ -935,7 +950,7 @@ export class QueryInfoLite extends Record({
 
                 // if supplied, apply rangeURI matching filter
                 if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
-                    infos.push({
+                    infos = infos.push({
                         name: this.name,
                         type
                     });
@@ -943,7 +958,7 @@ export class QueryInfoLite extends Record({
             });
         }
 
-        return infos.asImmutable();
+        return infos;
     }
 
     getPkColumns(): List<ColumnInfoLite> {
@@ -1064,7 +1079,7 @@ export class DomainFieldError extends Record({
 
     static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
 
-        let fieldErrors = List<DomainFieldError>().asMutable();
+        let fieldErrors = List<DomainFieldError>();
 
         for (let i=0; i < rawFields.length; i++) {
 
@@ -1074,10 +1089,10 @@ export class DomainFieldError extends Record({
 
             let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
                 severity: severityLevel, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
-            fieldErrors.push(domainFieldError);
+            fieldErrors = fieldErrors.push(domainFieldError);
         }
 
-        return fieldErrors.asImmutable();
+        return fieldErrors;
     }
 
     constructor(values?: {[key:string]: any}) {

@@ -401,7 +401,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 )}
                 <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)}
                      onClick={this.onExpand}>
-                    <FontAwesomeIcon size='lg' color={(dragging || hover) && !expanded ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
+                    <FontAwesomeIcon size='lg' color={(dragging || hover) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
                                      icon={expanded ? faMinusSquare : faPlusSquare}/>
                 </div>
             </div>

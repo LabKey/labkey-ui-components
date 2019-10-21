@@ -43,6 +43,11 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         };
     }
 
+    static isValid = (validator: PropertyValidator) => {
+
+        return (Filters.isValid(validator.get("formatFilter"), DOMAIN_CONDITIONAL_FORMAT_PREFIX));
+    };
+
     renderRemoveValidator() {
         const { validatorIndex } = this.props;
 

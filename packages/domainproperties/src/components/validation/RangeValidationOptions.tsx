@@ -27,6 +27,10 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
     labelWidth = 4;
     fieldWidth = 8;
 
+    static isValid = (validator: PropertyValidator) => {
+
+        return (Filters.isValid(validator.get("expression")) && !!validator.get("name"));
+    };
 
     renderRowTextbox(label: string, name: string, validatorIndex: number, value: string, tooltipTitle?: string, tooltipBody?: () => any) {
         return (
@@ -104,6 +108,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
 
     onChange = (evt) => {
         const { onChange, validator, validatorIndex } = this.props;
+        const { validFilters } = this.state;
 
         let value = evt.target.value;
         let name = getNameFromId(evt.target.id);

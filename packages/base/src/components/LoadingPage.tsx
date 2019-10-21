@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LoadingSpinner, Page, PageHeader, User } from "..";
+import { LoadingSpinner, Page, PageHeader } from "..";
 import * as React from "react";
 
 export interface LoadingPageProps {

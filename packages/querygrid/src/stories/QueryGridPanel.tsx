@@ -84,6 +84,37 @@ class QueryGridPanelWithMessagesWrapper extends React.Component {
     }
 }
 
+class QueryGridPanelWithImagesWrapper extends React.Component {
+    renderButtons = (model: QueryGridModel) => {
+        if (model) {
+            return (
+                <ManageDropdownButton id={'storymanagebtn'}>
+                    <SelectionMenuItem
+                        id={'storymenuitem'}
+                        text={'Delete Samples'}
+                        onClick={() => console.log('onMenuItemClick')}
+                        model={model}
+                    />
+                </ManageDropdownButton>
+            )
+        }
+    };
+
+    getQueryGridModel() {
+        const modelId = "gridPanelWithMessages";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "assay.General.ImageFieldAssay",
+            queryName: "Runs"
+        });
+
+        return getStateQueryGridModel(modelId, schemaQuery, {});
+    }
+
+    render() {
+        return <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />;
+    }
+}
+
 storiesOf('QueryGridPanel', module)
     .addDecorator(withKnobs)
     .add("with data", () => {
@@ -91,4 +122,7 @@ storiesOf('QueryGridPanel', module)
     })
     .add("with messages", () => {
         return <QueryGridPanelWithMessagesWrapper/>;
+    })
+    .add("with images", () => {
+        return <QueryGridPanelWithImagesWrapper/>;
     });

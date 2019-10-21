@@ -14,34 +14,37 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { List, Map } from "immutable";
+import { List } from "immutable";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
 import {
+    ATTACHMENT_TYPE,
     DomainDesign,
     DomainField,
     DomainFieldError,
+    FILE_TYPE,
+    FLAG_TYPE,
     IFieldChange,
-    PropDescType,
-    PROP_DESC_TYPES, FLAG_TYPE, FILE_TYPE, ATTACHMENT_TYPE
+    PROP_DESC_TYPES,
+    PropDescType
 } from "../models";
-import { StickyContainer, Sticky } from "react-sticky";
+import { Sticky, StickyContainer } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
-import { AddEntityButton, Alert, FileAttachmentForm, ConfirmModal, InferDomainResponse, Tip } from "@glass/base";
+import { faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { AddEntityButton, Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import {
     addDomainField,
     getIndexFromId,
-    handleDomainUpdates,
     getMaxPhiLevel,
+    handleDomainUpdates,
     removeField,
     setDomainFields
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
-import {EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, LK_DOMAIN_HELP_URL, PHILEVEL_NOT_PHI} from "../constants";
+import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, LK_DOMAIN_HELP_URL, PHILEVEL_NOT_PHI } from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -252,7 +255,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onBeforeDragStart = (initial) => {
-        const { domain, onChange } = this.props;
+        const { domain } = this.props;
         const id = initial.draggableId;
         const idIndex = id ? getIndexFromId(id) : undefined;
 

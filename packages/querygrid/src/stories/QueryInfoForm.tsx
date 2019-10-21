@@ -109,6 +109,8 @@ class QueryInfoFormPage extends React.Component<Props, any> {
 storiesOf('QueryInfoForm', module)
     .addDecorator(withKnobs)
     .add("default", () => {
+        // FIXME: This story is broken, not sure of fix. We don't have our mocks wired up for schemaName=schema
+        //  queryName=defaultForm
         const modelId = "defaultForm";
         const schemaQuery = new SchemaQuery({
             schemaName: "schema",

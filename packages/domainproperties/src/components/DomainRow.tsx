@@ -318,7 +318,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     <FormControl
                         componentClass="select"
                         name={createFormInputName(DOMAIN_FIELD_TYPE)}
-                        disabled={!field.isNew() && field.primaryKey || (isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
+                        disabled={(!field.isNew() && field.primaryKey) || isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType)}
                         id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}

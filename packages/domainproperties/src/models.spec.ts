@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { List } from "immutable";
 import {
     PropDescType,
     TEXT_TYPE,
@@ -27,8 +28,11 @@ import {
     ATTACHMENT_TYPE,
     USERS_TYPE,
     PARTICIPANT_TYPE,
-    DomainDesign, DomainField, AssayProtocolModel
+    DomainDesign,
+    DomainField,
+    AssayProtocolModel
 } from "./models";
+import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from "./constants";
 
 describe('PropDescType', () => {
     test("isInteger", () => {
@@ -93,21 +97,26 @@ describe('PropDescType', () => {
 });
 
 describe('DomainDesign', () => {
-    test("init", () => {
-        const d = DomainDesign.init('Foo');
-        expect(d.name).toBe('Foo Fields');
-        expect(d.domainURI.indexOf(':AssayDomain-Foo.')).toBe(25);
-        expect(d.fields.size).toBe(0);
-        expect(d.indices.size).toBe(0);
-        expect(d.domainId).toBe(null);
-    });
-
     test("isNameSuffixMatch", () => {
-        const d = DomainDesign.init('Foo');
+        const d = DomainDesign.create({name: 'Foo Fields'});
         expect(d.isNameSuffixMatch('Foo')).toBeTruthy();
         expect(d.isNameSuffixMatch('foo')).toBeFalsy();
         expect(d.isNameSuffixMatch('Bar')).toBeFalsy();
         expect(d.isNameSuffixMatch('bar')).toBeFalsy();
+    });
+
+    test("mandatoryFieldNames", () => {
+        const base = {name: 'Test Fields', fields: [{name: 'abc'},{name: 'def'}]};
+
+        let domain = DomainDesign.create({...base, mandatoryFieldNames: undefined});
+        expect(domain.fields.size).toBe(2);
+        expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
+        expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_NOT_LOCKED);
+
+        domain = DomainDesign.create({...base, mandatoryFieldNames: ['abc', 'DEF']});
+        expect(domain.fields.size).toBe(2);
+        expect(domain.fields.get(0).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
+        expect(domain.fields.get(1).lockType).toBe(DOMAIN_FIELD_PARTIALLY_LOCKED);
     });
 });
 
@@ -167,5 +176,86 @@ describe('AssayProtocolModel', () => {
         expect(model.getDomainByNameSuffix('Foo') === undefined).toBeTruthy();
         expect(model.getDomainByNameSuffix('sample') === undefined).toBeTruthy();
         expect(model.getDomainByNameSuffix('Sample') === undefined).toBeFalsy();
+    });
+
+    test("isNew", () => {
+        // name should get removed for the case where it is a "new" model (i.e. doesn't have a protocolId)
+        expect(AssayProtocolModel.create({protocolId: 1, name: 'Test'}).isNew()).toBeFalsy();
+        expect(AssayProtocolModel.create({protocolId: 0, name: 'Test'}).isNew()).toBeTruthy();
+        expect(AssayProtocolModel.create({name: 'Test'}).isNew()).toBeTruthy();
+    });
+
+    test("name removal for copy case", () => {
+        // name should get removed for the case where it is a "new" model (i.e. doesn't have a protocolId)
+        expect(AssayProtocolModel.create({protocolId: 1, name: 'Test'}).name).toBe('Test');
+        expect(AssayProtocolModel.create({protocolId: 0, name: 'Test'}).name).toBe(undefined);
+        expect(AssayProtocolModel.create({name: 'Test'}).name).toBe(undefined);
+    });
+
+    test("allowPlateTemplateSelection", () => {
+        expect(AssayProtocolModel.create({}).allowPlateTemplateSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availablePlateTemplates: 'test'}).allowPlateTemplateSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availablePlateTemplates: []}).allowPlateTemplateSelection()).toBeTruthy();
+        expect(AssayProtocolModel.create({availablePlateTemplates: ['a', 'b', 'c']}).allowPlateTemplateSelection()).toBeTruthy();
+    });
+
+    test("allowDetectionMethodSelection", () => {
+        expect(AssayProtocolModel.create({}).allowDetectionMethodSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableDetectionMethods: 'test'}).allowDetectionMethodSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableDetectionMethods: []}).allowDetectionMethodSelection()).toBeTruthy();
+        expect(AssayProtocolModel.create({availableDetectionMethods: ['a', 'b', 'c']}).allowDetectionMethodSelection()).toBeTruthy();
+    });
+
+    test("allowMetadataInputFormatSelection", () => {
+        expect(AssayProtocolModel.create({}).allowMetadataInputFormatSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableMetadataInputFormats: 'test'}).allowMetadataInputFormatSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableMetadataInputFormats: {}}).allowMetadataInputFormatSelection()).toBeFalsy();
+        expect(AssayProtocolModel.create({availableMetadataInputFormats: {test1: 'abc', test2: 'def'}}).allowMetadataInputFormatSelection()).toBeTruthy();
+    });
+
+    test("isValid", () => {
+        const base = {protocolId: 1, name: 'test'};
+
+        expect(AssayProtocolModel.create({...base, name: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: ''}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: 'test'}).isValid()).toBeTruthy();
+
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 1}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 'foo'}).isValid()).toBeTruthy();
+
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 1}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 'foo'}).isValid()).toBeTruthy();
+
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: undefined}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: null}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 1}).isValid()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 'foo'}).isValid()).toBeTruthy();
+    });
+
+    test("validateTransformScripts", () => {
+        const base = {protocolId: 1, name: 'test'};
+
+        expect(AssayProtocolModel.create({...base}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, protocolTransformScripts: []}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, protocolTransformScripts: List<string>()}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
+
+        expect(AssayProtocolModel.create({...base, protocolTransformScripts: ['foo.pl', 'bar.R', '']}).validateTransformScripts()).toContain('Missing required');
+        expect(AssayProtocolModel.create({...base, protocolTransformScripts: ['foo.pl', null, 'bar.R']}).validateTransformScripts()).toContain('Missing required');
+        expect(AssayProtocolModel.create({...base, protocolTransformScripts: [undefined, 'foo.pl', 'bar.R']}).validateTransformScripts()).toContain('Missing required');
+
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: true, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', 'bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: false, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toBe(undefined);
+        expect(AssayProtocolModel.create({...base, allowSpacesInPath: false, saveScriptFiles: true, protocolTransformScripts: ['foo.pl', '/path with space/bar.R']}).validateTransformScripts()).toContain('should not contain spaces');
     });
 });

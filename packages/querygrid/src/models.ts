@@ -27,7 +27,7 @@ import {
 } from '@glass/base'
 
 import { genCellKey } from './actions'
-import { getQueryGridModel } from './global'
+import { getQueryGridModel, getQueryMetadata } from './global'
 import { DefaultGridLoader } from './components/GridLoader'
 import { AppURL } from '@glass/base/src';
 
@@ -89,6 +89,8 @@ export function getStateQueryGridModel(
         return model;
     }
 
+    const metadata = getQueryMetadata();
+
     let modelProps: Partial<IQueryGridModel> = {
         allowSelection: true,
         baseFilters: List<Filter.IFilter>(),
@@ -108,7 +110,9 @@ export function getStateQueryGridModel(
         title: undefined,
         urlPrefix: undefined,
         view: schemaQuery.viewName,
-        omittedColumns: emptyList
+        omittedColumns: emptyList,
+        hideEmptyChartSelector: metadata.get('hideEmptyChartSelector'),
+        hideEmptyViewSelector: metadata.get('hideEmptyViewSelector')
     };
 
     if (keyValue !== undefined) {

@@ -21,6 +21,8 @@ import { initBrowserHistoryState } from "../util/global";
 import { initMocks } from "./mock";
 
 initQueryGridState(fromJS({
+    // hideEmptyChartSelector: true,
+    // hideEmptyViewSelector: true,
     concepts: {
         'http://www.labkey.org/exp/xml#alias': {
             inputRenderer: 'ExperimentAlias',

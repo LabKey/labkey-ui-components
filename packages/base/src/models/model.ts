@@ -434,7 +434,9 @@ export interface IQueryGridModel {
     requiredColumns?: List<string>
     showSearchBox?: boolean
     showViewSelector?: boolean
+    hideEmptyViewSelector?: boolean
     showChartSelector?: boolean
+    hideEmptyChartSelector?: boolean
     sortable?: boolean
     sorts?: string
     selectedIds?: List<string>
@@ -503,7 +505,9 @@ export class QueryGridModel extends Record({
     selectedQuantity: 0,
     showSearchBox: true,
     showViewSelector: true,
+    hideEmptyViewSelector: false,
     showChartSelector: true,
+    hideEmptyChartSelector: false,
     sortable: true,
     sorts: undefined,
     title: undefined,
@@ -541,7 +545,9 @@ export class QueryGridModel extends Record({
     requiredColumns: List<string>;
     showSearchBox: boolean;
     showViewSelector: boolean;
+    hideEmptyViewSelector: boolean;
     showChartSelector: boolean;
+    hideEmptyChartSelector: boolean;
     sortable: boolean;
     sorts: string;
     selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not

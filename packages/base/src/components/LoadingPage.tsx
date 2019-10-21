@@ -24,7 +24,7 @@ export interface LoadingPageProps {
 export class LoadingPage extends React.Component<LoadingPageProps> {
     render () {
         return (
-            <Page title={this.props.title}>
+            <Page title={this.props.title} hasHeader={true}>
                 <PageHeader showNotifications={false}/>
                 <LoadingSpinner msg={this.props.msg} wrapperClassName="loading-page-message"/>
             </Page>

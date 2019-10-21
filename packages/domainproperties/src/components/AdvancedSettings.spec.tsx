@@ -1,7 +1,9 @@
 import {mount} from "enzyme";
 import * as React from "react";
+import {List} from "immutable";
 import {createFormInputId} from "../actions/actions";
 import {
+    DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
@@ -10,7 +12,7 @@ import {
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
-    DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+    DOMAIN_FIELD_SHOWNINUPDATESVIEW, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT,
     INT_RANGE_URI, PHILEVEL_FULL_PHI,
     PHILEVEL_LIMITED_PHI
 } from "../constants";
@@ -48,7 +50,10 @@ describe('AdvancedSettings', () => {
             maxPhiLevel: PHILEVEL_FULL_PHI,
             field: field1,
             onHide: jest.fn(),
-            onApply: jest.fn()
+            onApply: jest.fn(),
+            defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
+            defaultValueOptions : List<string>([ DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT ]),
+            helpNoun: "domain"
         };
 
         const advSettings  = mount(<AdvancedSettings

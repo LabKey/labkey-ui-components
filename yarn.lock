@@ -1119,10 +1119,10 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@glass/domainproperties@0.0.40":
-  version "0.0.40"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.40.tgz#c06001253796f915f644ae3f045d6036a3a89f1b"
-  integrity sha1-wGABJTeW+RX2RK4/BF1gNqOonxs=
+"@glass/domainproperties@0.0.41":
+  version "0.0.41"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.41.tgz#66be2053c2cf50fee54f652ef15f41c9e6cb60a0"
+  integrity sha1-Zr4gU8LPUP7lT2Uu8V9ByebLYKA=
   dependencies:
     "@fortawesome/fontawesome-free" "5.9.0"
     "@fortawesome/fontawesome-svg-core" "1.2.19"

@@ -61,7 +61,9 @@ describe("domain properties actions", () => {
 
         const field3 = DomainField.create({
             name: 'field3name',
-            rangeURI: USER_RANGE_URI,
+            rangeURI: INT_RANGE_URI,
+            lookupSchema: 'core',
+            lookupQuery: 'users',
             propertyId: 0,
             propertyURI: 'test'
         });

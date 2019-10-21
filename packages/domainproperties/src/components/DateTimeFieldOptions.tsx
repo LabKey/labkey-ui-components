@@ -5,7 +5,7 @@ import {isFieldFullyLocked} from "../propertiesUtil";
 import {createFormInputId, createFormInputName, getNameFromId} from "../actions/actions";
 import {
     DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
-    DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_SCALE
+    DOMAIN_FIELD_FORMAT
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
 import {ITypeDependentProps} from "../models";

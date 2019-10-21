@@ -2,7 +2,7 @@
 import * as React from 'react'
 import {Button, Col, Row} from "react-bootstrap";
 import {List} from "immutable";
-import {isFieldFullyLocked, isFieldPartiallyLocked} from "../propertiesUtil";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
     DOMAIN_COND_FORMAT,

@@ -12,7 +12,6 @@ import { ActionURL } from "@labkey/api";
 import {
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
-    DOMAIN_FIELD_DEFAULT_VALUE,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_HIDDEN,
@@ -25,7 +24,7 @@ import {
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_PHI_LEVELS
 } from "../constants";
-import {Alert, ConfirmModal, LabelHelpTip} from "@glass/base";
+import {LabelHelpTip} from "@glass/base";
 
 interface AdvancedSettingsProps {
     domainId?: number

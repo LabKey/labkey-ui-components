@@ -80,7 +80,10 @@ import { AddEntityButton } from "./components/buttons/AddEntityButton"
 import { RemoveEntityButton } from "./components/buttons/RemoveEntityButton"
 import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/Alert'
-import { MultiMenuButton } from './components/menus/MultiMenuButton'
+import { DeleteIcon } from './components/DeleteIcon';
+import { DragDropHandle } from './components/DragDropHandle';
+import { FieldExpansionToggle } from './components/FieldExpansionToggle';
+import { MultiMenuButton } from './components/menus/MultiMenuButton';
 import { MenuOption, SubMenu } from "./components/menus/SubMenu";
 import { ISubItem, SubMenuItem, SubMenuItemProps } from "./components/menus/SubMenuItem";
 import { SelectionMenuItem } from "./components/menus/SelectionMenuItem";
@@ -178,6 +181,9 @@ export {
     RemoveEntityButton,
     Alert,
     CustomToggle,
+    DeleteIcon,
+    DragDropHandle,
+    FieldExpansionToggle,
     LoadingModal,
     LoadingSpinner,
     LoadingPage,

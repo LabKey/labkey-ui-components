@@ -84,7 +84,7 @@ describe('DomainForm', () => {
         expect(emptyHdrMsg.length).toEqual(1);
 
         // Add button
-        const findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
+        const findButton = form.find({className: 'test-loc-form-add-btn'}).childAt(0);
         expect(findButton.length).toEqual(1);
 
         // Search field
@@ -329,7 +329,7 @@ describe('DomainForm', () => {
         />);
 
         // Add new row
-        let findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
+        let findButton = form.find({className: 'test-loc-form-add-btn'}).childAt(0);
         expect(findButton.length).toEqual(1);
         findButton.simulate('click');
 
@@ -577,7 +577,7 @@ describe('DomainForm', () => {
         />);
 
         // Add new row
-        let findButton = form.find({className: 'domain-form-add-btn'}).childAt(0);
+        let findButton = form.find({className: 'test-loc-form-add-btn'}).childAt(0);
         expect(findButton.length).toEqual(1);
         findButton.simulate('click');
 

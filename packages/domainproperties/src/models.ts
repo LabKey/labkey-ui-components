@@ -136,7 +136,7 @@ export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', ra
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
 export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI});
 export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
-export const SAMPLE_TYPE = new PropDescType({name: 'sample', display: 'Sample', rangeURI: STRING_RANGE_URI, conceptURI: SAMPLE_TYPE_CONCEPT_URI});
+export const SAMPLE_TYPE = new PropDescType({name: 'sample', display: 'Sample', rangeURI: INT_RANGE_URI, conceptURI: SAMPLE_TYPE_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -428,7 +428,7 @@ export class DomainField extends Record({
     private static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
         let lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
-        let lookupSchema = rawField.lookupSchema === null ? undefined : resolveLookupSchema(rawField, dataType);
+        let lookupSchema = resolveLookupSchema(rawField, dataType);
         let lookupQuery = rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
         let lookupQueryValue = encodeLookup(lookupQuery, lookupType);
 
@@ -531,10 +531,16 @@ export class DomainField extends Record({
 
     static updateDefaultValues(field: DomainField): DomainField {
 
-        return field.merge({
-            measure: DomainField.defaultValues(DOMAIN_FIELD_MEASURE, field.dataType),
-            dimension: DomainField.defaultValues(DOMAIN_FIELD_DIMENSION, field.dataType)
-        }) as DomainField;
+        const {dataType} = field;
+
+        let config = {
+            measure: DomainField.defaultValues(DOMAIN_FIELD_MEASURE, dataType),
+            dimension: DomainField.defaultValues(DOMAIN_FIELD_DIMENSION, dataType)
+        };
+
+        let lookupConfig = dataType === SAMPLE_TYPE ? DomainField.resolveLookupConfig(field, dataType) : {};
+
+        return field.merge(config, lookupConfig) as DomainField;
     }
 
     static defaultValues(prop: string, type: PropDescType): any {
@@ -579,7 +585,7 @@ function resolveLookupSchema(rawField: Partial<IDomainField>, dataType: PropDesc
 
 export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?: string): DomainField {
 
-    let { queryName, rangeURI = STRING_RANGE_URI } = decodeLookup(sampleQueryValue);
+    let { queryName, rangeURI = INT_RANGE_URI } = decodeLookup(sampleQueryValue);
     let lookupType = field.lookupType || LOOKUP_TYPE;
     let sampleField = 'all' === sampleQueryValue ?
         {
@@ -587,7 +593,7 @@ export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?
             lookupQuery: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
             lookupQueryValue: sampleQueryValue,
             lookupType: field.lookupType.set('rangeURI', rangeURI),
-            rangeURI: STRING_RANGE_URI,
+            rangeURI: rangeURI,
         }:
         {
             lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,

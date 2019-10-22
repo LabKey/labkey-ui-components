@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.21.1-fb-jobCreation.12",
+  "version": "0.22.0-fb-jobCreation.12",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",

@@ -401,16 +401,16 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                          onMouseEnter={this.onMouseOver}
                          onMouseLeave={this.onMouseOut}
                     >
-                        <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
+                        <Row key={createFormInputId("domainrow", index)} className={'field-row-container'}>
                             <AdvancedSettings index={index} maxPhiLevel={maxPhiLevel} field={field} onApply={this.onMultiFieldChange} show={this.state.showAdv} onHide={this.onHideAdvanced} label={field.name}/>
-                            <div className='domain-row-handle'>
+                            <div className='field-row-handle'>
                                 {this.renderHandle()}
                             </div>
                             <div className='domain-row-main'>
-                                <Col xs={6} className='domain-zero-padding'>
+                                <Col xs={6} className='field-zero-padding'>
                                     {this.renderBaseFields()}
                                 </Col>
-                                <Col xs={6} className='domain-field-details-container'>
+                                <Col xs={6} className='field-details-container'>
                                     {this.getDetails()}
                                     {this.renderButtons()}
                                 </Col>

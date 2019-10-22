@@ -668,12 +668,12 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-0"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -803,7 +803,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -857,16 +857,16 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-0"
@@ -1053,12 +1053,12 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -1112,7 +1112,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                             </button>
                                                           </Button>
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-0"
                                                             onClick={[Function]}
                                                           >
@@ -3170,12 +3170,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-0"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -3306,7 +3306,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -3360,16 +3360,16 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-0"
@@ -3502,12 +3502,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -3517,7 +3517,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-0"
                                                             onClick={[Function]}
                                                           >
@@ -4681,12 +4681,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-1"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -4817,7 +4817,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -4871,16 +4871,16 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-1"
@@ -5025,12 +5025,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -5040,7 +5040,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-1"
                                                             onClick={[Function]}
                                                           >
@@ -6081,12 +6081,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-2"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -6217,7 +6217,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -6271,16 +6271,16 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-2"
@@ -6413,12 +6413,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -6428,7 +6428,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-2"
                                                             onClick={[Function]}
                                                           >
@@ -7592,12 +7592,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-3"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -7728,7 +7728,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -7782,16 +7782,16 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-3"
@@ -7936,12 +7936,12 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -7951,7 +7951,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-3"
                                                             onClick={[Function]}
                                                           >
@@ -9635,12 +9635,12 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-0"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -9770,7 +9770,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -9824,16 +9824,16 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-0"
@@ -10002,12 +10002,12 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -10019,7 +10019,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-0"
                                                             onClick={[Function]}
                                                           >
@@ -11555,12 +11555,12 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-0"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -11691,7 +11691,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -11745,16 +11745,16 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-0"
@@ -11887,12 +11887,12 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -11902,7 +11902,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-0"
                                                             onClick={[Function]}
                                                           >
@@ -14694,12 +14694,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-0"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -14830,7 +14830,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -14884,16 +14884,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-0"
@@ -15026,12 +15026,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -15041,7 +15041,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-0"
                                                             onClick={[Function]}
                                                           >
@@ -16205,12 +16205,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-1"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -16341,7 +16341,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -16395,16 +16395,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-1"
@@ -16549,12 +16549,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -16564,7 +16564,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-1"
                                                             onClick={[Function]}
                                                           >
@@ -17725,12 +17725,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-2"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -17861,7 +17861,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -17915,16 +17915,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-2"
@@ -18063,12 +18063,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -18078,7 +18078,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-2"
                                                             onClick={[Function]}
                                                           >
@@ -19239,12 +19239,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-3"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -19375,7 +19375,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -19429,16 +19429,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-3"
@@ -19559,12 +19559,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -19574,7 +19574,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-3"
                                                             onClick={[Function]}
                                                           >
@@ -20675,12 +20675,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-4"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -20811,7 +20811,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -20865,16 +20865,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-4"
@@ -20995,12 +20995,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -21010,7 +21010,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-4"
                                                             onClick={[Function]}
                                                           >
@@ -22174,12 +22174,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-5"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -22310,7 +22310,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -22364,16 +22364,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-5"
@@ -22494,12 +22494,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -22509,7 +22509,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-5"
                                                             onClick={[Function]}
                                                           >
@@ -23775,12 +23775,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-6"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -23911,7 +23911,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -23965,16 +23965,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-6"
@@ -24119,12 +24119,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -24134,7 +24134,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-6"
                                                             onClick={[Function]}
                                                           >
@@ -25295,12 +25295,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-7"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -25431,7 +25431,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -25485,16 +25485,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-7"
@@ -25615,12 +25615,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -25630,7 +25630,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-7"
                                                             onClick={[Function]}
                                                           >
@@ -26517,12 +26517,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-8"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -26653,7 +26653,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -26707,16 +26707,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-8"
@@ -26861,12 +26861,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -26876,7 +26876,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-8"
                                                             onClick={[Function]}
                                                           >
@@ -27763,12 +27763,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-9"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -27899,7 +27899,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -27953,16 +27953,16 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-9"
@@ -28083,12 +28083,12 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -28098,7 +28098,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-9"
                                                             onClick={[Function]}
                                                           >
@@ -30075,12 +30075,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-0"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -30211,7 +30211,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -30265,16 +30265,16 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-0"
@@ -30407,12 +30407,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -30424,7 +30424,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-0"
                                                             onClick={[Function]}
                                                           >
@@ -31588,12 +31588,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-1"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -31724,7 +31724,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -31778,16 +31778,16 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-1"
@@ -31932,12 +31932,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -31949,7 +31949,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-1"
                                                             onClick={[Function]}
                                                           >
@@ -33050,12 +33050,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-2"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -33186,7 +33186,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -33240,16 +33240,16 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-2"
@@ -33382,12 +33382,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -33399,7 +33399,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-2"
                                                             onClick={[Function]}
                                                           >
@@ -34286,12 +34286,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             >
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-container"
+                                                className="field-row-container"
                                                 componentClass="div"
                                                 key="domainpropertiesrow-domainrow-3"
                                               >
                                                 <div
-                                                  className="domain-row-container row"
+                                                  className="field-row-container row"
                                                 >
                                                   <AdvancedSettings
                                                     field={
@@ -34422,7 +34422,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
-                                                    className="domain-row-handle"
+                                                    className="field-row-handle"
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}
@@ -34476,16 +34476,16 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </FontAwesomeIcon>
                                                   </div>
                                                   <div
-                                                    className="domain-row-main"
+                                                    className="field-row-main"
                                                   >
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-zero-padding"
+                                                      className="field-zero-padding"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-zero-padding col-xs-6"
+                                                        className="field-zero-padding col-xs-6"
                                                       >
                                                         <div
                                                           id="domainpropertiesrow-row-3"
@@ -34630,12 +34630,12 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                     </Col>
                                                     <Col
                                                       bsClass="col"
-                                                      className="domain-field-details-container"
+                                                      className="field-details-container"
                                                       componentClass="div"
                                                       xs={6}
                                                     >
                                                       <div
-                                                        className="domain-field-details-container col-xs-6"
+                                                        className="field-details-container col-xs-6"
                                                       >
                                                         <div
                                                           className="domain-field-details"
@@ -34647,7 +34647,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                           className="domain-field-buttons"
                                                         >
                                                           <div
-                                                            className="domain-field-icon"
+                                                            className="field-icon"
                                                             id="domainpropertiesrow-expand-3"
                                                             onClick={[Function]}
                                                           >

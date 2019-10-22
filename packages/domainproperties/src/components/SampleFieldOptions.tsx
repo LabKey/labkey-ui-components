@@ -3,13 +3,16 @@
 import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
 import {isFieldFullyLocked} from "../propertiesUtil";
-import {createFormInputId, createFormInputName, fetchQueries, getIndexFromId, getNameFromId} from "../actions/actions";
-import {ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE} from "../constants";
+import {createFormInputId, createFormInputName, fetchQueries} from "../actions/actions";
+import {
+    ALL_SAMPLES_DISPLAY_TEXT,
+    DOMAIN_FIELD_SAMPLE_TYPE,
+    SAMPLE_TYPE_HELP_TEXT,
+} from "../constants";
 import {LabelHelpTip} from "@glass/base";
 import {
     encodeLookup,
     IDomainField,
-    IFieldChange,
     ITypeDependentProps,
     PropDescType,
     QueryInfoLite
@@ -43,17 +46,12 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
     };
 
     getHelpText = () => {
-        let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";
         return (
             <>
-                Some static help text that should be something else TODO: Change this.
-                <br/><br/>
-                Learn more about using <a target='_blank'
-                                          href={helpPrefix + 'dateFormats#number'}>Number formats</a> in LabKey.
+                <div dangerouslySetInnerHTML={{__html: SAMPLE_TYPE_HELP_TEXT}} />
             </>
         );
     };
-
 
     componentDidMount(): void {
         this.loadData();
@@ -83,7 +81,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
     };
 
     render() {
-        const { index, label, lockType, container, value } = this.props;
+        const { index, label, lockType, value } = this.props;
         const {loading, sampleTypes} = this.state;
 
         const id = createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE, index);
@@ -100,7 +98,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                         <div className={'domain-field-label'}>
                             Sample lookup to
                             <LabelHelpTip
-                                title='Format Strings'
+                                title='Sample Reference'
                                 body={this.getHelpText} />
                         </div>
                     </Col>
@@ -125,7 +123,6 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                                 );
                             }).toArray()}
                         </FormControl>
-
                     </Col>
                 </Row>
             </div>

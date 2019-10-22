@@ -351,6 +351,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { expanded, index, field, dragging } = this.props;
         const { hover } = this.state;
 
+        // TODO update to use FieldExpansionToggle
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
                 {expanded && (

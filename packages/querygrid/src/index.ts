@@ -40,7 +40,8 @@ import {
     invalidateLineageResults,
     removeQueryGridModel,
     setQueryColumnRenderers,
-    setQueryMetadata
+    setQueryMetadata,
+    invalidateProjectUsers
 } from './global';
 import {
     deleteRows,
@@ -86,7 +87,8 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
-import { handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
+import { handleInputTab, handleTabKeyOnTextArea, getProjectUsers } from './components/forms/actions';
+import { IUser } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
@@ -148,7 +150,7 @@ import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
-import { getUsers, IUser, UserSelectInput } from './components/forms/input/UserSelectInput';
+import { UserSelectInput } from './components/forms/input/UserSelectInput';
 
 export {
     // global state functions
@@ -246,7 +248,8 @@ export {
     EditorModel,
 
     // user-related
-    getUsers,
+    getProjectUsers,
+    invalidateProjectUsers,
     IUser,
 
     // samples-related

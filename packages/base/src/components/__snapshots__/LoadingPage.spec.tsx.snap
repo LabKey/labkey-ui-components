@@ -24,7 +24,7 @@ Array [
 
 exports[`<LoadingPage/> no props 1`] = `
 <Page
-  hasHeader={false}
+  hasHeader={true}
   notFound={false}
 >
   <PageHeader

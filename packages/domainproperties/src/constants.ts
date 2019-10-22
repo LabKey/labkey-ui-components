@@ -97,6 +97,8 @@ export const PHILEVEL_LIMITED_PHI = "Limited";
 export const PHILEVEL_FULL_PHI = "PHI";
 export const PHILEVEL_RESTRICTED_PHI = "Restricted";
 
+export const ALL_SAMPLES_DISPLAY_TEXT = 'All Samples';
+
 export const DOMAIN_PHI_LEVELS = List([
     {label: 'Not PHI', value: PHILEVEL_NOT_PHI},
     {label: 'Limited PHI', value: PHILEVEL_LIMITED_PHI},

@@ -4,7 +4,7 @@ import * as React from 'react'
 import {Col, FormControl, Row} from "react-bootstrap";
 import {isFieldFullyLocked} from "../propertiesUtil";
 import {createFormInputId, createFormInputName, fetchQueries, getIndexFromId, getNameFromId} from "../actions/actions";
-import {DOMAIN_FIELD_SAMPLE_TYPE} from "../constants";
+import {ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE} from "../constants";
 import {LabelHelpTip} from "@glass/base";
 import {
     encodeLookup,
@@ -111,7 +111,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                                      disabled={isFieldFullyLocked(lockType)}
                                      name={createFormInputName(DOMAIN_FIELD_SAMPLE_TYPE)}
                                      onChange={this.onFieldChange}
-                                     value={value || 'All Samples'}>
+                                     value={value || ALL_SAMPLES_DISPLAY_TEXT}>
                             {loading && <option disabled key="_loading" value={value}>Loading...</option>}
                             {!loading && <option
                                 key={createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index, index)}

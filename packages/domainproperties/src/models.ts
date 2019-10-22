@@ -436,7 +436,7 @@ export class PropertyValidator extends Record({
         super(values);
     }
 
-    static fromJS(rawPropertyValidator: Array<IPropertyValidator>, type: string): List<PropertyValidator> {
+    static fromJS(rawPropertyValidator: Array<any>, type: string): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
 
         let newPv;

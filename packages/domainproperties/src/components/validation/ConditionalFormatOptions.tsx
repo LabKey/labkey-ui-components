@@ -164,7 +164,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
     };
 
     renderColorPickers() {
-        const { validator } = this.props;
+        const { validator, validatorIndex } = this.props;
         const { showTextColor, showFillColor } = this.state;
 
         const textColor = validator.textColor ? '#' + validator.textColor : 'black';
@@ -182,6 +182,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                 <Col xs={3}>
                     <FormControl
                         type='text'
+                        id={'domain-validator-preview-' + validatorIndex}
                         defaultValue='Preview Text'
                         style={{fontSize: '12px', width: '100px', color: textColor, backgroundColor: fillColor,
                             fontWeight: (validator.bold?'bold':'normal'),

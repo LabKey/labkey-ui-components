@@ -285,7 +285,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
             <>
                 <Row className='domain-validator-filter-type-row'>
                     <Col xs={this.labelWidth}>
-                        <div>
+                        <div id='domain-filter-type-label-1'>
                             {firstFilterTypeLabel !== undefined ? firstFilterTypeLabel : 'Filter Type:'}
                             {firstFilterTooltip ? firstFilterTooltip : ''}
                         </div>
@@ -311,7 +311,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 </Row>
                 <Row className='domain-validator-filter-row'>
                     <Col xs={this.labelWidth}>
-                        <div>
+                        <div id='domain-filter-value-label-1'>
                             {firstFilterValueLabel !== undefined ? firstFilterValueLabel : 'Filter Value:'}
                         </div>
                     </Col>
@@ -321,7 +321,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 type={this.getFormControlType()}
                                 id={createFormInputId(DOMAIN_FIRST_FILTER_VALUE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_FIRST_FILTER_VALUE)}
-                                value={filterSet.firstFilterValue}
+                                value={filterSet.firstFilterValue !== undefined ? filterSet.firstFilterValue : ""}
                                 disabled={!this.isDataValueRequired(false)}
                                 required
                                 onChange={this.onChange}
@@ -331,7 +331,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 </Row>
                 <Row className='domain-validator-filter-type-row'>
                     <Col xs={this.labelWidth}>
-                        <div>
+                        <div id='domain-filter-type-label-2'>
                             {secondFilterTypeLabel !== undefined ? secondFilterTypeLabel : 'and:'}
                             {secondFilterTooltip ? secondFilterTooltip : ''}
                         </div>
@@ -342,7 +342,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 componentClass="select"
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_TYPE)}
-                                value={filterSet.secondFilterType}
+                                value={filterSet.secondFilterType ? filterSet.secondFilterType : "None"}
                                 onChange={this.onChange}
                             >
                                 {
@@ -356,7 +356,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 </Row>
                 <Row className='domain-validator-filter-bottom'>
                     <Col xs={this.labelWidth}>
-                        <div>
+                        <div id='domain-filter-value-label-2'>
                             {secondFilterValueLabel !== undefined ? secondFilterValueLabel : 'Filter Value:'}
                         </div>
                     </Col>
@@ -366,7 +366,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 type={this.getFormControlType()}
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_VALUE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_VALUE)}
-                                value={filterSet.secondFilterValue}
+                                value={filterSet.secondFilterValue !== undefined ? filterSet.secondFilterValue : ""}
                                 disabled={!this.isDataValueRequired(true)}
                                 onChange={this.onChange}
                             />

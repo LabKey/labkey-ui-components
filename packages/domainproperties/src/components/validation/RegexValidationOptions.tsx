@@ -64,7 +64,6 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                 <Col xs={this.labelWidth} />
                 <Col xs={this.fieldWidth} className='domain-validation-failOnMatch-row'>
                     <Checkbox
-                        // className='domain-validation-checkbox'
                         id={createFormInputId(DOMAIN_VALIDATOR_FAILONMATCH, validatorIndex)}
                         name={createFormInputName(DOMAIN_VALIDATOR_FAILONMATCH)}
                         checked={value}

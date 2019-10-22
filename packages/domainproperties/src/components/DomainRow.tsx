@@ -406,7 +406,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             <div className='field-row-handle'>
                                 {this.renderHandle()}
                             </div>
-                            <div className='domain-row-main'>
+                            <div className='field-row-main'>
                                 <Col xs={6} className='field-zero-padding'>
                                     {this.renderBaseFields()}
                                 </Col>

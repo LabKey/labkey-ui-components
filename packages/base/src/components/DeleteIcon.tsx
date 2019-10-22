@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
     onDelete: (event) => void
@@ -17,7 +15,7 @@ export class DeleteIcon extends React.Component<Props, any> {
         const { title, onDelete } = this.props;
         return (
             <span title={title} className="field-icon" onClick={onDelete}>
-                <FontAwesomeIcon size='sm' className={"field-delete"} icon={faTrash}/>
+                <i className={'fa fa-trash-o field-delete'}/>
             </span>
         )
     }

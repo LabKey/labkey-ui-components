@@ -395,7 +395,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <Col xs={12}>
                         <AddEntityButton
                             entity="Field"
-                            buttonClass="domain-form-add-btn"
+                            buttonClass="test-loc-form-add-btn"
                             onClick={this.onAddField}/>
                     </Col>
                 </Row>

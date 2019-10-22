@@ -20,6 +20,7 @@ import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, resolveSchemaQuery,
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
 import { Lineage } from './components/lineage/models';
+import { IUser } from "./components/forms/model";
 
 /**
  * Initialize the global state object for this package.
@@ -52,7 +53,8 @@ export function resetQueryGridState() {
         QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
-        QueryGrid_columnrenderers: Map<string, any>()
+        QueryGrid_columnrenderers: Map<string, any>(),
+        QueryGrid_users: List<IUser>()
     });
 }
 
@@ -328,4 +330,28 @@ export function updateLookupStore(store: LookupStore, updates: any, failIfNotFou
     });
 
     return updatedStore;
+}
+
+/**
+ * Get the users list from the global QueryGrid state
+ */
+export function getUsers() {
+    return getGlobalState('users');
+}
+
+/**
+ * Sets the users list to be used for this application in the global QueryGrid state
+ * @param users List of users
+ */
+export function setUsers(users: List<IUser>) {
+    setGlobal({
+        QueryGrid_users: users
+    });
+}
+
+/**
+ * Invalidate the global state users list
+ */
+export function invalidateProjectUsers() {
+    setUsers(List<IUser>());
 }

@@ -7,7 +7,8 @@ import {createFormInputId, createFormInputName, fetchQueries} from "../actions/a
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_SAMPLE_TYPE,
-    SAMPLE_TYPE_HELP_TEXT,
+    SAMPLE_TYPE_HELP_ANCHOR,
+    SM_BASE_HELP_URL,
 } from "../constants";
 import {LabelHelpTip} from "@glass/base";
 import {
@@ -22,7 +23,7 @@ import {List} from "immutable";
 interface SampleFieldProps extends ITypeDependentProps {
     original: Partial<IDomainField>
     value?: string
-    container:string,
+    container: string
 }
 
 export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, any> {
@@ -48,7 +49,9 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
     getHelpText = () => {
         return (
             <>
-                <div dangerouslySetInnerHTML={{__html: SAMPLE_TYPE_HELP_TEXT}} />
+                <p>Select the sample reference for this field. You can choose to reference all available samples or select a specific sample type to filter by.</p>
+                <p>This selection will be used to validate and link incoming data, populate lists for data entry, etc.</p>
+                <p>Learn more about using <a target='_blank' href={SM_BASE_HELP_URL + SAMPLE_TYPE_HELP_ANCHOR}>sample types</a> in LabKey.</p> {/*TODO: contextualize help link based on app (SM, LKS, etc.)*/}
             </>
         );
     };

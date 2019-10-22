@@ -89,10 +89,12 @@ export const NOT_HIGHLIGHT_GRAY = '#999999';
 // export const HIGHLIGHT_BLUE = '#3495D2';
 
 export const LK_BASE_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.view?name=";
+export const SM_BASE_HELP_URL = "https://www.labkey.org/SampleManagerDocs/wiki-page.view?name=";
+
 export const LK_URL_ENCODING_DOC = `${LK_BASE_HELP_URL}urlEncoding`;
 export const LK_DOMAIN_HELP_URL = `${LK_BASE_HELP_URL}propertyFields`;
 export const LK_ASSAY_DESIGNER_HELP_URL = `${LK_BASE_HELP_URL}defineAssaySchema`;
-export const LK_SAMPLE_TYPE_HELP_URL = `${LK_BASE_HELP_URL}sampleType`;  //TODO get from Docs
+export const SAMPLE_TYPE_HELP_ANCHOR = "propertyFields#sampleType";  //Needs to be context/App aware
 
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";
@@ -134,6 +136,3 @@ export const DOMAIN_FIELD_COLS = List([
         title: 'Scale'
     })
 ]);
-
-export const SAMPLE_TYPE_HELP_TEXT = "<p>Select the sample reference for this field. You can choose to reference all available samples or filter to a specific sample type by selecting it. This selection will be used to validate and link incoming data, populate lists for data entry, etc. where applicable.</p>" +
-    `<p>Learn more about using <a target='_blank' href=${LK_SAMPLE_TYPE_HELP_URL}>sample types</a> in LabKey.</p>`;

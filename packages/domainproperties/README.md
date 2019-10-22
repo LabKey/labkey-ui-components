@@ -6,7 +6,7 @@ Domain property related components for LabKey domains
 
 ### version ???
 *Released*: ???
-* Package patch update for changes to @glass/base v???
+* Use some css classes factored out into base for DomainRow and DomainForm
 
 ### version 0.0.41
 *Released*: 17 October 2019

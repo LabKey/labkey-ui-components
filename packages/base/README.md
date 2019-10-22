@@ -8,6 +8,8 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: ???
 * Modify getImportURL for AssayDefinitionModel to use the sample model's filters if present
 * Add QueryGridModel properties for hideEmptyViewSelector and hideEmptyChartSelector
+* Add DragDropHandle, DeleteIcon and FieldExpansionToggle components for use when rearranging 
+fields with properties (factoring out of domainproperties)
 
 ### version 0.19.0
 *Released*: 26 September 2019

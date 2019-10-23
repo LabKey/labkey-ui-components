@@ -622,7 +622,7 @@ export class DomainField extends Record({
     isPrimaryKey: boolean;
     lockType: string;
 
-    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
+    static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
         const {dataType} = baseField;
         const lookup = DomainField.resolveLookupConfig(rawField, dataType);

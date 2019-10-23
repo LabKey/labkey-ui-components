@@ -244,7 +244,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
 
-    onAddField = (config?: Partial<IDomainField>) => {
+    onAddField = () => {
+        this.applyAddField();
+    };
+
+    applyAddField = (config?: Partial<IDomainField>) => {
         this.onDomainChange(addDomainField(this.props.domain, config));
         this.collapseRow();
     };
@@ -576,7 +580,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domain,
             modelDomains,
             onChange: this.onFieldsChange,
-            onAddField: this.onAddField
+            onAddField: this.applyAddField
         } as IAppDomainHeader;
 
         return appDomainHeaderRenderer(config);

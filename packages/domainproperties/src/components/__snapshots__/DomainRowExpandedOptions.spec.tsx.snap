@@ -854,6 +854,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               "lookupQuery": undefined,
             },
             "original": Object {
+              "conceptURI": undefined,
               "dataType": Immutable.Record {
                 "conceptURI": undefined,
                 "display": "Boolean",
@@ -1660,6 +1661,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               "lookupQuery": undefined,
             },
             "original": Object {
+              "conceptURI": undefined,
               "dataType": Immutable.Record {
                 "conceptURI": undefined,
                 "display": "Date Time",
@@ -2986,6 +2988,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               "lookupQuery": undefined,
             },
             "original": Object {
+              "conceptURI": undefined,
               "dataType": Immutable.Record {
                 "conceptURI": undefined,
                 "display": "Integer",
@@ -4803,6 +4806,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               "lookupQuery": undefined,
             },
             "original": Object {
+              "conceptURI": undefined,
               "dataType": Immutable.Record {
                 "conceptURI": undefined,
                 "display": "Text (String)",

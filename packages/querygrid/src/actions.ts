@@ -902,7 +902,7 @@ interface ISelectionResponse {
 }
 
 export function getFilterListFromQuery(location: Location) : List<Filter.IFilter> {
-    const filters = Filter.getFiltersFromParametersObject(Object.assign({}, location.query));
+    const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
     if (filters.length > 0)
         return List<Filter.IFilter>(filters);
     return undefined;

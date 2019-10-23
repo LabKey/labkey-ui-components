@@ -1290,17 +1290,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.21-fb-jobCreation.0":
-  version "0.0.21-fb-jobCreation.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.21-fb-jobCreation.0.tgz#5373a25a4e23f46c3622d70d5b47c915c999a90c"
-  integrity sha1-U3OiWk4j9Gw2ItcNW0fJFcmZqQw=
+"@labkey/api@0.0.23-fb-jobCreation.1":
+  version "0.0.23-fb-jobCreation.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.23-fb-jobCreation.1.tgz#de05880648357084e6bdee106d72b93f959d118d"
+  integrity sha1-3gWIBkg1cITmve4QbXK5P5WdEY0=
 
-"@labkey/dependencies@0.0.10-fb-jobCreation.0":
-  version "0.0.10-fb-jobCreation.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.10-fb-jobCreation.0.tgz#33dead64b061018670e5035ba93c97293a16f359"
-  integrity sha1-M96tZLBhAYZw5QNbqTyXKToW81k=
+"@labkey/dependencies@0.0.10-fb-jobCreation.7":
+  version "0.0.10-fb-jobCreation.7"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.10-fb-jobCreation.7.tgz#1d53a0673d7191ba3ed2f2b8856e81e931a9153f"
+  integrity sha1-HVOgZz1xkbo+0vK4hW6B6TGpFT8=
   dependencies:
-    "@labkey/api" "0.0.21-fb-jobCreation.0"
+    "@labkey/api" "0.0.23-fb-jobCreation.1"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

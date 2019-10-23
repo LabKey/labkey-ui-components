@@ -118,7 +118,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                                 key={createFormInputId( DOMAIN_FIELD_SAMPLE_TYPE + '-option-' + index, index)}
                                 value={'all'}>All Samples</option>}
                             {sampleTypes
-                                .filter(st=>st.type.isString())  //Remove rowId duplicates
+                                .filter(st=>st.type.isInteger())  //Remove rowId duplicates
                                 .map((st) => {
                                 let encoded = encodeLookup(st.name, st.type);
                                 return (

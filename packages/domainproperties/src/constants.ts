@@ -77,6 +77,17 @@ export const DATETIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#dateTime';
 export const FILELINK_RANGE_URI = 'http://cpas.fhcrc.org/exp/xml#fileLink';
 export const ATTACHMENT_RANGE_URI = 'http://www.labkey.org/exp/xml#attachment';
 export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
+export const RANGE_URIS = {
+    STRING: STRING_RANGE_URI,
+    MULTILINE: MULTILINE_RANGE_URI,
+    BOOLEAN: BOOLEAN_RANGE_URI,
+    INT: INT_RANGE_URI,
+    DOUBLE: DOUBLE_RANGE_URI,
+    DATETIME: DATETIME_RANGE_URI,
+    FILELINK: FILELINK_RANGE_URI,
+    ATTACHMENT: ATTACHMENT_RANGE_URI,
+    USER: USER_RANGE_URI,
+};
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';

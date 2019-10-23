@@ -73,14 +73,14 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     }
 
     render() {
-        const { index, label, scale, onChange, lockType } = this.props;
+        const { index, label, scale, lockType } = this.props;
         const { radio } = this.state;
 
         return (
             <div>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <div className={'domain-field-section-heading margin-top'}>{label}</div>
+                        <div className={'domain-field-section-heading'}>{label}</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded '>

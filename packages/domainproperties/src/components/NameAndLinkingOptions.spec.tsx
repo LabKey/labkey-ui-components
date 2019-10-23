@@ -37,13 +37,13 @@ describe('NameAndLinkingOptions', () => {
         />);
 
         // Verify section label
-        const sectionLabel = numeric.find({className: 'domain-field-section-heading margin-top'});
+        const sectionLabel = numeric.find({className: 'domain-field-section-heading domain-field-section-hdr'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual('Name and Linking Options');
 
         // Verify values
         // Description
-        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1)});
+        let formField = numeric.find({id: createFormInputId(DOMAIN_FIELD_DESCRIPTION, 1), className: 'form-control domain-field-textarea form-control'});
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_description);
 

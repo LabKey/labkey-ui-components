@@ -9,6 +9,12 @@ Query Grid for LabKey schema/query data views
 * Package patch update for changes to @glass/base TBD
 * Package patch update for changes to @glass/domainproperties TBD
 
+### version 0.21.0
+*Released*: 18 October 2019
+* Fix image scaling problem in image modal (Issue 36957)
+* Add story for QueryGridPanel with images
+* Refactor mock.tsx
+
 ### version 0.20.1
 *Released*: 17 October 2019
 * Package patch update for changes to @glass/domainproperties v0.0.41

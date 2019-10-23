@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from "react";
-import {DomainField, IFieldChange} from "../models";
+import {DomainField, IFieldChange, PropDescType} from "../models";
 import {NameAndLinkingOptions} from "./NameAndLinkingOptions";
 import {TextFieldOptions} from "./TextFieldOptions";
 import {BooleanFieldOptions} from "./BooleanFieldOptions";
@@ -22,6 +22,7 @@ import {NumericFieldOptions} from "./NumericFieldOptions";
 import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import {LookupFieldOptions} from "./LookupFieldOptions";
 import { List } from "immutable";
+import {ConditionalFormattingAndValidation} from "./ConditionalFormattingAndValidation";
 import { SampleFieldOptions } from "./SampleFieldOptions";
 
 interface IDomainRowExpandedOptionsProps {
@@ -29,6 +30,7 @@ interface IDomainRowExpandedOptionsProps {
     index: number
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     onMultiChange: (changes: List<IFieldChange>) => void
+    setDragDisabled: (boolean) => any
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
@@ -57,6 +59,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                            lookupContainer={field.lookupContainer}
                                            lookupSchema={field.lookupSchema}
                                            lookupQueryValue={field.lookupQueryValue}
+                                           lookupValidator={field.lookupValidator}
                                            original={field.original}
                                            onChange={onChange}
                                            onMultiChange={onMultiChange}
@@ -75,14 +78,15 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange } = this.props;
+        const { field, index, onChange, setDragDisabled } = this.props;
 
         return(
             <div className='domain-row-container'>
                 <div className='domain-row-handle'/>
-                <div className='domain-row-main'>
+                <div className='domain-row-container-expanded'>
                     {this.typeDependentOptions()}
                     <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                    <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} setDragDisabled={setDragDisabled}/>
                 </div>
             </div>
         );

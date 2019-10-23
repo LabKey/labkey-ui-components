@@ -374,7 +374,9 @@ function updateDataType(field: DomainField, value: any): DomainField {
         field = field.merge({
             dataType,
             conceptURI: dataType.conceptURI,
-            rangeURI: dataType.rangeURI
+            rangeURI: dataType.rangeURI,
+            lookupSchema: dataType.lookupSchema ? dataType.lookupSchema : field.lookupSchema,
+            lookupQuery: dataType.lookupQuery ? dataType.lookupQuery : field.lookupQuery
         }) as DomainField;
 
         if (field.isNew()) {

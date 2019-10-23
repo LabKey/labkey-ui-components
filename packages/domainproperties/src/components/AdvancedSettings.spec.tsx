@@ -1,7 +1,9 @@
 import {mount} from "enzyme";
 import * as React from "react";
+import {List} from "immutable";
 import {createFormInputId} from "../actions/actions";
 import {
+    DOMAIN_EDITABLE_DEFAULT, DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
@@ -10,7 +12,7 @@ import {
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
-    DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+    DOMAIN_FIELD_SHOWNINUPDATESVIEW, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT,
     INT_RANGE_URI, PHILEVEL_FULL_PHI,
     PHILEVEL_LIMITED_PHI
 } from "../constants";
@@ -48,7 +50,10 @@ describe('AdvancedSettings', () => {
             maxPhiLevel: PHILEVEL_FULL_PHI,
             field: field1,
             onHide: jest.fn(),
-            onApply: jest.fn()
+            onApply: jest.fn(),
+            defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
+            defaultValueOptions : List<string>([ DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT ]),
+            helpNoun: "domain"
         };
 
         const advSettings  = mount(<AdvancedSettings
@@ -106,6 +111,12 @@ describe('AdvancedSettings', () => {
         expect(phi.props().children.size).toEqual(3);
         expect(phi.props().value).toEqual(PHILEVEL_LIMITED_PHI);
 
+        // Verify default type
+        let defaultType = advSettings.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _index), bsClass: 'form-control'});
+        expect(defaultType.length).toEqual(1);
+        expect(defaultType.props().children.size).toEqual(3);
+        expect(defaultType.props().value).toEqual(DOMAIN_EDITABLE_DEFAULT);
+
         const testStateUpdates = function() {
             // Verify hidden
             let hidden = advSettings.find({id: createFormInputId(DOMAIN_FIELD_HIDDEN, _index), bsClass: 'checkbox'});
@@ -154,6 +165,11 @@ describe('AdvancedSettings', () => {
             let phi = advSettings.find({id: createFormInputId(DOMAIN_FIELD_PHI, _index), bsClass: 'form-control'});
             expect(phi.props().value).toEqual(PHILEVEL_FULL_PHI);
 
+            defaultType = advSettings.find({id: createFormInputId(DOMAIN_FIELD_DEFAULT_VALUE_TYPE, _index), bsClass: 'form-control'});
+            expect(defaultType.length).toEqual(1);
+            expect(defaultType.props().children.size).toEqual(3);
+            expect(defaultType.props().value).toEqual(DOMAIN_LAST_ENTERED_DEFAULT);
+
             // TODO: Some reason toJson is hitting infinite loop on Advanced Settings
             // expect(toJson(advSettings)).toMatchSnapshot();
             advSettings.unmount();
@@ -168,7 +184,8 @@ describe('AdvancedSettings', () => {
             measure: false,
             mvEnabled: true,
             recommendedVariable: false,
-            PHI: PHILEVEL_FULL_PHI
+            PHI: PHILEVEL_FULL_PHI,
+            defaultValueType: DOMAIN_LAST_ENTERED_DEFAULT
         }, testStateUpdates);
     });
 });

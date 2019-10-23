@@ -10,6 +10,8 @@ module.exports = async ({ config, mode }) => {
     // You can change the configuration based on that.
     // 'PRODUCTION' is used when building the static version of storybook.
 
+    config.devtool = 'eval-source-map';
+
     config.module.rules.push({
         test: /\.(ts|tsx)$/,
         loaders: ['babel-loader', 'ts-loader']

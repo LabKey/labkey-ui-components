@@ -16,6 +16,7 @@ interface Props {
     onComplete: (model: AssayProtocolModel) => void
     initModel: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
+    containerTop?: number // This sets the top of the sticky header, default is 0
     basePropertiesOnly?: boolean
     appDomainHeaders?: Map<string, HeaderRenderer>
     appIsValid?: (model: AssayProtocolModel) => boolean
@@ -151,7 +152,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, basePropertiesOnly } = this.props;
+        const { onCancel, basePropertiesOnly, containerTop } = this.props;
         const { submitting, error, protocolModel, currentPanelIndex } = this.state;
         const isNew = protocolModel.isNew();
         const finish = !isNew || this.isLastStep();
@@ -188,6 +189,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}
+                            containerTop={containerTop}
                             helpURL={i > 0 ? null : undefined} // so we only show the helpURL link for the first assay domain
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);

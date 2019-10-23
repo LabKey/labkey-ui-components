@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, Checkbox, Col, Collapse, FormControl, Row} from "react-bootstrap";
+import {Button, Checkbox, Col, FormControl, Row} from "react-bootstrap";
 import {createFormInputId, createFormInputName, getNameFromId} from "../../actions/actions";
 import {
     DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, Checkbox, Col, Collapse, FormControl, Row} from "react-bootstrap";
+import {Button, Col, FormControl, Row} from "react-bootstrap";
 import {createFormInputId, createFormInputName, getNameFromId} from "../../actions/actions";
 import {
     DOMAIN_VALIDATOR_DESCRIPTION, DOMAIN_VALIDATOR_ERRORMESSAGE, DOMAIN_VALIDATOR_NAME, DOMAIN_VALIDATOR_REMOVE
@@ -108,7 +108,6 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
 
     onChange = (evt) => {
         const { onChange, validator, validatorIndex } = this.props;
-        const { validFilters } = this.state;
 
         let value = evt.target.value;
         let name = getNameFromId(evt.target.id);

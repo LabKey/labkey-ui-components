@@ -356,7 +356,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     </FormControl>
                 </Col>
                 <Col xs={2}>
-                    <div className='domain-field-checkbox'>
+                    <div className='domain-field-checkbox-container'>
                         <Checkbox
                             className='domain-field-checkbox'
                             name={createFormInputName(DOMAIN_FIELD_REQUIRED)}

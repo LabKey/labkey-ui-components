@@ -8,7 +8,6 @@ import { decodeLookup, encodeLookup, PropDescType } from "../../models";
 import { ILookupContext, LookupContextConsumer } from "./Context";
 import {createFormInputName} from "../../actions/actions";
 import {
-    DOMAIN_FIELD_FORMAT,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA

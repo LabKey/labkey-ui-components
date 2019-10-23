@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, Checkbox, Col, Collapse, FormControl, Row} from "react-bootstrap";
+import {Button, Checkbox, Col, FormControl, Row} from "react-bootstrap";
 import {createFormInputId, createFormInputName, getNameFromId} from "../../actions/actions";
 import {
     DOMAIN_VALIDATOR_DESCRIPTION, DOMAIN_VALIDATOR_ERRORMESSAGE,

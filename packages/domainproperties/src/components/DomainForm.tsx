@@ -456,14 +456,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <div className='domain-floating-hdr'>
                 <Row className='domain-form-hdr-row'>
-                    <Col xs={3}>
-                        <b>Field Name</b>
-                    </Col>
-                    <Col xs={2}>
-                        <b>Data Type</b>
-                    </Col>
-                    <Col xs={1}>
-                        <b style={{marginLeft: '12px'}}>Required?</b>
+                    <Col xs={6}>
+                        <Col xs={6}>
+                            <b>Field Name</b>
+                        </Col>
+                        <Col xs={4}>
+                            <b>Data Type</b>
+                        </Col>
+                        <Col xs={2} className='domain-form-hdr-center'>
+                            <b>Required</b>
+                        </Col>
                     </Col>
                     <Col xs={6}>
                         <b>Details</b>

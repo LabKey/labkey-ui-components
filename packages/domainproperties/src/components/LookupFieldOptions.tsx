@@ -83,7 +83,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                     </Col>
                 </Row>
                 <Row className="domain-row-expanded">
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <div className="domain-field-label">From Folder</div>
                         <FolderSelect
                             id={createFormInputId(DOMAIN_FIELD_LOOKUP_CONTAINER, index)}
@@ -93,7 +93,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             value={lookupContainer}
                         />
                     </Col>
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <div className="domain-field-label">From Schema</div>
                         <SchemaSelect
                             containerPath={lookupContainer}
@@ -103,7 +103,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             onChange={this.onFieldChange}
                             value={lookupSchema}/>
                     </Col>
-                    <Col xs={3}>
+                    <Col xs={2}>
                         <div className="domain-field-label">Target Table</div>
                         <TargetTableSelect
                             containerPath={lookupContainer}

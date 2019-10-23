@@ -9,9 +9,9 @@
 .domain-modal input[type="radio"] {
   width: 17px;
   height: 17px;
-  position: relative;
-  top: 3px;
-  margin-right: 10px;
+  position: relative !important;
+  margin-right: 7px;
+  vertical-align: text-bottom;
 }
 
 .domain-form-hdr-row {
@@ -26,6 +26,10 @@
 .domain-form-search {
   margin-bottom: 20px;
 };
+
+.domain-form-hdr-center {
+  text-align: center;
+}
 
 .domain-zero-padding {
   padding: 0
@@ -73,10 +77,14 @@
 }
 
 .domain-field-checkbox {
-  padding-left: 22%;
-  margin: 5px 15px 0 0;
   height: 0;
+  margin-top: 1px !important;
 };
+
+.domain-field-checkbox-container {
+  margin: auto;
+  display: table;
+}
 
 .domain-field-details {
   color: $gray-dark;
@@ -110,7 +118,6 @@
 
 .domain-field-details-container {
   display: flex;
-  padding-left: 0;
   top: 60%;
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
@@ -216,11 +223,11 @@
 }
 
 .domain-text-options-radio1 {
-  margin: 0 15px 5px 5px !important;
+  margin: 0 10px 5px 5px !important;
 }
 
 .domain-text-options-radio2 {
-  margin: 5px 15px 5px 5px !important;
+  margin: 6px 10px 5px 5px !important;
 }
 
 .domain-text-options-length {

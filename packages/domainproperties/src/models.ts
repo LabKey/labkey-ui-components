@@ -282,12 +282,6 @@ export class DomainDesign extends Record({
         super(values);
     }
 
-    getDomainKind = () => {
-        const kind = this.domainURI.substring(DOMAIN_URI_PREFIX.length);
-
-        return kind.split('.')[0];
-    }
-
     hasErrors(): boolean {
         return this.fields.find((f) => f.hasErrors()) !== undefined;
     }
@@ -446,12 +440,15 @@ export class PropertyValidator extends Record({
                  type === 'Lookup' && rawPropertyValidator[i].type === "Lookup"
             )
             {
-                newPv = new PropertyValidator(fromJS(rawPropertyValidator[i]));
+                rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties']));
+                newPv = new PropertyValidator(rawPropertyValidator[i]);
 
                 // Special case for filters HAS ANY VALUE not having a symbol
-                newPv = newPv.set('expression', newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')) as PropertyValidator;
+                if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
+                    newPv = newPv.set('expression', newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')) as PropertyValidator;
+                }
 
-                newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
+                // newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
                 propValidators = propValidators.push(newPv);
             }
         }

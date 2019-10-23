@@ -10,7 +10,7 @@ import {
 
 import { Filter } from '@labkey/api';
 import {ReactElement} from "react";
-import {JsonType, PropertyValidator} from "../../models";
+import {JsonType} from "../../models";
 
 interface FiltersProps {
     validatorIndex: number

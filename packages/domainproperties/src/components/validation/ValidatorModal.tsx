@@ -1,8 +1,7 @@
-import {ConditionalFormat, DomainField, IFieldChange, PropDescType, PropertyValidator} from "../../models";
+import {ConditionalFormat, PropDescType, PropertyValidator} from "../../models";
 import * as React from "react";
 import {List} from "immutable";
-import {Button, Checkbox, Collapse, Fade, FormControl, Modal} from "react-bootstrap";
-import {createFormInputId, createFormInputName} from "../../actions/actions";
+import {Button, Modal} from "react-bootstrap";
 import {
     DOMAIN_COND_FORMAT,
     DOMAIN_COND_FORMATS,
@@ -140,7 +139,7 @@ export function ValidatorModal(WrappedComponent: any) {
         render()
         {
             const { show, title, subTitle, onHide, addName, index, dataType, mvEnabled } = this.props;
-            const { expanded, collapsing, validators } = this.state;
+            const { expanded, validators } = this.state;
 
             return (
                 <Modal show={show}
@@ -154,8 +153,6 @@ export function ValidatorModal(WrappedComponent: any) {
                             <div className='domain-validation-subtitle'>{subTitle}</div>
                             {validators.map((validator, i) =>
                                 <div key={i}>
-                                    {/*<Collapse in={i === expanded} timeout={300} onExited={this.onCollapsed} onExiting={this.onCollapsing} onEntered={this.onCollapsed} onEntering={this.onCollapsing}>*/}
-                                    {/*<div style={{minHeight: '50px'}}>*/}
                                     <WrappedComponent
                                         key={i}
                                         validatorIndex={i}
@@ -168,12 +165,6 @@ export function ValidatorModal(WrappedComponent: any) {
                                         onChange={this.onChange}
                                         onDelete={this.onDelete}
                                     />
-                                    {/*</div>*/}
-                                    {/*</Collapse>*/}
-                                    {/*{i !== expanded && !collapsing &&*/}
-                                    {/*<WrappedComponent key={i} validatorIndex={i} validator={validator} index={index}*/}
-                                    {/*expanded={(i === expanded) && !collapsing} onExpand={this.onExpand}/>*/}
-                                    {/*// }*/}
                                 </div>
                             )}
                         </div>

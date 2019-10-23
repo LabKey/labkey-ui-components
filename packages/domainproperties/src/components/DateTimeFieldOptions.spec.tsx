@@ -27,7 +27,7 @@ describe('DateTimeFieldOptions', () => {
         />);
 
         // Verify label
-        const sectionLabel = dateTime.find({className: 'domain-field-section-heading margin-top'});
+        const sectionLabel = dateTime.find({className: 'domain-field-section-heading'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_section);
 
@@ -42,13 +42,13 @@ describe('DateTimeFieldOptions', () => {
         expect(formatField.props().value).toEqual(_format2);
 
         // Verify checked field
-        let excludeField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, 1)});
+        let excludeField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, 1), type: 'checkbox'});
         expect(excludeField.length).toEqual(1);
         expect(excludeField.props().checked).toEqual(true);
 
         // Uncheck excludeFromShifting
         dateTime.setProps({excludeFromShifting: false});
-        excludeField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, 1)});
+        excludeField = dateTime.find({id: createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, 1), type: 'checkbox'});
         expect(excludeField.props().checked).toEqual(false);
 
         expect(toJson(dateTime)).toMatchSnapshot();

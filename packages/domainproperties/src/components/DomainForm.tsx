@@ -44,7 +44,12 @@ import {
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
-import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, LK_DOMAIN_HELP_URL, PHILEVEL_NOT_PHI } from "../constants";
+import {
+    EXPAND_TRANSITION,
+    EXPAND_TRANSITION_FAST,
+    LK_DOMAIN_HELP_URL,
+    PHILEVEL_NOT_PHI
+} from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -60,6 +65,7 @@ interface IDomainFormInput {
     showInferFromFile?: boolean
     panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
+    containerTop?: number // This sets the top of the sticky header, default is 0
 }
 
 interface IDomainFormState {
@@ -216,11 +222,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         expandedRowIndex === index ? this.collapseRow() : this.expandRow(index);
     };
 
-    onDomainChange(updatedDomain: DomainDesign) {
+    onDomainChange(updatedDomain: DomainDesign, dirty?: boolean) {
         const { onChange } = this.props;
 
         if (onChange) {
-            onChange(updatedDomain, true);
+            onChange(updatedDomain, dirty !== undefined ? dirty : true);
         }
     }
 
@@ -421,11 +427,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return undefined;
     };
 
-    stickyStyle = (style: any): any => {
-        let newStyle = {...style, zIndex: 1000};
+    stickyStyle = (style: any, isSticky: boolean): any => {
+        const { containerTop } = this.props;
+
+        let newStyle = {...style, zIndex: 1000, top: (containerTop ? containerTop : 0)};
 
         // Sticking to top
-        if (style.top === 0) {
+        if (isSticky) {
             let newWidth = parseInt(style.width,10) + 30;  // Expand past panel padding
             const width = newWidth + 'px';
 
@@ -451,14 +459,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <div className='domain-floating-hdr'>
                 <Row className='domain-form-hdr-row'>
-                    <Col xs={3}>
-                        <b>Field Name</b>
-                    </Col>
-                    <Col xs={2}>
-                        <b>Data Type</b>
-                    </Col>
-                    <Col xs={1}>
-                        <b style={{marginLeft: '12px'}}>Required?</b>
+                    <Col xs={6}>
+                        <Col xs={6}>
+                            <b>Field Name</b>
+                        </Col>
+                        <Col xs={4}>
+                            <b>Data Type</b>
+                        </Col>
+                        <Col xs={2} className='domain-form-hdr-center'>
+                            <b>Required</b>
+                        </Col>
                     </Col>
                     <Col xs={6}>
                         <b>Details</b>
@@ -520,9 +530,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
 
         this.setState(() => ({filtered: value !== undefined && value.length > 0}));
-
-        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign);
-    }
+        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
+    };
 
     readerPanelHeaderContent() {
         const { helpURL, children } = this.props;
@@ -557,7 +566,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderForm() {
-        const { domain } = this.props;
+        const { domain, helpNoun, containerTop } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
@@ -567,8 +576,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
-                            <Sticky>{({ style }) =>
-                                <div style={this.stickyStyle(style)}>
+                            <Sticky topOffset={(containerTop ? ( -1 * containerTop) : 0)}>{({ style, isSticky }) =>
+                                <div style={this.stickyStyle(style, isSticky)}>
                                     {this.renderRowHeaders()}
                                 </div>}
                             </Sticky>
@@ -583,6 +592,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 return <div key={'domain-row-key-' + i} />;
 
                                             return <DomainRow
+                                                domainId={domain.domainId}
+                                                helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}
                                                 field={field}
                                                 fieldError={this.getFieldError(domain, i)}
@@ -596,6 +607,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 dragging={dragId === i}
                                                 isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
+                                                defaultDefaultValueType={domain.defaultDefaultValueType}
+                                                defaultValueOptions={domain.defaultValueOptions}
                                             />
                                         }))}
                                         {provided.placeholder}

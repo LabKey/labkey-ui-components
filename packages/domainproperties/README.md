@@ -8,6 +8,15 @@ Domain property related components for LabKey domains
 *Released*: ???
 * Use some css classes factored out into base for DomainRow and DomainForm
 
+### version 0.0.42
+*Released*: 23 October 2019
+* Item 5917: Conditional Formatting and Property Validators
+    * Add Conditional Formatting and Property Validators section to expanded Domain Row
+    * Add Conditional Formatting options dialog
+    * Add Regex Validator options dialog
+    * Add Range Validator options dialog for appropriate data types
+    * Add Default Values options to Advanced Settings
+
 ### version 0.0.41
 *Released*: 17 October 2019
 * Item 6199: support other assay provider types in AssayDesignerPanels and AssayPropertiesPanel

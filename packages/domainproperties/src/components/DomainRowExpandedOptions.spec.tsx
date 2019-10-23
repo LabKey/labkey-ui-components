@@ -21,6 +21,7 @@ describe('DomainExpandedOptions', () => {
             index={1}
             onChange={jest.fn()}
             onMultiChange={jest.fn()}
+            setDragDisabled={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -40,6 +41,7 @@ describe('DomainExpandedOptions', () => {
             index={1}
             onChange={jest.fn()}
             onMultiChange={jest.fn()}
+            setDragDisabled={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -59,6 +61,7 @@ describe('DomainExpandedOptions', () => {
             index={1}
             onChange={jest.fn()}
             onMultiChange={jest.fn()}
+            setDragDisabled={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();
@@ -78,6 +81,7 @@ describe('DomainExpandedOptions', () => {
             index={1}
             onChange={jest.fn()}
             onMultiChange={jest.fn()}
+            setDragDisabled={jest.fn()}
         />);
 
         expect(toJson(row)).toMatchSnapshot();

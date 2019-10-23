@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -39,6 +39,7 @@
     "@fortawesome/react-fontawesome": "0.1.4",
     "@glass/base": "0.19.0",
     "react-beautiful-dnd": "11.0.3",
+    "react-color": "2.17.3",
     "react-sticky": "6.0.3",
     "react-transition-group": "4.2.2"
   },
@@ -68,5 +69,5 @@
       "^.+\\.tsx?$": "ts-jest"
     }
   },
-  "gitHead": "4edd31c934e5bea492455ec2cedc7b083cff4ba5"
+  "gitHead": "593926a19694f0efde5fe9a450cabc594901360b"
 }

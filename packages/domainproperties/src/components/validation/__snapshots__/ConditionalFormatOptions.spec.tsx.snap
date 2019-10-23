@@ -1,0 +1,1012 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
+<ConditionalFormatOptions
+  dataType={
+    Immutable.Record {
+      "conceptURI": undefined,
+      "display": "Integer",
+      "name": "int",
+      "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+      "alternateRangeURI": "xsd:int",
+      "shortDisplay": undefined,
+      "lookupSchema": undefined,
+      "lookupQuery": undefined,
+    }
+  }
+  expanded={true}
+  index={1}
+  mvEnabled={true}
+  onChange={[MockFunction]}
+  onDelete={[MockFunction]}
+  onExpand={[MockFunction]}
+  validator={
+    Object {
+      "backgroundColor": "000080",
+      "bold": true,
+      "formatFilter": "format.column~startswith=0&format.column~doesnotstartwith=1",
+      "italic": false,
+      "strikethrough": false,
+      "textColor": "FF6347",
+    }
+  }
+  validatorIndex={0}
+>
+  <div
+    className="domain-validator-panel"
+    id="domain-condition-format-0"
+  >
+    <div>
+      <Filters
+        expression="format.column~startswith=0&format.column~doesnotstartwith=1"
+        mvEnabled={true}
+        onChange={[Function]}
+        prefix="format.column"
+        type="int"
+        validatorIndex={0}
+      >
+        <Row
+          bsClass="row"
+          className="domain-validator-filter-type-row"
+          componentClass="div"
+        >
+          <div
+            className="domain-validator-filter-type-row row"
+          >
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={4}
+            >
+              <div
+                className="col-xs-4"
+              >
+                <div
+                  id="domain-filter-type-label-1"
+                >
+                  Filter Type:
+                </div>
+              </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={8}
+            >
+              <div
+                className="col-xs-8"
+              >
+                <div>
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    id="domainpropertiesrow-firstFilterType-0"
+                    name="domainpropertiesrow-firstFilterType"
+                    onChange={[Function]}
+                    required={true}
+                    value="startswith"
+                  >
+                    <select
+                      className="form-control"
+                      id="domainpropertiesrow-firstFilterType-0"
+                      name="domainpropertiesrow-firstFilterType"
+                      onChange={[Function]}
+                      required={true}
+                      value="startswith"
+                    >
+                      <option
+                        key="0"
+                        value="HAS_ANY_VALUE"
+                      >
+                        Has Any Value
+                      </option>
+                      <option
+                        key="1"
+                        value="eq"
+                      >
+                        Equals
+                      </option>
+                      <option
+                        key="2"
+                        value="neqornull"
+                      >
+                        Does Not Equal
+                      </option>
+                      <option
+                        key="3"
+                        value="isblank"
+                      >
+                        Is Blank
+                      </option>
+                      <option
+                        key="4"
+                        value="isnonblank"
+                      >
+                        Is Not Blank
+                      </option>
+                      <option
+                        key="5"
+                        value="gt"
+                      >
+                        Is Greater Than
+                      </option>
+                      <option
+                        key="6"
+                        value="lt"
+                      >
+                        Is Less Than
+                      </option>
+                      <option
+                        key="7"
+                        value="gte"
+                      >
+                        Is Greater Than or Equal To
+                      </option>
+                      <option
+                        key="8"
+                        value="lte"
+                      >
+                        Is Less Than or Equal To
+                      </option>
+                      <option
+                        key="9"
+                        value="in"
+                      >
+                        Equals One Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="10"
+                        value="notin"
+                      >
+                        Does Not Equal Any Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="11"
+                        value="between"
+                      >
+                        Between, Inclusive (example usage: -4,4)
+                      </option>
+                      <option
+                        key="12"
+                        value="notbetween"
+                      >
+                        Not Between, Exclusive (example usage: -4,4)
+                      </option>
+                      <option
+                        key="13"
+                        value="hasmvvalue"
+                      >
+                        Has a missing value indicator
+                      </option>
+                      <option
+                        key="14"
+                        value="nomvvalue"
+                      >
+                        Does not have a missing value indicator
+                      </option>
+                    </select>
+                  </FormControl>
+                </div>
+              </div>
+            </Col>
+          </div>
+        </Row>
+        <Row
+          bsClass="row"
+          className="domain-validator-filter-row"
+          componentClass="div"
+        >
+          <div
+            className="domain-validator-filter-row row"
+          >
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={4}
+            >
+              <div
+                className="col-xs-4"
+              >
+                <div
+                  id="domain-filter-value-label-1"
+                >
+                  Filter Value:
+                </div>
+              </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={8}
+            >
+              <div
+                className="col-xs-8"
+              >
+                <div>
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="input"
+                    disabled={false}
+                    id="domainpropertiesrow-firstFilterValue-0"
+                    name="domainpropertiesrow-firstFilterValue"
+                    onChange={[Function]}
+                    required={true}
+                    type="number"
+                    value="0"
+                  >
+                    <input
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-firstFilterValue-0"
+                      name="domainpropertiesrow-firstFilterValue"
+                      onChange={[Function]}
+                      required={true}
+                      type="number"
+                      value="0"
+                    />
+                  </FormControl>
+                </div>
+              </div>
+            </Col>
+          </div>
+        </Row>
+        <Row
+          bsClass="row"
+          className="domain-validator-filter-type-row"
+          componentClass="div"
+        >
+          <div
+            className="domain-validator-filter-type-row row"
+          >
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={4}
+            >
+              <div
+                className="col-xs-4"
+              >
+                <div
+                  id="domain-filter-type-label-2"
+                >
+                  and:
+                </div>
+              </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={8}
+            >
+              <div
+                className="col-xs-8"
+              >
+                <div>
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="select"
+                    id="domainpropertiesrow-secondFilterType-0"
+                    name="domainpropertiesrow-secondFilterType"
+                    onChange={[Function]}
+                    value="doesnotstartwith"
+                  >
+                    <select
+                      className="form-control"
+                      id="domainpropertiesrow-secondFilterType-0"
+                      name="domainpropertiesrow-secondFilterType"
+                      onChange={[Function]}
+                      value="doesnotstartwith"
+                    >
+                      <option
+                        key="0"
+                        value="None"
+                      >
+                        No other filter
+                      </option>
+                      <option
+                        key="1"
+                        value="HAS_ANY_VALUE"
+                      >
+                        Has Any Value
+                      </option>
+                      <option
+                        key="2"
+                        value="eq"
+                      >
+                        Equals
+                      </option>
+                      <option
+                        key="3"
+                        value="neqornull"
+                      >
+                        Does Not Equal
+                      </option>
+                      <option
+                        key="4"
+                        value="isblank"
+                      >
+                        Is Blank
+                      </option>
+                      <option
+                        key="5"
+                        value="isnonblank"
+                      >
+                        Is Not Blank
+                      </option>
+                      <option
+                        key="6"
+                        value="gt"
+                      >
+                        Is Greater Than
+                      </option>
+                      <option
+                        key="7"
+                        value="lt"
+                      >
+                        Is Less Than
+                      </option>
+                      <option
+                        key="8"
+                        value="gte"
+                      >
+                        Is Greater Than or Equal To
+                      </option>
+                      <option
+                        key="9"
+                        value="lte"
+                      >
+                        Is Less Than or Equal To
+                      </option>
+                      <option
+                        key="10"
+                        value="in"
+                      >
+                        Equals One Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="11"
+                        value="notin"
+                      >
+                        Does Not Equal Any Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="12"
+                        value="between"
+                      >
+                        Between, Inclusive (example usage: -4,4)
+                      </option>
+                      <option
+                        key="13"
+                        value="notbetween"
+                      >
+                        Not Between, Exclusive (example usage: -4,4)
+                      </option>
+                      <option
+                        key="14"
+                        value="hasmvvalue"
+                      >
+                        Has a missing value indicator
+                      </option>
+                      <option
+                        key="15"
+                        value="nomvvalue"
+                      >
+                        Does not have a missing value indicator
+                      </option>
+                    </select>
+                  </FormControl>
+                </div>
+              </div>
+            </Col>
+          </div>
+        </Row>
+        <Row
+          bsClass="row"
+          className="domain-validator-filter-bottom"
+          componentClass="div"
+        >
+          <div
+            className="domain-validator-filter-bottom row"
+          >
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={4}
+            >
+              <div
+                className="col-xs-4"
+              >
+                <div
+                  id="domain-filter-value-label-2"
+                >
+                  Filter Value:
+                </div>
+              </div>
+            </Col>
+            <Col
+              bsClass="col"
+              componentClass="div"
+              xs={8}
+            >
+              <div
+                className="col-xs-8"
+              >
+                <div>
+                  <FormControl
+                    bsClass="form-control"
+                    componentClass="input"
+                    disabled={false}
+                    id="domainpropertiesrow-secondFilterValue-0"
+                    name="domainpropertiesrow-secondFilterValue"
+                    onChange={[Function]}
+                    type="number"
+                    value="1"
+                  >
+                    <input
+                      className="form-control"
+                      disabled={false}
+                      id="domainpropertiesrow-secondFilterValue-0"
+                      name="domainpropertiesrow-secondFilterValue"
+                      onChange={[Function]}
+                      type="number"
+                      value="1"
+                    />
+                  </FormControl>
+                </div>
+              </div>
+            </Col>
+          </div>
+        </Row>
+      </Filters>
+      <div
+        className="domain-validation-subtitle"
+      >
+        Display Options
+      </div>
+      <Row
+        bsClass="row"
+        componentClass="div"
+      >
+        <div
+          className="row"
+        >
+          <Col
+            bsClass="col"
+            className="domain-validation-display-checkbox-row"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="domain-validation-display-checkbox-row col-xs-12"
+            >
+              <Checkbox
+                bsClass="checkbox"
+                checked={true}
+                disabled={false}
+                id="domainpropertiesrow-bold-0"
+                inline={false}
+                name="domainpropertiesrow-bold"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={true}
+                      disabled={false}
+                      id="domainpropertiesrow-bold-0"
+                      name="domainpropertiesrow-bold"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Bold
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        componentClass="div"
+      >
+        <div
+          className="row"
+        >
+          <Col
+            bsClass="col"
+            className="domain-validation-display-checkbox-row"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="domain-validation-display-checkbox-row col-xs-12"
+            >
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                disabled={false}
+                id="domainpropertiesrow-italic-0"
+                inline={false}
+                name="domainpropertiesrow-italic"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-italic-0"
+                      name="domainpropertiesrow-italic"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Italics
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        componentClass="div"
+      >
+        <div
+          className="row"
+        >
+          <Col
+            bsClass="col"
+            className="domain-validation-display-checkbox-row"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="domain-validation-display-checkbox-row col-xs-12"
+            >
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                disabled={false}
+                id="domainpropertiesrow-strikethrough-0"
+                inline={false}
+                name="domainpropertiesrow-strikethrough"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-strikethrough-0"
+                      name="domainpropertiesrow-strikethrough"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Strikethrough
+                  </label>
+                </div>
+              </Checkbox>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        className="domain-validator-color-row"
+        componentClass="div"
+      >
+        <div
+          className="domain-validator-color-row row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={4}
+          >
+            <div
+              className="col-xs-4"
+            >
+              <div
+                style={
+                  Object {
+                    "width": "100%",
+                  }
+                }
+              >
+                <Button
+                  active={false}
+                  block={false}
+                  bsClass="btn"
+                  bsStyle="default"
+                  className="domain-color-picker-btn"
+                  disabled={false}
+                  id="domainpropertiesrow-textColor-0"
+                  key="domainpropertiesrow-textColor-0"
+                  name="domainpropertiesrow-textColor"
+                  onClick={[Function]}
+                >
+                  <button
+                    className="domain-color-picker-btn btn btn-default"
+                    disabled={false}
+                    id="domainpropertiesrow-textColor-0"
+                    name="domainpropertiesrow-textColor"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Text Color
+                    <FontAwesomeIcon
+                      border={false}
+                      className="domain-color-caret"
+                      fixedWidth={false}
+                      flip={null}
+                      icon={
+                        Object {
+                          "icon": Array [
+                            320,
+                            512,
+                            Array [],
+                            "f0d7",
+                            "M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z",
+                          ],
+                          "iconName": "caret-down",
+                          "prefix": "fas",
+                        }
+                      }
+                      inverse={false}
+                      listItem={false}
+                      mask={null}
+                      pull={null}
+                      pulse={false}
+                      rotation={null}
+                      size="lg"
+                      spin={false}
+                      symbol={false}
+                      title=""
+                      transform={null}
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="svg-inline--fa fa-caret-down fa-w-10 fa-lg domain-color-caret"
+                        data-icon="caret-down"
+                        data-prefix="fas"
+                        focusable="false"
+                        role="img"
+                        style={Object {}}
+                        viewBox="0 0 320 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                          fill="currentColor"
+                          style={Object {}}
+                        />
+                      </svg>
+                    </FontAwesomeIcon>
+                  </button>
+                </Button>
+                <div
+                  className="domain-color-preview"
+                  style={
+                    Object {
+                      "backgroundColor": "#FF6347",
+                    }
+                  }
+                />
+              </div>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={4}
+          >
+            <div
+              className="col-xs-4"
+            >
+              <div
+                style={
+                  Object {
+                    "width": "100%",
+                  }
+                }
+              >
+                <Button
+                  active={false}
+                  block={false}
+                  bsClass="btn"
+                  bsStyle="default"
+                  className="domain-color-picker-btn"
+                  disabled={false}
+                  id="domainpropertiesrow-backgroundColor-0"
+                  key="domainpropertiesrow-backgroundColor-0"
+                  name="domainpropertiesrow-backgroundColor"
+                  onClick={[Function]}
+                >
+                  <button
+                    className="domain-color-picker-btn btn btn-default"
+                    disabled={false}
+                    id="domainpropertiesrow-backgroundColor-0"
+                    name="domainpropertiesrow-backgroundColor"
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Fill Color
+                    <FontAwesomeIcon
+                      border={false}
+                      className="domain-color-caret"
+                      fixedWidth={false}
+                      flip={null}
+                      icon={
+                        Object {
+                          "icon": Array [
+                            320,
+                            512,
+                            Array [],
+                            "f0d7",
+                            "M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z",
+                          ],
+                          "iconName": "caret-down",
+                          "prefix": "fas",
+                        }
+                      }
+                      inverse={false}
+                      listItem={false}
+                      mask={null}
+                      pull={null}
+                      pulse={false}
+                      rotation={null}
+                      size="lg"
+                      spin={false}
+                      symbol={false}
+                      title=""
+                      transform={null}
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="svg-inline--fa fa-caret-down fa-w-10 fa-lg domain-color-caret"
+                        data-icon="caret-down"
+                        data-prefix="fas"
+                        focusable="false"
+                        role="img"
+                        style={Object {}}
+                        viewBox="0 0 320 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z"
+                          fill="currentColor"
+                          style={Object {}}
+                        />
+                      </svg>
+                    </FontAwesomeIcon>
+                  </button>
+                </Button>
+                <div
+                  className="domain-color-preview"
+                  style={
+                    Object {
+                      "backgroundColor": "#000080",
+                    }
+                  }
+                />
+              </div>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={1}
+          >
+            <div
+              className="col-xs-1"
+            />
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={3}
+          >
+            <div
+              className="col-xs-3"
+            >
+              <FormControl
+                bsClass="form-control"
+                componentClass="input"
+                defaultValue="Preview Text"
+                id="domain-validator-preview-0"
+                style={
+                  Object {
+                    "backgroundColor": "#000080",
+                    "color": "#FF6347",
+                    "fontSize": "12px",
+                    "fontStyle": "normal",
+                    "fontWeight": "bold",
+                    "textDecoration": "",
+                    "width": "100px",
+                  }
+                }
+                type="text"
+              >
+                <input
+                  className="form-control"
+                  defaultValue="Preview Text"
+                  id="domain-validator-preview-0"
+                  style={
+                    Object {
+                      "backgroundColor": "#000080",
+                      "color": "#FF6347",
+                      "fontSize": "12px",
+                      "fontStyle": "normal",
+                      "fontWeight": "bold",
+                      "textDecoration": "",
+                      "width": "100px",
+                    }
+                  }
+                  type="text"
+                />
+              </FormControl>
+            </div>
+          </Col>
+        </div>
+      </Row>
+      <Row
+        bsClass="row"
+        className="domain-validator-color-row"
+        componentClass="div"
+      >
+        <div
+          className="domain-validator-color-row row"
+        >
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={12}
+          >
+            <div
+              className="col-xs-12"
+            >
+              <Button
+                active={false}
+                block={false}
+                bsClass="btn"
+                bsStyle="danger"
+                className="domain-validation-delete"
+                disabled={false}
+                id="domainpropertiesrow-removeValidator-0"
+                name="domainpropertiesrow-removeValidator"
+                onClick={[Function]}
+              >
+                <button
+                  className="domain-validation-delete btn btn-danger"
+                  disabled={false}
+                  id="domainpropertiesrow-removeValidator-0"
+                  name="domainpropertiesrow-removeValidator"
+                  onClick={[Function]}
+                  type="button"
+                >
+                  Remove Validator
+                </button>
+              </Button>
+            </div>
+          </Col>
+        </div>
+      </Row>
+    </div>
+  </div>
+</ConditionalFormatOptions>
+`;
+
+exports[`ConditionalFormatOptions Format 2 - collapsed 1`] = `
+<ConditionalFormatOptions
+  dataType={
+    Immutable.Record {
+      "conceptURI": undefined,
+      "display": "Text (String)",
+      "name": "string",
+      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+      "alternateRangeURI": "xsd:string",
+      "shortDisplay": "String",
+      "lookupSchema": undefined,
+      "lookupQuery": undefined,
+    }
+  }
+  expanded={false}
+  index={1}
+  mvEnabled={true}
+  onChange={[MockFunction]}
+  onDelete={[MockFunction]}
+  onExpand={[MockFunction]}
+  validator={
+    Object {
+      "backgroundColor": "fda1ff",
+      "bold": false,
+      "formatFilter": "format.column~isnonblank=&format.column~gt=5",
+      "italic": true,
+      "strikethrough": true,
+      "textColor": "9f0500",
+    }
+  }
+  validatorIndex={0}
+>
+  <div
+    className="domain-validator-panel"
+    id="domain-condition-format-0"
+  >
+    <div>
+      <div>
+        Is Not Blank and Is Greater Than 5
+        <div
+          className="domain-validator-collapse-icon"
+          onClick={[Function]}
+        >
+          <FontAwesomeIcon
+            border={false}
+            className=""
+            fixedWidth={false}
+            flip={null}
+            icon={
+              Object {
+                "icon": Array [
+                  512,
+                  512,
+                  Array [],
+                  "f303",
+                  "M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z",
+                ],
+                "iconName": "pencil-alt",
+                "prefix": "fas",
+              }
+            }
+            inverse={false}
+            listItem={false}
+            mask={null}
+            pull={null}
+            pulse={false}
+            rotation={null}
+            size={null}
+            spin={false}
+            symbol={false}
+            title=""
+            transform={null}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-pencil-alt fa-w-16 "
+              data-icon="pencil-alt"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </FontAwesomeIcon>
+        </div>
+      </div>
+    </div>
+  </div>
+</ConditionalFormatOptions>
+`;

@@ -15,6 +15,7 @@
  */
 
 import * as React from "react";
+import {List} from "immutable";
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,
@@ -22,7 +23,6 @@ import {
     DomainFieldError,
     DOUBLE_TYPE,
     PARTICIPANT_TYPE, PROP_DESC_TYPES,
-    PropDescType,
     TEXT_TYPE
 } from "../models";
 import {DomainRow} from "./DomainRow";
@@ -39,7 +39,7 @@ import {
     DOMAIN_FIELD_DETAILS,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-    EXPAND_TRANSITION
+    EXPAND_TRANSITION, DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT
 } from "../constants";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import toJson from "enzyme-to-json";
@@ -63,6 +63,8 @@ const wrapDraggable = (element) => {
 
 };
 
+const DEFAULT_OPTIONS = List<string>([ DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT ]);
+
 describe('DomainRow', () => {
 
     test('with empty domain form', () => {
@@ -82,6 +84,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         expect(toJson(tree)).toMatchSnapshot();
@@ -115,6 +120,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -161,6 +169,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -207,6 +218,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -253,6 +267,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -276,9 +293,6 @@ describe('DomainRow', () => {
 
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index)});
         expect(advButton.length).toEqual(0);
-
-        let sectionLabel = row.find({className: 'domain-field-section-heading margin-top'});
-        expect(sectionLabel.length).toEqual(1);
 
         expect(toJson(row)).toMatchSnapshot();
         row.unmount();
@@ -311,6 +325,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
@@ -335,8 +352,8 @@ describe('DomainRow', () => {
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index), bsStyle: 'default'});
         expect(advButton.length).toEqual(1);
 
-        let sectionLabel = row.find({className: 'domain-field-section-heading margin-top'});
-        expect(sectionLabel.length).toEqual(1);
+        let sectionLabel = row.find({className: 'domain-field-section-heading domain-field-section-hdr'});
+        expect(sectionLabel.length).toEqual(2);
 
     });
 
@@ -370,6 +387,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         //test row highlighting for a warning
@@ -417,6 +437,9 @@ describe('DomainRow', () => {
                     isDragDisabled={false}
                     availableTypes={PROP_DESC_TYPES}
                     dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
                 />));
 
         //test row highlighting for error

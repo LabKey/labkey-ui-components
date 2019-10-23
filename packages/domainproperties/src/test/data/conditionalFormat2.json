@@ -1,0 +1,8 @@
+{
+  "formatFilter" : "format.column~isnonblank=&format.column~gt=5",
+  "bold" : false,
+  "italic" : true,
+  "backgroundColor" : "fda1ff",
+  "textColor" : "9f0500",
+  "strikethrough" : true
+}

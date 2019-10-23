@@ -31,8 +31,12 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
     USER_RANGE_URI,
+    DOMAIN_URI_PREFIX,
+    DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIELD_PARTIALLY_LOCKED
 } from "./constants";
+
+import { Filter } from '@labkey/api';
 
 export interface IFieldChange {
     id: string,
@@ -51,12 +55,16 @@ export interface ITypeDependentProps {
     lockType: string
 }
 
+export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
+
 interface IPropDescType {
     conceptURI: string
     display: string
     name: string
     rangeURI: string
     shortDisplay?: string
+    lookupSchema?: string
+    lookupQuery?: string
 }
 
 export class PropDescType extends Record({
@@ -65,7 +73,9 @@ export class PropDescType extends Record({
     name: undefined,
     rangeURI: undefined,
     alternateRangeURI: undefined,
-    shortDisplay: undefined
+    shortDisplay: undefined,
+    lookupSchema: undefined,
+    lookupQuery: undefined
 }) implements IPropDescType {
     conceptURI: string;
     display: string;
@@ -73,6 +83,12 @@ export class PropDescType extends Record({
     rangeURI: string;
     alternateRangeURI: string;
     shortDisplay: string;
+    lookupSchema?: string;
+    lookupQuery?: string;
+
+    static isUser(name: string): boolean {
+        return name === 'users';
+    }
 
     static isLookup(name: string): boolean {
         return name === 'lookup';
@@ -98,6 +114,26 @@ export class PropDescType extends Record({
         super(values);
     }
 
+    getJsonType(): JsonType {
+        switch(this.name) {
+            case 'boolean':
+                return 'boolean';
+            case 'int':
+                return 'int';
+            case 'double':
+                return 'float';
+            case 'dateTime':
+                return 'date';
+            default:
+                return 'string';
+
+        }
+    }
+
+    isUser(): boolean {
+        return PropDescType.isUser(this.name);
+    }
+
     isLookup(): boolean {
         return PropDescType.isLookup(this.name);
     }
@@ -108,6 +144,10 @@ export class PropDescType extends Record({
 
     isString(): boolean {
         return PropDescType.isString(this.rangeURI);
+    }
+
+    isFileType(): boolean {
+        return (this === FILE_TYPE || this === ATTACHMENT_TYPE )
     }
 }
 
@@ -121,7 +161,7 @@ export const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date 
 export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
 export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI});
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
-export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: USER_RANGE_URI});
+export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: INT_RANGE_URI, lookupSchema: 'core', lookupQuery: 'users'});
 export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
@@ -148,6 +188,8 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean
     allowAttachmentProperties: boolean
     allowFlagProperties: boolean
+    defaultDefaultValueType: string
+    defaultValueOptions: List<string>
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
@@ -162,6 +204,8 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: true,
     allowAttachmentProperties: true,
     allowFlagProperties: true,
+    defaultDefaultValueType: undefined,
+    defaultValueOptions: List<string>(),
     fields: List<DomainField>(),
     indices: List<DomainIndex>(),
     domainException: undefined,
@@ -176,6 +220,8 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    defaultDefaultValueType: string;
+    defaultValueOptions: List<string>;
     fields: List<DomainField>;
     indices: List<DomainIndex>;
     domainException: DomainException;
@@ -185,7 +231,9 @@ export class DomainDesign extends Record({
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
         let indices = List<DomainIndex>();
+        let defaultValueOptions = List<DomainField>();
         let mandatoryFieldNames = List<string>();
+
         let domainException = DomainException.create(exception, (exception ? exception.severity : undefined));
 
         if (rawModel) {
@@ -200,12 +248,22 @@ export class DomainDesign extends Record({
             if (rawModel.indices) {
                 indices = DomainIndex.fromJS(rawModel.indices);
             }
+
+            if (rawModel.defaultValueOptions)
+            {
+
+                for (let i = 0; i < rawModel.defaultValueOptions.length; i++)
+                {
+                    defaultValueOptions = defaultValueOptions.push(rawModel.defaultValueOptions[i]);
+                }
+            }
         }
 
         return new DomainDesign({
             ...rawModel,
             fields,
             indices,
+            defaultValueOptions,
             domainException
         })
     }
@@ -250,13 +308,13 @@ export class DomainIndex extends Record({
     type: 'primary' | 'unique';
 
     static fromJS(rawIndices: Array<IDomainIndex>): List<DomainIndex> {
-        let indices = List<DomainIndex>().asMutable();
+        let indices = List<DomainIndex>();
 
         for (let i=0; i < rawIndices.length; i++) {
-            indices.push(new DomainIndex(fromJS(rawIndices[i])));
+            indices = indices.push(new DomainIndex(fromJS(rawIndices[i])));
         }
 
-        return indices.asImmutable();
+        return indices;
     }
 
     constructor(values?: {[key:string]: any}) {
@@ -269,10 +327,152 @@ export enum FieldErrors {
     MISSING_SCHEMA_QUERY
 }
 
-// Commented out properties are unused
+export interface IConditionalFormat {
+    formatFilter: string,
+    bold: boolean,
+    italic: boolean,
+    strikethrough: boolean,
+    textColor?: string,
+    backgroundColor?: string
+}
+
+export class ConditionalFormat extends Record({
+    formatFilter: undefined,
+    bold: false,
+    italic: false,
+    strikethrough: false,
+    textColor: undefined,
+    backgroundColor: undefined
+}) implements IConditionalFormat {
+    formatFilter: string;
+    bold: boolean;
+    italic: boolean;
+    strikethrough: boolean;
+    textColor?: string;
+    backgroundColor?: string;
+
+    constructor(values?: { [key: string]: any }) {
+
+        // filter is a reserved work on Records so change to formatFilter and update for HASANYVALUE lacking a filter symbol
+        if (values && !values.get('formatFilter')) {
+            values = values.set('formatFilter', values.get('filter').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '='));
+        }
+        super(values);
+    }
+
+    static fromJS(rawCondFormat: Array<ConditionalFormat>): List<ConditionalFormat> {
+        let condFormats = List<ConditionalFormat>();
+
+        for (let i=0; i < rawCondFormat.length; i++) {
+            condFormats = condFormats.push(new ConditionalFormat(fromJS(rawCondFormat[i])));
+        }
+
+        return condFormats;
+    }
+
+    static serialize(cfs: Array<any>): any {
+
+        // Change formatFilter back to filter as that is what API is expecting
+        for (let i=0; i < cfs.length; i++) {
+            cfs[i].filter = cfs[i].formatFilter.replace(DOMAIN_FILTER_HASANYVALUE, '');
+            delete cfs[i].formatFilter;
+        }
+
+        return cfs;
+    }
+}
+
+export interface IPropertyValidatorProperties {
+    failOnMatch: boolean
+}
+
+export class PropertyValidatorProperties extends Record({
+    failOnMatch: false
+}) implements IPropertyValidatorProperties {
+    failOnMatch: boolean;
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    }
+}
+
+export interface IPropertyValidator {
+    type: string,
+    name: string,
+    properties: PropertyValidatorProperties,
+    errorMessage?: string,
+    description?: string,
+    new: boolean,
+    rowId?: number,
+    expression?: string
+}
+
+export class PropertyValidator extends Record({
+    type: undefined,
+    name: undefined,
+    properties: new PropertyValidatorProperties(),
+    errorMessage: undefined,
+    description: undefined,
+    new : true,
+    rowId: undefined,
+    expression: undefined
+}) implements IPropertyValidator {
+    type: string;
+    name: string;
+    properties: PropertyValidatorProperties;
+    errorMessage?: string;
+    description?: string;
+    new: boolean;
+    rowId?: number;
+    expression?: string;
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    }
+
+    static fromJS(rawPropertyValidator: Array<any>, type: string): List<PropertyValidator> {
+        let propValidators = List<PropertyValidator>();
+
+        let newPv;
+        for (let i=0; i < rawPropertyValidator.length; i++) {
+            if ( type === 'Range' && rawPropertyValidator[i].type === "Range" ||
+                 type === 'RegEx' && rawPropertyValidator[i].type === "RegEx" ||
+                 type === 'Lookup' && rawPropertyValidator[i].type === "Lookup"
+            )
+            {
+                rawPropertyValidator[i]['properties'] = new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties']));
+                newPv = new PropertyValidator(rawPropertyValidator[i]);
+
+                // Special case for filters HAS ANY VALUE not having a symbol
+                if (newPv.get('expression') !== undefined && newPv.get('expression') !== null) {
+                    newPv = newPv.set('expression', newPv.get('expression').replace('~=', '~' + DOMAIN_FILTER_HASANYVALUE + '=')) as PropertyValidator;
+                }
+
+                // newPv = newPv.set("properties", new PropertyValidatorProperties(fromJS(rawPropertyValidator[i]['properties'])));
+                propValidators = propValidators.push(newPv);
+            }
+        }
+
+        return propValidators;
+    }
+
+    static serialize(pvs: Array<any>): any {
+
+        for (let i=0; i < pvs.length; i++) {
+            pvs[i].expression = pvs[i].expression.replace(DOMAIN_FILTER_HASANYVALUE, '');
+        }
+
+        return pvs;
+    }
+}
+
 export interface IDomainField {
     conceptURI?: string
+    conditionalFormats: List<ConditionalFormat>
     defaultScale?: string
+    defaultValueType?: string
+    defaultValue?: string
+    defaultDisplayValue?: string
     description?: string
     dimension?: boolean
     excludeFromShifting?: boolean
@@ -283,6 +483,7 @@ export interface IDomainField {
     lookupContainer?: string
     lookupQuery?: string
     lookupSchema?: string
+    lookupValidator?: PropertyValidator
     measure?: boolean
     mvEnabled?: boolean
     name: string
@@ -290,7 +491,10 @@ export interface IDomainField {
     primaryKey?: boolean
     propertyId?: number
     propertyURI: string
+    propertyValidators: List<PropertyValidator>
+    rangeValidators: List<PropertyValidator>
     rangeURI: string
+    regexValidators: List<PropertyValidator>
     required?: boolean
     recommendedVariable?: boolean
     scale?: number
@@ -310,7 +514,11 @@ export interface IDomainField {
 
 export class DomainField extends Record({
     conceptURI: undefined,
+    conditionalFormats: List<ConditionalFormat>(),
     defaultScale: undefined,
+    defaultValueType: undefined,
+    defaultValue: undefined,
+    defaultDisplayValue: undefined,
     description: undefined,
     dimension: undefined,
     excludeFromShifting: false,
@@ -321,6 +529,7 @@ export class DomainField extends Record({
     lookupContainer: undefined,
     lookupQuery: undefined,
     lookupSchema: undefined,
+    lookupValidator: undefined,
     measure: undefined,
     mvEnabled: false,
     name: undefined,
@@ -328,7 +537,10 @@ export class DomainField extends Record({
     primaryKey: undefined,
     propertyId: undefined,
     propertyURI: undefined,
+    propertyValidators: List<PropertyValidator>(),
+    rangeValidators: List<PropertyValidator>(),
     rangeURI: undefined,
+    regexValidators: List<PropertyValidator>(),
     recommendedVariable: false,
     required: false,
     scale: undefined,
@@ -347,7 +559,11 @@ export class DomainField extends Record({
 
 }) implements IDomainField {
     conceptURI?: string;
+    conditionalFormats: List<ConditionalFormat>;
     defaultScale?: string;
+    defaultValueType?: string;
+    defaultValue?: string;
+    defaultDisplayValue?: string;
     description?: string;
     dimension?: boolean;
     excludeFromShifting?: boolean;
@@ -358,6 +574,7 @@ export class DomainField extends Record({
     lookupContainer?: string;
     lookupQuery?: string;
     lookupSchema?: string;
+    lookupValidator?: PropertyValidator;
     measure?: boolean;
     mvEnabled?: boolean;
     name: string;
@@ -365,7 +582,10 @@ export class DomainField extends Record({
     primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;
+    propertyValidators: List<PropertyValidator>;
+    rangeValidators: List<PropertyValidator>;
     rangeURI: string;
+    regexValidators: List<PropertyValidator>;
     recommendedVariable: boolean;
     required?: boolean;
     scale?: number;
@@ -382,7 +602,7 @@ export class DomainField extends Record({
     isPrimaryKey: boolean;
     lockType: string;
 
-    static create(rawField: Partial<IDomainField>, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
+    static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         let dataType = resolveDataType(rawField);
         let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
 
@@ -406,13 +626,26 @@ export class DomainField extends Record({
             }
         }));
 
+        if (rawField.conditionalFormats) {
+            field = field.set("conditionalFormats", ConditionalFormat.fromJS(rawField.conditionalFormats)) as DomainField;
+        }
+
+        if (rawField.propertyValidators) {
+            field = field.set("rangeValidators", PropertyValidator.fromJS(rawField.propertyValidators, 'Range')) as DomainField;
+            field = field.set("regexValidators", PropertyValidator.fromJS(rawField.propertyValidators, 'RegEx')) as DomainField;
+
+            const lookups = PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup');
+            if (lookups && lookups.size > 0) {
+                field = field.set("lookupValidator", PropertyValidator.fromJS(rawField.propertyValidators, 'Lookup').get(0)) as DomainField;
+            }
+        }
+
         if (shouldApplyDefaultValues) {
             field = DomainField.updateDefaultValues(field);
         }
 
         return field;
     }
-
 
     static fromJS(rawFields: Array<IDomainField>, mandatoryFieldNames?: List<string>): List<DomainField> {
         let fields = List<DomainField>();
@@ -427,7 +660,7 @@ export class DomainField extends Record({
     static serialize(df: DomainField): any {
         let json = df.toJS();
 
-        if (!df.dataType.isLookup()) {
+        if (!df.dataType.isLookup() && !df.dataType.isUser()) {
             json.lookupContainer = null;
             json.lookupQuery = null;
             json.lookupSchema = null;
@@ -447,6 +680,28 @@ export class DomainField extends Record({
             delete json.PHI;
         }
 
+        if (json.conditionalFormats) {
+            json.conditionalFormats = ConditionalFormat.serialize(json.conditionalFormats);
+        }
+
+        json.propertyValidators = [];
+        if (json.rangeValidators) {
+            json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.rangeValidators));
+        }
+
+        if (json.regexValidators) {
+            json.propertyValidators = json.propertyValidators.concat(PropertyValidator.serialize(json.regexValidators));
+        }
+
+        if (json.lookupValidator) {
+            json.propertyValidators = json.propertyValidators.concat(json.lookupValidator);
+        }
+
+        // Special case for users, needs different URI for uniqueness in UI but actually uses int URI
+        if (json.rangeURI === USER_RANGE_URI) {
+            json.rangeURI = INT_RANGE_URI;
+        }
+
         // remove non-serializable fields
         delete json.dataType;
         delete json.lookupQueryValue;
@@ -454,6 +709,9 @@ export class DomainField extends Record({
         delete json.original;
         delete json.updatedField;
         delete json.visible;
+        delete json.rangeValidators;
+        delete json.regexValidators;
+        delete json.lookupValidator;
 
         return json;
     }
@@ -476,6 +734,14 @@ export class DomainField extends Record({
 
     isNew(): boolean {
         return isFieldNew(this);
+    }
+
+    static hasRangeValidation(field: DomainField): boolean {
+        return (field.dataType === INTEGER_TYPE ||
+                field.dataType === DOUBLE_TYPE ||
+                field.dataType === DATETIME_TYPE ||
+                field.dataType === USERS_TYPE ||
+                field.dataType === LOOKUP_TYPE);
     }
 
     static updateDefaultValues(field: DomainField): DomainField {
@@ -557,7 +823,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
-            if (type.rangeURI === rawField.rangeURI) {
+            if (type.rangeURI === rawField.rangeURI && !type.isUser()) {
                 if (!rawField.lookupQuery &&
                     ((!type.conceptURI && !rawField.conceptURI) || (type.conceptURI === rawField.conceptURI)))
                 {
@@ -573,7 +839,7 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
                 return true;
             }
             // handle selected users option
-            else if (type.name === 'users' && rawField.lookupQuery && rawField.lookupQuery === 'users') {
+            else if (type.isUser() && rawField.lookupQuery && rawField.lookupQuery === 'users') {
                 return true;
             }
 
@@ -671,7 +937,7 @@ export class QueryInfoLite extends Record({
     }
 
     getLookupInfo(rangeURI?: string): List<{name: string, type: PropDescType}> {
-        let infos = List<{name: string, type: PropDescType}>().asMutable();
+        let infos = List<{name: string, type: PropDescType}>();
         let pkCols = this.getPkColumns()
             .filter(col => col.name.toLowerCase() !== 'container')
             .toList();
@@ -692,7 +958,7 @@ export class QueryInfoLite extends Record({
 
                 // if supplied, apply rangeURI matching filter
                 if (type && (rangeURI === undefined || rangeURI === type.rangeURI)) {
-                    infos.push({
+                    infos = infos.push({
                         name: this.name,
                         type
                     });
@@ -700,7 +966,7 @@ export class QueryInfoLite extends Record({
             });
         }
 
-        return infos.asImmutable();
+        return infos;
     }
 
     getPkColumns(): List<ColumnInfoLite> {
@@ -821,7 +1087,7 @@ export class DomainFieldError extends Record({
 
     static fromJS(rawFields: Array<any>, severityLevel: String): List<DomainFieldError> {
 
-        let fieldErrors = List<DomainFieldError>().asMutable();
+        let fieldErrors = List<DomainFieldError>();
 
         for (let i=0; i < rawFields.length; i++) {
 
@@ -831,10 +1097,10 @@ export class DomainFieldError extends Record({
 
             let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
                 severity: severityLevel, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
-            fieldErrors.push(domainFieldError);
+            fieldErrors = fieldErrors.push(domainFieldError);
         }
 
-        return fieldErrors.asImmutable();
+        return fieldErrors;
     }
 
     constructor(values?: {[key:string]: any}) {

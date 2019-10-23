@@ -359,46 +359,51 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          xs={3}
+                                          xs={6}
                                         >
                                           <div
-                                            className="col-xs-3"
+                                            className="col-xs-6"
                                           >
-                                            <b>
-                                              Field Name
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={2}
-                                        >
-                                          <div
-                                            className="col-xs-2"
-                                          >
-                                            <b>
-                                              Data Type
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={1}
-                                        >
-                                          <div
-                                            className="col-xs-1"
-                                          >
-                                            <b
-                                              style={
-                                                Object {
-                                                  "marginLeft": "12px",
-                                                }
-                                              }
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={6}
                                             >
-                                              Required?
-                                            </b>
+                                              <div
+                                                className="col-xs-6"
+                                              >
+                                                <b>
+                                                  Field Name
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={4}
+                                            >
+                                              <div
+                                                className="col-xs-4"
+                                              >
+                                                <b>
+                                                  Data Type
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              className="domain-form-hdr-center"
+                                              componentClass="div"
+                                              xs={2}
+                                            >
+                                              <div
+                                                className="domain-form-hdr-center col-xs-2"
+                                              >
+                                                <b>
+                                                  Required
+                                                </b>
+                                              </div>
+                                            </Col>
                                           </div>
                                         </Col>
                                         <Col
@@ -1106,7 +1111,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -3393,46 +3398,51 @@ exports[`DomainForm domain form header and search 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          xs={3}
+                                          xs={6}
                                         >
                                           <div
-                                            className="col-xs-3"
+                                            className="col-xs-6"
                                           >
-                                            <b>
-                                              Field Name
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={2}
-                                        >
-                                          <div
-                                            className="col-xs-2"
-                                          >
-                                            <b>
-                                              Data Type
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={1}
-                                        >
-                                          <div
-                                            className="col-xs-1"
-                                          >
-                                            <b
-                                              style={
-                                                Object {
-                                                  "marginLeft": "12px",
-                                                }
-                                              }
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={6}
                                             >
-                                              Required?
-                                            </b>
+                                              <div
+                                                className="col-xs-6"
+                                              >
+                                                <b>
+                                                  Field Name
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={4}
+                                            >
+                                              <div
+                                                className="col-xs-4"
+                                              >
+                                                <b>
+                                                  Data Type
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              className="domain-form-hdr-center"
+                                              componentClass="div"
+                                              xs={2}
+                                            >
+                                              <div
+                                                className="domain-form-hdr-center col-xs-2"
+                                              >
+                                                <b>
+                                                  Required
+                                                </b>
+                                              </div>
+                                            </Col>
                                           </div>
                                         </Col>
                                         <Col
@@ -4079,7 +4089,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -6159,7 +6169,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -7920,7 +7930,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -10000,7 +10010,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -11807,46 +11817,51 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          xs={3}
+                                          xs={6}
                                         >
                                           <div
-                                            className="col-xs-3"
+                                            className="col-xs-6"
                                           >
-                                            <b>
-                                              Field Name
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={2}
-                                        >
-                                          <div
-                                            className="col-xs-2"
-                                          >
-                                            <b>
-                                              Data Type
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={1}
-                                        >
-                                          <div
-                                            className="col-xs-1"
-                                          >
-                                            <b
-                                              style={
-                                                Object {
-                                                  "marginLeft": "12px",
-                                                }
-                                              }
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={6}
                                             >
-                                              Required?
-                                            </b>
+                                              <div
+                                                className="col-xs-6"
+                                              >
+                                                <b>
+                                                  Field Name
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={4}
+                                            >
+                                              <div
+                                                className="col-xs-4"
+                                              >
+                                                <b>
+                                                  Data Type
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              className="domain-form-hdr-center"
+                                              componentClass="div"
+                                              xs={2}
+                                            >
+                                              <div
+                                                className="domain-form-hdr-center col-xs-2"
+                                              >
+                                                <b>
+                                                  Required
+                                                </b>
+                                              </div>
+                                            </Col>
                                           </div>
                                         </Col>
                                         <Col
@@ -12506,7 +12521,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -14103,46 +14118,51 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          xs={3}
+                                          xs={6}
                                         >
                                           <div
-                                            className="col-xs-3"
+                                            className="col-xs-6"
                                           >
-                                            <b>
-                                              Field Name
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={2}
-                                        >
-                                          <div
-                                            className="col-xs-2"
-                                          >
-                                            <b>
-                                              Data Type
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={1}
-                                        >
-                                          <div
-                                            className="col-xs-1"
-                                          >
-                                            <b
-                                              style={
-                                                Object {
-                                                  "marginLeft": "12px",
-                                                }
-                                              }
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={6}
                                             >
-                                              Required?
-                                            </b>
+                                              <div
+                                                className="col-xs-6"
+                                              >
+                                                <b>
+                                                  Field Name
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={4}
+                                            >
+                                              <div
+                                                className="col-xs-4"
+                                              >
+                                                <b>
+                                                  Data Type
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              className="domain-form-hdr-center"
+                                              componentClass="div"
+                                              xs={2}
+                                            >
+                                              <div
+                                                className="domain-form-hdr-center col-xs-2"
+                                              >
+                                                <b>
+                                                  Required
+                                                </b>
+                                              </div>
+                                            </Col>
                                           </div>
                                         </Col>
                                         <Col
@@ -14797,7 +14817,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -18084,46 +18104,51 @@ exports[`DomainForm domain form with all field types 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          xs={3}
+                                          xs={6}
                                         >
                                           <div
-                                            className="col-xs-3"
+                                            className="col-xs-6"
                                           >
-                                            <b>
-                                              Field Name
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={2}
-                                        >
-                                          <div
-                                            className="col-xs-2"
-                                          >
-                                            <b>
-                                              Data Type
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={1}
-                                        >
-                                          <div
-                                            className="col-xs-1"
-                                          >
-                                            <b
-                                              style={
-                                                Object {
-                                                  "marginLeft": "12px",
-                                                }
-                                              }
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={6}
                                             >
-                                              Required?
-                                            </b>
+                                              <div
+                                                className="col-xs-6"
+                                              >
+                                                <b>
+                                                  Field Name
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={4}
+                                            >
+                                              <div
+                                                className="col-xs-4"
+                                              >
+                                                <b>
+                                                  Data Type
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              className="domain-form-hdr-center"
+                                              componentClass="div"
+                                              xs={2}
+                                            >
+                                              <div
+                                                className="domain-form-hdr-center col-xs-2"
+                                              >
+                                                <b>
+                                                  Required
+                                                </b>
+                                              </div>
+                                            </Col>
                                           </div>
                                         </Col>
                                         <Col
@@ -18778,7 +18803,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -20858,7 +20883,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -22785,7 +22810,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -24694,7 +24719,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -26543,7 +26568,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -28599,7 +28624,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -30797,7 +30822,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -32706,7 +32731,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -34365,7 +34390,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -36000,7 +36025,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -38164,46 +38189,51 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          xs={3}
+                                          xs={6}
                                         >
                                           <div
-                                            className="col-xs-3"
+                                            className="col-xs-6"
                                           >
-                                            <b>
-                                              Field Name
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={2}
-                                        >
-                                          <div
-                                            className="col-xs-2"
-                                          >
-                                            <b>
-                                              Data Type
-                                            </b>
-                                          </div>
-                                        </Col>
-                                        <Col
-                                          bsClass="col"
-                                          componentClass="div"
-                                          xs={1}
-                                        >
-                                          <div
-                                            className="col-xs-1"
-                                          >
-                                            <b
-                                              style={
-                                                Object {
-                                                  "marginLeft": "12px",
-                                                }
-                                              }
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={6}
                                             >
-                                              Required?
-                                            </b>
+                                              <div
+                                                className="col-xs-6"
+                                              >
+                                                <b>
+                                                  Field Name
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              componentClass="div"
+                                              xs={4}
+                                            >
+                                              <div
+                                                className="col-xs-4"
+                                              >
+                                                <b>
+                                                  Data Type
+                                                </b>
+                                              </div>
+                                            </Col>
+                                            <Col
+                                              bsClass="col"
+                                              className="domain-form-hdr-center"
+                                              componentClass="div"
+                                              xs={2}
+                                            >
+                                              <div
+                                                className="domain-form-hdr-center col-xs-2"
+                                              >
+                                                <b>
+                                                  Required
+                                                </b>
+                                              </div>
+                                            </Col>
                                           </div>
                                         </Col>
                                         <Col
@@ -38858,7 +38888,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -40940,7 +40970,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -42803,7 +42833,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"
@@ -44464,7 +44494,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                               className="col-xs-2"
                                                             >
                                                               <div
-                                                                className="domain-field-checkbox"
+                                                                className="domain-field-checkbox-container"
                                                               >
                                                                 <Checkbox
                                                                   bsClass="checkbox"

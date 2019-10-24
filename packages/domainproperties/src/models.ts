@@ -193,6 +193,7 @@ interface IDomainDesign {
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
+    instructions?: string
 }
 
 export class DomainDesign extends Record({
@@ -210,7 +211,8 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>(),
     domainException: undefined,
     mandatoryFieldNames: List<string>(),
-    reservedFieldNames: List<string>()
+    reservedFieldNames: List<string>(),
+    instructions: undefined
 }) implements IDomainDesign {
     name: string;
     container: string;
@@ -227,6 +229,7 @@ export class DomainDesign extends Record({
     domainException: DomainException;
     mandatoryFieldNames: List<string>;
     reservedFieldNames: List<string>;
+    instructions: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();

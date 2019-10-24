@@ -58,6 +58,7 @@ interface IDomainFormInput {
     collapsible?: boolean
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
+    headerTitle?: string,
     showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
     panelCls?: string
@@ -632,8 +633,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     getHeaderName(): string {
-        const { domain, headerPrefix, showHeaderFieldCount } = this.props;
-        let name = domain.name ? domain.name : "Domain Properties";
+        const { domain, headerTitle, headerPrefix, showHeaderFieldCount } = this.props;
+        let name = headerTitle || (domain.name ? domain.name : "Field Properties");
 
         // optionally trim off a headerPrefix from the name display
         if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {

@@ -15,7 +15,14 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '@glass/base'
+import {
+    GRID_CHECKBOX_OPTIONS,
+    naturalSort,
+    QueryColumn,
+    QueryGridModel,
+    resolveSchemaQuery,
+    SchemaQuery
+} from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
@@ -54,7 +61,7 @@ export function resetQueryGridState() {
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
         QueryGrid_columnrenderers: Map<string, any>(),
-        QueryGrid_users: List<IUser>()
+        QueryGrid_users: Map<string, List<IUser>>()
     });
 }
 
@@ -332,20 +339,33 @@ export function updateLookupStore(store: LookupStore, updates: any, failIfNotFou
     return updatedStore;
 }
 
+function getPermissionsKey(permissions?: string | Array<string>) : string {
+    let key = "allPermissions";
+    if (permissions) {
+        if (Array.isArray(permissions)) {
+            key = permissions.sort(naturalSort).join(";")
+        }
+        else {
+            key = permissions;
+        }
+    }
+    return key;
+}
+
 /**
  * Get the users list from the global QueryGrid state
  */
-export function getUsers() {
-    return getGlobalState('users');
+export function getUsers(permissions?: string | Array<string>) : List<IUser> {
+    return getGlobalState('users').get(getPermissionsKey(permissions));
 }
 
 /**
  * Sets the users list to be used for this application in the global QueryGrid state
  * @param users List of users
  */
-export function setUsers(users: List<IUser>) {
+export function setUsers(users: List<IUser>, permissions?: string | Array<string>) {
     setGlobal({
-        QueryGrid_users: users
+        QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users)
     });
 }
 
@@ -353,5 +373,7 @@ export function setUsers(users: List<IUser>) {
  * Invalidate the global state users list
  */
 export function invalidateProjectUsers() {
-    setUsers(List<IUser>());
+    setGlobal( {
+        QueryGrid_users: Map<string, List<IUser>>()
+    });
 }

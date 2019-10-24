@@ -366,15 +366,16 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
     }
 }
 
-export function getProjectUsers(): Promise<List<IUser>> {
-    const users = getUsers();
-    if (users.size > 0) {
+export function getProjectUsers(permissions?: string | Array<string>): Promise<List<IUser>> {
+    const users = getUsers(permissions);
+    if (users) {
         return Promise.resolve(users);
     }
 
     return new Promise((resolve, reject) => {
         Security.getUsers({
             active: true,  // Issue 30765: don't get deactivated users
+            permissions,
             success: function(data) {
                 let users = List<IUser>(data.users);
 
@@ -389,7 +390,7 @@ export function getProjectUsers(): Promise<List<IUser>> {
                     return _a > _b ? 1 : -1;
                 }).toList();
 
-                setUsers(sortedUsers);
+                setUsers(sortedUsers, permissions);
                 resolve(sortedUsers);
             },
             failure: function() {

@@ -12,6 +12,7 @@ import { getProjectUsers } from "../actions";
 interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server
     notifyList?: boolean
+    permissions?: string | Array<string>
 }
 
 export class UserSelectInput extends React.Component<UserSelectInputProps, any> {
@@ -22,7 +23,7 @@ export class UserSelectInput extends React.Component<UserSelectInputProps, any> 
     };
 
     loadOptions(value, cb) {
-        getProjectUsers().then((users: List<IUser>) => {
+        getProjectUsers(this.props.permissions).then((users: List<IUser>) => {
             cb(null, {
                 complete: true,
                 options: users.map((v) => {

@@ -1192,11 +1192,18 @@ export class AssayProtocolModel extends Record({
         // if this is not an existing assay, clear the name property so the user must set it
         const name = !raw.protocolId ? undefined : raw.name;
 
-        return new AssayProtocolModel({
-            ...raw,
-            name,
-            domains
-        });
+        // Issue 38685: for new assays, pre-select some required assay properties
+        const model = new AssayProtocolModel({...raw, name, domains});
+        if (model.isNew()) {
+            if (model.allowDetectionMethodSelection() && model.availableDetectionMethods.length > 0) {
+                raw.selectedDetectionMethod = List<string>(model.availableDetectionMethods).get(0);
+            }
+            if (model.allowPlateTemplateSelection() && model.availablePlateTemplates.length > 0) {
+                raw.selectedPlateTemplate = List<string>(model.availablePlateTemplates).get(0);
+            }
+        }
+
+        return new AssayProtocolModel({...raw, name, domains});
     }
 
     static serialize(model: AssayProtocolModel): any {

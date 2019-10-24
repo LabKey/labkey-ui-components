@@ -9,6 +9,10 @@ Query Grid for LabKey schema/query data views
 * Package patch update for changes to @glass/base TBD
 * Package patch update for changes to @glass/domainproperties TBD
 
+### version 0.21.1
+*Released*: 24 October 2019
+* Add getUrlString to MenuItemModel
+
 ### version 0.21.0
 *Released*: 18 October 2019
 * Fix image scaling problem in image modal (Issue 36957)

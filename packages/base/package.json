@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.19.1-fb-appSpecifics.2",
+  "version": "0.20.1-fb-appSpecifics.2",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",
@@ -43,6 +43,7 @@
     "bootstrap": "3.4.1",
     "moment": "2.24.0",
     "moment-jdateformatparser": "1.1.0",
+    "moment-timezone": "^0.5.27",
     "numeral": "2.0.6"
   },
   "devDependencies": {

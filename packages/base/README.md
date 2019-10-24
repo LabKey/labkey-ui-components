@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.20.0
+*Released*: 24 October 2019
 * Add formatDate, formatDateTime
 
 ### version 0.19.0

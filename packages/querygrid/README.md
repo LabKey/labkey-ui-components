@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.21.1
+*Released*: 24 October 2019
 * Add getUrlString to MenuItemModel
 
 ### version 0.21.0

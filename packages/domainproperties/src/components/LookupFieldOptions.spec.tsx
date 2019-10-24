@@ -4,16 +4,16 @@ import {mount, ReactWrapper} from "enzyme";
 
 import {createFormInputId, createFormInputName} from "../actions/actions";
 import {
-    DOMAIN_FIELD_LOOKUP_CONTAINER,
-    DOMAIN_FIELD_LOOKUP_QUERY,
-    DOMAIN_FIELD_LOOKUP_SCHEMA, DOMAIN_FIELD_NOT_LOCKED,
+    DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_FULLY_LOCKED,
     INT_RANGE_URI,
 } from "../constants";
 import {DomainField} from "../models";
 import {
     FolderSelectProps, IFolderSelectImplState,
     SchemaSelectProps, ISchemaSelectImplState,
-    QuerySelectProps, IQuerySelectImplState
+    TargetTableSelectProps, ITargetTableSelectImplState,
+    FolderSelect, SchemaSelect, TargetTableSelect
 } from "./Lookup/Fields";
 import {LookupFieldOptions} from "./LookupFieldOptions";
 import {MockLookupProvider} from "../test/components/Lookup";
@@ -38,7 +38,7 @@ describe('LookupFieldOptions', () => {
         }).not({bsClass: 'form-control'}).not({className: "form-control"});
     };
 
-    const queryFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<QuerySelectProps, IQuerySelectImplState> => {
+    const queryFieldSelector = (field: ReactWrapper<any>, index: number): ReactWrapper<TargetTableSelectProps, ITargetTableSelectImplState> => {
         return field.find({
             id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index),
             name: createFormInputName(DOMAIN_FIELD_LOOKUP_QUERY)
@@ -80,7 +80,7 @@ describe('LookupFieldOptions', () => {
         );
 
         // Verify section label
-        const sectionLabel = lookupField.find({className: 'domain-field-section-heading margin-top'});
+        const sectionLabel = lookupField.find({className: 'domain-field-section-heading'});
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(_label);
 
@@ -338,5 +338,35 @@ describe('LookupFieldOptions', () => {
                         lookupField.unmount();
                     });
             });
+    });
+
+    test("lockType", () => {
+        const base = {
+            lookupContainer: 'container',
+            lookupSchema: 'schema',
+            lookupQueryValue: 'query',
+            original: {},
+            onMultiChange: jest.fn,
+            onChange: jest.fn,
+            index: 0,
+            label: 'Foo'
+        };
+
+        function validateDisabled(lockType: string, expectDisabled: boolean) {
+            const component = (
+                <MockLookupProvider>
+                    <LookupFieldOptions {...base} lockType={lockType}/>
+                </MockLookupProvider>
+            );
+            const wrapper = mount(component);
+            expect(wrapper.find(FolderSelect).prop('disabled')).toBe(expectDisabled);
+            expect(wrapper.find(SchemaSelect).prop('disabled')).toBe(expectDisabled);
+            expect(wrapper.find(TargetTableSelect).prop('disabled')).toBe(expectDisabled);
+            wrapper.unmount();
+        }
+
+        validateDisabled(DOMAIN_FIELD_NOT_LOCKED, false);
+        validateDisabled(DOMAIN_FIELD_PARTIALLY_LOCKED, true);
+        validateDisabled(DOMAIN_FIELD_FULLY_LOCKED, true);
     });
 });

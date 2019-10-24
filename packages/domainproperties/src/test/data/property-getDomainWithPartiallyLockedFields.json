@@ -4,6 +4,8 @@
   "domainURI" : "urn:lsid:labkey.com:Study.Project-556:Study",
   "description" : null,
   "container" : "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
+  "defaultDefaultValueType" : "LAST_ENTERED",
+  "defaultValueOptions" : [ "FIXED_EDITABLE", "LAST_ENTERED", "FIXED_NON_EDITABLE" ],
   "fields" : [ {
     "propertyId" : 392739,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldText",
@@ -41,7 +43,6 @@
     "typeEditable" : true,
     "preventReordering" : false,
     "disableEditing" : false,
-    "lockType" : "PartiallyLocked",
     "propertyValidators" : [ {
       "type" : "Length",
       "name" : "Text Length",
@@ -92,7 +93,6 @@
     "typeEditable" : true,
     "preventReordering" : false,
     "disableEditing" : false,
-    "lockType" : "PartiallyLocked",
     "propertyValidators" : [ ],
     "excludeFromShifting" : false,
     "URL" : null,
@@ -269,5 +269,6 @@
   "indices" : [ ],
   "schemaName" : null,
   "queryName" : null,
-  "templateDescription" : null
+  "templateDescription" : null,
+  "mandatoryFieldNames" : ["fieldtext", "FieldInteger"]
 }

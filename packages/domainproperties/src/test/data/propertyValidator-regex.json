@@ -1,0 +1,12 @@
+{
+  "name" : "Test Validator",
+  "properties" : {
+    "failOnMatch" : true
+  },
+  "type" : "RegEx",
+  "errorMessage" : "Test Validation Failure",
+  "description" : "This is my validator description",
+  "new" : true,
+  "rowId" : 11266,
+  "expression" : "$[abc]"
+}

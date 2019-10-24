@@ -1,16 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssayPropertiesPanel asPanel and showEditSettings 1`] = `
+exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
 <form
   className=""
 >
+  <div
+    className="row"
+  >
+    <div
+      className="col-xs-9"
+    >
+      <div
+        className="domain-field-section-heading"
+      >
+        Basic Properties
+      </div>
+    </div>
+    <div
+      className="col-xs-3"
+    >
+      <a
+        className="domain-field-float-right"
+        href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        target="_blank"
+      >
+        Learn more about designing assays
+      </a>
+    </div>
+  </div>
   <div
     className="margin-top row"
   >
     <div
       className="col-xs-3"
     >
-      Name *
+      Name
+      <small>
+         (Required)
+      </small>
       <span
         className="label-help-target"
         onMouseOut={[Function]}
@@ -56,6 +83,7 @@ exports[`AssayPropertiesPanel asPanel and showEditSettings 1`] = `
       className="col-xs-3"
     >
       Description
+      
       <span
         className="label-help-target"
         onMouseOut={[Function]}
@@ -92,6 +120,62 @@ exports[`AssayPropertiesPanel asPanel and showEditSettings 1`] = `
       />
     </div>
   </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-xs-12"
+    >
+      <div
+        className="domain-field-section-heading domain-field-padding-top"
+      >
+        Editing Settings
+      </div>
+    </div>
+  </div>
+  <div
+    className="margin-top row"
+  >
+    <div
+      className="col-xs-3"
+    >
+      Editable Runs
+      
+      <span
+        className="label-help-target"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+      >
+        <svg
+          aria-hidden="true"
+          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+          data-icon="question-circle"
+          data-prefix="fas"
+          focusable="false"
+          role="img"
+          style={Object {}}
+          viewBox="0 0 512 512"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+            fill="currentColor"
+            style={Object {}}
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      className="col-xs-9"
+    >
+      <input
+        checked={false}
+        id="assay-design-editableRuns"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </div>
+  </div>
 </form>
 `;
 
@@ -101,9 +185,11 @@ exports[`AssayPropertiesPanel default properties 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Assay Properties
+      
     </span>
   </div>
   <div
@@ -116,13 +202,24 @@ exports[`AssayPropertiesPanel default properties 1`] = `
         className="row"
       >
         <div
-          className="col-xs-12"
+          className="col-xs-9"
         >
           <div
             className="domain-field-section-heading"
           >
             Basic Properties
           </div>
+        </div>
+        <div
+          className="col-xs-3"
+        >
+          <a
+            className="domain-field-float-right"
+            href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+            target="_blank"
+          >
+            Learn more about designing assays
+          </a>
         </div>
       </div>
       <div
@@ -131,7 +228,10 @@ exports[`AssayPropertiesPanel default properties 1`] = `
         <div
           className="col-xs-3"
         >
-          Name *
+          Name
+          <small>
+             (Required)
+          </small>
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -177,6 +277,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           className="col-xs-3"
         >
           Description
+          
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -214,15 +315,75 @@ exports[`AssayPropertiesPanel default properties 1`] = `
         </div>
       </div>
       <div
-        className="margin-top row"
+        className="row"
       >
         <div
           className="col-xs-12"
         >
           <div
-            className="domain-field-section-heading"
+            className="domain-field-section-heading domain-field-padding-top"
           >
-            Edit Settings
+            Import Settings
+          </div>
+        </div>
+      </div>
+      <div
+        className="margin-top row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          Auto-Copy Data to Study
+          
+          <span
+            className="label-help-target"
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+              data-icon="question-circle"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          className="col-xs-6"
+        >
+          <span
+            className=""
+          >
+            <i
+              aria-hidden="true"
+              className="fa fa-spinner fa-spin"
+            />
+             
+            Loading...
+          </span>
+        </div>
+      </div>
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-12"
+        >
+          <div
+            className="domain-field-section-heading domain-field-padding-top"
+          >
+            Editing Settings
           </div>
         </div>
       </div>
@@ -233,6 +394,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           className="col-xs-3"
         >
           Editable Runs
+          
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -268,48 +430,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           />
         </div>
       </div>
-      <div
-        className="margin-top row"
-      >
-        <div
-          className="col-xs-3"
-        >
-          Editable Results
-          <span
-            className="label-help-target"
-            onMouseOut={[Function]}
-            onMouseOver={[Function]}
-          >
-            <svg
-              aria-hidden="true"
-              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-              data-icon="question-circle"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
-              style={Object {}}
-              viewBox="0 0 512 512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                fill="currentColor"
-                style={Object {}}
-              />
-            </svg>
-          </span>
-        </div>
-        <div
-          className="col-xs-9"
-        >
-          <input
-            checked={false}
-            id="assay-design-editableResults"
-            onChange={[Function]}
-            type="checkbox"
-          />
-        </div>
-      </div>
     </form>
   </div>
 </div>
@@ -321,13 +441,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Assay Properties
+      
     </span>
     <span
       className="pull-right"
-      onClick={[Function]}
     >
       <i
         className="fa fa-check-square-o as-secondary-color"
@@ -343,9 +464,11 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
 >
   <div
     className="panel-heading"
+    onClick={[Function]}
   >
     <span>
       Assay Properties
+      
     </span>
   </div>
   <div
@@ -358,13 +481,24 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
         className="row"
       >
         <div
-          className="col-xs-12"
+          className="col-xs-9"
         >
           <div
             className="domain-field-section-heading"
           >
             Basic Properties
           </div>
+        </div>
+        <div
+          className="col-xs-3"
+        >
+          <a
+            className="domain-field-float-right"
+            href="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+            target="_blank"
+          >
+            Learn more about designing assays
+          </a>
         </div>
       </div>
       <div
@@ -373,7 +507,10 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
         <div
           className="col-xs-3"
         >
-          Name *
+          Name
+          <small>
+             (Required)
+          </small>
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -419,6 +556,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           className="col-xs-3"
         >
           Description
+          
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -456,15 +594,75 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
         </div>
       </div>
       <div
-        className="margin-top row"
+        className="row"
       >
         <div
           className="col-xs-12"
         >
           <div
-            className="domain-field-section-heading"
+            className="domain-field-section-heading domain-field-padding-top"
           >
-            Edit Settings
+            Import Settings
+          </div>
+        </div>
+      </div>
+      <div
+        className="margin-top row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          Auto-Copy Data to Study
+          
+          <span
+            className="label-help-target"
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+              data-icon="question-circle"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          className="col-xs-6"
+        >
+          <span
+            className=""
+          >
+            <i
+              aria-hidden="true"
+              className="fa fa-spinner fa-spin"
+            />
+             
+            Loading...
+          </span>
+        </div>
+      </div>
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-12"
+        >
+          <div
+            className="domain-field-section-heading domain-field-padding-top"
+          >
+            Editing Settings
           </div>
         </div>
       </div>
@@ -475,6 +673,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           className="col-xs-3"
         >
           Editable Runs
+          
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -510,13 +709,53 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           />
         </div>
       </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`AssayPropertiesPanel without helpURL 1`] = `
+<div
+  className="domain-form-panel panel panel-default"
+>
+  <div
+    className="panel-heading"
+    onClick={[Function]}
+  >
+    <span>
+      Assay Properties
+      
+    </span>
+  </div>
+  <div
+    className="panel-body"
+  >
+    <form
+      className=""
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-12"
+        >
+          <div
+            className="domain-field-section-heading"
+          >
+            Basic Properties
+          </div>
+        </div>
+      </div>
       <div
         className="margin-top row"
       >
         <div
           className="col-xs-3"
         >
-          Editable Results
+          Name
+          <small>
+             (Required)
+          </small>
           <span
             className="label-help-target"
             onMouseOut={[Function]}
@@ -545,8 +784,111 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
           className="col-xs-9"
         >
           <input
-            checked={true}
-            id="assay-design-editableResults"
+            className="form-control"
+            disabled={false}
+            id="assay-design-name"
+            onChange={[Function]}
+            placeholder="Enter a name for this assay"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        className="margin-top row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          Description
+          
+          <span
+            className="label-help-target"
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+              data-icon="question-circle"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          className="col-xs-9"
+        >
+          <textarea
+            className="form-control domain-field-textarea"
+            id="assay-design-description"
+            onChange={[Function]}
+            placeholder="Add a description"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        className="row"
+      >
+        <div
+          className="col-xs-12"
+        >
+          <div
+            className="domain-field-section-heading domain-field-padding-top"
+          >
+            Editing Settings
+          </div>
+        </div>
+      </div>
+      <div
+        className="margin-top row"
+      >
+        <div
+          className="col-xs-3"
+        >
+          Editable Runs
+          
+          <span
+            className="label-help-target"
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+              data-icon="question-circle"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+          </span>
+        </div>
+        <div
+          className="col-xs-9"
+        >
+          <input
+            checked={false}
+            id="assay-design-editableRuns"
             onChange={[Function]}
             type="checkbox"
           />

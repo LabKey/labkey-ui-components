@@ -14,7 +14,11 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
     original={
       Immutable.Record {
         "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
         "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
         "description": undefined,
         "dimension": undefined,
         "excludeFromShifting": false,
@@ -25,6 +29,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
         "name": "key",
@@ -32,7 +37,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
         "recommendedVariable": false,
         "required": false,
         "scale": undefined,
@@ -48,6 +56,8 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": "xsd:int",
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "lookupQueryValue": undefined,
         "lookupType": Immutable.Record {
@@ -57,6 +67,8 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": undefined,
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "original": Object {
           "dataType": Immutable.Record {
@@ -66,6 +78,8 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
             "alternateRangeURI": "xsd:int",
             "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
           },
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
@@ -93,7 +107,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading margin-top"
+                className="domain-field-section-heading"
               >
                 Lookup Field Options
               </div>
@@ -123,6 +137,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -151,6 +166,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -181,6 +197,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -210,6 +227,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -242,6 +260,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -271,6 +290,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -279,6 +299,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -287,6 +308,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -295,9 +317,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     >
                       <option
                         disabled={true}
-                        key="_empty"
+                        key="_loading"
+                        value="exp"
                       >
-                        (No schemas)
+                        Loading...
                       </option>
                     </select>
                   </FormControl>
@@ -318,8 +341,9 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -327,7 +351,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                 schemaName="exp"
                 value="Data"
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     Object {
@@ -351,6 +375,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -382,16 +407,169 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       >
                         Loading...
                       </option>
-                      <option
-                        disabled={true}
-                        key="_empty"
-                      >
-                        (No tables)
-                      </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Ensure Value Exists in Lookup Target
+                    <LabelHelpTip
+                      body={[Function]}
+                      id="tooltip"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size={null}
+                          spin={false}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
             </div>
           </Col>
         </div>
@@ -415,7 +593,11 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
     original={
       Immutable.Record {
         "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
         "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
         "description": undefined,
         "dimension": undefined,
         "excludeFromShifting": false,
@@ -426,6 +608,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
         "name": "key",
@@ -433,7 +616,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
         "recommendedVariable": false,
         "required": false,
         "scale": undefined,
@@ -449,6 +635,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": "xsd:int",
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "lookupQueryValue": undefined,
         "lookupType": Immutable.Record {
@@ -458,6 +646,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": undefined,
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "original": Object {
           "dataType": Immutable.Record {
@@ -467,6 +657,8 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
             "alternateRangeURI": "xsd:int",
             "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
           },
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
@@ -494,7 +686,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading margin-top"
+                className="domain-field-section-heading"
               >
                 Lookup Field Options
               </div>
@@ -524,6 +716,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -552,6 +745,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -582,6 +776,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -611,6 +806,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -655,6 +851,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -684,6 +881,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -692,6 +890,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -700,6 +899,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -758,8 +958,9 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -767,7 +968,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                 schemaName=""
                 value=""
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject"
                   context={
                     Object {
@@ -791,6 +992,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -847,8 +1049,167 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Ensure Value Exists in Lookup Target
+                    <LabelHelpTip
+                      body={[Function]}
+                      id="tooltip"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size={null}
+                          spin={false}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
             </div>
           </Col>
         </div>
@@ -872,7 +1233,11 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
     original={
       Immutable.Record {
         "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
         "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
         "description": undefined,
         "dimension": undefined,
         "excludeFromShifting": false,
@@ -883,6 +1248,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
         "name": "key",
@@ -890,7 +1256,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
         "recommendedVariable": false,
         "required": false,
         "scale": undefined,
@@ -906,6 +1275,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": "xsd:int",
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "lookupQueryValue": undefined,
         "lookupType": Immutable.Record {
@@ -915,6 +1286,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": undefined,
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "original": Object {
           "dataType": Immutable.Record {
@@ -924,6 +1297,8 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
             "alternateRangeURI": "xsd:int",
             "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
           },
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
@@ -951,7 +1326,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading margin-top"
+                className="domain-field-section-heading"
               >
                 Lookup Field Options
               </div>
@@ -981,6 +1356,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -1009,6 +1385,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -1039,6 +1416,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -1068,6 +1446,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -1112,6 +1491,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -1141,6 +1521,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -1149,6 +1530,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -1157,6 +1539,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -1215,8 +1598,9 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -1224,7 +1608,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                 schemaName=""
                 value=""
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject"
                   context={
                     Object {
@@ -1248,6 +1632,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -1304,8 +1689,167 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Ensure Value Exists in Lookup Target
+                    <LabelHelpTip
+                      body={[Function]}
+                      id="tooltip"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size={null}
+                          spin={false}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
             </div>
           </Col>
         </div>
@@ -1329,7 +1873,11 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
     original={
       Immutable.Record {
         "conceptURI": undefined,
+        "conditionalFormats": Immutable.List [],
         "defaultScale": undefined,
+        "defaultValueType": undefined,
+        "defaultValue": undefined,
+        "defaultDisplayValue": undefined,
         "description": undefined,
         "dimension": undefined,
         "excludeFromShifting": false,
@@ -1340,6 +1888,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "lookupContainer": undefined,
         "lookupQuery": undefined,
         "lookupSchema": undefined,
+        "lookupValidator": undefined,
         "measure": undefined,
         "mvEnabled": false,
         "name": "key",
@@ -1347,7 +1896,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "primaryKey": undefined,
         "propertyId": 1,
         "propertyURI": "test",
+        "propertyValidators": Immutable.List [],
+        "rangeValidators": Immutable.List [],
         "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
+        "regexValidators": Immutable.List [],
         "recommendedVariable": false,
         "required": false,
         "scale": undefined,
@@ -1363,6 +1915,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": "xsd:int",
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "lookupQueryValue": undefined,
         "lookupType": Immutable.Record {
@@ -1372,6 +1926,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
           "alternateRangeURI": undefined,
           "shortDisplay": undefined,
+          "lookupSchema": undefined,
+          "lookupQuery": undefined,
         },
         "original": Object {
           "dataType": Immutable.Record {
@@ -1381,6 +1937,8 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
             "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
             "alternateRangeURI": "xsd:int",
             "shortDisplay": undefined,
+            "lookupSchema": undefined,
+            "lookupQuery": undefined,
           },
           "rangeURI": "http://www.w3.org/2001/XMLSchema#int",
         },
@@ -1408,7 +1966,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               className="col-xs-12"
             >
               <div
-                className="domain-field-section-heading margin-top"
+                className="domain-field-section-heading"
               >
                 Lookup Field Options
               </div>
@@ -1438,6 +1996,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 From Folder
               </div>
               <FolderSelect
+                disabled={false}
                 id="domainpropertiesrow-lookupContainer-1"
                 key="domainpropertiesrow-lookupContainer-1"
                 onChange={[Function]}
@@ -1466,6 +2025,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupContainer-1"
                   name="domainpropertiesrow-lookupContainer"
                   onChange={[Function]}
@@ -1496,6 +2056,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                         "fetchSchemas": [Function],
                       }
                     }
+                    disabled={false}
                     id="domainpropertiesrow-lookupContainer-1"
                     name="domainpropertiesrow-lookupContainer"
                     onChange={[Function]}
@@ -1525,6 +2086,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                           "fetchSchemas": [Function],
                         }
                       }
+                      disabled={false}
                       id="domainpropertiesrow-lookupContainer-1"
                       name="domainpropertiesrow-lookupContainer"
                       onChange={[Function]}
@@ -1569,6 +2131,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupSchema-1"
                 key="domainpropertiesrow-lookupSchema-1"
                 onChange={[Function]}
@@ -1598,6 +2161,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupSchema-1"
                   name="domainpropertiesrow-lookupSchema"
                   onChange={[Function]}
@@ -1606,6 +2170,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   <FormControl
                     bsClass="form-control"
                     componentClass="select"
+                    disabled={false}
                     id="domainpropertiesrow-lookupSchema-1"
                     name="domainpropertiesrow-lookupSchema"
                     onChange={[Function]}
@@ -1614,6 +2179,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   >
                     <select
                       className="form-control"
+                      disabled={false}
                       id="domainpropertiesrow-lookupSchema-1"
                       name="domainpropertiesrow-lookupSchema"
                       onChange={[Function]}
@@ -1669,8 +2235,9 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               >
                 Target Table
               </div>
-              <QuerySelect
+              <TargetTableSelect
                 containerPath="/StudyVerifyProject/My Study"
+                disabled={false}
                 id="domainpropertiesrow-lookupQueryValue-1"
                 key="domainpropertiesrow-lookupQueryValue-1"
                 lookupURI="http://www.w3.org/2001/XMLSchema#int"
@@ -1678,7 +2245,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                 schemaName="study"
                 value=""
               >
-                <QuerySelectImpl
+                <TargetTableSelectImpl
                   containerPath="/StudyVerifyProject/My Study"
                   context={
                     Object {
@@ -1702,6 +2269,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       "fetchSchemas": [Function],
                     }
                   }
+                  disabled={false}
                   id="domainpropertiesrow-lookupQueryValue-1"
                   lookupURI="http://www.w3.org/2001/XMLSchema#int"
                   name="domainpropertiesrow-lookupQueryValue"
@@ -1758,8 +2326,167 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       </option>
                     </select>
                   </FormControl>
-                </QuerySelectImpl>
-              </QuerySelect>
+                </TargetTableSelectImpl>
+              </TargetTableSelect>
+            </div>
+          </Col>
+          <Col
+            bsClass="col"
+            componentClass="div"
+            xs={6}
+          >
+            <div
+              className="col-xs-6"
+            >
+              <div
+                className="domain-field-label"
+              >
+                Lookup Validator
+              </div>
+              <Checkbox
+                bsClass="checkbox"
+                checked={false}
+                className="domain-field-checkbox-margin"
+                disabled={false}
+                id="domainpropertiesrow-lookupValidator-1"
+                inline={false}
+                name="domainpropertiesrow-lookupValidator"
+                onChange={[Function]}
+                title=""
+              >
+                <div
+                  className="domain-field-checkbox-margin checkbox"
+                >
+                  <label
+                    title=""
+                  >
+                    <input
+                      checked={false}
+                      disabled={false}
+                      id="domainpropertiesrow-lookupValidator-1"
+                      name="domainpropertiesrow-lookupValidator"
+                      onChange={[Function]}
+                      type="checkbox"
+                    />
+                    Ensure Value Exists in Lookup Target
+                    <LabelHelpTip
+                      body={[Function]}
+                      id="tooltip"
+                      title="Lookup Validator"
+                    >
+                      <span
+                        className="label-help-target"
+                        onMouseOut={[Function]}
+                        onMouseOver={[Function]}
+                      >
+                        <FontAwesomeIcon
+                          border={false}
+                          className="label-help-icon"
+                          fixedWidth={false}
+                          flip={null}
+                          icon={
+                            Object {
+                              "icon": Array [
+                                512,
+                                512,
+                                Array [],
+                                "f059",
+                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                              ],
+                              "iconName": "question-circle",
+                              "prefix": "fas",
+                            }
+                          }
+                          inverse={false}
+                          listItem={false}
+                          mask={null}
+                          pull={null}
+                          pulse={false}
+                          rotation={null}
+                          size={null}
+                          spin={false}
+                          symbol={false}
+                          title=""
+                          transform={null}
+                        >
+                          <svg
+                            aria-hidden="true"
+                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            data-icon="question-circle"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            style={Object {}}
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                              fill="currentColor"
+                              style={Object {}}
+                            />
+                          </svg>
+                        </FontAwesomeIcon>
+                        <Overlay
+                          animation={[Function]}
+                          placement="right"
+                          rootClose={false}
+                          show={false}
+                          target={
+                            <span
+                              class="label-help-target"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                data-icon="question-circle"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 512 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                            </span>
+                          }
+                        >
+                          <Overlay
+                            placement="right"
+                            rootClose={false}
+                            show={false}
+                            target={
+                              <span
+                                class="label-help-target"
+                              >
+                                <svg
+                                  aria-hidden="true"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  data-icon="question-circle"
+                                  data-prefix="fas"
+                                  focusable="false"
+                                  role="img"
+                                  viewBox="0 0 512 512"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                    fill="currentColor"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                            transition={[Function]}
+                          />
+                        </Overlay>
+                      </span>
+                    </LabelHelpTip>
+                  </label>
+                </div>
+              </Checkbox>
             </div>
           </Col>
         </div>

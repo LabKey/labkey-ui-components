@@ -596,5 +596,34 @@ describe('DomainForm', () => {
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
+
+    test('header click for expand and collapse', () => {
+        const name = 'header click';
+        const domain = DomainDesign.create({
+            name: name,
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            }]
+        });
+
+        const wrapper = mount(<DomainForm domain={domain} onChange={jest.fn} collapsible={true}/>);
+        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
+
+        // first click will collapse the panel, but header text shouldn't change
+        wrapper.find('.panel-heading').simulate('click');
+        expect(wrapper.find(DomainRow)).toHaveLength(0);
+        expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
+
+        // second click will re-expand the panel, but header text shouldn't change
+        wrapper.find('.panel-heading').simulate('click');
+        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
+
+        wrapper.unmount();
+    })
 });
 

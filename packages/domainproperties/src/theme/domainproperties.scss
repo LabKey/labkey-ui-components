@@ -3,6 +3,17 @@
   min-width: 1000px;
 }
 
+.domain-form-panel input[type="checkbox"],
+.domain-form-panel input[type="radio"],
+.domain-modal input[type="checkbox"],
+.domain-modal input[type="radio"] {
+  width: 17px;
+  height: 17px;
+  position: relative !important;
+  margin-right: 7px;
+  vertical-align: text-bottom;
+}
+
 .domain-form-hdr-row {
   margin: 0 0 5px 40px !important;
   color: $gray;
@@ -16,8 +27,20 @@
   margin-bottom: 20px;
 };
 
+.domain-form-hdr-center {
+  text-align: center;
+}
+
 .domain-zero-padding {
   padding: 0
+}
+
+.domain-row-base-fields {
+  padding: 0;
+  margin: 0;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 .domain-field-row {
@@ -54,35 +77,60 @@
 }
 
 .domain-field-checkbox {
-  padding-left: 22%;
-  margin: 5px 15px 0 0;
+  height: 0;
+  margin-top: 1px !important;
 };
+
+.domain-field-checkbox-container {
+  margin: auto;
+  display: table;
+}
 
 .domain-field-details {
   color: $gray-dark;
   display: table-cell;
-  vertical-align: top;
+  height: 40px;
+  overflow: hidden;
+  padding-top: 1%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+};
+
+.domain-field-details-expanded {
+  color: $gray-dark;
+  display: table-cell;
+  padding-top: 1%;
 };
 
 .domain-field-buttons-expanded {
-  display: table-cell;
-  width: 290px;
+  float: right;
+  display: inline-flex;
+  height: min-content;
+  padding-top: .75%;
 };
 
 .domain-field-buttons {
-  display: table-cell;
-  width: 42px;
+  float: right;
+  display: inline-flex;
+  height: min-content;
+  padding-top: .75%;
 };
 
 .domain-field-details-container {
-  display: table;
-  padding-left: 0;
+  display: flex;
+  top: 60%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  justify-content: space-between;
+  height: 50px;
 };
 
 .domain-field-icon {
   color: $gray-light;
-  padding: 5px 5px 0 20px;
   display: inline-block;
+  padding-left: 20px;
+  top: 10%;
+  position: relative;
 
   &:hover {
     color: $gray-base;
@@ -141,6 +189,8 @@
 .domain-row-button {
   font-size: 12px;
   margin-left: 12px;
+  height: 28px;
+  height: min-content;  /* Not supported in older browsers so leave px height as well */
 }
 
 .domain-row-remove-button {
@@ -150,9 +200,16 @@
 }
 
 .domain-field-section-heading {
-  color: $gray;
+  color: $gray-dark;
   font-weight: bold;
-  padding: 0 0 5px 0;
+}
+
+.domain-field-padding-top {
+  padding-top: 20px;
+}
+
+.domain-field-section-hdr {
+  margin-top: 20px;
 }
 
 .domain-field-label {
@@ -166,15 +223,15 @@
 }
 
 .domain-text-options-radio1 {
-  margin: 4px 5px 5px 5px !important;
+  margin: 0 10px 5px 5px !important;
 }
 
 .domain-text-options-radio2 {
-  margin: 9px 5px 5px 5px !important;
+  margin: 6px 10px 5px 5px !important;
 }
 
 .domain-text-options-length {
-  margin: 6px 5px 0 0 !important;
+  margin: 6px 15px 0 0 !important;
 }
 
 .domain-text-label {
@@ -195,13 +252,33 @@
 }
 
 .domain-field-textarea {
-  height: 85px !important;
   resize: none;
-  margin-bottom: 2px;
+  padding-bottom: 2%;
 }
 
 .domain-help-table {
   border: 1px solid black;
+}
+
+.domain-field-lookup-validator-row {
+  display: inline-flex;
+  transform: translateY(50%);
+  margin-left: 10px;
+}
+
+.domain-field-lookup-validator-label {
+  margin: 3% 0 0 10px;
+  white-space: nowrap;
+}
+
+.domain-validator-error-msg {
+  color: red;
+  margin-top: 3%;
+  margin-right: 20px;
+}
+
+.domain-field-checkbox-margin {
+  margin-top: 2px;
 }
 
 .domain-adv-footer {
@@ -232,21 +309,16 @@
   margin: 20px 0 14px 0;
 }
 
-.domain-adv-phi {
-  float: left;
+.domain-adv-default-value {
+  width: 100px;
 }
 
-select.domain-adv-phi {
-  width: 250px;
+.domain-adv-thick-row {
+  padding-bottom: 10px;
 }
 
-span.domain-adv-phi {
-  margin-top: 3px;
-  margin-right: 25px;
-}
-
-.domain-adv-phi-row {
-  padding-bottom: 30px;
+.domain-adv-default-link {
+  padding-top: 2%;
 }
 
 .domain-adv-checkbox {
@@ -286,11 +358,144 @@ span.domain-adv-phi {
 }
 
 .domain-row-container-expanded {
-  border-bottom: 1px solid lightgray;
+  display: table-cell;
+  padding: 15px 2px 20px 0;
 }
 
 .domain-row-main {
-  display: table-cell;
-  padding: 15px 2px 10px 0;
+  height: 50px;
 }
 
+.domain-no-wrap {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.domain-validation-modal {
+  width: 550px;
+}
+
+.domain-validation-button {
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.domain-validation-group {
+  float: left;
+  margin-right: 80px;
+}
+
+.domain-validation-subtitle {
+  color: $gray;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.domain-validation-add-btn span {
+  font-size: 12px;
+}
+
+.domain-validation-btn-row {
+  padding-top: 50px;
+}
+
+.domain-validator-panel {
+  background-color: $gray-shadow;
+  margin-bottom: 5px;
+  padding: 10px;
+  border: 1px solid $gray-border;
+}
+
+.domain-validation-textarea {
+  resize: none;
+  width: 100%
+}
+
+.domain-validation-failOnMatch-row {
+  margin-top: -14px;
+}
+
+.domain-validation-checkbox {
+  float: left;
+  margin-top: 0;
+}
+
+.domain-validation-display-checkbox-row {
+  margin: 5px 0 -15px 0;
+}
+
+.domain-validation-delete {
+  font-size: 12px;
+  float: right;
+  margin-top: 20px;
+}
+
+.domain-validator-link {
+  cursor: pointer;
+}
+
+.domain-validator-filter-row {
+  margin-bottom: 10px;
+}
+
+.domain-validator-filter-type-row {
+  margin-bottom: 5px;
+}
+
+.domain-validator-filter-bottom {
+  margin-bottom: 20px;
+}
+
+.domain-validator-color-row {
+  margin-top: 20px;
+}
+
+.domain-validator-color-popover {
+  position: absolute;
+  z-index: 2;
+}
+
+.domain-validator-color-cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.domain-validator-modal-apply {
+  display: inline-flex;
+  float: right;
+}
+
+.domain-color-preview {
+  height: 25px;
+  width: 25px;
+  border: 1px solid;
+  display: inline-flex;
+  vertical-align: bottom;
+  margin-bottom: 1px;
+}
+
+.domain-color-picker-btn {
+  display: inline-flex;
+  font-size: 12px;
+  margin-right: 20px;
+  width: 70%;
+}
+
+.domain-color-caret {
+  margin-left: 40%;
+  position: absolute;
+  float: left;
+}
+
+.domain-validator-collapse-icon {
+  float: right;
+  cursor: pointer;
+}
+
+.domain-heading-collapsible {
+  cursor: pointer;
+}

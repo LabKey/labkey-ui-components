@@ -4,6 +4,27 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.42
+*Released*: 23 October 2019
+* Item 5917: Conditional Formatting and Property Validators
+    * Add Conditional Formatting and Property Validators section to expanded Domain Row
+    * Add Conditional Formatting options dialog
+    * Add Regex Validator options dialog
+    * Add Range Validator options dialog for appropriate data types
+    * Add Default Values options to Advanced Settings
+
+### version 0.0.41
+*Released*: 17 October 2019
+* Item 6199: support other assay provider types in AssayDesignerPanels and AssayPropertiesPanel
+    * update fetchProtocol to work for getting template based on provider name and for copy assay scenario
+    * remove default AssayProtocolModel creation from AssayDesignerPanels component and require a model be passed in as props
+    * AssayPropertiesPanel support for additional top-level properties and conditional display of those props based on provider type
+    * remove createGeneralAssayDesign helper in favor of saveAssayDesign (which takes an AssayProtocolModel)
+    * better helpURL support for AssayDesignerPanels and AssayPropertiesPanel
+    * support domain lookup field type support for locked fields (i.e. should show lookup option values, even if they are not in the virtual schema)
+    * rename lookup fields QuerySelect to TargetTableSelect to avoid confusion with other QuerySelect component
+    * for assays, set field lockType based on assay protocol mandatory fields list
+
 ### version 0.0.40
 *Released*: 26 September 2019
 * Package patch update for changes to @glass/base v0.19.0

@@ -59,6 +59,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     domain={domain}
                     onChange={this.onChange}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    showHeaderFieldCount={false}
                 />
             </MockLookupProvider>
         )
@@ -96,7 +97,7 @@ storiesOf("DomainForm", module)
             <DomainFormContainer
                 data={domainData}
                 initCollapsed={boolean('initCollapsed', true)}
-                markComplete={boolean('markComplete', false)}
+                markComplete={boolean('markComplete', true)}
             />
         )
     })

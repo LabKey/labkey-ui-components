@@ -2001,7 +2001,7 @@ exports[`DomainRow client side warning on field 1`] = `
     <App
       onDragEnd={[MockFunction]}
       setOnError={[Function]}
-      uniqueId={6}
+      uniqueId={7}
     >
       <Provider
         context={
@@ -2061,7 +2061,7 @@ exports[`DomainRow client side warning on field 1`] = `
             updateViewportMaxScroll={[Function]}
           >
             <div
-              data-react-beautiful-dnd-droppable="6"
+              data-react-beautiful-dnd-droppable="7"
             >
               <DomainRow
                 availableTypes={
@@ -2352,8 +2352,8 @@ exports[`DomainRow client side warning on field 1`] = `
                     <div
                       aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-warning"
-                      data-react-beautiful-dnd-drag-handle="6"
-                      data-react-beautiful-dnd-draggable="6"
+                      data-react-beautiful-dnd-drag-handle="7"
+                      data-react-beautiful-dnd-draggable="7"
                       draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}
@@ -10061,7 +10061,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
     <App
       onDragEnd={[MockFunction]}
       setOnError={[Function]}
-      uniqueId={7}
+      uniqueId={8}
     >
       <Provider
         context={
@@ -10121,7 +10121,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
             updateViewportMaxScroll={[Function]}
           >
             <div
-              data-react-beautiful-dnd-droppable="7"
+              data-react-beautiful-dnd-droppable="8"
             >
               <DomainRow
                 availableTypes={
@@ -10412,8 +10412,8 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     <div
                       aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-error"
-                      data-react-beautiful-dnd-drag-handle="7"
-                      data-react-beautiful-dnd-draggable="7"
+                      data-react-beautiful-dnd-drag-handle="8"
+                      data-react-beautiful-dnd-draggable="8"
                       draggable={true}
                       onBlur={[Function]}
                       onDragStart={[Function]}

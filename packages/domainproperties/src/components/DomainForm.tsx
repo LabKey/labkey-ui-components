@@ -553,11 +553,20 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderSearchField() {
+        const { fields } = this.props.domain;
+
         return (
             <Row>
                 <Col xs={3}>
                     <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
                 </Col>
+                {this.state.filtered &&
+                    <Col xs={9}>
+                        <div className={"domain-search-text"}>
+                            Showing {fields.filter(f => f.visible).size} of {fields.size} field{fields.size > 1 ? 's' : ''}.
+                        </div>
+                    </Col>
+                }
             </Row>
         )
     }
@@ -569,7 +578,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <>
                 {this.readerPanelHeaderContent()}
-                {domain.fields.size > 1 && this.renderSearchField()}
+                {(filtered || domain.fields.size > 1) && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>

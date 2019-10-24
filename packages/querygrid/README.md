@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.21.1
+*Released*: 24 October 2019
+* Add getUrlString to MenuItemModel
+
 ### version 0.21.0
 *Released*: 18 October 2019
 * Fix image scaling problem in image modal (Issue 36957)

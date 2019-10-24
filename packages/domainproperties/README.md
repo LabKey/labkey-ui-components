@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.43
+*Released*: 24 October 2019
+* Package patch update for changes to @glass/base v0.20.0
+
 ### version 0.0.42
 *Released*: 23 October 2019
 * Item 5917: Conditional Formatting and Property Validators

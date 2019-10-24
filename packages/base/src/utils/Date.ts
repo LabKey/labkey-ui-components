@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import moment from 'moment-jdateformatparser'
+import 'moment-timezone';
 import numeral from 'numeral'
 import { QueryColumn } from "../models/model";
 
@@ -59,6 +60,24 @@ function getFormattedDate(d) {
 
 function getFormattedDateTime(d) {
     return d ? moment(d, getDateTimeFormat()) : d;
+}
+
+export function formatDate(date : Date, timezone?: string) {
+    if (!date)
+        return null;
+    let _date = moment(date);
+    if (timezone)
+        _date = _date.tz(timezone);
+    return _date.formatWithJDF(getDateFormat());
+}
+
+export function formatDateTime(date : Date, timezone?: string) {
+    if (!date)
+        return null;
+    let _date = moment(date);
+    if (timezone)
+        _date = _date.tz(timezone);
+    return _date.formatWithJDF(getDateTimeFormat());
 }
 
 function getFormattedNumber(n) {

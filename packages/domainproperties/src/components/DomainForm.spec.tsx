@@ -632,6 +632,30 @@ describe('DomainForm', () => {
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
 
         wrapper.unmount();
-    })
+    });
+
+    test('Show app header', () => {
+        const name = 'header click';
+        const domain = DomainDesign.create({
+            name: name,
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            }]
+        });
+
+        const _headerId = 'mock-app-header';
+        const _headerText = 'This is a mock app header';
+
+        const mockAppHeader = jest.fn();
+        mockAppHeader.mockReturnValue(<><div id={_headerId}>{_headerText}</div></>);
+
+        const wrapper = mount(<DomainForm domain={domain} onChange={jest.fn} collapsible={true} appDomainHeaderRenderer={mockAppHeader} />);
+        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        expect(wrapper.find('#' + _headerId).text()).toBe(_headerText);
+        wrapper.unmount();
+    });
 });
 

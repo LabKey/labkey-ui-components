@@ -19,7 +19,7 @@ import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
 import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
 import {AssayDesignerPanels} from "./components/assay/AssayDesignerPanels";
-import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR, DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_TYPE, RANGE_URIS} from "./constants";
+import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR, DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_TYPE, RANGE_URIS, SAMPLE_TYPE_CONCEPT_URI} from "./constants";
 
 import './theme/index.scss'
 
@@ -53,4 +53,5 @@ export {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
+    SAMPLE_TYPE_CONCEPT_URI,
 }

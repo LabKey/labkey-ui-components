@@ -179,13 +179,20 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                     const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
+                    // collapse domain panel for new assays (unless it is the active step)
+                    // for existing assays, collapse unless the assay is invalidate and the domain has appDomainHeaderRenderer
+                    let initCollapsed = !isNew || currentPanelIndex !== (i+1);
+                    if (!isNew && !this.isValid() && appDomainHeaderRenderer !== undefined) {
+                        initCollapsed = false;
+                    }
+
                     return (
                         <DomainForm
                             key={domain.domainId || i}
                             domain={domain}
                             headerPrefix={protocolModel.name}
                             collapsible={!isNew}
-                            initCollapsed={!isNew || currentPanelIndex !== (i+1)}
+                            initCollapsed={initCollapsed}
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}

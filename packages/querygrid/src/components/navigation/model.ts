@@ -95,6 +95,10 @@ export class MenuItemModel extends Record ({
         }
         return new MenuItemModel();
     }
+
+    getUrlString() : string {
+        return typeof this.url === 'string' ? this.url : this.url.toHref()
+    }
 }
 
 export class ProductMenuModel extends Record( {

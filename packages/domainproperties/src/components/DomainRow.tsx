@@ -416,7 +416,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                          tabIndex={index}
                          onMouseEnter={this.onMouseOver}
                          onMouseLeave={this.onMouseOut}
-                         onDoubleClick={this.onExpand}
                     >
                         <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
                             <AdvancedSettings

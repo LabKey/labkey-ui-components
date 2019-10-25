@@ -348,7 +348,6 @@ exports[`DomainRow client side warning on field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-warning"
                       data-react-beautiful-dnd-draggable="6"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}
@@ -2148,7 +2147,6 @@ exports[`DomainRow date time field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="3"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}
@@ -4260,7 +4258,6 @@ exports[`DomainRow decimal field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="2"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}
@@ -6407,7 +6404,6 @@ exports[`DomainRow participant id field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="4"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}
@@ -8167,7 +8163,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     <div
                       className="domain-field-row domain-row-border-error"
                       data-react-beautiful-dnd-draggable="7"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}
@@ -9967,7 +9962,6 @@ exports[`DomainRow string field test 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="1"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}
@@ -11991,7 +11985,6 @@ exports[`DomainRow with empty domain form 1`] = `
                     <div
                       className="domain-field-row domain-row-border-default"
                       data-react-beautiful-dnd-draggable="0"
-                      onDoubleClick={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
                       onTransitionEnd={null}

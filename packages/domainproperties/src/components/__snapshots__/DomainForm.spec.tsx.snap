@@ -727,7 +727,6 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default domain-row-expanded"
                                               data-react-beautiful-dnd-draggable="3"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -3764,7 +3763,6 @@ exports[`DomainForm domain form header and search 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="5"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -5828,7 +5826,6 @@ exports[`DomainForm domain form header and search 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="5"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -7597,7 +7594,6 @@ exports[`DomainForm domain form header and search 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="5"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -9661,7 +9657,6 @@ exports[`DomainForm domain form header and search 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="5"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -12147,7 +12142,6 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="6"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -14476,7 +14470,6 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="2"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -18460,7 +18453,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -20524,7 +20516,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -22453,7 +22444,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -24376,7 +24366,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -26221,7 +26210,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -28273,7 +28261,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -30290,7 +30277,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -32219,7 +32205,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -33850,7 +33835,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -35505,7 +35489,6 @@ exports[`DomainForm domain form with all field types 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="0"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -38356,7 +38339,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="1"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -40422,7 +40404,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="1"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -42293,7 +42274,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="1"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}
@@ -43938,7 +43918,6 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                             <div
                                               className="domain-field-row domain-row-border-default"
                                               data-react-beautiful-dnd-draggable="1"
-                                              onDoubleClick={[Function]}
                                               onMouseEnter={[Function]}
                                               onMouseLeave={[Function]}
                                               onTransitionEnd={null}

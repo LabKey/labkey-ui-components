@@ -1544,7 +1544,7 @@ export class AssayDefinitionModel extends Record({
                 url = url.addParam('dataTab', dataTab);
             if (filterList && !filterList.isEmpty()) {
                 filterList.forEach((filter) => {
-                    url = url.addParam(filter.getURLParameterName(), filter.getValue());
+                    url = url.addParam(filter.getURLParameterName(), filter.getURLParameterValue());
                 });
             }
             if (selectionKey)

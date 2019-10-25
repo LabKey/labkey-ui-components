@@ -42,8 +42,7 @@ import {
     FieldErrors,
     DomainFieldError,
     PropDescType,
-    resolveAvailableTypes,
-    PROP_DESC_TYPES
+    resolveAvailableTypes
 } from "../models";
 import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "../actions/actions";
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
@@ -292,14 +291,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
     };
 
-    onExpandOnly = (): any => {
-        const { index, expanded, onExpand } = this.props;
-
-        if (!expanded && onExpand) {
-            onExpand(index);
-        }
-    };
-
     onCollapsed = () : void => {
         this.setState(() =>({closing: false}));
     };
@@ -334,7 +325,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, index)}
                         onChange={this.onNameChange}
-                        onClick={this.onExpandOnly}
                         disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
                     />
                 </Col>
@@ -346,7 +336,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}
-                        onClick={this.onExpandOnly}
                     >
                         {
                             resolveAvailableTypes(field, availableTypes).map(
@@ -399,8 +388,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     </Button>
                 </>
                 )}
-                <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)}
-                     onClick={this.onExpand}>
+                <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
                     <FontAwesomeIcon size='lg' color={(dragging || hover) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
                                      icon={expanded ? faMinusSquare : faPlusSquare}/>
                 </div>
@@ -418,12 +406,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 {(provided) => (
                     <div className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
                          {...provided.draggableProps}
-                         {...provided.dragHandleProps}
                          ref={provided.innerRef}
                          tabIndex={index}
-                         draggable={true}
                          onMouseEnter={this.onMouseOver}
                          onMouseLeave={this.onMouseOut}
+                         onDoubleClick={this.onExpand}
                     >
                         <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
                             <AdvancedSettings
@@ -439,7 +426,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
                             />
-                            <div className='domain-row-handle'>
+                            <div className='domain-row-handle' {...provided.dragHandleProps}>
                                 {this.renderHandle()}
                             </div>
                             <div className='domain-row-main'>

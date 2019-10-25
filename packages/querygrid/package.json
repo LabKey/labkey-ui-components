@@ -39,8 +39,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.19.1-fb-jobCreation.12",
-    "@glass/domainproperties": "0.0.43-fb-jobCreation.14",
+    "@glass/base": "0.21.0-fb-jobCreation.12",
+    "@glass/domainproperties": "0.0.44-fb-jobCreation.14",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

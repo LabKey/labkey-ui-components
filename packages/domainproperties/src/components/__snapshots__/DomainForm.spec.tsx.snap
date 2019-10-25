@@ -3722,7 +3722,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                           disableInteractiveElementBlocking={false}
                                           draggableId="domainpropertiesrow-domaindrag-0"
                                           index={0}
-                                          isDragDisabled={true}
+                                          isDragDisabled={false}
                                           shouldRespectForcePress={false}
                                         >
                                           <Draggable
@@ -3731,7 +3731,7 @@ exports[`DomainForm domain form header and search 1`] = `
                                             drop={[Function]}
                                             dropAnimationFinished={[Function]}
                                             index={0}
-                                            isDragDisabled={true}
+                                            isDragDisabled={false}
                                             lift={[Function]}
                                             mapped={
                                               Object {
@@ -3931,7 +3931,17 @@ exports[`DomainForm domain form header and search 1`] = `
                                                     </Modal>
                                                   </AdvancedSettings>
                                                   <div
+                                                    aria-roledescription="Draggable item. Press space bar to lift"
                                                     className="domain-row-handle"
+                                                    data-react-beautiful-dnd-drag-handle="5"
+                                                    draggable={false}
+                                                    onBlur={[Function]}
+                                                    onDragStart={[Function]}
+                                                    onFocus={[Function]}
+                                                    onKeyDown={[Function]}
+                                                    onMouseDown={[Function]}
+                                                    onTouchStart={[Function]}
+                                                    tabIndex={0}
                                                   >
                                                     <FontAwesomeIcon
                                                       border={false}

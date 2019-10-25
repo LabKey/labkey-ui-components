@@ -91,11 +91,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         };
     }
 
+    componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
+        // if there was a prop change to isDragDisabled, need to call setDragDisabled
+        if (nextProps.isDragDisabled !== this.props.isDragDisabled) {
+            this.setDragDisabled(nextProps.isDragDisabled, false);
+        }
+    }
+
     /**
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const {expanded, field, index} = this.props;
+        const { field, index } = this.props;
         let details = [];
 
         if (field.hasErrors()) {
@@ -258,13 +265,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     onShowAdvanced = (): any => {
         this.setState(() => ({showAdv: true}));
 
-        this.setDragDisabled(true);
+        this.setDragDisabled(this.props.isDragDisabled, true);
     };
 
     onHideAdvanced = (): any => {
         this.setState(() => ({showAdv: false}));
 
-        this.setDragDisabled(false);
+        this.setDragDisabled(this.props.isDragDisabled, false);
     };
 
     onMouseOver = (): any => {
@@ -299,17 +306,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({closing: true}));
     };
 
-    setDragDisabled = (disabled: boolean) => {
-        const { isDragDisabled } = this.props;
-
-        this.setState(() => ({isDragDisabled: (disabled || isDragDisabled)}));
+    setDragDisabled = (propDragDisabled: boolean, disabled: boolean) => {
+        this.setState(() => ({isDragDisabled: (disabled || propDragDisabled)}));
     };
 
     renderHandle() {
-        const { expanded, dragging } = this.props;
-        const { hover, closing } = this.state;
+        const { dragging } = this.props;
+        const { isDragDisabled, hover, closing } = this.state;
 
-        return (<FontAwesomeIcon size='lg' color={(dragging || hover || expanded || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>)
+        return (
+            <FontAwesomeIcon size='lg' color={!isDragDisabled && (dragging || hover || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>
+        )
     }
 
     renderBaseFields() {
@@ -440,7 +447,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         </Row>
                             <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
-                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange} setDragDisabled={this.setDragDisabled}/>
+                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}
+                                                              setDragDisabled={(disabled) => this.setDragDisabled(this.props.isDragDisabled, disabled)}
+                                    />
                                 </div>
                             </Collapse>
                     </div>

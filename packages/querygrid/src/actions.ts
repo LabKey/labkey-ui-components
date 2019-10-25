@@ -152,7 +152,7 @@ export function selectAll(key: string, schemaName: string, queryName: string, fi
         return Ajax.request({
             url: buildURL('query', 'selectAll.api'),
             method: 'POST',
-            params: getQueryFormParams(key, schemaName, queryName, filterList),
+            params: getQueryParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -740,9 +740,9 @@ interface IGetSelectedResponse {
     selected: Array<any>
 }
 
-function getFilteredQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getFilteredQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        return getQueryFormParams(key, schemaName, queryName, filterList);
+        return getQueryParams(key, schemaName, queryName, filterList);
     }
     else {
         return {
@@ -751,9 +751,9 @@ function getFilteredQueryFormParams(key: string, schemaName: string, queryName: 
     }
 }
 
-function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
     const filters = filterList.reduce((prev, next) => {
-        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
+        return Object.assign(prev, {[next.getURLParameterName()]: next.getURLParameterValue()});
     }, {});
 
     return {
@@ -776,7 +776,7 @@ function getQueryFormParams(key: string, schemaName: string, queryName: string, 
 export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
+            url: buildURL('query', 'getSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList)),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -794,7 +794,7 @@ interface ISelectResponse {
 function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
+            url: buildURL('query', 'clearSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList)),
             method: 'POST',
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);

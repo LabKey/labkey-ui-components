@@ -248,23 +248,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div>These options configure how and in which views this field will be visible.</div>
                 <Checkbox checked={hidden === false} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
-                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>Show field on default view of
-                    the
-                    grid</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>
+                    Show field on default view of the grid
+                </Checkbox>
                 <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on update form
-                    when updating a single row of data</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>
+                    Show on update form when updating a single row of data
+                </Checkbox>
                 <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>Show on insert form
-                    when
-                    updating a single row of data</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>
+                    Show on insert form when updating a single row of data
+                </Checkbox>
                 <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on details
-                    page
-                    for a single row</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>
+                    Show on details page for a single row
+                </Checkbox>
             </>
         )
     };
@@ -355,8 +356,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
                             id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
                     >
-                        Shift dates on export or publication<LabelHelpTip title='Participant Date Shifting'
-                                                                            body={this.getDateShiftingText}/>
+                        Shift dates on export or publication
+                        <LabelHelpTip title='Participant Date Shifting' body={this.getDateShiftingText}/>
                     </Checkbox>
                 </>
                 }
@@ -368,8 +369,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             name={createFormInputName(DOMAIN_FIELD_MEASURE)}
                             id={createFormInputId(DOMAIN_FIELD_MEASURE, index)}
                     >
-                        Make this field available as a measure<LabelHelpTip title='Measure'
-                                                                            body={this.getMeasureHelpText}/>
+                        Make this field available as a measure
+                        <LabelHelpTip title='Measure' body={this.getMeasureHelpText}/>
                     </Checkbox>
                     <Checkbox
                             checked={dimension === true}
@@ -377,8 +378,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
                             id={createFormInputId(DOMAIN_FIELD_DIMENSION, index)}
                     >
-                        Make this field available as a dimension<LabelHelpTip title='Data Dimension'
-                                                                              body={this.getDimensionHelpText}/>
+                        Make this field available as a dimension
+                        <LabelHelpTip title='Data Dimension' body={this.getDimensionHelpText}/>
                     </Checkbox>
                 </>
                 }
@@ -388,8 +389,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
                     id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, index)}
                 >
-                    Make this field a recommended variable<LabelHelpTip title='Recommended Variable'
-                                                                        body={this.getRecommendedVariableHelpText}/>
+                    Make this field a recommended variable
+                    <LabelHelpTip title='Recommended Variable' body={this.getRecommendedVariableHelpText}/>
                 </Checkbox>
 
                 {PropDescType.isMvEnableable(field.rangeURI) &&
@@ -399,8 +400,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
                         id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
                 >
-                    Track reason for missing data values<LabelHelpTip title='Missing Value Indicators'
-                                                                      body={this.getMissingValueHelpText}/>
+                    Track reason for missing data values
+                    <LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
                 </Checkbox>
                 }
             </>

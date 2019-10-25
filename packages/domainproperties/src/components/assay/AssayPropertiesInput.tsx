@@ -463,7 +463,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             <Col xs={3}>
                                 <RemoveEntityButton
                                     key={'scriptremove-' + i}
-                                    labelClass={''}
+                                    labelClass={'domain-remove-icon'}
                                     onClick={() => {this.removeScript(i)}}
                                 />
                             </Col>

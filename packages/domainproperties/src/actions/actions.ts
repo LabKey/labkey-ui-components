@@ -427,6 +427,7 @@ export function getCheckedValue(evt) {
 /**
  *
  * @param domain: DomainDesign to update with Field level error, in this case, set DomainException property which will carry field level error
+ * @param index: Domain field index
  * @param domainFieldError: Field level error with message and severity
  * @return copy of domain with exception set on a field
  */
@@ -479,23 +480,21 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
     }) as DomainDesign;
 }
 
-export function getBannerMessages (domain: any) : List<IBannerMessage> {
-
+export function getBannerMessages(domain: any) : List<IBannerMessage> {
     if (domain && domain.hasException()) {
+        let msgList = List<IBannerMessage>();
 
-        let msgList = List<IBannerMessage>().asMutable();
-        let errMsg = getErrorBannerMessage(domain);
+        const errMsg = getErrorBannerMessage(domain);
         if (errMsg !== undefined) {
-            msgList.push({message: errMsg, messageType: 'danger'});
+            msgList = msgList.push({message: errMsg, messageType: 'danger'});
         }
 
-        let warnMsg = getWarningBannerMessage(domain);
+        const warnMsg = getWarningBannerMessage(domain);
         if (warnMsg !== undefined) {
-            msgList.push({message: warnMsg, messageType: 'warning'})
+            msgList = msgList.push({message: warnMsg, messageType: 'warning'})
         }
 
-        return msgList.asImmutable();
-
+        return msgList;
     }
     else {
         return List<IBannerMessage>();

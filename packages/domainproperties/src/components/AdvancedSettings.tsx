@@ -3,6 +3,7 @@ import * as React from 'react';
 import {List} from "immutable";
 import {Button, Checkbox, Col, FormControl, Modal, Row} from "react-bootstrap";
 import {
+    DATETIME_TYPE,
     DomainField,
     IFieldChange,
     PropDescType
@@ -14,6 +15,7 @@ import {
     DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
+    DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_MVENABLED,
@@ -54,6 +56,7 @@ interface AdvancedSettingsState {
     PHI?: string
     phiLevels?: List<any>
     defaultUrl?: string
+    excludeFromShifting?: boolean
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -86,6 +89,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             measure: field.measure,
             mvEnabled: field.mvEnabled,
             recommendedVariable: field.recommendedVariable,
+            excludeFromShifting: field.excludeFromShifting,
             PHI: field.PHI,
             phiLevels: phiLevels,
             defaultUrl: (domainId === undefined ? '' : ActionURL.buildURL(ActionURL.getController(), 'setDefaultValuesList', ActionURL.getContainer(), {returnUrl:window.location, domainId: domainId}))
@@ -125,7 +129,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         let fieldName = getNameFromId(evt.target.id);
 
         // Show in default view
-        if (fieldName === DOMAIN_FIELD_HIDDEN) {
+        if (fieldName === DOMAIN_FIELD_HIDDEN || fieldName === DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING) {
             value = !value;
         }
 
@@ -169,7 +173,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     getDimensionHelpText = () => {
         return(
             <div>
-                <p>Indicates a column of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
+                <p>Indicates a field of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
                 <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=chartTrouble">Measures and Dimensions</a> for analysis.</p>
             </div>
         )
@@ -209,6 +213,12 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <p>Last entered: An editable default value is provided on first use. The last value entered will be provided on later imports.</p>
                 <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields#advanced">Default Type</a> settings.</p>
             </div>
+        )
+    };
+
+    getDateShiftingText = () => {
+        return (
+            'Participant date fields with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.'
         )
     };
 
@@ -305,7 +315,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
     renderMiscOptions = () => {
         const { index, maxPhiLevel, field } = this.props;
-        const { measure, dimension, mvEnabled, recommendedVariable, PHI } = this.state;
+        const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting } = this.state;
 
         // Filter phi levels available
         const phiIndex = this.getMaxPhiLevelIndex(maxPhiLevel);
@@ -337,6 +347,19 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Col>
                     <Col xs={3}/>
                 </Row>
+                {field.dataType === DATETIME_TYPE &&
+                <>
+                    <Checkbox
+                            checked={excludeFromShifting === false}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
+                            id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
+                    >
+                        Shift dates on export or publication<LabelHelpTip title='Participant Date Shifting'
+                                                                            body={this.getDateShiftingText}/>
+                    </Checkbox>
+                </>
+                }
                 {PropDescType.isMeasureDimension(field.rangeURI) &&
                 <>
                     <Checkbox
@@ -412,7 +435,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         </Button>
                         <a target='_blank'
                            href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                           className='domain-adv-footer domain-adv-link'>Get Help With Domain Settings</a>
+                           className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
                         <Button onClick={this.handleApply} bsClass='btn btn-success'
                                 className='domain-adv-footer domain-adv-apply-btn'>
                             Apply

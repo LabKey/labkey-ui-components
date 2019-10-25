@@ -62,6 +62,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "lookupQuery": undefined,
       },
       "original": Object {
+        "conceptURI": undefined,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Text",

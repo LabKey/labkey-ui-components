@@ -23,7 +23,13 @@ import {
     DomainFieldError,
     IFieldChange,
     PropDescType,
-    PROP_DESC_TYPES, FLAG_TYPE, FILE_TYPE, ATTACHMENT_TYPE
+    PROP_DESC_TYPES,
+    FLAG_TYPE,
+    FILE_TYPE,
+    ATTACHMENT_TYPE,
+    IDomainField,
+    IAppDomainHeader,
+    HeaderRenderer
 } from "../models";
 import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -61,9 +67,11 @@ interface IDomainFormInput {
     headerTitle?: string,
     showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
+    appDomainHeaderRenderer?: HeaderRenderer
     panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
     containerTop?: number // This sets the top of the sticky header, default is 0
+    modelDomains?: List<DomainDesign> //Set of domains that encompass the full protocol, that may impact validation or alerts
 }
 
 interface IDomainFormState {
@@ -237,8 +245,26 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
 
+    initNewDesign = () => {
+        const {domain} = this.props;
+        const {newDesignFields} = domain;
+
+        if (newDesignFields) {
+             newDesignFields.forEach(this.applyAddField);
+             this.setState({
+                 expandedRowIndex: 0
+             });
+        }
+        else
+            this.applyAddField();
+    };
+
     onAddField = () => {
-        this.onDomainChange(addDomainField(this.props.domain));
+        this.applyAddField();
+    };
+
+    applyAddField = (config?: Partial<IDomainField>) => {
+        this.onDomainChange(addDomainField(this.props.domain, config));
         this.collapseRow();
     };
 
@@ -387,7 +413,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <div className={'margin-top'}>
                     or&nbsp;
-                    <span className={'domain-form-add-link'} onClick={this.onAddField}>
+                    <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
                         Start a New Design
                     </span>
                 </div>
@@ -509,7 +535,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Panel className='domain-form-no-field-panel'>
                     No fields created yet. Add some using the button below.
                 </Panel>
-            )
+            );
         }
     }
 
@@ -533,7 +559,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
     };
 
-    readerPanelHeaderContent() {
+    renderPanelHeaderContent() {
         const { helpURL, children } = this.props;
 
         return(
@@ -573,13 +599,26 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
+    renderAppDomainHeader = () => {
+        const {appDomainHeaderRenderer, modelDomains, domain} = this.props;
+        const config = {
+            domain,
+            modelDomains,
+            onChange: this.onFieldsChange,
+            onAddField: this.applyAddField
+        } as IAppDomainHeader;
+
+        return appDomainHeaderRenderer(config);
+    };
+
     renderForm() {
-        const { domain, helpNoun, containerTop } = this.props;
+        const { domain, helpNoun, containerTop, appDomainHeaderRenderer } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
         return (
             <>
-                {this.readerPanelHeaderContent()}
+                {this.renderPanelHeaderContent()}
+                {appDomainHeaderRenderer && this.renderAppDomainHeader()}
                 {(filtered || domain.fields.size > 1) && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>

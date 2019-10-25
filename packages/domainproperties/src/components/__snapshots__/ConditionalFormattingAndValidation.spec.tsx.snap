@@ -79,6 +79,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
         "lookupQuery": undefined,
       },
       "original": Object {
+        "conceptURI": undefined,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Text",
@@ -404,6 +405,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
         "lookupQuery": undefined,
       },
       "original": Object {
+        "conceptURI": undefined,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
           "display": "Date Time",

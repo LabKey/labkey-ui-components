@@ -41,6 +41,8 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
     };
 
     render() {
+        const isValid = boolean('AppDesignValid', true);
+
         return (
             <AssayDesignerPanels
                 initModel={this.state.model}
@@ -54,6 +56,10 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 }}
                 onCancel={() => {
                     console.log('cancel clicked');
+                }}
+                appIsValid={()=>{
+                    //Disables Finish button if false
+                    return isValid;
                 }}
             />
         )

@@ -71,6 +71,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
           "lookupQuery": undefined,
         },
         "original": Object {
+          "conceptURI": undefined,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -650,6 +651,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
           "lookupQuery": undefined,
         },
         "original": Object {
+          "conceptURI": undefined,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -1290,6 +1292,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
           "lookupQuery": undefined,
         },
         "original": Object {
+          "conceptURI": undefined,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",
@@ -1930,6 +1933,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
           "lookupQuery": undefined,
         },
         "original": Object {
+          "conceptURI": undefined,
           "dataType": Immutable.Record {
             "conceptURI": undefined,
             "display": "Integer",

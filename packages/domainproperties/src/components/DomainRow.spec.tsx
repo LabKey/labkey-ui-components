@@ -22,7 +22,9 @@ import {
     DomainField,
     DomainFieldError,
     DOUBLE_TYPE,
-    PARTICIPANT_TYPE, PROP_DESC_TYPES,
+    PARTICIPANT_TYPE,
+    PROP_DESC_TYPES,
+    SAMPLE_TYPE,
     TEXT_TYPE
 } from "../models";
 import {DomainRow} from "./DomainRow";
@@ -355,6 +357,56 @@ describe('DomainRow', () => {
         let sectionLabel = row.find({className: 'domain-field-section-heading domain-field-section-hdr'});
         expect(sectionLabel.length).toEqual(2);
 
+    });
+
+    test('Sample Field', () => {
+        const _index = 0;
+        const _name = 'sampleField';
+        const _propDesc = SAMPLE_TYPE;
+
+        const field = DomainField.create({
+            name: _name,
+            rangeURI: _propDesc.rangeURI,
+            conceptURI: _propDesc.conceptURI,
+            propertyId: 1,
+            propertyURI: 'test',
+            required: false
+        });
+
+        const row = mount(
+            wrapDraggable(
+                <DomainRow
+                    key={'domain-row-key-1'}
+                    index={_index}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    isDragDisabled={false}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
+                />));
+
+        const type = row.find({id: createFormInputId(DOMAIN_FIELD_TYPE, _index), bsClass: 'form-control'});
+        expect(type.length).toEqual(1);
+        expect(type.props().value).toEqual(_propDesc.name);
+
+        const name = row.find({id: createFormInputId(DOMAIN_FIELD_NAME, _index), bsClass: 'form-control'});
+        expect(name.length).toEqual(1);
+        expect(name.props().value).toEqual(_name);
+
+        const req = row.find({id: createFormInputId(DOMAIN_FIELD_REQUIRED, _index), bsClass: 'checkbox'});
+        expect(req.length).toEqual(1);
+        expect(req.props().checked).toEqual(false);
+
+        expect(toJson(row)).toMatchSnapshot();
+        row.unmount();
     });
 
     test('client side warning on field', () => {

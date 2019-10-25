@@ -15,7 +15,7 @@
  */
 import { List, Map } from "immutable";
 import { Domain, Query, Security, Ajax, Utils, ActionURL } from "@labkey/api";
-import { Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn } from "@glass/base";
+import {Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn} from "@glass/base";
 
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -23,13 +23,15 @@ import {
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PREFIX,
+    DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
     SEVERITY_LEVEL_ERROR,
-    SEVERITY_LEVEL_WARN
+    SEVERITY_LEVEL_WARN,
 } from "../constants";
 
 import {
     decodeLookup,
+    updateSampleField,
     DomainDesign,
     DomainField,
     PROP_DESC_TYPES,
@@ -38,7 +40,8 @@ import {
     DomainFieldError,
     IFieldChange,
     IBannerMessage,
-    AssayProtocolModel
+    AssayProtocolModel,
+    IDomainField,
 } from "../models";
 
 let sharedCache = Map<string, Promise<any>>();
@@ -252,9 +255,9 @@ export function getIndexFromId(id: string): number {
     return -1;
 }
 
-export function addDomainField(domain: DomainDesign): DomainDesign {
+export function addDomainField(domain: DomainDesign, fieldConfig:  Partial<IDomainField> = {}): DomainDesign {
     return domain.merge({
-        fields: domain.fields.push(DomainField.create({}, true))
+        fields: domain.fields.push(DomainField.create(fieldConfig, true))
     }) as DomainDesign;
 }
 
@@ -336,6 +339,9 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
                 break;
             case DOMAIN_FIELD_LOOKUP_SCHEMA:
                 newField = updateLookup(newField, newField.lookupContainer, change.value);
+                break;
+            case DOMAIN_FIELD_SAMPLE_TYPE:
+                newField = updateSampleField(newField, change.value );
                 break;
             case DOMAIN_FIELD_LOOKUP_QUERY:
                 const { queryName, rangeURI } = decodeLookup(change.value);

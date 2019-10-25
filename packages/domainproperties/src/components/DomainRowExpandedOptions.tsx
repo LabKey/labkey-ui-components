@@ -21,9 +21,9 @@ import {BooleanFieldOptions} from "./BooleanFieldOptions";
 import {NumericFieldOptions} from "./NumericFieldOptions";
 import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import {LookupFieldOptions} from "./LookupFieldOptions";
-import {Row} from "react-bootstrap";
 import { List } from "immutable";
 import {ConditionalFormattingAndValidation} from "./ConditionalFormattingAndValidation";
+import { SampleFieldOptions } from "./SampleFieldOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField
@@ -40,19 +40,19 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         switch(field.dataType.name) {
             case 'string':
-                return <TextFieldOptions index={index} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />
+                return <TextFieldOptions index={index} label='Text Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'flag':
-                return <TextFieldOptions index={index} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />
+                return <TextFieldOptions index={index} label='Flag Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'multiLine':
-                return <TextFieldOptions index={index} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />
+                return <TextFieldOptions index={index} label='Multi-line Text Field Options' scale={field.scale} onChange={onChange} lockType={field.lockType} />;
             case 'boolean':
-                return <BooleanFieldOptions index={index} label='Boolean Field Options' format={field.format} onChange={onChange} lockType={field.lockType} />
+                return <BooleanFieldOptions index={index} label='Boolean Field Options' format={field.format} onChange={onChange} lockType={field.lockType} />;
             case 'dateTime':
-                return <DateTimeFieldOptions index={index} label='Date and Time Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} lockType={field.lockType} />
+                return <DateTimeFieldOptions index={index} label='Date and Time Options' format={field.format} excludeFromShifting={field.excludeFromShifting} onChange={onChange} lockType={field.lockType} />;
             case 'int':
-                return <NumericFieldOptions index={index} label='Integer Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />
+                return <NumericFieldOptions index={index} label='Integer Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />;
             case 'double':
-                return <NumericFieldOptions index={index} label='Decimal Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />
+                return <NumericFieldOptions index={index} label='Decimal Options' format={field.format} defaultScale={field.defaultScale} onChange={onChange} lockType={field.lockType} />;
             case 'lookup':
                 return <LookupFieldOptions index={index}
                                            label='Lookup Definition Options'
@@ -63,7 +63,15 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                                            original={field.original}
                                            onChange={onChange}
                                            onMultiChange={onMultiChange}
-                                           lockType={field.lockType}  />
+                                           lockType={field.lockType}  />;
+            case 'sample':
+                return <SampleFieldOptions index={index}
+                                           label='Sample Options'
+                                           value={field.lookupQueryValue}
+                                           original={field.original}
+                                           container={field.lookupContainer}
+                                           onChange={onChange}
+                                           lockType={field.lockType}  />;
         }
 
         return null;

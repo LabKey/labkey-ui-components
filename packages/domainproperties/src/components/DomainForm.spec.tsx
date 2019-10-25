@@ -30,6 +30,7 @@ import {
     INT_RANGE_URI, LK_DOMAIN_HELP_URL,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
+    SAMPLE_TYPE_CONCEPT_URI,
     STRING_RANGE_URI
 } from "../constants";
 import {mount} from "enzyme";
@@ -195,6 +196,13 @@ describe('DomainForm', () => {
             name: 'attachment',
             rangeURI: ATTACHMENT_RANGE_URI,
             propertyId: 10,
+            propertyURI: 'test'
+        });
+        fields.push({
+            name: 'sample',
+            rangeURI: STRING_RANGE_URI,
+            conceptURI: SAMPLE_TYPE_CONCEPT_URI,
+            propertyId: 11,
             propertyURI: 'test'
         });
 
@@ -587,7 +595,7 @@ describe('DomainForm', () => {
         // Get type field and verify available options
         let typeField = form.find({id: createFormInputId(DOMAIN_FIELD_TYPE, 0), className: 'form-control'});
         expect(typeField.length).toEqual(1);
-        expect(typeField.children().length).toEqual(9);  // Check number of options
+        expect(typeField.children().length).toEqual(10);  // Check number of options
         expect(typeField.find({value: 'int'}).length).toEqual(1);  // sanity check
         expect(typeField.find({value: 'flag'}).length).toEqual(0);
         expect(typeField.find({value: 'fileLink'}).length).toEqual(0);
@@ -624,6 +632,30 @@ describe('DomainForm', () => {
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
 
         wrapper.unmount();
-    })
+    });
+
+    test('Show app header', () => {
+        const name = 'header click';
+        const domain = DomainDesign.create({
+            name: name,
+            fields: [{
+                name: 'key',
+                rangeURI: INT_RANGE_URI,
+                propertyId: 1,
+                propertyURI: 'test'
+            }]
+        });
+
+        const _headerId = 'mock-app-header';
+        const _headerText = 'This is a mock app header';
+
+        const mockAppHeader = jest.fn();
+        mockAppHeader.mockReturnValue(<><div id={_headerId}>{_headerText}</div></>);
+
+        const wrapper = mount(<DomainForm domain={domain} onChange={jest.fn} collapsible={true} appDomainHeaderRenderer={mockAppHeader} />);
+        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        expect(wrapper.find('#' + _headerId).text()).toBe(_headerText);
+        wrapper.unmount();
+    });
 });
 

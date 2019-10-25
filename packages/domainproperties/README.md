@@ -4,10 +4,12 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.0.44
+*Released*: 25 October 2019
 * Update AssayDesignerPanels & DomainForm to accept a header renderer
 * Added Sample_Type for simplified lookup to SampleSets
+* Added newDesignFields property to initialize the DomainForm with when creating
+* Added RANGE_URIS constant to expose range uri values 
 
 ### version 0.0.43
 *Released*: 24 October 2019

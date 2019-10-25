@@ -3,8 +3,8 @@
 Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
-### version TBD
-*Released*: TBD
+### version 0.20.1
+*Released*: 25 October 2019
 * Added optional styling property for WizardNavButtons.tsx
 
 ### version 0.20.0

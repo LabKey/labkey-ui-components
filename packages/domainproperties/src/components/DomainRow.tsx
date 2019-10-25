@@ -24,7 +24,8 @@ import {
     SEVERITY_LEVEL_WARN,
     SEVERITY_LEVEL_ERROR,
     HIGHLIGHT_BLUE,
-    NOT_HIGHLIGHT_GRAY
+    NOT_HIGHLIGHT_GRAY,
+    ALL_SAMPLES_DISPLAY_TEXT,
 } from "../constants";
 
 import {
@@ -49,6 +50,7 @@ import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 import {AdvancedSettings} from "./AdvancedSettings";
+import {SCHEMAS} from "@glass/base";
 
 interface IDomainRowProps {
     domainId?: number
@@ -96,7 +98,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const {expanded, field, index} = this.props;
+        const {field, index} = this.props;
         let details = [];
 
         if (field.hasErrors()) {
@@ -110,6 +112,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 default:
                     break;
             }
+        }
+        else if (field.dataType.isSample()) {
+            let detailsText = field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName && SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(field.lookupQuery, 'en', {sensitivity: 'accent'}) === 0 ?
+                ALL_SAMPLES_DISPLAY_TEXT:
+                field.lookupQuery;
+            details.push(detailsText);
         }
         else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
             details.push([

@@ -31,10 +31,11 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
     USER_RANGE_URI,
-    DOMAIN_URI_PREFIX,
     DOMAIN_FILTER_HASANYVALUE,
+    SAMPLE_TYPE_CONCEPT_URI,
     DOMAIN_FIELD_PARTIALLY_LOCKED
 } from "./constants";
+import {SCHEMAS} from "@glass/base";
 
 import { Filter } from '@labkey/api';
 
@@ -88,6 +89,10 @@ export class PropDescType extends Record({
 
     static isUser(name: string): boolean {
         return name === 'users';
+    }
+
+    static isSample(conceptURI: string): boolean {
+        return conceptURI === SAMPLE_TYPE_CONCEPT_URI;
     }
 
     static isLookup(name: string): boolean {
@@ -149,6 +154,10 @@ export class PropDescType extends Record({
     isFileType(): boolean {
         return (this === FILE_TYPE || this === ATTACHMENT_TYPE )
     }
+
+    isSample(): boolean {
+        return PropDescType.isSample(this.conceptURI)
+    }
 }
 
 export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
@@ -163,6 +172,7 @@ export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', ra
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
 export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: INT_RANGE_URI, lookupSchema: 'core', lookupQuery: 'users'});
 export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
+export const SAMPLE_TYPE = new PropDescType({name: 'sample', display: 'Sample', rangeURI: INT_RANGE_URI, conceptURI: SAMPLE_TYPE_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
@@ -176,7 +186,8 @@ export const PROP_DESC_TYPES = List([
     ATTACHMENT_TYPE,
     USERS_TYPE,
     PARTICIPANT_TYPE,
-    LOOKUP_TYPE
+    LOOKUP_TYPE,
+    SAMPLE_TYPE,
 ]);
 
 interface IDomainDesign {
@@ -193,6 +204,7 @@ interface IDomainDesign {
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
+    newDesignFields?: List<DomainField>  // set of fields to initialize a manually created design
 }
 
 export class DomainDesign extends Record({
@@ -210,7 +222,8 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>(),
     domainException: undefined,
     mandatoryFieldNames: List<string>(),
-    reservedFieldNames: List<string>()
+    reservedFieldNames: List<string>(),
+    newDesignFields: undefined,
 }) implements IDomainDesign {
     name: string;
     container: string;
@@ -227,6 +240,7 @@ export class DomainDesign extends Record({
     domainException: DomainException;
     mandatoryFieldNames: List<string>;
     reservedFieldNames: List<string>;
+    newDesignFields?: List<DomainField>;  // Returns a set of fields to initialize a manually created design
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -274,6 +288,7 @@ export class DomainDesign extends Record({
 
         // remove non-serializable fields
         delete json.domainException;
+        delete json.newDesignFields;
 
         return json;
     }
@@ -466,6 +481,15 @@ export class PropertyValidator extends Record({
     }
 }
 
+interface ILookupConfig {
+    lookupContainer?: string
+    lookupQuery?: string
+    lookupSchema?: string
+    lookupQueryValue?: string;
+    lookupType?: PropDescType
+}
+
+// Commented out properties are unused
 export interface IDomainField {
     conceptURI?: string
     conditionalFormats: List<ConditionalFormat>
@@ -603,25 +627,14 @@ export class DomainField extends Record({
     lockType: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
-        let dataType = resolveDataType(rawField);
-        let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
-
-        // lockType can either come from the rawField, or be based on the domain's mandatoryFieldNames
-        const isMandatoryFieldMatch = mandatoryFieldNames !== undefined && mandatoryFieldNames.contains(rawField.name.toLowerCase());
-        let lockType = rawField.lockType || DOMAIN_FIELD_NOT_LOCKED;
-        if (lockType === DOMAIN_FIELD_NOT_LOCKED && isMandatoryFieldMatch) {
-            lockType = DOMAIN_FIELD_PARTIALLY_LOCKED;
-        }
-
-        let field = new DomainField(Object.assign({}, rawField, {
-            dataType,
-            lookupContainer: rawField.lookupContainer === null ? undefined : rawField.lookupContainer,
-            lookupQueryValue: encodeLookup(rawField.lookupQuery, lookupType),
-            lookupSchema: rawField.lookupSchema === null ? undefined : rawField.lookupSchema,
-            lookupType,
-            lockType,
+        let baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
+        const {dataType} = baseField;
+        const lookup = DomainField.resolveLookupConfig(rawField, dataType);
+        let field = new DomainField(Object.assign(rawField, baseField, {
+            ...lookup,
             original: {
                 dataType,
+                conceptURI: rawField.conceptURI,
                 rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined // Issue 38366: only need to use rangeURI filtering for already saved field/property
             }
         }));
@@ -647,6 +660,22 @@ export class DomainField extends Record({
         return field;
     }
 
+    private static resolveLookupConfig(rawField: Partial<IDomainField>, dataType: PropDescType): ILookupConfig {
+        let lookupType = LOOKUP_TYPE.set('rangeURI', rawField.rangeURI) as PropDescType;
+        let lookupContainer = rawField.lookupContainer === null ? undefined : rawField.lookupContainer;
+        let lookupSchema = resolveLookupSchema(rawField, dataType);
+        let lookupQuery = rawField.lookupQuery || (dataType === SAMPLE_TYPE ? SCHEMAS.EXP_TABLES.MATERIALS.queryName : undefined);
+        let lookupQueryValue = encodeLookup(lookupQuery, lookupType);
+
+        return {
+            lookupContainer,
+            lookupSchema,
+            lookupQuery,
+            lookupType,
+            lookupQueryValue,
+        };
+    }
+
     static fromJS(rawFields: Array<IDomainField>, mandatoryFieldNames?: List<string>): List<DomainField> {
         let fields = List<DomainField>();
 
@@ -657,10 +686,34 @@ export class DomainField extends Record({
         return fields;
     }
 
+    static resolveBaseProperties(raw: Partial<IDomainField>, mandatoryFieldNames?: List<string>): Partial<IDomainField> {
+        let dataType = resolveDataType(raw);
+
+        // lockType can either come from the rawField, or be based on the domain's mandatoryFieldNames
+        const isMandatoryFieldMatch = mandatoryFieldNames !== undefined && mandatoryFieldNames.contains(raw.name.toLowerCase());
+        let lockType = raw.lockType || DOMAIN_FIELD_NOT_LOCKED;
+        if (lockType === DOMAIN_FIELD_NOT_LOCKED && isMandatoryFieldMatch) {
+            lockType = DOMAIN_FIELD_PARTIALLY_LOCKED;
+        }
+
+        let field = {dataType, lockType} as IDomainField;
+
+        //Infer SampleId as SAMPLE_TYPE for sample manager and mark required
+        if (isFieldNew(raw) && raw.name) {
+            if (raw.name.localeCompare('SampleId', 'en', {sensitivity: 'accent'}) === 0) {
+                field.dataType = SAMPLE_TYPE;
+                field.conceptURI = SAMPLE_TYPE.conceptURI;
+                field.required = true;
+            }
+        }
+
+        return field;
+    }
+
     static serialize(df: DomainField): any {
         let json = df.toJS();
 
-        if (!df.dataType.isLookup() && !df.dataType.isUser()) {
+        if (!(df.dataType.isLookup() || df.dataType.isUser() || df.dataType.isSample()) ) {
             json.lookupContainer = null;
             json.lookupQuery = null;
             json.lookupSchema = null;
@@ -746,10 +799,16 @@ export class DomainField extends Record({
 
     static updateDefaultValues(field: DomainField): DomainField {
 
-        return field.merge({
-            measure: DomainField.defaultValues(DOMAIN_FIELD_MEASURE, field.dataType),
-            dimension: DomainField.defaultValues(DOMAIN_FIELD_DIMENSION, field.dataType)
-        }) as DomainField;
+        const {dataType} = field;
+
+        let config = {
+            measure: DomainField.defaultValues(DOMAIN_FIELD_MEASURE, dataType),
+            dimension: DomainField.defaultValues(DOMAIN_FIELD_DIMENSION, dataType)
+        };
+
+        let lookupConfig = dataType === SAMPLE_TYPE ? DomainField.resolveLookupConfig(field, dataType) : {};
+
+        return field.merge(config, lookupConfig) as DomainField;
     }
 
     static defaultValues(prop: string, type: PropDescType): any {
@@ -758,7 +817,7 @@ export class DomainField extends Record({
             case DOMAIN_FIELD_MEASURE:
                 return (type === INTEGER_TYPE || type === DOUBLE_TYPE);
             case DOMAIN_FIELD_DIMENSION:
-                return (type === LOOKUP_TYPE || type === USERS_TYPE);
+                return (type === LOOKUP_TYPE || type === USERS_TYPE || type === SAMPLE_TYPE);
             default:
                 return false
         }
@@ -782,6 +841,39 @@ export function encodeLookup(queryName: string, type: PropDescType): string {
     return undefined;
 }
 
+function resolveLookupSchema(rawField: Partial<IDomainField>, dataType: PropDescType): string {
+    if (rawField.lookupSchema)
+        return rawField.lookupSchema;
+
+    if (dataType === SAMPLE_TYPE )
+        return SCHEMAS.EXP_TABLES.SCHEMA;
+
+    return undefined;
+}
+
+export function updateSampleField(field: Partial<DomainField>, sampleQueryValue?: string): DomainField {
+
+    let { queryName, rangeURI = INT_RANGE_URI } = decodeLookup(sampleQueryValue);
+    let lookupType = field.lookupType || LOOKUP_TYPE;
+    let sampleField = 'all' === sampleQueryValue ?
+        {
+            lookupSchema: SCHEMAS.EXP_TABLES.SCHEMA,
+            lookupQuery: SCHEMAS.EXP_TABLES.MATERIALS.queryName,
+            lookupQueryValue: sampleQueryValue,
+            lookupType: field.lookupType.set('rangeURI', rangeURI),
+            rangeURI: rangeURI,
+        }:
+        {
+            lookupSchema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            lookupQuery: queryName,
+            lookupQueryValue: sampleQueryValue || 'all',
+            lookupType: lookupType.set('rangeURI', rangeURI),
+            rangeURI: rangeURI,
+        };
+
+    return field.merge(sampleField) as DomainField;
+}
+
 function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
 }
@@ -798,7 +890,7 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
 
     // field has been saved -- display eligible propTypes
     return availableTypes.filter((type) => {
-        if (type.isLookup()) {
+        if (type.isLookup() || type.isSample()) {
             return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
         }
 
@@ -820,6 +912,9 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
     let type: PropDescType;
 
     if (!isFieldNew(rawField) || rawField.rangeURI !== undefined) {
+        if (rawField.conceptURI === SAMPLE_TYPE_CONCEPT_URI)
+            return SAMPLE_TYPE;
+
         type = PROP_DESC_TYPES.find((type) => {
 
             // handle matching rangeURI and conceptURI
@@ -1265,4 +1360,14 @@ export class AssayProtocolModel extends Record({
             && (!this.allowPlateTemplateSelection() || Utils.isString(this.selectedPlateTemplate))
             && this.validateTransformScripts() === undefined;
     }
+}
+
+export type HeaderRenderer = (config:IAppDomainHeader) => any
+
+export interface IAppDomainHeader {
+    domain: DomainDesign
+    modelDomains?: List<DomainDesign>
+    onChange?: (changes: List<IFieldChange>, index: number, expand: boolean) => void
+    onAddField?: (fieldConfig: Partial<IDomainField>) => void
+    onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
 }

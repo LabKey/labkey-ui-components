@@ -1,8 +1,9 @@
 import * as React from 'react'
+import { Map } from 'immutable'
 import { Alert, WizardNavButtons } from "@glass/base";
 
-import { AssayProtocolModel, DomainDesign } from "../../models";
-import { saveAssayDesign } from "../../actions/actions";
+import {AssayProtocolModel, DomainDesign, HeaderRenderer} from "../../models";
+import {saveAssayDesign} from "../../actions/actions";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import DomainForm from "../DomainForm";
 
@@ -17,6 +18,8 @@ interface Props {
     hideEmptyBatchDomain?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
     basePropertiesOnly?: boolean
+    appDomainHeaders?: Map<string, HeaderRenderer>
+    appIsValid?: (model: AssayProtocolModel) => boolean
 }
 
 interface State {
@@ -122,7 +125,9 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
     }
 
     isValid(): boolean {
-        return this.state.protocolModel.isValid();
+        const { appIsValid } = this.props;
+        const { protocolModel } = this.state;
+        return appIsValid ? protocolModel.isValid() && appIsValid(protocolModel) : protocolModel.isValid();
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
@@ -135,6 +140,15 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                 onChange(model);
             }
         });
+    };
+
+    getAppDomainHeaderRenderer = (domain: DomainDesign): HeaderRenderer =>  {
+        const {appDomainHeaders} = this.props;
+
+        if (!appDomainHeaders)
+            return undefined;
+
+        return appDomainHeaders.filter((v,k) => domain.isNameSuffixMatch(k)).first();
     };
 
     render() {
@@ -163,6 +177,14 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
+                    const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
+
+                    // collapse domain panel for new assays (unless it is the active step)
+                    // for existing assays, collapse unless the assay is invalidate and the domain has appDomainHeaderRenderer
+                    let initCollapsed = !isNew || currentPanelIndex !== (i+1);
+                    if (!isNew && !this.isValid() && appDomainHeaderRenderer !== undefined) {
+                        initCollapsed = false;
+                    }
 
                     return (
                         <DomainForm
@@ -170,7 +192,7 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             domain={domain}
                             headerPrefix={protocolModel.name}
                             collapsible={!isNew}
-                            initCollapsed={!isNew || currentPanelIndex !== (i+1)}
+                            initCollapsed={initCollapsed}
                             markComplete={currentPanelIndex > (i+1)}
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}
@@ -179,6 +201,8 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}
+                            appDomainHeaderRenderer={appDomainHeaderRenderer}
+                            modelDomains={protocolModel.domains}
                         >
                             <p>{domain.description}</p>
                         </DomainForm>
@@ -187,14 +211,16 @@ export class AssayDesignerPanels extends React.Component<Props, State> {
                 {error && <Alert>{error}</Alert>}
                 {transformScriptError && <Alert>{transformScriptError}</Alert>}
                 <WizardNavButtons
-                    containerClassName=""
                     cancel={onCancel}
-                    finish={true}
-                    canFinish={this.isValid()}
-                    isFinishing={submitting}
-                    finishText={finish ? 'Finish' : 'Next'}
-                    nextStep={finish ? this.onFinish : this.onNext}
+                    canFinish={this.isValid()}  //if finished call isValid, otherwise isNameSet
+                    canNextStep={protocolModel.isValid()}
                     canPreviousStep={!submitting && currentPanelIndex > 0}
+                    containerClassName=""
+                    finish={finish}
+                    includeNext={!finish}
+                    isFinishing={submitting}
+                    nextStep={finish ? this.onFinish : this.onNext}
+                    nextStyle={'success'}
                     previousStep={isNew ? this.onPrevious : undefined}
                 />
             </>

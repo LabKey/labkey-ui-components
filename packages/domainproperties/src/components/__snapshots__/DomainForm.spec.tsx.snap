@@ -96,6 +96,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[Function]}
@@ -196,6 +197,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -2900,6 +2902,7 @@ exports[`DomainForm domain form header and search 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   helpURL="https://www.labkey.org/home/project-begin.view?"
@@ -3229,6 +3232,7 @@ exports[`DomainForm domain form header and search 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -11669,6 +11673,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[Function]}
@@ -11769,6 +11774,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -13993,6 +13999,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[MockFunction]}
@@ -14093,6 +14100,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -17377,6 +17385,7 @@ exports[`DomainForm domain form with all field types 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[MockFunction]}
@@ -18237,6 +18246,7 @@ exports[`DomainForm domain form with all field types 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -39583,6 +39593,7 @@ exports[`DomainForm domain form with no fields 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[MockFunction]}
@@ -39606,6 +39617,7 @@ exports[`DomainForm domain form with no fields 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -40086,6 +40098,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[MockFunction]}
@@ -40414,6 +40427,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"
@@ -48146,6 +48160,7 @@ exports[`DomainForm with empty domain form 1`] = `
       "domainException": undefined,
       "mandatoryFieldNames": Immutable.List [],
       "reservedFieldNames": Immutable.List [],
+      "newDesignFields": undefined,
     }
   }
   onChange={[MockFunction]}
@@ -48169,6 +48184,7 @@ exports[`DomainForm with empty domain form 1`] = `
           "domainException": undefined,
           "mandatoryFieldNames": Immutable.List [],
           "reservedFieldNames": Immutable.List [],
+          "newDesignFields": undefined,
         }
       }
       helpNoun="domain"

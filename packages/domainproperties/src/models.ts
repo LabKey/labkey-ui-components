@@ -204,6 +204,7 @@ interface IDomainDesign {
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
+    newDesignFields?: List<DomainField>  // set of fields to initialize a manually created design
 }
 
 export class DomainDesign extends Record({
@@ -221,7 +222,8 @@ export class DomainDesign extends Record({
     indices: List<DomainIndex>(),
     domainException: undefined,
     mandatoryFieldNames: List<string>(),
-    reservedFieldNames: List<string>()
+    reservedFieldNames: List<string>(),
+    newDesignFields: undefined,
 }) implements IDomainDesign {
     name: string;
     container: string;
@@ -238,6 +240,7 @@ export class DomainDesign extends Record({
     domainException: DomainException;
     mandatoryFieldNames: List<string>;
     reservedFieldNames: List<string>;
+    newDesignFields?: List<DomainField>;  // Returns a set of fields to initialize a manually created design
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -285,6 +288,7 @@ export class DomainDesign extends Record({
 
         // remove non-serializable fields
         delete json.domainException;
+        delete json.newDesignFields;
 
         return json;
     }

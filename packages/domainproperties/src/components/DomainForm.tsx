@@ -244,6 +244,20 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
 
+    initNewDesign = () => {
+        const {domain} = this.props;
+        const {newDesignFields} = domain;
+
+        if (newDesignFields) {
+             newDesignFields.forEach(this.applyAddField);
+             this.setState({
+                 expandedRowIndex: 0
+             });
+        }
+        else
+            this.applyAddField();
+    };
+
     onAddField = () => {
         this.applyAddField();
     };
@@ -398,7 +412,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <div className={'margin-top'}>
                     or&nbsp;
-                    <span className={'domain-form-add-link'} onClick={this.onAddField}>
+                    <span className={'domain-form-add-link'} onClick={this.initNewDesign}>
                         Start a New Design
                     </span>
                 </div>
@@ -542,7 +556,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
     };
 
-    readerPanelHeaderContent() {
+    renderPanelHeaderContent() {
         const { helpURL, children } = this.props;
 
         return(
@@ -592,7 +606,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
-                {this.readerPanelHeaderContent()}
+                {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
                 {domain.fields.size > 1 && this.renderSearchField()}
                 {domain.fields.size > 0 ?

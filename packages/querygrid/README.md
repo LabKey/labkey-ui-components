@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Package patch update for changes to @glass/domainproperties vTBD
+
 ### version 0.21.0
 *Released*: 18 October 2019
 * Fix image scaling problem in image modal (Issue 36957)

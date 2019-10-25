@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Item 6451: Domain designer feedback changes, bug fixes, and polish
+
 ### version 0.0.42
 *Released*: 23 October 2019
 * Item 5917: Conditional Formatting and Property Validators

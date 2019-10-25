@@ -54,7 +54,7 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
             <div
               className="domain-field-label"
             >
-              Format Numeric Values
+              Format for Numbers
               <LabelHelpTip
                 body={[Function]}
                 id="tooltip"
@@ -257,13 +257,13 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                   key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
                   value="LINEAR"
                 >
-                  LINEAR
+                  Linear
                 </option>
                 <option
                   key="domainpropertiesrow-defaultScaleoption-LOG-1"
                   value="LOG"
                 >
-                  LOG
+                  Log
                 </option>
               </select>
             </FormControl>

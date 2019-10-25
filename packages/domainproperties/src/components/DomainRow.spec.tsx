@@ -346,7 +346,7 @@ describe('DomainRow', () => {
         let expandButton = row.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, _index)});
         expect(expandButton.length).toEqual(1);
 
-        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index), bsStyle: 'danger'});
+        let deleteButton = row.find({id: createFormInputId(DOMAIN_FIELD_DELETE, _index), bsStyle: 'default'});
         expect(deleteButton.length).toEqual(1);
 
         let advButton = row.find({id: createFormInputId(DOMAIN_FIELD_ADV, _index), bsStyle: 'default'});

@@ -877,7 +877,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 active={false}
                 block={false}
                 bsClass="btn"
-                bsStyle="danger"
+                bsStyle="default"
                 className="domain-validation-delete"
                 disabled={false}
                 id="domainpropertiesrow-removeValidator-0"
@@ -885,7 +885,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 onClick={[Function]}
               >
                 <button
-                  className="domain-validation-delete btn btn-danger"
+                  className="domain-validation-delete btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-removeValidator-0"
                   name="domainpropertiesrow-removeValidator"

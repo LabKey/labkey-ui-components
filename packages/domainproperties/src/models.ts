@@ -151,18 +151,18 @@ export class PropDescType extends Record({
     }
 }
 
-export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
+export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
 export const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
 export const MULTILINE_TYPE = new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI});
 export const BOOLEAN_TYPE = new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI, alternateRangeURI: 'xsd:boolean'});
 export const INTEGER_TYPE = new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
 export const DOUBLE_TYPE = new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI, alternateRangeURI: 'xsd:double'});
 export const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI, alternateRangeURI: 'xsd:dateTime'});
-export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
+export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
 export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI});
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
 export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: INT_RANGE_URI, lookupSchema: 'core', lookupQuery: 'users'});
-export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
+export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,

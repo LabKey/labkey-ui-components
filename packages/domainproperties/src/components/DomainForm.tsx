@@ -449,6 +449,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 onConfirm={this.onDeleteConfirm}
                 onCancel={this.onConfirmCancel}
                 confirmVariant='danger'
+                confirmButtonText='Yes, Remove Field'
+                cancelButtonText='Cancel'
             />
         )
     }
@@ -459,7 +461,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Row className='domain-form-hdr-row'>
                     <Col xs={6}>
                         <Col xs={6}>
-                            <b>Field Name</b>
+                            <b>Name</b>
                         </Col>
                         <Col xs={4}>
                             <b>Data Type</b>
@@ -505,7 +507,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         else {
             return (
                 <Panel className='domain-form-no-field-panel'>
-                    Start by adding some properties using the "Add Field" button.
+                    No fields created yet. Add some using the button below.
                 </Panel>
             )
         }
@@ -539,8 +541,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Col xs={helpURL ? 9 : 12}>
                     {children ? children
                         : <div className='domain-field-float-left'>
-                            Adjust fields and their properties that will be shown within this domain.
-                            Click a row to access additional options. Drag and drop rows to reorder them.
+                            Set up and configure fields for use in this domain.
                         </div>
                     }
                 </Col>

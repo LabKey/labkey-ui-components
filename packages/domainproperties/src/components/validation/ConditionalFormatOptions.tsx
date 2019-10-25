@@ -55,7 +55,6 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
             <Row className='domain-validator-color-row'>
                 <Col xs={12}>
                     <Button
-                        bsStyle="danger"
                         className="domain-validation-delete"
                         name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
                         id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, validatorIndex)}

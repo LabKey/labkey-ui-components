@@ -369,7 +369,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 {(expanded || closing) && (
                 <>
                     <Button
-                        bsStyle="danger"
                         className="domain-row-button"
                         name={createFormInputName(DOMAIN_FIELD_DELETE)}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}

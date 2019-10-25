@@ -72,7 +72,6 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                      value={field.description || ''}
                                   id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                                   name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
-                                  placeholder={'Add a description'}
                                   onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
                     <Col xs={3}>

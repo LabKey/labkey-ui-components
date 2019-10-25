@@ -39,7 +39,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
 
         return (
             <>
-                To control how a number value is displayed, provide a string format compatible with the java data class DecimalFormat.
+                To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
                 <br/><br/>
                 Learn more about using <a target='_blank'
                                           href={helpPrefix + 'dateFormats#number'}>Number formats</a> in LabKey.
@@ -60,7 +60,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                 <Row className='domain-row-expanded'>
                     <Col xs={2}>
                         <div className={'domain-field-label'}>
-                            Format Numeric Values
+                            Format for Numbers
                             <LabelHelpTip
                                 title='Format Strings'
                                 body={this.getFormatHelpText} />
@@ -89,10 +89,10 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                                      onChange={this.onFieldChange} value={defaultScale}>
                             <option
                                 key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LINEAR, index)}
-                                value={DEFAULT_SCALE_LINEAR}>{DEFAULT_SCALE_LINEAR}</option>
+                                value={DEFAULT_SCALE_LINEAR}>Linear</option>
                             <option
                                 key={createFormInputId(DOMAIN_FIELD_DEFAULT_SCALE + 'option-' + DEFAULT_SCALE_LOG, index)}
-                                value={DEFAULT_SCALE_LOG}>{DEFAULT_SCALE_LOG}</option>
+                                value={DEFAULT_SCALE_LOG}>Log</option>
                         </FormControl>
                     </Col>
                 </Row>

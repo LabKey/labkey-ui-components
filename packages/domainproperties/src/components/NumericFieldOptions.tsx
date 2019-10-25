@@ -28,7 +28,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
         if (onChange) {
             onChange(evt.target.id, value);
         }
-    }
+    };
 
     getFormatHelpText = () => {
         let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";
@@ -45,7 +45,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                                           href={helpPrefix + 'dateFormats#number'}>Number formats</a> in LabKey.
             </>
         )
-    }
+    };
 
     render() {
         const { index, label, format, defaultScale, lockType } = this.props;
@@ -58,7 +58,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
-                    <Col xs={2}>
+                    <Col xs={3}>
                         <div className={'domain-field-label'}>
                             Format for Numbers
                             <LabelHelpTip
@@ -71,7 +71,7 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
-                    <Col xs={2}>
+                    <Col xs={3}>
                         <FormControl type="text"
                                      value={format || ""}
                                      onChange={this.onFieldChange}

@@ -49,7 +49,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
     };
 
     addLookupValidator = (evt) => {
-        const { lookupValidator, onMultiChange } = this.props;
+        const { onMultiChange } = this.props;
 
         let newLookupValidator = undefined;
 
@@ -69,7 +69,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         return (
             <div>Lookup validators allow you to require that any value is present in the lookup's target table or query</div>
         )
-    }
+    };
 
     render() {
         const { index, label, lookupContainer, lookupSchema, lookupQueryValue, original, lockType, lookupValidator } = this.props;

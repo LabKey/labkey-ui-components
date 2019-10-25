@@ -276,10 +276,10 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               <Col
                 bsClass="col"
                 componentClass="div"
-                xs={2}
+                xs={3}
               >
                 <div
-                  className="col-xs-2"
+                  className="col-xs-3"
                 >
                   <FormControl
                     bsClass="form-control"
@@ -2538,10 +2538,10 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <Col
                 bsClass="col"
                 componentClass="div"
-                xs={2}
+                xs={3}
               >
                 <div
-                  className="col-xs-2"
+                  className="col-xs-3"
                 >
                   <div
                     className="domain-field-label"
@@ -2693,10 +2693,10 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               <Col
                 bsClass="col"
                 componentClass="div"
-                xs={2}
+                xs={3}
               >
                 <div
-                  className="col-xs-2"
+                  className="col-xs-3"
                 >
                   <FormControl
                     bsClass="form-control"

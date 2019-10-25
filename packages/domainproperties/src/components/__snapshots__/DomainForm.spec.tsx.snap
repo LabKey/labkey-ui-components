@@ -4365,10 +4365,10 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <div
                                                                         className="domain-field-label"
@@ -4520,10 +4520,10 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -8198,10 +8198,10 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <div
                                                                         className="domain-field-label"
@@ -8353,10 +8353,10 @@ exports[`DomainForm domain form header and search 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -15077,10 +15077,10 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <div
                                                                         className="domain-field-label"
@@ -15232,10 +15232,10 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -19061,10 +19061,10 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <div
                                                                         className="domain-field-label"
@@ -19216,10 +19216,10 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -25105,10 +25105,10 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -26810,10 +26810,10 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <div
                                                                         className="domain-field-label"
@@ -26965,10 +26965,10 @@ exports[`DomainForm domain form with all field types 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -38959,10 +38959,10 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <div
                                                                         className="domain-field-label"
@@ -39114,10 +39114,10 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"
@@ -41177,10 +41177,10 @@ exports[`DomainForm domain form with updated fields 1`] = `
                                                                   <Col
                                                                     bsClass="col"
                                                                     componentClass="div"
-                                                                    xs={2}
+                                                                    xs={3}
                                                                   >
                                                                     <div
-                                                                      className="col-xs-2"
+                                                                      className="col-xs-3"
                                                                     >
                                                                       <FormControl
                                                                         bsClass="form-control"

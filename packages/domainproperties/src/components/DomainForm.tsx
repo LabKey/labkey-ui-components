@@ -101,7 +101,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
  */
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
-        helpNoun: 'domain',
+        helpNoun: 'field designer',
         helpURL: LK_DOMAIN_HELP_URL,
         showHeader: true,
         showHeaderFieldCount: true,
@@ -560,14 +560,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderPanelHeaderContent() {
-        const { helpURL, children } = this.props;
+        const { helpURL, helpNoun, children } = this.props;
 
         return(
             <Row className='domain-form-hdr-margins'>
                 <Col xs={helpURL ? 9 : 12}>
                     {children ? children
                         : <div className='domain-field-float-left'>
-                            Set up and configure fields for use in this domain.
+                            Set up and configure fields for use in this {helpNoun}.
                         </div>
                     }
                 </Col>

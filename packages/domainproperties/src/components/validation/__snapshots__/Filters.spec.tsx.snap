@@ -290,7 +290,7 @@ exports[`Filters Date Range 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
-              disabled={false}
+              disabled={true}
               id="domainpropertiesrow-secondFilterValue-1"
               name="domainpropertiesrow-secondFilterValue"
               onChange={[Function]}
@@ -299,7 +299,7 @@ exports[`Filters Date Range 1`] = `
             >
               <input
                 className="form-control"
-                disabled={false}
+                disabled={true}
                 id="domainpropertiesrow-secondFilterValue-1"
                 name="domainpropertiesrow-secondFilterValue"
                 onChange={[Function]}
@@ -764,7 +764,7 @@ exports[`Filters Empty Filters - string type 1`] = `
             <FormControl
               bsClass="form-control"
               componentClass="input"
-              disabled={false}
+              disabled={true}
               id="domainpropertiesrow-secondFilterValue-3"
               name="domainpropertiesrow-secondFilterValue"
               onChange={[Function]}
@@ -773,7 +773,7 @@ exports[`Filters Empty Filters - string type 1`] = `
             >
               <input
                 className="form-control"
-                disabled={false}
+                disabled={true}
                 id="domainpropertiesrow-secondFilterValue-3"
                 name="domainpropertiesrow-secondFilterValue"
                 onChange={[Function]}

@@ -381,7 +381,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
-                {(expanded || closing) && (
+                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && (
                 <>
                     <Button
                         className="domain-row-button"

@@ -32,8 +32,8 @@ import {
     STRING_RANGE_URI,
     USER_RANGE_URI,
     DOMAIN_FILTER_HASANYVALUE,
-    SAMPLE_TYPE_CONCEPT_URI,
-    DOMAIN_FIELD_PARTIALLY_LOCKED
+    DOMAIN_FIELD_PARTIALLY_LOCKED,
+    SAMPLE_TYPE_CONCEPT_URI
 } from "./constants";
 import {SCHEMAS} from "@glass/base";
 
@@ -492,7 +492,6 @@ interface ILookupConfig {
     lookupType?: PropDescType
 }
 
-// Commented out properties are unused
 export interface IDomainField {
     conceptURI?: string
     conditionalFormats: List<ConditionalFormat>

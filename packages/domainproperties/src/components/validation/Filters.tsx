@@ -178,7 +178,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
             return ({
                 firstFilterType: 'eq',
                 firstFilterValue: '',
-                secondFilterType: '',
+                secondFilterType: 'None',
                 secondFilterValue: ''
             } as FilterSet)
         }
@@ -231,7 +231,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
             return filter.isDataValueRequired();
         }
 
-        return true;
+        return false;
     };
 
     isDataValueRequired = (second?: boolean) => {

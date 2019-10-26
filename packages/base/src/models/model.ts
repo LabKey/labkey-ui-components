@@ -574,6 +574,14 @@ export class QueryGridModel extends Record({
         }
     }
 
+    static getEmptySelection() : any {
+        return {
+            selectedQuantity: 0,
+            selectedIds: emptyList,
+            selectedState: GRID_CHECKBOX_OPTIONS.NONE
+        };
+    }
+
     canImport() {
         return this.showImportDataButton().get('canImport');
     }
@@ -1544,7 +1552,12 @@ export class AssayDefinitionModel extends Record({
                 url = url.addParam('dataTab', dataTab);
             if (filterList && !filterList.isEmpty()) {
                 filterList.forEach((filter) => {
-                    url = url.addParam(filter.getURLParameterName(), filter.getURLParameterValue());
+                    // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
+                    // CONSIDER:  Applications might want to be able to register their own filter types
+                    const urlSuffix = filter.getFilterType().getURLSuffix();
+                    if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
+                        url = url.addParam(filter.getURLParameterName(), filter.getURLParameterValue());
+                    }
                 });
             }
             if (selectionKey)

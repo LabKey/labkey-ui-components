@@ -258,16 +258,15 @@ interface IGridSelectionResponse {
 export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse)  {
     const selectedIds = response.selectedIds;
     const id = model.getId();
-    const selectedLoaded: any = true;
+    const selectedLoaded = true;
 
     if (selectedIds !== undefined && selectedIds.size) {
         const { dataIds, maxRows, totalRows } = model;
-        let viewSelected = selectedIds;
-        const selectedState = getSelectedState(dataIds, viewSelected, maxRows, totalRows);
+        const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
         const updatedState = {
             selectedIds,
             selectedLoaded,
-            selectedQuantity: viewSelected.size,
+            selectedQuantity: selectedIds.size,
             selectedState
         } as any;
 
@@ -277,7 +276,7 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
     }
     else {
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded}))
+            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded, ...QueryGridModel.getEmptySelection()}))
         });
     }
 }

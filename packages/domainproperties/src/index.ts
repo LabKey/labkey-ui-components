@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {fetchDomain, fetchProtocol, saveAssayDesign, saveDomain, getBannerMessages, setDomainFields} from "./actions/actions";
-import {AssayProtocolModel, DomainDesign, IBannerMessage, DomainField} from "./models";
+import {fetchDomain, fetchProtocol, saveAssayDesign, saveDomain, getBannerMessages, setDomainFields, createFormInputId} from "./actions/actions";
+import {AssayProtocolModel, DomainDesign, IBannerMessage, DomainField, IAppDomainHeader, SAMPLE_TYPE} from "./models";
 import DomainForm from "./components/DomainForm";
 import {DomainFieldsDisplay} from "./components/DomainFieldsDisplay";
 import {AssayPropertiesPanel} from "./components/assay/AssayPropertiesPanel";
 import {AssayDesignerPanels} from "./components/assay/AssayDesignerPanels";
-import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR} from "./constants";
+import {SEVERITY_LEVEL_WARN, SEVERITY_LEVEL_ERROR, DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_TYPE, RANGE_URIS, SAMPLE_TYPE_CONCEPT_URI} from "./constants";
 
 import './theme/index.scss'
 
@@ -35,6 +35,7 @@ export {
     saveDomain,
     getBannerMessages,
     fetchProtocol,
+    createFormInputId,
     saveAssayDesign,
     setDomainFields,
 
@@ -43,8 +44,14 @@ export {
     DomainDesign,
     DomainField,
     IBannerMessage,
+    IAppDomainHeader,
 
     // constants
     SEVERITY_LEVEL_ERROR,
-    SEVERITY_LEVEL_WARN
+    SEVERITY_LEVEL_WARN,
+    SAMPLE_TYPE,
+    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_TYPE,
+    RANGE_URIS,
+    SAMPLE_TYPE_CONCEPT_URI,
 }

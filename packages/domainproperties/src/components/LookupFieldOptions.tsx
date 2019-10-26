@@ -35,12 +35,12 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         changes.push({id: evt.target.id, value: evt.target.value} as IFieldChange);
 
         if (name === DOMAIN_FIELD_LOOKUP_CONTAINER) {
-            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index), value: ''})
-            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''})
+            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index), value: ''});
+            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
         }
 
         if (name === DOMAIN_FIELD_LOOKUP_SCHEMA) {
-            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''})
+            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
         }
 
         if (onMultiChange) {

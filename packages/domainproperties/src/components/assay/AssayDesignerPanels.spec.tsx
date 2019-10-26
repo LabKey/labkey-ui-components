@@ -1,5 +1,5 @@
 import * as React from "react";
-import {List} from "immutable";
+import {List, Map} from "immutable";
 import {mount} from "enzyme";
 import renderer from 'react-test-renderer'
 import { FileAttachmentForm } from "@glass/base";
@@ -9,6 +9,7 @@ import { AssayProtocolModel, DomainDesign } from "../../models";
 import DomainForm from "../DomainForm";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import { NameInput } from "./AssayPropertiesInput";
+import {Panel} from "react-bootstrap";
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -211,4 +212,28 @@ describe('AssayDesignerPanels', () => {
             domains: List([DomainDesign.create({name: 'Data Fields'})])
         }), false);
     });
+
+    test('Show app headers', () => {
+        const _appHeaderId = 'mock-app-header';
+        const _appHeaderText = 'This is a mock app header';
+
+        const mockAppHeader = jest.fn();
+        mockAppHeader.mockReturnValue(<><div id={_appHeaderId}>{_appHeaderText}</div></>);
+
+        const component = (
+            <AssayDesignerPanels
+                initModel={EXISTING_MODEL}
+                onCancel={jest.fn}
+                onComplete={jest.fn}
+                appDomainHeaders={Map({'Sample': mockAppHeader})}
+            />
+        );
+
+        let wrapper = mount(component);
+        //Open Sample Properties panel body
+        wrapper.find(Panel.Heading).filterWhere(n => n.text() === 'Sample Properties (3)').simulate('click');
+        expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);
+        expect(wrapper.find('#' + _appHeaderId).text()).toBe(_appHeaderText);
+    });
+
 });

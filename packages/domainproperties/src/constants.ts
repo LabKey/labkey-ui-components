@@ -45,11 +45,10 @@ export const DOMAIN_FIELD_SHOWNINDETAILSVIEW = 'shownInDetailsView';
 export const DOMAIN_FIELD_SHOWNININSERTVIEW = 'shownInInsertView';
 export const DOMAIN_FIELD_SHOWNINUPDATESVIEW = 'shownInUpdateView';
 export const DOMAIN_FIELD_CLIENT_SIDE_ERROR = 'error';
+export const DOMAIN_FIELD_SAMPLE_TYPE = 'sampleTypeSelect';
 export const DOMAIN_FIELD_DEFAULT_VALUE_TYPE = 'defaultValueType';
 export const DOMAIN_FIELD_DEFAULT_VALUE = 'defaultValue';
 export const DOMAIN_FIELD_DEFAULT_DISPLAY_VALUE = 'defaultDisplayValue';
-
-export const DOMAIN_URI_PREFIX = 'butt';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -112,9 +111,21 @@ export const DATETIME_RANGE_URI = 'http://www.w3.org/2001/XMLSchema#dateTime';
 export const FILELINK_RANGE_URI = 'http://cpas.fhcrc.org/exp/xml#fileLink';
 export const ATTACHMENT_RANGE_URI = 'http://www.labkey.org/exp/xml#attachment';
 export const USER_RANGE_URI = 'http://www.labkey.org/exp/xml#int';
+export const RANGE_URIS = {
+    STRING: STRING_RANGE_URI,
+    MULTILINE: MULTILINE_RANGE_URI,
+    BOOLEAN: BOOLEAN_RANGE_URI,
+    INT: INT_RANGE_URI,
+    DOUBLE: DOUBLE_RANGE_URI,
+    DATETIME: DATETIME_RANGE_URI,
+    FILELINK: FILELINK_RANGE_URI,
+    ATTACHMENT: ATTACHMENT_RANGE_URI,
+    USER: USER_RANGE_URI,
+};
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
+export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 
 export const MAX_TEXT_LENGTH = 4000;
 
@@ -122,14 +133,20 @@ export const HIGHLIGHT_BLUE = '#2980B9';  // See $blue-border in variables.scss
 export const NOT_HIGHLIGHT_GRAY = '#999999';
 // export const HIGHLIGHT_BLUE = '#3495D2';
 
-export const LK_URL_ENCODING_DOC = "https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding";
-export const LK_DOMAIN_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields";
-export const LK_ASSAY_DESIGNER_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema";
+export const LK_BASE_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.view?name=";
+export const SM_BASE_HELP_URL = "https://www.labkey.org/SampleManagerDocs/wiki-page.view?name=";
+
+export const LK_URL_ENCODING_DOC = `${LK_BASE_HELP_URL}urlEncoding`;
+export const LK_DOMAIN_HELP_URL = `${LK_BASE_HELP_URL}propertyFields`;
+export const LK_ASSAY_DESIGNER_HELP_URL = `${LK_BASE_HELP_URL}defineAssaySchema`;
+export const SAMPLE_TYPE_HELP_ANCHOR = "propertyFields#sampleType";  //Needs to be context/App aware
 
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";
 export const PHILEVEL_FULL_PHI = "PHI";
 export const PHILEVEL_RESTRICTED_PHI = "Restricted";
+
+export const ALL_SAMPLES_DISPLAY_TEXT = 'All Samples';
 
 export const DOMAIN_PHI_LEVELS = List([
     {label: 'Not PHI', value: PHILEVEL_NOT_PHI},

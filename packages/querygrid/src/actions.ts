@@ -1236,6 +1236,11 @@ export function modifyCell(modelId: string, colIdx: number, rowIdx: number, newV
     const VD = List<ValueDescriptor>();
 
     let model = getEditorModel(modelId);
+    if (!model) {
+        console.warn("No model available for id '" + modelId + "'");
+        return;
+    }
+
     model = updateEditorModel(model, {cellMessages: model.cellMessages.delete(cellKey)});
 
     if (mod === MODIFICATION_TYPES.ADD) {

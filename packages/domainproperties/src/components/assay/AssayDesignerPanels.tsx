@@ -29,7 +29,7 @@ interface State {
     protocolModel: AssayProtocolModel
 }
 
-export class AssayDesignerPanels extends React.Component<Props, State> {
+export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     panelCount = 1;// start at 1 for the AssayPropertiesPanel, will updated count after domains are defined in constructor
 
     constructor(props: Props) {

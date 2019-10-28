@@ -65,7 +65,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         super(props);
 
         // Filter phi levels available
-        const phiIndex = this.getMaxPhiLevelIndex(props.maxPhiLevel);
+        const phiIndex = this.getPhiLevelIndex(props.maxPhiLevel);
         const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
             return index <= phiIndex;
         }) as List<any>;
@@ -222,7 +222,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         )
     };
 
-    getMaxPhiLevelIndex = (phi: string): number => {
+    getPhiLevelIndex = (phi: string): number => {
         return DOMAIN_PHI_LEVELS.findIndex((level) => {
             return level.value === phi;
         });
@@ -315,14 +315,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderMiscOptions = () => {
-        const { index, maxPhiLevel, field } = this.props;
-        const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting } = this.state;
-
-        // Filter phi levels available
-        const phiIndex = this.getMaxPhiLevelIndex(maxPhiLevel);
-        const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
-            return index <= phiIndex;
-        });
+        const { index, field } = this.props;
+        const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
 
         return (
             <>
@@ -361,8 +355,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Checkbox>
                 </>
                 }
-                {PropDescType.isMeasureDimension(field.rangeURI) &&
-                <>
+                {PropDescType.isMeasure(field.dataType.rangeURI) &&
                     <Checkbox
                             checked={measure === true}
                             onChange={this.handleCheckbox}
@@ -372,6 +365,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         Make this field available as a measure
                         <LabelHelpTip title='Measure' body={this.getMeasureHelpText}/>
                     </Checkbox>
+                }
+                {PropDescType.isDimension(field.dataType.rangeURI) &&
                     <Checkbox
                             checked={dimension === true}
                             onChange={this.handleCheckbox}
@@ -381,7 +376,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         Make this field available as a dimension
                         <LabelHelpTip title='Data Dimension' body={this.getDimensionHelpText}/>
                     </Checkbox>
-                </>
                 }
                 <Checkbox
                     checked={recommendedVariable === true}
@@ -393,16 +387,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <LabelHelpTip title='Recommended Variable' body={this.getRecommendedVariableHelpText}/>
                 </Checkbox>
 
-                {PropDescType.isMvEnableable(field.rangeURI) &&
-                <Checkbox
-                        checked={mvEnabled === true}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                        id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
-                >
-                    Track reason for missing data values
-                    <LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
-                </Checkbox>
+                {PropDescType.isMvEnableable(field.dataType.rangeURI) &&
+                    <Checkbox
+                            checked={mvEnabled === true}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
+                            id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
+                    >
+                        Track reason for missing data values
+                        <LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
+                    </Checkbox>
                 }
             </>
         )

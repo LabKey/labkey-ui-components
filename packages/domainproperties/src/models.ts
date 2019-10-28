@@ -107,8 +107,12 @@ export class PropDescType extends Record({
         return (rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI);
     }
 
-    static isMeasureDimension(rangeURI: string): boolean {
+    static isMeasure(rangeURI: string): boolean {
         return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI);
+    }
+
+    static isDimension(rangeURI: string): boolean {
+        return (rangeURI === BOOLEAN_RANGE_URI || rangeURI === DOUBLE_RANGE_URI || rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI);
     }
 
     static isMvEnableable(rangeURI: string): boolean {

@@ -36,9 +36,11 @@ import {
 import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
-import renderer from 'react-test-renderer'
 import { FileAttachmentForm } from "@glass/base";
 import { DomainRow } from "./DomainRow";
+import {Simulate} from "react-dom/test-utils";
+import waiting = Simulate.waiting;
+import {awaitExpression} from "@babel/types";
 
 interface Props {
     showInferFromFile?: boolean
@@ -102,7 +104,7 @@ describe('DomainForm', () => {
 
     test('with showHeader, helpNoun, and helpURL', () => {
         const domain = DomainDesign.create({});
-        const tree = renderer.create(
+        const form = mount(
             <DomainForm
                 domain={domain}
                 helpNoun='assay'
@@ -112,7 +114,8 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form with no fields', () => {
@@ -391,7 +394,7 @@ describe('DomainForm', () => {
             }]
         });
 
-        const tree  = renderer.create(
+        const form  = mount(
             <DomainForm
                 domain={domain}
                 collapsible={false}
@@ -400,7 +403,8 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form initCollapsed and markComplete', () => {
@@ -419,7 +423,7 @@ describe('DomainForm', () => {
             }]
         });
 
-        const tree  = renderer.create(
+        const form  = mount(
             <DomainForm
                 domain={domain}
                 collapsible={false}
@@ -429,13 +433,14 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form headerPrefix and panelCls', () => {
         const domain = DomainDesign.create({name: "Foo headerPrefix and panelCls"});
 
-        const tree  = renderer.create(
+        const form  = mount(
             <DomainForm
                 domain={domain}
                 collapsible={false}
@@ -446,12 +451,13 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('with showInferFromFile', () => {
         const domain = DomainDesign.create({});
-        const tree = renderer.create(
+        const form = mount(
             <DomainForm
                 domain={domain}
                 showInferFromFile={true}
@@ -459,7 +465,8 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('test showInferFromFile click domain-form-add-link', () => {
@@ -618,20 +625,22 @@ describe('DomainForm', () => {
         });
 
         const wrapper = mount(<DomainForm domain={domain} onChange={jest.fn} collapsible={true}/>);
-        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
 
         // first click will collapse the panel, but header text shouldn't change
         wrapper.find('.panel-heading').simulate('click');
-        expect(wrapper.find(DomainRow)).toHaveLength(0);
+        expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(0);
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
 
         // second click will re-expand the panel, but header text shouldn't change
         wrapper.find('.panel-heading').simulate('click');
-        expect(wrapper.find(DomainRow)).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
+        setTimeout(() => {
+            expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
+            expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
 
-        wrapper.unmount();
+            wrapper.unmount();
+        }, 1000);
     });
 
     test('Show app header', () => {

@@ -190,7 +190,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         const { collapsed } = this.state;
 
         return (
-            <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
+            <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')} expanded={!collapsed} onToggle={function(){}}>
                 <Panel.Heading onClick={this.onPanelHeaderClick} className={collapsible ? 'domain-heading-collapsible' : ''}>
                     {this.renderHeader()}
                     {collapsible && collapsed &&
@@ -209,11 +209,9 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                         </span>
                     }
                 </Panel.Heading>
-                {!collapsed &&
-                    <Panel.Body>
-                        {this.renderForm()}
-                    </Panel.Body>
-                }
+                <Panel.Body collapsible={collapsible}>
+                    {this.renderForm()}
+                </Panel.Body>
             </Panel>
         )
     }

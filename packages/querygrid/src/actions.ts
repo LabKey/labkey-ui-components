@@ -136,11 +136,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
 
 export function gridClearAll(model: QueryGridModel) {
     clearSelected(model.getId(), model.schema, model.query, model.getFilters()).then(() => {
-       updateQueryGridModel(model, {
-            selectedIds:  List<string>(),
-            selectedQuantity: 0,
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE
-        });
+       updateQueryGridModel(model, QueryGridModel.getEmptySelection());
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
         gridShowError(model, error);
@@ -350,8 +346,6 @@ export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Co
 export function reloadQueryGridModel(model: QueryGridModel) {
     const newModel = updateQueryGridModel(model, {
         isLoading: true,
-        selectedLoaded: false,
-        ...QueryGridModel.getEmptySelection(),
         ...bindURLProps(model)
     });
     gridLoad(newModel);

@@ -7,6 +7,8 @@ Domain property related components for LabKey domains
 ### version TBD
 *Released*: TBD
 * Item 6451: Domain designer feedback changes, bug fixes, and polish
+* Issue 38685: UX Assay Designer: Default values for select fields
+* Issue 38771: Assay designer: default value type not set/respected for assay properties
 
 ### version 0.0.44
 *Released*: 25 October 2019

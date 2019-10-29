@@ -83,8 +83,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             shownInDetailsView: field.shownInDetailsView,
             shownInInsertView: field.shownInInsertView,
             shownInUpdateView: field.shownInUpdateView,
-            defaultValueType: (field.defaultValueType ? field.defaultValueType : (defaultDefaultValueType ? defaultDefaultValueType : DOMAIN_EDITABLE_DEFAULT)),
-            defaultDisplayValue: field.defaultDisplayValue,
+            defaultValueType: field.defaultValueType ? field.defaultValueType : (defaultDefaultValueType ? defaultDefaultValueType : DOMAIN_EDITABLE_DEFAULT),
+            defaultDisplayValue: field.defaultDisplayValue || '[none]',
             dimension: field.dimension,
             measure: field.measure,
             mvEnabled: field.mvEnabled,
@@ -273,7 +273,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     renderDefaultValues = () => {
         const { index, defaultValueOptions } = this.props;
         const { defaultValueType, defaultDisplayValue } = this.state;
-
 
         return (
             <>

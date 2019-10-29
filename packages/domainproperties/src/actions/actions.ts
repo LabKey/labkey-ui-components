@@ -256,6 +256,11 @@ export function getIndexFromId(id: string): number {
 }
 
 export function addDomainField(domain: DomainDesign, fieldConfig:  Partial<IDomainField> = {}): DomainDesign {
+    // Issue 38771: if the domain has a defaultDefaultValueType and the fieldConfig doesn't include its own, use the defaultDefaultValueType
+    if (domain.defaultDefaultValueType && !fieldConfig.defaultValueType) {
+        fieldConfig.defaultValueType = domain.defaultDefaultValueType;
+    }
+
     return domain.merge({
         fields: domain.fields.push(DomainField.create(fieldConfig, true))
     }) as DomainDesign;

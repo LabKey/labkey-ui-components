@@ -343,9 +343,13 @@ export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Co
     gridLoad(model, connectedComponent);
 }
 
+// need to reload when the URL changes and also need to reload selections because one of the
+// reasons the URL may change is for the application of filters.
 export function reloadQueryGridModel(model: QueryGridModel) {
     const newModel = updateQueryGridModel(model, {
         isLoading: true,
+        selectedLoaded: false,
+        ...QueryGridModel.getEmptySelection(),
         ...bindURLProps(model)
     });
     gridLoad(newModel);

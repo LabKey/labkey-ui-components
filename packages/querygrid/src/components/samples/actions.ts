@@ -37,7 +37,7 @@ function initParents(initialParents: Array<string>, selectionKey: string): Promi
             const { schemaQuery } = SchemaQuery.parseSelectionKey(selectionKey);
             const queryGridModel = getQueryGridModel(selectionKey);
 
-            if (queryGridModel) {
+            if (queryGridModel && queryGridModel.selectedLoaded) {
                 return selectRows({
                             schemaName: schemaQuery.schemaName,
                             queryName: schemaQuery.queryName,

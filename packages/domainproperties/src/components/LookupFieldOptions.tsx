@@ -31,20 +31,20 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         const index = getIndexFromId(evt.target.id);
         const name = getNameFromId(evt.target.id);
 
-        let changes = List<IFieldChange>().asMutable();
-        changes.push({id: evt.target.id, value: evt.target.value} as IFieldChange);
+        let changes = List<IFieldChange>();
+        changes = changes.push({id: evt.target.id, value: evt.target.value} as IFieldChange);
 
         if (name === DOMAIN_FIELD_LOOKUP_CONTAINER) {
-            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index), value: ''});
-            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
+            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_SCHEMA, index), value: ''});
+            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
         }
 
         if (name === DOMAIN_FIELD_LOOKUP_SCHEMA) {
-            changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
+            changes = changes.push({id: createFormInputId(DOMAIN_FIELD_LOOKUP_QUERY, index), value: ''});
         }
 
         if (onMultiChange) {
-            onMultiChange(changes.asImmutable());
+            onMultiChange(changes);
         }
     };
 
@@ -57,11 +57,11 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
             newLookupValidator = new PropertyValidator({type: 'Lookup', name: 'Lookup Validator'});
         }
 
-        let changes = List<IFieldChange>().asMutable();
-        changes.push({id: evt.target.id, value: newLookupValidator} as IFieldChange);
+        let changes = List<IFieldChange>();
+        changes = changes.push({id: evt.target.id, value: newLookupValidator} as IFieldChange);
 
         if (onMultiChange) {
-            onMultiChange(changes.asImmutable());
+            onMultiChange(changes);
         }
     };
 

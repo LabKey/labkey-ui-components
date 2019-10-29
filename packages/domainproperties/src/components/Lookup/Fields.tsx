@@ -75,7 +75,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
         return (
             <FormControl {...this.props} componentClass="select">
-                {context.activeContainer && <option key="_current" value={context.activeContainer.path}>Current Folder</option>}
+                {context.activeContainer && <option key="_current" value={''}>Current {context.activeContainer.type === 'project' ? 'Project' : 'Folder'}</option>}
                 {containers.map((c) => <option key={c.id} value={c.path}>{c.path}</option>).toArray()}
             </FormControl>
         )
@@ -162,7 +162,10 @@ class TargetTableSelectImpl extends React.Component<TargetTableSelectProps, ITar
             prevSchemaName: schemaName
         });
 
-        context.fetchQueries(containerPath, schemaName).then((queries) => {
+        // special case for Current Project/Folder which uses a value of '' (empty string)
+        const queryContainerPath = containerPath === '' ? null : containerPath;
+
+        context.fetchQueries(queryContainerPath, schemaName).then((queries) => {
             let infos = List<{name: string, type: PropDescType}>();
 
             queries.forEach((q) => {

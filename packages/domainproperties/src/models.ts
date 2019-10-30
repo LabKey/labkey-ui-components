@@ -712,6 +712,7 @@ export class DomainField extends Record({
             if (raw.name.localeCompare('SampleId', 'en', {sensitivity: 'accent'}) === 0) {
                 field.dataType = SAMPLE_TYPE;
                 field.conceptURI = SAMPLE_TYPE.conceptURI;
+                field.rangeURI = SAMPLE_TYPE.rangeURI;
                 field.required = true;
             }
         }

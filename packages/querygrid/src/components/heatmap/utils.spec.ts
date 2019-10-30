@@ -41,9 +41,9 @@ describe("HeatMap utils", () => {
         expect (months.length).toBe(12);
 
         // make sure we got 12 unique months
-        const monthNames = Set<string>().asMutable();
+        let monthNames = Set<string>();
         months.forEach((month) => {
-            monthNames.add(month.monthName);
+            monthNames = monthNames.add(month.monthName);
         });
         expect(monthNames.size).toBe(12);
     })

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { AppURL } from "@glass/base";
-
-import { addDateRangeFilter, monthSort } from "./utils";
+import { Set } from 'immutable';
+import { addDateRangeFilter, last12Months, monthSort } from "./utils";
 
 describe("HeatMap utils", () => {
 
@@ -36,4 +36,15 @@ describe("HeatMap utils", () => {
         expect(monthSort('jan', 'feb')).toBe(0);
     });
 
+    test ("last12Months", () => {
+        const months = last12Months();
+        expect (months.length).toBe(12);
+
+        // make sure we got 12 unique months
+        const monthNames = Set<string>().asMutable();
+        months.forEach((month) => {
+            monthNames.add(month.monthName);
+        });
+        expect(monthNames.size).toBe(12);
+    })
 });

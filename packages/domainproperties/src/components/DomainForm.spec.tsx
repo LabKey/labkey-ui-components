@@ -576,6 +576,7 @@ describe('DomainForm', () => {
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowFlagProperties: false,
+            showDefaultValueSettings: true,
             indices:[]
         });
 

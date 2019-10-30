@@ -27,6 +27,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -46,6 +47,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -65,6 +67,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -126,6 +129,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -145,6 +149,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -164,6 +169,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -315,6 +321,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -334,6 +341,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -353,6 +361,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -581,6 +590,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -600,6 +610,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -619,6 +630,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -861,6 +873,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -880,6 +893,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -899,6 +913,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -1106,6 +1121,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -1132,6 +1148,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1151,6 +1168,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1170,6 +1188,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1199,6 +1218,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -1225,6 +1245,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1244,6 +1265,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1263,6 +1285,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1420,6 +1443,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -1446,6 +1470,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1465,6 +1490,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1484,6 +1510,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1513,6 +1540,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -1539,6 +1567,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1558,6 +1587,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1577,6 +1607,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1734,6 +1765,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -1760,6 +1792,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1779,6 +1812,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1798,6 +1832,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -1827,6 +1862,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -1853,6 +1889,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1872,6 +1909,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -1891,6 +1929,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -2223,6 +2262,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -2242,6 +2282,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -2532,6 +2573,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -2551,6 +2593,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [
@@ -3015,6 +3058,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -3034,6 +3078,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -3491,6 +3536,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -3510,6 +3556,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -3981,6 +4028,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -4000,6 +4048,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -4441,6 +4490,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -4460,6 +4510,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -4900,6 +4951,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -4927,6 +4979,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -4946,6 +4999,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -5204,6 +5258,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -5231,6 +5286,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -5250,6 +5306,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [
@@ -5724,6 +5781,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [
@@ -5980,6 +6038,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -5999,6 +6058,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -6257,6 +6317,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [
@@ -6513,6 +6574,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -6532,6 +6594,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [
@@ -7366,6 +7429,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -7521,6 +7585,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -9359,6 +9424,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -9514,6 +9580,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -11499,6 +11566,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -11654,6 +11722,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -13549,6 +13618,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -13568,6 +13638,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -13587,6 +13658,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -13648,6 +13720,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -13667,6 +13740,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -13686,6 +13760,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -13837,6 +13912,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -13856,6 +13932,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -13875,6 +13952,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14103,6 +14181,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14122,6 +14201,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14141,6 +14221,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14383,6 +14464,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14402,6 +14484,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14421,6 +14504,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14672,6 +14756,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14691,6 +14776,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14710,6 +14796,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -14917,6 +15004,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -14943,6 +15031,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -14962,6 +15051,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -14981,6 +15071,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15010,6 +15101,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -15036,6 +15128,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15055,6 +15148,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15074,6 +15168,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15231,6 +15326,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -15257,6 +15353,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15276,6 +15373,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15295,6 +15393,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15324,6 +15423,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -15350,6 +15450,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15369,6 +15470,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15388,6 +15490,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15545,6 +15648,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -15571,6 +15675,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15590,6 +15695,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15609,6 +15715,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -15638,6 +15745,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -15664,6 +15772,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15683,6 +15792,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -15702,6 +15812,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -16034,6 +16145,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -16053,6 +16165,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -16072,6 +16185,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -16133,6 +16247,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -16152,6 +16267,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -16171,6 +16287,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -16322,6 +16439,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16341,6 +16459,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16360,6 +16479,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16588,6 +16708,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16607,6 +16728,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16626,6 +16748,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16868,6 +16991,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16887,6 +17011,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -16906,6 +17031,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -17157,6 +17283,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -17176,6 +17303,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -17195,6 +17323,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             "allowFileLinkProperties": true,
                             "allowAttachmentProperties": true,
                             "allowFlagProperties": true,
+                            "showDefaultValueSettings": false,
                             "defaultDefaultValueType": undefined,
                             "defaultValueOptions": Immutable.List [],
                             "fields": Immutable.List [],
@@ -17402,6 +17531,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -17428,6 +17558,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -17447,6 +17578,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -17466,6 +17598,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -17495,6 +17628,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -17521,6 +17655,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -17540,6 +17675,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -17559,6 +17695,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -17716,6 +17853,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -17742,6 +17880,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -17761,6 +17900,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -17780,6 +17920,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -17809,6 +17950,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -17835,6 +17977,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -17854,6 +17997,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -17873,6 +18017,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -18205,6 +18350,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -18224,6 +18370,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -18514,6 +18661,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -18533,6 +18681,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [
@@ -18997,6 +19146,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -19016,6 +19166,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -19473,6 +19624,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -19492,6 +19644,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -19963,6 +20116,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -19982,6 +20136,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -20433,6 +20588,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -20452,6 +20608,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -20922,6 +21079,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -20941,6 +21099,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -21382,6 +21541,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -21401,6 +21561,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -21841,6 +22002,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [
@@ -22097,6 +22259,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -22116,6 +22279,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -22374,6 +22538,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [
@@ -22630,6 +22795,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -22649,6 +22815,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [
@@ -23483,6 +23650,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -23638,6 +23806,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -25476,6 +25645,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -25631,6 +25801,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -27616,6 +27787,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -27771,6 +27943,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -29666,6 +29839,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -29685,6 +29859,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -29975,6 +30150,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -29994,6 +30170,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [
@@ -30458,6 +30635,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -30477,6 +30655,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -30934,6 +31113,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -30953,6 +31133,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -31424,6 +31605,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -31443,6 +31625,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -31894,6 +32077,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -31913,6 +32097,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -32383,6 +32568,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -32402,6 +32588,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -32843,6 +33030,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [],
@@ -32862,6 +33050,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                     "allowFileLinkProperties": true,
                                     "allowAttachmentProperties": true,
                                     "allowFlagProperties": true,
+                                    "showDefaultValueSettings": false,
                                     "defaultDefaultValueType": undefined,
                                     "defaultValueOptions": Immutable.List [],
                                     "fields": Immutable.List [
@@ -33302,6 +33491,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [],
@@ -33329,6 +33519,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -33348,6 +33539,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -33606,6 +33798,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [],
@@ -33633,6 +33826,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -33652,6 +33846,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [
@@ -34126,6 +34321,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         "allowFileLinkProperties": true,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
         "fields": Immutable.List [
@@ -34382,6 +34578,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [],
@@ -34401,6 +34598,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
           "allowFileLinkProperties": true,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
           "fields": Immutable.List [
@@ -34659,6 +34857,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "allowFileLinkProperties": true,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
             "fields": Immutable.List [
@@ -34915,6 +35114,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [],
@@ -34934,6 +35134,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "allowFileLinkProperties": true,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
               "fields": Immutable.List [
@@ -35768,6 +35969,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -35923,6 +36125,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -37761,6 +37964,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -37916,6 +38120,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}
@@ -39901,6 +40106,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   onChange={[Function]}
                                                   onDelete={[Function]}
                                                   onExpand={[Function]}
+                                                  showDefaultValueSettings={false}
                                                 >
                                                   <ConnectFunction
                                                     disableInteractiveElementBlocking={false}
@@ -40056,6 +40262,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onApply={[Function]}
                                                               onHide={[Function]}
                                                               show={false}
+                                                              showDefaultValueSettings={false}
                                                             >
                                                               <Modal
                                                                 animation={true}

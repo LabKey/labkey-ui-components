@@ -298,7 +298,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onBeforeDragStart = (initial) => {
-        const { domain, onChange } = this.props;
+        const { domain } = this.props;
         const id = initial.draggableId;
         const idIndex = id ? getIndexFromId(id) : undefined;
 
@@ -465,7 +465,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         return newStyle;
-    }
+    };
 
     renderFieldRemoveConfirm() {
         return (
@@ -567,7 +567,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return true;
 
         return !collapsed;
-    }
+    };
 
     renderPanelHeaderContent() {
         const { helpURL, helpNoun, children } = this.props;
@@ -664,6 +664,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 dragging={dragId === i}
                                                 isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
+                                                showDefaultValueSettings={domain.showDefaultValueSettings}
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                             />

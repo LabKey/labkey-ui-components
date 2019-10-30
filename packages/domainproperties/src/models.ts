@@ -203,6 +203,7 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean
     allowAttachmentProperties: boolean
     allowFlagProperties: boolean
+    showDefaultValueSettings: boolean
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
     fields?: List<DomainField>
@@ -221,6 +222,7 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: true,
     allowAttachmentProperties: true,
     allowFlagProperties: true,
+    showDefaultValueSettings: false,
     defaultDefaultValueType: undefined,
     defaultValueOptions: List<string>(),
     fields: List<DomainField>(),
@@ -239,6 +241,7 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     fields: List<DomainField>;

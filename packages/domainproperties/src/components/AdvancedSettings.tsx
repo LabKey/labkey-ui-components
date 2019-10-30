@@ -40,6 +40,7 @@ interface AdvancedSettingsProps {
     field: DomainField
     onHide: () => any
     onApply: (any) => any
+    showDefaultValueSettings: boolean
 }
 
 interface AdvancedSettingsState {
@@ -229,7 +230,11 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     showDefaultValues = () => {
-        const { field } = this.props;
+        const { field, showDefaultValueSettings } = this.props;
+
+        // some domains just don't support default values
+        if (!showDefaultValueSettings)
+            return false;
 
         // Not shown for file types
         if (field.dataType.isFileType())
@@ -416,9 +421,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal.Body>
                         <div className='domain-modal'>
                             {this.renderDisplayOptions()}
-                            {this.showDefaultValues() &&
-                            this.renderDefaultValues()
-                            }
+                            {this.showDefaultValues() && this.renderDefaultValues()}
                             {this.renderMiscOptions()}
                         </div>
                     </Modal.Body>

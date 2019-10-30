@@ -10,6 +10,7 @@
       "allowFileLinkProperties" : true,
       "allowAttachmentProperties" : false,
       "allowFlagProperties" : true,
+      "showDefaultValueSettings" : true,
       "defaultDefaultValueType" : "LAST_ENTERED",
       "defaultValueOptions" : [ "FIXED_EDITABLE", "FIXED_NON_EDITABLE", "LAST_ENTERED" ],
       "fields" : [ {
@@ -137,6 +138,7 @@
       "allowFileLinkProperties" : true,
       "allowAttachmentProperties" : false,
       "allowFlagProperties" : true,
+      "showDefaultValueSettings" : true,
       "defaultDefaultValueType" : "LAST_ENTERED",
       "defaultValueOptions" : [ "FIXED_EDITABLE", "FIXED_NON_EDITABLE", "LAST_ENTERED" ],
       "fields" : [ {
@@ -506,6 +508,7 @@
       "allowFileLinkProperties" : false,
       "allowAttachmentProperties" : false,
       "allowFlagProperties" : true,
+      "showDefaultValueSettings" : true,
       "defaultDefaultValueType" : "LAST_ENTERED",
       "defaultValueOptions" : [ "FIXED_EDITABLE", "FIXED_NON_EDITABLE", "LAST_ENTERED" ],
       "fields" : [ {
@@ -771,6 +774,7 @@
       "allowFileLinkProperties" : false,
       "allowAttachmentProperties" : false,
       "allowFlagProperties" : true,
+      "showDefaultValueSettings" : true,
       "defaultDefaultValueType" : "LAST_ENTERED",
       "defaultValueOptions" : [ "FIXED_EDITABLE", "FIXED_NON_EDITABLE", "LAST_ENTERED" ],
       "fields" : [ {
@@ -1373,6 +1377,7 @@
       "allowFileLinkProperties" : false,
       "allowAttachmentProperties" : false,
       "allowFlagProperties" : true,
+      "showDefaultValueSettings" : true,
       "defaultDefaultValueType" : "LAST_ENTERED",
       "defaultValueOptions" : [ "FIXED_EDITABLE", "FIXED_NON_EDITABLE", "LAST_ENTERED" ],
       "fields" : [ {

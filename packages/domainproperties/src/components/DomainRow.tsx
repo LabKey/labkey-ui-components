@@ -66,6 +66,7 @@ interface IDomainRowProps {
     onDelete: (any) => void
     onExpand: (index?: number) => void
     isDragDisabled: boolean
+    showDefaultValueSettings: boolean
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
 }
@@ -413,7 +414,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing, isDragDisabled, showAdv } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId,
-            helpNoun, defaultDefaultValueType, defaultValueOptions } = this.props;
+            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={isDragDisabled}>
@@ -436,6 +437,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 show={showAdv}
                                 onHide={this.onHideAdvanced}
                                 label={field.name}
+                                showDefaultValueSettings={showDefaultValueSettings}
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
                             />

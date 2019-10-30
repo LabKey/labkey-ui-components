@@ -51,36 +51,42 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
     render() {
         const { data } = this.props;
 
-        if (!data || !data.has('displayValue')) {
+        if (!data) {
             return null;
         }
 
         const url = data.get('url');
+        const value = data.get('value');
         const displayValue = data.get('displayValue');
 
-        if (isImage(displayValue)) {
-            const alt = `${displayValue} image`;
+        if (url && isImage(url)) {
+            const title = displayValue ? displayValue : value;
+            const alt = `${title} image`;
             return (
                 <>
                     <img
                         src={url}
                         alt={alt}
-                        title={displayValue}
+                        title={title}
                         onClick={this.onImageClick}
                         className="file-renderer-img"
                     />
 
                     <Modal bsSize="large" show={this.state.showModal} onHide={this.onHide}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{displayValue}</Modal.Title>
+                            <Modal.Title>{title}</Modal.Title>
                         </Modal.Header>
 
                         <Modal.Body>
-                            <img src={url} alt={alt} title={displayValue} className="file-renderer-img__modal" />
+                            <img src={url} alt={alt} title={title} className="file-renderer-img__modal" />
                         </Modal.Body>
                     </Modal>
                 </>
             );
+        }
+
+        if (!displayValue) {
+            return null;
         }
 
         const content = <span>{displayValue}&nbsp;<i className="fa fa-file-o"/></span>;

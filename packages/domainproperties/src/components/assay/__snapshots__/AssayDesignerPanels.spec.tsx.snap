@@ -404,9 +404,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                               className="col-xs-3"
                             >
                               Name
-                              <small>
-                                 (Required)
-                              </small>
+                               *
                               <LabelHelpTip
                                 body={[Function]}
                                 id="tooltip"
@@ -1119,6 +1117,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "instructions": undefined,
       }
     }
+    helpURL={null}
     initCollapsed={true}
     key="0"
     markComplete={false}
@@ -1212,7 +1211,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        helpURL={null}
         initCollapsed={true}
         markComplete={false}
         modelDomains={
@@ -1308,7 +1307,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Batch Properties
+                    Batch Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -1330,29 +1329,12 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                       <Col
                         bsClass="col"
                         componentClass="div"
-                        xs={9}
+                        xs={12}
                       >
                         <div
-                          className="col-xs-9"
+                          className="col-xs-12"
                         >
-                          <p />
-                        </div>
-                      </Col>
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={3}
-                      >
-                        <div
-                          className="col-xs-3"
-                        >
-                          <a
-                            className="domain-field-float-right"
-                            href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                            target="_blank"
-                          >
-                            Learn more about this tool
-                          </a>
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -1639,7 +1621,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Run Properties
+                    Run Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -1666,7 +1648,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                         <div
                           className="col-xs-12"
                         >
-                          <p />
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -1953,7 +1935,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Results Properties
+                    Results Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -1980,7 +1962,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                         <div
                           className="col-xs-12"
                         >
-                          <p />
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -2883,7 +2865,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                   pull={null}
                   pulse={false}
                   rotation={null}
-                  size={null}
+                  size="lg"
                   spin={false}
                   symbol={false}
                   title=""
@@ -2891,7 +2873,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    className="svg-inline--fa fa-minus-square fa-w-14 domain-form-expand-btn"
+                    className="svg-inline--fa fa-minus-square fa-w-14 fa-lg domain-form-expand-btn"
                     data-icon="minus-square"
                     data-prefix="fas"
                     focusable="false"
@@ -3332,9 +3314,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                       className="col-xs-3"
                                     >
                                       Name
-                                      <small>
-                                         (Required)
-                                      </small>
+                                       *
                                       <LabelHelpTip
                                         body={[Function]}
                                         id="tooltip"
@@ -4932,6 +4912,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
+    helpURL={null}
     initCollapsed={true}
     key="0"
     markComplete={false}
@@ -5236,7 +5217,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        helpURL={null}
         initCollapsed={true}
         markComplete={false}
         modelDomains={
@@ -5542,7 +5523,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Batch Properties
+                    Batch Fields
                   </span>
                   <span
                     className="pull-right"
@@ -5571,7 +5552,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                       pull={null}
                       pulse={false}
                       rotation={null}
-                      size={null}
+                      size="lg"
                       spin={false}
                       symbol={false}
                       title=""
@@ -5579,7 +5560,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-plus-square fa-w-14 domain-form-expand-btn"
+                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
                         data-icon="plus-square"
                         data-prefix="fas"
                         focusable="false"
@@ -5648,29 +5629,12 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                               <Col
                                 bsClass="col"
                                 componentClass="div"
-                                xs={9}
+                                xs={12}
                               >
                                 <div
-                                  className="col-xs-9"
+                                  className="col-xs-12"
                                 >
-                                  <p />
-                                </div>
-                              </Col>
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={3}
-                              >
-                                <div
-                                  className="col-xs-3"
-                                >
-                                  <a
-                                    className="domain-field-float-right"
-                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                                    target="_blank"
-                                  >
-                                    Learn more about this tool
-                                  </a>
+                                  <div />
                                 </div>
                               </Col>
                             </div>
@@ -6841,7 +6805,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Sample Properties (3)
+                    Sample Fields (3)
                   </span>
                   <span
                     className="pull-right"
@@ -6870,7 +6834,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                       pull={null}
                       pulse={false}
                       rotation={null}
-                      size={null}
+                      size="lg"
                       spin={false}
                       symbol={false}
                       title=""
@@ -6878,7 +6842,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-plus-square fa-w-14 domain-form-expand-btn"
+                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
                         data-icon="plus-square"
                         data-prefix="fas"
                         focusable="false"
@@ -6952,7 +6916,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                 <div
                                   className="col-xs-12"
                                 >
-                                  <p />
+                                  <div />
                                 </div>
                               </Col>
                             </div>
@@ -13962,9 +13926,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                               className="col-xs-3"
                             >
                               Name
-                              <small>
-                                 (Required)
-                              </small>
+                               *
                               <LabelHelpTip
                                 body={[Function]}
                                 id="tooltip"
@@ -14966,6 +14928,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "instructions": undefined,
       }
     }
+    helpURL={null}
     initCollapsed={true}
     key="0"
     markComplete={false}
@@ -15059,7 +15022,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        helpURL={null}
         initCollapsed={true}
         markComplete={false}
         modelDomains={
@@ -15155,7 +15118,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Batch Properties
+                    Batch Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -15177,29 +15140,12 @@ exports[`AssayDesignerPanels default properties 1`] = `
                       <Col
                         bsClass="col"
                         componentClass="div"
-                        xs={9}
+                        xs={12}
                       >
                         <div
-                          className="col-xs-9"
+                          className="col-xs-12"
                         >
-                          <p />
-                        </div>
-                      </Col>
-                      <Col
-                        bsClass="col"
-                        componentClass="div"
-                        xs={3}
-                      >
-                        <div
-                          className="col-xs-3"
-                        >
-                          <a
-                            className="domain-field-float-right"
-                            href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                            target="_blank"
-                          >
-                            Learn more about this tool
-                          </a>
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -15486,7 +15432,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Run Properties
+                    Run Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -15513,7 +15459,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                         <div
                           className="col-xs-12"
                         >
-                          <p />
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -15800,7 +15746,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Results Properties
+                    Results Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -15827,7 +15773,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                         <div
                           className="col-xs-12"
                         >
-                          <p />
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -16465,9 +16411,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                               className="col-xs-3"
                             >
                               Name
-                              <small>
-                                 (Required)
-                              </small>
+                               *
                               <LabelHelpTip
                                 body={[Function]}
                                 id="tooltip"
@@ -17659,7 +17603,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Run Properties
+                    Run Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -17686,7 +17630,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                         <div
                           className="col-xs-12"
                         >
-                          <p />
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -17973,7 +17917,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Results Properties
+                    Results Fields
                   </span>
                 </div>
               </PanelHeading>
@@ -18000,7 +17944,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                         <div
                           className="col-xs-12"
                         >
-                          <p />
+                          <div />
                         </div>
                       </Col>
                     </div>
@@ -18903,7 +18847,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   pull={null}
                   pulse={false}
                   rotation={null}
-                  size={null}
+                  size="lg"
                   spin={false}
                   symbol={false}
                   title=""
@@ -18911,7 +18855,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    className="svg-inline--fa fa-minus-square fa-w-14 domain-form-expand-btn"
+                    className="svg-inline--fa fa-minus-square fa-w-14 fa-lg domain-form-expand-btn"
                     data-icon="minus-square"
                     data-prefix="fas"
                     focusable="false"
@@ -19352,9 +19296,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                       className="col-xs-3"
                                     >
                                       Name
-                                      <small>
-                                         (Required)
-                                      </small>
+                                       *
                                       <LabelHelpTip
                                         body={[Function]}
                                         id="tooltip"
@@ -22980,7 +22922,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Sample Properties (3)
+                    Sample Fields (3)
                   </span>
                   <span
                     className="pull-right"
@@ -23009,7 +22951,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       pull={null}
                       pulse={false}
                       rotation={null}
-                      size={null}
+                      size="lg"
                       spin={false}
                       symbol={false}
                       title=""
@@ -23017,7 +22959,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-plus-square fa-w-14 domain-form-expand-btn"
+                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
                         data-icon="plus-square"
                         data-prefix="fas"
                         focusable="false"
@@ -23091,7 +23033,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                 <div
                                   className="col-xs-12"
                                 >
-                                  <p />
+                                  <div />
                                 </div>
                               </Col>
                             </div>
@@ -30366,7 +30308,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   pull={null}
                   pulse={false}
                   rotation={null}
-                  size={null}
+                  size="lg"
                   spin={false}
                   symbol={false}
                   title=""
@@ -30374,7 +30316,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    className="svg-inline--fa fa-minus-square fa-w-14 domain-form-expand-btn"
+                    className="svg-inline--fa fa-minus-square fa-w-14 fa-lg domain-form-expand-btn"
                     data-icon="minus-square"
                     data-prefix="fas"
                     focusable="false"
@@ -30815,9 +30757,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                       className="col-xs-3"
                                     >
                                       Name
-                                      <small>
-                                         (Required)
-                                      </small>
+                                       *
                                       <LabelHelpTip
                                         body={[Function]}
                                         id="tooltip"
@@ -33374,6 +33314,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
+    helpURL={null}
     initCollapsed={true}
     key="0"
     markComplete={false}
@@ -33678,7 +33619,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+        helpURL={null}
         initCollapsed={true}
         markComplete={false}
         modelDomains={
@@ -33984,7 +33925,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Batch Properties
+                    Batch Fields
                   </span>
                   <span
                     className="pull-right"
@@ -34013,7 +33954,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       pull={null}
                       pulse={false}
                       rotation={null}
-                      size={null}
+                      size="lg"
                       spin={false}
                       symbol={false}
                       title=""
@@ -34021,7 +33962,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-plus-square fa-w-14 domain-form-expand-btn"
+                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
                         data-icon="plus-square"
                         data-prefix="fas"
                         focusable="false"
@@ -34090,29 +34031,12 @@ exports[`AssayDesignerPanels initModel 1`] = `
                               <Col
                                 bsClass="col"
                                 componentClass="div"
-                                xs={9}
+                                xs={12}
                               >
                                 <div
-                                  className="col-xs-9"
+                                  className="col-xs-12"
                                 >
-                                  <p />
-                                </div>
-                              </Col>
-                              <Col
-                                bsClass="col"
-                                componentClass="div"
-                                xs={3}
-                              >
-                                <div
-                                  className="col-xs-3"
-                                >
-                                  <a
-                                    className="domain-field-float-right"
-                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                                    target="_blank"
-                                  >
-                                    Learn more about this tool
-                                  </a>
+                                  <div />
                                 </div>
                               </Col>
                             </div>
@@ -35283,7 +35207,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   onClick={[Function]}
                 >
                   <span>
-                    Sample Properties (3)
+                    Sample Fields (3)
                   </span>
                   <span
                     className="pull-right"
@@ -35312,7 +35236,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       pull={null}
                       pulse={false}
                       rotation={null}
-                      size={null}
+                      size="lg"
                       spin={false}
                       symbol={false}
                       title=""
@@ -35320,7 +35244,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     >
                       <svg
                         aria-hidden="true"
-                        className="svg-inline--fa fa-plus-square fa-w-14 domain-form-expand-btn"
+                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg domain-form-expand-btn"
                         data-icon="plus-square"
                         data-prefix="fas"
                         focusable="false"
@@ -35394,7 +35318,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                 <div
                                   className="col-xs-12"
                                 >
-                                  <p />
+                                  <div />
                                 </div>
                               </Col>
                             </div>

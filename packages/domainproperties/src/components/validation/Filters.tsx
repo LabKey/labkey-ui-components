@@ -286,7 +286,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 <Row className='domain-validator-filter-type-row'>
                     <Col xs={this.labelWidth}>
                         <div id='domain-filter-type-label-1'>
-                            {firstFilterTypeLabel !== undefined ? firstFilterTypeLabel : 'Filter Type:'}
+                            {firstFilterTypeLabel !== undefined ? firstFilterTypeLabel : 'Filter Type'}
                             {firstFilterTooltip ? firstFilterTooltip : ''}
                         </div>
                     </Col>
@@ -312,7 +312,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 <Row className='domain-validator-filter-row'>
                     <Col xs={this.labelWidth}>
                         <div id='domain-filter-value-label-1'>
-                            {firstFilterValueLabel !== undefined ? firstFilterValueLabel : 'Filter Value:'}
+                            {firstFilterValueLabel !== undefined ? firstFilterValueLabel : 'Filter Value'}
                         </div>
                     </Col>
                     <Col xs={this.fieldWidth}>
@@ -332,7 +332,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 <Row className='domain-validator-filter-type-row'>
                     <Col xs={this.labelWidth}>
                         <div id='domain-filter-type-label-2'>
-                            {secondFilterTypeLabel !== undefined ? secondFilterTypeLabel : 'and:'}
+                            {secondFilterTypeLabel !== undefined ? secondFilterTypeLabel : 'and'}
                             {secondFilterTooltip ? secondFilterTooltip : ''}
                         </div>
                     </Col>
@@ -357,7 +357,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 <Row className='domain-validator-filter-bottom'>
                     <Col xs={this.labelWidth}>
                         <div id='domain-filter-value-label-2'>
-                            {secondFilterValueLabel !== undefined ? secondFilterValueLabel : 'Filter Value:'}
+                            {secondFilterValueLabel !== undefined ? secondFilterValueLabel : 'Filter Value'}
                         </div>
                     </Col>
                     <Col xs={this.fieldWidth}>

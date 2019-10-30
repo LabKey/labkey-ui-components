@@ -197,14 +197,14 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             panelCls={isNew && currentPanelIndex === (i+1) ? 'panel-active' : ''}
                             showInferFromFile={showInferFromFile}
                             containerTop={containerTop}
-                            helpURL={i > 0 ? null : undefined} // so we only show the helpURL link for the first assay domain
+                            helpURL={null} // don't show the helpURL link for assay domains since we have a help link in the Assay Properties panel
                             onChange={(updatedDomain) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                         >
-                            <p>{domain.description}</p>
+                            <div>{domain.description}</div>
                         </DomainForm>
                     )
                 })}

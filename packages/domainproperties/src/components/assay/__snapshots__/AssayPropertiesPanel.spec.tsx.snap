@@ -270,9 +270,7 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
                   className="col-xs-3"
                 >
                   Name
-                  <small>
-                     (Required)
-                  </small>
+                   *
                   <LabelHelpTip
                     body={[Function]}
                     id="tooltip"
@@ -1266,9 +1264,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                             className="col-xs-3"
                           >
                             Name
-                            <small>
-                               (Required)
-                            </small>
+                             *
                             <LabelHelpTip
                               body={[Function]}
                               id="tooltip"
@@ -2381,7 +2377,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               className="pull-right"
             >
               <i
-                className="fa fa-check-square-o as-secondary-color"
+                className="fa fa-check-square-o fa-lg as-secondary-color"
               />
             </span>
           </div>
@@ -2566,9 +2562,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                             className="col-xs-3"
                           >
                             Name
-                            <small>
-                               (Required)
-                            </small>
+                             *
                             <LabelHelpTip
                               body={[Function]}
                               id="tooltip"
@@ -3740,9 +3734,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                             className="col-xs-3"
                           >
                             Name
-                            <small>
-                               (Required)
-                            </small>
+                             *
                             <LabelHelpTip
                               body={[Function]}
                               id="tooltip"
@@ -4835,9 +4827,7 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
                             className="col-xs-3"
                           >
                             Name
-                            <small>
-                               (Required)
-                            </small>
+                             *
                             <LabelHelpTip
                               body={[Function]}
                               id="tooltip"

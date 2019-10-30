@@ -65,7 +65,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
             <Row>
                 <Col xs={this.labelWidth}>
                     <div>
-                        Name:*
+                        Name *
                     </div>
                 </Col>
                 <Col xs={this.fieldWidth}>
@@ -171,16 +171,16 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                              onChange={this.onFilterChange}
                              type={dataType.getJsonType()}
                              expression={validator.expression}
-                             firstFilterTypeLabel='First Condition:*'
+                             firstFilterTypeLabel='First Condition *'
                              firstFilterValueLabel=''
                              firstFilterTooltip={this.firstFilterTooltip()}
-                             secondFilterTypeLabel='Second Condition:'
+                             secondFilterTypeLabel='Second Condition'
                              secondFilterValueLabel=''
                              secondFilterTooltip={this.secondFilterTooltip()}
                              
                     />
-                    {this.renderRowTextbox('Description:', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
-                    {this.renderRowTextbox('Error Message:', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage)}
+                    {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
+                    {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage)}
                     {this.renderName(validatorIndex, validator.name)}
                     {this.renderRemoveValidator()}
 

@@ -23,7 +23,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
             <Row className={'margin-top'}>
                 <Col xs={3}>
                     {label}
-                    {required ? <small> (Required)</small> : ''}
+                    {required ? ' *' : ''}
                     {helpTipBody &&
                         <LabelHelpTip
                             title={label}

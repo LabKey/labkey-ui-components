@@ -29,9 +29,7 @@ exports[`AssayPropertiesInput with custom props 1`] = `
     className="col-xs-3"
   >
     Test Property
-    <small>
-       (Required)
-    </small>
+     *
     <span
       className="label-help-target"
       onMouseOut={[Function]}

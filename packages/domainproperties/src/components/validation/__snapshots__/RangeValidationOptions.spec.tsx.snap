@@ -152,7 +152,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
             title="First Condition"
           />
         }
-        firstFilterTypeLabel="First Condition:*"
+        firstFilterTypeLabel="First Condition *"
         firstFilterValueLabel=""
         mvEnabled={true}
         onChange={[Function]}
@@ -164,7 +164,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
             title="Second Condition"
           />
         }
-        secondFilterTypeLabel="Second Condition:"
+        secondFilterTypeLabel="Second Condition"
         secondFilterValueLabel=""
         type="int"
         validatorIndex={0}
@@ -188,7 +188,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 <div
                   id="domain-filter-type-label-1"
                 >
-                  First Condition:*
+                  First Condition *
                   <LabelHelpTip
                     body={[Function]}
                     id="tooltip"
@@ -452,7 +452,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                 <div
                   id="domain-filter-type-label-2"
                 >
-                  Second Condition:
+                  Second Condition
                   <LabelHelpTip
                     body={[Function]}
                     id="tooltip"
@@ -717,7 +717,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Description:
+                Description
               </div>
             </div>
           </Col>
@@ -771,7 +771,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Error Message:
+                Error Message
               </div>
             </div>
           </Col>
@@ -824,7 +824,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Name:*
+                Name *
               </div>
             </div>
           </Col>

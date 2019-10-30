@@ -170,19 +170,19 @@ describe('AssayDesignerPanels', () => {
         expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
         expect(getButton(wrapper, 'Finish')).toHaveLength(0);
 
-        // click Next to advance in the wizard to the Batch Properties
+        // click Next to advance in the wizard to the Batch Fields
         getButton(wrapper, 'Next').simulate('click');
         verifyActivePanel(wrapper, false, true, false, false);
         expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
         expect(getButton(wrapper, 'Finish')).toHaveLength(0);
 
-        // click Next to advance in the wizard to the Run Properties
+        // click Next to advance in the wizard to the Run Fields
         getButton(wrapper, 'Next').simulate('click');
         verifyActivePanel(wrapper, false, false, true, false);
         expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
         expect(getButton(wrapper, 'Finish')).toHaveLength(0);
 
-        // click Next to advance in the wizard to the Data Properties
+        // click Next to advance in the wizard to the Data Fields
         getButton(wrapper, 'Next').simulate('click');
         verifyActivePanel(wrapper, false, false, false, true);
         expect(getButton(wrapper, 'Next')).toHaveLength(0);
@@ -238,8 +238,8 @@ describe('AssayDesignerPanels', () => {
         );
 
         let wrapper = mount(component);
-        //Open Sample Properties panel body
-        wrapper.find(Panel.Heading).filterWhere(n => n.text() === 'Sample Properties (3)').simulate('click');
+        //Open Sample Fields panel body
+        wrapper.find(Panel.Heading).filterWhere(n => n.text() === 'Sample Fields (3)').simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);
         expect(wrapper.find('#' + _appHeaderId).text()).toBe(_appHeaderText);
     });

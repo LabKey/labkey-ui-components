@@ -684,21 +684,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     getHeaderName(): string {
         const { domain, headerTitle, headerPrefix, showHeaderFieldCount } = this.props;
-        let name = headerTitle || (domain.name ? domain.name : "Field Properties");
+        let name = headerTitle || (domain.name ? domain.name : "Fields");
 
         // optionally trim off a headerPrefix from the name display
         if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
             name = name.replace(headerPrefix + ' ', '');
         }
 
-        // prefer to use the suffix "Properties" over "Fields" in panel heading
-        if (name.endsWith(' Fields')) {
-            name = name.substring(0, name.length - 7) + ' Properties';
-        }
-
-        // prefer "Results Properties" over "Data Properties"in assay case
-        if (name.endsWith('Data Properties')) {
-            name = name.replace('Data Properties', 'Results Properties');
+        // prefer "Results Fields" over "Data Fields"in assay case
+        if (name.endsWith('Data Fields')) {
+            name = name.replace('Data Fields', 'Results Fields');
         }
 
         // add the field count to the header, if not empty
@@ -718,17 +713,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <span>{this.getHeaderName()}</span>
                 {collapsible && collapsed &&
                     <span className={'pull-right'}>
-                        <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                        <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
                     </span>
                 }
                 {collapsible && !collapsed &&
                     <span className={'pull-right'}>
-                        <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-expand-btn"}/>
                     </span>
                 }
                 {!collapsible && collapsed && markComplete &&
                     <span className={'pull-right'}>
-                        <i className={'fa fa-check-square-o as-secondary-color'}/>
+                        <i className={'fa fa-check-square-o fa-lg as-secondary-color'}/>
                     </span>
                 }
             </>

@@ -82,7 +82,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
             <Row>
                 <Col xs={this.labelWidth}>
                     <div>
-                        Name:*
+                        Name *
                     </div>
                 </Col>
                 <Col xs={this.fieldWidth}>
@@ -180,10 +180,10 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
             <div className='domain-validator-panel' id={"domain-regex-validator-" + validatorIndex}>
                 {expanded &&
                         <div>
-                            {this.renderRowTextbox('Regular Expression:*', DOMAIN_VALIDATOR_EXPRESSION, validatorIndex, validator.expression,
+                            {this.renderRowTextbox('Regular Expression *', DOMAIN_VALIDATOR_EXPRESSION, validatorIndex, validator.expression,
                                 'Regular Expression', this.regExTooltip)}
-                            {this.renderRowTextbox('Description:', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
-                            {this.renderRowTextbox('Error Message:', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage,
+                            {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
+                            {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage,
                                 'Error Message', this.errorMsgTooltip)}
                             {this.renderFailValidationCheckbox(validatorIndex, validator.properties.failOnMatch)}
                             {this.renderName(validatorIndex, validator.name)}

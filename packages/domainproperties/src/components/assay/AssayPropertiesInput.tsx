@@ -83,7 +83,6 @@ export function DescriptionInput(props: InputProps) {
             <textarea
                 className="form-control domain-field-textarea"
                 id={FORM_IDS.ASSAY_DESCRIPTION}
-                placeholder={'Add a description'}
                 value={props.model.description || ''}
                 onChange={props.onChange}
             />

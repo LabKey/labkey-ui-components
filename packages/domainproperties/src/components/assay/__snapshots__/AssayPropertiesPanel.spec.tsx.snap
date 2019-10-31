@@ -673,7 +673,6 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
                     className="form-control domain-field-textarea"
                     id="assay-design-description"
                     onChange={[Function]}
-                    placeholder="Add a description"
                     value=""
                   />
                 </div>
@@ -1676,7 +1675,6 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               className="form-control domain-field-textarea"
                               id="assay-design-description"
                               onChange={[Function]}
-                              placeholder="Add a description"
                               value=""
                             />
                           </div>
@@ -2936,7 +2934,6 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               className="form-control domain-field-textarea"
                               id="assay-design-description"
                               onChange={[Function]}
-                              placeholder="Add a description"
                               value="test description for this assay"
                             />
                           </div>
@@ -4093,7 +4090,6 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
                               className="form-control domain-field-textarea"
                               id="assay-design-description"
                               onChange={[Function]}
-                              placeholder="Add a description"
                               value=""
                             />
                           </div>

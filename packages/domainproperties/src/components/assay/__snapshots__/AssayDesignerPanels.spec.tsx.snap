@@ -807,7 +807,6 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                 className="form-control domain-field-textarea"
                                 id="assay-design-description"
                                 onChange={[Function]}
-                                placeholder="Add a description"
                                 value=""
                               />
                             </div>
@@ -3576,7 +3575,6 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                 className="form-control domain-field-textarea"
                                 id="assay-design-description"
                                 onChange={[Function]}
-                                placeholder="Add a description"
                                 value="My assay protocol for you all to use."
                               />
                             </div>
@@ -7283,7 +7281,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                 className="form-control domain-field-textarea"
                                 id="assay-design-description"
                                 onChange={[Function]}
-                                placeholder="Add a description"
                                 value=""
                               />
                             </div>
@@ -9456,7 +9453,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                 className="form-control domain-field-textarea"
                                 id="assay-design-description"
                                 onChange={[Function]}
-                                placeholder="Add a description"
                                 value=""
                               />
                             </div>
@@ -12289,7 +12285,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                 className="form-control domain-field-textarea"
                                 id="assay-design-description"
                                 onChange={[Function]}
-                                placeholder="Add a description"
                                 value="My assay protocol for you all to use."
                               />
                             </div>
@@ -17147,7 +17142,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                 className="form-control domain-field-textarea"
                                 id="assay-design-description"
                                 onChange={[Function]}
-                                placeholder="Add a description"
                                 value="My assay protocol for you all to use."
                               />
                             </div>

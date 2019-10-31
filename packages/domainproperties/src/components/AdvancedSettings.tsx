@@ -217,7 +217,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         )
     };
 
-    getDateShiftingText = () => {
+    getExcludeFromDateShiftingText = () => {
         return (
             'Participant date fields with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.'
         )
@@ -353,8 +353,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
                             id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
                     >
-                        Shift dates on export or publication
-                        <LabelHelpTip title='Participant Date Shifting' body={this.getDateShiftingText}/>
+                        Exclude from "Participant Date Shifting" on export/publication
+                        <LabelHelpTip title='Exclude from Date Shifting' body={this.getExcludeFromDateShiftingText}/>
                     </Checkbox>
                 }
                 {PropDescType.isMeasure(field.dataType.rangeURI) &&

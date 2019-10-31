@@ -561,6 +561,12 @@ export class QueryGridModel extends Record({
     urlPrefix: string;
     view: string;
 
+    static EMPTY_SELECTION = {
+        selectedQuantity: 0,
+        selectedIds: emptyList,
+        selectedState: GRID_CHECKBOX_OPTIONS.NONE
+    };
+
     constructor(values?: IQueryGridModel) {
         super(values);
 
@@ -572,14 +578,6 @@ export class QueryGridModel extends Record({
                 throw new Error('Required and omitted columns cannot intersect. Model id: "' + this.id + '". See console for colliding columns.');
             }
         }
-    }
-
-    static getEmptySelection() : any {
-        return {
-            selectedQuantity: 0,
-            selectedIds: emptyList,
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE
-        };
     }
 
     canImport() {

@@ -276,7 +276,7 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
     }
     else {
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded, ...QueryGridModel.getEmptySelection()}))
+            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded, ...QueryGridModel.EMPTY_SELECTION}))
         });
     }
 }

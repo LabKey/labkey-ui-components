@@ -129,14 +129,14 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.getEmptySelection(), ...bindURLProps(newModel)}, connectedComponent);
+        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, ...bindURLProps(newModel)}, connectedComponent);
         gridLoad(newModel, connectedComponent);
     }
 }
 
 export function gridClearAll(model: QueryGridModel) {
     clearSelected(model.getId(), model.schema, model.query, model.getFilters()).then(() => {
-       updateQueryGridModel(model, QueryGridModel.getEmptySelection());
+       updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
         gridShowError(model, error);
@@ -349,7 +349,7 @@ export function reloadQueryGridModel(model: QueryGridModel) {
     const newModel = updateQueryGridModel(model, {
         isLoading: true,
         selectedLoaded: false,
-        ...QueryGridModel.getEmptySelection(),
+        ...QueryGridModel.EMPTY_SELECTION,
         ...bindURLProps(model)
     });
     gridLoad(newModel);
@@ -366,7 +366,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
-                newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.getEmptySelection(), filterArray: List<any>()});
+                newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: List<any>()});
             }
             else if (filters && filters.count()) {
                 let urls = filters.reduce((urls, filter: any) => {
@@ -378,7 +378,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
                 });
 
                 if (filtered.count() < model.filterArray.count()) {
-                    newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.getEmptySelection(), filterArray: filtered});
+                    newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: filtered});
                 }
             }
         }
@@ -393,7 +393,7 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
     else {
         if (filters.count()) {
-            let newModel = updateQueryGridModel(model, {selectedLoaded: false, ...QueryGridModel.getEmptySelection(), filterArray: model.filterArray.merge(filters)});
+            let newModel = updateQueryGridModel(model, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: model.filterArray.merge(filters)});
             gridLoad(newModel);
         }
     }

@@ -3,6 +3,7 @@ import * as React from 'react';
 import {List} from "immutable";
 import {Button, Checkbox, Col, FormControl, Modal, Row} from "react-bootstrap";
 import {
+    DATETIME_TYPE,
     DomainField,
     IFieldChange,
     PropDescType
@@ -14,6 +15,7 @@ import {
     DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
+    DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_MVENABLED,
@@ -38,6 +40,7 @@ interface AdvancedSettingsProps {
     field: DomainField
     onHide: () => any
     onApply: (any) => any
+    showDefaultValueSettings: boolean
 }
 
 interface AdvancedSettingsState {
@@ -54,6 +57,7 @@ interface AdvancedSettingsState {
     PHI?: string
     phiLevels?: List<any>
     defaultUrl?: string
+    excludeFromShifting?: boolean
 }
 
 export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps, AdvancedSettingsState> {
@@ -62,7 +66,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         super(props);
 
         // Filter phi levels available
-        const phiIndex = this.getMaxPhiLevelIndex(props.maxPhiLevel);
+        const phiIndex = this.getPhiLevelIndex(props.maxPhiLevel);
         const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
             return index <= phiIndex;
         }) as List<any>;
@@ -80,12 +84,13 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             shownInDetailsView: field.shownInDetailsView,
             shownInInsertView: field.shownInInsertView,
             shownInUpdateView: field.shownInUpdateView,
-            defaultValueType: (field.defaultValueType ? field.defaultValueType : (defaultDefaultValueType ? defaultDefaultValueType : DOMAIN_EDITABLE_DEFAULT)),
-            defaultDisplayValue: field.defaultDisplayValue,
+            defaultValueType: field.defaultValueType ? field.defaultValueType : (defaultDefaultValueType ? defaultDefaultValueType : DOMAIN_EDITABLE_DEFAULT),
+            defaultDisplayValue: field.defaultDisplayValue || '[none]',
             dimension: field.dimension,
             measure: field.measure,
             mvEnabled: field.mvEnabled,
             recommendedVariable: field.recommendedVariable,
+            excludeFromShifting: field.excludeFromShifting,
             PHI: field.PHI,
             phiLevels: phiLevels,
             defaultUrl: (domainId === undefined ? '' : ActionURL.buildURL(ActionURL.getController(), 'setDefaultValuesList', ActionURL.getContainer(), {returnUrl:window.location, domainId: domainId}))
@@ -125,7 +130,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         let fieldName = getNameFromId(evt.target.id);
 
         // Show in default view
-        if (fieldName === DOMAIN_FIELD_HIDDEN) {
+        if (fieldName === DOMAIN_FIELD_HIDDEN || fieldName === DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING) {
             value = !value;
         }
 
@@ -169,7 +174,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     getDimensionHelpText = () => {
         return(
             <div>
-                <p>Indicates a column of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
+                <p>Indicates a field of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
                 <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=chartTrouble">Measures and Dimensions</a> for analysis.</p>
             </div>
         )
@@ -212,14 +217,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         )
     };
 
-    getMaxPhiLevelIndex = (phi: string): number => {
+    getExcludeFromDateShiftingText = () => {
+        return (
+            'Participant date fields with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.'
+        )
+    };
+
+    getPhiLevelIndex = (phi: string): number => {
         return DOMAIN_PHI_LEVELS.findIndex((level) => {
             return level.value === phi;
         });
     };
 
     showDefaultValues = () => {
-        const { field } = this.props;
+        const { field, showDefaultValueSettings } = this.props;
+
+        // some domains just don't support default values
+        if (!showDefaultValueSettings)
+            return false;
 
         // Not shown for file types
         if (field.dataType.isFileType())
@@ -238,23 +253,24 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div>These options configure how and in which views this field will be visible.</div>
                 <Checkbox checked={hidden === false} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_HIDDEN)}
-                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>Show field on default view of
-                    the
-                    grid</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_HIDDEN, index)}>
+                    Show field on default view of the grid
+                </Checkbox>
                 <Checkbox checked={shownInUpdateView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNINUPDATESVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>Show on update form
-                    when updating a single row of data</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINUPDATESVIEW, index)}>
+                    Show on update form when updating a single row of data
+                </Checkbox>
                 <Checkbox checked={shownInInsertView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNININSERTVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>Show on insert form
-                    when
-                    updating a single row of data</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNININSERTVIEW, index)}>
+                    Show on insert form when updating a single row of data
+                </Checkbox>
                 <Checkbox checked={shownInDetailsView === true} onChange={this.handleCheckbox}
                           name={createFormInputName(DOMAIN_FIELD_SHOWNINDETAILSVIEW)}
-                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>Show on details
-                    page
-                    for a single row</Checkbox>
+                          id={createFormInputId(DOMAIN_FIELD_SHOWNINDETAILSVIEW, index)}>
+                    Show on details page for a single row
+                </Checkbox>
             </>
         )
     };
@@ -262,7 +278,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     renderDefaultValues = () => {
         const { index, defaultValueOptions } = this.props;
         const { defaultValueType, defaultDisplayValue } = this.state;
-
 
         return (
             <>
@@ -304,14 +319,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     };
 
     renderMiscOptions = () => {
-        const { index, maxPhiLevel, field } = this.props;
-        const { measure, dimension, mvEnabled, recommendedVariable, PHI } = this.state;
-
-        // Filter phi levels available
-        const phiIndex = this.getMaxPhiLevelIndex(maxPhiLevel);
-        const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
-            return index <= phiIndex;
-        });
+        const { index, field } = this.props;
+        const { measure, dimension, mvEnabled, recommendedVariable, PHI, excludeFromShifting, phiLevels } = this.state;
 
         return (
             <>
@@ -337,27 +346,38 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     </Col>
                     <Col xs={3}/>
                 </Row>
-                {PropDescType.isMeasureDimension(field.rangeURI) &&
-                <>
+                {field.dataType === DATETIME_TYPE &&
+                    <Checkbox
+                            checked={excludeFromShifting === false}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
+                            id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
+                    >
+                        Exclude from "Participant Date Shifting" on export/publication
+                        <LabelHelpTip title='Exclude from Date Shifting' body={this.getExcludeFromDateShiftingText}/>
+                    </Checkbox>
+                }
+                {PropDescType.isMeasure(field.dataType.rangeURI) &&
                     <Checkbox
                             checked={measure === true}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_MEASURE)}
                             id={createFormInputId(DOMAIN_FIELD_MEASURE, index)}
                     >
-                        Make this field available as a measure<LabelHelpTip title='Measure'
-                                                                            body={this.getMeasureHelpText}/>
+                        Make this field available as a measure
+                        <LabelHelpTip title='Measure' body={this.getMeasureHelpText}/>
                     </Checkbox>
+                }
+                {PropDescType.isDimension(field.dataType.rangeURI) &&
                     <Checkbox
                             checked={dimension === true}
                             onChange={this.handleCheckbox}
                             name={createFormInputName(DOMAIN_FIELD_DIMENSION)}
                             id={createFormInputId(DOMAIN_FIELD_DIMENSION, index)}
                     >
-                        Make this field available as a dimension<LabelHelpTip title='Data Dimension'
-                                                                              body={this.getDimensionHelpText}/>
+                        Make this field available as a dimension
+                        <LabelHelpTip title='Data Dimension' body={this.getDimensionHelpText}/>
                     </Checkbox>
-                </>
                 }
                 <Checkbox
                     checked={recommendedVariable === true}
@@ -365,20 +385,20 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     name={createFormInputName(DOMAIN_FIELD_RECOMMENDEDVARIABLE)}
                     id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, index)}
                 >
-                    Make this field a recommended variable<LabelHelpTip title='Recommended Variable'
-                                                                        body={this.getRecommendedVariableHelpText}/>
+                    Make this field a recommended variable
+                    <LabelHelpTip title='Recommended Variable' body={this.getRecommendedVariableHelpText}/>
                 </Checkbox>
 
-                {PropDescType.isMvEnableable(field.rangeURI) &&
-                <Checkbox
-                        checked={mvEnabled === true}
-                        onChange={this.handleCheckbox}
-                        name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
-                        id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
-                >
-                    Track reason for missing data values<LabelHelpTip title='Missing Value Indicators'
-                                                                      body={this.getMissingValueHelpText}/>
-                </Checkbox>
+                {PropDescType.isMvEnableable(field.dataType.rangeURI) &&
+                    <Checkbox
+                            checked={mvEnabled === true}
+                            onChange={this.handleCheckbox}
+                            name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
+                            id={createFormInputId(DOMAIN_FIELD_MVENABLED, index)}
+                    >
+                        Track reason for missing data values
+                        <LabelHelpTip title='Missing Value Indicators' body={this.getMissingValueHelpText}/>
+                    </Checkbox>
                 }
             </>
         )
@@ -388,39 +408,34 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const { show, label } = this.props;
 
         return (
-            <>
-                <Modal show={show}
-                       onHide={this.handleClose}
-                       onEnter={this.initializeState}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>{'Advanced Settings and Properties' + (label ? (' for ' + label) : '')}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className='domain-modal'>
-                            {this.renderDisplayOptions()}
-                            {this.showDefaultValues() &&
-                            this.renderDefaultValues()
-                            }
-                            {this.renderMiscOptions()}
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleClose} bsClass='btn'
-                                className='domain-adv-footer domain-adv-cancel-btn'>
-                            Cancel
-                        </Button>
-                        <a target='_blank'
-                           href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                           className='domain-adv-footer domain-adv-link'>Get Help With Domain Settings</a>
-                        <Button onClick={this.handleApply} bsClass='btn btn-success'
-                                className='domain-adv-footer domain-adv-apply-btn'>
-                            Apply
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-            </>
+            <Modal show={show}
+                   onHide={this.handleClose}
+                   onEnter={this.initializeState}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>{'Advanced Settings and Properties' + (label ? (' for ' + label) : '')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className='domain-modal'>
+                        {this.renderDisplayOptions()}
+                        {this.showDefaultValues() && this.renderDefaultValues()}
+                        {this.renderMiscOptions()}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleClose} bsClass='btn'
+                            className='domain-adv-footer domain-adv-cancel-btn'>
+                        Cancel
+                    </Button>
+                    <a target='_blank'
+                       href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                       className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
+                    <Button onClick={this.handleApply} bsClass='btn btn-success'
+                            className='domain-adv-footer domain-adv-apply-btn'>
+                        Apply
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 }

@@ -23,7 +23,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
             <Row className={'margin-top'}>
                 <Col xs={3}>
                     {label}
-                    {required ? <small> (Required)</small> : ''}
+                    {required ? ' *' : ''}
                     {helpTipBody &&
                         <LabelHelpTip
                             title={label}
@@ -83,7 +83,6 @@ export function DescriptionInput(props: InputProps) {
             <textarea
                 className="form-control domain-field-textarea"
                 id={FORM_IDS.ASSAY_DESCRIPTION}
-                placeholder={'Add a description'}
                 value={props.model.description || ''}
                 onChange={props.onChange}
             />
@@ -463,7 +462,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                             <Col xs={3}>
                                 <RemoveEntityButton
                                     key={'scriptremove-' + i}
-                                    labelClass={''}
+                                    labelClass={'domain-remove-icon'}
                                     onClick={() => {this.removeScript(i)}}
                                 />
                             </Col>

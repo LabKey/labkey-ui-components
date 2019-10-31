@@ -64,6 +64,7 @@ interface IDomainFormInput {
     collapsible?: boolean
     markComplete?: boolean
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
+    headerTitle?: string,
     showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
     appDomainHeaderRenderer?: HeaderRenderer
@@ -100,7 +101,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
  */
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
-        helpNoun: 'domain',
+        helpNoun: 'field designer',
         helpURL: LK_DOMAIN_HELP_URL,
         showHeader: true,
         showHeaderFieldCount: true,
@@ -297,7 +298,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onBeforeDragStart = (initial) => {
-        const { domain, onChange } = this.props;
+        const { domain } = this.props;
         const id = initial.draggableId;
         const idIndex = id ? getIndexFromId(id) : undefined;
 
@@ -464,7 +465,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         return newStyle;
-    }
+    };
 
     renderFieldRemoveConfirm() {
         return (
@@ -474,6 +475,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 onConfirm={this.onDeleteConfirm}
                 onCancel={this.onConfirmCancel}
                 confirmVariant='danger'
+                confirmButtonText='Yes, Remove Field'
+                cancelButtonText='Cancel'
             />
         )
     }
@@ -484,7 +487,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <Row className='domain-form-hdr-row'>
                     <Col xs={6}>
                         <Col xs={6}>
-                            <b>Field Name</b>
+                            <b>Name</b>
                         </Col>
                         <Col xs={4}>
                             <b>Data Type</b>
@@ -530,7 +533,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         else {
             return (
                 <Panel className='domain-form-no-field-panel'>
-                    Start by adding some properties using the "Add Field" button.
+                    No fields created yet. Add some using the button below.
                 </Panel>
             );
         }
@@ -557,15 +560,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderPanelHeaderContent() {
-        const { helpURL, children } = this.props;
+        const { helpURL, helpNoun, children } = this.props;
 
         return(
             <Row className='domain-form-hdr-margins'>
                 <Col xs={helpURL ? 9 : 12}>
                     {children ? children
                         : <div className='domain-field-float-left'>
-                            Adjust fields and their properties that will be shown within this domain.
-                            Click a row to access additional options. Drag and drop rows to reorder them.
+                            Set up and configure fields for use in this {helpNoun}.
                         </div>
                     }
                 </Col>
@@ -579,11 +581,20 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderSearchField() {
+        const { fields } = this.props.domain;
+
         return (
             <Row>
                 <Col xs={3}>
                     <FormControl id={"domain-search-name"} type="text" placeholder={'Search Fields'} onChange={this.onSearch}/>
                 </Col>
+                {this.state.filtered &&
+                    <Col xs={9}>
+                        <div className={"domain-search-text"}>
+                            Showing {fields.filter(f => f.visible).size} of {fields.size} field{fields.size > 1 ? 's' : ''}.
+                        </div>
+                    </Col>
+                }
             </Row>
         )
     }
@@ -608,7 +619,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <>
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {domain.fields.size > 1 && this.renderSearchField()}
+                {(filtered || domain.fields.size > 1) && this.renderSearchField()}
                 {domain.fields.size > 0 ?
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
@@ -643,6 +654,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 dragging={dragId === i}
                                                 isDragDisabled={filtered}
                                                 availableTypes={availableTypes}
+                                                showDefaultValueSettings={domain.showDefaultValueSettings}
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                             />
@@ -662,22 +674,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     getHeaderName(): string {
-        const { domain, headerPrefix, showHeaderFieldCount } = this.props;
-        let name = domain.name ? domain.name : "Domain Properties";
+        const { domain, headerTitle, headerPrefix, showHeaderFieldCount } = this.props;
+        let name = headerTitle || (domain.name ? domain.name : "Fields");
 
         // optionally trim off a headerPrefix from the name display
         if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
             name = name.replace(headerPrefix + ' ', '');
         }
 
-        // prefer to use the suffix "Properties" over "Fields" in panel heading
-        if (name.endsWith(' Fields')) {
-            name = name.substring(0, name.length - 7) + ' Properties';
-        }
-
-        // prefer "Results Properties" over "Data Properties"in assay case
-        if (name.endsWith('Data Properties')) {
-            name = name.replace('Data Properties', 'Results Properties');
+        // prefer "Results Fields" over "Data Fields"in assay case
+        if (name.endsWith('Data Fields')) {
+            name = name.replace('Data Fields', 'Results Fields');
         }
 
         // add the field count to the header, if not empty
@@ -697,17 +704,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 <span>{this.getHeaderName()}</span>
                 {collapsible && collapsed &&
                     <span className={'pull-right'}>
-                        <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                        <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
                     </span>
                 }
                 {collapsible && !collapsed &&
                     <span className={'pull-right'}>
-                        <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-expand-btn"}/>
                     </span>
                 }
                 {!collapsible && collapsed && markComplete &&
                     <span className={'pull-right'}>
-                        <i className={'fa fa-check-square-o as-secondary-color'}/>
+                        <i className={'fa fa-check-square-o fa-lg as-secondary-color'}/>
                     </span>
                 }
             </>

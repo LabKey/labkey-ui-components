@@ -36,9 +36,11 @@ import {
 import {mount} from "enzyme";
 import {clearFieldDetails, createFormInputId, updateDomainField} from "../actions/actions";
 import toJson from "enzyme-to-json";
-import renderer from 'react-test-renderer'
 import { FileAttachmentForm } from "@glass/base";
 import { DomainRow } from "./DomainRow";
+import {Simulate} from "react-dom/test-utils";
+import waiting = Simulate.waiting;
+import {awaitExpression} from "@babel/types";
 
 interface Props {
     showInferFromFile?: boolean
@@ -102,7 +104,7 @@ describe('DomainForm', () => {
 
     test('with showHeader, helpNoun, and helpURL', () => {
         const domain = DomainDesign.create({});
-        const tree = renderer.create(
+        const form = mount(
             <DomainForm
                 domain={domain}
                 helpNoun='assay'
@@ -112,7 +114,8 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form with no fields', () => {
@@ -357,7 +360,7 @@ describe('DomainForm', () => {
         let deleteButton = form.find({id: createFormInputId(DOMAIN_FIELD_DELETE, 0), type: "button"});
         expect(deleteButton.length).toEqual(1);
         deleteButton.simulate('click');
-        let confirmButton = form.find('.btn-danger[children="Yes"]');
+        let confirmButton = form.find('.btn-danger[children="Yes, Remove Field"]');
         confirmButton.simulate('click');
 
         // Update state.  This is controlled outside glass component so set it here.
@@ -391,7 +394,7 @@ describe('DomainForm', () => {
             }]
         });
 
-        const tree  = renderer.create(
+        const form  = mount(
             <DomainForm
                 domain={domain}
                 collapsible={false}
@@ -400,7 +403,8 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form initCollapsed and markComplete', () => {
@@ -419,7 +423,7 @@ describe('DomainForm', () => {
             }]
         });
 
-        const tree  = renderer.create(
+        const form  = mount(
             <DomainForm
                 domain={domain}
                 collapsible={false}
@@ -429,13 +433,14 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('domain form headerPrefix and panelCls', () => {
         const domain = DomainDesign.create({name: "Foo headerPrefix and panelCls"});
 
-        const tree  = renderer.create(
+        const form  = mount(
             <DomainForm
                 domain={domain}
                 collapsible={false}
@@ -446,12 +451,13 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('with showInferFromFile', () => {
         const domain = DomainDesign.create({});
-        const tree = renderer.create(
+        const form = mount(
             <DomainForm
                 domain={domain}
                 showInferFromFile={true}
@@ -459,7 +465,8 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('test showInferFromFile click domain-form-add-link', () => {
@@ -569,6 +576,7 @@ describe('DomainForm', () => {
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowFlagProperties: false,
+            showDefaultValueSettings: true,
             indices:[]
         });
 
@@ -630,7 +638,6 @@ describe('DomainForm', () => {
         wrapper.find('.panel-heading').simulate('click');
         expect(wrapper.find(DomainRow)).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' (1)');
-
         wrapper.unmount();
     });
 

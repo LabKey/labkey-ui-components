@@ -32,8 +32,8 @@ import {
     STRING_RANGE_URI,
     USER_RANGE_URI,
     DOMAIN_FILTER_HASANYVALUE,
-    SAMPLE_TYPE_CONCEPT_URI,
-    DOMAIN_FIELD_PARTIALLY_LOCKED
+    DOMAIN_FIELD_PARTIALLY_LOCKED,
+    SAMPLE_TYPE_CONCEPT_URI
 } from "./constants";
 import {SCHEMAS} from "@glass/base";
 
@@ -107,8 +107,12 @@ export class PropDescType extends Record({
         return (rangeURI === STRING_RANGE_URI || rangeURI === MULTILINE_RANGE_URI);
     }
 
-    static isMeasureDimension(rangeURI: string): boolean {
+    static isMeasure(rangeURI: string): boolean {
         return (rangeURI !== ATTACHMENT_RANGE_URI && rangeURI !== FILELINK_RANGE_URI);
+    }
+
+    static isDimension(rangeURI: string): boolean {
+        return (rangeURI === BOOLEAN_RANGE_URI || rangeURI === DOUBLE_RANGE_URI || rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI);
     }
 
     static isMvEnableable(rangeURI: string): boolean {
@@ -160,18 +164,18 @@ export class PropDescType extends Record({
     }
 }
 
-export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text (String)', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
+export const TEXT_TYPE = new PropDescType({name: 'string', display: 'Text', rangeURI: STRING_RANGE_URI, alternateRangeURI: 'xsd:string', shortDisplay: 'String'});
 export const LOOKUP_TYPE = new PropDescType({name: 'lookup', display: 'Lookup'});
 export const MULTILINE_TYPE = new PropDescType({name: 'multiLine', display: 'Multi-Line Text', rangeURI: MULTILINE_RANGE_URI});
 export const BOOLEAN_TYPE = new PropDescType({name: 'boolean', display: 'Boolean', rangeURI: BOOLEAN_RANGE_URI, alternateRangeURI: 'xsd:boolean'});
 export const INTEGER_TYPE = new PropDescType({name: 'int', display: 'Integer', rangeURI: INT_RANGE_URI, alternateRangeURI: 'xsd:int'});
 export const DOUBLE_TYPE = new PropDescType({name: 'double', display: 'Decimal', rangeURI: DOUBLE_RANGE_URI, alternateRangeURI: 'xsd:double'});
 export const DATETIME_TYPE = new PropDescType({name: 'dateTime', display: 'Date Time', rangeURI: DATETIME_RANGE_URI, alternateRangeURI: 'xsd:dateTime'});
-export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag (String)', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
+export const FLAG_TYPE = new PropDescType({name: 'flag', display: 'Flag', rangeURI: STRING_RANGE_URI, conceptURI: FLAG_CONCEPT_URI});
 export const FILE_TYPE = new PropDescType({name: 'fileLink', display: 'File', rangeURI: FILELINK_RANGE_URI});
 export const ATTACHMENT_TYPE = new PropDescType({name: 'attachment', display: 'Attachment', rangeURI: ATTACHMENT_RANGE_URI});
 export const USERS_TYPE = new PropDescType({name: 'users', display: 'User', rangeURI: INT_RANGE_URI, lookupSchema: 'core', lookupQuery: 'users'});
-export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant (String)', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
+export const PARTICIPANT_TYPE = new PropDescType({name: 'ParticipantId', display: 'Subject/Participant', rangeURI: STRING_RANGE_URI, conceptURI: PARTICIPANTID_CONCEPT_URI});
 export const SAMPLE_TYPE = new PropDescType({name: 'sample', display: 'Sample', rangeURI: INT_RANGE_URI, conceptURI: SAMPLE_TYPE_CONCEPT_URI});
 
 export const PROP_DESC_TYPES = List([
@@ -199,12 +203,14 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean
     allowAttachmentProperties: boolean
     allowFlagProperties: boolean
+    showDefaultValueSettings: boolean
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
     fields?: List<DomainField>
     indices?: List<DomainIndex>
     domainException?: DomainException
     newDesignFields?: List<DomainField>  // set of fields to initialize a manually created design
+    instructions?: string
 }
 
 export class DomainDesign extends Record({
@@ -216,6 +222,7 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: true,
     allowAttachmentProperties: true,
     allowFlagProperties: true,
+    showDefaultValueSettings: false,
     defaultDefaultValueType: undefined,
     defaultValueOptions: List<string>(),
     fields: List<DomainField>(),
@@ -224,6 +231,7 @@ export class DomainDesign extends Record({
     mandatoryFieldNames: List<string>(),
     reservedFieldNames: List<string>(),
     newDesignFields: undefined,
+    instructions: undefined
 }) implements IDomainDesign {
     name: string;
     container: string;
@@ -233,6 +241,7 @@ export class DomainDesign extends Record({
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
     fields: List<DomainField>;
@@ -241,6 +250,7 @@ export class DomainDesign extends Record({
     mandatoryFieldNames: List<string>;
     reservedFieldNames: List<string>;
     newDesignFields?: List<DomainField>;  // Returns a set of fields to initialize a manually created design
+    instructions: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -489,7 +499,6 @@ interface ILookupConfig {
     lookupType?: PropDescType
 }
 
-// Commented out properties are unused
 export interface IDomainField {
     conceptURI?: string
     conditionalFormats: List<ConditionalFormat>
@@ -703,6 +712,7 @@ export class DomainField extends Record({
             if (raw.name.localeCompare('SampleId', 'en', {sensitivity: 'accent'}) === 0) {
                 field.dataType = SAMPLE_TYPE;
                 field.conceptURI = SAMPLE_TYPE.conceptURI;
+                field.rangeURI = SAMPLE_TYPE.rangeURI;
                 field.required = true;
             }
         }
@@ -890,8 +900,12 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
 
     // field has been saved -- display eligible propTypes
     return availableTypes.filter((type) => {
-        if (type.isLookup() || type.isSample()) {
+        if (type.isLookup()) {
             return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
+        }
+
+        if (type.isSample()) {
+            return rangeURI === INT_RANGE_URI;
         }
 
         // Catches Users
@@ -1284,11 +1298,18 @@ export class AssayProtocolModel extends Record({
         // if this is not an existing assay, clear the name property so the user must set it
         const name = !raw.protocolId ? undefined : raw.name;
 
-        return new AssayProtocolModel({
-            ...raw,
-            name,
-            domains
-        });
+        // Issue 38685: for new assays, pre-select some required assay properties
+        const model = new AssayProtocolModel({...raw, name, domains});
+        if (model.isNew()) {
+            if (model.allowDetectionMethodSelection() && model.availableDetectionMethods.length > 0) {
+                raw.selectedDetectionMethod = List<string>(model.availableDetectionMethods).get(0);
+            }
+            if (model.allowPlateTemplateSelection() && model.availablePlateTemplates.length > 0) {
+                raw.selectedPlateTemplate = List<string>(model.availablePlateTemplates).get(0);
+            }
+        }
+
+        return new AssayProtocolModel({...raw, name, domains});
     }
 
     static serialize(model: AssayProtocolModel): any {

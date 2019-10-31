@@ -160,7 +160,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Regular Expression:*
+                Regular Expression *
                 <LabelHelpTip
                   body={[Function]}
                   id="tooltip"
@@ -329,7 +329,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Description:
+                Description
               </div>
             </div>
           </Col>
@@ -383,7 +383,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Error Message:
+                Error Message
                 <LabelHelpTip
                   body={[Function]}
                   id="tooltip"
@@ -723,7 +723,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
               className="col-xs-4"
             >
               <div>
-                Name:*
+                Name *
               </div>
             </div>
           </Col>
@@ -776,7 +776,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 active={false}
                 block={false}
                 bsClass="btn"
-                bsStyle="danger"
+                bsStyle="default"
                 className="domain-validation-delete"
                 disabled={false}
                 id="domainpropertiesrow-removeValidator-0"
@@ -784,7 +784,7 @@ exports[`RegexValidationOptions Regex Validator - expanded 1`] = `
                 onClick={[Function]}
               >
                 <button
-                  className="domain-validation-delete btn btn-danger"
+                  className="domain-validation-delete btn btn-default"
                   disabled={false}
                   id="domainpropertiesrow-removeValidator-0"
                   name="domainpropertiesrow-removeValidator"

@@ -59,7 +59,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "visible": true,
       "dataType": Immutable.Record {
         "conceptURI": undefined,
-        "display": "Text (String)",
+        "display": "Text",
         "name": "string",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
         "alternateRangeURI": "xsd:string",
@@ -82,7 +82,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
         "conceptURI": undefined,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
-          "display": "Text (String)",
+          "display": "Text",
           "name": "string",
           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
           "alternateRangeURI": "xsd:string",

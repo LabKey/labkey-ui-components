@@ -3,7 +3,10 @@
 This repository defines all of the components available in the @glass scope. These React components, utility functions, and models comprise the LabKey Glass UI framework.
 
 :construction: **Warning** :construction: 
-LabKey Glass is under development so these components should be considered unstable and are very likely to change. Once they're ready, we'll officially push the components as version 1.0.0.
+LabKey Glass is under development, so these components should be considered unstable and are very likely to change.
+We are also in the process of consolidating the packages into a single package, so some of
+the development process described below will change once this is done.
+ Once they're ready, we'll officially push the components as version 1.0.0.
 :construction: **Warning** :construction:
 
 ## Package listing
@@ -19,12 +22,14 @@ LabKey Glass is under development so these components should be considered unsta
 ## Using @glass npm packages
 
 The easiest way to use `@glass` components is to install them from npm and bundle them with your app. 
-Before you run install you'll want to make sure you set the appropriate registry for the `@glass` scope
+Before you run install, you'll want to make sure you set the appropriate registry for the `@glass` scope
 as well as the `@labkey` scope.
 
 #### Setting the Registry Scope
 
-This package is currently available on LabKey's Artifactory package registry. To include this package set the registry in npm for the `@glass` scope. This can be done via command line using `npm config`:
+This package is currently available on LabKey's Artifactory package registry and relies on the `@labkey/api` pacakge. 
+To include this package, set the registry in npm for the `@glass` scope as well as the `@labkey` scope. 
+This can be done via command line using `npm config`:
 ```
 npm config set @glass:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
 npm config set @labkey:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client/
@@ -43,7 +48,7 @@ To install using npm
 ```
 npm install @glass/base
 ```
-You can then import @glass/base in your application as follows:
+You can then import `@glass/base` in your application as follows:
 ```js
 import { Grid } from '@glass/base';
 ```
@@ -83,7 +88,7 @@ Lerna should now be available on the command line.
 
 #### 3. Clone and Build
 
-Now that yarn and lerna are set up you can go ahead and clone this repository to a local directory.
+Now that yarn and lerna are set up, you can go ahead and clone this repository to a local directory.
 
 ```sh
 git clone https://github.com/LabKey/glass-components.git # or via ssh
@@ -95,7 +100,10 @@ Navigate into the directory and run:
 lerna bootstrap
 ```
 
-This will install all dependencies for the component packages. Once this is complete you can utilize either lerna or yarn to run builds for a specific package. From the top directory you can run any command across all packages that have that command using lerna. For example, if you want to build all the components run the following from the top directory:
+This will install all dependencies for the component packages. 
+Once this is complete you can utilize either lerna or yarn to run builds for a specific package. 
+You can run any command across all packages that have that command using lerna. 
+For example, if you want to build all the components run the following:
 
 ```sh
 lerna run build
@@ -143,7 +151,7 @@ Generally, when doing development, you should:
 ### Local Development
 
 When making modifications to an existing package, you should:
-* Update the version number for the package to be `X.Y.Z-fb-my-branch-name.0`, which `X.Y.Z` is your best guess at the 
+* Update the version number for the package to be `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the 
 next [SemVer](https://semver.org/) version that will include your changes, `fb-my-branch-name` is the name of your
 feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning.
 You can do this editing manually or by using `lerna version --exact`.  See [below](#version-numbering) for
@@ -158,13 +166,13 @@ for reading in realistic data that can be captured from the server.
 * Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
 testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured 
 from the server for various Ajax calls that are required.  
-* Test within the application pnce display and functionality are as expected from within storybook.  
+* Test within the application once display and functionality are as expected from within storybook.  
   
 #### Getting glass packages to the application
 
 While you can [publish](#publishing) a pre-release version of the glass packages and then update your application's `package.json`
 to reference the new pre-release version in order to view the changes within the application, you will likely want to 
-be able to do this without publishing.
+be able to do this without publishing for quicker development iteration.
 
 In order to use and test the components you are developing or modifying in this repository within another application, 
 you can use [npm link](https://docs.npmjs.com/cli/link.html) (or `yarn link`, presumably)
@@ -222,10 +230,10 @@ this is also a great way to do visual inspection and testing of your components 
 
 Each package that is developed should create a set of stories that illustrate the components in that package.  We follow these
 conventions currently:
-* Each package as a `.storybook` directory that contains the configuration files for storybook.  See `packages/template/.storybook` for and example.
+* Each package as a `.storybook` directory that contains the configuration files for storybook.  See `packages/template/.storybook` for an example.
 * Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components
-`* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a user can
-explore the different options available within a component.  See the `navigation` package for a few examples.
+* The [addon-knobs](https://www.npmjs.com/package/@storybook/addon-knobs) package is used for parameterizing the stories so a user can
+explore the different options available within a component.  See the `querygrid` package for a few examples.
 
 You can start up Storybook via:
 
@@ -264,7 +272,7 @@ Steps for package version numbering during feature branch development:
 on TeamCity, update the `package.json` version for that package. Ex. if adding a new feature and the current version is `0.1.0`,
 you would use `0.2.0-fb-feature-1.1`.
 1. If you make further edits to your feature branch and need to push new alpha versions, you would just bump the last
-digit in your package version number (i.e. `0.2.0-fb-feature-1.2`, `0.2.0-fb-feature-1.3`, etc.).
+digit in your package version number (e.g., `0.2.0-fb-feature-1.2`, `0.2.0-fb-feature-1.3`, etc.).
 1. Once your feature branch is complete and ready to merge, you do one more package version update to what will be the
 "release" version (i.e. `0.2.0` in this scenario) and then build/publish and complete the merge. Don't forget to update
 the release notes in your package's `README.md` file for this version number. And don't forget to update your application

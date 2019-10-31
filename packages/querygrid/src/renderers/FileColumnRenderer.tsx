@@ -59,7 +59,9 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
         const value = data.get('value');
         const displayValue = data.get('displayValue');
 
-        if (url && isImage(url)) {
+        // Attachment URLs will look like images, so we check if the URL is an image.
+        // FileLink URLs don't look like images, so you have to check value or displayValue.
+        if ((url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value))) {
             const title = displayValue ? displayValue : value;
             const alt = `${title} image`;
             return (

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
+import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
 import {
@@ -264,6 +264,10 @@ class Renderers {
 
     static applyColumnRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'columnRenderer', metadata);
+        const types = Set.of(
+            rawColumn.type.toLowerCase(),
+            rawColumn.friendlyType.toLowerCase(),
+        );
 
         if (value === undefined) {
             if (rawColumn.multiValue === true) {
@@ -272,7 +276,7 @@ class Renderers {
             else if (rawColumn.name === 'harvest') {
                 value = 'MaterialLookupColumnRenderer';
             }
-            else if (rawColumn.type === 'File') {
+            else if (types.contains('file')) {
                 value = 'FileColumnRenderer';
             }
         }

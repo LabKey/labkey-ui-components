@@ -302,6 +302,7 @@ exports[`DomainRow Sample Field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -463,6 +464,7 @@ exports[`DomainRow Sample Field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -2300,6 +2302,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -2461,6 +2464,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -4120,6 +4124,7 @@ exports[`DomainRow date time field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -4281,6 +4286,7 @@ exports[`DomainRow date time field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -6246,6 +6252,7 @@ exports[`DomainRow decimal field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -6407,6 +6414,7 @@ exports[`DomainRow decimal field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -8407,6 +8415,7 @@ exports[`DomainRow participant id field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -8568,6 +8577,7 @@ exports[`DomainRow participant id field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -10181,6 +10191,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -10342,6 +10353,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -12001,6 +12013,7 @@ exports[`DomainRow string field test 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -12162,6 +12175,7 @@ exports[`DomainRow string field test 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -14039,6 +14053,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -14199,6 +14214,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}

@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.21.3
+*Released*: 31 Oct 2019
 
 * Issue 38807: get a full calendar of months, even at the end of the month
  

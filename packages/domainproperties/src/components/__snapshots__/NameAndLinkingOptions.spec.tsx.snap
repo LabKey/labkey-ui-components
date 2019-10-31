@@ -42,7 +42,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "visible": true,
       "dataType": Immutable.Record {
         "conceptURI": undefined,
-        "display": "Text (String)",
+        "display": "Text",
         "name": "string",
         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
         "alternateRangeURI": "xsd:string",
@@ -65,7 +65,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
         "conceptURI": undefined,
         "dataType": Immutable.Record {
           "conceptURI": undefined,
-          "display": "Text (String)",
+          "display": "Text",
           "name": "string",
           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
           "alternateRangeURI": "xsd:string",
@@ -139,7 +139,6 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                 id="domainpropertiesrow-description-1"
                 name="domainpropertiesrow-description"
                 onChange={[Function]}
-                placeholder="Add a description"
                 rows={4}
                 value="This is a description"
               >
@@ -149,7 +148,6 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                   id="domainpropertiesrow-description-1"
                   name="domainpropertiesrow-description"
                   onChange={[Function]}
-                  placeholder="Add a description"
                   rows={4}
                   value="This is a description"
                 />

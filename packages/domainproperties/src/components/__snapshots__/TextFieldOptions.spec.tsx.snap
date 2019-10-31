@@ -53,7 +53,7 @@ exports[`TextFieldOptions Text data type 1`] = `
             <div
               className="domain-field-label"
             >
-              Max Text Character Count
+              Maximum Text Length
               <LabelHelpTip
                 body={[Function]}
                 id="tooltip"
@@ -204,7 +204,7 @@ exports[`TextFieldOptions Text data type 1`] = `
             <div
               className="domain-text-label"
             >
-              Allow max character count
+              Unlimited
             </div>
           </div>
         </Col>
@@ -238,7 +238,7 @@ exports[`TextFieldOptions Text data type 1`] = `
             <span
               className="domain-text-options-length domain-field-float-left domain-text-label"
             >
-              Set character count to
+              No longer than X characters
             </span>
             <FormControl
               bsClass="form-control"

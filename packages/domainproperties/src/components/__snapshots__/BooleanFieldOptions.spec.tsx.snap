@@ -185,10 +185,10 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
         <Col
           bsClass="col"
           componentClass="div"
-          xs={2}
+          xs={3}
         >
           <div
-            className="col-xs-2"
+            className="col-xs-3"
           >
             <FormControl
               bsClass="form-control"

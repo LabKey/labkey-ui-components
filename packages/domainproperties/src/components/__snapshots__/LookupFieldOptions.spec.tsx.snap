@@ -135,7 +135,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Folder
+                Target Folder
               </div>
               <FolderSelect
                 disabled={false}
@@ -236,9 +236,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     >
                       <option
                         key="_current"
-                        value="/StudyVerifyProject/My Study"
+                        value=""
                       >
-                        Current Folder
+                        Current 
+                        Folder
                       </option>
                     </select>
                   </FormControl>
@@ -257,7 +258,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Schema
+                Target Schema
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject/My Study"
@@ -715,7 +716,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Folder
+                Target Folder
               </div>
               <FolderSelect
                 disabled={false}
@@ -816,9 +817,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     >
                       <option
                         key="_current"
-                        value="/StudyVerifyProject/My Study"
+                        value=""
                       >
-                        Current Folder
+                        Current 
+                        Folder
                       </option>
                       <option
                         key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
@@ -849,7 +851,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Schema
+                Target Schema
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject"
@@ -1356,7 +1358,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Folder
+                Target Folder
               </div>
               <FolderSelect
                 disabled={false}
@@ -1457,9 +1459,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     >
                       <option
                         key="_current"
-                        value="/StudyVerifyProject/My Study"
+                        value=""
                       >
-                        Current Folder
+                        Current 
+                        Folder
                       </option>
                       <option
                         key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
@@ -1490,7 +1493,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Schema
+                Target Schema
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject"
@@ -1997,7 +2000,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Folder
+                Target Folder
               </div>
               <FolderSelect
                 disabled={false}
@@ -2098,9 +2101,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     >
                       <option
                         key="_current"
-                        value="/StudyVerifyProject/My Study"
+                        value=""
                       >
-                        Current Folder
+                        Current 
+                        Folder
                       </option>
                       <option
                         key="a21a06e1-4058-1037-95c6-1e81b2533cfd"
@@ -2131,7 +2135,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
               <div
                 className="domain-field-label"
               >
-                From Schema
+                Target Schema
               </div>
               <SchemaSelect
                 containerPath="/StudyVerifyProject/My Study"

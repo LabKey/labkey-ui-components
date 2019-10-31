@@ -195,17 +195,17 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                     {this.renderHeader()}
                     {collapsible && collapsed &&
                         <span className={'pull-right'}>
-                            <FontAwesomeIcon icon={faPlusSquare} className={"domain-form-expand-btn"}/>
+                            <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
                         </span>
                     }
                     {collapsible && !collapsed &&
                         <span className={'pull-right'}>
-                            <FontAwesomeIcon icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                            <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-expand-btn"}/>
                         </span>
                     }
                     {!collapsible && collapsed && markComplete &&
                         <span className={'pull-right'}>
-                            <i className={'fa fa-check-square-o as-secondary-color'}/>
+                            <i className={'fa fa-check-square-o fa-lg as-secondary-color'}/>
                         </span>
                     }
                 </Panel.Heading>

@@ -91,6 +91,11 @@ import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
+import  {
+    addDateRangeFilter,
+    last12Months,
+    monthSort
+} from './components/heatmap/utils';
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
@@ -286,6 +291,11 @@ export {
     WithFormStepsProps,
     FormStep,
     FormTabs,
+
+    // heatmap
+    addDateRangeFilter,
+    last12Months,
+    monthSort,
 
     // DataViewInfo
     DataViewInfoTypes,

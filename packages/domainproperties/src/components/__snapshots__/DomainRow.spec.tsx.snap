@@ -8790,12 +8790,6 @@ exports[`DomainRow participant id field 1`] = `
                                           >
                                             Lookup
                                           </option>
-                                          <option
-                                            key="5"
-                                            value="sample"
-                                          >
-                                            Sample
-                                          </option>
                                         </select>
                                       </FormControl>
                                     </div>
@@ -12389,12 +12383,6 @@ exports[`DomainRow string field test 1`] = `
                                             value="lookup"
                                           >
                                             Lookup
-                                          </option>
-                                          <option
-                                            key="5"
-                                            value="sample"
-                                          >
-                                            Sample
                                           </option>
                                         </select>
                                       </FormControl>

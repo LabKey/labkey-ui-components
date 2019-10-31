@@ -900,8 +900,12 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
 
     // field has been saved -- display eligible propTypes
     return availableTypes.filter((type) => {
-        if (type.isLookup() || type.isSample()) {
+        if (type.isLookup()) {
             return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
+        }
+
+        if (type.isSample()) {
+            return rangeURI === INT_RANGE_URI;
         }
 
         // Catches Users

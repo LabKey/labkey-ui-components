@@ -8,9 +8,11 @@ import {
     DOMAIN_SECOND_FILTER_TYPE, DOMAIN_SECOND_FILTER_VALUE,
 } from "../../constants";
 
-import { Filter } from '@labkey/api';
+import { Filter, Utils } from '@labkey/api';
 import {ReactElement} from "react";
 import {JsonType} from "../../models";
+
+const NO_FILTER_TYPE = 'None';
 
 interface FiltersProps {
     validatorIndex: number
@@ -87,7 +89,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
         let filterTypes = Array<{name: string, value: string}>();
         if (!first) {
-            filterTypes.push({name: 'No other filter', value: 'None'})
+            filterTypes.push({name: 'No other filter', value: NO_FILTER_TYPE});
         }
 
         let filters;
@@ -110,15 +112,19 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         const filterSet = Filters.parseFilterString(expression, prefix);
 
         let valid = false;
-        if (filterSet.firstFilterType) {
+        if (Filters.hasFilterType(filterSet.firstFilterType)) {
             valid = !!Filters.validFilter(filterSet.firstFilterType, filterSet.firstFilterValue);
         }
 
-        if (valid && filterSet.secondFilterType) {
+        if (valid && Filters.hasFilterType(filterSet.secondFilterType)) {
             valid = !!Filters.validFilter(filterSet.secondFilterType, filterSet.secondFilterValue);
         }
 
         return valid;
+    };
+
+    static hasFilterType = (type: string) => {
+        return type && Utils.isString(type) && type.length > 0 && type !== NO_FILTER_TYPE;
     };
 
     static validFilter = (type: string, value: string) => {
@@ -138,7 +144,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
             }
         }
 
-        if (Filters.validFilter(filterSet.secondFilterType, filterSet.secondFilterValue)) {
+        if (Filters.hasFilterType(filterSet.secondFilterType) && Filters.validFilter(filterSet.secondFilterType, filterSet.secondFilterValue)) {
             const secondType = Filters.getFilterFromPrefix(filterSet.secondFilterType);
             expressionString += ' and ' + secondType.getDisplayText();
 
@@ -178,7 +184,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
             return ({
                 firstFilterType: 'eq',
                 firstFilterValue: '',
-                secondFilterType: 'None',
+                secondFilterType: NO_FILTER_TYPE,
                 secondFilterValue: ''
             } as FilterSet)
         }
@@ -203,7 +209,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
         let filterString = (prefix ? prefix : '') + '~' + filters.firstFilterType + '=' + filters.firstFilterValue;
 
-        if (filters.secondFilterType) {
+        if (Filters.hasFilterType(filters.secondFilterType)) {
             filterString = filterString.concat('&' + (prefix ? prefix : '') + '~' + filters.secondFilterType + '=' + filters.secondFilterValue);
         }
 
@@ -259,7 +265,6 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         this.setState(() => ({filterSet: updatedFilters}));
 
         onChange(this.getFilterString(updatedFilters));
-
     };
 
     getFormControlType = (): string => {
@@ -274,7 +279,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         }
 
         return 'text';
-    }
+    };
 
     render() {
         const { validatorIndex, type, firstFilterTypeLabel, firstFilterValueLabel, secondFilterTypeLabel, secondFilterValueLabel,
@@ -342,7 +347,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                                 componentClass="select"
                                 id={createFormInputId(DOMAIN_SECOND_FILTER_TYPE, validatorIndex)}
                                 name={createFormInputName(DOMAIN_SECOND_FILTER_TYPE)}
-                                value={filterSet.secondFilterType ? filterSet.secondFilterType : "None"}
+                                value={filterSet.secondFilterType ? filterSet.secondFilterType : NO_FILTER_TYPE}
                                 onChange={this.onChange}
                             >
                                 {

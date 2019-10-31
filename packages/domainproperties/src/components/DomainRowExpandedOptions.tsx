@@ -23,6 +23,7 @@ import {DateTimeFieldOptions} from "./DateTimeFieldOptions";
 import {LookupFieldOptions} from "./LookupFieldOptions";
 import { List } from "immutable";
 import {ConditionalFormattingAndValidation} from "./ConditionalFormattingAndValidation";
+import {isFieldFullyLocked} from "../propertiesUtil";
 import { SampleFieldOptions } from "./SampleFieldOptions";
 
 interface IDomainRowExpandedOptionsProps {
@@ -86,7 +87,10 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                 <div className='domain-row-container-expanded'>
                     {this.typeDependentOptions()}
                     <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
-                    <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} setDragDisabled={setDragDisabled}/>
+                    {!isFieldFullyLocked(field.lockType) &&
+                        <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange}
+                                                        setDragDisabled={setDragDisabled}/>
+                    }
                 </div>
             </div>
         );

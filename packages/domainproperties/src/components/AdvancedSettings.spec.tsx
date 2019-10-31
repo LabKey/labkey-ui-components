@@ -51,14 +51,13 @@ describe('AdvancedSettings', () => {
             field: field1,
             onHide: jest.fn(),
             onApply: jest.fn(),
+            showDefaultValueSettings: true,
             defaultDefaultValueType: DOMAIN_EDITABLE_DEFAULT,
             defaultValueOptions : List<string>([ DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT ]),
             helpNoun: "domain"
         };
 
-        const advSettings  = mount(<AdvancedSettings
-            {...props}
-        />);
+        const advSettings  = mount(<AdvancedSettings {...props}/>);
 
         // Verify label
         const sectionLabel = advSettings.find({className: 'modal-title'});

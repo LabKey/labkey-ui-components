@@ -4,6 +4,12 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.45
+*Released*: 31 October 2019
+* Item 6451: Domain designer feedback changes, bug fixes, and polish
+* Issue 38685: UX Assay Designer: Default values for select fields
+* Issue 38771: Assay designer: default value type not set/respected for assay properties
+
 ### version 0.0.44
 *Released*: 25 October 2019
 * Update AssayDesignerPanels & DomainForm to accept a header renderer

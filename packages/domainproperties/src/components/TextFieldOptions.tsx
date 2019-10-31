@@ -86,7 +86,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 <Row className='domain-row-expanded '>
                     <Col xs={12}>
                         <div className={'domain-field-label'}>
-                            Max Text Character Count
+                            Maximum Text Length
                             <LabelHelpTip
                                 title="Max Text Length"
                                 body={this.getMaxCountHelpText}
@@ -105,7 +105,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, index)}
                                disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div className='domain-text-label'>Allow max character count</div>
+                        <div className='domain-text-label'>Unlimited</div>
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
@@ -118,7 +118,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                onChange={this.handleChange}
                                id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, index)}
                         />
-                        <span className='domain-text-options-length domain-field-float-left domain-text-label'>Set character count to</span>
+                        <span className='domain-text-options-length domain-field-float-left domain-text-label'>No longer than X characters</span>
                         <FormControl type="text"
                                      id={createFormInputId(DOMAIN_FIELD_SCALE, index)}
                                      name={createFormInputName(DOMAIN_FIELD_SCALE)}

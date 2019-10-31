@@ -65,19 +65,19 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
-    test("isMeasureDimension", () => {
-        expect(PropDescType.isMeasureDimension(TEXT_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(LOOKUP_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(MULTILINE_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(BOOLEAN_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(INTEGER_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(DOUBLE_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(DATETIME_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(FLAG_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(FILE_TYPE.rangeURI)).toBeFalsy();
-        expect(PropDescType.isMeasureDimension(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
-        expect(PropDescType.isMeasureDimension(USERS_TYPE.rangeURI)).toBeTruthy();
-        expect(PropDescType.isMeasureDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+    test("isMeasure", () => {
+        expect(PropDescType.isMeasure(TEXT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(LOOKUP_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(MULTILINE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(BOOLEAN_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(INTEGER_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(DOUBLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(DATETIME_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(FLAG_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(FILE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isMeasure(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isMeasure(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
     test("isMvEnableable", () => {

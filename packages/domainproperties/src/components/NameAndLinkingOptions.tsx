@@ -46,7 +46,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <>
                 Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
                 <br/><br/>
-                Learn more about using <a target="_blank" href={LK_URL_ENCODING_DOC}>Url Formatting Options</a>
+                Learn more about using <a target="_blank" href={LK_URL_ENCODING_DOC}>URL Formatting Options</a>
             </>
         )
     }
@@ -72,7 +72,6 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                      value={field.description || ''}
                                   id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, index)}
                                   name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
-                                  placeholder={'Add a description'}
                                   onChange={this.handleChange} disabled={isFieldFullyLocked(field.lockType)}/>
                     </Col>
                     <Col xs={3}>

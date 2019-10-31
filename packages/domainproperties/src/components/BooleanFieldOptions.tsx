@@ -25,7 +25,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
         if (onChange) {
             onChange(evt.target.id, value);
         }
-    }
+    };
 
     getFormatHelpText = () => {
         return (
@@ -35,7 +35,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                 For example, "Yes;No;Blank" would output "Yes" if the value is true, "No" if false, and "Blank" for a null value.
             </div>
         );
-    }
+    };
 
     render() {
         const { index, label, format, lockType } = this.props;
@@ -56,7 +56,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                     </Col>
                 </Row>
                 <Row className='domain-row-expanded'>
-                    <Col xs={2}>
+                    <Col xs={3}>
                         <FormControl type="text"
                                      value={format || ''}
                                      onChange={this.onFieldChange}

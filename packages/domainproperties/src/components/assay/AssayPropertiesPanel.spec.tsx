@@ -1,8 +1,7 @@
 import * as React from "react";
 import {List} from "immutable";
 import {mount} from "enzyme";
-import renderer from 'react-test-renderer'
-import { AssayPropertiesPanel, FORM_IDS } from "./AssayPropertiesPanel";
+import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import { AssayProtocolModel, DomainDesign } from "../../models";
 import { LK_DOMAIN_HELP_URL } from "../../constants";
 import {
@@ -20,6 +19,7 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput
 } from "./AssayPropertiesInput";
+import toJson from "enzyme-to-json";
 
 const EMPTY_MODEL = AssayProtocolModel.create({
     providerName: 'General',
@@ -33,18 +33,19 @@ const EMPTY_MODEL = AssayProtocolModel.create({
 describe('AssayPropertiesPanel', () => {
 
     test('default properties', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 onChange={jest.fn}
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('asPanel, helpURL, and basePropertiesOnly', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 asPanel={false}
@@ -54,11 +55,12 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('without helpURL', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 helpURL={null}
@@ -67,11 +69,12 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('panelCls, initCollapsed, and markComplete', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 panelCls={'panel-primary'}
@@ -82,11 +85,12 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('with initial model', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayPropertiesPanel
                 model={AssayProtocolModel.create({
                     protocolId: 1,
@@ -99,7 +103,8 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('collapsible', () => {
@@ -115,12 +120,14 @@ describe('AssayPropertiesPanel', () => {
         expect(wrapper.find('.panel-body')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
-        expect(wrapper.find('.panel-body')).toHaveLength(0);
+        expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(0);
         expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties (With Name)');
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
-        expect(wrapper.find('.panel-body')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
-        wrapper.unmount();
+        setTimeout(() => {
+            expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
+            expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
+            wrapper.unmount();
+        }, 1000);
     });
 
     test('visible properties based on empty AssayProtocolModel', () => {

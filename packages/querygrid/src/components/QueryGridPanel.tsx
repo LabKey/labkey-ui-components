@@ -15,6 +15,8 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
+
+import { Utils } from '@labkey/api'
 import { QueryGridModel, Alert, LoadingSpinner } from '@glass/base'
 
 import { gridInit } from '../actions'
@@ -34,6 +36,7 @@ interface Props {
     showAllTabs?: boolean
     showGridBar?: boolean
     activeTab?: number
+    onChangeTab?: (tabInd : number) => any
 }
 
 interface State {
@@ -130,7 +133,12 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     setActiveTab(id: number) {
-        this.setState({activeTab: id})
+        const { onChangeTab } = this.props;
+        this.setState({activeTab: id});
+
+        if (Utils.isFunction(onChangeTab)) {
+            onChangeTab(id);
+        }
     }
 
     renderTabs() {

@@ -14,6 +14,10 @@ Query Grid for LabKey schema/query data views
 * Package patch update for changes to @glass/base 0.20.1
 * Package patch update for changes to @glass/domainproperties 0.0.44
 
+### version XXX
+*Released*: XXX
+* Add onChangeTab to QueryGridPanel
+
 ### version 0.21.1
 *Released*: 24 October 2019
 * Add getUrlString to MenuItemModel

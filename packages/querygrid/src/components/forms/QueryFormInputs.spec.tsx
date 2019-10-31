@@ -56,7 +56,6 @@ describe("QueryFormInputs", () => {
 
     test("render file inputs", () => {
         return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
-            //console.log('QUERYINFO:', queryInfo.schemaName, queryInfo.name);
             const formWrapper = mount(
                 <Formsy>
                     <QueryFormInputs renderFileInputs={true} queryInfo={queryInfo}/>

@@ -1119,21 +1119,6 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@glass/domainproperties@0.0.45-fb-uxddPolish.0":
-  version "0.0.45-fb-uxddPolish.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.45-fb-uxddPolish.0.tgz#775847f4ab53ccadc438e4094f47539aa96b4cb0"
-  integrity sha1-d1hH9KtTzK3EOOQJT0dTmqlrTLA=
-  dependencies:
-    "@fortawesome/fontawesome-free" "5.9.0"
-    "@fortawesome/fontawesome-svg-core" "1.2.19"
-    "@fortawesome/free-solid-svg-icons" "5.9.0"
-    "@fortawesome/react-fontawesome" "0.1.4"
-    "@glass/base" "0.20.1"
-    react-beautiful-dnd "11.0.3"
-    react-color "2.17.3"
-    react-sticky "6.0.3"
-    react-transition-group "4.2.2"
-
 "@icons/material@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"

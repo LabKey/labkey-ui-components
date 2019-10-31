@@ -75,7 +75,7 @@ class FolderSelectImpl extends React.Component<FolderSelectProps, IFolderSelectI
 
         return (
             <FormControl {...this.props} componentClass="select">
-                {context.activeContainer && <option key="_current" value={''}>Current {context.activeContainer.type === 'project' ? 'Project' : 'Folder'}</option>}
+                {context.activeContainer && <option key="_current" value={''}>Current {context.activeContainer.type.toLowerCase() === 'project' ? 'Project' : 'Folder'}</option>}
                 {containers.map((c) => <option key={c.id} value={c.path}>{c.path}</option>).toArray()}
             </FormControl>
         )

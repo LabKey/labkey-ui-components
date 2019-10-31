@@ -347,7 +347,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Col xs={3}/>
                 </Row>
                 {field.dataType === DATETIME_TYPE &&
-                <>
                     <Checkbox
                             checked={excludeFromShifting === false}
                             onChange={this.handleCheckbox}
@@ -357,7 +356,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         Shift dates on export or publication
                         <LabelHelpTip title='Participant Date Shifting' body={this.getDateShiftingText}/>
                     </Checkbox>
-                </>
                 }
                 {PropDescType.isMeasure(field.dataType.rangeURI) &&
                     <Checkbox
@@ -410,37 +408,34 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         const { show, label } = this.props;
 
         return (
-            <>
-                <Modal show={show}
-                       onHide={this.handleClose}
-                       onEnter={this.initializeState}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>{'Advanced Settings and Properties' + (label ? (' for ' + label) : '')}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className='domain-modal'>
-                            {this.renderDisplayOptions()}
-                            {this.showDefaultValues() && this.renderDefaultValues()}
-                            {this.renderMiscOptions()}
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleClose} bsClass='btn'
-                                className='domain-adv-footer domain-adv-cancel-btn'>
-                            Cancel
-                        </Button>
-                        <a target='_blank'
-                           href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
-                           className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
-                        <Button onClick={this.handleApply} bsClass='btn btn-success'
-                                className='domain-adv-footer domain-adv-apply-btn'>
-                            Apply
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-            </>
+            <Modal show={show}
+                   onHide={this.handleClose}
+                   onEnter={this.initializeState}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>{'Advanced Settings and Properties' + (label ? (' for ' + label) : '')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className='domain-modal'>
+                        {this.renderDisplayOptions()}
+                        {this.showDefaultValues() && this.renderDefaultValues()}
+                        {this.renderMiscOptions()}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleClose} bsClass='btn'
+                            className='domain-adv-footer domain-adv-cancel-btn'>
+                        Cancel
+                    </Button>
+                    <a target='_blank'
+                       href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                       className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
+                    <Button onClick={this.handleApply} bsClass='btn btn-success'
+                            className='domain-adv-footer domain-adv-apply-btn'>
+                        Apply
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 }

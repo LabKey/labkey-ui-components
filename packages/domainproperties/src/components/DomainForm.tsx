@@ -559,16 +559,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
     };
 
-    isPanelExpanded = (): boolean => {
-        const { collapsible } = this.props;
-        const { collapsed } = this.state;
-
-        if (!collapsible)
-            return true;
-
-        return !collapsed;
-    };
-
     renderPanelHeaderContent() {
         const { helpURL, helpNoun, children } = this.props;
 
@@ -733,23 +723,25 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader, panelCls, collapsible } = this.props;
-        const { showConfirm } = this.state;
+        const { showConfirm, collapsed } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
-                <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')} expanded={this.isPanelExpanded()} onToggle={function(){}}>
+                <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
                     {showHeader &&
                         <Panel.Heading onClick={this.onPanelHeaderClick} className={collapsible ? 'domain-heading-collapsible' : ''}>
                             {this.renderHeaderContent()}
                         </Panel.Heading>
                     }
-                    <Panel.Body collapsible={collapsible}>
-                        {this.isValidDomain(domain)
-                            ? this.renderForm()
-                            : <Alert>Invalid domain design.</Alert>
-                        }
-                    </Panel.Body>
+                    {!collapsed &&
+                        <Panel.Body>
+                            {this.isValidDomain(domain)
+                                ? this.renderForm()
+                                :<Alert>Invalid domain design.</Alert>
+                            }
+                        </Panel.Body>
+                    }
                 </Panel>
             </>
         );

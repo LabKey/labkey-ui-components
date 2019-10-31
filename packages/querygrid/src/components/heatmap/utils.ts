@@ -58,6 +58,7 @@ type monthRec = {
  */
 export function last12Months(): monthRec[] {
     const d = new Date();
+    d.setDate(1); // Issue 38807: make sure we don't skip months without a full complement of days.
     const months: monthRec[] = [];
     for (let i = 0; i < 12; i++) {
         months.push({

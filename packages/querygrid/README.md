@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.21.3
+*Released*: 31 Oct 2019
+
+* Issue 38807: get a full calendar of months, even at the end of the month
+ 
 ### version 0.21.2
 *Released*: 25 October 2019
 * Package patch update for changes to @glass/base 0.20.1

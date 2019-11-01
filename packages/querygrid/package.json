@@ -57,6 +57,7 @@
     "@types/history": "4.7.2",
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",
+    "@types/react-datepicker": "2.9.3",
     "@types/vis": "4.21.16",
     "bootstrap-sass": "3.4.1",
     "xhr-mock": "2.4.1"

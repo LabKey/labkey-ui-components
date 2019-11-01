@@ -46,15 +46,15 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         <Col
           bsClass="col"
           componentClass="div"
-          xs={2}
+          xs={3}
         >
           <div
-            className="col-xs-2"
+            className="col-xs-3"
           >
             <div
               className="domain-field-label"
             >
-              Format Numeric Values
+              Format for Numbers
               <LabelHelpTip
                 body={[Function]}
                 id="tooltip"
@@ -201,10 +201,10 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
         <Col
           bsClass="col"
           componentClass="div"
-          xs={2}
+          xs={3}
         >
           <div
-            className="col-xs-2"
+            className="col-xs-3"
           >
             <FormControl
               bsClass="form-control"
@@ -257,13 +257,13 @@ exports[`NumericFieldOptions Numeric data type 1`] = `
                   key="domainpropertiesrow-defaultScaleoption-LINEAR-1"
                   value="LINEAR"
                 >
-                  LINEAR
+                  Linear
                 </option>
                 <option
                   key="domainpropertiesrow-defaultScaleoption-LOG-1"
                   value="LOG"
                 >
-                  LOG
+                  Log
                 </option>
               </select>
             </FormControl>

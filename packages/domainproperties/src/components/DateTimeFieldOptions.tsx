@@ -41,18 +41,12 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
 
         return (
             <>
-                To control how a date or time value is displayed, provide a string format compatible with the java data class SimpleDateFormat.
+                To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
                 <br/><br/>
                 Learn more about using <a target='_blank' href={helpPrefix + 'dateFormats#date'}>Date and Time formats</a> in LabKey.
             </>
         )
-    }
-
-    getDateShiftingText = () => {
-        return (
-            'Participant date columns with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.'
-        )
-    }
+    };
 
     render() {
         const { index, label, format, excludeFromShifting, lockType } = this.props;
@@ -73,14 +67,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                                 body={this.getFormatHelpText} />
                         </div>
                     </Col>
-                    <Col xs={9}>
-                        <div className={'domain-field-label'}>
-                            Participant Date Shifting
-                            <LabelHelpTip
-                                title='Participant Date Shifting'
-                                body={this.getDateShiftingText} />
-                        </div>
-                    </Col>
+                    <Col xs={9} />
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={3}>
@@ -92,19 +79,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                                      name={createFormInputName(DOMAIN_FIELD_FORMAT)}
                         />
                     </Col>
-                    <Col xs={9}>
-                        <Checkbox
-                            className='domain-field-checkbox-margin'
-                            name={createFormInputName(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING)}
-                            value='ExcludeFromShiftingOptions'
-                            checked={excludeFromShifting}
-                            onChange={this.onFieldChange}
-                            disabled={isFieldFullyLocked(lockType)}
-                            id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, index)}
-                        >
-                        Do Not Shift Dates on Export or Publication
-                        </Checkbox>
-                    </Col>
+                    <Col xs={9} />
                 </Row>
             </div>
         )

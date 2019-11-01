@@ -43,8 +43,7 @@ import {
     FieldErrors,
     DomainFieldError,
     PropDescType,
-    resolveAvailableTypes,
-    PROP_DESC_TYPES
+    resolveAvailableTypes
 } from "../models";
 import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "../actions/actions";
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "../propertiesUtil";
@@ -67,6 +66,7 @@ interface IDomainRowProps {
     onDelete: (any) => void
     onExpand: (index?: number) => void
     isDragDisabled: boolean
+    showDefaultValueSettings: boolean
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
 }
@@ -94,11 +94,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         };
     }
 
+    componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
+        // if there was a prop change to isDragDisabled, need to call setDragDisabled
+        if (nextProps.isDragDisabled !== this.props.isDragDisabled) {
+            this.setDragDisabled(nextProps.isDragDisabled, false);
+        }
+    }
+
     /**
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { expanded, field, index } = this.props;
+        const { field, index } = this.props;
         let details = [];
 
         if (field.hasErrors()) {
@@ -267,13 +274,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     onShowAdvanced = (): any => {
         this.setState(() => ({showAdv: true}));
 
-        this.setDragDisabled(true);
+        this.setDragDisabled(this.props.isDragDisabled, true);
     };
 
     onHideAdvanced = (): any => {
         this.setState(() => ({showAdv: false}));
 
-        this.setDragDisabled(false);
+        this.setDragDisabled(this.props.isDragDisabled, false);
     };
 
     onMouseOver = (): any => {
@@ -300,14 +307,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         }
     };
 
-    onExpandOnly = (): any => {
-        const { index, expanded, onExpand } = this.props;
-
-        if (!expanded && onExpand) {
-            onExpand(index);
-        }
-    };
-
     onCollapsed = () : void => {
         this.setState(() =>({closing: false}));
     };
@@ -316,17 +315,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({closing: true}));
     };
 
-    setDragDisabled = (disabled: boolean) => {
-        const { isDragDisabled } = this.props;
-
-        this.setState(() => ({isDragDisabled: (disabled || isDragDisabled)}));
+    setDragDisabled = (propDragDisabled: boolean, disabled: boolean) => {
+        this.setState(() => ({isDragDisabled: (disabled || propDragDisabled)}));
     };
 
     renderHandle() {
-        const { expanded, dragging } = this.props;
-        const { hover, closing } = this.state;
+        const { dragging } = this.props;
+        const { isDragDisabled, hover, closing } = this.state;
 
-        return (<FontAwesomeIcon size='lg' color={(dragging || hover || expanded || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>)
+        return (
+            <FontAwesomeIcon size='lg' color={!isDragDisabled && (dragging || hover || closing) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY} icon={faGripVertical}/>
+        )
     }
 
     renderBaseFields() {
@@ -342,7 +341,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, index)}
                         onChange={this.onNameChange}
-                        onClick={this.onExpandOnly}
                         disabled={(isFieldPartiallyLocked(field.lockType) || isFieldFullyLocked(field.lockType))}
                     />
                 </Col>
@@ -354,7 +352,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         id={createFormInputId(DOMAIN_FIELD_TYPE, index)}
                         onChange={this.onDataTypeChange}
                         value={field.dataType.name}
-                        onClick={this.onExpandOnly}
                     >
                         {
                             resolveAvailableTypes(field, availableTypes).map(
@@ -386,10 +383,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         // TODO update to use FieldExpansionToggle
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
-                {(expanded || closing) && (
+                {(expanded || closing) && !isFieldFullyLocked(field.lockType) && (
                 <>
                     <Button
-                        bsStyle="danger"
                         className="domain-row-button"
                         name={createFormInputName(DOMAIN_FIELD_DELETE)}
                         id={createFormInputId(DOMAIN_FIELD_DELETE, index)}
@@ -408,8 +404,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     </Button>
                 </>
                 )}
-                <div className="field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)}
-                     onClick={this.onExpand}>
+                <div className="field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
                     <FontAwesomeIcon size='lg' color={(dragging || hover) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
                                      icon={expanded ? faMinusSquare : faPlusSquare}/>
                 </div>
@@ -420,17 +415,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing, isDragDisabled, showAdv } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId,
-            helpNoun, defaultDefaultValueType, defaultValueOptions } = this.props;
+            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={isDragDisabled}>
                 {(provided) => (
                     <div className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
                          {...provided.draggableProps}
-                         {...provided.dragHandleProps}
                          ref={provided.innerRef}
                          tabIndex={index}
-                         draggable={true}
                          onMouseEnter={this.onMouseOver}
                          onMouseLeave={this.onMouseOut}
                     >
@@ -445,10 +438,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 show={showAdv}
                                 onHide={this.onHideAdvanced}
                                 label={field.name}
+                                showDefaultValueSettings={showDefaultValueSettings}
                                 defaultDefaultValueType={defaultDefaultValueType}
                                 defaultValueOptions={defaultValueOptions}
                             />
-                            <div className='domain-row-handle'>
+                            <div className='domain-row-handle' {...provided.dragHandleProps}>
                                 {this.renderHandle()}
                             </div>
                             <div className='domain-row-main'>
@@ -463,7 +457,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         </Row>
                             <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
-                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange} setDragDisabled={this.setDragDisabled}/>
+                                    <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}
+                                                              setDragDisabled={(disabled) => this.setDragDisabled(this.props.isDragDisabled, disabled)}
+                                    />
                                 </div>
                             </Collapse>
                     </div>

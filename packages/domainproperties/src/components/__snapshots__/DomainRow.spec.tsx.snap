@@ -75,7 +75,7 @@ exports[`DomainRow Sample Field 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -135,7 +135,7 @@ exports[`DomainRow Sample Field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -175,7 +175,7 @@ exports[`DomainRow Sample Field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -302,6 +302,7 @@ exports[`DomainRow Sample Field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -347,19 +348,10 @@ exports[`DomainRow Sample Field 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-default"
-                      data-react-beautiful-dnd-drag-handle="6"
                       data-react-beautiful-dnd-draggable="6"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -472,6 +464,7 @@ exports[`DomainRow Sample Field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -531,7 +524,17 @@ exports[`DomainRow Sample Field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="6"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -614,7 +617,6 @@ exports[`DomainRow Sample Field 1`] = `
                                         id="domainpropertiesrow-name-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="sampleField"
                                       >
@@ -624,7 +626,6 @@ exports[`DomainRow Sample Field 1`] = `
                                           id="domainpropertiesrow-name-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="sampleField"
                                         />
@@ -646,7 +647,6 @@ exports[`DomainRow Sample Field 1`] = `
                                         id="domainpropertiesrow-type-0"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="sample"
                                       >
                                         <select
@@ -655,7 +655,6 @@ exports[`DomainRow Sample Field 1`] = `
                                           id="domainpropertiesrow-type-0"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="sample"
                                         >
                                           <option
@@ -1301,7 +1300,6 @@ exports[`DomainRow Sample Field 1`] = `
                                                   id="domainpropertiesrow-description-0"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -1311,7 +1309,6 @@ exports[`DomainRow Sample Field 1`] = `
                                                     id="domainpropertiesrow-description-0"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -2068,7 +2065,7 @@ exports[`DomainRow client side warning on field 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -2128,7 +2125,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -2168,7 +2165,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -2305,6 +2302,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -2350,19 +2348,10 @@ exports[`DomainRow client side warning on field 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-warning"
-                      data-react-beautiful-dnd-drag-handle="7"
                       data-react-beautiful-dnd-draggable="7"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -2475,6 +2464,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -2534,7 +2524,17 @@ exports[`DomainRow client side warning on field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="7"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -2617,7 +2617,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="#ColumnAwesome"
                                       >
@@ -2627,7 +2626,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                           id="domainpropertiesrow-name-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="#ColumnAwesome"
                                         />
@@ -2649,7 +2647,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="attachment"
                                       >
                                         <select
@@ -2658,14 +2655,13 @@ exports[`DomainRow client side warning on field 1`] = `
                                           id="domainpropertiesrow-type-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="attachment"
                                         >
                                           <option
                                             key="0"
                                             value="string"
                                           >
-                                            Text (String)
+                                            Text
                                           </option>
                                           <option
                                             key="1"
@@ -2701,7 +2697,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             key="6"
                                             value="flag"
                                           >
-                                            Flag (String)
+                                            Flag
                                           </option>
                                           <option
                                             key="7"
@@ -2725,7 +2721,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             key="10"
                                             value="ParticipantId"
                                           >
-                                            Subject/Participant (String)
+                                            Subject/Participant
                                           </option>
                                           <option
                                             key="11"
@@ -3136,7 +3132,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                                   id="domainpropertiesrow-description-1"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -3146,7 +3141,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                                     id="domainpropertiesrow-description-1"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -3903,7 +3897,7 @@ exports[`DomainRow date time field 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -3963,7 +3957,7 @@ exports[`DomainRow date time field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -4003,7 +3997,7 @@ exports[`DomainRow date time field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -4130,6 +4124,7 @@ exports[`DomainRow date time field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -4175,19 +4170,10 @@ exports[`DomainRow date time field 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-default"
-                      data-react-beautiful-dnd-drag-handle="3"
                       data-react-beautiful-dnd-draggable="3"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -4300,6 +4286,7 @@ exports[`DomainRow date time field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -4359,7 +4346,17 @@ exports[`DomainRow date time field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="3"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -4442,7 +4439,6 @@ exports[`DomainRow date time field 1`] = `
                                         id="domainpropertiesrow-name-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="dateTimeField"
                                       >
@@ -4452,7 +4448,6 @@ exports[`DomainRow date time field 1`] = `
                                           id="domainpropertiesrow-name-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="dateTimeField"
                                         />
@@ -4474,7 +4469,6 @@ exports[`DomainRow date time field 1`] = `
                                         id="domainpropertiesrow-type-0"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="dateTime"
                                       >
                                         <select
@@ -4483,7 +4477,6 @@ exports[`DomainRow date time field 1`] = `
                                           id="domainpropertiesrow-type-0"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="dateTime"
                                         >
                                           <option
@@ -4921,128 +4914,7 @@ exports[`DomainRow date time field 1`] = `
                                           >
                                             <div
                                               className="col-xs-9"
-                                            >
-                                              <div
-                                                className="domain-field-label"
-                                              >
-                                                Participant Date Shifting
-                                                <LabelHelpTip
-                                                  body={[Function]}
-                                                  id="tooltip"
-                                                  title="Participant Date Shifting"
-                                                >
-                                                  <span
-                                                    className="label-help-target"
-                                                    onMouseOut={[Function]}
-                                                    onMouseOver={[Function]}
-                                                  >
-                                                    <FontAwesomeIcon
-                                                      border={false}
-                                                      className="label-help-icon"
-                                                      fixedWidth={false}
-                                                      flip={null}
-                                                      icon={
-                                                        Object {
-                                                          "icon": Array [
-                                                            512,
-                                                            512,
-                                                            Array [],
-                                                            "f059",
-                                                            "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
-                                                          ],
-                                                          "iconName": "question-circle",
-                                                          "prefix": "fas",
-                                                        }
-                                                      }
-                                                      inverse={false}
-                                                      listItem={false}
-                                                      mask={null}
-                                                      pull={null}
-                                                      pulse={false}
-                                                      rotation={null}
-                                                      size={null}
-                                                      spin={false}
-                                                      symbol={false}
-                                                      title=""
-                                                      transform={null}
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        style={Object {}}
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                          style={Object {}}
-                                                        />
-                                                      </svg>
-                                                    </FontAwesomeIcon>
-                                                    <Overlay
-                                                      animation={[Function]}
-                                                      placement="right"
-                                                      rootClose={false}
-                                                      show={false}
-                                                      target={
-                                                        <span
-                                                          class="label-help-target"
-                                                        >
-                                                          <svg
-                                                            aria-hidden="true"
-                                                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                            data-icon="question-circle"
-                                                            data-prefix="fas"
-                                                            focusable="false"
-                                                            role="img"
-                                                            viewBox="0 0 512 512"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                          >
-                                                            <path
-                                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                              fill="currentColor"
-                                                            />
-                                                          </svg>
-                                                        </span>
-                                                      }
-                                                    >
-                                                      <Overlay
-                                                        placement="right"
-                                                        rootClose={false}
-                                                        show={false}
-                                                        target={
-                                                          <span
-                                                            class="label-help-target"
-                                                          >
-                                                            <svg
-                                                              aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
-                                                              data-icon="question-circle"
-                                                              data-prefix="fas"
-                                                              focusable="false"
-                                                              role="img"
-                                                              viewBox="0 0 512 512"
-                                                              xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                              <path
-                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                fill="currentColor"
-                                                              />
-                                                            </svg>
-                                                          </span>
-                                                        }
-                                                        transition={[Function]}
-                                                      />
-                                                    </Overlay>
-                                                  </span>
-                                                </LabelHelpTip>
-                                              </div>
-                                            </div>
+                                            />
                                           </Col>
                                         </div>
                                       </Row>
@@ -5091,39 +4963,7 @@ exports[`DomainRow date time field 1`] = `
                                           >
                                             <div
                                               className="col-xs-9"
-                                            >
-                                              <Checkbox
-                                                bsClass="checkbox"
-                                                checked={false}
-                                                className="domain-field-checkbox-margin"
-                                                disabled={false}
-                                                id="domainpropertiesrow-excludeFromShifting-0"
-                                                inline={false}
-                                                name="domainpropertiesrow-excludeFromShifting"
-                                                onChange={[Function]}
-                                                title=""
-                                                value="ExcludeFromShiftingOptions"
-                                              >
-                                                <div
-                                                  className="domain-field-checkbox-margin checkbox"
-                                                >
-                                                  <label
-                                                    title=""
-                                                  >
-                                                    <input
-                                                      checked={false}
-                                                      disabled={false}
-                                                      id="domainpropertiesrow-excludeFromShifting-0"
-                                                      name="domainpropertiesrow-excludeFromShifting"
-                                                      onChange={[Function]}
-                                                      type="checkbox"
-                                                      value="ExcludeFromShiftingOptions"
-                                                    />
-                                                    Do Not Shift Dates on Export or Publication
-                                                  </label>
-                                                </div>
-                                              </Checkbox>
-                                            </div>
+                                            />
                                           </Col>
                                         </div>
                                       </Row>
@@ -5267,7 +5107,6 @@ exports[`DomainRow date time field 1`] = `
                                                   id="domainpropertiesrow-description-0"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -5277,7 +5116,6 @@ exports[`DomainRow date time field 1`] = `
                                                     id="domainpropertiesrow-description-0"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -6187,7 +6025,7 @@ exports[`DomainRow decimal field 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -6247,7 +6085,7 @@ exports[`DomainRow decimal field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -6287,7 +6125,7 @@ exports[`DomainRow decimal field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -6414,6 +6252,7 @@ exports[`DomainRow decimal field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -6459,19 +6298,10 @@ exports[`DomainRow decimal field 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-default"
-                      data-react-beautiful-dnd-drag-handle="2"
                       data-react-beautiful-dnd-draggable="2"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -6584,6 +6414,7 @@ exports[`DomainRow decimal field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -6643,7 +6474,17 @@ exports[`DomainRow decimal field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="2"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -6726,7 +6567,6 @@ exports[`DomainRow decimal field 1`] = `
                                         id="domainpropertiesrow-name-2"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="decimalField"
                                       >
@@ -6736,7 +6576,6 @@ exports[`DomainRow decimal field 1`] = `
                                           id="domainpropertiesrow-name-2"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="decimalField"
                                         />
@@ -6758,7 +6597,6 @@ exports[`DomainRow decimal field 1`] = `
                                         id="domainpropertiesrow-type-2"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="double"
                                       >
                                         <select
@@ -6767,7 +6605,6 @@ exports[`DomainRow decimal field 1`] = `
                                           id="domainpropertiesrow-type-2"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="double"
                                         >
                                           <option
@@ -7070,15 +6907,15 @@ exports[`DomainRow decimal field 1`] = `
                                           <Col
                                             bsClass="col"
                                             componentClass="div"
-                                            xs={2}
+                                            xs={3}
                                           >
                                             <div
-                                              className="col-xs-2"
+                                              className="col-xs-3"
                                             >
                                               <div
                                                 className="domain-field-label"
                                               >
-                                                Format Numeric Values
+                                                Format for Numbers
                                                 <LabelHelpTip
                                                   body={[Function]}
                                                   id="tooltip"
@@ -7225,10 +7062,10 @@ exports[`DomainRow decimal field 1`] = `
                                           <Col
                                             bsClass="col"
                                             componentClass="div"
-                                            xs={2}
+                                            xs={3}
                                           >
                                             <div
-                                              className="col-xs-2"
+                                              className="col-xs-3"
                                             >
                                               <FormControl
                                                 bsClass="form-control"
@@ -7279,13 +7116,13 @@ exports[`DomainRow decimal field 1`] = `
                                                     key="domainpropertiesrow-defaultScaleoption-LINEAR-2"
                                                     value="LINEAR"
                                                   >
-                                                    LINEAR
+                                                    Linear
                                                   </option>
                                                   <option
                                                     key="domainpropertiesrow-defaultScaleoption-LOG-2"
                                                     value="LOG"
                                                   >
-                                                    LOG
+                                                    Log
                                                   </option>
                                                 </select>
                                               </FormControl>
@@ -7433,7 +7270,6 @@ exports[`DomainRow decimal field 1`] = `
                                                   id="domainpropertiesrow-description-2"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -7443,7 +7279,6 @@ exports[`DomainRow decimal field 1`] = `
                                                     id="domainpropertiesrow-description-2"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -8353,7 +8188,7 @@ exports[`DomainRow participant id field 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -8413,7 +8248,7 @@ exports[`DomainRow participant id field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -8453,7 +8288,7 @@ exports[`DomainRow participant id field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -8534,7 +8369,7 @@ exports[`DomainRow participant id field 1`] = `
                     "visible": true,
                     "dataType": Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -8557,7 +8392,7 @@ exports[`DomainRow participant id field 1`] = `
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                       "dataType": Immutable.Record {
                         "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                        "display": "Subject/Participant (String)",
+                        "display": "Subject/Participant",
                         "name": "ParticipantId",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                         "alternateRangeURI": undefined,
@@ -8580,6 +8415,7 @@ exports[`DomainRow participant id field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -8625,19 +8461,10 @@ exports[`DomainRow participant id field 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-default"
-                      data-react-beautiful-dnd-drag-handle="4"
                       data-react-beautiful-dnd-draggable="4"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -8705,7 +8532,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "visible": true,
                                 "dataType": Immutable.Record {
                                   "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                  "display": "Subject/Participant (String)",
+                                  "display": "Subject/Participant",
                                   "name": "ParticipantId",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                   "alternateRangeURI": undefined,
@@ -8728,7 +8555,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                   "dataType": Immutable.Record {
                                     "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                    "display": "Subject/Participant (String)",
+                                    "display": "Subject/Participant",
                                     "name": "ParticipantId",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "alternateRangeURI": undefined,
@@ -8750,6 +8577,7 @@ exports[`DomainRow participant id field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -8809,7 +8637,17 @@ exports[`DomainRow participant id field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="4"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -8892,7 +8730,6 @@ exports[`DomainRow participant id field 1`] = `
                                         id="domainpropertiesrow-name-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="participantField"
                                       >
@@ -8902,7 +8739,6 @@ exports[`DomainRow participant id field 1`] = `
                                           id="domainpropertiesrow-name-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="participantField"
                                         />
@@ -8924,7 +8760,6 @@ exports[`DomainRow participant id field 1`] = `
                                         id="domainpropertiesrow-type-0"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="ParticipantId"
                                       >
                                         <select
@@ -8933,14 +8768,13 @@ exports[`DomainRow participant id field 1`] = `
                                           id="domainpropertiesrow-type-0"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="ParticipantId"
                                         >
                                           <option
                                             key="0"
                                             value="string"
                                           >
-                                            Text (String)
+                                            Text
                                           </option>
                                           <option
                                             key="1"
@@ -8952,25 +8786,19 @@ exports[`DomainRow participant id field 1`] = `
                                             key="2"
                                             value="flag"
                                           >
-                                            Flag (String)
+                                            Flag
                                           </option>
                                           <option
                                             key="3"
                                             value="ParticipantId"
                                           >
-                                            Subject/Participant (String)
+                                            Subject/Participant
                                           </option>
                                           <option
                                             key="4"
                                             value="lookup"
                                           >
                                             Lookup
-                                          </option>
-                                          <option
-                                            key="5"
-                                            value="sample"
-                                          >
-                                            Sample
                                           </option>
                                         </select>
                                       </FormControl>
@@ -9171,7 +8999,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "visible": true,
                                   "dataType": Immutable.Record {
                                     "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                    "display": "Subject/Participant (String)",
+                                    "display": "Subject/Participant",
                                     "name": "ParticipantId",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "alternateRangeURI": undefined,
@@ -9194,7 +9022,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                     "dataType": Immutable.Record {
                                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                      "display": "Subject/Participant (String)",
+                                      "display": "Subject/Participant",
                                       "name": "ParticipantId",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "alternateRangeURI": undefined,
@@ -9264,7 +9092,7 @@ exports[`DomainRow participant id field 1`] = `
                                         "visible": true,
                                         "dataType": Immutable.Record {
                                           "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                          "display": "Subject/Participant (String)",
+                                          "display": "Subject/Participant",
                                           "name": "ParticipantId",
                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                           "alternateRangeURI": undefined,
@@ -9287,7 +9115,7 @@ exports[`DomainRow participant id field 1`] = `
                                           "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                           "dataType": Immutable.Record {
                                             "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                            "display": "Subject/Participant (String)",
+                                            "display": "Subject/Participant",
                                             "name": "ParticipantId",
                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                             "alternateRangeURI": undefined,
@@ -9361,7 +9189,6 @@ exports[`DomainRow participant id field 1`] = `
                                                   id="domainpropertiesrow-description-0"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -9371,7 +9198,6 @@ exports[`DomainRow participant id field 1`] = `
                                                     id="domainpropertiesrow-description-0"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -9749,7 +9575,7 @@ exports[`DomainRow participant id field 1`] = `
                                         "visible": true,
                                         "dataType": Immutable.Record {
                                           "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                          "display": "Subject/Participant (String)",
+                                          "display": "Subject/Participant",
                                           "name": "ParticipantId",
                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                           "alternateRangeURI": undefined,
@@ -9772,7 +9598,7 @@ exports[`DomainRow participant id field 1`] = `
                                           "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
                                           "dataType": Immutable.Record {
                                             "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                                            "display": "Subject/Participant (String)",
+                                            "display": "Subject/Participant",
                                             "name": "ParticipantId",
                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                             "alternateRangeURI": undefined,
@@ -10128,7 +9954,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -10188,7 +10014,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -10228,7 +10054,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -10365,6 +10191,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -10410,19 +10237,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-error"
-                      data-react-beautiful-dnd-drag-handle="8"
                       data-react-beautiful-dnd-draggable="8"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -10535,6 +10353,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -10594,7 +10413,17 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="8"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -10677,7 +10506,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="modified"
                                       >
@@ -10687,7 +10515,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           id="domainpropertiesrow-name-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="modified"
                                         />
@@ -10709,7 +10536,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="attachment"
                                       >
                                         <select
@@ -10718,14 +10544,13 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           id="domainpropertiesrow-type-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="attachment"
                                         >
                                           <option
                                             key="0"
                                             value="string"
                                           >
-                                            Text (String)
+                                            Text
                                           </option>
                                           <option
                                             key="1"
@@ -10761,7 +10586,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             key="6"
                                             value="flag"
                                           >
-                                            Flag (String)
+                                            Flag
                                           </option>
                                           <option
                                             key="7"
@@ -10785,7 +10610,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             key="10"
                                             value="ParticipantId"
                                           >
-                                            Subject/Participant (String)
+                                            Subject/Participant
                                           </option>
                                           <option
                                             key="11"
@@ -11196,7 +11021,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                   id="domainpropertiesrow-description-1"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -11206,7 +11030,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                     id="domainpropertiesrow-description-1"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -11963,7 +11786,7 @@ exports[`DomainRow string field test 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -12023,7 +11846,7 @@ exports[`DomainRow string field test 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -12063,7 +11886,7 @@ exports[`DomainRow string field test 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -12144,7 +11967,7 @@ exports[`DomainRow string field test 1`] = `
                     "visible": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -12167,7 +11990,7 @@ exports[`DomainRow string field test 1`] = `
                       "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Text (String)",
+                        "display": "Text",
                         "name": "string",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                         "alternateRangeURI": "xsd:string",
@@ -12190,6 +12013,7 @@ exports[`DomainRow string field test 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -12235,19 +12059,10 @@ exports[`DomainRow string field test 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-default"
-                      data-react-beautiful-dnd-drag-handle="1"
                       data-react-beautiful-dnd-draggable="1"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -12315,7 +12130,7 @@ exports[`DomainRow string field test 1`] = `
                                 "visible": true,
                                 "dataType": Immutable.Record {
                                   "conceptURI": undefined,
-                                  "display": "Text (String)",
+                                  "display": "Text",
                                   "name": "string",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                   "alternateRangeURI": "xsd:string",
@@ -12338,7 +12153,7 @@ exports[`DomainRow string field test 1`] = `
                                   "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
+                                    "display": "Text",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "alternateRangeURI": "xsd:string",
@@ -12360,6 +12175,7 @@ exports[`DomainRow string field test 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -12419,7 +12235,17 @@ exports[`DomainRow string field test 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="1"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -12502,7 +12328,6 @@ exports[`DomainRow string field test 1`] = `
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value="stringField"
                                       >
@@ -12512,7 +12337,6 @@ exports[`DomainRow string field test 1`] = `
                                           id="domainpropertiesrow-name-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value="stringField"
                                         />
@@ -12534,7 +12358,6 @@ exports[`DomainRow string field test 1`] = `
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="string"
                                       >
                                         <select
@@ -12543,14 +12366,13 @@ exports[`DomainRow string field test 1`] = `
                                           id="domainpropertiesrow-type-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="string"
                                         >
                                           <option
                                             key="0"
                                             value="string"
                                           >
-                                            Text (String)
+                                            Text
                                           </option>
                                           <option
                                             key="1"
@@ -12562,25 +12384,19 @@ exports[`DomainRow string field test 1`] = `
                                             key="2"
                                             value="flag"
                                           >
-                                            Flag (String)
+                                            Flag
                                           </option>
                                           <option
                                             key="3"
                                             value="ParticipantId"
                                           >
-                                            Subject/Participant (String)
+                                            Subject/Participant
                                           </option>
                                           <option
                                             key="4"
                                             value="lookup"
                                           >
                                             Lookup
-                                          </option>
-                                          <option
-                                            key="5"
-                                            value="sample"
-                                          >
-                                            Sample
                                           </option>
                                         </select>
                                       </FormControl>
@@ -12781,7 +12597,7 @@ exports[`DomainRow string field test 1`] = `
                                   "visible": true,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
+                                    "display": "Text",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "alternateRangeURI": "xsd:string",
@@ -12804,7 +12620,7 @@ exports[`DomainRow string field test 1`] = `
                                     "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Text (String)",
+                                      "display": "Text",
                                       "name": "string",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "alternateRangeURI": "xsd:string",
@@ -12884,7 +12700,7 @@ exports[`DomainRow string field test 1`] = `
                                               <div
                                                 className="domain-field-label"
                                               >
-                                                Max Text Character Count
+                                                Maximum Text Length
                                                 <LabelHelpTip
                                                   body={[Function]}
                                                   id="tooltip"
@@ -13035,7 +12851,7 @@ exports[`DomainRow string field test 1`] = `
                                               <div
                                                 className="domain-text-label"
                                               >
-                                                Allow max character count
+                                                Unlimited
                                               </div>
                                             </div>
                                           </Col>
@@ -13069,7 +12885,7 @@ exports[`DomainRow string field test 1`] = `
                                               <span
                                                 className="domain-text-options-length domain-field-float-left domain-text-label"
                                               >
-                                                Set character count to
+                                                No longer than X characters
                                               </span>
                                               <FormControl
                                                 bsClass="form-control"
@@ -13148,7 +12964,7 @@ exports[`DomainRow string field test 1`] = `
                                         "visible": true,
                                         "dataType": Immutable.Record {
                                           "conceptURI": undefined,
-                                          "display": "Text (String)",
+                                          "display": "Text",
                                           "name": "string",
                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                           "alternateRangeURI": "xsd:string",
@@ -13171,7 +12987,7 @@ exports[`DomainRow string field test 1`] = `
                                           "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
-                                            "display": "Text (String)",
+                                            "display": "Text",
                                             "name": "string",
                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                             "alternateRangeURI": "xsd:string",
@@ -13245,7 +13061,6 @@ exports[`DomainRow string field test 1`] = `
                                                   id="domainpropertiesrow-description-1"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -13255,7 +13070,6 @@ exports[`DomainRow string field test 1`] = `
                                                     id="domainpropertiesrow-description-1"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -13633,7 +13447,7 @@ exports[`DomainRow string field test 1`] = `
                                         "visible": true,
                                         "dataType": Immutable.Record {
                                           "conceptURI": undefined,
-                                          "display": "Text (String)",
+                                          "display": "Text",
                                           "name": "string",
                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                           "alternateRangeURI": "xsd:string",
@@ -13656,7 +13470,7 @@ exports[`DomainRow string field test 1`] = `
                                           "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
-                                            "display": "Text (String)",
+                                            "display": "Text",
                                             "name": "string",
                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                             "alternateRangeURI": "xsd:string",
@@ -14012,7 +13826,7 @@ exports[`DomainRow with empty domain form 1`] = `
                   Immutable.List [
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -14072,7 +13886,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://www.labkey.org/exp/xml#flag",
-                      "display": "Flag (String)",
+                      "display": "Flag",
                       "name": "flag",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -14112,7 +13926,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#ParticipantId",
-                      "display": "Subject/Participant (String)",
+                      "display": "Subject/Participant",
                       "name": "ParticipantId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
@@ -14193,7 +14007,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "visible": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Text (String)",
+                      "display": "Text",
                       "name": "string",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": "xsd:string",
@@ -14216,7 +14030,7 @@ exports[`DomainRow with empty domain form 1`] = `
                       "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Text (String)",
+                        "display": "Text",
                         "name": "string",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                         "alternateRangeURI": "xsd:string",
@@ -14239,6 +14053,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 onChange={[MockFunction]}
                 onDelete={[MockFunction]}
                 onExpand={[MockFunction]}
+                showDefaultValueSettings={true}
               >
                 <ConnectFunction
                   disableInteractiveElementBlocking={false}
@@ -14284,19 +14099,10 @@ exports[`DomainRow with empty domain form 1`] = `
                     shouldRespectForcePress={false}
                   >
                     <div
-                      aria-roledescription="Draggable item. Press space bar to lift"
                       className="domain-field-row domain-row-border-default"
-                      data-react-beautiful-dnd-drag-handle="0"
                       data-react-beautiful-dnd-draggable="0"
-                      draggable={true}
-                      onBlur={[Function]}
-                      onDragStart={[Function]}
-                      onFocus={[Function]}
-                      onKeyDown={[Function]}
-                      onMouseDown={[Function]}
                       onMouseEnter={[Function]}
                       onMouseLeave={[Function]}
-                      onTouchStart={[Function]}
                       onTransitionEnd={null}
                       style={
                         Object {
@@ -14364,7 +14170,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "visible": true,
                                 "dataType": Immutable.Record {
                                   "conceptURI": undefined,
-                                  "display": "Text (String)",
+                                  "display": "Text",
                                   "name": "string",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                   "alternateRangeURI": "xsd:string",
@@ -14387,7 +14193,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
+                                    "display": "Text",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "alternateRangeURI": "xsd:string",
@@ -14408,6 +14214,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             onApply={[Function]}
                             onHide={[Function]}
                             show={false}
+                            showDefaultValueSettings={true}
                           >
                             <Modal
                               animation={true}
@@ -14467,7 +14274,17 @@ exports[`DomainRow with empty domain form 1`] = `
                             </Modal>
                           </AdvancedSettings>
                           <div
+                            aria-roledescription="Draggable item. Press space bar to lift"
                             className="domain-row-handle"
+                            data-react-beautiful-dnd-drag-handle="0"
+                            draggable={false}
+                            onBlur={[Function]}
+                            onDragStart={[Function]}
+                            onFocus={[Function]}
+                            onKeyDown={[Function]}
+                            onMouseDown={[Function]}
+                            onTouchStart={[Function]}
+                            tabIndex={0}
                           >
                             <FontAwesomeIcon
                               border={false}
@@ -14550,7 +14367,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                         id="domainpropertiesrow-name-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         type="text"
                                         value=""
                                       >
@@ -14560,7 +14376,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                           id="domainpropertiesrow-name-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           type="text"
                                           value=""
                                         />
@@ -14582,7 +14397,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                         id="domainpropertiesrow-type-1"
                                         name="domainpropertiesrow-type"
                                         onChange={[Function]}
-                                        onClick={[Function]}
                                         value="string"
                                       >
                                         <select
@@ -14591,14 +14405,13 @@ exports[`DomainRow with empty domain form 1`] = `
                                           id="domainpropertiesrow-type-1"
                                           name="domainpropertiesrow-type"
                                           onChange={[Function]}
-                                          onClick={[Function]}
                                           value="string"
                                         >
                                           <option
                                             key="0"
                                             value="string"
                                           >
-                                            Text (String)
+                                            Text
                                           </option>
                                           <option
                                             key="1"
@@ -14634,7 +14447,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             key="6"
                                             value="flag"
                                           >
-                                            Flag (String)
+                                            Flag
                                           </option>
                                           <option
                                             key="7"
@@ -14658,7 +14471,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             key="10"
                                             value="ParticipantId"
                                           >
-                                            Subject/Participant (String)
+                                            Subject/Participant
                                           </option>
                                           <option
                                             key="11"
@@ -14873,7 +14686,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "visible": true,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Text (String)",
+                                    "display": "Text",
                                     "name": "string",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                     "alternateRangeURI": "xsd:string",
@@ -14896,7 +14709,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Text (String)",
+                                      "display": "Text",
                                       "name": "string",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                       "alternateRangeURI": "xsd:string",
@@ -14976,7 +14789,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                               <div
                                                 className="domain-field-label"
                                               >
-                                                Max Text Character Count
+                                                Maximum Text Length
                                                 <LabelHelpTip
                                                   body={[Function]}
                                                   id="tooltip"
@@ -15127,7 +14940,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                               <div
                                                 className="domain-text-label"
                                               >
-                                                Allow max character count
+                                                Unlimited
                                               </div>
                                             </div>
                                           </Col>
@@ -15161,7 +14974,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                               <span
                                                 className="domain-text-options-length domain-field-float-left domain-text-label"
                                               >
-                                                Set character count to
+                                                No longer than X characters
                                               </span>
                                               <FormControl
                                                 bsClass="form-control"
@@ -15240,7 +15053,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         "visible": true,
                                         "dataType": Immutable.Record {
                                           "conceptURI": undefined,
-                                          "display": "Text (String)",
+                                          "display": "Text",
                                           "name": "string",
                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                           "alternateRangeURI": "xsd:string",
@@ -15263,7 +15076,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                           "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
-                                            "display": "Text (String)",
+                                            "display": "Text",
                                             "name": "string",
                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                             "alternateRangeURI": "xsd:string",
@@ -15337,7 +15150,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                                   id="domainpropertiesrow-description-1"
                                                   name="domainpropertiesrow-description"
                                                   onChange={[Function]}
-                                                  placeholder="Add a description"
                                                   rows={4}
                                                   value=""
                                                 >
@@ -15347,7 +15159,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                                     id="domainpropertiesrow-description-1"
                                                     name="domainpropertiesrow-description"
                                                     onChange={[Function]}
-                                                    placeholder="Add a description"
                                                     rows={4}
                                                     value=""
                                                   />
@@ -15725,7 +15536,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         "visible": true,
                                         "dataType": Immutable.Record {
                                           "conceptURI": undefined,
-                                          "display": "Text (String)",
+                                          "display": "Text",
                                           "name": "string",
                                           "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                           "alternateRangeURI": "xsd:string",
@@ -15748,7 +15559,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                           "conceptURI": undefined,
                                           "dataType": Immutable.Record {
                                             "conceptURI": undefined,
-                                            "display": "Text (String)",
+                                            "display": "Text",
                                             "name": "string",
                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                                             "alternateRangeURI": "xsd:string",

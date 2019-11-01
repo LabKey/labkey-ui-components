@@ -1,7 +1,6 @@
 import * as React from "react";
 import {List, Map} from "immutable";
 import {mount} from "enzyme";
-import renderer from 'react-test-renderer'
 import { FileAttachmentForm } from "@glass/base";
 
 import {AssayDesignerPanels} from "./AssayDesignerPanels";
@@ -10,6 +9,7 @@ import DomainForm from "../DomainForm";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import { NameInput } from "./AssayPropertiesInput";
 import {Panel} from "react-bootstrap";
+import toJson from "enzyme-to-json";
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -59,7 +59,7 @@ function setAssayName(wrapper: any, value: string) {
 describe('AssayDesignerPanels', () => {
 
     test('default properties', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayDesignerPanels
                 initModel={EMPTY_MODEL}
                 onCancel={jest.fn}
@@ -67,11 +67,12 @@ describe('AssayDesignerPanels', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('initModel', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayDesignerPanels
                 initModel={EXISTING_MODEL}
                 onCancel={jest.fn}
@@ -79,11 +80,12 @@ describe('AssayDesignerPanels', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('hideEmptyBatchDomain for new assay', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayDesignerPanels
                 initModel={EMPTY_MODEL}
                 hideEmptyBatchDomain={true}
@@ -92,11 +94,12 @@ describe('AssayDesignerPanels', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('hideEmptyBatchDomain with initModel', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayDesignerPanels
                 initModel={EXISTING_MODEL}
                 hideEmptyBatchDomain={true}
@@ -105,11 +108,12 @@ describe('AssayDesignerPanels', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('basePropertiesOnly for new assay', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayDesignerPanels
                 initModel={EMPTY_MODEL}
                 basePropertiesOnly={true}
@@ -118,11 +122,12 @@ describe('AssayDesignerPanels', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('basePropertiesOnly with initModel', () => {
-        const tree = renderer.create(
+        const form = mount(
             <AssayDesignerPanels
                 initModel={EXISTING_MODEL}
                 basePropertiesOnly={true}
@@ -131,7 +136,8 @@ describe('AssayDesignerPanels', () => {
             />
         );
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(toJson(form)).toMatchSnapshot();
+        form.unmount();
     });
 
     test('new assay wizard', () => {
@@ -146,10 +152,12 @@ describe('AssayDesignerPanels', () => {
         function verifyActivePanel(wrapper: any, assayPropsActive: boolean, batchActive: boolean, runActive: boolean, resultsActive: boolean) {
             expect(wrapper.find(AssayPropertiesPanel)).toHaveLength(1);
             expect(wrapper.find(DomainForm)).toHaveLength(3);
-            expect(wrapper.find('.panel-body')).toHaveLength(1);
-            expect(wrapper.find(NameInput)).toHaveLength(assayPropsActive ? 1 : 0);
-            expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
-            expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
+            setTimeout(() => {
+                expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
+                expect(wrapper.find(NameInput)).toHaveLength(assayPropsActive ? 1 : 0);
+                expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
+                expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
+            }, 1000);
         }
 
         const wrapper = mount(component);
@@ -162,19 +170,19 @@ describe('AssayDesignerPanels', () => {
         expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
         expect(getButton(wrapper, 'Finish')).toHaveLength(0);
 
-        // click Next to advance in the wizard to the Batch Properties
+        // click Next to advance in the wizard to the Batch Fields
         getButton(wrapper, 'Next').simulate('click');
         verifyActivePanel(wrapper, false, true, false, false);
         expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
         expect(getButton(wrapper, 'Finish')).toHaveLength(0);
 
-        // click Next to advance in the wizard to the Run Properties
+        // click Next to advance in the wizard to the Run Fields
         getButton(wrapper, 'Next').simulate('click');
         verifyActivePanel(wrapper, false, false, true, false);
         expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
         expect(getButton(wrapper, 'Finish')).toHaveLength(0);
 
-        // click Next to advance in the wizard to the Data Properties
+        // click Next to advance in the wizard to the Data Fields
         getButton(wrapper, 'Next').simulate('click');
         verifyActivePanel(wrapper, false, false, false, true);
         expect(getButton(wrapper, 'Next')).toHaveLength(0);
@@ -230,8 +238,8 @@ describe('AssayDesignerPanels', () => {
         );
 
         let wrapper = mount(component);
-        //Open Sample Properties panel body
-        wrapper.find(Panel.Heading).filterWhere(n => n.text() === 'Sample Properties (3)').simulate('click');
+        //Open Sample Fields panel body
+        wrapper.find(Panel.Heading).filterWhere(n => n.text() === 'Sample Fields (3)').simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);
         expect(wrapper.find('#' + _appHeaderId).text()).toBe(_appHeaderText);
     });

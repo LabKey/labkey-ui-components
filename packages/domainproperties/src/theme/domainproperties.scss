@@ -1,6 +1,8 @@
 
 .domain-form-panel {
   min-width: 1000px;
+  margin-bottom: 0 !important;
+  margin-top: 20px;
 }
 
 .domain-form-panel input[type="checkbox"],
@@ -177,6 +179,15 @@
   }
 }
 
+.domain-form-collapse-btn {
+  color: white;
+
+  &:hover {
+    color: white;
+    cursor: pointer;
+  }
+}
+
 .domain-form-no-field-panel {
   height: 53px;
   margin: 25px 0px 20px 0px;
@@ -210,6 +221,19 @@
 
 .domain-field-padding-top {
   padding-top: 20px;
+}
+
+.domain-field-padding-bottom {
+  padding-bottom: 20px;
+}
+
+.domain-field-no-padding-right {
+  padding-right: 0 !important;
+}
+
+.domain-field-no-side-padding {
+  padding-right: 0;
+  padding-left: 0;
 }
 
 .domain-field-section-hdr {
@@ -506,4 +530,50 @@
 
 .domain-remove-icon {
   padding-top: 5px;
+}
+
+.domain-panel-header {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.domain-panel-header-fields-defined {
+  font-weight: normal;
+  font-size: 15px;
+  margin-left: 13px;
+}
+
+.domain-panel-header-expanded {
+  background-color: $blue-border-solid !important;
+  color: white !important;
+}
+
+.domain-panel-status-icon {
+  margin-right: 10px;
+}
+
+.domain-panel-status-icon-green {
+  color: green;
+}
+
+.domain-panel-status-icon-blue {
+  color: $blue-border-solid;
+}
+
+.domain-bottom-alert div {
+  border-left-color: #ddd;
+  border-right-color: #ddd;
+  border-bottom-color: #ddd;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
+.domain-main-alert {
+  margin-top: 20px;
+}
+
+.assay-props-column {
+  padding-right: 35px;
 }

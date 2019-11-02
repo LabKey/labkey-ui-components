@@ -75,6 +75,7 @@ interface IDomainRowState {
     showAdv: boolean
     closing: boolean
     hover: boolean
+    showingModal: boolean
     isDragDisabled: boolean
 }
 
@@ -90,6 +91,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showAdv: false,
             closing: false,
             hover: false,
+            showingModal: false,
             isDragDisabled: props.isDragDisabled
         };
     }
@@ -319,6 +321,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({isDragDisabled: (disabled || propDragDisabled)}));
     };
 
+    showingModal = (showing: boolean) => {
+        this.setState(() => ({showingModal: showing}));
+    };
+
     renderHandle() {
         const { dragging } = this.props;
         const { isDragDisabled, hover, closing } = this.state;
@@ -412,19 +418,19 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     render() {
-        const { closing, isDragDisabled, showAdv } = this.state;
+        const { closing, isDragDisabled, showAdv, showingModal } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId,
             helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions } = this.props;
 
         return (
-            <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={isDragDisabled}>
+            <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
                 {(provided) => (
                     <div className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
                          {...provided.draggableProps}
                          ref={provided.innerRef}
                          tabIndex={index}
-                         onMouseEnter={this.onMouseOver}
-                         onMouseLeave={this.onMouseOut}
+                         onMouseEnter={showingModal ? undefined : this.onMouseOver}
+                         onMouseLeave={showingModal ? undefined : this.onMouseOut}
                     >
                         <Row key={createFormInputId("domainrow", index)} className={'domain-row-container'}>
                             <AdvancedSettings
@@ -457,7 +463,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
                                     <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}
-                                                              setDragDisabled={(disabled) => this.setDragDisabled(this.props.isDragDisabled, disabled)}
+                                                              showingModal={this.showingModal}
                                     />
                                 </div>
                             </Collapse>

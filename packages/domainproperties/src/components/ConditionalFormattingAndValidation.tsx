@@ -20,7 +20,7 @@ interface ConditionalFormattingAndValidationProps {
     index: number,
     field: DomainField,
     onChange: (string, any) => any
-    setDragDisabled: (boolean) => any
+    showingModal: (boolean) => any
 }
 
 interface ConditionalFormattingAndValidationState {
@@ -77,25 +77,22 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
     };
 
     showHideConditionalFormat = () => {
-        const { setDragDisabled } = this.props;
-        const { showCondFormat } = this.state;
+        const { showingModal } = this.props;
 
-        this.setState((state) => ({showCondFormat: !state.showCondFormat}), setDragDisabled(!showCondFormat));
+        this.setState((state) => ({showCondFormat: !state.showCondFormat}), showingModal(this.state.showCondFormat));
 
     };
 
     showHideRegexValidator = () => {
-        const { setDragDisabled } = this.props;
-        const { showRegex } = this.state;
+        const { showingModal } = this.props;
 
-        this.setState((state) => ({showRegex: !state.showRegex}), setDragDisabled(!showRegex));
+        this.setState((state) => ({showRegex: !state.showRegex}), showingModal(this.state.showRegex));
     };
 
     showHideRangeValidator = () => {
-        const { setDragDisabled } = this.props;
-        const { showRange } = this.state;
+        const { showingModal } = this.props;
 
-        this.setState((state) => ({showRange: !state.showRange}), setDragDisabled(!showRange));
+        this.setState((state) => ({showRange: !state.showRange}), showingModal(this.state.showRange));
     };
 
     renderValidator = (range: boolean) => {

@@ -318,6 +318,11 @@ export class DomainDesign extends Record({
     isNameSuffixMatch(name: string): boolean {
         return this.name && this.name.endsWith(name + ' Fields');
     }
+
+    isValid(): boolean {
+        const invalidField = this.fields.find((field) => {return field.isValid() === false});
+        return !this.hasException() && !invalidField;
+    }
 }
 
 interface IDomainIndex {
@@ -797,6 +802,10 @@ export class DomainField extends Record({
 
     isNew(): boolean {
         return isFieldNew(this);
+    }
+
+    isValid(): boolean {
+        return (!!this.name && !!this.dataType && !!this.dataType.rangeURI);
     }
 
     static hasRangeValidation(field: DomainField): boolean {
@@ -1392,3 +1401,5 @@ export interface IAppDomainHeader {
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
 }
+
+export type AssayPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';

@@ -14,6 +14,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {PropDescType, PropertyValidator} from "../../models";
 import {Filters} from "./Filters";
 import { CompactPicker } from 'react-color';
+import {LabelHelpTip} from "@glass/base";
 
 interface ConditionalFormatOptionsProps {
     validator: any
@@ -99,6 +100,14 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         if (onExpand) {
             onExpand(validatorIndex);
         }
+    };
+
+    firstFilterTooltipText = () => {
+        return 'Add a condition to this format rule that will be tested against the value for this field.'
+    };
+
+    firstFilterTooltip = () => {
+        return (<LabelHelpTip title='First Condition' body={this.firstFilterTooltipText} required={true}/>)
     };
 
     renderCollapsed = () => {
@@ -230,6 +239,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                              mvEnabled={mvEnabled}
                              expression={validator.formatFilter}
                              prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}
+                             firstFilterTooltip={this.firstFilterTooltip()}
                     />
                     <div className='domain-validation-subtitle'>Display Options</div>
                     {this.renderDisplayCheckbox(DOMAIN_VALIDATOR_BOLD, 'Bold', validator.bold)}

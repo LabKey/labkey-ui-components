@@ -16,22 +16,51 @@ interface AssayPropertiesInputProps {
 }
 
 export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
+
+    getSplitSentence = (label: string, lastWord: boolean): string => {
+
+        if (!label)
+            return undefined;
+
+        const words = label.split(" ");
+
+        if (lastWord) {
+            if (words.length === 1) {
+                return words[0];
+            }
+            else {
+                return words[words.length - 1];
+            }
+        }
+        else {
+            if (words.length === 1) {
+                return undefined;
+            }
+            else {
+                return words.slice(0, words.length -1).join(" ") + " ";
+            }
+        }
+    };
+
     render() {
         const { label, required, helpTipBody, colSize, children } = this.props;
 
         return (
             <Row className={'margin-top'}>
-                <Col xs={3}>
-                    {label}
-                    {required ? ' *' : ''}
-                    {helpTipBody &&
+                <Col xs={3} lg={4}>
+                    {this.getSplitSentence(label, false)}
+                    <span className='domain-no-wrap'>
+                        {this.getSplitSentence(label, true)}
+                        {required ? ' *' : ''}
+                        {helpTipBody &&
                         <LabelHelpTip
-                            title={label}
-                            body={helpTipBody}
+                                title={label}
+                                body={helpTipBody}
                         />
-                    }
+                        }
+                    </span>
                 </Col>
-                <Col xs={colSize || 9}>
+                <Col xs={colSize || 9} lg={8}>
                     {children}
                 </Col>
             </Row>
@@ -53,7 +82,6 @@ export function NameInput(props: InputProps) {
                 return (
                     <>
                         <p>The name for this assay design. Note that this can't be changed after the assay design is created.</p>
-                        <p><small><i>This field is required.</i></small></p>
                     </>
                 )
             }}
@@ -318,7 +346,6 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
         return (
             <AssayPropertiesInput
                 label={'Auto-Copy Data to Study'}
-                colSize={6}
                 helpTipBody={() => {
                     return (
                         <>
@@ -414,7 +441,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const label = 'Transform Scripts';
 
         return (
-            <Col xs={3}>
+            <Col className='domain-field-no-padding-right' xs={3} lg={4}>
                 {label}
                 <LabelHelpTip
                     title={label}
@@ -449,8 +476,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                 {protocolTransformScripts.map((scriptPath, i) => {
                     return (
                         <Row key={'scriptrow-' + i} className={'margin-top'}>
-                            {i === 0 ? this.renderLabel() : <Col xs={3}/>}
-                            <Col xs={6}>
+                            {i === 0 ? this.renderLabel() : <Col xs={3} lg={4}/>}
+                            <Col xs={8} lg={7}>
                                 <FormControl
                                     key={'scriptinput-' + i}
                                     id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
@@ -459,7 +486,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     onChange={this.onChange}
                                 />
                             </Col>
-                            <Col xs={3}>
+                            <Col xs={1}>
                                 <RemoveEntityButton
                                     key={'scriptremove-' + i}
                                     labelClass={'domain-remove-icon'}
@@ -470,12 +497,12 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                     )
                 })}
                 <Row className={'margin-top'}>
-                    {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3}/>}
-                    <Col xs={3}>
+                    {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3} lg={4}/>}
+                    <Col xs={3} lg={4}>
                         <AddEntityButton entity={'Script'} containerClass={''} onClick={this.addScript}/>
                     </Col>
                     {protocolTransformScripts.size > 0 && !model.isNew() &&
-                        <Col xs={3}>
+                        <Col xs={3} lg={4}>
                             <span className={'pull-right'}>
                                 <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', undefined, {rowId: model.protocolId})}
                                    target={'_blank'}

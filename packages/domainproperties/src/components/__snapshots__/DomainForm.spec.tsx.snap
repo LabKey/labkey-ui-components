@@ -2542,7 +2542,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -2552,7 +2552,7 @@ exports[`DomainForm domain form add, expand, and delete field 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -11479,7 +11479,7 @@ exports[`DomainForm domain form header and search 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -11489,7 +11489,7 @@ exports[`DomainForm domain form header and search 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -14718,7 +14718,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -14728,7 +14728,7 @@ exports[`DomainForm domain form no file or attachment type 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -17347,7 +17347,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -17357,7 +17357,7 @@ exports[`DomainForm domain form updated field, cleared details 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -40188,7 +40188,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -40198,7 +40198,7 @@ exports[`DomainForm domain form with all field types 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -40394,7 +40394,7 @@ exports[`DomainForm domain form with no fields 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -40404,7 +40404,7 @@ exports[`DomainForm domain form with no fields 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -48743,7 +48743,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -48753,7 +48753,7 @@ exports[`DomainForm domain form with updated fields 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -48949,7 +48949,7 @@ exports[`DomainForm with empty domain form 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -48959,7 +48959,7 @@ exports[`DomainForm with empty domain form 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"
@@ -49143,7 +49143,7 @@ exports[`DomainForm with showHeader, helpNoun, and helpURL 1`] = `
                         className="col-xs-12"
                       >
                         <AddEntityButton
-                          buttonClass="test-loc-form-add-btn"
+                          buttonClass="domain-form-add-btn test-loc-form-add-btn"
                           containerClass="form-group"
                           entity="Field"
                           helperTitle="More Info"
@@ -49153,7 +49153,7 @@ exports[`DomainForm with showHeader, helpNoun, and helpURL 1`] = `
                             className="form-group"
                           >
                             <div
-                              className="test-loc-form-add-btn"
+                              className="domain-form-add-btn test-loc-form-add-btn"
                             >
                               <span
                                 className="container--action-button btn btn-default"

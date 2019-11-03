@@ -420,12 +420,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             )
         }
         else {
+            // TODO remove domain-form-add-btn after use in 19.3
             return (
                 <Row>
                     <Col xs={12}>
                         <AddEntityButton
                             entity="Field"
-                            buttonClass="test-loc-form-add-btn"
+                            buttonClass="domain-form-add-btn test-loc-form-add-btn"
                             onClick={this.onAddField}/>
                     </Col>
                 </Row>

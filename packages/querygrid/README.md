@@ -9,6 +9,10 @@ Query Grid for LabKey schema/query data views
 * Issue 36835: Dataclass grids with attachment-type fields do not display images inline in grid
     * Fix logic in FileColumnRenderer to render any file column (instead of just fileLinks).
 
+### version 0.21.5
+*Released*: 4 November 2019
+* Add onChangeTab to QueryGridPanel
+
 ### version 0.21.4
 *Released*: 31 October 2019
 * Package patch update for changes to @glass/domainproperties v0.0.45

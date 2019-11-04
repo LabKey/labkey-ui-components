@@ -192,7 +192,7 @@ export function getMaxPhiLevel(): Promise<string> {
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.hasErrors()) {
-            reject('Unable to save domain. Fix fields before saving.');
+            reject(domain.set('domainException', {exception: 'Unable to save domain. Please fix any field errors before saving.'}));
         }
         else if (domain.domainId) {
             Domain.save({
@@ -205,8 +205,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                     let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
                     let exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exceptionWithServerSideErrors);
                     let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
-                    let badDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors));
-                    reject(badDomain);
+                    reject(domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors)));
                 }
             })
         }
@@ -220,8 +219,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 },
                 failure: (error) => {
                     let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let badDomain = domain.set('domainException', domainException);
-                    reject(badDomain);
+                    reject(domain.set('domainException', domainException));
                 }
             })
         }

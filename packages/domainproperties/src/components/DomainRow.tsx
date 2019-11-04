@@ -115,8 +115,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 case FieldErrors.MISSING_SCHEMA_QUERY:
                     details.push(
                         <span key={details.length} style={{color: 'red'}}>
-                                A lookup requires a schema and table!
-                            </span>);
+                            Missing required lookup target schema/table properties.
+                        </span>
+                    );
                     break;
                 default:
                     break;

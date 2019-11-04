@@ -320,7 +320,7 @@ export class DomainDesign extends Record({
     }
 
     isValid(): boolean {
-        const invalidField = this.fields.find((field) => {return field.isValid() === false});
+        const invalidField = this.fields.find((field) => !field.isValid());
         return !this.hasException() && !invalidField;
     }
 }
@@ -805,7 +805,9 @@ export class DomainField extends Record({
     }
 
     isValid(): boolean {
-        return (!!this.name && !!this.dataType && !!this.dataType.rangeURI);
+        // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
+        // if so, then we can remove this isValid() function and just use !hasErrors()
+        return !!this.name && !!this.dataType && !!this.dataType.rangeURI && !this.hasErrors();
     }
 
     static hasRangeValidation(field: DomainField): boolean {

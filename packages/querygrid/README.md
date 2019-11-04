@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.21.5
+*Released*: 4 November 2019
+* Add onChangeTab to QueryGridPanel
+
 ### version 0.21.4
 *Released*: 31 October 2019
 * Package patch update for changes to @glass/domainproperties v0.0.45

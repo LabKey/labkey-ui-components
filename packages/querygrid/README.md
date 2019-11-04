@@ -13,6 +13,10 @@ Query Grid for LabKey schema/query data views
 * Add support for app metadata for QueryGridModel hideEmptyViewSelector and hideEmptyChartSelector
 * Fix problem with selection state after applying filters (as manifesting in GridSelectionBanner) 
 
+### version 0.21.5
+*Released*: 4 November 2019
+* Add onChangeTab to QueryGridPanel
+
 ### version 0.21.4
 *Released*: 31 October 2019
 * Package patch update for changes to @glass/domainproperties v0.0.45

@@ -378,8 +378,8 @@ function updateDataType(field: DomainField, value: any): DomainField {
             dataType,
             conceptURI: dataType.conceptURI,
             rangeURI: dataType.rangeURI,
-            lookupSchema: dataType.lookupSchema ? dataType.lookupSchema : field.lookupSchema,
-            lookupQuery: dataType.lookupQuery ? dataType.lookupQuery : field.lookupQuery
+            lookupSchema: dataType.lookupSchema,
+            lookupQuery: dataType.lookupQuery
         }) as DomainField;
 
         if (field.isNew()) {

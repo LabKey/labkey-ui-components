@@ -650,11 +650,20 @@ export class QueryGridModel extends Record({
     }
 
     getAllColumns(): List<QueryColumn> {
-        if (this.queryInfo) {
-            return List<QueryColumn>(this.queryInfo.columns.values());
+        if (!this.queryInfo) {
+            return emptyColumns;
         }
 
-        return emptyColumns;
+        // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
+        // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
+        // additional context.
+        return List<QueryColumn>(this.queryInfo.columns.values()).reduce((result, rawColumn) => {
+            if(!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+                return result.push(rawColumn);
+            }
+
+            return result;
+        }, this.getDisplayColumns());
     }
 
     getData(): List<any> {

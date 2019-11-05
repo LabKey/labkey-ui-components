@@ -6,7 +6,7 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ### version XXX
 *Released*: XXX
-* Export WHERE_FILTER_TYPE
+* export WHERE_FILTER_TYPE
 
 ### version 0.21.0
 *Released*: 5 November 2019

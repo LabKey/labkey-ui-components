@@ -15,11 +15,19 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '@glass/base'
+import {
+    GRID_CHECKBOX_OPTIONS,
+    naturalSort,
+    QueryColumn,
+    QueryGridModel,
+    resolveSchemaQuery,
+    SchemaQuery
+} from '@glass/base'
 
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
 import { Lineage } from './components/lineage/models';
+import { IUser } from "./components/forms/model";
 
 /**
  * Initialize the global state object for this package.
@@ -52,7 +60,8 @@ export function resetQueryGridState() {
         QueryGrid_lookups: Map<string, LookupStore>(),
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
-        QueryGrid_columnrenderers: Map<string, any>()
+        QueryGrid_columnrenderers: Map<string, any>(),
+        QueryGrid_users: Map<string, List<IUser>>()
     });
 }
 
@@ -81,8 +90,8 @@ export function getQueryGridModelsForSchemaQuery(schemaQuery: SchemaQuery): List
     return getGlobalState('models').filter(model => model.getModelName() === modelName).toList();
 }
 
-export function getQueryGridModelsForGridId(gridId: string): List<QueryGridModel> {
-    const prefix = (gridId + '|').toLowerCase();
+export function getQueryGridModelsForGridId(gridIdPrefix: string): List<QueryGridModel> {
+    const prefix = (gridIdPrefix + '|').toLowerCase();
     return getGlobalState('models').filter(model => model.getId().indexOf(prefix) === 0).toList();
 }
 
@@ -249,16 +258,15 @@ interface IGridSelectionResponse {
 export function updateSelections(model: QueryGridModel, response: IGridSelectionResponse)  {
     const selectedIds = response.selectedIds;
     const id = model.getId();
-    const selectedLoaded: any = true;
+    const selectedLoaded = true;
 
     if (selectedIds !== undefined && selectedIds.size) {
         const { dataIds, maxRows, totalRows } = model;
-        let viewSelected = selectedIds;
-        const selectedState = getSelectedState(dataIds, viewSelected, maxRows, totalRows);
+        const selectedState = getSelectedState(dataIds, selectedIds, maxRows, totalRows);
         const updatedState = {
             selectedIds,
             selectedLoaded,
-            selectedQuantity: viewSelected.size,
+            selectedQuantity: selectedIds.size,
             selectedState
         } as any;
 
@@ -268,7 +276,7 @@ export function updateSelections(model: QueryGridModel, response: IGridSelection
     }
     else {
         setGlobal({
-            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded}))
+            QueryGrid_models: getGlobalState('models').set(id, model.merge({selectedLoaded, ...QueryGridModel.EMPTY_SELECTION}))
         });
     }
 }
@@ -328,4 +336,43 @@ export function updateLookupStore(store: LookupStore, updates: any, failIfNotFou
     });
 
     return updatedStore;
+}
+
+function getPermissionsKey(permissions?: string | Array<string>) : string {
+    let key = "allPermissions";
+    if (permissions) {
+        if (Array.isArray(permissions)) {
+            key = permissions.sort(naturalSort).join(";")
+        }
+        else {
+            key = permissions;
+        }
+    }
+    return key;
+}
+
+/**
+ * Get the users list from the global QueryGrid state
+ */
+export function getUsers(permissions?: string | Array<string>) : List<IUser> {
+    return getGlobalState('users').get(getPermissionsKey(permissions));
+}
+
+/**
+ * Sets the users list to be used for this application in the global QueryGrid state
+ * @param users List of users
+ */
+export function setUsers(users: List<IUser>, permissions?: string | Array<string>) {
+    setGlobal({
+        QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users)
+    });
+}
+
+/**
+ * Invalidate the global state users list
+ */
+export function invalidateProjectUsers() {
+    setGlobal( {
+        QueryGrid_users: Map<string, List<IUser>>()
+    });
 }

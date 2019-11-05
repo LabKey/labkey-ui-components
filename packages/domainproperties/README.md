@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.48
+*Released*: 5 November 2019
+* Use some css classes factored out into base for DomainRow and DomainForm
+
 ### version 0.0.47
 *Released*: 5 November 2019
 * Package patch update to fix downstream package.lock files

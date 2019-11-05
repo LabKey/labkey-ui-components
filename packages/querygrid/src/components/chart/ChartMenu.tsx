@@ -25,6 +25,7 @@ import { setReportId } from '../../actions';
 interface Props {
     model: QueryGridModel
     charts: List<DataViewInfo>
+    style?: Object
 }
 
 export class ChartMenu extends React.PureComponent<Props> {
@@ -120,11 +121,16 @@ export class ChartMenu extends React.PureComponent<Props> {
     }
 
     render() {
+        const { model, style } = this.props;
         const selectedChart = this.getSelectedChart();
         const chartItems = this.createMenuItems();
 
+        if (model.hideEmptyChartSelector && chartItems.length === 0) {
+            return null;
+        }
+
         return (
-            <>
+            <span style={style}>
                 <DropdownButton
                     id={this.dropId}
                     disabled={chartItems.length === 0}
@@ -134,7 +140,7 @@ export class ChartMenu extends React.PureComponent<Props> {
                 </DropdownButton>
 
                 {selectedChart && this.renderChartModal()}
-            </>
+            </span>
         )
     }
 }

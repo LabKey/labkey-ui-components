@@ -380,6 +380,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { expanded, index, field, dragging } = this.props;
         const { hover, closing } = this.state;
 
+        // TODO update to use FieldExpansionToggle
         return (
             <div className={expanded ? "domain-field-buttons-expanded" : "domain-field-buttons"}>
                 {(expanded || closing) && !isFieldFullyLocked(field.lockType) && (
@@ -403,7 +404,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     </Button>
                 </>
                 )}
-                <div className="domain-field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
+                <div className="field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
                     <FontAwesomeIcon size='lg' color={(dragging || hover) ? HIGHLIGHT_BLUE : NOT_HIGHLIGHT_GRAY}
                                      icon={expanded ? faMinusSquare : faPlusSquare}/>
                 </div>
@@ -448,7 +449,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 <Col xs={6} className='domain-row-base-fields'>
                                     {this.renderBaseFields()}
                                 </Col>
-                                <Col xs={6} className='domain-field-details-container'>
+                                <Col xs={6} className='field-details-container'>
                                     {this.getDetails()}
                                     {this.renderButtons()}
                                 </Col>

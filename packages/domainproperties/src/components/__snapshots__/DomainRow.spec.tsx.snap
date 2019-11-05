@@ -732,12 +732,12 @@ exports[`DomainRow Sample Field 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -749,7 +749,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-0"
                                     onClick={[Function]}
                                   >
@@ -2786,12 +2786,12 @@ exports[`DomainRow client side warning on field 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -2809,7 +2809,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
@@ -4536,12 +4536,12 @@ exports[`DomainRow date time field 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -4551,7 +4551,7 @@ exports[`DomainRow date time field 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-0"
                                     onClick={[Function]}
                                   >
@@ -6664,12 +6664,12 @@ exports[`DomainRow decimal field 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -6679,7 +6679,7 @@ exports[`DomainRow decimal field 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-2"
                                     onClick={[Function]}
                                   >
@@ -8851,12 +8851,12 @@ exports[`DomainRow participant id field 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -8866,7 +8866,7 @@ exports[`DomainRow participant id field 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-0"
                                     onClick={[Function]}
                                   >
@@ -10675,12 +10675,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -10698,7 +10698,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
@@ -12449,12 +12449,12 @@ exports[`DomainRow string field test 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -12464,7 +12464,7 @@ exports[`DomainRow string field test 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >
@@ -14536,12 +14536,12 @@ exports[`DomainRow with empty domain form 1`] = `
                             </Col>
                             <Col
                               bsClass="col"
-                              className="domain-field-details-container"
+                              className="field-details-container"
                               componentClass="div"
                               xs={6}
                             >
                               <div
-                                className="domain-field-details-container col-xs-6"
+                                className="field-details-container col-xs-6"
                               >
                                 <div
                                   className="domain-field-details"
@@ -14553,7 +14553,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   className="domain-field-buttons"
                                 >
                                   <div
-                                    className="domain-field-icon"
+                                    className="field-icon"
                                     id="domainpropertiesrow-expand-1"
                                     onClick={[Function]}
                                   >

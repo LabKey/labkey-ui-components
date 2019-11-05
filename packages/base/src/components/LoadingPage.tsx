@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LoadingSpinner, Page, PageHeader, User } from "..";
+import { LoadingSpinner, Page, PageHeader } from "..";
 import * as React from "react";
 
 export interface LoadingPageProps {
@@ -24,7 +24,7 @@ export interface LoadingPageProps {
 export class LoadingPage extends React.Component<LoadingPageProps> {
     render () {
         return (
-            <Page title={this.props.title}>
+            <Page title={this.props.title} hasHeader={true}>
                 <PageHeader showNotifications={false}/>
                 <LoadingSpinner msg={this.props.msg} wrapperClassName="loading-page-message"/>
             </Page>

@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import { Option } from 'react-select';
-import { Filter, Utils } from '@labkey/api'
+import { Filter, Security, Utils } from '@labkey/api'
 import { QueryInfo, similaritySortFactory } from '@glass/base'
 
 import { FOCUS_FLAG } from './constants'
 import { selectRows, searchRows, ISelectRowsResult, getQueryDetails } from '../../query/api'
 import { QuerySelectOwnProps } from './QuerySelect'
-import { QuerySelectModel, QuerySelectModelProps } from './model'
+import { IUser, QuerySelectModel, QuerySelectModelProps } from './model'
+import { getUsers, setUsers } from "../../global";
 
 const emptyMap = Map<string, any>();
 
@@ -363,4 +364,39 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
     if (evt && evt.target && evt.target.type === 'textarea') {
         handleInputTab(evt);
     }
+}
+
+export function getProjectUsers(permissions?: string | Array<string>): Promise<List<IUser>> {
+    const users = getUsers(permissions);
+    if (users) {
+        return Promise.resolve(users);
+    }
+
+    return new Promise((resolve, reject) => {
+        Security.getUsers({
+            active: true,  // Issue 30765: don't get deactivated users
+            permissions,
+            success: function(data) {
+                let users = List<IUser>(data.users);
+
+                // sort by displayName
+                const sortedUsers = users.sort((a, b) => {
+                    const _a = a.displayName.toLowerCase();
+                    const _b = b.displayName.toLowerCase();
+
+                    if (_a === _b) {
+                        return 0;
+                    }
+                    return _a > _b ? 1 : -1;
+                }).toList();
+
+                setUsers(sortedUsers, permissions);
+                resolve(sortedUsers);
+            },
+            failure: function() {
+                // This API responds with HTML, lol
+                reject('LABKEY.Security.getUsers() failed. Check request log.');
+            }
+        });
+    });
 }

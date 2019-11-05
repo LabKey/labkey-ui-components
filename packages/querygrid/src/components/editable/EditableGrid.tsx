@@ -411,7 +411,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     toggleBulkUpdate() {
         this.setState((state) => ({
             showBulkUpdate: !state.showBulkUpdate
-        }));
+        }), () => {
+            // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
+            (document.activeElement as HTMLElement).blur();
+        });
     }
 
     renderError() {

@@ -4,6 +4,15 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.22.0
+*Released*: 5 November 2019
+* Add getFilterListFromQuery
+* Add optional parameters to getSelection and pass through from getSelected so filters in the query string are used
+* Add optional properties for LookupSelectInput to allow filtering and sorting of options
+* Port UserSelect (as UserSelectInput) from Biologics
+* Add support for app metadata for QueryGridModel hideEmptyViewSelector and hideEmptyChartSelector
+* Fix problem with selection state after applying filters (as manifesting in GridSelectionBanner) 
+
 ### version 0.21.8
 *Released*: 5 November 2019
 * Package patch update for changes to @glass/base v0.20.2, @glass/domainproperties 0.0.47

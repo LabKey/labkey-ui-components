@@ -24,6 +24,7 @@ import { ChartMenu } from './ChartMenu'
 
 interface Props {
     model: QueryGridModel
+    style?: Object
 }
 
 export class ChartSelector extends React.Component<Props, any> {
@@ -69,10 +70,10 @@ export class ChartSelector extends React.Component<Props, any> {
     }
 
     render() {
-        const { model } = this.props;
+        const { model, style } = this.props;
 
         return (
-            <ChartMenu model={model} charts={this.getChartsForQuery()}/>
+            <ChartMenu model={model} charts={this.getChartsForQuery()} style={style}/>
         )
     }
 }

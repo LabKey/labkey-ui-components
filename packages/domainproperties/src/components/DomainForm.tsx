@@ -31,17 +31,17 @@ import {
     IAppDomainHeader,
     HeaderRenderer
 } from "../models";
-import { StickyContainer, Sticky } from "react-sticky";
+import { Sticky, StickyContainer } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare } from "@fortawesome/free-solid-svg-icons";
-import { AddEntityButton, Alert, FileAttachmentForm, ConfirmModal, InferDomainResponse } from "@glass/base";
+import { faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
+import { AddEntityButton, Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import {
     addDomainField,
     getIndexFromId,
-    handleDomainUpdates,
     getMaxPhiLevel,
+    handleDomainUpdates,
     removeField,
     setDomainFields
 } from "../actions/actions";
@@ -420,6 +420,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             )
         }
         else {
+            // TODO remove domain-form-add-btn after use in 19.3
             return (
                 <Row>
                     <Col xs={12}>

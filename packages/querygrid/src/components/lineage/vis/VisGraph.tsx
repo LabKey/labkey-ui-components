@@ -151,7 +151,7 @@ export class VisGraph extends React.Component<VisGraphProps, VisGraphState> {
     data: {
         edges: DataSet<Edge>;
         nodes: DataSet<VisGraphNode | VisGraphCombinedNode>;
-    }
+    };
     network: InternalVisNetwork;
 
     refs: {

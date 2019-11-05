@@ -27,7 +27,7 @@ import {
 } from '@glass/base'
 
 import { genCellKey } from './actions'
-import { getQueryGridModel } from './global'
+import { getQueryGridModel, getQueryMetadata } from './global'
 import { DefaultGridLoader } from './components/GridLoader'
 import { AppURL } from '@glass/base/src';
 
@@ -48,6 +48,8 @@ interface IStateModelProps {
     title?: string
     urlPrefix?: string
     omittedColumns?: List<string>
+    showChartSelector?: boolean
+    showViewSelector?: boolean
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -87,6 +89,8 @@ export function getStateQueryGridModel(
         return model;
     }
 
+    const metadata = getQueryMetadata();
+
     let modelProps: Partial<IQueryGridModel> = {
         allowSelection: true,
         baseFilters: List<Filter.IFilter>(),
@@ -106,7 +110,9 @@ export function getStateQueryGridModel(
         title: undefined,
         urlPrefix: undefined,
         view: schemaQuery.viewName,
-        omittedColumns: emptyList
+        omittedColumns: emptyList,
+        hideEmptyChartSelector: metadata.get('hideEmptyChartSelector'),
+        hideEmptyViewSelector: metadata.get('hideEmptyViewSelector')
     };
 
     if (keyValue !== undefined) {
@@ -176,6 +182,14 @@ export function getStateQueryGridModel(
 
             if (props.omittedColumns !== undefined) {
                 modelProps.omittedColumns = props.omittedColumns;
+            }
+
+            if (props.showChartSelector !== undefined) {
+                modelProps.showChartSelector = props.showChartSelector;
+            }
+
+            if (props.showViewSelector !== undefined) {
+                modelProps.showViewSelector = props.showViewSelector;
             }
         }
     }

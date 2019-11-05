@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record } from 'immutable'
-import { normalize, schema } from 'normalizr'
-import { Query, QueryDOM, Filter } from '@labkey/api'
-import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo, resolveKeyFromJson, resolveSchemaQuery, caseInsensitive } from '@glass/base'
+import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
+import { normalize, schema } from 'normalizr';
+import { Filter, Query, QueryDOM } from '@labkey/api';
+import {
+    caseInsensitive,
+    QueryColumn,
+    QueryInfo,
+    QueryInfoStatus,
+    resolveKeyFromJson,
+    resolveSchemaQuery,
+    SchemaQuery,
+    ViewInfo,
+} from '@glass/base';
 
-import { URLResolver } from '../util/URLResolver'
-import { getQueryMetadata } from '../global'
+import { URLResolver } from '../util/URLResolver';
+import { getQueryMetadata } from '../global';
 
 let queryDetailsCache: {[key: string]: Promise<QueryInfo>} = {};
 
@@ -255,6 +264,11 @@ class Renderers {
 
     static applyColumnRenderer(columnMetadata, rawColumn, metadata) {
         let value = this._check(columnMetadata, rawColumn, 'columnRenderer', metadata);
+        const types = Set.of(
+            rawColumn.type.toLowerCase(),
+            rawColumn.friendlyType.toLowerCase(),
+        );
+
         if (value === undefined) {
             if (rawColumn.multiValue === true) {
                 value = 'MultiValueColumnRenderer';
@@ -262,7 +276,7 @@ class Renderers {
             else if (rawColumn.name === 'harvest') {
                 value = 'MaterialLookupColumnRenderer';
             }
-            else if (rawColumn.rangeURI && rawColumn.rangeURI.indexOf('fileLink') > -1) {
+            else if (types.contains('file')) {
                 value = 'FileColumnRenderer';
             }
         }

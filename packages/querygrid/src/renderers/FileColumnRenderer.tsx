@@ -51,36 +51,44 @@ export class FileColumnRenderer extends React.Component<FileColumnRendererProps,
     render() {
         const { data } = this.props;
 
-        if (!data || !data.has('displayValue')) {
+        if (!data) {
             return null;
         }
 
         const url = data.get('url');
+        const value = data.get('value');
         const displayValue = data.get('displayValue');
 
-        if (isImage(displayValue)) {
-            const alt = `${displayValue} image`;
+        // Attachment URLs will look like images, so we check if the URL is an image.
+        // FileLink URLs don't look like images, so you have to check value or displayValue.
+        if ((url && isImage(url)) || (displayValue && isImage(displayValue)) || (value && isImage(value))) {
+            const title = displayValue || value;
+            const alt = `${title} image`;
             return (
                 <>
                     <img
                         src={url}
                         alt={alt}
-                        title={displayValue}
+                        title={title}
                         onClick={this.onImageClick}
                         className="file-renderer-img"
                     />
 
                     <Modal bsSize="large" show={this.state.showModal} onHide={this.onHide}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{displayValue}</Modal.Title>
+                            <Modal.Title>{title}</Modal.Title>
                         </Modal.Header>
 
                         <Modal.Body>
-                            <img src={url} alt={alt} title={displayValue} className="file-renderer-img__modal" />
+                            <img src={url} alt={alt} title={title} className="file-renderer-img__modal" />
                         </Modal.Body>
                     </Modal>
                 </>
             );
+        }
+
+        if (!displayValue) {
+            return null;
         }
 
         const content = <span>{displayValue}&nbsp;<i className="fa fa-file-o"/></span>;

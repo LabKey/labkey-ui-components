@@ -37,7 +37,7 @@ import lookuplistQuery from '../test/data/lookuplist-getQuery.json';
 import samplesUpdate from '../test/data/samples-updateRows.json';
 import nameExpressionQueryInfo from '../test/data/nameExpressionSet-getQueryDetails.json';
 import nameExpressionSelected from '../test/data/nameExpressionSet-getSelected.json';
-import nameExpressionSelectedQuery from "../test/data/nameExpressionSet-selected-getQuery.json";
+import nameExpressionSelectedQuery from '../test/data/nameExpressionSet-selected-getQuery.json';
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
@@ -45,24 +45,26 @@ import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQ
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
-import deleteAllConfirmation from "../test/data/deleteAll-getMaterialDeleteConfirmationData.json";
-import deleteNoneConfirmation from "../test/data/deleteNone-getMaterialDeleteConfirmationData.json";
-import deleteOneConfirmation from "../test/data/deleteOne-getMaterialDeleteConfirmationData.json";
-import deleteSomeConfirmation from "../test/data/deleteSome-getMaterialDeleteConfirmationData.json";
-import sampleSetAllFieldTypesQueryInfo from "../test/data/sampleSetAllFieldTypes-getQueryDetails.json";
-import assayGpatRunsQueryInfo from "../test/data/assayGpatRuns-getQueryDetails.json";
-import assayGpatDataQueryInfo from "../test/data/assayGpatData-getQueryDetails.json";
-import assayGpatRunData from "../test/data/assayGpatRuns-getQuery.json";
-import filePreviewData from "../test/data/property-getFilePreview.json";
+import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
+import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
+import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
+import deleteSomeConfirmation from '../test/data/deleteSome-getMaterialDeleteConfirmationData.json';
+import sampleSetAllFieldTypesQueryInfo from '../test/data/sampleSetAllFieldTypes-getQueryDetails.json';
+import assayGpatRunsQueryInfo from '../test/data/assayGpatRuns-getQueryDetails.json';
+import assayGpatDataQueryInfo from '../test/data/assayGpatData-getQueryDetails.json';
+import assayGpatRunData from '../test/data/assayGpatRuns-getQuery.json';
+import filePreviewData from '../test/data/property-getFilePreview.json';
 import visualizationConfig from '../test/data/visualization-getVisualization.json';
-import lineageData from "../test/data/experiment-lineage.json";
-import samplesLineageQuery from "../test/data/sampleLineage-getQuery.json";
-import expSystemSamplesLineageQuery from "../test/data/expSystemSampleLineage-getQuery.json";
-import expSystemLineageQuery from "../test/data/expSystemLineage-getQuery.json";
-import expressionsystemsamplesQueryInfo from "../test/data/expSystemSamples-getQueryDetails.json";
-import expressionsystemQueryInfo from "../test/data/expSystem-getQueryDetails.json";
-import assayImageFieldRunsQueryInfo from "../test/data/assayImageFieldRuns-getQueryDetails.json";
-import assayImageFieldRunsQuery from "../test/data/assayImageFieldRuns-getQuery.json";
+import lineageData from '../test/data/experiment-lineage.json';
+import samplesLineageQuery from '../test/data/sampleLineage-getQuery.json';
+import expSystemSamplesLineageQuery from '../test/data/expSystemSampleLineage-getQuery.json';
+import expSystemLineageQuery from '../test/data/expSystemLineage-getQuery.json';
+import expressionsystemsamplesQueryInfo from '../test/data/expSystemSamples-getQueryDetails.json';
+import expressionsystemQueryInfo from '../test/data/expSystem-getQueryDetails.json';
+import assayImageFieldRunsQueryInfo from '../test/data/assayImageFieldRuns-getQueryDetails.json';
+import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.json';
+import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
+import labbookQuery from '../test/data/labbook-getQuery.json';
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
@@ -83,6 +85,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     'exp.data': {
         'mixtures': mixturesQueryInfo,
         'expressionsystem': expressionsystemQueryInfo,
+    },
+    'labbook': {
+        'labbookexperiment': labbookQueryInfo,
     },
     'lists': {
         'mixturetypes': mixtureTypesQueryInfo,
@@ -119,6 +124,9 @@ const QUERY_RESPONSES = fromJS({
     'exp.data': {
         'mixtures': mixturesQuery,
         'expressionsystem': expSystemLineageQuery
+    },
+    'labbook': {
+        'labbookexperiment': labbookQuery,
     },
     'lists': {
         'mixturetypes': mixtureTypesQuery,
@@ -228,9 +236,10 @@ export function initMocks() {
 
     mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
         const queryParams = req.url().query;
+        const key = queryParams.key;
         let responseBody;
         
-        if (queryParams.key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
+        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
             responseBody = nameExpressionSelected;
         } else {
             responseBody = mixturesSelected;

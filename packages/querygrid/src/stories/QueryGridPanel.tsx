@@ -115,6 +115,39 @@ class QueryGridPanelWithImagesWrapper extends React.Component {
     }
 }
 
+class QueryGridPanelWithRenamedColumnsWrapper extends React.Component {
+    renderButtons = (model: QueryGridModel) => {
+        if (model) {
+            return (
+                <ManageDropdownButton id={'storymanagebtn'}>
+                    <SelectionMenuItem
+                        id={'storymenuitem'}
+                        text={'Delete Samples'}
+                        onClick={() => console.log('onMenuItemClick')}
+                        model={model}
+                    />
+                </ManageDropdownButton>
+            )
+        }
+    };
+
+    getQueryGridModel() {
+        // This grid model has a default view that has different column metadata for the Title column, which renames
+        // "Title" to "Experiment Title". This is used to reproduce Issue 38186.
+        const modelId = "gridPanelWithRenamedColumns";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "labbook",
+            queryName: "LabBookExperiment"
+        });
+
+        return getStateQueryGridModel(modelId, schemaQuery, {});
+    }
+
+    render() {
+        return <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />;
+    }
+}
+
 storiesOf('QueryGridPanel', module)
     .addDecorator(withKnobs)
     .add("with data", () => {
@@ -125,4 +158,7 @@ storiesOf('QueryGridPanel', module)
     })
     .add("with images", () => {
         return <QueryGridPanelWithImagesWrapper/>;
+    })
+    .add("with renamed columns", () => {
+        return <QueryGridPanelWithRenamedColumnsWrapper/>;
     });

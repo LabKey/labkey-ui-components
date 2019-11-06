@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.21.0-19.3-fb-uxddPolish2.1",
+  "version": "0.21.0-19.3-fb-uxddPolish2.3",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

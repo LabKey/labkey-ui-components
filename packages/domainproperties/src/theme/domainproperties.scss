@@ -95,10 +95,10 @@
 
 .domain-field-details {
   color: $gray-dark;
-  display: table-cell;
   height: 40px;
+  width: 100%;
   overflow: hidden;
-  padding-top: 1.5%;
+  padding-top: 15px;
   white-space: nowrap;
   text-overflow: ellipsis;
 };
@@ -107,20 +107,21 @@
   color: $gray-dark;
   display: table-cell;
   padding-top: 1.5%;
+  width: 100%;
 };
 
 .domain-field-buttons-expanded {
   float: right;
   display: inline-flex;
   height: min-content;
-  padding-top: 1.5%;
+  padding-top: 9px;
 };
 
 .domain-field-buttons {
   float: right;
   display: inline-flex;
   height: min-content;
-  padding-top: 1.5%;
+  padding-top: 9px;
 };
 
 .domain-field-details-container {

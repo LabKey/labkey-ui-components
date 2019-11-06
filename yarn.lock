@@ -1143,6 +1143,18 @@
     moment-timezone "^0.5.27"
     numeral "2.0.6"
 
+"@glass/base@0.21.0-19.3-fb-uxddPolish2.1":
+  version "0.21.0-19.3-fb-uxddPolish2.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.21.0-19.3-fb-uxddPolish2.1.tgz#f93b0e80e726ad016c9d685b9fa2863548622a74"
+  integrity sha1-+TsOgOcmrQFsnWhbn6KGNUhiKnQ=
+  dependencies:
+    "@labkey/dependencies" "0.0.10"
+    bootstrap "3.4.1"
+    moment "2.24.0"
+    moment-jdateformatparser "1.1.0"
+    moment-timezone "^0.5.27"
+    numeral "2.0.6"
+
 "@glass/domainproperties@0.0.48":
   version "0.0.48"
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.48.tgz#b525ee45fa0653edee5b39a93c22dcb2cdb88746"

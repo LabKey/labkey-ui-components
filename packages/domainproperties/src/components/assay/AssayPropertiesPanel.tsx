@@ -28,6 +28,7 @@ import {
     TransformScriptsInput
 } from "./AssayPropertiesInput";
 import {Alert, LabelHelpTip} from "@glass/base";
+import {createFormInputName} from "../../actions/actions";
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -51,16 +52,17 @@ const BOOLEAN_FIELDS = [
 
 interface Props {
     model: AssayProtocolModel
-    onChange: (model: any, error: boolean) => any
+    onChange: (model: any) => any
     basePropertiesOnly: boolean
     asPanel: boolean
     initCollapsed: boolean
     collapsible?: boolean
     controlledCollapse?: boolean
     validate?: boolean
+    useTheme?: boolean
     panelStatus?: AssayPanelStatus
     helpURL?: string
-    onToggle?: (collapsed: boolean, error: boolean, callback: () => any) => any
+    onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
 interface State {
@@ -96,13 +98,28 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         }
 
         if (nextProps.validate && validate !== nextProps.validate) {
-            const valid = model.isValid();
+            const valid = model.hasValidProperties();
             this.setState(() => ({validProperties: (model && valid)}), () => {
                 if (onChange)
                 {
-                    onChange(model, !valid);
+                    onChange(model);
                 }
             })
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
+        if (prevProps.useTheme) {
+            const el = document.getElementById(createFormInputName('assay-properties-hdr'));
+            el.classList.remove("panel-heading");
+        }
+    }
+
+    componentDidMount(): void {
+        if (this.props.useTheme) {
+            const el = document.getElementById(createFormInputName('assay-properties-hdr'));
+            el.classList.remove("panel-heading");
         }
     }
 
@@ -111,16 +128,16 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         this.setState((state) => ({
             collapsed: collapsed !== undefined ? collapsed : !state.collapsed,
-            validProperties: model && model.isValid()
+            validProperties: model && model.hasValidProperties()
         }));
     };
 
     togglePanel = (evt: any, collapsed?: boolean): void => {
-        const { model, onToggle, collapsible, controlledCollapse } = this.props;
+        const { onToggle, collapsible, controlledCollapse } = this.props;
 
         if (collapsible || controlledCollapse) {
             if (onToggle) {
-                onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), !model.isValid(), this.toggleLocalPanel);
+                onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), this.toggleLocalPanel);
             }
             else {
                 this.toggleLocalPanel(collapsed)
@@ -152,23 +169,26 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
             [id.replace(FORM_ID_PREFIX, '')]: value
         }) as AssayProtocolModel;
 
-        const valid = (newModel.isValid() === true ? true : this.state.validProperties);
+        const valid = (newModel.hasValidProperties() === true ? true : this.state.validProperties);
 
         this.setState((state) => (
                 // Only clear validation errors here. New errors found on collapse or submit.
                 {validProperties: valid}),
             () => {
-                this.props.onChange(newModel, !valid);
+                this.props.onChange(newModel);
             });
 
     };
 
     getHeaderClasses(): string {
-        const { collapsible, controlledCollapse } = this.props;
+        const { collapsible, controlledCollapse, useTheme } = this.props;
         const { collapsed } = this.state;
 
         let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
-        classes += (!collapsed ? ' domain-panel-header-expanded' : '');
+        classes += (!collapsed ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
+        if (!collapsed) {
+            classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
+        }
 
         return classes;
     }
@@ -331,7 +351,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         return (
             <>
             <Panel className={"domain-form-panel"} expanded={!collapsed} onToggle={function(){}}>
-                <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()}>
+                <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()} id={createFormInputName('assay-properties-hdr')}>
                     {this.renderHeader()}
                 </Panel.Heading>
                 <Panel.Body collapsible={collapsible || controlledCollapse}>

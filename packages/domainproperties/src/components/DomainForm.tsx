@@ -29,21 +29,30 @@ import {
     ATTACHMENT_TYPE,
     IDomainField,
     IAppDomainHeader,
-    HeaderRenderer, AssayPanelStatus
+    HeaderRenderer,
+    AssayPanelStatus,
+    DomainException
 } from "../models";
-import { Sticky, StickyContainer } from "react-sticky";
+import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle, faCircle } from "@fortawesome/free-solid-svg-icons";
-import { AddEntityButton, Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
+import {
+    AddEntityButton,
+    Alert,
+    FileAttachmentForm,
+    ConfirmModal,
+    InferDomainResponse,
+    LabelHelpTip
+} from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import {
     addDomainField,
     getIndexFromId,
-    getMaxPhiLevel,
     handleDomainUpdates,
+    getMaxPhiLevel,
     removeField,
-    setDomainFields
+    setDomainFields, setDomainException, clearAllClientValidationErrors, createFormInputName
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
@@ -56,8 +65,8 @@ import {
 
 interface IDomainFormInput {
     domain: DomainDesign
-    onChange: (newDomain: DomainDesign, dirty: boolean, error?: boolean) => any
-    onToggle?: (collapsed: boolean, error: boolean, callback?: () => any) => any
+    onChange: (newDomain: DomainDesign, dirty: boolean) => any
+    onToggle?: (collapsed: boolean, callback?: () => any) => any
     helpURL?: string
     helpNoun?: string
     showHeader?: boolean
@@ -71,6 +80,7 @@ interface IDomainFormInput {
     headerTitle?: string,
     showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
+    useTheme?: boolean
     appDomainHeaderRenderer?: HeaderRenderer
     maxPhiLevel?: string  // Just for testing, only affects display
     containerTop?: number // This sets the top of the sticky header, default is 0
@@ -86,7 +96,6 @@ interface IDomainFormState {
     dragId?: number
     availableTypes: List<PropDescType>
     filtered: boolean
-    validDomain: boolean
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -124,8 +133,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
             availableTypes: this.getAvailableTypes(),
             collapsed: props.initCollapsed,
-            filtered: false,
-            validDomain: true
+            filtered: false
         };
     }
 
@@ -139,6 +147,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         console.error("Unable to retrieve max PHI level.")
                     }
                 )
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<IDomainFormInput>, prevState: Readonly<IDomainFormState>, snapshot?: any): void {
+
+        // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
+        if (prevProps.useTheme) {
+            const {domain} = this.props;
+            const el = document.getElementById(createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr'));
+            el.classList.remove("panel-heading");
         }
     }
 
@@ -171,37 +189,53 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         if (nextProps.validate && validate !== nextProps.validate) {
-            const valid = domain.isValid();
-            this.setState(() => ({validDomain: (domain && valid)}), () => {
-                if (onChange)
-                {
-                    onChange(domain, false, !valid);
-                }
-            })
+            const newDomain = this.validateDomain(nextProps.domain);
+            if (onChange) {
+                onChange(newDomain, false);
+            }
         }
     }
 
+    validateDomain = (domain: DomainDesign): DomainDesign => {
+        const invalidFields = domain.getInvalidFields();
+        let newDomain = domain;
+        if (invalidFields.size > 0) {
+            const exception = DomainException.clientValidationExceptions("Missing required field properties", "Missing required property", invalidFields);
+            newDomain = setDomainException(domain, exception);
+        }
+        else {
+            newDomain = clearAllClientValidationErrors(domain);
+        }
+
+        return newDomain;
+    };
+
     toggleLocalPanel = (collapsed?: boolean): void => {
-        const { domain } = this.props;
+        const { domain, onChange } = this.props;
 
         this.setState((state) => ({
             expandedRowIndex: undefined,
-            collapsed: collapsed !== undefined ? collapsed : !state.collapsed,
-            validDomain: domain && domain.isValid()
+            collapsed: collapsed !== undefined ? collapsed : !state.collapsed
         }), () => {
+            let newDomain = this.validateDomain(domain);
+
             // clear the search/filter state if collapsed
             if (this.state.collapsed) {
-                this.updateFilteredFields();
+                newDomain = this.getFilteredFields(newDomain);
+            }
+
+            if (onChange) {
+                onChange(newDomain, false);
             }
         });
     };
 
     togglePanel = (evt: any, collapsed?: boolean): void => {
-        const { domain, onToggle, collapsible, controlledCollapse} = this.props;
+        const { onToggle, collapsible, controlledCollapse} = this.props;
 
         if (collapsible || controlledCollapse) {
             if (onToggle) {
-                onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), !domain.isValid(), this.toggleLocalPanel);
+                onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), this.toggleLocalPanel);
             }
             else {
                 this.toggleLocalPanel(collapsed)
@@ -257,19 +291,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onDomainChange(updatedDomain: DomainDesign, dirty?: boolean) {
-        const { onChange } = this.props;
-        const { validDomain } = this.state;
+        const { onChange, controlledCollapse } = this.props;
 
-        const valid = (updatedDomain.isValid() === true ? true : validDomain);
+        // Check for cleared errors
+        if (controlledCollapse && updatedDomain.hasException() && updatedDomain.hasErrors()) {
+            const invalidFields = updatedDomain.getInvalidFields();
+            const markedInvalid = updatedDomain.get("exception").get("errors");
 
-        this.setState((state) => (
-            // Only clear validation errors here. New errors found on collapse or submit.
-            {validDomain: valid}),
-            () => {
-            if (onChange) {
-                onChange(updatedDomain, dirty !== undefined ? dirty : true, !valid);
+            if (markedInvalid.size > invalidFields.size) {
+                updatedDomain = this.validateDomain(updatedDomain);
             }
-        });
+        }
+
+        if (onChange) {
+            onChange(updatedDomain, false);
+        }
     }
 
     onDeleteConfirm = () => {
@@ -581,9 +617,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.updateFilteredFields(value);
     };
 
-    updateFilteredFields(value?: string) {
-        const { domain } = this.props;
-
+    getFilteredFields = (domain: DomainDesign, value?: string): DomainDesign => {
         const filteredFields = domain.fields.map( field => {
             if (!value || (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1)) {
                 return field.set('visible', true);
@@ -592,8 +626,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return field.set('visible', false);
         });
 
+        return domain.set('fields', filteredFields) as DomainDesign;
+    };
+
+    updateFilteredFields = (value?: string) => {
+        const { domain } = this.props;
+
+        const filteredDomain = this.getFilteredFields(domain, value);
+
         this.setState(() => ({filtered: value !== undefined && value.length > 0}));
-        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
+        this.onDomainChange(filteredDomain, false);
     };
 
     isPanelExpanded = (): boolean => {
@@ -610,13 +652,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { helpURL, helpNoun, children } = this.props;
 
         return(
-            <Row className='domain-form-hdr-margins'>
+            <Row className={helpURL ? 'domain-form-hdr-margins' : ''}>
                 <Col xs={helpURL ? 9 : 12}>
-                    {children ? children
-                        : <div className='domain-field-float-left'>
-                            Set up and configure fields for use in this {helpNoun}.
-                        </div>
-                    }
+                    {/*{children ? children*/}
+                        {/*: <div className='domain-field-float-left'>*/}
+                            {/*Set up and configure fields for use in this {helpNoun}.*/}
+                        {/*</div>*/}
+                    {/*}*/}
                 </Col>
                 {helpURL &&
                     <Col xs={3}>
@@ -743,10 +785,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     getHeaderClasses(): string {
-        const { collapsible, controlledCollapse } = this.props;
+        const { collapsible, controlledCollapse, useTheme } = this.props;
 
         let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
-        classes += (this.isPanelExpanded() ? ' domain-panel-header-expanded' : '');
+        classes += (this.isPanelExpanded() ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
+        if (this.isPanelExpanded()) {
+            classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
+        }
 
         return classes;
     }
@@ -765,12 +810,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     getHeaderClass = () => {
-        const { panelStatus } = this.props;
-        const { collapsed, validDomain } = this.state;
+        const { panelStatus, domain } = this.props;
+        const { collapsed } = this.state;
         let classes = 'domain-panel-status-icon';
 
         if (collapsed) {
-            if (validDomain && panelStatus === 'COMPLETE') {
+            if (!domain.hasException() && panelStatus === 'COMPLETE') {
                 return classes + ' domain-panel-status-icon-green';
             }
             return (classes + ' domain-panel-status-icon-blue');
@@ -780,10 +825,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     getHeaderIcon = () => {
-        const { panelStatus } = this.props;
-        const { validDomain } = this.state;
+        const { domain, panelStatus } = this.props;
 
-        if (!validDomain || panelStatus === 'TODO') {
+        if (domain.hasException() || panelStatus === 'TODO') {
             return faExclamationCircle;
         }
 
@@ -800,11 +844,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     getHeaderIconHelpMsg = () => {
-        const { panelStatus } = this.props;
-        const { validDomain } = this.state;
+        const { panelStatus, domain } = this.props;
 
-        if (!validDomain) {
-            return "This section has errors."
+        if (domain.hasException()) {
+            return domain.domainException.exception;
         }
 
         if (panelStatus === 'TODO') {
@@ -845,7 +888,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                 {/*Help tip*/}
                 {children &&
-                    <Tip size={'lg'} customStyle={{height: '14px', verticalAlign: 'middle', marginTop: '-2px'}} placement={'top'} title={this.getHeaderName()} body={() => (children)}/>
+                    <LabelHelpTip size={'lg'} customStyle={{height: '14px', verticalAlign: 'middle', marginTop: '-2px'}} placement={'top'} title={this.getHeaderName()} body={() => (children)}/>
                 }
 
                 {/*Number of fields*/}
@@ -858,14 +901,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     render() {
         const { domain, showHeader, collapsible, controlledCollapse } = this.props;
-        const { showConfirm, validDomain } = this.state;
+        const { showConfirm } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel"} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
-                        <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()}>
+                        <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()} id={createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr')}>
                             {this.renderHeaderContent()}
                         </Panel.Heading>
                     }
@@ -876,9 +919,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         }
                     </Panel.Body>
                 </Panel>
-                {!validDomain &&
-                    <div onClick={this.togglePanel} className='domain-bottom-alert'>
-                        <Alert bsStyle="danger">Contains errors or is missing required values. Ensure all fields have names.</Alert>
+                {domain.hasException() &&
+                    <div onClick={this.togglePanel} className='domain-bottom-alert panel-default'>
+                        <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
                     </div>
                 }
             </>

@@ -257,7 +257,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
             let message = "SQL queries, R scripts, and other code are easiest to write when field names only contain combination of letters, numbers, and underscores, and start with a letter or underscore.";
             let fieldName = value;
-            let severity = SEVERITY_LEVEL_WARN;
+            let severity = SEVERITY_LEVEL_ERROR;
             let indexes = List<number>([index]);
             let domainFieldError = new DomainFieldError({message, fieldName, propertyId: undefined, severity, rowIndexes: indexes});
 

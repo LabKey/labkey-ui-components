@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.21.0",
+    "@glass/base": "0.21.0-19.3-fb-uxddPolish2.1",
     "@glass/domainproperties": "0.0.48",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",

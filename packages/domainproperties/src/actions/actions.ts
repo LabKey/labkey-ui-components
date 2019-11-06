@@ -192,7 +192,7 @@ export function getMaxPhiLevel(): Promise<string> {
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.hasErrors()) {
-            reject(domain.set('domainException', {exception: 'Unable to save domain. Please fix any field errors before saving.'}));
+            reject('Unable to save domain. Fix fields before saving.');
         }
         else if (domain.domainId) {
             Domain.save({
@@ -202,10 +202,9 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                     resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
-                    let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exceptionWithServerSideErrors);
-                    let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
-                    reject(domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors)));
+                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    const badDomain = setDomainException(domain, exception);
+                    reject(badDomain);
                 }
             })
         }
@@ -219,7 +218,8 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                 },
                 failure: (error) => {
                     let domainException = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    reject(domain.set('domainException', domainException));
+                    let badDomain = domain.set('domainException', domainException);
+                    reject(badDomain);
                 }
             })
         }
@@ -413,7 +413,21 @@ export function getCheckedValue(evt) {
     return undefined;
 }
 
- function clearFieldError (domain: DomainDesign, rowIndex: any) {
+export function clearAllClientValidationErrors(domain: DomainDesign): DomainDesign {
+    let exception = undefined;
+
+    if (domain.domainException) {
+        const updatedErrors = domain.domainException.errors.filter((error) => (error.serverError));
+
+        if (updatedErrors && updatedErrors.size > 0)
+        {
+            exception = domain.domainException.set('errors', updatedErrors);
+        }
+    }
+    return domain.set("domainException", exception) as DomainDesign;
+}
+
+ function clearFieldError (domain: DomainDesign, rowIndex: any): List<DomainFieldError> {
 
     let allErrors = domain.domainException.get('errors');
 
@@ -576,6 +590,35 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
     }) as DomainDesign;
 }
 
+export function setDomainException(domain: DomainDesign, exception: DomainException) : DomainDesign {
+    const exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exception);
+    const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
+    return domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
+}
+
+export function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
+    let updatedModel = model;
+
+    // If a domain is identified in the exception, attach to that domain
+    if (exception.domainName) {
+        const exceptionDomains = model.domains.map((domain) => {
+            if (domain.get('name') === exception.domainName)
+            {
+                return setDomainException(domain, exception);
+            }
+
+            return domain;
+        });
+
+        updatedModel = model.set('domains', exceptionDomains) as AssayProtocolModel;
+    }
+    // otherwise attach to whole assay
+    else {
+        updatedModel = model.set('exception', exception.exception) as AssayProtocolModel;
+    }
+    return updatedModel;
+}
+
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -585,7 +628,21 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
                 resolve(AssayProtocolModel.create(response.data));
             }),
             failure: Utils.getCallbackWrapper((error) => {
-                reject(error.exception);
+                let badModel = model;
+
+                // Check for validation exception
+                const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                if (exception) {
+                    if (exception.domainName) {
+                        badModel = setAssayDomainException(model, exception);
+                    }
+                    else {
+                        badModel = model.set("exception", exception.exception) as AssayProtocolModel;
+                    }
+                } else {
+                    badModel = model.set("exception", error) as AssayProtocolModel;
+                }
+                reject(badModel);
             }, this, false)
         });
     });

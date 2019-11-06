@@ -1131,28 +1131,28 @@
     humps "^2.0.1"
     prop-types "^15.5.10"
 
-"@glass/base@0.20.1":
-  version "0.20.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.20.1.tgz#9dfc6c53cb23e014f4c0ccedd9f0147d6503de81"
-  integrity sha1-nfxsU8sj4BT0wMzt2fAUfWUD3oE=
+"@glass/base@0.21.0":
+  version "0.21.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/base/-/@glass/base-0.21.0.tgz#f5b43bf3ea3d11d6011c58175672dcdd0180e638"
+  integrity sha1-9bQ78+o9EdYBHFgXVnLc3QGA5jg=
   dependencies:
-    "@labkey/dependencies" "0.0.9"
+    "@labkey/dependencies" "0.0.10"
     bootstrap "3.4.1"
     moment "2.24.0"
     moment-jdateformatparser "1.1.0"
     moment-timezone "^0.5.27"
     numeral "2.0.6"
 
-"@glass/domainproperties@0.0.45":
-  version "0.0.45"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.45.tgz#8093a9563a18cbfa1eb115dc8e8e85223e3d01af"
-  integrity sha1-gJOpVjoYy/oesRXcjo6FIj49Aa8=
+"@glass/domainproperties@0.0.48":
+  version "0.0.48"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@glass/domainproperties/-/@glass/domainproperties-0.0.48.tgz#b525ee45fa0653edee5b39a93c22dcb2cdb88746"
+  integrity sha1-tSXuRfoGU+3uWzmpPCLcss24h0Y=
   dependencies:
     "@fortawesome/fontawesome-free" "5.9.0"
     "@fortawesome/fontawesome-svg-core" "1.2.19"
     "@fortawesome/free-solid-svg-icons" "5.9.0"
     "@fortawesome/react-fontawesome" "0.1.4"
-    "@glass/base" "0.20.1"
+    "@glass/base" "0.21.0"
     react-beautiful-dnd "11.0.3"
     react-color "2.17.3"
     react-sticky "6.0.3"
@@ -2716,6 +2716,15 @@
   integrity sha512-w/Agv91PQ2q5w4MK+plWshyvLMFePxdl+b2KtlFHBSbr6FgaguIGEAdhA3l0hyKDmEj3VMHGFiBqwhsQJ2Rltg==
   dependencies:
     "@types/react" "*"
+
+"@types/react-datepicker@2.9.3":
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-2.9.3.tgz#af8e7a40e159ce95fe33edbcf707fdbf594e53d2"
+  integrity sha512-87L4+bQ1FwAmlb+6bMaXVMKFdVvH0u7Zib0x4kOPRqAb0qfrQuaWOlLYvd/yETYhCFuHuQEA46kasyU6PpH3+A==
+  dependencies:
+    "@types/react" "*"
+    date-fns "^2.0.1"
+    popper.js "^1.14.1"
 
 "@types/react-dom@16.8.4":
   version "16.8.4"
@@ -10443,6 +10452,11 @@ polished@^3.3.1:
   integrity sha512-GiuavmunMIKMOEoSPkXoqBYM2ZcI4YIwCaiwmTOQ55Zq4HG2kD0YZt3WlLZ2l3U9XhJ1LM/fgjCFHHffiZP0YQ==
   dependencies:
     "@babel/runtime" "^7.4.4"
+
+popper.js@^1.14.1:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.0.tgz#2e1816bcbbaa518ea6c2e15a466f4cb9c6e2fbb3"
+  integrity sha512-+G+EkOPoE5S/zChTpmBSSDYmhXJ5PsW8eMhH8cP/CQHMFPBG/kC9Y5IIw6qNYgdJ+/COf0ddY2li28iHaZRSjw==
 
 popper.js@^1.14.4, popper.js@^1.14.7:
   version "1.15.0"

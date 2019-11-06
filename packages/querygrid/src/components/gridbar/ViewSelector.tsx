@@ -24,6 +24,7 @@ const emptyList = List<React.ReactNode>();
 
 interface Props {
     model: QueryGridModel
+    style?: Object
 }
 
 /**
@@ -107,16 +108,23 @@ export class ViewSelector extends React.Component<Props, any> {
     }
 
     render() {
+        const { model, style } = this.props;
         const viewItems = this.createMenuItems();
 
+        if (model.hideEmptyViewSelector && viewItems.size <= 1) {
+            return null;
+        }
+
         return (
-            <DropdownButton
-                disabled={viewItems.size <= 1}
-                id={this.dropId}
-                pullRight
-                title="Grid Views">
-                {viewItems.toArray()}
-            </DropdownButton>
+            <span style={style}>
+                <DropdownButton
+                    disabled={viewItems.size <= 1}
+                    id={this.dropId}
+                    pullRight
+                    title="Grid Views">
+                    {viewItems.toArray()}
+                </DropdownButton>
+            </span>
         )
     }
 }

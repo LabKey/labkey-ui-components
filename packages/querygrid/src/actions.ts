@@ -35,7 +35,7 @@ import {
 
 import { getQueryDetails, searchRows, selectRows } from './query/api'
 import { isEqual } from './query/filter'
-import { buildQueryString, getLocation, replaceParameter, replaceParameters } from './util/URL'
+import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL'
 import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
@@ -129,18 +129,14 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
         });
     }
     else if (shouldLoadData && hasURLChange(newModel) && newModel.bindURL) {
-        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...bindURLProps(newModel)}, connectedComponent);
+        newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, ...bindURLProps(newModel)}, connectedComponent);
         gridLoad(newModel, connectedComponent);
     }
 }
 
 export function gridClearAll(model: QueryGridModel) {
     clearSelected(model.getId(), model.schema, model.query, model.getFilters()).then(() => {
-       updateQueryGridModel(model, {
-            selectedIds:  List<string>(),
-            selectedQuantity: 0,
-            selectedState: GRID_CHECKBOX_OPTIONS.NONE
-        });
+       updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
     }).catch(err => {
         const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
         gridShowError(model, error);
@@ -152,7 +148,7 @@ export function selectAll(key: string, schemaName: string, queryName: string, fi
         return Ajax.request({
             url: buildURL('query', 'selectAll.api'),
             method: 'POST',
-            params: getQueryFormParams(key, schemaName, queryName, filterList),
+            params: getQueryParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -277,8 +273,8 @@ export function queryGridInvalidate(schemaQuery: SchemaQuery, remove: boolean = 
     getQueryGridModelsForSchemaQuery(schemaQuery).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
-export function gridIdInvalidate(gridId: string, remove: boolean = false) {
-    getQueryGridModelsForGridId(gridId).map((model) => gridRemoveOrInvalidate(model, remove));
+export function gridIdInvalidate(gridIdPrefix: string, remove: boolean = false) {
+    getQueryGridModelsForGridId(gridIdPrefix).map((model) => gridRemoveOrInvalidate(model, remove));
 }
 
 function gridRemoveOrInvalidate(model: QueryGridModel, remove: boolean) {
@@ -347,10 +343,13 @@ export function gridRefresh(model: QueryGridModel, connectedComponent?: React.Co
     gridLoad(model, connectedComponent);
 }
 
+// need to reload when the URL changes and also need to reload selections because one of the
+// reasons the URL may change is for the application of filters.
 export function reloadQueryGridModel(model: QueryGridModel) {
     const newModel = updateQueryGridModel(model, {
         isLoading: true,
         selectedLoaded: false,
+        ...QueryGridModel.EMPTY_SELECTION,
         ...bindURLProps(model)
     });
     gridLoad(newModel);
@@ -367,7 +366,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
         let newModel = model;
         if (model.filterArray.count()) {
             if (all) {
-                newModel = updateQueryGridModel(newModel, {selectedLoaded: false, filterArray: List<any>()});
+                newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: List<any>()});
             }
             else if (filters && filters.count()) {
                 let urls = filters.reduce((urls, filter: any) => {
@@ -379,7 +378,7 @@ export function removeFilters(model: QueryGridModel, filters?: List<Filter.IFilt
                 });
 
                 if (filtered.count() < model.filterArray.count()) {
-                    newModel = updateQueryGridModel(newModel, {selectedLoaded: false, filterArray: filtered});
+                    newModel = updateQueryGridModel(newModel, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: filtered});
                 }
             }
         }
@@ -394,7 +393,7 @@ export function addFilters(model: QueryGridModel, filters: List<Filter.IFilter>)
     }
     else {
         if (filters.count()) {
-            let newModel = updateQueryGridModel(model, {selectedLoaded: false, filterArray: model.filterArray.merge(filters)});
+            let newModel = updateQueryGridModel(model, {selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, filterArray: model.filterArray.merge(filters)});
             gridLoad(newModel);
         }
     }
@@ -727,7 +726,9 @@ function fetchSelectedIfNeeded(model: QueryGridModel) {
             }
             else {
                 updateQueryGridModel(model, {
-                    selectedLoaded: true
+                    selectedLoaded: true,
+                    selectedQuantity: 0,
+                    selectedIds
                 });
             }
         }, payload => {
@@ -740,9 +741,9 @@ interface IGetSelectedResponse {
     selected: Array<any>
 }
 
-function getFilteredQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getFilteredQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        return getQueryFormParams(key, schemaName, queryName, filterList);
+        return getQueryParams(key, schemaName, queryName, filterList);
     }
     else {
         return {
@@ -751,9 +752,9 @@ function getFilteredQueryFormParams(key: string, schemaName: string, queryName: 
     }
 }
 
-function getQueryFormParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
+function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>) : any {
     const filters = filterList.reduce((prev, next) => {
-        return Object.assign(prev, {[next.getURLParameterName()]: next.getValue()});
+        return Object.assign(prev, {[next.getURLParameterName()]: next.getURLParameterValue()});
     }, {});
 
     return {
@@ -776,7 +777,7 @@ function getQueryFormParams(key: string, schemaName: string, queryName: string, 
 export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
+            url: buildURL('query', 'getSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList)),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -794,7 +795,7 @@ interface ISelectResponse {
 function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', getFilteredQueryFormParams(key, schemaName, queryName, filterList)),
+            url: buildURL('query', 'clearSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList)),
             method: 'POST',
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
@@ -901,6 +902,13 @@ interface ISelectionResponse {
     selected: Array<any>
 }
 
+export function getFilterListFromQuery(location: Location) : List<Filter.IFilter> {
+    const filters = Filter.getFiltersFromParameters(Object.assign({}, location.query));
+    if (filters.length > 0)
+        return List<Filter.IFilter>(filters);
+    return undefined;
+}
+
 export function getSelection(location: any): Promise<ISelectionResponse> {
     if (location && location.query && location.query.selectionKey) {
         const key = location.query.selectionKey;
@@ -916,7 +924,7 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                 });
             }
 
-            return getSelected(key).then((response) => {
+            return getSelected(key, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location)).then((response) => {
                 resolve({
                     resolved: true,
                     schemaQuery,
@@ -1226,6 +1234,11 @@ export function modifyCell(modelId: string, colIdx: number, rowIdx: number, newV
     const VD = List<ValueDescriptor>();
 
     let model = getEditorModel(modelId);
+    if (!model) {
+        console.warn("No model available for id '" + modelId + "'");
+        return;
+    }
+
     model = updateEditorModel(model, {cellMessages: model.cellMessages.delete(cellKey)});
 
     if (mod === MODIFICATION_TYPES.ADD) {

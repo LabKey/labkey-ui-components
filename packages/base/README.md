@@ -3,9 +3,23 @@
 Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
+
+### version 0.21.0
+*Released*: 5 November 2019
+* Modify getImportURL for AssayDefinitionModel to use the sample model's filters if present
+* Add QueryGridModel properties for hideEmptyViewSelector and hideEmptyChartSelector
+* Add DragDropHandle, DeleteIcon and FieldExpansionToggle components for use when rearranging 
+fields with properties (factoring out of domainproperties)
+
+### version 0.20.2
+*Released*: 5 November 2019
+* Fix Issue 38186
+    - QueryGridModel.getAllColumns() now uses column metadata from the current view when possible.
+
 ### version 0.20.1
 *Released*: 25 October 2019
 * Added optional styling property for WizardNavButtons.tsx
+
 
 ### version 0.20.0
 *Released*: 24 October 2019

@@ -57,21 +57,15 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
         ) : null;
 
         const exportBtn = model ? (
-            <span style={{paddingLeft: '10px'}}>
-                <Export model={model}/>
-            </span>
+            <Export model={model} style={{paddingLeft: '10px'}}/>
         ) : null;
 
         const chart = model && model.showChartSelector ? (
-            <span style={buttonsNode ? {paddingLeft: '10px'} : {}}>
-                <ChartSelector model={model}/>
-            </span>
+            <ChartSelector model={model} style={buttonsNode ? {paddingLeft: '10px'} : {}}/>
         ) : null;
 
         const view = model && model.showViewSelector ? (
-            <span style={{paddingLeft: '10px'}}>
-                <ViewSelector model={model}/>
-            </span>
+            <ViewSelector model={model} style={{paddingLeft: '10px'}}/>
         ) : null;
 
         let leftContent;

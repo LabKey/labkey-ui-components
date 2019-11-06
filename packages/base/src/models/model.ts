@@ -434,7 +434,9 @@ export interface IQueryGridModel {
     requiredColumns?: List<string>
     showSearchBox?: boolean
     showViewSelector?: boolean
+    hideEmptyViewSelector?: boolean
     showChartSelector?: boolean
+    hideEmptyChartSelector?: boolean
     sortable?: boolean
     sorts?: string
     selectedIds?: List<string>
@@ -503,7 +505,9 @@ export class QueryGridModel extends Record({
     selectedQuantity: 0,
     showSearchBox: true,
     showViewSelector: true,
+    hideEmptyViewSelector: false,
     showChartSelector: true,
+    hideEmptyChartSelector: false,
     sortable: true,
     sorts: undefined,
     title: undefined,
@@ -541,7 +545,9 @@ export class QueryGridModel extends Record({
     requiredColumns: List<string>;
     showSearchBox: boolean;
     showViewSelector: boolean;
+    hideEmptyViewSelector: boolean;
     showChartSelector: boolean;
+    hideEmptyChartSelector: boolean;
     sortable: boolean;
     sorts: string;
     selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not
@@ -554,6 +560,12 @@ export class QueryGridModel extends Record({
     urlParamValues: Map<string, any>;
     urlPrefix: string;
     view: string;
+
+    static EMPTY_SELECTION = {
+        selectedQuantity: 0,
+        selectedIds: emptyList,
+        selectedState: GRID_CHECKBOX_OPTIONS.NONE
+    };
 
     constructor(values?: IQueryGridModel) {
         super(values);
@@ -638,11 +650,20 @@ export class QueryGridModel extends Record({
     }
 
     getAllColumns(): List<QueryColumn> {
-        if (this.queryInfo) {
-            return List<QueryColumn>(this.queryInfo.columns.values());
+        if (!this.queryInfo) {
+            return emptyColumns;
         }
 
-        return emptyColumns;
+        // initialReduction is getDisplayColumns() because they include custom metadata from the view, like alternate
+        // column display names (e.g. the Experiment grid overrides Title to "Experiment Title"). See Issue 38186 for
+        // additional context.
+        return List<QueryColumn>(this.queryInfo.columns.values()).reduce((result, rawColumn) => {
+            if(!result.find(displayColumn => displayColumn.name === rawColumn.name)) {
+                return result.push(rawColumn);
+            }
+
+            return result;
+        }, this.getDisplayColumns());
     }
 
     getData(): List<any> {
@@ -1529,13 +1550,23 @@ export class AssayDefinitionModel extends Record({
         return undefined;
     }
 
-    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string) {
+    getImportUrl(dataTab?: AssayUploadTabs, selectionKey?: string, filterList?: List<Filter.IFilter>) {
         let url;
         // Note, will need to handle the re-import run case separately. Possibly introduce another URL via links
         if (this.name !== undefined && this.importAction === 'uploadWizard' && this.importController === 'assay') {
             url = AppURL.create('assays', this.type, this.name, 'upload').addParam('rowId', this.id);
             if (dataTab)
                 url = url.addParam('dataTab', dataTab);
+            if (filterList && !filterList.isEmpty()) {
+                filterList.forEach((filter) => {
+                    // if the filter has a URL suffix and is not registered as one recognized for URL filters, we ignore it here
+                    // CONSIDER:  Applications might want to be able to register their own filter types
+                    const urlSuffix = filter.getFilterType().getURLSuffix();
+                    if (!urlSuffix || Filter.getFilterTypeForURLSuffix(urlSuffix)) {
+                        url = url.addParam(filter.getURLParameterName(), filter.getURLParameterValue());
+                    }
+                });
+            }
             if (selectionKey)
                 url = url.addParam('selectionKey', selectionKey);
             url = url.toHref();

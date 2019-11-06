@@ -22,6 +22,8 @@ import { initMocks } from "./mock";
 import { FileColumnRenderer } from '..';
 
 const QUERY_METADATA = fromJS({
+    // hideEmptyChartSelector: true,
+    // hideEmptyViewSelector: true,
     concepts: {
         'http://www.labkey.org/exp/xml#alias': {
             inputRenderer: 'ExperimentAlias',

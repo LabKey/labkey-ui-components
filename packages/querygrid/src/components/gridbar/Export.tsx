@@ -29,6 +29,7 @@ import { EXPORT_TYPES } from "../../constants";
 interface Props {
     model: QueryGridModel
     supportedTypes?: Set<EXPORT_TYPES> // the types that are supported
+    style?: Object
 }
 
 /**
@@ -46,53 +47,55 @@ export class Export extends React.Component<Props, any> {
     }
 
     render() {
-        const { model, supportedTypes } = this.props;
+        const { model, supportedTypes, style } = this.props;
 
         return (
             model &&
-            <Tip caption="Export">
-                <DropdownButton
-                    id={`export-drop-${model.getId()}`}
-                    noCaret
-                    pullRight
-                    title={<span className="fa fa-download"/>}
-                    disabled={model.isError}
-                >
-                    <MenuItem header>
-                        Export {model.selectedQuantity > 0 ? "Selected" : ""}
-                    </MenuItem>
-                    <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.CSV)}>
-                        <span className="fa fa-file-o"/>&nbsp;
-                        CSV
-                    </MenuItem>
-                    <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.EXCEL)}>
-                        <span className="fa fa-file-excel-o"/>&nbsp;
-                        Excel
-                    </MenuItem>
-                    <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.TSV)}>
-                        <span className="fa fa-file-text-o"/>&nbsp;
-                        TSV
-                    </MenuItem>
-                    { supportedTypes.includes(EXPORT_TYPES.FASTA) ?
-                        <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.FASTA)}>
-                            <span className="fa-stack" style={{width: '1em', height: '1em', lineHeight: '1em'}}>
-                                <span className="fa fa-file-o fa-stack-1x" />
-                                <strong className="fa-stack-text file-text fa-stack-1x" style={{fontSize: '0.5em'}}>fa</strong>
-                            </span>&nbsp;
-                            FASTA
-                        </MenuItem> : undefined
-                    }
-                    { supportedTypes.includes(EXPORT_TYPES.GENBANK) ?
-                        <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.GENBANK)}>
-                            <span className="fa-stack" style={{width: '1em', height: '1em', lineHeight: '1em'}}>
-                                <span className="fa fa-file-o fa-stack-1x" />
-                                <strong className="fa-stack-text file-text fa-stack-1x" style={{fontSize: '0.5em'}}>gb</strong>
-                            </span>&nbsp;
-                            GenBank
-                        </MenuItem> : undefined
-                    }
-                </DropdownButton>
-            </Tip>
+            <span style={style}>
+                <Tip caption="Export">
+                    <DropdownButton
+                        id={`export-drop-${model.getId()}`}
+                        noCaret
+                        pullRight
+                        title={<span className="fa fa-download"/>}
+                        disabled={model.isError}
+                    >
+                        <MenuItem header>
+                            Export {model.selectedQuantity > 0 ? "Selected" : ""}
+                        </MenuItem>
+                        <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.CSV)}>
+                            <span className="fa fa-file-o"/>&nbsp;
+                            CSV
+                        </MenuItem>
+                        <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.EXCEL)}>
+                            <span className="fa fa-file-excel-o"/>&nbsp;
+                            Excel
+                        </MenuItem>
+                        <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.TSV)}>
+                            <span className="fa fa-file-text-o"/>&nbsp;
+                            TSV
+                        </MenuItem>
+                        { supportedTypes.includes(EXPORT_TYPES.FASTA) ?
+                            <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.FASTA)}>
+                                <span className="fa-stack" style={{width: '1em', height: '1em', lineHeight: '1em'}}>
+                                    <span className="fa fa-file-o fa-stack-1x" />
+                                    <strong className="fa-stack-text file-text fa-stack-1x" style={{fontSize: '0.5em'}}>fa</strong>
+                                </span>&nbsp;
+                                FASTA
+                            </MenuItem> : undefined
+                        }
+                        { supportedTypes.includes(EXPORT_TYPES.GENBANK) ?
+                            <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.GENBANK)}>
+                                <span className="fa-stack" style={{width: '1em', height: '1em', lineHeight: '1em'}}>
+                                    <span className="fa fa-file-o fa-stack-1x" />
+                                    <strong className="fa-stack-text file-text fa-stack-1x" style={{fontSize: '0.5em'}}>gb</strong>
+                                </span>&nbsp;
+                                GenBank
+                            </MenuItem> : undefined
+                        }
+                    </DropdownButton>
+                </Tip>
+            </span>
         )
     }
 }

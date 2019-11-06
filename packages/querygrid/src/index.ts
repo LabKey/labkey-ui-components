@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { EditorModel, getStateQueryGridModel, SearchResultsModel } from './models';
+import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
 import {
     addColumns,
     changeColumn,
     createQueryGridModelFilteredBySample,
+    getFilterListFromQuery,
     getSelected,
     getSelectedData,
     getSelection,
@@ -36,10 +37,11 @@ import {
     getEditorModel,
     getQueryGridModel,
     initQueryGridState,
+    invalidateLineageResults,
     removeQueryGridModel,
     setQueryColumnRenderers,
     setQueryMetadata,
-    invalidateLineageResults
+    invalidateProjectUsers
 } from './global';
 import {
     deleteRows,
@@ -57,7 +59,7 @@ import {
     updateRows
 } from './query/api';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
-import { getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
+import { buildQueryString, getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
 import {
@@ -85,7 +87,8 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
-import { handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
+import { handleInputTab, handleTabKeyOnTextArea, getProjectUsers } from './components/forms/actions';
+import { IUser } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
@@ -100,7 +103,12 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
-import { deleteSampleSet, getSampleDeleteConfirmationData, getSampleSet, loadSelectedSamples } from './components/samples/actions';
+import {
+    deleteSampleSet,
+    getSampleDeleteConfirmationData,
+    getSampleSet,
+    loadSelectedSamples
+} from './components/samples/actions';
 import { SampleSetDeleteConfirmModal } from './components/samples/SampleSetDeleteConfirmModal';
 import { SampleSetDetailsPanel } from './components/samples/SampleSetDetailsPanel';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
@@ -130,11 +138,7 @@ import {
     uploadAssayRunFiles
 } from './components/assay/actions';
 import { PreviewGrid } from './components/PreviewGrid';
-import {
-    flattenBrowseDataTreeResponse,
-    ReportURLMapper,
-} from './components/report-list/model';
-import { DataViewInfoTypes, IDataViewInfo} from './models';
+import { flattenBrowseDataTreeResponse, ReportURLMapper, } from './components/report-list/model';
 import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
 import { LineageFilter } from './components/lineage/models'
@@ -151,6 +155,7 @@ import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
+import { UserSelectInput } from './components/forms/input/UserSelectInput';
 
 export {
     // global state functions
@@ -166,6 +171,7 @@ export {
     getSelected,
     getSelectedData,
     getSelection,
+    getFilterListFromQuery,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
@@ -212,6 +218,7 @@ export {
     pushParameter,
     pushParameters,
     replaceParameters,
+    buildQueryString,
 
     // renderers
     AliasRenderer,
@@ -230,6 +237,7 @@ export {
     LookupSelectInput,
     SelectInput,
     QuerySelect,
+    UserSelectInput,
     PageDetailHeader,
     DetailEditing,
     Detail,
@@ -243,6 +251,11 @@ export {
     // types
     PlacementType,
     EditorModel,
+
+    // user-related
+    getProjectUsers,
+    invalidateProjectUsers,
+    IUser,
 
     // samples-related
     SampleInsertPanel,

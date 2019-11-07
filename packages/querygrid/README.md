@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* update EditorModel with methods for converting from queryGrid results to the data format expected by 
+the editable grid
+
 ### version 0.22.0
 *Released*: 5 November 2019
 * Add getFilterListFromQuery

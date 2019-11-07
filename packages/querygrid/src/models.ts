@@ -732,6 +732,27 @@ export class EditorModel extends Record({
             this.selectedRowIdx === rowIdx
         );
     }
+
+    static getEditorDataFromQueryValueMap(valueMap: any) {
+        // Editor expects to get either a single value or an array of [displayValue, value]
+        if (valueMap && valueMap.has('value') && valueMap.get('value') !== null && valueMap.get('value') !== undefined)
+            return valueMap.has('displayValue') ? List<any>([{displayValue: valueMap.get('displayValue'), value: valueMap.get('value')}]) : valueMap.get('value');
+        else
+            return undefined;
+    }
+
+    static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>) : Map<any, Map<string, any>> {
+        return data.map((valueMap) => {
+            const returnMap = valueMap.reduce((m, valueMap, key) => {
+                const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
+                if (editorData)
+                    return m.set(key, editorData);
+                else
+                    return m;
+            }, Map<any, any>());
+            return updates? returnMap.merge(updates) : returnMap;
+        }) as Map<any, Map<string, any>>;
+    }
 }
 
 export class LookupStore extends Record({

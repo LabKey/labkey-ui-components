@@ -733,8 +733,8 @@ export class EditorModel extends Record({
         );
     }
 
-    static getEditorDataFromQueryValueMap(valueMap: any) {
-        // Editor expects to get either a single value or an array of [displayValue, value]
+    static getEditorDataFromQueryValueMap(valueMap: any) : List<any> | any {
+        // Editor expects to get either a single value or an array of an object with fields displayValue and value
         if (valueMap && valueMap.has('value') && valueMap.get('value') !== null && valueMap.get('value') !== undefined)
             return valueMap.has('displayValue') ? List<any>([{displayValue: valueMap.get('displayValue'), value: valueMap.get('value')}]) : valueMap.get('value');
         else

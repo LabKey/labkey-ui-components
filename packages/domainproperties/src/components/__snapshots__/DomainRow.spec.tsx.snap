@@ -923,7 +923,7 @@ exports[`DomainRow Sample Field 1`] = `
                               index={0}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -1005,7 +1005,9 @@ exports[`DomainRow Sample Field 1`] = `
                                                 Sample lookup to
                                                 <LabelHelpTip
                                                   body={[Function]}
+                                                  customStyle={Object {}}
                                                   id="tooltip"
+                                                  size="1x"
                                                   title="Sample Reference"
                                                 >
                                                   <span
@@ -1037,15 +1039,16 @@ exports[`DomainRow Sample Field 1`] = `
                                                       pull={null}
                                                       pulse={false}
                                                       rotation={null}
-                                                      size={null}
+                                                      size="1x"
                                                       spin={false}
+                                                      style={Object {}}
                                                       symbol={false}
                                                       title=""
                                                       transform={null}
                                                     >
                                                       <svg
                                                         aria-hidden="true"
-                                                        className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                        className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                         data-icon="question-circle"
                                                         data-prefix="fas"
                                                         focusable="false"
@@ -1072,7 +1075,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                         >
                                                           <svg
                                                             aria-hidden="true"
-                                                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                             data-icon="question-circle"
                                                             data-prefix="fas"
                                                             focusable="false"
@@ -1098,7 +1101,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -1354,7 +1357,9 @@ exports[`DomainRow Sample Field 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -1386,15 +1391,16 @@ exports[`DomainRow Sample Field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -1421,7 +1427,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -1447,7 +1453,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -1504,7 +1510,9 @@ exports[`DomainRow Sample Field 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -1536,15 +1544,16 @@ exports[`DomainRow Sample Field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -1571,7 +1580,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -1597,7 +1606,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -1726,7 +1735,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     }
                                     index={0}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -1817,7 +1826,9 @@ exports[`DomainRow Sample Field 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -1849,15 +1860,16 @@ exports[`DomainRow Sample Field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -1884,7 +1896,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -1910,7 +1922,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -2290,6 +2302,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "fieldName": "#ColumnAwesome",
                     "propertyId": undefined,
                     "severity": "Warning",
+                    "serverError": undefined,
                     "rowIndexes": Immutable.List [],
                     "newRowIndexes": undefined,
                   }
@@ -2983,7 +2996,7 @@ exports[`DomainRow client side warning on field 1`] = `
                               index={1}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -3186,7 +3199,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -3218,15 +3233,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -3253,7 +3269,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -3279,7 +3295,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -3336,7 +3352,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -3368,15 +3386,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -3403,7 +3422,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -3429,7 +3448,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -3558,7 +3577,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     }
                                     index={1}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -3649,7 +3668,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -3681,15 +3702,16 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -3716,7 +3738,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -3742,7 +3764,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -4725,7 +4747,7 @@ exports[`DomainRow date time field 1`] = `
                               index={0}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -4791,7 +4813,9 @@ exports[`DomainRow date time field 1`] = `
                                                 Format for Dates
                                                 <LabelHelpTip
                                                   body={[Function]}
+                                                  customStyle={Object {}}
                                                   id="tooltip"
+                                                  size="1x"
                                                   title="Format String"
                                                 >
                                                   <span
@@ -4823,15 +4847,16 @@ exports[`DomainRow date time field 1`] = `
                                                       pull={null}
                                                       pulse={false}
                                                       rotation={null}
-                                                      size={null}
+                                                      size="1x"
                                                       spin={false}
+                                                      style={Object {}}
                                                       symbol={false}
                                                       title=""
                                                       transform={null}
                                                     >
                                                       <svg
                                                         aria-hidden="true"
-                                                        className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                        className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                         data-icon="question-circle"
                                                         data-prefix="fas"
                                                         focusable="false"
@@ -4858,7 +4883,7 @@ exports[`DomainRow date time field 1`] = `
                                                         >
                                                           <svg
                                                             aria-hidden="true"
-                                                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                             data-icon="question-circle"
                                                             data-prefix="fas"
                                                             focusable="false"
@@ -4884,7 +4909,7 @@ exports[`DomainRow date time field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -5161,7 +5186,9 @@ exports[`DomainRow date time field 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -5193,15 +5220,16 @@ exports[`DomainRow date time field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -5228,7 +5256,7 @@ exports[`DomainRow date time field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -5254,7 +5282,7 @@ exports[`DomainRow date time field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -5311,7 +5339,9 @@ exports[`DomainRow date time field 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -5343,15 +5373,16 @@ exports[`DomainRow date time field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -5378,7 +5409,7 @@ exports[`DomainRow date time field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -5404,7 +5435,7 @@ exports[`DomainRow date time field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -5533,7 +5564,7 @@ exports[`DomainRow date time field 1`] = `
                                     }
                                     index={0}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -5624,7 +5655,9 @@ exports[`DomainRow date time field 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -5656,15 +5689,16 @@ exports[`DomainRow date time field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -5691,7 +5725,7 @@ exports[`DomainRow date time field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -5717,7 +5751,7 @@ exports[`DomainRow date time field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -5777,7 +5811,9 @@ exports[`DomainRow date time field 1`] = `
                                                   Create Range Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Range Validator"
                                                   >
                                                     <span
@@ -5809,15 +5845,16 @@ exports[`DomainRow date time field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -5844,7 +5881,7 @@ exports[`DomainRow date time field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -5870,7 +5907,7 @@ exports[`DomainRow date time field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -6853,7 +6890,7 @@ exports[`DomainRow decimal field 1`] = `
                               index={2}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -6918,7 +6955,9 @@ exports[`DomainRow decimal field 1`] = `
                                                 Format for Numbers
                                                 <LabelHelpTip
                                                   body={[Function]}
+                                                  customStyle={Object {}}
                                                   id="tooltip"
+                                                  size="1x"
                                                   title="Format Strings"
                                                 >
                                                   <span
@@ -6950,15 +6989,16 @@ exports[`DomainRow decimal field 1`] = `
                                                       pull={null}
                                                       pulse={false}
                                                       rotation={null}
-                                                      size={null}
+                                                      size="1x"
                                                       spin={false}
+                                                      style={Object {}}
                                                       symbol={false}
                                                       title=""
                                                       transform={null}
                                                     >
                                                       <svg
                                                         aria-hidden="true"
-                                                        className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                        className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                         data-icon="question-circle"
                                                         data-prefix="fas"
                                                         focusable="false"
@@ -6985,7 +7025,7 @@ exports[`DomainRow decimal field 1`] = `
                                                         >
                                                           <svg
                                                             aria-hidden="true"
-                                                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                             data-icon="question-circle"
                                                             data-prefix="fas"
                                                             focusable="false"
@@ -7011,7 +7051,7 @@ exports[`DomainRow decimal field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -7324,7 +7364,9 @@ exports[`DomainRow decimal field 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -7356,15 +7398,16 @@ exports[`DomainRow decimal field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -7391,7 +7434,7 @@ exports[`DomainRow decimal field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -7417,7 +7460,7 @@ exports[`DomainRow decimal field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -7474,7 +7517,9 @@ exports[`DomainRow decimal field 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -7506,15 +7551,16 @@ exports[`DomainRow decimal field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -7541,7 +7587,7 @@ exports[`DomainRow decimal field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -7567,7 +7613,7 @@ exports[`DomainRow decimal field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -7696,7 +7742,7 @@ exports[`DomainRow decimal field 1`] = `
                                     }
                                     index={2}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -7787,7 +7833,9 @@ exports[`DomainRow decimal field 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -7819,15 +7867,16 @@ exports[`DomainRow decimal field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -7854,7 +7903,7 @@ exports[`DomainRow decimal field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -7880,7 +7929,7 @@ exports[`DomainRow decimal field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -7940,7 +7989,9 @@ exports[`DomainRow decimal field 1`] = `
                                                   Create Range Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Range Validator"
                                                   >
                                                     <span
@@ -7972,15 +8023,16 @@ exports[`DomainRow decimal field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -8007,7 +8059,7 @@ exports[`DomainRow decimal field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -8033,7 +8085,7 @@ exports[`DomainRow decimal field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -9040,7 +9092,7 @@ exports[`DomainRow participant id field 1`] = `
                               index={0}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -9243,7 +9295,9 @@ exports[`DomainRow participant id field 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -9275,15 +9329,16 @@ exports[`DomainRow participant id field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -9310,7 +9365,7 @@ exports[`DomainRow participant id field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -9336,7 +9391,7 @@ exports[`DomainRow participant id field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -9393,7 +9448,9 @@ exports[`DomainRow participant id field 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -9425,15 +9482,16 @@ exports[`DomainRow participant id field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -9460,7 +9518,7 @@ exports[`DomainRow participant id field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -9486,7 +9544,7 @@ exports[`DomainRow participant id field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -9615,7 +9673,7 @@ exports[`DomainRow participant id field 1`] = `
                                     }
                                     index={0}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -9706,7 +9764,9 @@ exports[`DomainRow participant id field 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -9738,15 +9798,16 @@ exports[`DomainRow participant id field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -9773,7 +9834,7 @@ exports[`DomainRow participant id field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -9799,7 +9860,7 @@ exports[`DomainRow participant id field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -10179,6 +10240,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "fieldName": "modified",
                     "propertyId": undefined,
                     "severity": "Error",
+                    "serverError": undefined,
                     "rowIndexes": Immutable.List [],
                     "newRowIndexes": undefined,
                   }
@@ -10872,7 +10934,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               index={1}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -11075,7 +11137,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -11107,15 +11171,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -11142,7 +11207,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -11168,7 +11233,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -11225,7 +11290,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -11257,15 +11324,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -11292,7 +11360,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -11318,7 +11386,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -11447,7 +11515,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     }
                                     index={1}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -11538,7 +11606,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -11570,15 +11640,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -11605,7 +11676,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -11631,7 +11702,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -12638,7 +12709,7 @@ exports[`DomainRow string field test 1`] = `
                               index={1}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -12703,7 +12774,9 @@ exports[`DomainRow string field test 1`] = `
                                                 Maximum Text Length
                                                 <LabelHelpTip
                                                   body={[Function]}
+                                                  customStyle={Object {}}
                                                   id="tooltip"
+                                                  size="1x"
                                                   title="Max Text Length"
                                                 >
                                                   <span
@@ -12735,15 +12808,16 @@ exports[`DomainRow string field test 1`] = `
                                                       pull={null}
                                                       pulse={false}
                                                       rotation={null}
-                                                      size={null}
+                                                      size="1x"
                                                       spin={false}
+                                                      style={Object {}}
                                                       symbol={false}
                                                       title=""
                                                       transform={null}
                                                     >
                                                       <svg
                                                         aria-hidden="true"
-                                                        className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                        className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                         data-icon="question-circle"
                                                         data-prefix="fas"
                                                         focusable="false"
@@ -12770,7 +12844,7 @@ exports[`DomainRow string field test 1`] = `
                                                         >
                                                           <svg
                                                             aria-hidden="true"
-                                                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                             data-icon="question-circle"
                                                             data-prefix="fas"
                                                             focusable="false"
@@ -12796,7 +12870,7 @@ exports[`DomainRow string field test 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -13115,7 +13189,9 @@ exports[`DomainRow string field test 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -13147,15 +13223,16 @@ exports[`DomainRow string field test 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -13182,7 +13259,7 @@ exports[`DomainRow string field test 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -13208,7 +13285,7 @@ exports[`DomainRow string field test 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -13265,7 +13342,9 @@ exports[`DomainRow string field test 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -13297,15 +13376,16 @@ exports[`DomainRow string field test 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -13332,7 +13412,7 @@ exports[`DomainRow string field test 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -13358,7 +13438,7 @@ exports[`DomainRow string field test 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -13487,7 +13567,7 @@ exports[`DomainRow string field test 1`] = `
                                     }
                                     index={1}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -13578,7 +13658,9 @@ exports[`DomainRow string field test 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -13610,15 +13692,16 @@ exports[`DomainRow string field test 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -13645,7 +13728,7 @@ exports[`DomainRow string field test 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -13671,7 +13754,7 @@ exports[`DomainRow string field test 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -14727,7 +14810,7 @@ exports[`DomainRow with empty domain form 1`] = `
                               index={1}
                               onChange={[Function]}
                               onMultiChange={[Function]}
-                              setDragDisabled={[Function]}
+                              showingModal={[Function]}
                             >
                               <div
                                 className="domain-row-container"
@@ -14792,7 +14875,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 Maximum Text Length
                                                 <LabelHelpTip
                                                   body={[Function]}
+                                                  customStyle={Object {}}
                                                   id="tooltip"
+                                                  size="1x"
                                                   title="Max Text Length"
                                                 >
                                                   <span
@@ -14824,15 +14909,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       pull={null}
                                                       pulse={false}
                                                       rotation={null}
-                                                      size={null}
+                                                      size="1x"
                                                       spin={false}
+                                                      style={Object {}}
                                                       symbol={false}
                                                       title=""
                                                       transform={null}
                                                     >
                                                       <svg
                                                         aria-hidden="true"
-                                                        className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                        className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                         data-icon="question-circle"
                                                         data-prefix="fas"
                                                         focusable="false"
@@ -14859,7 +14945,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         >
                                                           <svg
                                                             aria-hidden="true"
-                                                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                             data-icon="question-circle"
                                                             data-prefix="fas"
                                                             focusable="false"
@@ -14885,7 +14971,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -15204,7 +15290,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                                   Import Aliases
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Import Aliases"
                                                   >
                                                     <span
@@ -15236,15 +15324,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -15271,7 +15360,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -15297,7 +15386,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -15354,7 +15443,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                                   URL
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="URL"
                                                   >
                                                     <span
@@ -15386,15 +15477,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -15421,7 +15513,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -15447,7 +15539,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"
@@ -15576,7 +15668,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     }
                                     index={1}
                                     onChange={[Function]}
-                                    setDragDisabled={[Function]}
+                                    showingModal={[Function]}
                                   >
                                     <div>
                                       <Row
@@ -15667,7 +15759,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                                   Create Regular Expression Validator
                                                   <LabelHelpTip
                                                     body={[Function]}
+                                                    customStyle={Object {}}
                                                     id="tooltip"
+                                                    size="1x"
                                                     title="Add Regex Validator"
                                                   >
                                                     <span
@@ -15699,15 +15793,16 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         pull={null}
                                                         pulse={false}
                                                         rotation={null}
-                                                        size={null}
+                                                        size="1x"
                                                         spin={false}
+                                                        style={Object {}}
                                                         symbol={false}
                                                         title=""
                                                         transform={null}
                                                       >
                                                         <svg
                                                           aria-hidden="true"
-                                                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                           data-icon="question-circle"
                                                           data-prefix="fas"
                                                           focusable="false"
@@ -15734,7 +15829,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                           >
                                                             <svg
                                                               aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                               data-icon="question-circle"
                                                               data-prefix="fas"
                                                               focusable="false"
@@ -15760,7 +15855,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                             >
                                                               <svg
                                                                 aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                                                 data-icon="question-circle"
                                                                 data-prefix="fas"
                                                                 focusable="false"

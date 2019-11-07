@@ -56,7 +56,9 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
               Format for Boolean Values
               <LabelHelpTip
                 body={[Function]}
+                customStyle={Object {}}
                 id="tooltip"
+                size="1x"
                 title="Format Strings"
               >
                 <span
@@ -88,15 +90,16 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
                     pull={null}
                     pulse={false}
                     rotation={null}
-                    size={null}
+                    size="1x"
                     spin={false}
+                    style={Object {}}
                     symbol={false}
                     title=""
                     transform={null}
                   >
                     <svg
                       aria-hidden="true"
-                      className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                       data-icon="question-circle"
                       data-prefix="fas"
                       focusable="false"
@@ -123,7 +126,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                           data-icon="question-circle"
                           data-prefix="fas"
                           focusable="false"
@@ -149,7 +152,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                             data-icon="question-circle"
                             data-prefix="fas"
                             focusable="false"

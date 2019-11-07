@@ -77,10 +77,8 @@ describe('AssayPropertiesPanel', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
-                panelCls={'panel-primary'}
                 collapsible={false}
                 initCollapsed={true}
-                markComplete={true}
                 onChange={jest.fn}
             />
         );

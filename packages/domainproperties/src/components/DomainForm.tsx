@@ -35,7 +35,7 @@ import {
 } from "../models";
 import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle, faCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import {
     AddEntityButton,
     Alert,

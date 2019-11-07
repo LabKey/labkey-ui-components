@@ -388,7 +388,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 value={count ? count.toString() : 1}
                             />
                         )}
-                        <hr/>
+                        {(header || includeCountField) && <hr/>}
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}

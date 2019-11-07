@@ -280,17 +280,8 @@ function updateErrorIndexes(removedFieldIndex: number, domainException: DomainEx
 
 export function removeField(domain: DomainDesign, index: number): DomainDesign {
 
-    let de;
-
-    //clear field error on a removed field
-    if (domain.hasException()) {
-        const updatedErrors = clearFieldError(domain, index);
-        de = domain.domainException.merge({errors: updatedErrors}) as DomainException;
-    }
-
     let newDomain = domain.merge({
-        fields: domain.fields.delete(index),
-        domainException: de
+        fields: domain.fields.delete(index)
     }) as DomainDesign;
 
     //"move up" the indexes of the fields with error, i.e. the fields that are below the removed field

@@ -811,7 +811,7 @@ export class DomainField extends Record({
     isValid(): boolean {
         // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
         // if so, then we can remove this isValid() function and just use !hasErrors()
-        return !!this.name && !!this.dataType && !!this.dataType.rangeURI;
+        return !!this.name && !!this.dataType && (!!this.dataType.rangeURI || !!this.rangeURI);
     }
 
     static hasRangeValidation(field: DomainField): boolean {
@@ -1135,7 +1135,7 @@ export class DomainException extends Record({
             const domainName = this.getDomainNameFromException(rawModel.exception);
             let exception = rawModel.exception;
             if (domainName) {
-                const prefix = domainName + ": ";
+                const prefix = domainName + " -- ";
                 exception = exception.split(prefix)[1];
                 errors = errors.map((err) => {
                     let parts = err.message.split(prefix);
@@ -1176,7 +1176,7 @@ export class DomainException extends Record({
     }
 
     static getDomainNameFromException(message: string): string {
-        let msgParts = message.split(':');
+        let msgParts = message.split(' -- ');
         if (msgParts.length > 1)
         {
             return msgParts[0];
@@ -1213,7 +1213,7 @@ export class DomainException extends Record({
             let indices = domain.fields.reduce((indexList, field, idx, iter) : List<number> => {
 
                 if (((field.name === undefined || field.name === '') && error.get("fieldName") === undefined) ||
-                    (field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
+                    (field.propertyId !== 0 && field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
                     (field.name !== undefined && error.get("fieldName") !== undefined && field.name.toLowerCase() === error.get("fieldName").toLowerCase())) {
 
                     indexList = indexList.push(idx);

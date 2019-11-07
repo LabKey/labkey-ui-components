@@ -151,10 +151,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidUpdate(prevProps: Readonly<IDomainFormInput>, prevState: Readonly<IDomainFormState>, snapshot?: any): void {
+        const {domain} = this.props;
 
         // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
-        if (prevProps.useTheme) {
-            const {domain} = this.props;
+        if (prevProps.useTheme && domain && domain.name) {
             const el = document.getElementById(createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr'));
             el.classList.remove("panel-heading");
         }
@@ -649,16 +649,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderPanelHeaderContent() {
-        const { helpURL, helpNoun, children } = this.props;
+        const { helpURL, controlledCollapse } = this.props;
 
         return(
             <Row className={helpURL ? 'domain-form-hdr-margins' : ''}>
                 <Col xs={helpURL ? 9 : 12}>
-                    {/*{children ? children*/}
-                        {/*: <div className='domain-field-float-left'>*/}
-                            {/*Set up and configure fields for use in this {helpNoun}.*/}
-                        {/*</div>*/}
-                    {/*}*/}
+                    {!controlledCollapse &&
+                        'Adjust fields and their properties. Expand a row to set additional properties.'
+                    }
                 </Col>
                 {helpURL &&
                     <Col xs={3}>
@@ -888,7 +886,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                 {/*Help tip*/}
                 {children &&
-                    <LabelHelpTip size={'lg'} customStyle={{height: '14px', verticalAlign: 'middle', marginTop: '-2px'}} placement={'top'} title={this.getHeaderName()} body={() => (children)}/>
+                    <LabelHelpTip customStyle={{verticalAlign: 'top', marginLeft: '5px'}} placement={'top'} title={this.getHeaderName()} body={() => (children)}/>
                 }
 
                 {/*Number of fields*/}
@@ -908,7 +906,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel"} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
-                        <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()} id={createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr')}>
+                        <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>
                             {this.renderHeaderContent()}
                         </Panel.Heading>
                     }

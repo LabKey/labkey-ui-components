@@ -216,7 +216,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
     render() {
         const { onCancel, basePropertiesOnly, containerTop, useTheme } = this.props;
-        const { protocolModel, currentPanelIndex, validatePanel } = this.state;
+        const { protocolModel, currentPanelIndex, validatePanel, visitedPanels } = this.state;
 
         let errorDomains = List<String>();
 
@@ -288,10 +288,10 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     </Col>
                     <Col xs={10}>
                         {errorDomains.size > 0 &&
-                            <Alert bsStyle="danger">{"Please correct errors in " + errorDomains.join(', ')}</Alert>
+                            <Alert bsStyle="danger">{"Must correct errors in " + errorDomains.join(', ') + " before saving."}</Alert>
                         }
-                        {protocolModel.exception &&
-                            <Alert bsStyle="danger">{protocolModel.exception}</Alert>
+                        {visitedPanels.size > 1 && !protocolModel.hasValidProperties() &&
+                            <Alert bsStyle="danger">Must correct errors in Assay Properties before saving.</Alert>
                         }
                     </Col>
                     <Col xs={1}>

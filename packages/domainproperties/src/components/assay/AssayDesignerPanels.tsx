@@ -293,9 +293,12 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                         {visitedPanels.size > 1 && !protocolModel.hasValidProperties() &&
                             <Alert bsStyle="danger">Must correct errors in Assay Properties before saving.</Alert>
                         }
+                        {protocolModel.exception &&
+                        <Alert bsStyle="danger">{protocolModel.exception}</Alert>
+                        }
                     </Col>
                     <Col xs={1}>
-                        <Button className='pull-right domain-assay-save-btn' bsStyle='success' disabled={!this.isValid()} onClick={this.onFinish}>Save</Button>
+                        <Button className='pull-right domain-assay-save-btn' bsStyle='success' disabled={!this.isValid() || this.state.submitting} onClick={this.onFinish}>Save</Button>
                     </Col>
                 </Row>
             </>

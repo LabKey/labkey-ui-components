@@ -593,8 +593,7 @@ export function setAssayDomainException(model: AssayProtocolModel, exception: Do
     // If a domain is identified in the exception, attach to that domain
     if (exception.domainName) {
         const exceptionDomains = model.domains.map((domain) => {
-            if (domain.get('name') === exception.domainName)
-            {
+            if (exception.domainName.endsWith(domain.get('name'))) {
                 return setDomainException(domain, exception);
             }
 

@@ -294,9 +294,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { onChange, controlledCollapse } = this.props;
 
         // Check for cleared errors
-        if (controlledCollapse && updatedDomain.hasException() && updatedDomain.hasErrors()) {
+        if (controlledCollapse && updatedDomain.hasErrors()) {
             const invalidFields = updatedDomain.getInvalidFields();
-            const markedInvalid = updatedDomain.get("exception").get("errors");
+            const markedInvalid = updatedDomain.get("domainException").get("errors");
 
             if (markedInvalid.size > invalidFields.size) {
                 updatedDomain = this.validateDomain(updatedDomain);

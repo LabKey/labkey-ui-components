@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* Package patch update for changes to @glass/base vXXX
+
 ### version 0.22.0
 *Released*: 5 November 2019
 * Add getFilterListFromQuery

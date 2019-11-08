@@ -26,8 +26,6 @@ initMocks();
 
 interface Props {
     showInferFromFile?: boolean
-    initCollapsed?: boolean
-    markComplete?: boolean
     data: {}
     exception?: {}
     helpNoun?: any
@@ -59,7 +57,6 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     domain={domain}
                     onChange={this.onChange}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    showHeaderFieldCount={false}
                 />
             </MockLookupProvider>
         )
@@ -89,15 +86,6 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={domainData}
-            />
-        )
-    })
-    .add("initCollapsed and mark complete", () => {
-        return (
-            <DomainFormContainer
-                data={domainData}
-                initCollapsed={boolean('initCollapsed', true)}
-                markComplete={boolean('markComplete', true)}
             />
         )
     })

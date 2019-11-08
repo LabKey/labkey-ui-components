@@ -78,7 +78,6 @@ interface IDomainFormInput {
     panelStatus?: DomainPanelStatus
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
     headerTitle?: string,
-    showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
     useTheme?: boolean
     appDomainHeaderRenderer?: HeaderRenderer
@@ -117,7 +116,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         helpNoun: 'field designer',
         helpURL: LK_DOMAIN_HELP_URL,
         showHeader: true,
-        showHeaderFieldCount: true,
         initCollapsed: false,
         isNew: false
     };
@@ -762,7 +760,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     getHeaderName(): string {
-        const { domain, headerTitle, headerPrefix, showHeaderFieldCount } = this.props;
+        const { domain, headerTitle, headerPrefix } = this.props;
         let name = headerTitle || (domain.name ? domain.name : "Fields");
 
         // optionally trim off a headerPrefix from the name display
@@ -775,15 +773,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             name = name.replace('Data Fields', 'Results Fields');
         }
 
-        // add the field count to the header, if not empty
-        // if (showHeaderFieldCount && domain.fields.size > 0) {
-        //     name = name + ' - ' + domain.fields.size + ' defined';
-        // }
-
         return name;
     }
 
-    getHeaderClasses(): string {
+    getPanelHeaderClass(): string {
         const { collapsible, controlledCollapse, useTheme } = this.props;
 
         let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
@@ -795,20 +788,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return classes;
     }
 
-    renderPanelBody = () => {
-        const { domain } = this.props;
-
-        return (
-            <Panel.Body>
-                {this.domainExists(domain)
-                    ? this.renderForm()
-                    : <Alert>Invalid domain design.</Alert>
-                }
-            </Panel.Body>
-        )
-    };
-
-    getHeaderClass = () => {
+    getHeaderIconClass = () => {
         const { panelStatus, domain } = this.props;
         const { collapsed } = this.state;
         let classes = 'domain-panel-status-icon';
@@ -836,7 +816,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     getHeaderIconComponent = () => {
 
         return (
-            <span className={this.getHeaderClass()}>
+            <span className={this.getHeaderIconClass()}>
                 <FontAwesomeIcon icon={this.getHeaderIcon()}/>
             </span>
         )
@@ -907,7 +887,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {showConfirm && this.renderFieldRemoveConfirm()}
                 <Panel className={"domain-form-panel"} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
-                        <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>
+                        <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>
                             {this.renderHeaderContent()}
                         </Panel.Heading>
                     }

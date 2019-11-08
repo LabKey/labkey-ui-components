@@ -4,7 +4,7 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
 <AssayPropertiesPanel
   asPanel={false}
   basePropertiesOnly={true}
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor"
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -125,7 +125,7 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
             className="domain-field-padding-bottom domain-field-no-padding-right"
           >
             <SectionHeading
-              helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+              helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor"
               title="Basic Properties"
             >
               <Row
@@ -280,6 +280,7 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
                             body={[Function]}
                             customStyle={Object {}}
                             id="tooltip"
+                            required={true}
                             size="1x"
                             title="Name"
                           >
@@ -1368,6 +1369,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       body={[Function]}
                                       customStyle={Object {}}
                                       id="tooltip"
+                                      required={true}
                                       size="1x"
                                       title="Name"
                                     >
@@ -2768,6 +2770,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       body={[Function]}
                                       customStyle={Object {}}
                                       id="tooltip"
+                                      required={true}
                                       size="1x"
                                       title="Name"
                                     >
@@ -4045,6 +4048,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       body={[Function]}
                                       customStyle={Object {}}
                                       id="tooltip"
+                                      required={true}
                                       size="1x"
                                       title="Name"
                                     >
@@ -5231,6 +5235,7 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
                                       body={[Function]}
                                       customStyle={Object {}}
                                       id="tooltip"
+                                      required={true}
                                       size="1x"
                                       title="Name"
                                     >

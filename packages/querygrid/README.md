@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Item 6493: fix for containerPath encoding issue with buildURL() helper
+
 ### version 0.22.0
 *Released*: 5 November 2019
 * Add getFilterListFromQuery

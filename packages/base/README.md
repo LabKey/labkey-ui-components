@@ -4,6 +4,11 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Item 6493: LabelHelpTip updates for size, customStyle, required, and iconComponent props
+* Fix for buildURL helper to pass LABKEY.container.path as default instead of undefined
+
 ### version 0.21.0
 *Released*: 5 November 2019
 * Modify getImportURL for AssayDefinitionModel to use the sample model's filters if present

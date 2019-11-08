@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Item 6493: Assay designer feedback changes, bug fixes, and polish
+
 ### version 0.0.48
 *Released*: 5 November 2019
 * Use some css classes factored out into base for DomainRow and DomainForm

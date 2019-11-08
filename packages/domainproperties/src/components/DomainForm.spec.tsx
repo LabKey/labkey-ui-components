@@ -623,18 +623,21 @@ describe('DomainForm', () => {
             }]
         });
 
-        const wrapper = mount(<DomainForm domain={domain} onChange={jest.fn} collapsible={true}/>);
-        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        const wrapper = mount(<DomainForm domain={domain} onChange={jest.fn} collapsible={true} controlledCollapse={true}/>);
+        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
         expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
 
         // first click will collapse the panel, but header text shouldn't change
         wrapper.find('.panel-heading').simulate('click');
-        expect(wrapper.find(DomainRow)).toHaveLength(0);
+        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
 
         // second click will re-expand the panel, but header text shouldn't change
         wrapper.find('.panel-heading').simulate('click');
-        expect(wrapper.find(DomainRow)).toHaveLength(1);
+        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
         expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
         wrapper.unmount();
     });

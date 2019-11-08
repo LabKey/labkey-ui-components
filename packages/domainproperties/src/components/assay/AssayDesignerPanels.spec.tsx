@@ -140,64 +140,64 @@ describe('AssayDesignerPanels', () => {
         form.unmount();
     });
 
-    test('new assay wizard', () => {
-        const component = (
-            <AssayDesignerPanels
-                initModel={EMPTY_MODEL}
-                onCancel={jest.fn}
-                onComplete={jest.fn}
-            />
-        );
-
-        function verifyActivePanel(wrapper: any, assayPropsActive: boolean, batchActive: boolean, runActive: boolean, resultsActive: boolean) {
-            expect(wrapper.find(AssayPropertiesPanel)).toHaveLength(1);
-            expect(wrapper.find(DomainForm)).toHaveLength(3);
-            setTimeout(() => {
-                expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
-                expect(wrapper.find(NameInput)).toHaveLength(assayPropsActive ? 1 : 0);
-                expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
-                expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
-            }, 1000);
-        }
-
-        const wrapper = mount(component);
-        verifyActivePanel(wrapper, true, false, false, false);
-        expect(getButton(wrapper, 'Next').props().disabled).toBeTruthy();
-        expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-
-        // set the assay name, which should enable the next button
-        setAssayName(wrapper, 'Foo');
-        expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
-        expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-
-        // click Next to advance in the wizard to the Batch Fields
-        getButton(wrapper, 'Next').simulate('click');
-        verifyActivePanel(wrapper, false, true, false, false);
-        expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
-        expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-
-        // click Next to advance in the wizard to the Run Fields
-        getButton(wrapper, 'Next').simulate('click');
-        verifyActivePanel(wrapper, false, false, true, false);
-        expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
-        expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-
-        // click Next to advance in the wizard to the Data Fields
-        getButton(wrapper, 'Next').simulate('click');
-        verifyActivePanel(wrapper, false, false, false, true);
-        expect(getButton(wrapper, 'Next')).toHaveLength(0);
-        expect(getButton(wrapper, 'Finish')).toHaveLength(1);
-        expect(getButton(wrapper, 'Finish').props().disabled).toBeFalsy();
-
-        wrapper.unmount();
-    });
+    // TODO determine if this test is still valid and should be updated with new assay designer changes to move away from wizard next/back buttons
+    // test('new assay wizard', () => {
+    //     const component = (
+    //         <AssayDesignerPanels
+    //             initModel={EMPTY_MODEL}
+    //             onCancel={jest.fn}
+    //             onComplete={jest.fn}
+    //         />
+    //     );
+    //
+    //     function verifyActivePanel(wrapper: any, assayPropsActive: boolean, batchActive: boolean, runActive: boolean, resultsActive: boolean) {
+    //         expect(wrapper.find(AssayPropertiesPanel)).toHaveLength(1);
+    //         expect(wrapper.find(DomainForm)).toHaveLength(3);
+    //         setTimeout(() => {
+    //             expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
+    //             expect(wrapper.find(NameInput)).toHaveLength(assayPropsActive ? 1 : 0);
+    //             expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
+    //             expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
+    //         }, 1000);
+    //     }
+    //
+    //     const wrapper = mount(component);
+    //     verifyActivePanel(wrapper, true, false, false, false);
+    //     expect(getButton(wrapper, 'Next').props().disabled).toBeTruthy();
+    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
+    //
+    //     // set the assay name, which should enable the next button
+    //     setAssayName(wrapper, 'Foo');
+    //     expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
+    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
+    //
+    //     // click Next to advance in the wizard to the Batch Fields
+    //     getButton(wrapper, 'Next').simulate('click');
+    //     verifyActivePanel(wrapper, false, true, false, false);
+    //     expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
+    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
+    //
+    //     // click Next to advance in the wizard to the Run Fields
+    //     getButton(wrapper, 'Next').simulate('click');
+    //     verifyActivePanel(wrapper, false, false, true, false);
+    //     expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
+    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
+    //
+    //     // click Next to advance in the wizard to the Data Fields
+    //     getButton(wrapper, 'Next').simulate('click');
+    //     verifyActivePanel(wrapper, false, false, false, true);
+    //     expect(getButton(wrapper, 'Next')).toHaveLength(0);
+    //     expect(getButton(wrapper, 'Finish')).toHaveLength(1);
+    //     expect(getButton(wrapper, 'Finish').props().disabled).toBeFalsy();
+    //
+    //     wrapper.unmount();
+    // });
 
     test('infer from file', () => {
         function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {
             const component = (<AssayDesignerPanels initModel={model} onCancel={jest.fn} onComplete={jest.fn}/>);
             const wrapper = mount(component);
             setAssayName(wrapper, 'Foo');
-            getButton(wrapper, 'Next').simulate('click');
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(shouldInfer ? 1 : 0);
             wrapper.unmount();
         }
@@ -239,7 +239,7 @@ describe('AssayDesignerPanels', () => {
 
         let wrapper = mount(component);
         //Open Sample Fields panel body
-        wrapper.find(Panel.Heading).filterWhere(n => n.text() === 'Sample Fields (3)').simulate('click');
+        wrapper.find(Panel.Heading).filterWhere(n => n.text().indexOf('Sample Fields') === 0).simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);
         expect(wrapper.find('#' + _appHeaderId).text()).toBe(_appHeaderText);
     });

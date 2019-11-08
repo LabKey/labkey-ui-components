@@ -106,9 +106,10 @@ describe('AssayPropertiesPanel', () => {
     });
 
     test('collapsible', () => {
+        const name = 'With Name';
         const component = (
             <AssayPropertiesPanel
-                model={AssayProtocolModel.create({protocolId: 1, name: 'With Name'})}
+                model={AssayProtocolModel.create({protocolId: 1, name: name})}
                 collapsible={true}
                 onChange={jest.fn}
             />
@@ -116,14 +117,14 @@ describe('AssayPropertiesPanel', () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('.panel-body')).toHaveLength(1);
-        expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
+        expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
         expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(0);
-        expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties (With Name)');
+        expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
         setTimeout(() => {
             expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
-            expect(wrapper.find('.panel-heading').text()).toBe('Assay Properties');
+            expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
             wrapper.unmount();
         }, 1000);
     });

@@ -101,6 +101,7 @@ export function processContainers(payload: any, container?: Container): List<Con
 export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.get({
+            containerPath: LABKEY.container.path,
             domainId,
             schemaName,
             queryName,
@@ -196,6 +197,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
         }
         else if (domain.domainId) {
             Domain.save({
+                containerPath: LABKEY.container.path,
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
                 success: (data) => {
@@ -210,6 +212,7 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
         }
         else {
             Domain.create({
+                containerPath: LABKEY.container.path,
                 kind,
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),

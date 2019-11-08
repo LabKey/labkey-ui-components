@@ -33,11 +33,10 @@ import {
     USER_RANGE_URI,
     DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
-    SAMPLE_TYPE_CONCEPT_URI, SEVERITY_LEVEL_ERROR
+    SAMPLE_TYPE_CONCEPT_URI,
+    SEVERITY_LEVEL_ERROR
 } from "./constants";
 import {SCHEMAS} from "@glass/base";
-
-import { Filter } from '@labkey/api';
 
 export interface IFieldChange {
     id: string,

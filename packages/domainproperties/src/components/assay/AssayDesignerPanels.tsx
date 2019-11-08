@@ -7,6 +7,7 @@ import {saveAssayDesign} from "../../actions/actions";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import DomainForm from "../DomainForm";
 import {Button, Col, Row} from "react-bootstrap";
+import {SEVERITY_LEVEL_ERROR} from "../../constants";
 
 interface Props {
     onChange?: (model: AssayProtocolModel) => void
@@ -275,7 +276,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                         initCollapsed = false;
                     }
 
-                    if (domain.hasException()) {
+                    if (domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
                         errorDomains = errorDomains.push(domain.name);
                     }
 

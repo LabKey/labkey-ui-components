@@ -60,7 +60,7 @@ import {
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     LK_DOMAIN_HELP_URL,
-    PHILEVEL_NOT_PHI
+    PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR
 } from "../constants";
 
 interface IDomainFormInput {
@@ -918,7 +918,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         }
                     </Panel.Body>
                 </Panel>
-                {domain.hasException() &&
+                {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR &&
                     <div onClick={this.togglePanel} className='domain-bottom-alert panel-default'>
                         <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
                     </div>

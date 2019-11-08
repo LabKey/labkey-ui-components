@@ -436,7 +436,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         Cancel
                     </Button>
                     <a target='_blank'
-                       href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                       href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#advanced"
                        className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
                     <Button onClick={this.handleApply} bsClass='btn btn-success'
                             className='domain-adv-footer domain-adv-apply-btn'>

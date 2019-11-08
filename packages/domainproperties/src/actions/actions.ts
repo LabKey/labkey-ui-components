@@ -417,7 +417,7 @@ export function clearAllClientValidationErrors(domain: DomainDesign): DomainDesi
     let exception = undefined;
 
     if (domain.domainException) {
-        const updatedErrors = domain.domainException.errors.filter((error) => (error.serverError));
+        const updatedErrors = domain.domainException.errors.filter((error) => (error.serverError || error.severity === SEVERITY_LEVEL_WARN));
 
         if (updatedErrors && updatedErrors.size > 0)
         {
@@ -485,7 +485,7 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
             const errors = List<DomainFieldError>().asMutable();
             errors.push(domainFieldError);
 
-            domainExceptionObj = new DomainException({exception, success: undefined, severity: domainFieldError.severity, errors: errors.asImmutable()});
+            domainExceptionObj = new DomainException({exception, success: undefined, severity: domainFieldError.severity, errors: errors.asImmutable(), domainName: domain.name});
         }
     }
     //no error on a field at a given index

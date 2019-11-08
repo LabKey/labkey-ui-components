@@ -146,10 +146,15 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         })
     };
 
+    hasValidDomainId(): boolean {
+        const { domainId } = this.props;
+        return !(domainId === undefined || domainId === null || domainId === 0);
+    }
+
     handleSetDefaultValues = (evt) => {
         const { domainId, helpNoun } = this.props;
 
-        if (domainId === undefined || domainId === null) {
+        if (!this.hasValidDomainId()) {
             alert("Must save " + helpNoun + " before you can set default values.")
         }
         else {

@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { Col, Form, Row, Panel } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faPlusSquare,
-    faMinusSquare,
-    faCircle,
-    faCheckCircle,
-    faExclamationCircle
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { Utils } from "@labkey/api";
 
 import { DomainPanelStatus, AssayProtocolModel } from "../../models";
@@ -180,7 +174,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
     };
 
-    getHeaderClasses(): string {
+    getPanelHeaderClass(): string {
         const { collapsible, controlledCollapse, useTheme } = this.props;
         const { collapsed } = this.state;
 
@@ -264,7 +258,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         )
     }
 
-    getHeaderClass = () => {
+    getHeaderIconClass = () => {
         const { panelStatus } = this.props;
         const { collapsed, validProperties } = this.state;
         let classes = 'domain-panel-status-icon';
@@ -293,7 +287,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     getHeaderIconComponent = () => {
 
         return (
-            <span className={this.getHeaderClass()}>
+            <span className={this.getHeaderIconClass()}>
                 <FontAwesomeIcon icon={this.getHeaderIcon()}/>
             </span>
         )
@@ -351,7 +345,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         return (
             <>
             <Panel className={"domain-form-panel"} expanded={!collapsed} onToggle={function(){}}>
-                <Panel.Heading onClick={this.togglePanel} className={this.getHeaderClasses()} id={createFormInputName('assay-properties-hdr')}>
+                <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={createFormInputName('assay-properties-hdr')}>
                     {this.renderHeader()}
                 </Panel.Heading>
                 <Panel.Body collapsible={collapsible || controlledCollapse}>

@@ -305,7 +305,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         if (onChange) {
-            onChange(updatedDomain, false);
+            onChange(updatedDomain, dirty !== undefined ? dirty : true);
         }
     }
 

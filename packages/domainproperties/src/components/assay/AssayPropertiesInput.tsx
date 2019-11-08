@@ -150,7 +150,7 @@ export function PlateTemplatesInput(props: InputProps) {
                     ))
                 }
             </FormControl>
-            <a href={ActionURL.buildURL('plate', 'plateTemplateList')} className={'labkey-text-link'}>Configure Templates</a>
+            <a href={ActionURL.buildURL('plate', 'plateTemplateList', LABKEY.container.path)} className={'labkey-text-link'}>Configure Templates</a>
         </AssayPropertiesInput>
     )
 }
@@ -480,7 +480,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                     {protocolTransformScripts.size > 0 && !model.isNew() &&
                         <Col xs={3} lg={4}>
                             <span className={'pull-right'}>
-                                <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', undefined, {rowId: model.protocolId})}
+                                <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', LABKEY.container.path, {rowId: model.protocolId})}
                                    target={'_blank'}
                                    className={'labkey-text-link'}
                                 >

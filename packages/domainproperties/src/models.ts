@@ -307,7 +307,7 @@ export class DomainDesign extends Record({
     }
 
     hasErrors(): boolean {
-        return (this.domainException !== undefined && this.domainException.errors !== undefined && this.domainException.errors.size > 0);
+        return (this.domainException !== undefined && this.domainException.errors !== undefined && this.domainException.errors.size > 0 && this.domainException.severity === SEVERITY_LEVEL_ERROR);
     }
 
     hasException(): boolean {

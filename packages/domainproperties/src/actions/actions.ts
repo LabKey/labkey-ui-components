@@ -193,7 +193,10 @@ export function getMaxPhiLevel(): Promise<string> {
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         if (domain.hasErrors()) {
-            reject('Unable to save domain. Fix fields before saving.');
+            const error = {exception: 'Unable to save domain. Fix fields before saving.'};
+            const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+            const badDomain = setDomainException(domain, exception);
+            reject(badDomain);
         }
         else if (domain.domainId) {
             Domain.save({

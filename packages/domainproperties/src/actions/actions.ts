@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from "immutable";
-import { Domain, Query, Security, Ajax, Utils, ActionURL } from "@labkey/api";
+import { Domain, Query, Security, Ajax, Utils } from "@labkey/api";
 import {Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn} from "@glass/base";
 
 import {
@@ -121,7 +121,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
         new Promise((resolve) => {
             if (schemaName) {
                 Query.getQueries({
-                    containerPath,
+                    containerPath: containerPath || LABKEY.container.path,
                     schemaName,
                     queryDetailColumns: true,
                     success: (data) => {
@@ -151,7 +151,7 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
         new Promise((resolve) => {
             Query.getSchemas({
                 apiVersion: 17.1,
-                containerPath,
+                containerPath: containerPath || LABKEY.container.path,
                 includeHidden: false,
                 success: (data) => {
                     resolve(handleSchemas(data));
@@ -171,7 +171,7 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
 export function getMaxPhiLevel(): Promise<string> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('security', 'GetMaxPhiLevel.api'),
+            url: buildURL('security', 'GetMaxPhiLevel.api'),
             success: (data) => {
                 resolve(JSON.parse(data.response).maxPhiLevel);
             },

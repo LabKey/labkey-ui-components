@@ -2,6 +2,9 @@
 import * as React from 'react';
 import {List} from "immutable";
 import {Button, Checkbox, Col, FormControl, Modal, Row} from "react-bootstrap";
+import { ActionURL } from "@labkey/api";
+import { LabelHelpTip } from "@glass/base";
+
 import {
     DATETIME_TYPE,
     DomainField,
@@ -9,7 +12,6 @@ import {
     PropDescType
 } from "../models";
 import {createFormInputId, createFormInputName, getCheckedValue, getNameFromId} from "../actions/actions";
-import { ActionURL } from "@labkey/api";
 import {
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
@@ -26,7 +28,6 @@ import {
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_PHI_LEVELS
 } from "../constants";
-import {LabelHelpTip} from "@glass/base";
 
 interface AdvancedSettingsProps {
     domainId?: number
@@ -165,7 +166,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 params['providerName'] = ActionURL.getParameter('providerName');
             }
 
-            window.location.href = ActionURL.buildURL(controller, action, null, params);
+            window.location.href = ActionURL.buildURL(controller, action, LABKEY.container.path, params);
         }
     };
 

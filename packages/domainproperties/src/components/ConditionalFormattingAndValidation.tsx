@@ -61,7 +61,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Range validators allow you to specify numeric comparisons that must be satisfied.</p>
 
-                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range'>Range Validation</a></p>
+                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range'>Range Validation</a>.</p>
             </>
         )
     };
@@ -71,7 +71,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>RegEx validators allow you to specify a regular expression that defines what string values are valid.</p>
 
-                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex'>Regular Expression Validation</a></p>
+                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex'>Regular Expression Validation</a>.</p>
             </>
         )
     };
@@ -81,7 +81,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Conditional formats allow targeted display formatting for values that meet defined conditions.</p>
 
-                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional'>Conditional Formats</a></p>
+                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional'>Conditional Formats</a>.</p>
             </>
         )
     };

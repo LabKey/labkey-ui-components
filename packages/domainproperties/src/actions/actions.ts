@@ -524,7 +524,7 @@ function getErrorBannerMessage (domain: any) : any {
 
         if (errors && errors.size > 0) {
             if (errors.size > 1) {
-                return "Multiple fields contain issues that need to be fixed. Review the red highlighted fields below for more information.";
+                return "Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.";
             }
             else {
                 return errors.get(0).message;
@@ -541,7 +541,7 @@ function getWarningBannerMessage (domain: any) : any {
 
         if (warnings && warnings.size > 0) {
             if (warnings.size > 1) {
-                return "Multiple fields may require your attention. Review the yellow highlighted fields below for more information.";
+                return "Multiple fields may require your attention. Review the yellow highlighted fields above for more information.";
             }
             else {
                 return (warnings.get(0).fieldName + " : " + warnings.get(0).message);

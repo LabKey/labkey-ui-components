@@ -308,11 +308,11 @@ export class DomainDesign extends Record({
     }
 
     hasErrors(): boolean {
-        return this.fields.find((f) => f.hasErrors()) !== undefined;
+        return (this.domainException !== undefined && this.domainException.errors !== undefined);
     }
 
     hasException(): boolean {
-        return (this.domainException !== undefined && this.domainException.errors !== undefined);
+        return (this.domainException !== undefined);
     }
 
     isNameSuffixMatch(name: string): boolean {

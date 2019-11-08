@@ -49,7 +49,11 @@
   },
   "jest": {
     "globals": {
-      "LABKEY": {}
+      "LABKEY": {
+        "container": {
+          "path": ""
+        }
+      }
     },
     "moduleFileExtensions": [
       "ts",

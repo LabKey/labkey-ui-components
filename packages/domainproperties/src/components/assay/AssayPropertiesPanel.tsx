@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Utils } from "@labkey/api";
 
-import {AssayPanelStatus, AssayProtocolModel} from "../../models";
+import { DomainPanelStatus, AssayProtocolModel } from "../../models";
 import { LK_ASSAY_DESIGNER_HELP_URL } from "../../constants";
 import {
     AutoCopyDataInput,
@@ -60,7 +60,7 @@ interface Props {
     controlledCollapse?: boolean
     validate?: boolean
     useTheme?: boolean
-    panelStatus?: AssayPanelStatus
+    panelStatus?: DomainPanelStatus
     helpURL?: string
     onToggle?: (collapsed: boolean, callback: () => any) => any
 }

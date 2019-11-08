@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Map, List } from 'immutable'
 import { Alert, WizardNavButtons } from "@glass/base";
 
-import {AssayPanelStatus, AssayProtocolModel, DomainDesign, HeaderRenderer} from "../../models";
+import {DomainPanelStatus, AssayProtocolModel, DomainDesign, HeaderRenderer} from "../../models";
 import {saveAssayDesign} from "../../actions/actions";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
 import DomainForm from "../DomainForm";
@@ -39,16 +39,11 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
         this.panelCount = this.panelCount + props.initModel.domains.size;
 
-        const errors = List<number>();
-        if (props.initModel.isNew()) {
-            errors.push(0);
-        }
-
         this.state = {
             submitting: false,
             currentPanelIndex: 0,
             protocolModel: props.initModel,
-            visitedPanels: List<number>().push(0),
+            visitedPanels: List<number>([0]),
             validatePanel: undefined,
             firstState: true
         }
@@ -119,7 +114,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
             }
         }
         else {
-            if (collapsed && currentPanelIndex === index) {
+            if (currentPanelIndex === index) {
                 this.setState(() => ({currentPanelIndex: undefined, firstState: false}), callback());
             }
             else {
@@ -132,6 +127,8 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         const { protocolModel } = this.state;
         const { beforeFinish } = this.props;
 
+        // This first setState forces the current expanded panel to validate its fields and display and errors
+        // the callback setState then sets that to undefined so it doesn't keep validating every render
         this.setState((state) => ({validatePanel: state.currentPanelIndex}), () => {
             this.setState((state) => ({validatePanel: undefined}), () => {
 
@@ -187,7 +184,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         });
     };
 
-    getPanelStatus = (index: number): AssayPanelStatus => {
+    getPanelStatus = (index: number): DomainPanelStatus => {
         const { currentPanelIndex, visitedPanels, firstState } = this.state;
 
         if (index === 0 && firstState) {
@@ -214,11 +211,37 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         return appDomainHeaders.filter((v,k) => domain.isNameSuffixMatch(k)).first();
     };
 
+    getBottomErrorBanner = (errorDomains: List<string>) => {
+        const { visitedPanels, protocolModel } = this.state;
+
+        let message;
+        if (protocolModel.exception) {
+            message = protocolModel.exception;
+        }
+        else if (errorDomains.size > 1 || (errorDomains.size > 0 && !protocolModel.hasValidProperties())) {
+            message = "Must correct errors above before saving.";
+        }
+        else if (visitedPanels.size > 1 && !protocolModel.hasValidProperties()) {
+            message = "Must correct errors in Assay Properties before saving.";
+        }
+        else if (errorDomains.size == 1) {
+            message = "Must correct errors in " + errorDomains.get(0) + " before saving.";
+        }
+
+        if (message) {
+            return (
+                <Alert bsStyle="danger">{message}</Alert>
+            )
+        }
+
+        return undefined;
+    };
+
     render() {
         const { onCancel, basePropertiesOnly, containerTop, useTheme } = this.props;
         const { protocolModel, currentPanelIndex, validatePanel, visitedPanels } = this.state;
 
-        let errorDomains = List<String>();
+        let errorDomains = List<string>();
 
         return (
             <>
@@ -283,20 +306,15 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     )
                 })}
                 <Row className='domain-field-padding-top'>
+                    <Col xs={12}>
+                        {this.getBottomErrorBanner(errorDomains)}
+                    </Col>
+                </Row>
+                <Row>
                     <Col xs={1}>
                         <Button className='domain-assay-save-btn' onClick={onCancel}>Cancel</Button>
                     </Col>
-                    <Col xs={10}>
-                        {errorDomains.size > 0 &&
-                            <Alert bsStyle="danger">{"Must correct errors in " + errorDomains.join(', ') + " before saving."}</Alert>
-                        }
-                        {visitedPanels.size > 1 && !protocolModel.hasValidProperties() &&
-                            <Alert bsStyle="danger">Must correct errors in Assay Properties before saving.</Alert>
-                        }
-                        {protocolModel.exception &&
-                        <Alert bsStyle="danger">{protocolModel.exception}</Alert>
-                        }
-                    </Col>
+                    <Col xs={10} />
                     <Col xs={1}>
                         <Button className='pull-right domain-assay-save-btn' bsStyle='success' disabled={!this.isValid() || this.state.submitting} onClick={this.onFinish}>Save</Button>
                     </Col>

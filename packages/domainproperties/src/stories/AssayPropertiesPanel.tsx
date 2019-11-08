@@ -76,12 +76,4 @@ storiesOf("AssayPropertiesPanel", module)
             <WrappedAssayPropertiesPanel data={elispotAssaySaved.data}/>
         )
     })
-    .add("GPAT Error", () => {
-
-
-        return (
-            <WrappedAssayPropertiesPanel data={generalAssaySaved.data}/>
-        )
-    })
-
 ;

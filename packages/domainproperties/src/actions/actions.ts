@@ -202,6 +202,10 @@ export function saveDomain(domain: DomainDesign, kind?: string, options?: any, n
                     resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
+                    if (!error.exception) {
+                        error = {exception: error};
+                    }
+
                     const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
                     const badDomain = setDomainException(domain, exception);
                     reject(badDomain);
@@ -279,6 +283,8 @@ function updateErrorIndexes(removedFieldIndex: number, domainException: DomainEx
 }
 
 export function removeField(domain: DomainDesign, index: number): DomainDesign {
+
+    domain = updateDomainException(domain, index, undefined);
 
     let newDomain = domain.merge({
         fields: domain.fields.delete(index)
@@ -418,7 +424,17 @@ export function clearAllClientValidationErrors(domain: DomainDesign): DomainDesi
     return domain.set("domainException", exception) as DomainDesign;
 }
 
- function clearFieldError (domain: DomainDesign, rowIndex: any): List<DomainFieldError> {
+export function clearAllFieldErrors(domain: DomainDesign): DomainDesign {
+    let exception = undefined;
+
+    // Keep exception only errors as those are not related to the fields
+    if (domain.hasException() && !domain.hasErrors()) {
+        exception = domain.domainException;
+    }
+    return domain.set("domainException", exception) as DomainDesign;
+}
+
+function clearFieldError (domain: DomainDesign, rowIndex: any): List<DomainFieldError> {
 
     let allErrors = domain.domainException.get('errors');
 
@@ -651,3 +667,28 @@ export function getValidPublishTargets(): Promise<List<Container>> {
         })
     });
 }
+
+export function getSplitSentence(label: string, lastWord: boolean): string {
+
+    if (!label)
+        return undefined;
+
+    const words = label.split(" ");
+
+    if (lastWord) {
+        if (words.length === 1) {
+            return words[0];
+        }
+        else {
+            return words[words.length - 1];
+        }
+    }
+    else {
+        if (words.length === 1) {
+            return undefined;
+        }
+        else {
+            return words.slice(0, words.length -1).join(" ") + " ";
+        }
+    }
+};

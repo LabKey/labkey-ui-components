@@ -6,7 +6,7 @@ import { ActionURL } from "@labkey/api";
 
 import { AssayProtocolModel } from "../../models";
 import { FORM_IDS } from "./AssayPropertiesPanel";
-import { getValidPublishTargets } from "../../actions/actions";
+import { getValidPublishTargets, getSplitSentence } from "../../actions/actions";
 
 interface AssayPropertiesInputProps {
     label: string
@@ -17,45 +17,21 @@ interface AssayPropertiesInputProps {
 
 export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
 
-    getSplitSentence = (label: string, lastWord: boolean): string => {
-
-        if (!label)
-            return undefined;
-
-        const words = label.split(" ");
-
-        if (lastWord) {
-            if (words.length === 1) {
-                return words[0];
-            }
-            else {
-                return words[words.length - 1];
-            }
-        }
-        else {
-            if (words.length === 1) {
-                return undefined;
-            }
-            else {
-                return words.slice(0, words.length -1).join(" ") + " ";
-            }
-        }
-    };
-
     render() {
         const { label, required, helpTipBody, colSize, children } = this.props;
 
         return (
             <Row className={'margin-top'}>
                 <Col xs={3} lg={4}>
-                    {this.getSplitSentence(label, false)}
+                    {getSplitSentence(label, false)}
                     <span className='domain-no-wrap'>
-                        {this.getSplitSentence(label, true)}
+                        {getSplitSentence(label, true)}
                         {required ? ' *' : ''}
                         {helpTipBody &&
                         <LabelHelpTip
                                 title={label}
                                 body={helpTipBody}
+                                required={required}
                         />
                         }
                     </span>

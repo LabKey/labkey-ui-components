@@ -308,7 +308,7 @@ export class DomainDesign extends Record({
     }
 
     hasErrors(): boolean {
-        return (this.domainException !== undefined && this.domainException.errors !== undefined);
+        return (this.domainException !== undefined && this.domainException.errors !== undefined && this.domainException.errors.size > 0);
     }
 
     hasException(): boolean {
@@ -319,13 +319,17 @@ export class DomainDesign extends Record({
         return this.name && this.name.endsWith(name + ' Fields');
     }
 
-    isValid(): boolean {
-        const invalidField = this.fields.find((field) => !field.isValid());
-        return !invalidField;
-    }
+    getInvalidFields(): Map<number, DomainField> {
+        let invalid = new Map<number, DomainField>();
 
-    getInvalidFields(): List<DomainField> {
-        return this.fields.filter((field) => (!field.isValid())) as List<DomainField>;
+        for (let i=0; i<this.fields.size; i++) {
+            let field = this.fields.get(i);
+            if (!field.isValid()) {
+                invalid.set(i, field);
+            }
+        }
+
+        return invalid;
     }
 }
 
@@ -1154,17 +1158,19 @@ export class DomainException extends Record({
         return undefined;
     }
 
-    static clientValidationExceptions(exception: string, fieldMessage: string, fields: List<DomainField>): DomainException {
-        const fieldErrors = fields.map((field) => {
-            return new DomainFieldError({
+    static clientValidationExceptions(exception: string, fieldMessage: string, fields: Map<number, DomainField>): DomainException {
+        let fieldErrors = List<DomainFieldError>();
+
+        fields.forEach((field, index) => {
+            fieldErrors = fieldErrors.push(new DomainFieldError({
                 message: fieldMessage,
                 fieldName: field.get('name'),
                 propertyId: field.get('propertyId'),
                 severity: SEVERITY_LEVEL_ERROR,
                 serverError: false,
-                rowIndexes: List<number>(),
+                rowIndexes: List<number>([index]),
                 newRowIndexes: undefined
-            });
+            }));
         });
 
         return new DomainException({
@@ -1464,4 +1470,4 @@ export interface IAppDomainHeader {
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
 }
 
-export type AssayPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';
+export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';

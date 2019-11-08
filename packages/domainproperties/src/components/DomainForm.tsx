@@ -30,7 +30,7 @@ import {
     IDomainField,
     IAppDomainHeader,
     HeaderRenderer,
-    AssayPanelStatus,
+    DomainPanelStatus,
     DomainException
 } from "../models";
 import { StickyContainer, Sticky } from "react-sticky";
@@ -52,7 +52,7 @@ import {
     handleDomainUpdates,
     getMaxPhiLevel,
     removeField,
-    setDomainFields, setDomainException, clearAllClientValidationErrors, createFormInputName
+    setDomainFields, setDomainException, clearAllFieldErrors, createFormInputName, clearAllClientValidationErrors
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
@@ -75,7 +75,7 @@ interface IDomainFormInput {
     controlledCollapse?: boolean
     validate?: boolean
     isNew?: boolean
-    panelStatus?: AssayPanelStatus
+    panelStatus?: DomainPanelStatus
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
     headerTitle?: string,
     showHeaderFieldCount?: boolean
@@ -201,7 +201,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let newDomain = domain;
         if (invalidFields.size > 0) {
             const exception = DomainException.clientValidationExceptions("Missing required field properties", "Missing required property", invalidFields);
-            newDomain = setDomainException(domain, exception);
+            const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exception);
+            newDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
         }
         else {
             newDomain = clearAllClientValidationErrors(domain);
@@ -494,7 +495,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         else {
             // TODO remove domain-form-add-btn after use in 19.3
             return (
-                <Row>
+                <Row className='domain-add-field-row'>
                     <Col xs={12}>
                         <AddEntityButton
                             entity="Field"
@@ -890,7 +891,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 }
 
                 {/*Number of fields*/}
-                {(domain.fields.size > 0) &&
+                {controlledCollapse && (domain.fields.size > 0) &&
                     <span className='domain-panel-header-fields-defined'>{'' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined'}</span>
                 }
             </>

@@ -16,6 +16,7 @@
 import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable'
 import { Filter } from '@labkey/api'
 import {
+    GRID_EDIT_INDEX,
     IGridLoader,
     IQueryGridModel,
     QueryColumn,
@@ -451,6 +452,7 @@ export class EditorModel extends Record({
     cellMessages: Map<string, CellMessage>(),
     cellValues: Map<string, List<ValueDescriptor>>(),
     colCount: 0,
+    deletedIds: Set<any>(),
     id: undefined,
     isPasting: false,
     focusColIdx: -1,
@@ -465,6 +467,7 @@ export class EditorModel extends Record({
     cellMessages: CellMessages;
     cellValues: CellValues;
     colCount: number;
+    deletedIds: Set<any>;
     id: string;
     isPasting: boolean;
     focusColIdx: number;
@@ -753,6 +756,40 @@ export class EditorModel extends Record({
             return updates? returnMap.merge(updates) : returnMap;
         }) as Map<any, Map<string, any>>;
     }
+
+    getDeletedIds() : Set<any> {
+        return this.deletedIds.filter((id) => id.toString().indexOf(GRID_EDIT_INDEX) === -1).toSet();
+    }
+
+    isModified(editedRow: Map<string, any>, originalQueryRow: Map<string, any>) : boolean {
+        return editedRow.find((value, key) => (originalQueryRow.get(key) !== value)) !== undefined;
+    }
+
+    isRowEmpty(editedRow: Map<string, any>) : boolean {
+        return editedRow.find((value) => ( value !== undefined )) === undefined;
+    }
+
+    getModifiedData(model: QueryGridModel, readOnlyColumns?: List<string>) : {newRows: List<Map<string, any>>, updatedRows: List<Map<string, any>>} {
+        // find all the rows where the dataId has a prefix of GRID_EDIT_INDEX
+        const rawData: List<Map<string, any>> = this.getRawData(model, false, readOnlyColumns);
+        let updatedRows = List<Map<string, any>>();
+        let newRows = List<Map<string, any>>();
+        model.dataIds.forEach((id, index) => {
+            const editedRow = rawData.get(index);
+            if (id.toString().indexOf(GRID_EDIT_INDEX) === 0) {
+                if (!this.isRowEmpty(editedRow))
+                    newRows = newRows.push(editedRow);
+            }
+            else if (this.isModified(editedRow, model.data.get(id))) {
+                updatedRows = updatedRows.push(editedRow.merge(model.getPkData(id)));
+            }
+        });
+        return {
+            newRows,
+            updatedRows
+        }
+    }
+
 }
 
 export class LookupStore extends Record({

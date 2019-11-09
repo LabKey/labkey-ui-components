@@ -2281,6 +2281,16 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     // sort descending so we remove the data for the row with the largest index first and don't mess up the index number for other rows
     const sortedIdIndexes = dataIdIndexes.sort().reverse();
 
+    let data = model.data;
+    let dataIds = model.dataIds;
+    let deletedIds = Set<any>();
+    sortedIdIndexes.forEach((dataIdIndex) => {
+        const dataId = dataIds.get(dataIdIndex);
+        deletedIds = deletedIds.add(dataId);
+        data = data.remove(dataId);
+        dataIds = dataIds.remove(dataIdIndex);
+    });
+
     if (model.editable) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
@@ -2311,6 +2321,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
         });
 
         updateEditorModel(editorModel, {
+            deletedIds: editorModel.deletedIds.merge(deletedIds),
             focusColIdx: -1,
             focusRowIdx: -1,
             rowCount: editorModel.rowCount - dataIdIndexes.size,
@@ -2321,14 +2332,6 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
             cellValues: newCellValues
         });
     }
-
-    let data = model.data;
-    let dataIds = model.dataIds;
-    sortedIdIndexes.forEach((dataIdIndex) => {
-        const dataId = dataIds.get(dataIdIndex);
-        data = data.remove(dataId);
-        dataIds = dataIds.remove(dataIdIndex);
-    });
 
     updateQueryGridModel(model, {
         data,

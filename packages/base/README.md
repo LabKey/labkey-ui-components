@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.21.1
+*Released*: 8 November 2019
 * Item 6493: LabelHelpTip updates for size, customStyle, required, and iconComponent props
 * Fix for buildURL helper to pass LABKEY.container.path as default instead of undefined
 

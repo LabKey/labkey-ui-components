@@ -30,14 +30,14 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         return (!!validator.get("expression") && !!validator.get("name"))
     };
 
-    renderRowTextbox(label: string, name: string, validatorIndex: number, value: string, tooltipTitle?: string, tooltipBody?: () => any) {
+    renderRowTextbox(label: string, name: string, validatorIndex: number, value: string, tooltipTitle?: string, tooltipBody?: () => any, required?: boolean) {
         return (
             <Row className='domain-validator-filter-row'>
                 <Col xs={this.labelWidth}>
                     <div>
                         {label}
                         {tooltipTitle && tooltipBody &&
-                            <LabelHelpTip title={tooltipTitle} body={tooltipBody}/>
+                            <LabelHelpTip title={tooltipTitle} body={tooltipBody} required={required}/>
                         }
                     </div>
                 </Col>
@@ -181,7 +181,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                 {expanded &&
                         <div>
                             {this.renderRowTextbox('Regular Expression *', DOMAIN_VALIDATOR_EXPRESSION, validatorIndex, validator.expression,
-                                'Regular Expression', this.regExTooltip)}
+                                'Regular Expression', this.regExTooltip, true)}
                             {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
                             {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage,
                                 'Error Message', this.errorMsgTooltip)}

@@ -137,7 +137,7 @@ export const LK_BASE_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.
 export const SM_BASE_HELP_URL = "https://www.labkey.org/SampleManagerDocs/wiki-page.view?name=";
 
 export const LK_URL_ENCODING_DOC = `${LK_BASE_HELP_URL}urlEncoding`;
-export const LK_DOMAIN_HELP_URL = `${LK_BASE_HELP_URL}propertyFields`;
+export const LK_DOMAIN_HELP_URL = `${LK_BASE_HELP_URL}fieldEditor`;
 export const LK_ASSAY_DESIGNER_HELP_URL = `${LK_BASE_HELP_URL}defineAssaySchema`;
 export const SAMPLE_TYPE_HELP_ANCHOR = "propertyFields#sampleType";  //Needs to be context/App aware
 

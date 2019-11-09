@@ -5,7 +5,7 @@ import {
     DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIRST_FILTER_TYPE,
     DOMAIN_FIRST_FILTER_VALUE,
-    DOMAIN_SECOND_FILTER_TYPE, DOMAIN_SECOND_FILTER_VALUE,
+    DOMAIN_SECOND_FILTER_TYPE, DOMAIN_SECOND_FILTER_VALUE, LK_ASSAY_DESIGNER_HELP_URL,
 } from "../../constants";
 
 import { Filter, Utils } from '@labkey/api';
@@ -47,6 +47,13 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
 
     labelWidth = 4;
     fieldWidth = 8;
+
+    static defaultProps = {
+        firstFilterTypeLabel: "First Condition *",
+        firstFilterValueLabel: "",
+        secondFilterTypeLabel: "Second Condition",
+        secondFilterValueLabel: ""
+    };
 
     constructor(props) {
         super(props);
@@ -291,7 +298,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 <Row className='domain-validator-filter-type-row'>
                     <Col xs={this.labelWidth}>
                         <div id='domain-filter-type-label-1'>
-                            {firstFilterTypeLabel !== undefined ? firstFilterTypeLabel : 'Filter Type'}
+                            {firstFilterTypeLabel}
                             {firstFilterTooltip ? firstFilterTooltip : ''}
                         </div>
                     </Col>
@@ -337,7 +344,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
                 <Row className='domain-validator-filter-type-row'>
                     <Col xs={this.labelWidth}>
                         <div id='domain-filter-type-label-2'>
-                            {secondFilterTypeLabel !== undefined ? secondFilterTypeLabel : 'and'}
+                            {secondFilterTypeLabel}
                             {secondFilterTooltip ? secondFilterTooltip : ''}
                         </div>
                     </Col>

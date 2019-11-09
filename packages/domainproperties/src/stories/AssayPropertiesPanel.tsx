@@ -13,6 +13,9 @@ import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.
 import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
 import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
 import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
+import generalAssaySavedDuplicates from "../test/data/assay-getProtocolGeneralDuplicateFields.json";
+import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
+
 import './stories.scss'
 
 interface Props {
@@ -46,7 +49,6 @@ class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
                 basePropertiesOnly={boolean('basePropertiesOnly', false)}
                 initCollapsed={boolean('initCollapsed', false)}
                 collapsible={boolean('collapsible', true)}
-                markComplete={boolean('markComplete', false)}
             />
         )
     }
@@ -73,4 +75,5 @@ storiesOf("AssayPropertiesPanel", module)
         return (
             <WrappedAssayPropertiesPanel data={elispotAssaySaved.data}/>
         )
-    });
+    })
+;

@@ -83,7 +83,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         });
 
         Ajax.request({
-            url: ActionURL.buildURL('assay', 'assayFileUpload.view'),
+            url: ActionURL.buildURL('assay', 'assayFileUpload.view', LABKEY.container.path),
             method: 'POST',
             form: formData,
             success: (result) => {

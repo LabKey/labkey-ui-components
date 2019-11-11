@@ -36,7 +36,7 @@ Array [
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                   data-icon="question-circle"
                   data-prefix="fas"
                   focusable="false"
@@ -87,7 +87,7 @@ Array [
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                   data-icon="question-circle"
                   data-prefix="fas"
                   focusable="false"
@@ -132,7 +132,7 @@ Array [
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                   data-icon="question-circle"
                   data-prefix="fas"
                   focusable="false"
@@ -194,7 +194,7 @@ Array [
                   >
                     <svg
                       aria-hidden="true"
-                      className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                       data-icon="question-circle"
                       data-prefix="fas"
                       focusable="false"
@@ -289,7 +289,7 @@ Array [
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                   data-icon="question-circle"
                   data-prefix="fas"
                   focusable="false"
@@ -340,7 +340,7 @@ Array [
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                   data-icon="question-circle"
                   data-prefix="fas"
                   focusable="false"
@@ -385,7 +385,7 @@ Array [
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                   data-icon="question-circle"
                   data-prefix="fas"
                   focusable="false"
@@ -447,7 +447,7 @@ Array [
                   >
                     <svg
                       aria-hidden="true"
-                      className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                       data-icon="question-circle"
                       data-prefix="fas"
                       focusable="false"

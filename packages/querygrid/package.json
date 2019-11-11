@@ -39,8 +39,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.21.1-fb-manageLocations.0",
-    "@glass/domainproperties": "0.0.49-fb-manageLocations.0",
+    "@glass/base": "0.21.2-fb-manageLocations.0",
+    "@glass/domainproperties": "0.0.50-fb-manageLocations.0",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",
@@ -72,7 +72,10 @@
   "jest": {
     "globals": {
       "LABKEY": {
-        "contextPath": "/labkey"
+        "contextPath": "/labkey",
+        "container": {
+          "path": ""
+        }
       }
     },
     "moduleFileExtensions": [

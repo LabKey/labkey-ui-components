@@ -2,9 +2,13 @@
 
 exports[`Filters Date Range 1`] = `
 <Filters
+  firstFilterTypeLabel="First Condition *"
+  firstFilterValueLabel=""
   mvEnabled={true}
   onChange={[MockFunction]}
   range={true}
+  secondFilterTypeLabel="Second Condition"
+  secondFilterValueLabel=""
   type="date"
   validatorIndex={1}
 >
@@ -27,7 +31,7 @@ exports[`Filters Date Range 1`] = `
           <div
             id="domain-filter-type-label-1"
           >
-            Filter Type
+            First Condition *
           </div>
         </div>
       </Col>
@@ -118,9 +122,7 @@ exports[`Filters Date Range 1`] = `
         >
           <div
             id="domain-filter-value-label-1"
-          >
-            Filter Value
-          </div>
+          />
         </div>
       </Col>
       <Col
@@ -178,7 +180,7 @@ exports[`Filters Date Range 1`] = `
           <div
             id="domain-filter-type-label-2"
           >
-            and
+            Second Condition
           </div>
         </div>
       </Col>
@@ -273,9 +275,7 @@ exports[`Filters Date Range 1`] = `
         >
           <div
             id="domain-filter-value-label-2"
-          >
-            Filter Value
-          </div>
+          />
         </div>
       </Col>
       <Col
@@ -792,9 +792,13 @@ exports[`Filters Empty Filters - string type 1`] = `
 exports[`Filters Test Expressions 1`] = `
 <Filters
   expression="format.column~isblank="
+  firstFilterTypeLabel="First Condition *"
+  firstFilterValueLabel=""
   mvEnabled={true}
   onChange={[MockFunction]}
   prefix="format.column"
+  secondFilterTypeLabel="Second Condition"
+  secondFilterValueLabel=""
   type="int"
   validatorIndex={1}
 >
@@ -817,7 +821,7 @@ exports[`Filters Test Expressions 1`] = `
           <div
             id="domain-filter-type-label-1"
           >
-            Filter Type
+            First Condition *
           </div>
         </div>
       </Col>
@@ -962,9 +966,7 @@ exports[`Filters Test Expressions 1`] = `
         >
           <div
             id="domain-filter-value-label-1"
-          >
-            Filter Value
-          </div>
+          />
         </div>
       </Col>
       <Col
@@ -1022,7 +1024,7 @@ exports[`Filters Test Expressions 1`] = `
           <div
             id="domain-filter-type-label-2"
           >
-            and
+            Second Condition
           </div>
         </div>
       </Col>
@@ -1171,9 +1173,7 @@ exports[`Filters Test Expressions 1`] = `
         >
           <div
             id="domain-filter-value-label-2"
-          >
-            Filter Value
-          </div>
+          />
         </div>
       </Col>
       <Col

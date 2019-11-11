@@ -33,11 +33,10 @@ import {
     USER_RANGE_URI,
     DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
-    SAMPLE_TYPE_CONCEPT_URI
+    SAMPLE_TYPE_CONCEPT_URI,
+    SEVERITY_LEVEL_ERROR
 } from "./constants";
 import {SCHEMAS} from "@glass/base";
-
-import { Filter } from '@labkey/api';
 
 export interface IFieldChange {
     id: string,
@@ -308,15 +307,28 @@ export class DomainDesign extends Record({
     }
 
     hasErrors(): boolean {
-        return this.fields.find((f) => f.hasErrors()) !== undefined;
+        return (this.domainException !== undefined && this.domainException.errors !== undefined && this.domainException.errors.size > 0 && this.domainException.severity === SEVERITY_LEVEL_ERROR);
     }
 
     hasException(): boolean {
-        return (this.domainException !== undefined && this.domainException.errors !== undefined);
+        return (this.domainException !== undefined);
     }
 
     isNameSuffixMatch(name: string): boolean {
         return this.name && this.name.endsWith(name + ' Fields');
+    }
+
+    getInvalidFields(): Map<number, DomainField> {
+        let invalid = new Map<number, DomainField>();
+
+        for (let i=0; i<this.fields.size; i++) {
+            let field = this.fields.get(i);
+            if (!field.isValid()) {
+                invalid.set(i, field);
+            }
+        }
+
+        return invalid;
     }
 }
 
@@ -799,6 +811,12 @@ export class DomainField extends Record({
         return isFieldNew(this);
     }
 
+    isValid(): boolean {
+        // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
+        // if so, then we can remove this isValid() function and just use !hasErrors()
+        return !!this.name && !!this.dataType && (!!this.dataType.rangeURI || !!this.rangeURI);
+    }
+
     static hasRangeValidation(field: DomainField): boolean {
         return (field.dataType === INTEGER_TYPE ||
                 field.dataType === DOUBLE_TYPE ||
@@ -1098,6 +1116,7 @@ export class DomainException extends Record({
     exception: undefined,
     success: undefined,
     severity: undefined,
+    domainName: undefined,
     errors: List<DomainFieldError>()
 
 }) implements IDomainException
@@ -1105,23 +1124,69 @@ export class DomainException extends Record({
     exception: string;
     success: boolean;
     severity: string;
+    domainName: string;
     errors?: List<DomainFieldError>;
 
     static create(rawModel: any, severityLevel): DomainException {
-        if (rawModel)
+        if (rawModel && rawModel.exception)
         {
             let errors = List<DomainFieldError>();
             if (rawModel.errors) {
                 errors = DomainFieldError.fromJS(rawModel.errors, severityLevel);
             }
 
+            const domainName = this.getDomainNameFromException(rawModel.exception);
+            let exception = rawModel.exception;
+            if (domainName) {
+                const prefix = domainName + " -- ";
+                exception = exception.split(prefix)[1];
+                errors = errors.map((err) => {
+                    let parts = err.message.split(prefix);
+                    return err.set('message', parts.length > 1 ? parts[1] : parts[0]);
+                }) as List<DomainFieldError>
+            }
+
             return new DomainException({
-                exception: rawModel.exception,
+                exception: exception,
                 success: rawModel.success,
                 severity: severityLevel,
+                domainName: domainName,
                 errors: errors
             })
         }
+        return undefined;
+    }
+
+    static clientValidationExceptions(exception: string, fieldMessage: string, fields: Map<number, DomainField>): DomainException {
+        let fieldErrors = List<DomainFieldError>();
+
+        fields.forEach((field, index) => {
+            fieldErrors = fieldErrors.push(new DomainFieldError({
+                message: fieldMessage,
+                fieldName: field.get('name'),
+                propertyId: field.get('propertyId'),
+                severity: SEVERITY_LEVEL_ERROR,
+                serverError: false,
+                rowIndexes: List<number>([index]),
+                newRowIndexes: undefined
+            }));
+        });
+
+        return new DomainException({
+            exception: exception,
+            success: false,
+            severity: SEVERITY_LEVEL_ERROR,
+            errors: fieldErrors
+        })
+    }
+
+    static getDomainNameFromException(message: string): string {
+        let msgParts = message.split(' -- ');
+        if (msgParts.length > 1)
+        {
+            return msgParts[0];
+        }
+
         return undefined;
     }
 
@@ -1153,7 +1218,7 @@ export class DomainException extends Record({
             let indices = domain.fields.reduce((indexList, field, idx, iter) : List<number> => {
 
                 if (((field.name === undefined || field.name === '') && error.get("fieldName") === undefined) ||
-                    (field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
+                    (field.propertyId !== 0 && field.propertyId !== undefined && error.get("propertyId") === field.propertyId) ||
                     (field.name !== undefined && error.get("fieldName") !== undefined && field.name.toLowerCase() === error.get("fieldName").toLowerCase())) {
 
                     indexList = indexList.push(idx);
@@ -1183,6 +1248,7 @@ export class DomainFieldError extends Record({
     fieldName: undefined,
     propertyId: undefined,
     severity: undefined,
+    serverError: undefined,
     rowIndexes: List<number>(),
     newRowIndexes: undefined
 
@@ -1191,6 +1257,7 @@ export class DomainFieldError extends Record({
     fieldName: string;
     propertyId?: number;
     severity?: string;
+    serverError: boolean;
     rowIndexes: List<number>;
     newRowIndexes?: List<number>;
 
@@ -1202,10 +1269,10 @@ export class DomainFieldError extends Record({
 
             //empty field name and property id comes in as "form" string from the server, resetting it to undefined here
             let fieldName = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].field);
-            let propertyId = (rawFields[i].id === "form" && rawFields[i].field === "form" ? undefined : rawFields[i].id);
+            let propertyId = ((rawFields[i].id === "form" && rawFields[i].field === "form") || rawFields[i].id < 1 ? undefined : rawFields[i].id);
 
             let domainFieldError = new DomainFieldError({message: rawFields[i].message, fieldName, propertyId,
-                severity: severityLevel, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
+                severity: severityLevel, serverError: true, rowIndexes: (rawFields[i].rowIndexes ? rawFields[i].rowIndexes : List<number>())});
             fieldErrors = fieldErrors.push(domainFieldError);
         }
 
@@ -1233,6 +1300,7 @@ export class AssayProtocolModel extends Record({
     domains: undefined,
     editableResults: false,
     editableRuns: false,
+    exception: undefined,
     metadataInputFormatHelp: undefined,
     moduleTransformScripts: undefined,
     name: undefined,
@@ -1261,6 +1329,7 @@ export class AssayProtocolModel extends Record({
     domains: List<DomainDesign>;
     editableResults: boolean;
     editableRuns: boolean;
+    exception: string;
     metadataInputFormatHelp: any;
     moduleTransformScripts: List<string>;
     name: string;
@@ -1322,6 +1391,7 @@ export class AssayProtocolModel extends Record({
 
         // only need to serialize the id and not the autoCopyTargetContainer object
         delete json.autoCopyTargetContainer;
+        delete json.exception;
 
         return json;
     }
@@ -1374,7 +1444,13 @@ export class AssayProtocolModel extends Record({
         }
     }
 
-    isValid(): boolean {
+    static isValid(model: AssayProtocolModel): boolean {
+        const errDomain = model.domains.find((dom) => (!!dom.domainException && dom.domainException.severity === SEVERITY_LEVEL_ERROR));
+
+        return !errDomain && model.hasValidProperties();
+    }
+
+    hasValidProperties(): boolean {
         return (this.name !== undefined && this.name !==null && this.name.trim().length > 0)
             && (!this.allowMetadataInputFormatSelection() || Utils.isString(this.selectedMetadataInputFormat))
             && (!this.allowDetectionMethodSelection() || Utils.isString(this.selectedDetectionMethod))
@@ -1392,3 +1468,5 @@ export interface IAppDomainHeader {
     onAddField?: (fieldConfig: Partial<IDomainField>) => void
     onDomainChange?: (index: number, updatedDomain: DomainDesign) => void
 }
+
+export type DomainPanelStatus = 'INPROGRESS' | 'TODO' | 'COMPLETE' | 'NONE';

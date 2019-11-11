@@ -13,6 +13,12 @@ from sampleManagement
 * allow selectRows results to be passed in to LookupSelectInput
 * in EditableGrid, change single-row deletion from delicate right-click on row number to separate icon column
 
+### version 0.22.1
+*Released*: 8 November 2019
+* Item 6493: fix for containerPath encoding issue with buildURL() helper
+* Package patch update for changes to @glass/domainproperties v0.0.49
+* Package patch update for changes to @glass/base 0.21.1
+
 ### version 0.22.0
 *Released*: 5 November 2019
 * Add getFilterListFromQuery

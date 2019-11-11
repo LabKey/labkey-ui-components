@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version ???
+*Released*: ???
+* Change styling of DeleteIcon
+
 ### version 0.21.0
 *Released*: 5 November 2019
 * Modify getImportURL for AssayDefinitionModel to use the sample model's filters if present

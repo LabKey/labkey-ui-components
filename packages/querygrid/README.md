@@ -11,6 +11,7 @@ the editable grid
 * move EditableGridLoader, EditableGridLoaderForSelection, EditableGridPanelForUpdate, EditableGridModal, BulkUpdateForm
 from sampleManagement
 * allow selectRows results to be passed in to LookupSelectInput
+* in EditableGrid, change single-row deletion from delicate right-click on row number to separate icon column
 
 ### version 0.22.0
 *Released*: 5 November 2019

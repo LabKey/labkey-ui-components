@@ -29,7 +29,7 @@ import {
     LoadingSpinner,
     QueryColumn,
     QueryGridModel,
-    capitalizeFirstChar
+    capitalizeFirstChar, DeleteIcon
 } from '@glass/base'
 
 import {
@@ -289,27 +289,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             });
             gridColumns = gridColumns.push(selColumn);
         }
-        gridColumns = gridColumns.push(
-            allowRemove ? new GridColumn({
-                index: GRID_EDIT_INDEX,
-                tableCell: true,
-                title: 'Row',
-                width: 45,
-                cell: (d,r,c,rn) => (
-                    <Dropdown key={c.index} id={`row-context-${rn}`} className="cellular-count" componentClass="td">
-                        <RightClickToggle bsRole="toggle">
-                            {rn+1}
-                        </RightClickToggle>
-                        <Dropdown.Menu>
-                            <MenuItem onSelect={() => {
-                                removeRow(model, d, rn);
-                                this.onRowCountChange();
-                            }}>Delete Row</MenuItem>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                )
-            }) : COUNT_COL
-        );
+        gridColumns = gridColumns.push(COUNT_COL);
 
         this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
@@ -321,6 +301,23 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 width: 100
             }));
         });
+        if (allowRemove) {
+            gridColumns = gridColumns.push(
+                 new GridColumn({
+                    index: GRID_EDIT_INDEX,
+                    tableCell: true,
+                    title: 'Delete',
+                    width: 45,
+                    cell: (d,r,c,rn) => (
+                        <DeleteIcon onDelete={(event) => {
+                            removeRow(model, d, rn);
+                            this.onRowCountChange();
+                        }}/>
+                    )
+                })
+            );
+        }
+
 
         return gridColumns;
     }

@@ -131,7 +131,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         allowAdd: true,
         allowBulkUpdate: false,
         allowBulkRemove: false,
-        allowRemove: true,
+        allowRemove: false,
         addControlProps: {
             nounPlural: "Rows",
             nounSingular: "Row"
@@ -309,10 +309,12 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                     title: 'Delete',
                     width: 45,
                     cell: (d,r,c,rn) => (
-                        <DeleteIcon onDelete={(event) => {
-                            removeRow(model, d, rn);
-                            this.onRowCountChange();
-                        }}/>
+                        <td>
+                            <DeleteIcon onDelete={(event) => {
+                                removeRow(model, d, rn);
+                                this.onRowCountChange();
+                            }}/>
+                        </td>
                     )
                 })
             );
@@ -603,7 +605,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             responsive={false}
                             rowKey={GRID_EDIT_INDEX}
                             striped={striped}
-                            tableRef={this.table} />
+                            tableRef={this.table}
+                        />
                     </div>
                     {allowAdd && (this.getControlsPlacement() != 'top') && (
                         <AddRowsControl

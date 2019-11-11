@@ -123,6 +123,7 @@ storiesOf('EditableGridPanel', module)
             <EditableGridPanel
                 addControlProps={addRowsControl}
                 allowAdd={boolean("Allow rows to be added?", true, PANEL_GROUP)}
+                bordered={boolean("Bordered?", false, PANEL_GROUP)}
                 allowBulkRemove={boolean("Allow bulk delete?", true, PANEL_GROUP)}
                 allowRemove={boolean("Allow rows to be removed?", true, PANEL_GROUP)}
                 disabled={boolean("Disabled?", false, PANEL_GROUP)}

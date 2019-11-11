@@ -10,7 +10,7 @@ import { EditableGridProps } from './EditableGrid';
 interface Props extends EditableGridProps {
     show: boolean,
     title: string,
-    onCancel: (any) => void
+    onCancel?: () => void
     onSave: (model: QueryGridModel) => void
     cancelText?: string
     addControlProps?: Partial<AddRowsControlProps>
@@ -28,17 +28,20 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
         this.init();
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps: Props) {
         this.init();
-    }
-
-    componentWillUnmount() {
-        schemaGridInvalidate(this.props.model.schema, true);
     }
 
     init() {
         gridInit(this.props.model, true, this)
     }
+
+    onCancel = () => {
+        schemaGridInvalidate(this.props.model.schema, true);
+        if (this.props.onCancel) {
+            this.props.onCancel();
+        }
+    };
 
     getQueryGridModel() {
         return getQueryGridModel(this.props.model.getId()) || this.props.model;
@@ -46,6 +49,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
 
     onSave = () => {
         this.props.onSave(this.getQueryGridModel());
+        schemaGridInvalidate(this.props.model.schema, true);
     };
 
     render() {
@@ -72,7 +76,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
                 </Modal.Body>
                 <Modal.Footer>
                     <WizardNavButtons
-                        cancel={this.props.onCancel}
+                        cancel={this.onCancel}
                         cancelText={this.props.cancelText}
                         containerClassName=""
                         finish={true}

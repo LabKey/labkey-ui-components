@@ -105,7 +105,7 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('collapsible', () => {
+    test('collapsible', (done) => {
         const name = 'With Name';
         const component = (
             <AssayPropertiesPanel
@@ -118,15 +118,20 @@ describe('AssayPropertiesPanel', () => {
         const wrapper = mount(component);
         expect(wrapper.find('.panel-body')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
+        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
-        expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(0);
+        expect(wrapper.find('.panel-body')).toHaveLength(1);
         expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
+        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(1);
         wrapper.find('.pull-right').last().simulate('click'); // expand/collapse toggle click
-        setTimeout(() => {
-            expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
-            expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
-            wrapper.unmount();
-        }, 1000);
+        expect(wrapper.find('.panel-body')).toHaveLength(1);
+        expect(wrapper.find('.panel-heading').text()).toBe(name + ' - Assay Properties');
+        expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
+        expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
+        wrapper.unmount();
+        done();
     });
 
     test('visible properties based on empty AssayProtocolModel', () => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal } from "react-bootstrap";
 import { QueryGridModel, WizardNavButtons } from '@glass/base';
 import { AddRowsControlProps } from './Controls';
-import { gridInit } from '../../actions';
+import { gridInit, schemaGridInvalidate } from '../../actions';
 import { getQueryGridModel } from '../../global';
 import { EditableGridPanel } from './EditableGridPanel';
 import { EditableGridProps } from './EditableGrid';
@@ -32,12 +32,16 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
         this.init();
     }
 
+    componentWillUnmount() {
+        schemaGridInvalidate(this.props.model.schema, true);
+    }
+
     init() {
-        gridInit(this.getQueryGridModel())
+        gridInit(this.props.model, true, this)
     }
 
     getQueryGridModel() {
-        return getQueryGridModel(this.props.model.getId());
+        return getQueryGridModel(this.props.model.getId()) || this.props.model;
     }
 
     onSave = () => {

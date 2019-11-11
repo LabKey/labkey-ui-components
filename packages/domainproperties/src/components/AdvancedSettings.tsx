@@ -2,6 +2,9 @@
 import * as React from 'react';
 import {List} from "immutable";
 import {Button, Checkbox, Col, FormControl, Modal, Row} from "react-bootstrap";
+import { ActionURL } from "@labkey/api";
+import { LabelHelpTip } from "@glass/base";
+
 import {
     DATETIME_TYPE,
     DomainField,
@@ -9,7 +12,6 @@ import {
     PropDescType
 } from "../models";
 import {createFormInputId, createFormInputName, getCheckedValue, getNameFromId} from "../actions/actions";
-import { ActionURL } from "@labkey/api";
 import {
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
@@ -26,7 +28,6 @@ import {
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_PHI_LEVELS
 } from "../constants";
-import {LabelHelpTip} from "@glass/base";
 
 interface AdvancedSettingsProps {
     domainId?: number
@@ -56,7 +57,6 @@ interface AdvancedSettingsState {
     recommendedVariable?: boolean
     PHI?: string
     phiLevels?: List<any>
-    defaultUrl?: string
     excludeFromShifting?: boolean
 }
 
@@ -92,8 +92,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
             recommendedVariable: field.recommendedVariable,
             excludeFromShifting: field.excludeFromShifting,
             PHI: field.PHI,
-            phiLevels: phiLevels,
-            defaultUrl: (domainId === undefined ? '' : ActionURL.buildURL(ActionURL.getController(), 'setDefaultValuesList', ActionURL.getContainer(), {returnUrl:window.location, domainId: domainId}))
+            phiLevels: phiLevels
         })
     };
 
@@ -112,7 +111,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
             // Iterate over state values and put into list of changes
             Object.keys(this.state).forEach(function (key, i) {
-                if (key !== 'phiLevels' && key !== 'defaultUrl') {
+                if (key !== 'phiLevels') {
                     changes.push({id: createFormInputId(key, index), value: this.state[key]} as IFieldChange)
                 }
             }, this);
@@ -147,18 +146,32 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         })
     };
 
+    hasValidDomainId(): boolean {
+        const { domainId } = this.props;
+        return !(domainId === undefined || domainId === null || domainId === 0);
+    }
+
     handleSetDefaultValues = (evt) => {
         const { domainId, helpNoun } = this.props;
 
-        if (domainId === undefined || domainId === null) {
+        if (!this.hasValidDomainId()) {
             alert("Must save " + helpNoun + " before you can set default values.")
         }
         else {
-            let controller = ActionURL.getController();
-            if (controller !== 'assay') {
-                controller = 'list';
+            let params = {
+                domainId: domainId,
+                returnUrl: window.location,
+            };
+
+            let controller = 'list';
+            let action = 'setDefaultValuesList';
+            if (ActionURL.getController() === 'assay') {
+                controller = 'assay';
+                action = 'setDefaultValuesAssay';
+                params['providerName'] = ActionURL.getParameter('providerName');
             }
-            window.location.href = ActionURL.buildURL(controller, 'setDefaultValuesList', ActionURL.getContainer(), {returnUrl:window.location, domainId: domainId});
+
+            window.location.href = ActionURL.buildURL(controller, action, LABKEY.container.path, params);
         }
     };
 
@@ -428,7 +441,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         Cancel
                     </Button>
                     <a target='_blank'
-                       href="https://www.labkey.org/Documentation/wiki-page.view?name=propertyFields"
+                       href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#advanced"
                        className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
                     <Button onClick={this.handleApply} bsClass='btn btn-success'
                             className='domain-adv-footer domain-adv-apply-btn'>

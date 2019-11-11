@@ -18,7 +18,7 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
       >
         <svg
           aria-hidden="true"
-          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
           data-icon="question-circle"
           data-prefix="fas"
           focusable="false"
@@ -173,7 +173,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
       >
         <svg
           aria-hidden="true"
-          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
           data-icon="question-circle"
           data-prefix="fas"
           focusable="false"
@@ -346,7 +346,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
       >
         <svg
           aria-hidden="true"
-          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
           data-icon="question-circle"
           data-prefix="fas"
           focusable="false"

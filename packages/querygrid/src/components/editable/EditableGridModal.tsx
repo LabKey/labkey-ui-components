@@ -64,6 +64,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
                 <Modal.Body>
                     <EditableGridPanel
                         addControlProps={this.props.addControlProps}
+                        allowRemove={this.props.allowRemove}
                         allowBulkRemove={false}
                         allowBulkUpdate={false}
                         bordered={this.props.bordered}

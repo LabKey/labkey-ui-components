@@ -310,7 +310,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                     width: 45,
                     cell: (d,r,c,rn) => (
                         <td>
-                            <DeleteIcon onDelete={(event) => {
+                            <DeleteIcon key={"delete" + r} onDelete={(event) => {
                                 removeRow(model, d, rn);
                                 this.onRowCountChange();
                             }}/>

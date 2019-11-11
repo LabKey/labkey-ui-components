@@ -60,6 +60,8 @@ interface OwnProps extends SelectInputProps {
     queryColumn: QueryColumn
     filterArray?:  Array<Filter.IFilter>
     sort?: string
+    refresh?: boolean
+    afterRefresh?: () => any
 }
 
 export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
@@ -78,8 +80,22 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
     }
 
     componentWillMount() {
+        if (!this.state.options) {
+            this.getOptions();
+        }
+    }
+
+    componentWillReceiveProps(nextProps: OwnProps) {
+        if (nextProps.refresh) {
+            this.getOptions();
+            if (this.props.afterRefresh) {
+                this.props.afterRefresh();
+            }
+        }
+    }
+
+    getOptions() {
         const { queryColumn, filterArray, sort } = this.props;
-        const { options } = this.state;
 
         if (!queryColumn || !queryColumn.isLookup()) {
             throw 'querygrid forms/input/<LookupSelectInput> only works with lookup columns.';
@@ -89,24 +105,14 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         }
 
         const { schemaName, queryName } = queryColumn.lookup;
-
-        if (!options) {
-            selectRows({schemaName, queryName, filterArray, sort})
-                .then(response => {
+        selectRows({schemaName, queryName, filterArray, sort})
+            .then(response => {
                     const models = Map<string, any>(fromJS(response.models));
                     const options = formatOptions(queryColumn.lookup, models.get(resolveKey(schemaName, queryName)), sort === undefined);
                     this.setState(() => ({options}));
                 }
             );
-        }
     }
-
-    // TODO is this still needed, if so need to update after move to querygrid
-    // shouldComponentUpdate(nextProps: OwnProps) {
-    //     return nextProps.options.length !== this.props.options.length ||
-    //             nextProps.value !== this.props.value ||
-    //             nextProps.disabled !== this.props.disabled;
-    // }
 
     render() {
         const { queryColumn, value } = this.props;

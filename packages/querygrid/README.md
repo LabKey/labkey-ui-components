@@ -10,6 +10,7 @@ Query Grid for LabKey schema/query data views
 the editable grid
 * move EditableGridLoader, EditableGridLoaderForSelection, EditableGridPanelForUpdate, EditableGridModal, BulkUpdateForm
 from sampleManagement
+* allow selectRows results to be passed in to LookupSelectInput
 
 ### version 0.22.0
 *Released*: 5 November 2019

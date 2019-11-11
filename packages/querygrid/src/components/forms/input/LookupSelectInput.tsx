@@ -19,15 +19,15 @@ import { Filter } from '@labkey/api'
 import { QueryColumn, QueryLookup, naturalSort, generateId, LoadingSpinner, resolveKey } from '@glass/base'
 
 import { SelectInput, SelectInputProps } from "./SelectInput";
-import { selectRows } from "../../../query/api";
+import { ISelectRowsResult, selectRows } from "../../../query/api";
 import { LabelOverlay } from "../LabelOverlay";
 
-interface SelectOption {
+interface LookupSelectOption {
     label: string
     value: any
 }
 
-function formatOptions(lookup: QueryLookup, models: Map<string, any>, doSort: boolean=true): Array<SelectOption> {
+function formatLookupSelectInputOptions(lookup: QueryLookup, models: Map<string, any>, doSort: boolean=true): Array<LookupSelectOption> {
     if (!models) {
         return [];
     }
@@ -53,15 +53,14 @@ function formatOptions(lookup: QueryLookup, models: Map<string, any>, doSort: bo
 }
 
 interface StateProps {
-    options: Array<SelectOption>
+    options: Array<LookupSelectOption>
 }
 
 interface OwnProps extends SelectInputProps {
     queryColumn: QueryColumn
     filterArray?:  Array<Filter.IFilter>
     sort?: string
-    refresh?: boolean
-    afterRefresh?: () => any
+    selectedRows?: ISelectRowsResult
 }
 
 export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
@@ -75,7 +74,7 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         this._id = generateId('select-');
 
         this.state = {
-            options: undefined
+            options: this.getOptionsFromSelectedRows(props, props.selectedRows)
         }
     }
 
@@ -86,11 +85,21 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
     }
 
     componentWillReceiveProps(nextProps: OwnProps) {
-        if (nextProps.refresh) {
-            this.getOptions();
-            if (this.props.afterRefresh) {
-                this.props.afterRefresh();
-            }
+        if (nextProps.selectedRows) {
+            this.setState(() => ({
+               options: this.getOptionsFromSelectedRows(nextProps, nextProps.selectedRows)
+            }));
+        }
+    }
+
+    getOptionsFromSelectedRows(props: OwnProps, selectedRows: ISelectRowsResult) {
+        if (selectedRows) {
+            const models = Map<string, any>(fromJS(selectedRows.models));
+            const {schemaName, queryName} = props.queryColumn.lookup;
+            return formatLookupSelectInputOptions(props.queryColumn.lookup, models.get(resolveKey(schemaName, queryName)), props.sort === undefined);
+        }
+        else {
+            return undefined;
         }
     }
 
@@ -107,9 +116,9 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         const { schemaName, queryName } = queryColumn.lookup;
         selectRows({schemaName, queryName, filterArray, sort})
             .then(response => {
-                    const models = Map<string, any>(fromJS(response.models));
-                    const options = formatOptions(queryColumn.lookup, models.get(resolveKey(schemaName, queryName)), sort === undefined);
-                    this.setState(() => ({options}));
+                    this.setState(() => ({
+                        options: this.getOptionsFromSelectedRows(this.props, response)
+                    }))
                 }
             );
     }

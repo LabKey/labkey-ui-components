@@ -779,8 +779,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { collapsible, controlledCollapse, useTheme } = this.props;
 
         let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
-        classes += (this.isPanelExpanded() ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
-        if (this.isPanelExpanded()) {
+        classes += ((this.isPanelExpanded() && controlledCollapse) ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
+        if (this.isPanelExpanded() && controlledCollapse) {
             classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
         }
 
@@ -837,11 +837,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     getPanelClass = () => {
         const { collapsed } = this.state;
-        const { useTheme } = this.props;
+        const { useTheme, controlledCollapse } = this.props;
 
         let classes = 'domain-form-panel';
 
-        if (!collapsed) {
+        if (!collapsed && controlledCollapse) {
             if (useTheme) {
                 classes += ' lk-border-theme-light';
             }
@@ -855,10 +855,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     getAlertClasses = () => {
         const { collapsed } = this.state;
-        const { useTheme } = this.props;
+        const { useTheme, controlledCollapse } = this.props;
         let classes = 'domain-bottom-alert panel-default';
 
-        if (!collapsed) {
+        if (!collapsed && controlledCollapse) {
             if (useTheme) {
                 classes += ' lk-border-theme-light';
             }

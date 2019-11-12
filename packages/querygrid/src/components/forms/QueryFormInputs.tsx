@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Map, OrderedMap } from 'immutable'
+import { Map, OrderedMap, List } from 'immutable'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
 import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '@glass/base'
@@ -56,6 +56,7 @@ interface QueryFormInputsProps {
     renderFileInputs?: boolean
     allowFieldDisable?: boolean
     initiallyDisableFields?: boolean
+    disabledFields?: List<string>
 }
 
 interface State {
@@ -69,7 +70,8 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         includeLabelField: false,
         renderFileInputs: false,
         allowFieldDisable: false,
-        initiallyDisableFields: false
+        initiallyDisableFields: false,
+        disabledFields: List<string>()
     };
 
     constructor(props: QueryFormInputsProps) {
@@ -137,7 +139,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         const {
             columnFilter,
             componentKey,
-            destroyOnDismount,
             fieldValues,
             fireQSChangeOnInit,
             checkRequiredFields,
@@ -149,11 +150,11 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             onChange,
             renderFileInputs,
             allowFieldDisable,
+            disabledFields
         } = this.props;
+
         const filter = columnFilter ? columnFilter : insertColumnFilter;
-
         const columns = queryInfo ? queryInfo.columns : queryColumns;
-
 
         // CONSIDER: separately establishing the set of columns and allow
         // QueryFormInputs to be a rendering factory for the columns that are in the set.
@@ -162,7 +163,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 .filter(filter)
                 .valueSeq()
                 .map((col: QueryColumn, i: number) => {
-                    let value = caseInsensitive(fieldValues, col.name);
+                    const shouldDisableField = initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
 
                     let showAsteriskSymbol = false;
                     if (!checkRequiredFields && col.required) {
@@ -170,10 +171,10 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         showAsteriskSymbol = showLabelAsterisk;
                     }
 
+                    let value = caseInsensitive(fieldValues, col.name);
                     if (!value && lookups) {
                         value = lookups.get(col.name) || lookups.get((col.name).toLowerCase());
                     }
-
                     if (!value && col.jsonType === 'string') {
                         value = '';
                     }
@@ -201,7 +202,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     {this.renderLabelField(col)}
                                     <QuerySelect
                                         allowDisable={allowFieldDisable}
-                                        initiallyDisabled={initiallyDisableFields}
+                                        initiallyDisabled={shouldDisableField}
                                         componentId={id}
                                         fireQSChangeOnInit={fireQSChangeOnInit}
                                         joinValues={joinValues}
@@ -226,18 +227,18 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.inputType === 'textarea') {
-                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
+                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                     } else if (col.inputType === 'file' && renderFileInputs) {
-                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
+                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                     }
 
                     switch (col.jsonType) {
                         case 'date':
-                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                         case 'boolean':
-                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return <CheckboxInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                         default:
-                            return <TextInput key={i} queryColumn={col} value={value ? String(value) : value} allowDisable={allowFieldDisable} initiallyDisabled={initiallyDisableFields} addLabelAsterisk={showAsteriskSymbol}/>;
+                            return <TextInput key={i} queryColumn={col} value={value ? String(value) : value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
                     }
                 })
                 .toArray();

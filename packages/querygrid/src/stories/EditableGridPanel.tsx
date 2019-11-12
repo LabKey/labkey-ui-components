@@ -59,9 +59,12 @@ storiesOf('EditableGridPanel', module)
         let columnMetadata = Map<string, EditableColumnMetadata>();
         columnMetadata = columnMetadata.set("Name", {toolTip: "Name tips"});
         columnMetadata = columnMetadata.set('mixtureTypeId', {toolTip: <b>We require this value</b>});
+        columnMetadata = columnMetadata.set("Remove", {toolTip: <span>We allow you to remove things here.  I <b>hope</b> that's what you expect.</span>});
         return (
             <EditableGridPanel
                 model={model}
+                allowRemove={true}
+                removeColumnTitle={"Remove"}
                 columnMetadata={columnMetadata}
             />
         );

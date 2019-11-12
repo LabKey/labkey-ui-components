@@ -113,6 +113,7 @@ export interface EditableGridProps {
     disabled?: boolean
     forUpdate?: boolean
     readOnlyColumns?: List<string>
+    removeColumnTitle?: string
     striped?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
@@ -134,6 +135,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         allowBulkUpdate: false,
         allowBulkRemove: false,
         allowRemove: false,
+        removeColumnTitle: "Delete",
         addControlProps: {
             nounPlural: "Rows",
             nounSingular: "Row"
@@ -308,7 +310,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                  new GridColumn({
                     index: GRID_EDIT_INDEX,
                     tableCell: true,
-                    title: 'Delete',
+                    title: this.props.removeColumnTitle,
                     width: 45,
                     cell: (d,r,c,rn) => (
                         <td>
@@ -326,23 +328,23 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return gridColumns;
     }
 
-    renderColumnHeader(queryColumn: QueryColumn, col: GridColumn) {
+    renderColumnHeader(col:GridColumn, metadataKey: string, required?: boolean) {
         const label = col.title;
-        const metadata = this.props.columnMetadata && this.props.columnMetadata.has(queryColumn.fieldKey) ? this.props.columnMetadata.get(queryColumn.fieldKey) : undefined;
+        const metadata = this.props.columnMetadata && this.props.columnMetadata.has(metadataKey) ? this.props.columnMetadata.get(metadataKey) : undefined;
         const overlay = metadata && metadata.toolTip ?
             <OverlayTrigger
                 placement={'bottom'}
-                overlay={<Popover id={'popover-' + label} title={label} bsClass="popover">
+                overlay={<Popover id={'popover-' + label}  bsClass="popover">
                     {metadata.toolTip}
                 </Popover>}>
                 <i className="fa fa-question-circle"/>
             </OverlayTrigger> : undefined;
         return (
             <>
-               {label}
-                {queryColumn.required ? <span className="required-symbol"> *</span> : null}&nbsp;
+                {label}
+                {required ? <span className="required-symbol"> *</span> : null}&nbsp;
                 {overlay}
-           </>
+            </>
         )
     }
 
@@ -353,10 +355,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
-            return this.renderColumnHeader(qColumn, col);
+            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required);
         }
         if (col && col.showHeader) {
-            return col.title;
+            return this.renderColumnHeader(col, col.title, false);
         }
     }
 

@@ -22,6 +22,7 @@ import $ from 'jquery'
 import {
     Alert,
     capitalizeFirstChar,
+    caseInsensitive,
     DeleteIcon,
     Grid,
     GRID_CHECKBOX_OPTIONS,
@@ -114,6 +115,7 @@ export interface EditableGridProps {
     forUpdate?: boolean
     readOnlyColumns?: List<string>
     removeColumnTitle?: string
+    notDeletable?: List<any> // list if key values that cannot be deleted.
     striped?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
@@ -143,6 +145,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         bordered: false,
         bulkUpdateText: "Bulk Update",
         columnMetadata: Map<string, EditableColumnMetadata>(),
+        notDeletable: List<any>(),
         condensed: false,
         disabled: false,
         isSubmitting: false,
@@ -312,14 +315,29 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                     tableCell: true,
                     title: this.props.removeColumnTitle,
                     width: 45,
-                    cell: (d,r,c,rn) => (
-                        <td>
-                            <DeleteIcon key={"delete" + r} onDelete={(event) => {
-                                removeRow(model, d, rn);
-                                this.onRowCountChange();
-                            }}/>
-                        </td>
-                    )
+                    cell: (d, row: Map<string, any>, c,rn) => {
+                        const keyCols = model.getKeyColumns();
+                        let canDelete = true;
+                        if (keyCols.size == 1) {
+                            let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                            canDelete = !key || !this.props.notDeletable.contains(key);
+                        }
+                        else {
+                            console.warn("Preventing deletion for models with " + keyCols.size + " keys is not currently supported.");
+                        }
+
+                        return (
+                            canDelete ?
+                            <td>
+                                <DeleteIcon key={"delete" + rn} onDelete={(event) => {
+                                    removeRow(model, d, rn);
+                                    this.onRowCountChange();
+                                }}/>
+                            </td>
+                            :
+                            <td>&nbsp;</td>
+                        );
+                    }
                 })
             );
         }

@@ -20,7 +20,9 @@ import { SchemaQuery } from "@glass/base";
 import { getStateQueryGridModel } from "../models";
 
 import './stories.scss'
-import { EditableGridLoader, EditableGridModal } from "..";
+import { EditableColumnMetadata, EditableGridLoader, EditableGridModal, gridInit } from "..";
+import * as constants from '../test/data/constants';
+import { List, Map } from 'immutable';
 
 
 storiesOf('EditableGridModal', module)
@@ -47,6 +49,46 @@ storiesOf('EditableGridModal', module)
                 saveText={text("Save text", undefined)}
             />
         );
+    })
+    .add("with undeletable items", () => {
+        const modelId = "editableGridModalWithDeleteRestrictions";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixtures"
+        });
 
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise((resolve) => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                }
+            }
+        });
+
+        gridInit(model, true);
+
+        let columnMetadata = Map<string, EditableColumnMetadata>();
+        columnMetadata = columnMetadata.set("Delete", {toolTip: <span>Items in use cannot be deleted.</span>});
+
+        return (
+            <EditableGridModal
+                columnMetadata={columnMetadata}
+                show={true}
+                title={"Delete restrictions"}
+                onSave={() => console.log("Save changes")}
+                onCancel={() => console.log("Cancel")}
+                bordered={true}
+                allowBulkRemove={false}
+                allowRemove={true}
+                notDeletable={List<any>(['2'])}
+                model={model}
+            />
+        );
     })
 ;

@@ -1,7 +1,7 @@
 import {JsonType} from "../../models";
 import {mount} from "enzyme";
 import * as React from "react";
-import {Filters} from "./Filters";
+import { Filters, NO_FILTER_TYPE } from "./Filters";
 import toJson from "enzyme-to-json";
 import {createFormInputId} from "../../actions/actions";
 import {
@@ -179,5 +179,13 @@ describe('Filters', () => {
         expect(toJson(filters)).toMatchSnapshot();
         filters.unmount();
 
+    });
+
+    test('hasFilterType', () => {
+        expect(Filters.hasFilterType(undefined)).toBeFalsy();
+        expect(Filters.hasFilterType(null)).toBeFalsy();
+        expect(Filters.hasFilterType('')).toBeFalsy();
+        expect(Filters.hasFilterType(NO_FILTER_TYPE)).toBeFalsy();
+        expect(Filters.hasFilterType('eq')).toBeTruthy();
     });
 });

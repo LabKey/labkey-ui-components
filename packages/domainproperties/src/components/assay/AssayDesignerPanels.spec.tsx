@@ -5,9 +5,6 @@ import { FileAttachmentForm } from "@glass/base";
 
 import {AssayDesignerPanels} from "./AssayDesignerPanels";
 import { AssayProtocolModel, DomainDesign } from "../../models";
-import DomainForm from "../DomainForm";
-import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
-import { NameInput } from "./AssayPropertiesInput";
 import {Panel} from "react-bootstrap";
 import toJson from "enzyme-to-json";
 

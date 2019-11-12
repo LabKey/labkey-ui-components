@@ -5,7 +5,7 @@ import { Alert, WizardNavButtons } from "@glass/base";
 import {DomainPanelStatus, AssayProtocolModel, DomainDesign, HeaderRenderer} from "../../models";
 import {saveAssayDesign} from "../../actions/actions";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
-import DomainForm from "../DomainForm";
+import DomainForm, {DomainFormImpl} from "../DomainForm";
 import {Button, Col, Row} from "react-bootstrap";
 import {SEVERITY_LEVEL_ERROR} from "../../constants";
 
@@ -220,13 +220,13 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
             message = protocolModel.exception;
         }
         else if (errorDomains.size > 1 || (errorDomains.size > 0 && !protocolModel.hasValidProperties())) {
-            message = "Must correct errors above before saving.";
+            message = "Please correct errors above before saving.";
         }
         else if (visitedPanels.size > 1 && !protocolModel.hasValidProperties()) {
-            message = "Must correct errors in Assay Properties before saving.";
+            message = "Please correct errors in Assay Properties before saving.";
         }
         else if (errorDomains.size == 1) {
-            message = "Must correct errors in " + errorDomains.get(0) + " before saving.";
+            message = "Please correct errors in " + errorDomains.get(0) + " before saving.";
         }
 
         if (message) {
@@ -240,7 +240,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
     render() {
         const { onCancel, basePropertiesOnly, containerTop, useTheme } = this.props;
-        const { protocolModel, currentPanelIndex, validatePanel, visitedPanels } = this.state;
+        const { protocolModel, currentPanelIndex, validatePanel } = this.state;
 
         let errorDomains = List<string>();
 
@@ -277,7 +277,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     }
 
                     if (domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
-                        errorDomains = errorDomains.push(domain.name);
+                        errorDomains = errorDomains.push(DomainFormImpl.getHeaderName(domain.name, undefined, protocolModel.name));
                     }
 
                     return (
@@ -317,7 +317,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     </Col>
                     <Col xs={10} />
                     <Col xs={1}>
-                        <Button className='pull-right domain-assay-save-btn' bsStyle='success' disabled={!this.isValid() || this.state.submitting} onClick={this.onFinish}>Save</Button>
+                        <Button className='pull-right domain-assay-save-btn' bsStyle='success' disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
                     </Col>
                 </Row>
             </>

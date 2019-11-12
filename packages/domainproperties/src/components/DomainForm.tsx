@@ -759,21 +759,20 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
-    getHeaderName(): string {
-        const { domain, headerTitle, headerPrefix } = this.props;
-        let name = headerTitle || (domain.name ? domain.name : "Fields");
+    static getHeaderName(name?: string, headerTitle?: string, headerPrefix?: string): string {
+        let updatedName = headerTitle || (name ? name : "Fields");
 
         // optionally trim off a headerPrefix from the name display
-        if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
-            name = name.replace(headerPrefix + ' ', '');
+        if (headerPrefix && updatedName.indexOf(headerPrefix + ' ') === 0) {
+            updatedName = updatedName.replace(headerPrefix + ' ', '');
         }
 
         // prefer "Results Fields" over "Data Fields"in assay case
-        if (name.endsWith('Data Fields')) {
-            name = name.replace('Data Fields', 'Results Fields');
+        if (updatedName.endsWith('Data Fields')) {
+            updatedName = updatedName.replace('Data Fields', 'Results Fields');
         }
 
-        return name;
+        return updatedName;
     }
 
     getPanelHeaderClass(): string {
@@ -836,8 +835,49 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return undefined;
     };
 
+    getPanelClass = () => {
+        const { collapsed } = this.state;
+        const { useTheme } = this.props;
+
+        let classes = 'domain-form-panel';
+
+        if (!collapsed) {
+            if (useTheme) {
+                classes += ' lk-border-theme-light';
+            }
+            else {
+                classes += ' domain-panel-no-theme';
+            }
+        }
+
+        return classes;
+    };
+
+    getAlertClasses = () => {
+        const { collapsed } = this.state;
+        const { useTheme } = this.props;
+        let classes = 'domain-bottom-alert panel-default';
+
+        if (!collapsed) {
+            if (useTheme) {
+                classes += ' lk-border-theme-light';
+            }
+            else {
+                classes += ' domain-bottom-alert-expanded';
+            }
+        }
+        else {
+            classes += ' panel-default';
+        }
+
+        if (!collapsed)
+            classes += ' domain-bottom-alert-top';
+
+        return classes;
+    };
+
     renderHeaderContent() {
-        const { collapsible, controlledCollapse, panelStatus, children, domain } = this.props;
+        const { collapsible, controlledCollapse, panelStatus, children, domain, headerTitle, headerPrefix } = this.props;
         const { collapsed } = this.state;
 
         const iconHelpMsg = ((panelStatus && panelStatus !== 'NONE') ? this.getHeaderIconHelpMsg() : undefined);
@@ -846,12 +886,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <>
                 {/*Setup header help icon if applicable*/}
                 {iconHelpMsg &&
-                    <LabelHelpTip title={this.getHeaderName()} body={() => (iconHelpMsg)} placement="top" iconComponent={this.getHeaderIconComponent}/>
+                    <LabelHelpTip title={DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)} body={() => (iconHelpMsg)} placement="top" iconComponent={this.getHeaderIconComponent}/>
                 }
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
                 {/*Header name*/}
-                <span>{this.getHeaderName()}</span>
+                <span>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
 
                 {/*Expand/Collapse Icon*/}
                 {(collapsible || controlledCollapse) && collapsed &&
@@ -867,7 +907,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                 {/*Help tip*/}
                 {children &&
-                    <LabelHelpTip customStyle={{verticalAlign: 'top', marginLeft: '5px'}} placement={'top'} title={this.getHeaderName()} body={() => (children)}/>
+                    <LabelHelpTip customStyle={{verticalAlign: 'top', marginLeft: '5px'}} placement={'top'} title={DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)} body={() => (children)}/>
                 }
 
                 {/*Number of fields*/}
@@ -885,7 +925,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
-                <Panel className={"domain-form-panel"} expanded={this.isPanelExpanded()} onToggle={function(){}}>
+                <Panel className={this.getPanelClass()} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
                         <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>
                             {this.renderHeaderContent()}
@@ -899,7 +939,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     </Panel.Body>
                 </Panel>
                 {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR &&
-                    <div onClick={this.togglePanel} className='domain-bottom-alert panel-default'>
+                    <div onClick={this.togglePanel} className={this.getAlertClasses()}>
                         <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
                     </div>
                 }

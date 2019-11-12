@@ -54,7 +54,6 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
             value = parseInt(value);
         }
 
-        // TODO: Probably should do an error message or something in the UI but waiting on more error handling clarity
         if (isNaN(value) || value > MAX_TEXT_LENGTH) {
             value = MAX_TEXT_LENGTH;
         }
@@ -96,8 +95,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12} className='domain-text-options-col'>
-                        <input type='radio'
-                               name={createFormInputName(DOMAIN_FIELD_MAX_LENGTH)}
+                        <FormControl type='radio'
                                className='domain-text-options-radio1 domain-field-float-left'
                                value={DOMAIN_FIELD_MAX_LENGTH}
                                checked={radio === DOMAIN_FIELD_MAX_LENGTH}
@@ -110,8 +108,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 </Row>
                 <Row className='domain-row-expanded'>
                     <Col xs={12}>
-                        <input type='radio'
-                               name={createFormInputName(DOMAIN_FIELD_CUSTOM_LENGTH)}
+                        <FormControl type='radio'
                                className='domain-text-options-radio2 domain-field-float-left'
                                value={DOMAIN_FIELD_CUSTOM_LENGTH}
                                checked={radio === DOMAIN_FIELD_CUSTOM_LENGTH}
@@ -119,10 +116,10 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, index)}
                         />
                         <span className='domain-text-options-length domain-field-float-left domain-text-label'>No longer than X characters</span>
-                        <FormControl type="text"
+                        <FormControl type="number"
                                      id={createFormInputId(DOMAIN_FIELD_SCALE, index)}
                                      name={createFormInputName(DOMAIN_FIELD_SCALE)}
-                                     style={{width: '60px'}}
+                                     className='domain-text-length-field'
                                      value={typeof scale !== "undefined" && radio === DOMAIN_FIELD_CUSTOM_LENGTH ? scale : 4000}
                                      onChange={this.handleChange}
                                      disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}

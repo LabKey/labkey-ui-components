@@ -12,6 +12,7 @@ the editable grid
 from sampleManagement
 * allow selectRows results to be passed in to LookupSelectInput
 * in EditableGrid, change single-row deletion from delicate right-click on row number to separate icon column
+* add optional toolTip property to EditableColumnMetadata to allow display of overlay tip in column headers
 
 ### version 0.22.1
 *Released*: 8 November 2019

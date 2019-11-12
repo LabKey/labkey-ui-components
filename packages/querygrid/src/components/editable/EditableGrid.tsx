@@ -16,11 +16,13 @@
 import * as OrigReact from 'react'
 import { ReactNode } from 'react'
 import React from 'reactn'
-import { Button, Dropdown, MenuItem } from 'react-bootstrap'
-import { List, Map, Set, OrderedMap } from 'immutable'
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
+import { List, Map, OrderedMap, Set } from 'immutable'
 import $ from 'jquery'
 import {
     Alert,
+    capitalizeFirstChar,
+    DeleteIcon,
     Grid,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
@@ -28,8 +30,7 @@ import {
     GridColumn,
     LoadingSpinner,
     QueryColumn,
-    QueryGridModel,
-    capitalizeFirstChar, DeleteIcon
+    QueryGridModel
 } from '@glass/base'
 
 import {
@@ -46,7 +47,7 @@ import {
 } from '../../actions'
 import { getEditorModel, getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
-import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
+import { AddRowsControl, AddRowsControlProps } from './Controls'
 import { headerSelectionCell } from "../../renderers";
 import { QueryInfoForm, QueryInfoFormProps } from "../forms/QueryInfoForm";
 import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
@@ -93,7 +94,8 @@ function inputCellKey(col: QueryColumn, row: any): string {
 
 export interface EditableColumnMetadata {
     placeholder?: string,
-    readOnly?: boolean
+    readOnly?: boolean,
+    toolTip?: React.ReactNode
 }
 
 export interface EditableGridProps {
@@ -324,6 +326,26 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return gridColumns;
     }
 
+    renderColumnHeader(queryColumn: QueryColumn, col: GridColumn) {
+        const label = col.title;
+        const metadata = this.props.columnMetadata && this.props.columnMetadata.has(queryColumn.fieldKey) ? this.props.columnMetadata.get(queryColumn.fieldKey) : undefined;
+        const overlay = metadata && metadata.toolTip ?
+            <OverlayTrigger
+                placement={'bottom'}
+                overlay={<Popover id={'popover-' + label} title={label} bsClass="popover">
+                    {metadata.toolTip}
+                </Popover>}>
+                <i className="fa fa-question-circle"/>
+            </OverlayTrigger> : undefined;
+        return (
+            <>
+               {label}
+                {queryColumn.required ? <span className="required-symbol"> *</span> : null}&nbsp;
+                {overlay}
+           </>
+        )
+    }
+
     headerCell(col: GridColumn) {
         const model = this.getModel(this.props);
         if (this.props.allowBulkRemove && col.index.toLowerCase() == GRID_SELECTION_INDEX) {
@@ -331,7 +353,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
-            return [col.title, (qColumn.required ? '*': undefined)].join(' ');
+            return this.renderColumnHeader(qColumn, col);
         }
         if (col && col.showHeader) {
             return col.title;

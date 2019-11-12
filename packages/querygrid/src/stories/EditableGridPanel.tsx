@@ -47,6 +47,25 @@ storiesOf('EditableGridPanel', module)
         />;
 
     })
+    .add("with column tooltips", () => {
+        const modelId = 'editableWithTooltips';
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: 'mixtures'
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true
+        });
+        let columnMetadata = Map<string, EditableColumnMetadata>();
+        columnMetadata = columnMetadata.set("Name", {toolTip: "Name tips"});
+        columnMetadata = columnMetadata.set('mixtureTypeId', {toolTip: <b>We require this value</b>});
+        return (
+            <EditableGridPanel
+                model={model}
+                columnMetadata={columnMetadata}
+            />
+        );
+    })
     .add("without data", () => {
         const modelId = "editableWithoutData";
         const schemaQuery = new SchemaQuery({

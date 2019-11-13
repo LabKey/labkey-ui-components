@@ -136,7 +136,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
     };
 
     firstFilterTooltip = () => {
-        return (<LabelHelpTip title='First Condition' body={this.firstFilterTooltipText}/>)
+        return (<LabelHelpTip title='First Condition' body={this.firstFilterTooltipText} required={true}/>)
     };
 
     secondFilterTooltipText = () => {
@@ -171,11 +171,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                              onChange={this.onFilterChange}
                              type={dataType.getJsonType()}
                              expression={validator.expression}
-                             firstFilterTypeLabel='First Condition *'
-                             firstFilterValueLabel=''
                              firstFilterTooltip={this.firstFilterTooltip()}
-                             secondFilterTypeLabel='Second Condition'
-                             secondFilterValueLabel=''
                              secondFilterTooltip={this.secondFilterTooltip()}
                              
                     />

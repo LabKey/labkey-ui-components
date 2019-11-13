@@ -8,6 +8,16 @@ Query Grid for LabKey schema/query data views
 *Released*: XXX
 * Add headerURL to MenuSectionConfig
 
+### version 0.22.2
+*Released*: 12 November 2019
+* Package patch update for changes to @glass/domainproperties v0.0.50
+
+### version 0.22.1
+*Released*: 8 November 2019
+* Item 6493: fix for containerPath encoding issue with buildURL() helper
+* Package patch update for changes to @glass/domainproperties v0.0.49
+* Package patch update for changes to @glass/base 0.21.1
+
 ### version 0.22.0
 *Released*: 5 November 2019
 * Add getFilterListFromQuery

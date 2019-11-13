@@ -453,10 +453,16 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
+                      customStyle={Object {}}
                       id="tooltip"
+                      size="1x"
                       title="Lookup Validator"
                     >
                       <span
@@ -488,15 +494,16 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                           pull={null}
                           pulse={false}
                           rotation={null}
-                          size={null}
+                          size="1x"
                           spin={false}
+                          style={Object {}}
                           symbol={false}
                           title=""
                           transform={null}
                         >
                           <svg
                             aria-hidden="true"
-                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                             data-icon="question-circle"
                             data-prefix="fas"
                             focusable="false"
@@ -523,7 +530,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                 data-icon="question-circle"
                                 data-prefix="fas"
                                 focusable="false"
@@ -549,7 +556,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                   data-icon="question-circle"
                                   data-prefix="fas"
                                   focusable="false"
@@ -1095,10 +1102,16 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
+                      customStyle={Object {}}
                       id="tooltip"
+                      size="1x"
                       title="Lookup Validator"
                     >
                       <span
@@ -1130,15 +1143,16 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                           pull={null}
                           pulse={false}
                           rotation={null}
-                          size={null}
+                          size="1x"
                           spin={false}
+                          style={Object {}}
                           symbol={false}
                           title=""
                           transform={null}
                         >
                           <svg
                             aria-hidden="true"
-                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                             data-icon="question-circle"
                             data-prefix="fas"
                             focusable="false"
@@ -1165,7 +1179,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                 data-icon="question-circle"
                                 data-prefix="fas"
                                 focusable="false"
@@ -1191,7 +1205,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                   data-icon="question-circle"
                                   data-prefix="fas"
                                   focusable="false"
@@ -1737,10 +1751,16 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
+                      customStyle={Object {}}
                       id="tooltip"
+                      size="1x"
                       title="Lookup Validator"
                     >
                       <span
@@ -1772,15 +1792,16 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                           pull={null}
                           pulse={false}
                           rotation={null}
-                          size={null}
+                          size="1x"
                           spin={false}
+                          style={Object {}}
                           symbol={false}
                           title=""
                           transform={null}
                         >
                           <svg
                             aria-hidden="true"
-                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                             data-icon="question-circle"
                             data-prefix="fas"
                             focusable="false"
@@ -1807,7 +1828,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                 data-icon="question-circle"
                                 data-prefix="fas"
                                 focusable="false"
@@ -1833,7 +1854,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                   data-icon="question-circle"
                                   data-prefix="fas"
                                   focusable="false"
@@ -2376,10 +2397,16 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
+                      customStyle={Object {}}
                       id="tooltip"
+                      size="1x"
                       title="Lookup Validator"
                     >
                       <span
@@ -2411,15 +2438,16 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                           pull={null}
                           pulse={false}
                           rotation={null}
-                          size={null}
+                          size="1x"
                           spin={false}
+                          style={Object {}}
                           symbol={false}
                           title=""
                           transform={null}
                         >
                           <svg
                             aria-hidden="true"
-                            className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                             data-icon="question-circle"
                             data-prefix="fas"
                             focusable="false"
@@ -2446,7 +2474,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                 data-icon="question-circle"
                                 data-prefix="fas"
                                 focusable="false"
@@ -2472,7 +2500,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                               >
                                 <svg
                                   aria-hidden="true"
-                                  class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                   data-icon="question-circle"
                                   data-prefix="fas"
                                   focusable="false"

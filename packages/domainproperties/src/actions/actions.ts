@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from "immutable";
-import { Domain, Query, Security, Ajax, Utils, ActionURL } from "@labkey/api";
+import { Domain, Query, Security, Ajax, Utils } from "@labkey/api";
 import {Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn} from "@glass/base";
 
 import {
@@ -101,6 +101,7 @@ export function processContainers(payload: any, container?: Container): List<Con
 export function fetchDomain(domainId: number, schemaName: string, queryName: string): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         Domain.get({
+            containerPath: LABKEY.container.path,
             domainId,
             schemaName,
             queryName,
@@ -121,7 +122,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
         new Promise((resolve) => {
             if (schemaName) {
                 Query.getQueries({
-                    containerPath,
+                    containerPath: containerPath || LABKEY.container.path,
                     schemaName,
                     queryDetailColumns: true,
                     success: (data) => {
@@ -151,7 +152,7 @@ export function fetchSchemas(containerPath: string): Promise<List<SchemaDetails>
         new Promise((resolve) => {
             Query.getSchemas({
                 apiVersion: 17.1,
-                containerPath,
+                containerPath: containerPath || LABKEY.container.path,
                 includeHidden: false,
                 success: (data) => {
                     resolve(handleSchemas(data));
@@ -171,7 +172,7 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
 export function getMaxPhiLevel(): Promise<string> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('security', 'GetMaxPhiLevel.api'),
+            url: buildURL('security', 'GetMaxPhiLevel.api'),
             success: (data) => {
                 resolve(JSON.parse(data.response).maxPhiLevel);
             },
@@ -191,27 +192,28 @@ export function getMaxPhiLevel(): Promise<string> {
  */
 export function saveDomain(domain: DomainDesign, kind?: string, options?: any, name?: string) : Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
-        if (domain.hasErrors()) {
-            reject('Unable to save domain. Fix fields before saving.');
-        }
-        else if (domain.domainId) {
+        if (domain.domainId) {
             Domain.save({
+                containerPath: LABKEY.container.path,
                 domainDesign: DomainDesign.serialize(domain),
                 domainId: domain.domainId,
                 success: (data) => {
                     resolve(DomainDesign.create(data));
                 },
                 failure: (error) => {
-                    let exceptionWithServerSideErrors = DomainException.create(error, SEVERITY_LEVEL_ERROR);
-                    let exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exceptionWithServerSideErrors);
-                    let exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
-                    let badDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exceptionWithServerSideErrors));
+                    if (!error.exception) {
+                        error = {exception: error};
+                    }
+
+                    const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                    const badDomain = setDomainException(domain, exception);
                     reject(badDomain);
                 }
             })
         }
         else {
             Domain.create({
+                containerPath: LABKEY.container.path,
                 kind,
                 options,
                 domainDesign: DomainDesign.serialize(domain.set('name', name) as DomainDesign),
@@ -282,17 +284,10 @@ function updateErrorIndexes(removedFieldIndex: number, domainException: DomainEx
 
 export function removeField(domain: DomainDesign, index: number): DomainDesign {
 
-    let de;
-
-    //clear field error on a removed field
-    if (domain.hasException()) {
-        const updatedErrors = clearFieldError(domain, index);
-        de = domain.domainException.merge({errors: updatedErrors}) as DomainException;
-    }
+    domain = updateDomainException(domain, index, undefined);
 
     let newDomain = domain.merge({
-        fields: domain.fields.delete(index),
-        domainException: de
+        fields: domain.fields.delete(index)
     }) as DomainDesign;
 
     //"move up" the indexes of the fields with error, i.e. the fields that are below the removed field
@@ -380,8 +375,8 @@ function updateDataType(field: DomainField, value: any): DomainField {
             dataType,
             conceptURI: dataType.conceptURI,
             rangeURI: dataType.rangeURI,
-            lookupSchema: dataType.lookupSchema ? dataType.lookupSchema : field.lookupSchema,
-            lookupQuery: dataType.lookupQuery ? dataType.lookupQuery : field.lookupQuery
+            lookupSchema: dataType.lookupSchema,
+            lookupQuery: dataType.lookupQuery
         }) as DomainField;
 
         if (field.isNew()) {
@@ -415,7 +410,31 @@ export function getCheckedValue(evt) {
     return undefined;
 }
 
- function clearFieldError (domain: DomainDesign, rowIndex: any) {
+export function clearAllClientValidationErrors(domain: DomainDesign): DomainDesign {
+    let exception = undefined;
+
+    if (domain.domainException) {
+        const updatedErrors = domain.domainException.errors.filter((error) => (error.serverError || error.severity === SEVERITY_LEVEL_WARN));
+
+        if (updatedErrors && updatedErrors.size > 0)
+        {
+            exception = domain.domainException.set('errors', updatedErrors);
+        }
+    }
+    return domain.set("domainException", exception) as DomainDesign;
+}
+
+export function clearAllFieldErrors(domain: DomainDesign): DomainDesign {
+    let exception = undefined;
+
+    // Keep exception only errors as those are not related to the fields
+    if (domain.hasException() && !domain.hasErrors()) {
+        exception = domain.domainException;
+    }
+    return domain.set("domainException", exception) as DomainDesign;
+}
+
+function clearFieldError (domain: DomainDesign, rowIndex: any): List<DomainFieldError> {
 
     let allErrors = domain.domainException.get('errors');
 
@@ -463,7 +482,7 @@ export function updateDomainException(domain: DomainDesign, index: any, domainFi
             const errors = List<DomainFieldError>().asMutable();
             errors.push(domainFieldError);
 
-            domainExceptionObj = new DomainException({exception, success: undefined, severity: domainFieldError.severity, errors: errors.asImmutable()});
+            domainExceptionObj = new DomainException({exception, success: undefined, severity: domainFieldError.severity, errors: errors.asImmutable(), domainName: domain.name});
         }
     }
     //no error on a field at a given index
@@ -521,7 +540,7 @@ function getErrorBannerMessage (domain: any) : any {
 
         if (errors && errors.size > 0) {
             if (errors.size > 1) {
-                return "Multiple fields contain issues that need to be fixed. Review the red highlighted fields below for more information.";
+                return "Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.";
             }
             else {
                 return errors.get(0).message;
@@ -538,7 +557,7 @@ function getWarningBannerMessage (domain: any) : any {
 
         if (warnings && warnings.size > 0) {
             if (warnings.size > 1) {
-                return "Multiple fields may require your attention. Review the yellow highlighted fields below for more information.";
+                return "Multiple fields may require your attention. Review the yellow highlighted fields above for more information.";
             }
             else {
                 return (warnings.get(0).fieldName + " : " + warnings.get(0).message);
@@ -578,6 +597,34 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
     }) as DomainDesign;
 }
 
+export function setDomainException(domain: DomainDesign, exception: DomainException) : DomainDesign {
+    const exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exception);
+    const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
+    return domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
+}
+
+export function setAssayDomainException(model: AssayProtocolModel, exception: DomainException): AssayProtocolModel {
+    let updatedModel = model;
+
+    // If a domain is identified in the exception, attach to that domain
+    if (exception.domainName) {
+        const exceptionDomains = model.domains.map((domain) => {
+            if (exception.domainName.endsWith(domain.get('name'))) {
+                return setDomainException(domain, exception);
+            }
+
+            return domain;
+        });
+
+        updatedModel = model.set('domains', exceptionDomains) as AssayProtocolModel;
+    }
+    // otherwise attach to whole assay
+    else {
+        updatedModel = model.set('exception', exception.exception) as AssayProtocolModel;
+    }
+    return updatedModel;
+}
+
 export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtocolModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
@@ -587,7 +634,21 @@ export function saveAssayDesign(model: AssayProtocolModel): Promise<AssayProtoco
                 resolve(AssayProtocolModel.create(response.data));
             }),
             failure: Utils.getCallbackWrapper((error) => {
-                reject(error.exception);
+                let badModel = model;
+
+                // Check for validation exception
+                const exception = DomainException.create(error, SEVERITY_LEVEL_ERROR);
+                if (exception) {
+                    if (exception.domainName) {
+                        badModel = setAssayDomainException(model, exception);
+                    }
+                    else {
+                        badModel = model.set("exception", exception.exception) as AssayProtocolModel;
+                    }
+                } else {
+                    badModel = model.set("exception", error) as AssayProtocolModel;
+                }
+                reject(badModel);
             }, this, false)
         });
     });
@@ -606,3 +667,28 @@ export function getValidPublishTargets(): Promise<List<Container>> {
         })
     });
 }
+
+export function getSplitSentence(label: string, lastWord: boolean): string {
+
+    if (!label)
+        return undefined;
+
+    const words = label.split(" ");
+
+    if (lastWord) {
+        if (words.length === 1) {
+            return words[0];
+        }
+        else {
+            return words[words.length - 1];
+        }
+    }
+    else {
+        if (words.length === 1) {
+            return undefined;
+        }
+        else {
+            return words.slice(0, words.length -1).join(" ") + " ";
+        }
+    }
+};

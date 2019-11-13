@@ -28,6 +28,7 @@ import {
     ATTACHMENT_TYPE,
     USERS_TYPE,
     PARTICIPANT_TYPE,
+    SAMPLE_TYPE,
     DomainDesign,
     DomainField,
     AssayProtocolModel
@@ -47,6 +48,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isInteger(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isInteger(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
     });
 
@@ -62,6 +64,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(USERS_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isString(SAMPLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
@@ -77,7 +80,24 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMeasure(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMeasure(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+    });
+
+    test("isDimension", () => {
+        expect(PropDescType.isDimension(TEXT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(LOOKUP_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(MULTILINE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(BOOLEAN_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(INTEGER_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(DOUBLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(DATETIME_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(FLAG_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(FILE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(SAMPLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
     test("isMvEnableable", () => {
@@ -92,6 +112,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMvEnableable(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMvEnableable(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMvEnableable(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 });
@@ -216,25 +237,25 @@ describe('AssayProtocolModel', () => {
     test("isValid", () => {
         const base = {protocolId: 1, name: 'test'};
 
-        expect(AssayProtocolModel.create({...base, name: undefined}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, name: null}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, name: ''}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, name: 'test'}).isValid()).toBeTruthy();
+        expect(AssayProtocolModel.create({...base, name: undefined}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: null}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: ''}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, name: 'test'}).hasValidProperties()).toBeTruthy();
 
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: undefined}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: null}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 1}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 'foo'}).isValid()).toBeTruthy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: undefined}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: null}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 1}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableMetadataInputFormats: {foo: 'bar'}, selectedMetadataInputFormat: 'foo'}).hasValidProperties()).toBeTruthy();
 
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: undefined}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: null}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 1}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 'foo'}).isValid()).toBeTruthy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: undefined}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: null}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 1}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availableDetectionMethods: ['foo'], selectedDetectionMethod: 'foo'}).hasValidProperties()).toBeTruthy();
 
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: undefined}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: null}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 1}).isValid()).toBeFalsy();
-        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 'foo'}).isValid()).toBeTruthy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: undefined}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: null}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 1}).hasValidProperties()).toBeFalsy();
+        expect(AssayProtocolModel.create({...base, availablePlateTemplates: ['foo'], selectedPlateTemplate: 'foo'}).hasValidProperties()).toBeTruthy();
     });
 
     test("validateTransformScripts", () => {

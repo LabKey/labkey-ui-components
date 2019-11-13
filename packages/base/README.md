@@ -8,6 +8,11 @@ Base components, models, and utility functions for LabKey applications and pages
 *Released*: XXX
 * export WHERE_FILTER_TYPE
 
+### version 0.21.1
+*Released*: 8 November 2019
+* Item 6493: LabelHelpTip updates for size, customStyle, required, and iconComponent props
+* Fix for buildURL helper to pass LABKEY.container.path as default instead of undefined
+
 ### version 0.21.0
 *Released*: 5 November 2019
 * Modify getImportURL for AssayDefinitionModel to use the sample model's filters if present
@@ -23,6 +28,7 @@ fields with properties (factoring out of domainproperties)
 ### version 0.20.1
 *Released*: 25 October 2019
 * Added optional styling property for WizardNavButtons.tsx
+
 
 ### version 0.20.0
 *Released*: 24 October 2019

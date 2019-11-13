@@ -148,7 +148,10 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         firstFilterTooltip={
           <LabelHelpTip
             body={[Function]}
+            customStyle={Object {}}
             id="tooltip"
+            required={true}
+            size="1x"
             title="First Condition"
           />
         }
@@ -160,7 +163,9 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         secondFilterTooltip={
           <LabelHelpTip
             body={[Function]}
+            customStyle={Object {}}
             id="tooltip"
+            size="1x"
             title="Second Condition"
           />
         }
@@ -191,7 +196,10 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   First Condition *
                   <LabelHelpTip
                     body={[Function]}
+                    customStyle={Object {}}
                     id="tooltip"
+                    required={true}
+                    size="1x"
                     title="First Condition"
                   >
                     <span
@@ -223,15 +231,16 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                         pull={null}
                         pulse={false}
                         rotation={null}
-                        size={null}
+                        size="1x"
                         spin={false}
+                        style={Object {}}
                         symbol={false}
                         title=""
                         transform={null}
                       >
                         <svg
                           aria-hidden="true"
-                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                           data-icon="question-circle"
                           data-prefix="fas"
                           focusable="false"
@@ -258,7 +267,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                               data-icon="question-circle"
                               data-prefix="fas"
                               focusable="false"
@@ -284,7 +293,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                 data-icon="question-circle"
                                 data-prefix="fas"
                                 focusable="false"
@@ -455,7 +464,9 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   Second Condition
                   <LabelHelpTip
                     body={[Function]}
+                    customStyle={Object {}}
                     id="tooltip"
+                    size="1x"
                     title="Second Condition"
                   >
                     <span
@@ -487,15 +498,16 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                         pull={null}
                         pulse={false}
                         rotation={null}
-                        size={null}
+                        size="1x"
                         spin={false}
+                        style={Object {}}
                         symbol={false}
                         title=""
                         transform={null}
                       >
                         <svg
                           aria-hidden="true"
-                          className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                          className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                           data-icon="question-circle"
                           data-prefix="fas"
                           focusable="false"
@@ -522,7 +534,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                               data-icon="question-circle"
                               data-prefix="fas"
                               focusable="false"
@@ -548,7 +560,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                                 data-icon="question-circle"
                                 data-prefix="fas"
                                 focusable="false"

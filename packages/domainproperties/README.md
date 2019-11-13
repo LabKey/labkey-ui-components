@@ -8,6 +8,15 @@ Domain property related components for LabKey domains
 *Released*: XXX
 * Package patch update for changes to @glass/base vXXX
 
+### version 0.0.50
+*Released*: 12 November 2019
+* Item 6528: More assay and domain designer feedback changes, bug fixes, and polish
+
+### version 0.0.49
+*Released*: 8 November 2019
+* Item 6493: Assay designer feedback changes, bug fixes, and polish
+* Package patch update for changes to @glass/base 0.21.1
+
 ### version 0.0.48
 *Released*: 5 November 2019
 * Use some css classes factored out into base for DomainRow and DomainForm

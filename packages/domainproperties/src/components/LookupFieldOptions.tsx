@@ -125,7 +125,7 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             checked={!!lookupValidator}
                             onChange={this.addLookupValidator}
                         >
-                            Ensure Value Exists in Lookup Target
+                            <span className='domain-lookup-validator-text'>Ensure Value Exists in Lookup Target</span>
                             <LabelHelpTip title='Lookup Validator' body={this.getLookupValidatorHelp}/>
                         </Checkbox>
                     </Col>

@@ -390,7 +390,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
         if (row && row.get('Run')) {
             const runId = row.get('Run').get('value');
 
-            legacyRunLineageUrl = ActionURL.buildURL('experiment', 'showRunGraph.view', null, {
+            legacyRunLineageUrl = ActionURL.buildURL('experiment', 'showRunGraph.view', LABKEY.container.path, {
                 rowId: runId,
             });
 
@@ -398,7 +398,7 @@ class SelectedNodeDetail extends React.Component<SelectedNodeProps, any> {
             const typePrefix =
                 node.type === 'Sample' ? 'M' :
                     node.type === 'Data' ? 'D' : 'A'
-            legacyDetailsLineageUrl = ActionURL.buildURL('experiment', 'showRunGraphDetail.view', null, {
+            legacyDetailsLineageUrl = ActionURL.buildURL('experiment', 'showRunGraphDetail.view', LABKEY.container.path, {
                 rowId: runId,
                 detail: true,
                 focus: typePrefix + node.rowId

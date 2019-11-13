@@ -7,19 +7,24 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { text, boolean, withKnobs } from '@storybook/addon-knobs'
 
-import { AssayProtocolModel } from "../models";
+import {AssayProtocolModel, DomainException} from "../models";
 import { AssayDesignerPanels } from "../components/assay/AssayDesignerPanels"
 import { initMocks } from "./mock";
 import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
 import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
+import generalAssayDupes from "../test/data/assay-getProtocolGeneralDuplicateFields.json";
+import domainAssayException from "../test/data/assay-domainExceptionFromServer.json";
 import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
 import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import './stories.scss'
+import {SEVERITY_LEVEL_ERROR} from "../constants";
+import {setAssayDomainException, setDomainException} from "../actions/actions";
 
 initMocks();
 
 interface Props {
-    data: {}
+    data: {},
+    exception?: {}
 }
 
 interface State {
@@ -31,8 +36,14 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        let model = AssayProtocolModel.create(props.data);
+        if (props.exception) {
+            const exception = DomainException.create(props.exception, SEVERITY_LEVEL_ERROR);
+            model = setAssayDomainException(model, exception)
+        }
+
         this.state = {
-            model: AssayProtocolModel.create(props.data)
+            model: model
         }
     }
 
@@ -48,6 +59,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 initModel={this.state.model}
                 basePropertiesOnly={boolean('basePropertiesOnly', false)}
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
+                useTheme={false}
                 onChange={(model: AssayProtocolModel) => {
                     console.log('change', model.toJS());
                 }}
@@ -76,6 +88,11 @@ storiesOf("AssayDesignerPanels", module)
     .add("GPAT Saved Assay", () => {
         return (
             <WrappedAssayDesignerPanels data={generalAssaySaved.data}/>
+        )
+    })
+    .add("GPAT Assay with Errors", () => {
+        return (
+            <WrappedAssayDesignerPanels data={generalAssayDupes.data} exception={domainAssayException}/>
         )
     })
     .add("ELISpot Template", () => {

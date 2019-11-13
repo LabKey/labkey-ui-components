@@ -21,7 +21,8 @@ describe('ConditionalFormattingAndValidation', () => {
             index: 1,
             field: DomainField.create({}),
             setDragDisabled: jest.fn(),
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            showingModal: jest.fn()
         };
 
         const cfv  = mount(<ConditionalFormattingAndValidation
@@ -83,7 +84,8 @@ describe('ConditionalFormattingAndValidation', () => {
             index: 1,
             field: DomainField.create({propertyValidators: [propertyValidatorRange, propertyValidatorRegex], rangeURI: integerPropertyType.rangeURI}),
             setDragDisabled: jest.fn(),
-            onChange: jest.fn()
+            onChange: jest.fn(),
+            showingModal: jest.fn()
         };
 
         const cfv  = mount(<ConditionalFormattingAndValidation

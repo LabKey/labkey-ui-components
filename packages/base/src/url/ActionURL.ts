@@ -71,7 +71,7 @@ export function buildURL(controller: string, action: string, params?: any, optio
     return ActionURL.buildURL(
         controller,
         action,
-        options && options.container ? options.container : undefined,
+        options && options.container ? options.container : LABKEY.container.path,
         parameters
     );
 }

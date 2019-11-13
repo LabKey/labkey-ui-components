@@ -1092,6 +1092,11 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.19.tgz#754a0f85e1290858152e1c05700ab502b11197f1"
   integrity sha512-nd2Ul/CUs8U9sjofQYAALzOGpgkVJQgEhIJnOHaoyVR/LeC3x2mVg4eB910a4kS6WgLPebAY0M2fApEI497raQ==
 
+"@fortawesome/fontawesome-common-types@^0.2.25":
+  version "0.2.25"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.25.tgz#6df015905081f2762e5cfddeb7a20d2e9b16c786"
+  integrity sha512-3RuZPDuuPELd7RXtUqTCfed14fcny9UiPOkdr2i+cYxBoTOfQgxcDoq77fHiiHcgWuo1LoBUpvGxFF1H/y7s3Q==
+
 "@fortawesome/fontawesome-free@5.9.0":
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-free/-/fontawesome-free-5.9.0.tgz#1aa5c59efb1b8c6eb6277d1e3e8c8f31998b8c8e"
@@ -1103,6 +1108,13 @@
   integrity sha512-D4ICXg9oU08eF9o7Or392gPpjmwwgJu8ecCFusthbID95CLVXOgIyd4mOKD9Nud5Ckz+Ty59pqkNtThDKR0erA==
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.19"
+
+"@fortawesome/free-regular-svg-icons@5.11.2":
+  version "5.11.2"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-regular-svg-icons/-/free-regular-svg-icons-5.11.2.tgz#6edfc5c230094be3b9070fef048c01aa321a8428"
+  integrity sha512-k0vbThRv9AvnXYBWi1gn1rFW4X7co/aFkbm0ZNmAR5PoWb9vY9EDDDobg8Ay4ISaXtCPypvJ0W1FWkSpLQwZ6w==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.25"
 
 "@fortawesome/free-solid-svg-icons@5.9.0":
   version "5.9.0"
@@ -2677,6 +2689,15 @@
   integrity sha512-w/Agv91PQ2q5w4MK+plWshyvLMFePxdl+b2KtlFHBSbr6FgaguIGEAdhA3l0hyKDmEj3VMHGFiBqwhsQJ2Rltg==
   dependencies:
     "@types/react" "*"
+
+"@types/react-datepicker@2.9.3":
+  version "2.9.3"
+  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-2.9.3.tgz#af8e7a40e159ce95fe33edbcf707fdbf594e53d2"
+  integrity sha512-87L4+bQ1FwAmlb+6bMaXVMKFdVvH0u7Zib0x4kOPRqAb0qfrQuaWOlLYvd/yETYhCFuHuQEA46kasyU6PpH3+A==
+  dependencies:
+    "@types/react" "*"
+    date-fns "^2.0.1"
+    popper.js "^1.14.1"
 
 "@types/react-dom@16.8.4":
   version "16.8.4"
@@ -10404,6 +10425,11 @@ polished@^3.3.1:
   integrity sha512-GiuavmunMIKMOEoSPkXoqBYM2ZcI4YIwCaiwmTOQ55Zq4HG2kD0YZt3WlLZ2l3U9XhJ1LM/fgjCFHHffiZP0YQ==
   dependencies:
     "@babel/runtime" "^7.4.4"
+
+popper.js@^1.14.1:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.0.tgz#2e1816bcbbaa518ea6c2e15a466f4cb9c6e2fbb3"
+  integrity sha512-+G+EkOPoE5S/zChTpmBSSDYmhXJ5PsW8eMhH8cP/CQHMFPBG/kC9Y5IIw6qNYgdJ+/COf0ddY2li28iHaZRSjw==
 
 popper.js@^1.14.4, popper.js@^1.14.7:
   version "1.15.0"

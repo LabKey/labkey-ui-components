@@ -10,6 +10,10 @@ interface LabelHelpTipProps {
     body: () => any,
     placement?: "top"|"right"|"bottom"|"left"
     id?: string
+    size?: any   // size of help icon, if using default icon
+    customStyle?: any  // additional style added to help icon
+    required?: boolean  // will add required message at bottom of help tooltip
+    iconComponent?: () => React.ReactElement  // use a different icon than the question mark circle
 }
 
 interface LabelHelpTipState {
@@ -31,10 +35,12 @@ export class LabelHelpTip extends React.PureComponent<LabelHelpTipProps, LabelHe
 
     static defaultProps= {
         id: "tooltip",
+        size: "1x",
+        customStyle: {}
     };
 
     render() {
-        const { title, body, placement, id } = this.props;
+        const { title, body, placement, id, size, customStyle, required, iconComponent } = this.props;
         const { target, show, attachRef } = this.state;
 
         return (
@@ -44,15 +50,19 @@ export class LabelHelpTip extends React.PureComponent<LabelHelpTipProps, LabelHe
                      onMouseOut={() => this.setState({ show: !show })}>
 
                     {/* Need to have both icon and overlay inside mouse handlers div so overlay stays visible when moused over*/}
-                    <FontAwesomeIcon className='label-help-icon' icon={faQuestionCircle}/>
+                    {iconComponent ? iconComponent() :
+                        <FontAwesomeIcon size={size} style={customStyle} className='label-help-icon'
+                                         icon={faQuestionCircle}/>
+                    }
                     <Overlay target={target} show={show} placement={placement}>
                         <Popover id={id} title={title}>
                             {body()}
+                            {required &&
+                                <div className="label-help-required">This field is required.</div>
+                            }
                         </Popover>
                     </Overlay>
                 </span>
-
-
             </>
 
         )

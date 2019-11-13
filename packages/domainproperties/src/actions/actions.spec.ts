@@ -117,7 +117,7 @@ describe("domain properties actions", () => {
             propertyURI: 'test'
         });
 
-        let multipleErrorMsg = "Multiple fields contain issues that need to be fixed. Review the red highlighted fields below for more information.";
+        let multipleErrorMsg = "Multiple fields contain issues that need to be fixed. Review the red highlighted fields above for more information.";
 
         message = "'modified' is a reserved field name in 'CancerCuringStudy'";
         domainFieldError.push({message, field: field2, id: 1});

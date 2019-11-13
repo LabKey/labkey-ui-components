@@ -56,7 +56,9 @@ exports[`TextFieldOptions Text data type 1`] = `
               Maximum Text Length
               <LabelHelpTip
                 body={[Function]}
+                customStyle={Object {}}
                 id="tooltip"
+                size="1x"
                 title="Max Text Length"
               >
                 <span
@@ -88,15 +90,16 @@ exports[`TextFieldOptions Text data type 1`] = `
                     pull={null}
                     pulse={false}
                     rotation={null}
-                    size={null}
+                    size="1x"
                     spin={false}
+                    style={Object {}}
                     symbol={false}
                     title=""
                     transform={null}
                   >
                     <svg
                       aria-hidden="true"
-                      className="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                      className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                       data-icon="question-circle"
                       data-prefix="fas"
                       focusable="false"
@@ -123,7 +126,7 @@ exports[`TextFieldOptions Text data type 1`] = `
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                           data-icon="question-circle"
                           data-prefix="fas"
                           focusable="false"
@@ -149,7 +152,7 @@ exports[`TextFieldOptions Text data type 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-question-circle fa-w-16 label-help-icon"
+                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
                             data-icon="question-circle"
                             data-prefix="fas"
                             focusable="false"
@@ -191,16 +194,27 @@ exports[`TextFieldOptions Text data type 1`] = `
           <div
             className="domain-text-options-col col-xs-12"
           >
-            <input
+            <FormControl
+              bsClass="form-control"
               checked={false}
               className="domain-text-options-radio1 domain-field-float-left"
+              componentClass="input"
               disabled={false}
               id="domainpropertiesrow-maxLength-1"
-              name="domainpropertiesrow-maxLength"
               onChange={[Function]}
               type="radio"
               value="maxLength"
-            />
+            >
+              <input
+                checked={false}
+                className="domain-text-options-radio1 domain-field-float-left form-control"
+                disabled={false}
+                id="domainpropertiesrow-maxLength-1"
+                onChange={[Function]}
+                type="radio"
+                value="maxLength"
+              />
+            </FormControl>
             <div
               className="domain-text-label"
             >
@@ -226,15 +240,25 @@ exports[`TextFieldOptions Text data type 1`] = `
           <div
             className="col-xs-12"
           >
-            <input
+            <FormControl
+              bsClass="form-control"
               checked={true}
               className="domain-text-options-radio2 domain-field-float-left"
+              componentClass="input"
               id="domainpropertiesrow-customLength-1"
-              name="domainpropertiesrow-customLength"
               onChange={[Function]}
               type="radio"
               value="customLength"
-            />
+            >
+              <input
+                checked={true}
+                className="domain-text-options-radio2 domain-field-float-left form-control"
+                id="domainpropertiesrow-customLength-1"
+                onChange={[Function]}
+                type="radio"
+                value="customLength"
+              />
+            </FormControl>
             <span
               className="domain-text-options-length domain-field-float-left domain-text-label"
             >
@@ -242,31 +266,22 @@ exports[`TextFieldOptions Text data type 1`] = `
             </span>
             <FormControl
               bsClass="form-control"
+              className="domain-text-length-field"
               componentClass="input"
               disabled={false}
               id="domainpropertiesrow-scale-1"
               name="domainpropertiesrow-scale"
               onChange={[Function]}
-              style={
-                Object {
-                  "width": "60px",
-                }
-              }
-              type="text"
+              type="number"
               value={200}
             >
               <input
-                className="form-control"
+                className="domain-text-length-field form-control"
                 disabled={false}
                 id="domainpropertiesrow-scale-1"
                 name="domainpropertiesrow-scale"
                 onChange={[Function]}
-                style={
-                  Object {
-                    "width": "60px",
-                  }
-                }
-                type="text"
+                type="number"
                 value={200}
               />
             </FormControl>

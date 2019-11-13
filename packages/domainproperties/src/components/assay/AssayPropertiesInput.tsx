@@ -6,7 +6,7 @@ import { ActionURL } from "@labkey/api";
 
 import { AssayProtocolModel } from "../../models";
 import { FORM_IDS } from "./AssayPropertiesPanel";
-import { getValidPublishTargets } from "../../actions/actions";
+import { getValidPublishTargets, getSplitSentence } from "../../actions/actions";
 
 interface AssayPropertiesInputProps {
     label: string
@@ -16,22 +16,27 @@ interface AssayPropertiesInputProps {
 }
 
 export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
+
     render() {
         const { label, required, helpTipBody, colSize, children } = this.props;
 
         return (
             <Row className={'margin-top'}>
-                <Col xs={3}>
-                    {label}
-                    {required ? ' *' : ''}
-                    {helpTipBody &&
+                <Col xs={3} lg={4}>
+                    {getSplitSentence(label, false)}
+                    <span className='domain-no-wrap'>
+                        {getSplitSentence(label, true)}
+                        {required ? ' *' : ''}
+                        {helpTipBody &&
                         <LabelHelpTip
-                            title={label}
-                            body={helpTipBody}
+                                title={label}
+                                body={helpTipBody}
+                                required={required}
                         />
-                    }
+                        }
+                    </span>
                 </Col>
-                <Col xs={colSize || 9}>
+                <Col xs={colSize || 9} lg={8}>
                     {children}
                 </Col>
             </Row>
@@ -53,7 +58,6 @@ export function NameInput(props: InputProps) {
                 return (
                     <>
                         <p>The name for this assay design. Note that this can't be changed after the assay design is created.</p>
-                        <p><small><i>This field is required.</i></small></p>
                     </>
                 )
             }}
@@ -146,7 +150,7 @@ export function PlateTemplatesInput(props: InputProps) {
                     ))
                 }
             </FormControl>
-            <a href={ActionURL.buildURL('plate', 'plateTemplateList')} className={'labkey-text-link'}>Configure Templates</a>
+            <a href={ActionURL.buildURL('plate', 'plateTemplateList', LABKEY.container.path)} className={'labkey-text-link'}>Configure Templates</a>
         </AssayPropertiesInput>
     )
 }
@@ -318,7 +322,6 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
         return (
             <AssayPropertiesInput
                 label={'Auto-Copy Data to Study'}
-                colSize={6}
                 helpTipBody={() => {
                     return (
                         <>
@@ -414,7 +417,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const label = 'Transform Scripts';
 
         return (
-            <Col xs={3}>
+            <Col className='domain-field-no-padding-right' xs={3} lg={4}>
                 {label}
                 <LabelHelpTip
                     title={label}
@@ -449,8 +452,8 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                 {protocolTransformScripts.map((scriptPath, i) => {
                     return (
                         <Row key={'scriptrow-' + i} className={'margin-top'}>
-                            {i === 0 ? this.renderLabel() : <Col xs={3}/>}
-                            <Col xs={6}>
+                            {i === 0 ? this.renderLabel() : <Col xs={3} lg={4}/>}
+                            <Col xs={8} lg={7}>
                                 <FormControl
                                     key={'scriptinput-' + i}
                                     id={FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS + i}
@@ -459,7 +462,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                     onChange={this.onChange}
                                 />
                             </Col>
-                            <Col xs={3}>
+                            <Col xs={1}>
                                 <RemoveEntityButton
                                     key={'scriptremove-' + i}
                                     labelClass={'domain-remove-icon'}
@@ -470,14 +473,14 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                     )
                 })}
                 <Row className={'margin-top'}>
-                    {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3}/>}
-                    <Col xs={3}>
+                    {protocolTransformScripts.size === 0 ? this.renderLabel() : <Col xs={3} lg={4}/>}
+                    <Col xs={3} lg={4}>
                         <AddEntityButton entity={'Script'} containerClass={''} onClick={this.addScript}/>
                     </Col>
                     {protocolTransformScripts.size > 0 && !model.isNew() &&
-                        <Col xs={3}>
+                        <Col xs={3} lg={4}>
                             <span className={'pull-right'}>
-                                <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', undefined, {rowId: model.protocolId})}
+                                <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', LABKEY.container.path, {rowId: model.protocolId})}
                                    target={'_blank'}
                                    className={'labkey-text-link'}
                                 >

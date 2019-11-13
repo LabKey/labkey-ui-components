@@ -29,21 +29,30 @@ import {
     ATTACHMENT_TYPE,
     IDomainField,
     IAppDomainHeader,
-    HeaderRenderer
+    HeaderRenderer,
+    DomainPanelStatus,
+    DomainException
 } from "../models";
-import { Sticky, StickyContainer } from "react-sticky";
+import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
-import { AddEntityButton, Alert, ConfirmModal, FileAttachmentForm, InferDomainResponse, Tip } from "@glass/base";
+import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+    AddEntityButton,
+    Alert,
+    FileAttachmentForm,
+    ConfirmModal,
+    InferDomainResponse,
+    LabelHelpTip
+} from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import {
     addDomainField,
     getIndexFromId,
-    getMaxPhiLevel,
     handleDomainUpdates,
+    getMaxPhiLevel,
     removeField,
-    setDomainFields
+    setDomainFields, setDomainException, clearAllFieldErrors, createFormInputName, clearAllClientValidationErrors
 } from "../actions/actions";
 
 import { LookupProvider } from "./Lookup/Context";
@@ -51,24 +60,27 @@ import {
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     LK_DOMAIN_HELP_URL,
-    PHILEVEL_NOT_PHI
+    PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR
 } from "../constants";
 
 interface IDomainFormInput {
     domain: DomainDesign
     onChange: (newDomain: DomainDesign, dirty: boolean) => any
+    onToggle?: (collapsed: boolean, callback?: () => any) => any
     helpURL?: string
     helpNoun?: string
     showHeader?: boolean
     initCollapsed?: boolean
     collapsible?: boolean
-    markComplete?: boolean
+    controlledCollapse?: boolean
+    validate?: boolean
+    isNew?: boolean
+    panelStatus?: DomainPanelStatus
     headerPrefix?: string // used as a string to remove from the heading when using the domain.name
     headerTitle?: string,
-    showHeaderFieldCount?: boolean
     showInferFromFile?: boolean
+    useTheme?: boolean
     appDomainHeaderRenderer?: HeaderRenderer
-    panelCls?: string
     maxPhiLevel?: string  // Just for testing, only affects display
     containerTop?: number // This sets the top of the sticky header, default is 0
     modelDomains?: List<DomainDesign> //Set of domains that encompass the full protocol, that may impact validation or alerts
@@ -104,8 +116,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         helpNoun: 'field designer',
         helpURL: LK_DOMAIN_HELP_URL,
         showHeader: true,
-        showHeaderFieldCount: true,
-        initCollapsed: false
+        initCollapsed: false,
+        isNew: false
     };
 
     constructor(props) {
@@ -136,6 +148,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
+    componentDidUpdate(prevProps: Readonly<IDomainFormInput>, prevState: Readonly<IDomainFormState>, snapshot?: any): void {
+        const {domain} = this.props;
+
+        // This is kind of a hacky way to remove a class from core css so we can set the color of the panel hdr to match the theme
+        if (prevProps.useTheme && domain && domain.name) {
+            const el = document.getElementById(createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr'));
+            el.classList.remove("panel-heading");
+        }
+    }
+
     getAvailableTypes = (): List<PropDescType>  => {
         const { domain } = this.props;
 
@@ -157,28 +179,67 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
-        // if not collapsible, allow the prop change to update the collapsed state
-        if (!this.props.collapsible && nextProps.initCollapsed !== this.props.initCollapsed) {
-            this.togglePanel(null, nextProps.initCollapsed);
+        const { controlledCollapse, initCollapsed, domain, validate, onChange } = this.props;
+
+        // if controlled collapsible, allow the prop change to update the collapsed state
+        if (controlledCollapse && nextProps.initCollapsed !== initCollapsed) {
+            this.toggleLocalPanel(nextProps.initCollapsed);
+        }
+
+        if (nextProps.validate && validate !== nextProps.validate) {
+            const newDomain = this.validateDomain(nextProps.domain);
+            if (onChange) {
+                onChange(newDomain, false);
+            }
         }
     }
 
-    onPanelHeaderClick = (evt: any) => {
-        if (this.props.collapsible) {
-            this.togglePanel(null);
+    validateDomain = (domain: DomainDesign): DomainDesign => {
+        const invalidFields = domain.getInvalidFields();
+        let newDomain = domain;
+        if (invalidFields.size > 0) {
+            const exception = DomainException.clientValidationExceptions("Missing required field properties", "Missing required property", invalidFields);
+            const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exception);
+            newDomain = domain.set('domainException', (exceptionWithAllErrors ? exceptionWithAllErrors : exception)) as DomainDesign;
         }
+        else {
+            newDomain = clearAllClientValidationErrors(domain);
+        }
+
+        return newDomain;
     };
 
-    togglePanel = (evt: any, collapsed?: boolean): void => {
+    toggleLocalPanel = (collapsed?: boolean): void => {
+        const { domain, onChange } = this.props;
+
         this.setState((state) => ({
             expandedRowIndex: undefined,
             collapsed: collapsed !== undefined ? collapsed : !state.collapsed
         }), () => {
+            let newDomain = this.validateDomain(domain);
+
             // clear the search/filter state if collapsed
             if (this.state.collapsed) {
-                this.updateFilteredFields();
+                newDomain = this.getFilteredFields(newDomain);
+            }
+
+            if (onChange) {
+                onChange(newDomain, false);
             }
         });
+    };
+
+    togglePanel = (evt: any, collapsed?: boolean): void => {
+        const { onToggle, collapsible, controlledCollapse} = this.props;
+
+        if (collapsible || controlledCollapse) {
+            if (onToggle) {
+                onToggle((collapsed !== undefined ? collapsed : !this.state.collapsed), this.toggleLocalPanel);
+            }
+            else {
+                this.toggleLocalPanel(collapsed)
+            }
+        }
     };
 
     collapseRow = (): void => {
@@ -218,7 +279,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return this.state.expandedRowIndex !== undefined;
     };
 
-    isValidDomain(domainDesign: DomainDesign): boolean {
+    domainExists(domainDesign: DomainDesign): boolean {
         return !!(domainDesign);
     }
 
@@ -229,7 +290,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onDomainChange(updatedDomain: DomainDesign, dirty?: boolean) {
-        const { onChange } = this.props;
+        const { onChange, controlledCollapse } = this.props;
+
+        // Check for cleared errors
+        if (controlledCollapse && updatedDomain.hasErrors()) {
+            const invalidFields = updatedDomain.getInvalidFields();
+            const markedInvalid = updatedDomain.get("domainException").get("errors");
+
+            if (markedInvalid.size > invalidFields.size) {
+                updatedDomain = this.validateDomain(updatedDomain);
+            }
+        }
 
         if (onChange) {
             onChange(updatedDomain, dirty !== undefined ? dirty : true);
@@ -422,7 +493,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         else {
             // TODO remove domain-form-add-btn after use in 19.3
             return (
-                <Row>
+                <Row className='domain-add-field-row'>
                     <Col xs={12}>
                         <AddEntityButton
                             entity="Field"
@@ -545,9 +616,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.updateFilteredFields(value);
     };
 
-    updateFilteredFields(value?: string) {
-        const { domain } = this.props;
-
+    getFilteredFields = (domain: DomainDesign, value?: string): DomainDesign => {
         const filteredFields = domain.fields.map( field => {
             if (!value || (field.name && field.name.toLowerCase().indexOf(value.toLowerCase()) !== -1)) {
                 return field.set('visible', true);
@@ -556,20 +625,36 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return field.set('visible', false);
         });
 
+        return domain.set('fields', filteredFields) as DomainDesign;
+    };
+
+    updateFilteredFields = (value?: string) => {
+        const { domain } = this.props;
+
+        const filteredDomain = this.getFilteredFields(domain, value);
+
         this.setState(() => ({filtered: value !== undefined && value.length > 0}));
-        this.onDomainChange(domain.set('fields', filteredFields) as DomainDesign, false);
+        this.onDomainChange(filteredDomain, false);
+    };
+
+    isPanelExpanded = (): boolean => {
+        const { collapsible, controlledCollapse } = this.props;
+        const { collapsed } = this.state;
+
+        if (!collapsible && !controlledCollapse)
+            return true;
+
+        return !collapsed;
     };
 
     renderPanelHeaderContent() {
-        const { helpURL, helpNoun, children } = this.props;
+        const { helpURL, controlledCollapse } = this.props;
 
         return(
-            <Row className='domain-form-hdr-margins'>
+            <Row className={helpURL ? 'domain-form-hdr-margins' : ''}>
                 <Col xs={helpURL ? 9 : 12}>
-                    {children ? children
-                        : <div className='domain-field-float-left'>
-                            Set up and configure fields for use in this {helpNoun}.
-                        </div>
+                    {!controlledCollapse &&
+                        'Adjust fields and their properties. Expand a row to set additional properties.'
                     }
                 </Col>
                 {helpURL &&
@@ -674,76 +759,190 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         )
     }
 
-    getHeaderName(): string {
-        const { domain, headerTitle, headerPrefix, showHeaderFieldCount } = this.props;
-        let name = headerTitle || (domain.name ? domain.name : "Fields");
+    static getHeaderName(name?: string, headerTitle?: string, headerPrefix?: string): string {
+        let updatedName = headerTitle || (name ? name : "Fields");
 
         // optionally trim off a headerPrefix from the name display
-        if (headerPrefix && name.indexOf(headerPrefix + ' ') === 0) {
-            name = name.replace(headerPrefix + ' ', '');
+        if (headerPrefix && updatedName.indexOf(headerPrefix + ' ') === 0) {
+            updatedName = updatedName.replace(headerPrefix + ' ', '');
         }
 
         // prefer "Results Fields" over "Data Fields"in assay case
-        if (name.endsWith('Data Fields')) {
-            name = name.replace('Data Fields', 'Results Fields');
+        if (updatedName.endsWith('Data Fields')) {
+            updatedName = updatedName.replace('Data Fields', 'Results Fields');
         }
 
-        // add the field count to the header, if not empty
-        if (showHeaderFieldCount && domain.fields.size > 0) {
-            name = name + ' (' + domain.fields.size + ')';
-        }
-
-        return name;
+        return updatedName;
     }
 
-    renderHeaderContent() {
-        const { collapsible, markComplete } = this.props;
+    getPanelHeaderClass(): string {
+        const { collapsible, controlledCollapse, useTheme } = this.props;
+
+        let classes = 'domain-panel-header ' + ((collapsible || controlledCollapse) ? 'domain-heading-collapsible' : '');
+        classes += ((this.isPanelExpanded() && controlledCollapse) ? ' domain-panel-header-expanded' : ' domain-panel-header-collapsed');
+        if (this.isPanelExpanded() && controlledCollapse) {
+            classes += (useTheme ? ' labkey-page-nav' : ' domain-panel-header-no-theme');
+        }
+
+        return classes;
+    }
+
+    getHeaderIconClass = () => {
+        const { panelStatus, domain } = this.props;
         const { collapsed } = this.state;
+        let classes = 'domain-panel-status-icon';
+
+        if (collapsed) {
+            if (!domain.hasException() && panelStatus === 'COMPLETE') {
+                return classes + ' domain-panel-status-icon-green';
+            }
+            return (classes + ' domain-panel-status-icon-blue');
+        }
+
+        return classes;
+    };
+
+    getHeaderIcon = () => {
+        const { domain, panelStatus } = this.props;
+
+        if (domain.hasException() || panelStatus === 'TODO') {
+            return faExclamationCircle;
+        }
+
+        return faCheckCircle;
+    };
+
+    getHeaderIconComponent = () => {
+
+        return (
+            <span className={this.getHeaderIconClass()}>
+                <FontAwesomeIcon icon={this.getHeaderIcon()}/>
+            </span>
+        )
+    };
+
+    getHeaderIconHelpMsg = () => {
+        const { panelStatus, domain } = this.props;
+
+        if (domain.hasException()) {
+            return domain.domainException.exception;
+        }
+
+        if (panelStatus === 'TODO') {
+            return "This section does not contain any user defined fields.  You may want to review."
+        }
+
+        return undefined;
+    };
+
+    getPanelClass = () => {
+        const { collapsed } = this.state;
+        const { useTheme, controlledCollapse } = this.props;
+
+        let classes = 'domain-form-panel';
+
+        if (!collapsed && controlledCollapse) {
+            if (useTheme) {
+                classes += ' lk-border-theme-light';
+            }
+            else {
+                classes += ' domain-panel-no-theme';
+            }
+        }
+
+        return classes;
+    };
+
+    getAlertClasses = () => {
+        const { collapsed } = this.state;
+        const { useTheme, controlledCollapse } = this.props;
+        let classes = 'domain-bottom-alert panel-default';
+
+        if (!collapsed && controlledCollapse) {
+            if (useTheme) {
+                classes += ' lk-border-theme-light';
+            }
+            else {
+                classes += ' domain-bottom-alert-expanded';
+            }
+        }
+        else {
+            classes += ' panel-default';
+        }
+
+        if (!collapsed)
+            classes += ' domain-bottom-alert-top';
+
+        return classes;
+    };
+
+    renderHeaderContent() {
+        const { collapsible, controlledCollapse, panelStatus, children, domain, headerTitle, headerPrefix } = this.props;
+        const { collapsed } = this.state;
+
+        const iconHelpMsg = ((panelStatus && panelStatus !== 'NONE') ? this.getHeaderIconHelpMsg() : undefined);
 
         return (
             <>
-                <span>{this.getHeaderName()}</span>
-                {collapsible && collapsed &&
+                {/*Setup header help icon if applicable*/}
+                {iconHelpMsg &&
+                    <LabelHelpTip title={DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)} body={() => (iconHelpMsg)} placement="top" iconComponent={this.getHeaderIconComponent}/>
+                }
+                {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
+
+                {/*Header name*/}
+                <span>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
+
+                {/*Expand/Collapse Icon*/}
+                {(collapsible || controlledCollapse) && collapsed &&
                     <span className={'pull-right'}>
                         <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
                     </span>
                 }
-                {collapsible && !collapsed &&
+                {(collapsible || controlledCollapse) && !collapsed &&
                     <span className={'pull-right'}>
-                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-expand-btn"}/>
+                        <FontAwesomeIcon size={'lg'} icon={faMinusSquare} className={"domain-form-collapse-btn"}/>
                     </span>
                 }
-                {!collapsible && collapsed && markComplete &&
-                    <span className={'pull-right'}>
-                        <i className={'fa fa-check-square-o fa-lg as-secondary-color'}/>
-                    </span>
+
+                {/*Help tip*/}
+                {children &&
+                    <LabelHelpTip customStyle={{verticalAlign: 'top', marginLeft: '5px'}} placement={'top'} title={DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)} body={() => (children)}/>
+                }
+
+                {/*Number of fields*/}
+                {controlledCollapse && (domain.fields.size > 0) &&
+                    <span className='domain-panel-header-fields-defined'>{'' + domain.fields.size + ' Field' + (domain.fields.size > 1?'s':'') + ' Defined'}</span>
                 }
             </>
         )
     }
 
     render() {
-        const { domain, showHeader, panelCls, collapsible } = this.props;
-        const { showConfirm, collapsed } = this.state;
+        const { domain, showHeader, collapsible, controlledCollapse } = this.props;
+        const { showConfirm } = this.state;
 
         return (
             <>
                 {showConfirm && this.renderFieldRemoveConfirm()}
-                <Panel className={"domain-form-panel" + (panelCls ? ' ' + panelCls : '')}>
+                <Panel className={this.getPanelClass()} expanded={this.isPanelExpanded()} onToggle={function(){}}>
                     {showHeader &&
-                        <Panel.Heading onClick={this.onPanelHeaderClick} className={collapsible ? 'domain-heading-collapsible' : ''}>
+                        <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={domain && domain.name ? createFormInputName(domain.name.replace(/\s/g, '-') + '-hdr') : 'domain-header'}>
                             {this.renderHeaderContent()}
                         </Panel.Heading>
                     }
-                    {!collapsed &&
-                        <Panel.Body>
-                            {this.isValidDomain(domain)
-                                ? this.renderForm()
-                                :<Alert>Invalid domain design.</Alert>
-                            }
-                        </Panel.Body>
-                    }
+                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                        {this.domainExists(domain)
+                            ? this.renderForm()
+                            : <Alert>Invalid domain design.</Alert>
+                        }
+                    </Panel.Body>
                 </Panel>
+                {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR &&
+                    <div onClick={this.togglePanel} className={this.getAlertClasses()}>
+                        <Alert bsStyle="danger">{domain.domainException.exception}</Alert>
+                    </div>
+                }
             </>
         );
     }

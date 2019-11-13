@@ -25,13 +25,14 @@ import { List } from "immutable";
 import {ConditionalFormattingAndValidation} from "./ConditionalFormattingAndValidation";
 import {isFieldFullyLocked} from "../propertiesUtil";
 import { SampleFieldOptions } from "./SampleFieldOptions";
+import {Col} from "react-bootstrap";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField
     index: number
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     onMultiChange: (changes: List<IFieldChange>) => void
-    setDragDisabled: (boolean) => any
+    showingModal: (boolean) => any
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
@@ -79,17 +80,22 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange, setDragDisabled } = this.props;
+        const { field, index, onChange, showingModal } = this.props;
 
         return(
             <div className='domain-row-container'>
                 <div className='domain-row-handle'/>
                 <div className='domain-row-container-expanded'>
-                    {this.typeDependentOptions()}
-                    <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                    <Col xs={12}>
+                        {this.typeDependentOptions()}
+                    </Col>
+                    <Col xs={12} lg={10}>
+                        <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                    </Col>
                     {!isFieldFullyLocked(field.lockType) &&
-                        <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange}
-                                                        setDragDisabled={setDragDisabled}/>
+                        <Col xs={12}>
+                            <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal}/>
+                        </Col>
                     }
                 </div>
             </div>

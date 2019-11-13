@@ -14,6 +14,14 @@ from sampleManagement
 * in EditableGrid, change single-row deletion from delicate right-click on row number to separate icon column
 * add optional toolTip property to EditableColumnMetadata to allow display of overlay tip in column headers
 
+### version 0.22.3
+*Released*: 13 November 2019
+* Add headerURL to MenuSectionConfig
+
+### version 0.22.2
+*Released*: 12 November 2019
+* Package patch update for changes to @glass/domainproperties v0.0.50
+
 ### version 0.22.1
 *Released*: 8 November 2019
 * Item 6493: fix for containerPath encoding issue with buildURL() helper

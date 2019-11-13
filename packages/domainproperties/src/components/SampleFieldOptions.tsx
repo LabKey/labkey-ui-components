@@ -105,7 +105,9 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                                 body={this.getHelpText} />
                         </div>
                     </Col>
-                    <Col xs={6}>
+                </Row>
+                <Row>
+                    <Col xs={5}>
                         <FormControl componentClass="select"
                                      id={id}
                                      key={id}

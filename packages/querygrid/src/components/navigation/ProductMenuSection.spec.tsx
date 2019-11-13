@@ -111,6 +111,21 @@ describe("ProductMenuSection render", () => {
         expect(toJson(menuSection)).toMatchSnapshot();
     });
 
+    test("section with custom headerURL", () => {
+        let section = MenuSectionModel.create({
+            label: "Sample Sets",
+            items: List<MenuSectionModel>(),
+            itemLimit: 2,
+            key: "samples"
+        });
+
+        const menuSection = mount(<ProductMenuSection productId="testProductHeaderUrl" section={section} config={new MenuSectionConfig({
+            iconURL: "/testProduct/images/samples.svg",
+            headerURL: AppURL.create('sample', 'new').addParams({sort: 'date'})
+        })}/>);
+
+        expect(toJson(menuSection)).toMatchSnapshot();
+    });
 
     test("one-column section", () => {
         const productId = "testProduct3Columns";

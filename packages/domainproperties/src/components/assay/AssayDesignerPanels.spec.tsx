@@ -5,9 +5,7 @@ import { FileAttachmentForm } from "@glass/base";
 
 import {AssayDesignerPanels} from "./AssayDesignerPanels";
 import { AssayProtocolModel, DomainDesign } from "../../models";
-import DomainForm from "../DomainForm";
-import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
-import { NameInput } from "./AssayPropertiesInput";
+import { DescriptionInput, NameInput } from "./AssayPropertiesInput";
 import {Panel} from "react-bootstrap";
 import toJson from "enzyme-to-json";
 
@@ -140,58 +138,28 @@ describe('AssayDesignerPanels', () => {
         form.unmount();
     });
 
-    // TODO determine if this test is still valid and should be updated with new assay designer changes to move away from wizard next/back buttons
-    // test('new assay wizard', () => {
-    //     const component = (
-    //         <AssayDesignerPanels
-    //             initModel={EMPTY_MODEL}
-    //             onCancel={jest.fn}
-    //             onComplete={jest.fn}
-    //         />
-    //     );
-    //
-    //     function verifyActivePanel(wrapper: any, assayPropsActive: boolean, batchActive: boolean, runActive: boolean, resultsActive: boolean) {
-    //         expect(wrapper.find(AssayPropertiesPanel)).toHaveLength(1);
-    //         expect(wrapper.find(DomainForm)).toHaveLength(3);
-    //         setTimeout(() => {
-    //             expect(wrapper.find({className: 'panel-collapse collapse in'})).toHaveLength(1);
-    //             expect(wrapper.find(NameInput)).toHaveLength(assayPropsActive ? 1 : 0);
-    //             expect(wrapper.find('div.domain-form-no-field-panel')).toHaveLength(batchActive || runActive ? 1 : 0);
-    //             expect(wrapper.find(FileAttachmentForm)).toHaveLength(resultsActive ? 1 : 0);
-    //         }, 1000);
-    //     }
-    //
-    //     const wrapper = mount(component);
-    //     verifyActivePanel(wrapper, true, false, false, false);
-    //     expect(getButton(wrapper, 'Next').props().disabled).toBeTruthy();
-    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-    //
-    //     // set the assay name, which should enable the next button
-    //     setAssayName(wrapper, 'Foo');
-    //     expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
-    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-    //
-    //     // click Next to advance in the wizard to the Batch Fields
-    //     getButton(wrapper, 'Next').simulate('click');
-    //     verifyActivePanel(wrapper, false, true, false, false);
-    //     expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
-    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-    //
-    //     // click Next to advance in the wizard to the Run Fields
-    //     getButton(wrapper, 'Next').simulate('click');
-    //     verifyActivePanel(wrapper, false, false, true, false);
-    //     expect(getButton(wrapper, 'Next').props().disabled).toBeFalsy();
-    //     expect(getButton(wrapper, 'Finish')).toHaveLength(0);
-    //
-    //     // click Next to advance in the wizard to the Data Fields
-    //     getButton(wrapper, 'Next').simulate('click');
-    //     verifyActivePanel(wrapper, false, false, false, true);
-    //     expect(getButton(wrapper, 'Next')).toHaveLength(0);
-    //     expect(getButton(wrapper, 'Finish')).toHaveLength(1);
-    //     expect(getButton(wrapper, 'Finish').props().disabled).toBeFalsy();
-    //
-    //     wrapper.unmount();
-    // });
+    test('new assay wizard', () => {
+        const component = (
+            <AssayDesignerPanels
+                initModel={EMPTY_MODEL}
+                onCancel={jest.fn}
+                onComplete={jest.fn}
+            />
+        );
+
+        const wrapper = mount(component);
+        expect(wrapper.find('.domain-heading-collapsible').hostNodes()).toHaveLength(4);
+        expect(wrapper.find('.domain-panel-status-icon').hostNodes()).toHaveLength(3);
+        expect(wrapper.find('.fa-exclamation-circle').hostNodes()).toHaveLength(3);
+        expect(wrapper.find(NameInput)).toHaveLength(1);
+        expect(wrapper.find(DescriptionInput)).toHaveLength(1);
+        expect(wrapper.find('.domain-form-no-field-panel').hostNodes()).toHaveLength(2);
+        expect(wrapper.find('.domain-form-add-btn').hostNodes()).toHaveLength(2);
+        expect(wrapper.find('.domain-form-add-link').hostNodes()).toHaveLength(1);
+        expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
+        expect(wrapper.find('.domain-assay-save-btn').hostNodes()).toHaveLength(2);
+        wrapper.unmount();
+    });
 
     test('infer from file', () => {
         function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {

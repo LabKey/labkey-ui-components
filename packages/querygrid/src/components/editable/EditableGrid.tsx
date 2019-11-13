@@ -360,8 +360,13 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         return (
             <>
                 {label}
-                {required ? <span className="required-symbol"> *</span> : null}&nbsp;
-                {overlay}
+                {required && <span className="required-symbol">&nbsp;*</span>}
+                {overlay && (
+                    <>
+                        &nbsp;
+                        {overlay}
+                    </>
+                )}
             </>
         )
     }

@@ -76,6 +76,7 @@ import {
 } from './utils/utils'
 import { getActionErrorMessage } from './utils/messaging'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
+import { WHERE_FILTER_TYPE } from './url/WhereFilterType'
 import { AddEntityButton } from "./components/buttons/AddEntityButton"
 import { RemoveEntityButton } from "./components/buttons/RemoveEntityButton"
 import { AppURL, spliceURL } from "./url/AppURL";
@@ -285,6 +286,7 @@ export {
     setParameter,
     toggleParameter,
     spliceURL,
+    WHERE_FILTER_TYPE,
 
     // devTools functions
     applyDevTools,

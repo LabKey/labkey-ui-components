@@ -29,6 +29,7 @@ export class MenuSectionConfig extends Record({
     seeAllURL: undefined,
     emptyURL: undefined,
     emptyURLText: 'Get started...',
+    headerURL: undefined,
 }){
     emptyText?: string;
     iconURL?: string;
@@ -38,6 +39,7 @@ export class MenuSectionConfig extends Record({
     seeAllURL?: AppURL;
     emptyURL?: AppURL;
     emptyURLText: string;
+    headerURL: AppURL
 }
 
 
@@ -102,10 +104,16 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
             icon = <span className={(config.iconCls || '') + " menu-section-icon"}/>;
         }
         const label = icon ? (<>{icon}&nbsp;{section.label}</>) : section.label;
+        let headerURL = config.headerURL;
+        if (headerURL === undefined) {
+            if (section.url) {
+                headerURL = AppURL.create(section.key);
+            }
+        }
         const header = (
             <>
                 <span className="menu-section-header">
-                    {section.url ? <a href={AppURL.create(section.key).toHref()}>{label}</a> : <>{label}</>}
+                    {headerURL ? <a href={headerURL.toHref()}>{label}</a> : <>{label}</>}
                 </span>
                 <hr/>
             </>

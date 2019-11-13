@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.22.3
+*Released*: 13 November 2019
+* Add headerURL to MenuSectionConfig
+
 ### version 0.22.2
 *Released*: 12 November 2019
 * Package patch update for changes to @glass/domainproperties v0.0.50

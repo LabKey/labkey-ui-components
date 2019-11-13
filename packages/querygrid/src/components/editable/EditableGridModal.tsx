@@ -37,7 +37,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
     }
 
     onCancel = () => {
-        schemaGridInvalidate(this.props.model.schema, true);
+        schemaGridInvalidate(this.props.model.schema);
         if (this.props.onCancel) {
             this.props.onCancel();
         }
@@ -49,7 +49,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
 
     onSave = () => {
         this.props.onSave(this.getQueryGridModel());
-        schemaGridInvalidate(this.props.model.schema, true);
+        schemaGridInvalidate(this.props.model.schema);
     };
 
     render() {

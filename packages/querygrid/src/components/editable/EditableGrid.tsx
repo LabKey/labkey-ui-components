@@ -328,14 +328,14 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
                         return (
                             canDelete ?
-                            <td>
-                                <DeleteIcon key={"delete" + rn} onDelete={(event) => {
+                            <td key={"delete" + rn}>
+                                <DeleteIcon onDelete={(event) => {
                                     removeRow(model, d, rn);
                                     this.onRowCountChange();
                                 }}/>
                             </td>
                             :
-                            <td>&nbsp;</td>
+                            <td key={"delete" + rn}>&nbsp;</td>
                         );
                     }
                 })

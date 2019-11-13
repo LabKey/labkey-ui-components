@@ -15,13 +15,17 @@ interface Props extends EditableGridProps {
     cancelText?: string
     addControlProps?: Partial<AddRowsControlProps>
     saveText?: string
+    savingText?: string
+    isSaving?: boolean
 }
 
 export class EditableGridModal extends React.PureComponent<Props, any> {
 
     static defaultProps = {
         cancelText: 'Cancel',
-        saveText: 'Save'
+        saveText: 'Save',
+        savingText: 'Saving...',
+        isSaving: false
     };
 
     componentWillMount() {
@@ -29,7 +33,12 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        this.init();
+        if (nextProps.show && !nextProps.isSaving)
+            this.init();
+    }
+
+    componentWillUnmount() {
+        schemaGridInvalidate(this.props.model.schema);
     }
 
     init() {
@@ -37,7 +46,6 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
     }
 
     onCancel = () => {
-        schemaGridInvalidate(this.props.model.schema);
         if (this.props.onCancel) {
             this.props.onCancel();
         }
@@ -49,7 +57,6 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
 
     onSave = () => {
         this.props.onSave(this.getQueryGridModel());
-        schemaGridInvalidate(this.props.model.schema);
     };
 
     render() {
@@ -84,6 +91,8 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
                         containerClassName=""
                         finish={true}
                         finishText={this.props.saveText}
+                        isFinishingText={this.props.savingText}
+                        isFinishing={this.props.isSaving}
                         nextStep={this.onSave}
                     />
                 </Modal.Footer>

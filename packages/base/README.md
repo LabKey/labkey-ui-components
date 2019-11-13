@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version XXX
-*Released*: XXX
+### version 0.21.2
+*Released*: 13 November 2019
 * export WHERE_FILTER_TYPE
 
 ### version 0.21.1

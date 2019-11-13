@@ -453,7 +453,11 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
                       customStyle={Object {}}
@@ -1098,7 +1102,11 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
                       customStyle={Object {}}
@@ -1743,7 +1751,11 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
                       customStyle={Object {}}
@@ -2385,7 +2397,11 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       onChange={[Function]}
                       type="checkbox"
                     />
-                    Ensure Value Exists in Lookup Target
+                    <span
+                      className="domain-lookup-validator-text"
+                    >
+                      Ensure Value Exists in Lookup Target
+                    </span>
                     <LabelHelpTip
                       body={[Function]}
                       customStyle={Object {}}

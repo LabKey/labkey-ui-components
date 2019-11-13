@@ -25,6 +25,7 @@ import { List } from "immutable";
 import {ConditionalFormattingAndValidation} from "./ConditionalFormattingAndValidation";
 import {isFieldFullyLocked} from "../propertiesUtil";
 import { SampleFieldOptions } from "./SampleFieldOptions";
+import {Col} from "react-bootstrap";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField
@@ -85,10 +86,16 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             <div className='domain-row-container'>
                 <div className='domain-row-handle'/>
                 <div className='domain-row-container-expanded'>
-                    {this.typeDependentOptions()}
-                    <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                    <Col xs={12}>
+                        {this.typeDependentOptions()}
+                    </Col>
+                    <Col xs={12} lg={10}>
+                        <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
+                    </Col>
                     {!isFieldFullyLocked(field.lockType) &&
-                        <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal}/>
+                        <Col xs={12}>
+                            <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal}/>
+                        </Col>
                     }
                 </div>
             </div>

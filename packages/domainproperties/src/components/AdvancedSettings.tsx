@@ -65,20 +65,22 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     constructor(props) {
         super(props);
 
+        this.state = this.getInitialState(this.props.field, this.props.domainId, this.props.defaultDefaultValueType);
+    }
+
+    initializeState = () => {
+        this.setState(this.getInitialState(this.props.field, this.props.domainId, this.props.defaultDefaultValueType));
+    };
+
+    getInitialState = (field: DomainField, domainId: number, defaultDefaultValueType: string) => {
+        const { maxPhiLevel } = this.props;
+
         // Filter phi levels available
-        const phiIndex = this.getPhiLevelIndex(props.maxPhiLevel);
+        const phiIndex = this.getPhiLevelIndex(maxPhiLevel);
         const phiLevels = DOMAIN_PHI_LEVELS.filter( (value, index) => {
             return index <= phiIndex;
         }) as List<any>;
 
-        this.state = this.getInitialState(this.props.field, phiLevels, this.props.domainId, this.props.defaultDefaultValueType);
-    }
-
-    initializeState = () => {
-        this.setState(this.getInitialState(this.props.field, this.state.phiLevels, this.props.domainId, this.props.defaultDefaultValueType));
-    };
-
-    getInitialState = (field: DomainField, phiLevels, domainId: number, defaultDefaultValueType: string) => {
         return ({
             hidden: field.hidden,
             shownInDetailsView: field.shownInDetailsView,

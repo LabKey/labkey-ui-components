@@ -2,7 +2,7 @@
 .domain-form-panel {
   min-width: 1000px;
   margin-bottom: 0 !important;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .domain-form-panel input[type="checkbox"],
@@ -253,15 +253,19 @@
 }
 
 .domain-text-options-radio1 {
-  margin: 0 10px 5px 5px !important;
+  margin: 0 15px 5px 5px !important;
 }
 
 .domain-text-options-radio2 {
-  margin: 6px 10px 5px 5px !important;
+  margin: 6px 15px 5px 5px !important;
 }
 
 .domain-text-options-length {
-  margin: 6px 15px 0 0 !important;
+  margin: 6px 20px 0 0 !important;
+}
+
+.domain-text-length-field {
+  width: 80px;
 }
 
 .domain-text-label {
@@ -299,6 +303,10 @@
 .domain-field-lookup-validator-label {
   margin: 3% 0 0 10px;
   white-space: nowrap;
+}
+
+.domain-lookup-validator-text {
+  margin-left: 10px;
 }
 
 .domain-validator-error-msg {
@@ -389,7 +397,7 @@
 
 .domain-row-container-expanded {
   display: table-cell;
-  padding: 15px 2px 20px 0;
+  padding: 15px 2px 30px 0;
 }
 
 .domain-row-main {
@@ -407,7 +415,7 @@
 
 .domain-validation-button {
   font-size: 12px;
-  margin-right: 10px;
+  margin-right: 15px;
 }
 
 .domain-validation-group {
@@ -563,6 +571,10 @@
   background-color: $blue-border-solid !important;
 }
 
+.domain-panel-no-theme {
+  border-color: $blue-border-solid !important;
+}
+
 .domain-panel-header-collapsed {
   background-color: #F5F5F5;
 }
@@ -580,9 +592,6 @@
 }
 
 .domain-bottom-alert div {
-  //border-left-color: #ddd;
-  //border-right-color: #ddd;
-  //border-bottom-color: #ddd;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin-top: -4px;
@@ -590,6 +599,19 @@
   cursor: pointer;
   height: 40px;
   padding-top: .5%;
+  border-color: inherit;
+}
+
+.domain-bottom-alert-expanded div {
+   border-color: $blue-border-solid;
+ }
+
+.domain-bottom-alert-collapsed div {
+  border-color: #ddd;
+}
+
+.domain-bottom-alert-top div {
+  border-top-color: #ddd;
 }
 
 .domain-main-alert {

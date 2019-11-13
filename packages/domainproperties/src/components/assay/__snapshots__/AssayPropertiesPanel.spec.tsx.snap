@@ -1123,19 +1123,19 @@ exports[`AssayPropertiesPanel default properties 1`] = `
   validate={false}
 >
   <Uncontrolled(Panel)
-    className="domain-form-panel"
+    className="domain-form-panel domain-panel-no-theme"
     expanded={true}
     onToggle={[Function]}
   >
     <Panel
       bsClass="panel"
       bsStyle="default"
-      className="domain-form-panel"
+      className="domain-form-panel domain-panel-no-theme"
       expanded={true}
       onToggle={[Function]}
     >
       <div
-        className="domain-form-panel panel panel-default"
+        className="domain-form-panel domain-panel-no-theme panel panel-default"
       >
         <PanelHeading
           bsClass="panel"
@@ -3863,19 +3863,19 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
   validate={false}
 >
   <Uncontrolled(Panel)
-    className="domain-form-panel"
+    className="domain-form-panel domain-panel-no-theme"
     expanded={true}
     onToggle={[Function]}
   >
     <Panel
       bsClass="panel"
       bsStyle="default"
-      className="domain-form-panel"
+      className="domain-form-panel domain-panel-no-theme"
       expanded={true}
       onToggle={[Function]}
     >
       <div
-        className="domain-form-panel panel panel-default"
+        className="domain-form-panel domain-panel-no-theme panel panel-default"
       >
         <PanelHeading
           bsClass="panel"
@@ -5019,19 +5019,19 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
   validate={false}
 >
   <Uncontrolled(Panel)
-    className="domain-form-panel"
+    className="domain-form-panel domain-panel-no-theme"
     expanded={true}
     onToggle={[Function]}
   >
     <Panel
       bsClass="panel"
       bsStyle="default"
-      className="domain-form-panel"
+      className="domain-form-panel domain-panel-no-theme"
       expanded={true}
       onToggle={[Function]}
     >
       <div
-        className="domain-form-panel panel panel-default"
+        className="domain-form-panel domain-panel-no-theme panel panel-default"
       >
         <PanelHeading
           bsClass="panel"

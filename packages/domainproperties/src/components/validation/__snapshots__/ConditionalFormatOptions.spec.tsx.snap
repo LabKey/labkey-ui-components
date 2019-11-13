@@ -56,7 +56,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
         prefix="format.column"
         secondFilterTypeLabel="Second Condition"
         secondFilterValueLabel=""
-        type="int"
+        type="string"
         validatorIndex={0}
       >
         <Row
@@ -283,36 +283,72 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       </option>
                       <option
                         key="9"
+                        value="contains"
+                      >
+                        Contains
+                      </option>
+                      <option
+                        key="10"
+                        value="doesnotcontain"
+                      >
+                        Does Not Contain
+                      </option>
+                      <option
+                        key="11"
+                        value="doesnotstartwith"
+                      >
+                        Does Not Start With
+                      </option>
+                      <option
+                        key="12"
+                        value="startswith"
+                      >
+                        Starts With
+                      </option>
+                      <option
+                        key="13"
                         value="in"
                       >
                         Equals One Of (example usage: a;b;c)
                       </option>
                       <option
-                        key="10"
+                        key="14"
                         value="notin"
                       >
                         Does Not Equal Any Of (example usage: a;b;c)
                       </option>
                       <option
-                        key="11"
+                        key="15"
+                        value="containsoneof"
+                      >
+                        Contains One Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="16"
+                        value="containsnoneof"
+                      >
+                        Does Not Contain Any Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="17"
                         value="between"
                       >
                         Between, Inclusive (example usage: -4,4)
                       </option>
                       <option
-                        key="12"
+                        key="18"
                         value="notbetween"
                       >
                         Not Between, Exclusive (example usage: -4,4)
                       </option>
                       <option
-                        key="13"
+                        key="19"
                         value="hasmvvalue"
                       >
                         Has a missing value indicator
                       </option>
                       <option
-                        key="14"
+                        key="20"
                         value="nomvvalue"
                       >
                         Does not have a missing value indicator
@@ -362,7 +398,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     name="domainpropertiesrow-firstFilterValue"
                     onChange={[Function]}
                     required={true}
-                    type="number"
+                    type="text"
                     value="0"
                   >
                     <input
@@ -372,7 +408,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       name="domainpropertiesrow-firstFilterValue"
                       onChange={[Function]}
                       required={true}
-                      type="number"
+                      type="text"
                       value="0"
                     />
                   </FormControl>
@@ -490,36 +526,72 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       </option>
                       <option
                         key="10"
+                        value="contains"
+                      >
+                        Contains
+                      </option>
+                      <option
+                        key="11"
+                        value="doesnotcontain"
+                      >
+                        Does Not Contain
+                      </option>
+                      <option
+                        key="12"
+                        value="doesnotstartwith"
+                      >
+                        Does Not Start With
+                      </option>
+                      <option
+                        key="13"
+                        value="startswith"
+                      >
+                        Starts With
+                      </option>
+                      <option
+                        key="14"
                         value="in"
                       >
                         Equals One Of (example usage: a;b;c)
                       </option>
                       <option
-                        key="11"
+                        key="15"
                         value="notin"
                       >
                         Does Not Equal Any Of (example usage: a;b;c)
                       </option>
                       <option
-                        key="12"
+                        key="16"
+                        value="containsoneof"
+                      >
+                        Contains One Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="17"
+                        value="containsnoneof"
+                      >
+                        Does Not Contain Any Of (example usage: a;b;c)
+                      </option>
+                      <option
+                        key="18"
                         value="between"
                       >
                         Between, Inclusive (example usage: -4,4)
                       </option>
                       <option
-                        key="13"
+                        key="19"
                         value="notbetween"
                       >
                         Not Between, Exclusive (example usage: -4,4)
                       </option>
                       <option
-                        key="14"
+                        key="20"
                         value="hasmvvalue"
                       >
                         Has a missing value indicator
                       </option>
                       <option
-                        key="15"
+                        key="21"
                         value="nomvvalue"
                       >
                         Does not have a missing value indicator
@@ -568,7 +640,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                     id="domainpropertiesrow-secondFilterValue-0"
                     name="domainpropertiesrow-secondFilterValue"
                     onChange={[Function]}
-                    type="number"
+                    type="text"
                     value="1"
                   >
                     <input
@@ -577,7 +649,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                       id="domainpropertiesrow-secondFilterValue-0"
                       name="domainpropertiesrow-secondFilterValue"
                       onChange={[Function]}
-                      type="number"
+                      type="text"
                       value="1"
                     />
                   </FormControl>

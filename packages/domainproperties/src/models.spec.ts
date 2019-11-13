@@ -28,6 +28,7 @@ import {
     ATTACHMENT_TYPE,
     USERS_TYPE,
     PARTICIPANT_TYPE,
+    SAMPLE_TYPE,
     DomainDesign,
     DomainField,
     AssayProtocolModel
@@ -47,6 +48,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isInteger(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isInteger(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isInteger(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
     });
 
@@ -62,6 +64,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(USERS_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isString(SAMPLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
@@ -77,7 +80,24 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMeasure(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMeasure(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+    });
+
+    test("isDimension", () => {
+        expect(PropDescType.isDimension(TEXT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(LOOKUP_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(MULTILINE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(BOOLEAN_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(INTEGER_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(DOUBLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(DATETIME_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(FLAG_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(FILE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isDimension(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(SAMPLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 
     test("isMvEnableable", () => {
@@ -92,6 +112,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(FILE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMvEnableable(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isMvEnableable(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMvEnableable(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
     });
 });

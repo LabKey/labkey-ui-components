@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.22.2
+*Released*: 12 November 2019
+* Package patch update for changes to @glass/domainproperties v0.0.50
+
 ### version 0.22.1
 *Released*: 8 November 2019
 * Item 6493: fix for containerPath encoding issue with buildURL() helper

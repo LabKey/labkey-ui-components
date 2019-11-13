@@ -4,6 +4,10 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
+### version 0.0.50
+*Released*: 12 November 2019
+* Item 6528: More assay and domain designer feedback changes, bug fixes, and polish
+
 ### version 0.0.49
 *Released*: 8 November 2019
 * Item 6493: Assay designer feedback changes, bug fixes, and polish

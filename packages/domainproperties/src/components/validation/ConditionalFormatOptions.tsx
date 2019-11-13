@@ -235,7 +235,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                 <div>
                     <Filters validatorIndex={validatorIndex}
                              onChange={this.onFilterChange}
-                             type={dataType.getJsonType()}
+                             type={'string'} // Needs to be able to take string values for between syntax
                              mvEnabled={mvEnabled}
                              expression={validator.formatFilter}
                              prefix={DOMAIN_CONDITIONAL_FORMAT_PREFIX}

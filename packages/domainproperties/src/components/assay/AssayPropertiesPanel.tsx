@@ -308,6 +308,48 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         return undefined;
     };
 
+    getPanelClass = () => {
+        const { collapsed } = this.state;
+        const { useTheme } = this.props;
+
+        let classes = 'domain-form-panel';
+
+        if (!collapsed) {
+            if (useTheme) {
+                classes += ' lk-border-theme-light';
+            }
+            else {
+                classes += ' domain-panel-no-theme';
+            }
+        }
+
+        return classes;
+    };
+
+    getAlertClasses = () => {
+        const { collapsed } = this.state;
+        const { useTheme } = this.props;
+
+        let classes = 'domain-bottom-alert panel-default';
+
+        if (!collapsed) {
+            if (useTheme) {
+                classes += ' lk-border-theme-light';
+            }
+            else {
+                classes += ' domain-bottom-alert-expanded';
+            }
+        }
+        else {
+            classes += ' panel-default';
+        }
+
+        if (!collapsed)
+            classes += ' domain-bottom-alert-top';
+
+        return classes;
+    };
+
     renderHeader() {
         const { name } = this.props.model;
         const { panelStatus, controlledCollapse, collapsible } = this.props;
@@ -344,7 +386,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-            <Panel className={"domain-form-panel"} expanded={!collapsed} onToggle={function(){}}>
+            <Panel className={this.getPanelClass()} expanded={!collapsed} onToggle={function(){}}>
                 <Panel.Heading onClick={this.togglePanel} className={this.getPanelHeaderClass()} id={createFormInputName('assay-properties-hdr')}>
                     {this.renderHeader()}
                 </Panel.Heading>
@@ -354,7 +396,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 </Panel.Body>
             </Panel>
             {!validProperties &&
-                <div onClick={this.togglePanel} className='domain-bottom-alert'>
+                <div onClick={this.togglePanel} className={this.getAlertClasses()}>
                     <Alert bsStyle="danger">Contains errors or is missing required values.</Alert>
                 </div>
             }

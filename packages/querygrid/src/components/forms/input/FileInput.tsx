@@ -134,16 +134,8 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     render() {
-        const {
-            queryColumn,
-            allowDisable,
-            addLabelAsterisk
-        } = this.props;
-        const {
-            isHover,
-            isDisabled,
-            file,
-        } = this.state;
+        const { queryColumn, allowDisable, addLabelAsterisk, showLabel } = this.props;
+        const { isHover,  isDisabled,  file } = this.state;
 
         const name = this.props.name ? this.props.name : queryColumn.name;
         const inputId = `${name}-fileUpload`;
@@ -209,7 +201,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
             <div className="form-group row">
                 <FieldLabel
                     labelOverlayProps={labelOverlayProps}
-                    showLabel={true}
+                    showLabel={showLabel}
                     showToggle={allowDisable}
                     column={queryColumn}
                     isDisabled = {isDisabled}

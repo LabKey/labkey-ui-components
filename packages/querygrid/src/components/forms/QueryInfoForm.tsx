@@ -77,6 +77,7 @@ export interface QueryInfoFormProps {
     footer?: ReactNode
     singularNoun?: string
     pluralNoun?: string
+    showErrorsAtBottom?: boolean
 }
 
 
@@ -349,7 +350,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields, disabledFields, columnFilter } = this.props;
+        const {
+            includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk,
+            maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields,
+            disabledFields, columnFilter, showErrorsAtBottom
+        } = this.props;
         const { count } = this.state;
 
 
@@ -365,7 +370,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             content = (
                 <div>
                     {header}
-                    {this.renderError()}
+                    {!showErrorsAtBottom && this.renderError()}
                     <Formsy
                         className="form-horizontal"
                         onValidSubmit={this.handleValidSubmit}
@@ -401,6 +406,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             columnFilter={columnFilter}
                             fieldValues={fieldValues}/>
                         {footer}
+                        {showErrorsAtBottom && this.renderError()}
                         {this.renderButtons()}
                     </Formsy>
 

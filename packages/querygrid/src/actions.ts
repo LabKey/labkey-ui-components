@@ -480,7 +480,12 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
             fetchSelectedIfNeeded(newModel);
         }
     }, payload => {
-        gridShowError(payload.model, payload.error, connectedComponent);
+        if (payload.model) {
+            gridShowError(payload.model, payload.error, connectedComponent);
+        }
+        else {
+            console.error("No model available for loading.", payload.error);
+        }
     });
 }
 

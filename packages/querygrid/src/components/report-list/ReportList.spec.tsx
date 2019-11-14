@@ -44,7 +44,7 @@ const urlMapper = (report) => {
 };
 
 describe('<ReportList />', () => {
-    test('flattenApiResponse works with valid data', () => {
+    test('flattenBrowseDataTreeResponse works with valid data', () => {
         flattenBrowseDataTreeResponse(exampleData, urlMapper);
     });
 

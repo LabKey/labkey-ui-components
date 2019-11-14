@@ -85,7 +85,7 @@ export class UserProfile extends React.Component<Props, State> {
 
     renderSectionTitle(title: string) {
         return (
-            <p className={'sm-section-header'}>{title}</p>
+            <p className={'user-section-header'}>{title}</p>
         )
     }
 
@@ -116,7 +116,7 @@ export class UserProfile extends React.Component<Props, State> {
                             />
                             {!isDefaultAvatar && !removeCurrentAvatar &&
                                 <div>
-                                    <a className={'sm-text-link'} onClick={this.removeCurrentAvatar}>Delete Current Avatar</a>
+                                    <a className={'user-text-link'} onClick={this.removeCurrentAvatar}>Delete Current Avatar</a>
                                 </div>
                             }
                         </>

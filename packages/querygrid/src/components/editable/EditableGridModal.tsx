@@ -42,7 +42,7 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
     }
 
     init() {
-        gridInit(this.props.model, true, this)
+        gridInit(this.getQueryGridModel(), true, this)
     }
 
     onCancel = () => {

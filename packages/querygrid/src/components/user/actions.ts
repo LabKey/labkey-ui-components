@@ -1,7 +1,8 @@
 import moment from 'moment'
 import { Map, OrderedMap } from 'immutable'
 import { Ajax , ActionURL, Utils } from '@labkey/api'
-import { caseInsensitive, hasAllPermissions, PermissionTypes, SchemaQuery, User } from "@glass/base";
+import { caseInsensitive, hasAllPermissions, PermissionTypes, SchemaQuery, User, buildURL } from "@glass/base";
+import { ChangePasswordModel } from "./models";
 
 export function getUserPermissionsDisplay(user: User): Array<string> {
     let permissions = [];
@@ -70,6 +71,37 @@ export function updateUserDetails(schemaQuery: SchemaQuery, data: FormData): Pro
             failure: Utils.getCallbackWrapper(error => {
                 reject(error);
             })
+        });
+    });
+}
+
+export function changePassword(model: ChangePasswordModel): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('login', 'changePasswordApi.api'),
+            method: 'POST',
+            params: model.toJS(),
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            })
+        });
+    });
+}
+
+export function getPasswordRuleInfo(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('login', 'getPasswordRulesInfo.api'),
+            method: 'GET',
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            }),
         });
     });
 }

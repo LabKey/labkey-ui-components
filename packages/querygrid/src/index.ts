@@ -158,6 +158,7 @@ import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
+import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 
 export {
     // global state functions
@@ -260,6 +261,7 @@ export {
     IUser,
     UserDetailHeader,
     UserProfile,
+    ChangePasswordModal,
 
     // samples-related
     SampleInsertPanel,

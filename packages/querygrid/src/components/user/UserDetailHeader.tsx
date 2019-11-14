@@ -9,12 +9,13 @@ interface HeaderProps {
     user: User
     userProperties: Map<string, any>
     dateFormat: string
+    renderButtons?: () => any
 }
 
 export class UserDetailHeader extends React.Component<HeaderProps> {
 
     render() {
-        const { user, userProperties, title, dateFormat } = this.props;
+        const { user, userProperties, title, dateFormat, renderButtons } = this.props;
         const lastLogin = getUserLastLogin(userProperties, dateFormat);
 
         return (
@@ -25,7 +26,10 @@ export class UserDetailHeader extends React.Component<HeaderProps> {
                 description={getUserPermissionsDisplay(user).join(', ')}
                 leftColumns={10}
             >
-                {lastLogin && <div className={'detail__header--desc'}>Last Login: {lastLogin}</div>}
+                {renderButtons
+                    ? renderButtons()
+                    : lastLogin && <div className={'detail__header--desc'}>Last Login: {lastLogin}</div>
+                }
             </PageDetailHeader>
         )
     }

@@ -12,6 +12,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
+      "headerURL": undefined,
     }
   }
   maxColumns={1}
@@ -64,6 +65,7 @@ exports[`ProductMenuSection render empty section with empty text and create link
         "_params": undefined,
       },
       "emptyURLText": "Test empty link",
+      "headerURL": undefined,
     }
   }
   maxColumns={1}
@@ -129,6 +131,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
+      "headerURL": undefined,
     }
   }
   maxColumns={1}
@@ -219,6 +222,65 @@ exports[`ProductMenuSection render one-column section 1`] = `
 </ProductMenuSection>
 `;
 
+exports[`ProductMenuSection render section with custom headerURL 1`] = `
+<ProductMenuSection
+  config={
+    Immutable.Record {
+      "emptyText": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "iconCls": undefined,
+      "maxItemsPerColumn": 12,
+      "maxColumns": 1,
+      "seeAllURL": undefined,
+      "emptyURL": undefined,
+      "emptyURLText": "Get started...",
+      "headerURL": Immutable.Record {
+        "_baseUrl": "/sample/new",
+        "_filters": undefined,
+        "_params": Immutable.Map {
+          "sort": "date",
+        },
+      },
+    }
+  }
+  maxColumns={1}
+  productId="testProductHeaderUrl"
+  section={
+    Immutable.Record {
+      "label": "Sample Sets",
+      "url": undefined,
+      "items": Immutable.List [],
+      "totalCount": 0,
+      "itemLimit": 2,
+      "key": "samples",
+    }
+  }
+>
+  <span
+    className="menu-section-header"
+  >
+    <a
+      href="#/sample/new?sort=date"
+    >
+      <img
+        alt="Sample Sets icon"
+        className="menu-section-image "
+        height="24px"
+        src="/testProduct/images/samples.svg"
+        width="24px"
+      />
+       
+      Sample Sets
+    </a>
+  </span>
+  <hr />
+  <ul
+    className="col-0"
+    key="samplescol-1"
+  />
+</ProductMenuSection>
+`;
+
 exports[`ProductMenuSection render two columns with overflow link 1`] = `
 <ProductMenuSection
   config={
@@ -231,6 +293,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
+      "headerURL": undefined,
     }
   }
   maxColumns={1}
@@ -337,6 +400,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
+      "headerURL": undefined,
     }
   }
   maxColumns={1}

@@ -111,7 +111,8 @@ storiesOf('NavigationBar', module)
             iconCls:  text('iconClass', "fas fa-user-circle"),
             iconURL: text("iconURL", undefined),
             emptyURL: boolean("showEmptyURL", true) ? AppURL.create('fruit', 'new') : undefined,
-            emptyURLText: text('emptyURLText', "Define a new fruit")
+            emptyURLText: text('emptyURLText', "Define a new fruit"),
+            headerURL: boolean("showCustomHeaderURL", true) ? AppURL.create('fruit', 'list').addParams({sort:'color'}) : undefined,
         })));
 
         return <NavigationBar

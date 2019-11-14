@@ -33,10 +33,10 @@ interface FileInputProps extends DisableableInputProps {
     labelClassName: string,
     showLabel: boolean,
     key: any
-    value: any
+    value?: any
     name?: string
     onChange: any
-    queryColumn: QueryColumn
+    queryColumn?: QueryColumn
     addLabelAsterisk?: boolean
 }
 
@@ -69,12 +69,13 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         }
     }
 
+    getInputName(): string {
+        return this.props.name ? this.props.name : this.props.queryColumn.name;
+    }
+
     processFiles(fileList: FileList, transferItems?: DataTransferItemList) {
-        const {
-            onChange,
-            queryColumn,
-        } = this.props;
-        const name = this.props.name ? this.props.name : queryColumn.name;
+        const {onChange} = this.props;
+        const name = this.getInputName();
 
         if (fileList.length > 1) {
             this.setState({error: 'Only one file allowed'});
@@ -123,11 +124,8 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     onRemove() {
-        const {
-            onChange,
-            queryColumn,
-        } = this.props;
-        const name = this.props.name ? this.props.name : queryColumn.name;
+        const {onChange} = this.props;
+        const name = this.getInputName();
 
         this.setState({file: null});
         onChange({[name]: null});
@@ -137,7 +135,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
         const { queryColumn, allowDisable, addLabelAsterisk, showLabel } = this.props;
         const { isHover,  isDisabled,  file } = this.state;
 
-        const name = this.props.name ? this.props.name : queryColumn.name;
+        const name = this.getInputName();
         const inputId = `${name}-fileUpload`;
         let body;
 

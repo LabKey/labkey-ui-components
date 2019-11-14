@@ -79,7 +79,6 @@ import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { QueryInfoForm } from './components/forms/QueryInfoForm';
-import { FileInput } from './components/forms/input/FileInput';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
@@ -157,6 +156,8 @@ import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
+import { UserDetailHeader } from './components/user/UserDetailHeader';
+import { UserProfile } from './components/user/UserProfile';
 
 export {
     // global state functions
@@ -235,7 +236,6 @@ export {
     QueryGridPanel,
     PreviewGrid,
     QueryInfoForm,
-    FileInput,
     LookupSelectInput,
     SelectInput,
     QuerySelect,
@@ -258,6 +258,8 @@ export {
     getProjectUsers,
     invalidateProjectUsers,
     IUser,
+    UserDetailHeader,
+    UserProfile,
 
     // samples-related
     SampleInsertPanel,

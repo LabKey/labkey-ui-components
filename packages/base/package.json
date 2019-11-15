@@ -1,6 +1,6 @@
 {
   "name": "@glass/base",
-  "version": "0.21.2",
+  "version": "0.22.0-fb-workflowFiles.0",
   "description": "Base components, models, and utility functions for LabKey applications and pages",
   "main": "dist/base.cjs.js",
   "module": "dist/base.es.js",

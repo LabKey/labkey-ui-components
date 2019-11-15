@@ -27,7 +27,7 @@ class GridLoader implements IGridLoader {
             return selectRows({
                 schemaName: model.schema,
                 queryName: model.query,
-                // viewName: model.view,
+                viewName: model.view,
                 filterArray: model.getFilters().toJS(),
                 sort: model.getSorts(),
                 columns: model.getRequestColumnsString(),

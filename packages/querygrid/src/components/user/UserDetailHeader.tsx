@@ -26,10 +26,8 @@ export class UserDetailHeader extends React.Component<HeaderProps> {
                 description={getUserPermissionsDisplay(user).join(', ')}
                 leftColumns={10}
             >
-                {renderButtons
-                    ? renderButtons()
-                    : lastLogin && <div className={'detail__header--desc'}>Last Login: {lastLogin}</div>
-                }
+                {lastLogin && <div className={'detail__header--desc'}>Last Login: {lastLogin}</div>}
+                {renderButtons && <div className={lastLogin ? 'detail__header--buttons' : ''}>{renderButtons()}</div>}
             </PageDetailHeader>
         )
     }

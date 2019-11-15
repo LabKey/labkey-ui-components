@@ -941,6 +941,18 @@ export class QueryGridModel extends Record({
 
         return rows;
     }
+
+    get selectionKey() {
+        if (!this.queryInfo) {
+            return undefined;
+        }
+
+        if (this.keyValue !== undefined) {
+            return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, [this.keyValue]);
+        }
+
+        return this.getId();
+    }
 }
 
 // commented out attributes are not used in app

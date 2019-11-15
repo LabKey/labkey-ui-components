@@ -103,3 +103,20 @@
   font-size: 20px;
   cursor: pointer;
 }
+
+.file-listing-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 55px;
+  font-size: 24pt;
+  color: white;
+  line-height: 55px;
+  margin-left: 10px;
+  text-align: center;
+  background: $brand-primary
+}
+
+.file-listing-delete {
+  display: inline-block;
+  cursor: pointer;
+}

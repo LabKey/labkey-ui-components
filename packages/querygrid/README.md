@@ -8,6 +8,10 @@ Query Grid for LabKey schema/query data views
 *Released*: 14 November 2019
 * Fix Issue 38804
 
+### version XXX
+*Released*: XXX
+* Package patch update for changes to @glass/base vXXX
+
 ### version 0.22.3
 *Released*: 13 November 2019
 * Add headerURL to MenuSectionConfig

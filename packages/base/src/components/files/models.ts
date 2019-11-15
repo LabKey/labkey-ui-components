@@ -21,3 +21,25 @@ export interface FileAttachmentFormModel {
     isSubmitting?: boolean
     removeAttachedFile?: (any) => any
 }
+
+export interface IFile {
+    name: string,
+    created: string,
+    createdById: number,
+    createdBy: string,
+    iconFontCls: string,
+    downloadUrl: string,
+    description: string,
+    propertiesRowId?: number;
+}
+
+export const DEFAULT_FILE: IFile = {
+    name: undefined,
+    created: undefined,
+    createdById: -1,
+    createdBy: undefined,
+    iconFontCls: undefined,
+    downloadUrl: undefined,
+    description: undefined,
+    propertiesRowId: undefined
+};

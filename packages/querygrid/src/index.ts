@@ -87,7 +87,7 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
-import { handleInputTab, handleTabKeyOnTextArea, getProjectUsers } from './components/forms/actions';
+import { handleInputTab, handleTabKeyOnTextArea, getUsersWithPermissions } from './components/forms/actions';
 import { IUser } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { PlacementType } from './components/editable/Controls';
@@ -253,7 +253,7 @@ export {
     EditorModel,
 
     // user-related
-    getProjectUsers,
+    getUsersWithPermissions,
     invalidateProjectUsers,
     IUser,
 

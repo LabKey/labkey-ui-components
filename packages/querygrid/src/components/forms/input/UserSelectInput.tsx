@@ -7,7 +7,7 @@ import { List } from 'immutable'
 
 import { SelectInput, SelectInputProps } from './SelectInput'
 import { IUser } from "../model";
-import { getProjectUsers } from "../actions";
+import { getUsersWithPermissions } from "../actions";
 
 interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server
@@ -23,7 +23,7 @@ export class UserSelectInput extends React.Component<UserSelectInputProps, any> 
     };
 
     loadOptions(value, cb) {
-        getProjectUsers(this.props.permissions).then((users: List<IUser>) => {
+        getUsersWithPermissions(this.props.permissions).then((users: List<IUser>) => {
             cb(null, {
                 complete: true,
                 options: users.map((v) => {

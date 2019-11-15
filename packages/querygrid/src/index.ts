@@ -138,7 +138,8 @@ import {
     uploadAssayRunFiles
 } from './components/assay/actions';
 import { PreviewGrid } from './components/PreviewGrid';
-import { flattenBrowseDataTreeResponse, ReportURLMapper, } from './components/report-list/model';
+import { flattenBrowseDataTreeResponse, ReportURLMapper, loadReports,
+} from './query/reports';
 import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
 import { LineageFilter } from './components/lineage/models'
@@ -317,6 +318,7 @@ export {
     // report-list
     flattenBrowseDataTreeResponse,
     ReportURLMapper,
+    loadReports,
     ReportListItem,
     ReportItemModal,
     ReportListProps,

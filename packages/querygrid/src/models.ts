@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable'
-import { Filter } from '@labkey/api'
+import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
+import { Filter } from '@labkey/api';
 import {
     IGridLoader,
     IQueryGridModel,
@@ -24,12 +24,13 @@ import {
     resolveSchemaQuery,
     SchemaQuery,
     ViewInfo
-} from '@glass/base'
+} from '@glass/base';
 
-import { genCellKey } from './actions'
-import { getQueryGridModel, getQueryMetadata } from './global'
-import { DefaultGridLoader } from './components/GridLoader'
+import { genCellKey } from './actions';
+import { getQueryGridModel, getQueryMetadata } from './global';
+import { DefaultGridLoader } from './components/GridLoader';
 import { AppURL } from '@glass/base/src';
+import { CHARTS } from './query/reports';
 
 const emptyList = List<string>();
 
@@ -333,12 +334,7 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     }
 
     isVisChartType() {
-        return this.type === DataViewInfoTypes.AutomaticPlot
-            || this.type === DataViewInfoTypes.BarChart
-            || this.type === DataViewInfoTypes.BoxAndWhiskerPlot
-            || this.type === DataViewInfoTypes.PieChart
-            || this.type === DataViewInfoTypes.XYScatterPlot
-            || this.type === DataViewInfoTypes.XYSeriesLinePlot;
+        return CHARTS.contains(this.type);
     }
 }
 

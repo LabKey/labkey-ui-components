@@ -6,7 +6,7 @@ import * as React from 'react'
 import { List, Map, OrderedMap } from 'immutable'
 import { Row, Col } from "react-bootstrap";
 import { ActionURL } from '@labkey/api'
-import { QueryInfo, LoadingSpinner, User, SCHEMAS } from '@glass/base'
+import { QueryInfo, LoadingSpinner, User, SCHEMAS, QueryColumn } from '@glass/base'
 
 import { getUserDetailsRowData, updateUserDetails } from "./actions";
 import { getQueryDetails } from "../../../src/query/api";
@@ -53,9 +53,13 @@ export class UserProfile extends React.Component<Props, State> {
 
     getUpdateQueryInfo(): QueryInfo {
         const { queryInfo } = this.state;
-        const updateColumns = queryInfo.columns.filter((column) => {
+        let updateColumns = queryInfo.columns.filter((column) => {
             return column.userEditable && !FIELDS_TO_EXCLUDE.contains(column.fieldKey.toLowerCase());
         });
+
+        // make sure all columns are set as shownInInsertView
+        updateColumns = updateColumns.map((col) => col.set('shownInInsertView', true) as QueryColumn);
+
         return queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 

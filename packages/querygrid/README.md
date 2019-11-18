@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.23.0
+*Released*: 18 November 2019
 * Add components for user profile management in app - ChangePasswordModal, UserDetailHeader, UserProfile
 * QueryFormInputs - add disabledFields property 
 * QueryInfoForm - add disabledFields and showErrorsAtBottom properties

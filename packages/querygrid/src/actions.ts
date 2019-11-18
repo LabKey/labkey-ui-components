@@ -438,7 +438,8 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     updateEditorModel(editorModel, {
         colCount: columns.size,
         cellValues: cellValues.asImmutable(),
-        rowCount: rows.size > 0 ? rows.size : editorModel.rowCount
+        deletedIds: Set<any>(),  // when initially loaded, nothing has been deleted; need to clear out any ids possibly set from the last edit.
+        rowCount: rows.size > 0 ? rows.size : editorModel.rowCount,
     });
 }
 

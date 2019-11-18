@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Map, List } from "immutable";
+import { List, Map } from "immutable";
 import { Utils } from "@labkey/api";
 import {
     capitalizeFirstChar,
-    createNotification,
     getCommonDataValues,
     getUpdatedData,
     QueryGridModel,
@@ -11,7 +10,7 @@ import {
     SchemaQuery
 } from "@glass/base";
 import { getSelectedData } from '../../actions';
-import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from '../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { QueryInfoForm } from './QueryInfoForm';
 
 
@@ -22,6 +21,7 @@ interface Props {
     model: QueryGridModel,
     canSubmitForEdit: boolean,
     onCancel: () => any,
+    onError?: (message: string) => any,
     onComplete: (data: any, submitForEdit: boolean) => any
     onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any
     updateRows: (schemaQuery: SchemaQuery, rows: Array<any>) => Promise<any>
@@ -31,6 +31,7 @@ interface State {
     isLoadingDataForSelection: boolean
     dataForSelection: Map<string, any>
     dataIdsForSelection: List<any>
+    errorMsg: string
 }
 
 export class BulkUpdateForm extends React.Component<Props, State> {
@@ -47,7 +48,8 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         this.state = {
             isLoadingDataForSelection: true,
             dataForSelection: undefined,
-            dataIdsForSelection: undefined
+            dataIdsForSelection: undefined,
+            errorMsg: undefined
         };
     }
 
@@ -63,10 +65,9 @@ export class BulkUpdateForm extends React.Component<Props, State> {
             }));
         }).catch((reason) => {
             console.error(reason);
-            createNotification({
-                alertClass: 'danger',
-                message: `There was a problem loading the data for the selected ${pluralNoun}.`,
-            });
+            if (this.props.onError) {
+                this.props.onError("There was a problem loading the data for the selected " +  pluralNoun + ".")
+            }
             onCancel();
         });
     }
@@ -95,13 +96,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         const { model, updateRows } = this.props;
         const rows = !Utils.isEmptyObj(data)? getUpdatedData(this.state.dataForSelection, data, model.queryInfo.pkCols) : [];
 
-        if (rows.length > 0) {
-            return updateRows(model.queryInfo.schemaQuery, rows);
-        }
-        else {
-            createNotification(NO_UPDATES_MESSAGE);
-            return new Promise<any>((resolve) => resolve(data));
-        }
+        return updateRows(model.queryInfo.schemaQuery, rows);
     };
 
     onEditWithGrid = (updateData: any) => {

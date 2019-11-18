@@ -62,8 +62,12 @@
   padding: 8px;
 }
 
-.file-upload--compact-label i {
+.file-upload--compact-label i, .file-listing-info {
   display: inline-block;
+
+  .file-listing-info-light {
+    color: gray;
+  }
 }
 
 .file-upload--error-message {
@@ -113,10 +117,33 @@
   line-height: 55px;
   margin-left: 10px;
   text-align: center;
-  background: $brand-primary
+  background: $brand-primary;
+  vertical-align: middle;
 }
 
 .file-listing-delete {
   display: inline-block;
   cursor: pointer;
+
+  .file-listing-delete-icon {
+    font-size: 20px;
+    color: red;
+  }
+
+}
+
+.file-listing-filename {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.file-listing-icon--container {
+  width: 108px;
+}
+
+.file-listing-canceldel-icon {
+  margin-right: 5px;
 }

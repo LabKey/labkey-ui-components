@@ -8,13 +8,13 @@ interface Props {
     files: List<IFile>
     addFileText: string
     noFilesMessage: string
-    handleUpload: (files: Map<string, File>, cb: () => any) => any
-    handleDelete: (file: string) => any
-    handleDownload: (files: Set<string>) => any
+
+    handleUpload?: (files: Map<string, File>, cb: () => any) => any
+    handleDelete?: (file: string) => any
+    handleDownload?: (files: Set<string>) => any
     canInsert?: boolean
     canDelete?: boolean
     useFilePropertiesEditTrigger?: boolean
-
     onPropertyUpdate?: () => any
     onSubmit?: () => any
     onUploadFiles?: () => any
@@ -137,33 +137,28 @@ export class FilesListing extends React.Component<Props, State> {
             return (
                 <div>
                     {files.map((file: IFile, key) => {
-                        const { description, downloadUrl, name } = file;
+                        const {description, downloadUrl, name} = file;
                         const confirmDelete = this.state.showConfirmDelete.has(name);
 
                         return (
-                            <div className="component component-detail--container"  key={key}>
+                            <div className="component component-detail--container" key={key}>
                                 <div className="detail-component">
                                     <div className="row" key={key}>
-                                        <div className="col-xs-4" style={{width: "108px"}}>
+                                        <div className="col-xs-4 file-listing-icon--container">
                                             <input checked={this.state.selectedFiles.contains(name)}
                                                    name={name}
                                                    onClick={this.toggleFileSelection}
                                                    type="checkbox"/>
-                                            <i className={file.iconFontCls + " file-listing-icon"}
-                                               style={{verticalAlign: "middle"}}/>
+                                            <i className={file.iconFontCls + " file-listing-icon"}/>
                                         </div>
-                                        <div className="col-xs-3" style={{display: 'inline-block'}}>
+                                        <div className="col-xs-3 file-listing-info">
                                             <strong><a href={downloadUrl} title={name}>
-                                                <div style={
-                                                    {
-                                                        width: "250px",
-                                                        whiteSpace: "nowrap",
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis",
-                                                        display: "inline-block"
-                                                    }}>{name}</div>
+                                                <div className={"file-listing-filename"}>{name}</div>
                                             </a></strong><br/>
-                                            <span style={{color: "grey"}}><span className={"test-loc-file-created-by"}>{file.createdBy}</span> <span className={"test-loc-file-created"}>{file.created}</span></span>
+                                            <span className={'file-listing-info-light'}>
+                                                <span className={"test-loc-file-created-by"}>{file.createdBy}</span>
+                                                <span className={"test-loc-file-created"}>{file.created}</span>
+                                            </span>
                                         </div>
 
                                         <div className="col-xs-5">
@@ -174,21 +169,18 @@ export class FilesListing extends React.Component<Props, State> {
                                             {useFilePropertiesEditTrigger && getFilePropertiesEditTrigger(file)}
                                             {canDelete && confirmDelete ?
                                                 <span>
-                                                            <div
-                                                                className="pull-right">Permanently delete?</div><br/>
-                                                            <span style={{marginRight: "5px"}}>
-                                                                <Button bsStyle="default"
-                                                                        onClick={() => this.toggleDeleteConfirmation(name)}>Cancel</Button>
-                                                            </span>
-                                                            <Button bsStyle="danger"
-                                                                    onClick={() => this.deleteFile(name)}>Delete File</Button>
-                                                        </span>
+                                                    <div className="pull-right">Permanently delete?</div><br/>
+                                                    <span className={'file-listing-canceldel-icon'}>
+                                                        <Button bsStyle="default"
+                                                                onClick={() => this.toggleDeleteConfirmation(name)}>Cancel</Button>
+                                                    </span>
+                                                    <Button bsStyle="danger" onClick={() => this.deleteFile(name)}>Delete File</Button>
+                                                </span>
                                                 :
-                                                <span className="pull-right file-listing-delete"
+                                                canDelete && <span className="pull-right file-listing-delete"
                                                       onClick={() => this.toggleDeleteConfirmation(name)}>
-                                                            <i style={{fontSize: "20px", color: 'red'}}
-                                                               className="fa fa-times-circle"/>
-                                                        </span>
+                                                    <i className="fa fa-times-circle file-listing-delete-icon"/>
+                                                </span>
                                             }
                                             </span>
                                     </div>

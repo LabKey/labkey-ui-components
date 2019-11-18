@@ -1,0 +1,578 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilesListing/> empty files custom msg 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    />
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <div>
+    the file list is empty
+  </div>
+</Fragment>
+`;
+
+exports[`<FilesListing/> empty files default props 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    />
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <div>
+    No files currently attached.
+  </div>
+</Fragment>
+`;
+
+exports[`<FilesListing/> with files custom props 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    >
+      <Button
+        active={false}
+        block={false}
+        bsClass="btn"
+        bsStyle="primary"
+        disabled={false}
+        onClick={[Function]}
+        title="add more files"
+      >
+        add more files
+      </Button>
+    </div>
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      className="component component-detail--container"
+      key="0"
+    >
+      <div
+        className="detail-component"
+      >
+        <div
+          className="row"
+          key="0"
+        >
+          <div
+            className="col-xs-4 file-listing-icon--container"
+          >
+            <input
+              checked={false}
+              name="exam.xlsx"
+              onClick={[Function]}
+              type="checkbox"
+            />
+            <i
+              className="fa fa-file-excel-o file-listing-icon"
+            />
+          </div>
+          <div
+            className="col-xs-3 file-listing-info"
+          >
+            <strong>
+              <a
+                href="/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=exam.xlsx&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+                title="exam.xlsx"
+              >
+                <div
+                  className="file-listing-filename"
+                >
+                  exam.xlsx
+                </div>
+              </a>
+            </strong>
+            <br />
+            <span
+              className="file-listing-info-light"
+            >
+              <span
+                className="test-loc-file-created-by"
+              >
+                Vader
+              </span>
+              <span
+                className="test-loc-file-created"
+              >
+                2019-11-08 12:26:30.064
+              </span>
+            </span>
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            i'm an excel file
+          </div>
+          <span
+            className="pull-right"
+          >
+            <span
+              className="pull-right file-listing-delete"
+              onClick={[Function]}
+            >
+              <i
+                className="fa fa-times-circle file-listing-delete-icon"
+              />
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="component component-detail--container"
+      key="1"
+    >
+      <div
+        className="detail-component"
+      >
+        <div
+          className="row"
+          key="1"
+        >
+          <div
+            className="col-xs-4 file-listing-icon--container"
+          >
+            <input
+              checked={false}
+              name="xray.gif"
+              onClick={[Function]}
+              type="checkbox"
+            />
+            <i
+              className="fa fa-file-image-o file-listing-icon"
+            />
+          </div>
+          <div
+            className="col-xs-3 file-listing-info"
+          >
+            <strong>
+              <a
+                href="/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=xray.gif&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+                title="xray.gif"
+              >
+                <div
+                  className="file-listing-filename"
+                >
+                  xray.gif
+                </div>
+              </a>
+            </strong>
+            <br />
+            <span
+              className="file-listing-info-light"
+            >
+              <span
+                className="test-loc-file-created-by"
+              >
+                Skywalker
+              </span>
+              <span
+                className="test-loc-file-created"
+              >
+                2019-11-14 15:47:51.931
+              </span>
+            </span>
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            i'm gif
+          </div>
+          <span
+            className="pull-right"
+          >
+            <span
+              className="pull-right file-listing-delete"
+              onClick={[Function]}
+            >
+              <i
+                className="fa fa-times-circle file-listing-delete-icon"
+              />
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      className="component component-detail--container"
+      key="2"
+    >
+      <div
+        className="detail-component"
+      >
+        <div
+          className="row"
+          key="2"
+        >
+          <div
+            className="col-xs-4 file-listing-icon--container"
+          >
+            <input
+              checked={false}
+              name="report.json"
+              onClick={[Function]}
+              type="checkbox"
+            />
+            <i
+              className="fa fa-file-o file-listing-icon"
+            />
+          </div>
+          <div
+            className="col-xs-3 file-listing-info"
+          >
+            <strong>
+              <a
+                href="/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=sreport.json&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+                title="report.json"
+              >
+                <div
+                  className="file-listing-filename"
+                >
+                  report.json
+                </div>
+              </a>
+            </strong>
+            <br />
+            <span
+              className="file-listing-info-light"
+            >
+              <span
+                className="test-loc-file-created-by"
+              >
+                Vader
+              </span>
+              <span
+                className="test-loc-file-created"
+              >
+                2019-11-14 15:48:11.472
+              </span>
+            </span>
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            i'm a json file
+          </div>
+          <span
+            className="pull-right"
+          >
+            <span
+              className="pull-right file-listing-delete"
+              onClick={[Function]}
+            >
+              <i
+                className="fa fa-times-circle file-listing-delete-icon"
+              />
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`<FilesListing/> with files default props 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    />
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div
+      className="component component-detail--container"
+      key="0"
+    >
+      <div
+        className="detail-component"
+      >
+        <div
+          className="row"
+          key="0"
+        >
+          <div
+            className="col-xs-4 file-listing-icon--container"
+          >
+            <input
+              checked={false}
+              name="exam.xlsx"
+              onClick={[Function]}
+              type="checkbox"
+            />
+            <i
+              className="fa fa-file-excel-o file-listing-icon"
+            />
+          </div>
+          <div
+            className="col-xs-3 file-listing-info"
+          >
+            <strong>
+              <a
+                href="/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=exam.xlsx&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+                title="exam.xlsx"
+              >
+                <div
+                  className="file-listing-filename"
+                >
+                  exam.xlsx
+                </div>
+              </a>
+            </strong>
+            <br />
+            <span
+              className="file-listing-info-light"
+            >
+              <span
+                className="test-loc-file-created-by"
+              >
+                Vader
+              </span>
+              <span
+                className="test-loc-file-created"
+              >
+                2019-11-08 12:26:30.064
+              </span>
+            </span>
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            i'm an excel file
+          </div>
+          <span
+            className="pull-right"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="component component-detail--container"
+      key="1"
+    >
+      <div
+        className="detail-component"
+      >
+        <div
+          className="row"
+          key="1"
+        >
+          <div
+            className="col-xs-4 file-listing-icon--container"
+          >
+            <input
+              checked={false}
+              name="xray.gif"
+              onClick={[Function]}
+              type="checkbox"
+            />
+            <i
+              className="fa fa-file-image-o file-listing-icon"
+            />
+          </div>
+          <div
+            className="col-xs-3 file-listing-info"
+          >
+            <strong>
+              <a
+                href="/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=xray.gif&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+                title="xray.gif"
+              >
+                <div
+                  className="file-listing-filename"
+                >
+                  xray.gif
+                </div>
+              </a>
+            </strong>
+            <br />
+            <span
+              className="file-listing-info-light"
+            >
+              <span
+                className="test-loc-file-created-by"
+              >
+                Skywalker
+              </span>
+              <span
+                className="test-loc-file-created"
+              >
+                2019-11-14 15:47:51.931
+              </span>
+            </span>
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            i'm gif
+          </div>
+          <span
+            className="pull-right"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="component component-detail--container"
+      key="2"
+    >
+      <div
+        className="detail-component"
+      >
+        <div
+          className="row"
+          key="2"
+        >
+          <div
+            className="col-xs-4 file-listing-icon--container"
+          >
+            <input
+              checked={false}
+              name="report.json"
+              onClick={[Function]}
+              type="checkbox"
+            />
+            <i
+              className="fa fa-file-o file-listing-icon"
+            />
+          </div>
+          <div
+            className="col-xs-3 file-listing-info"
+          >
+            <strong>
+              <a
+                href="/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=sreport.json&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+                title="report.json"
+              >
+                <div
+                  className="file-listing-filename"
+                >
+                  report.json
+                </div>
+              </a>
+            </strong>
+            <br />
+            <span
+              className="file-listing-info-light"
+            >
+              <span
+                className="test-loc-file-created-by"
+              >
+                Vader
+              </span>
+              <span
+                className="test-loc-file-created"
+              >
+                2019-11-14 15:48:11.472
+              </span>
+            </span>
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            i'm a json file
+          </div>
+          <span
+            className="pull-right"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;

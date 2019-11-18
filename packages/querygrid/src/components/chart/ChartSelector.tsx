@@ -21,6 +21,10 @@ import { fetchCharts } from '../../actions'
 import { DataViewInfo } from '../../models'
 import { getCharts, updateCharts } from '../../global'
 import { ChartMenu } from './ChartMenu'
+import { loadReports } from '../../query/reports';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
+
+const VALID_REPORTS = VISUALIZATION_REPORTS.add(DataViewInfoTypes.SampleComparison);
 
 interface Props {
     model: QueryGridModel

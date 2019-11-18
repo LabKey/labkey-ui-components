@@ -19,8 +19,8 @@ import { Image, Media, Modal, Panel } from 'react-bootstrap'
 import { LoadingSpinner, SchemaQuery, SVGIcon } from '@glass/base';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
-import { DataViewInfo, IDataViewInfo, DataViewInfoTypes } from '../../models';
-import { CHARTS, GRID_REPORTS } from '../../query/reports';
+import { DataViewInfo, IDataViewInfo } from '../../models';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS, GRID_REPORTS } from '../../constants';
 
 const ICONS = {
     [DataViewInfoTypes.AutomaticPlot]: 'xy_line',
@@ -156,7 +156,7 @@ export class ReportItemModal extends React.PureComponent<ReportItemModalProps> {
 
         if (GRID_REPORTS.contains(type as DataViewInfoTypes)) {
             BodyRenderer = GridReportBody;
-        } else if (CHARTS.contains(type as DataViewInfoTypes)) {
+        } else if (VISUALIZATION_REPORTS.contains(type as DataViewInfoTypes)) {
             BodyRenderer = ChartReportBody;
         }
 

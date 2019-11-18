@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
+import { EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
 import {
     addColumns,
     changeColumn,
@@ -58,7 +58,13 @@ import {
     selectRows,
     updateRows
 } from './query/api';
-import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
+import {
+    MAX_EDITABLE_GRID_ROWS,
+    NO_UPDATES_MESSAGE,
+    GRID_REPORTS,
+    VISUALIZATION_REPORTS,
+    DataViewInfoTypes
+} from './constants';
 import { buildQueryString, getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
@@ -314,6 +320,8 @@ export {
     // DataViewInfo
     DataViewInfoTypes,
     IDataViewInfo,
+    GRID_REPORTS,
+    VISUALIZATION_REPORTS,
 
     // report-list
     flattenBrowseDataTreeResponse,

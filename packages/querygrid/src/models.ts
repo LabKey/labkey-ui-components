@@ -30,7 +30,7 @@ import { genCellKey } from './actions';
 import { getQueryGridModel, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { AppURL } from '@glass/base/src';
-import { CHARTS } from './query/reports';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';
 
 const emptyList = List<string>();
 
@@ -198,22 +198,6 @@ export function getStateQueryGridModel(
     return new QueryGridModel(modelProps);
 }
 
-export enum DataViewInfoTypes {
-    AutomaticPlot = 'Automatic Plot',
-    BarChart = 'Bar Chart',
-    BoxAndWhiskerPlot = 'Box and Whisker Plot',
-    CrosstabReport = 'Crosstab Report',
-    Dataset = 'Dataset',
-    ParticipantReport = 'Participant Report',
-    PieChart = 'Pie Chart',
-    Query = 'Query',
-    RReport = 'R Report',
-    SampleComparison = 'Sample Comparison',
-    TimeChart = 'Time Chart',
-    XYScatterPlot = 'XY Scatter Plot',
-    XYSeriesLinePlot = 'XY Series Line Plot',
-}
-
 type DataViewInfoType = DataViewInfoTypes.AutomaticPlot |
     DataViewInfoTypes.BarChart |
     DataViewInfoTypes.BoxAndWhiskerPlot |
@@ -334,7 +318,7 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     }
 
     isVisChartType() {
-        return CHARTS.contains(this.type);
+        return VISUALIZATION_REPORTS.contains(this.type);
     }
 }
 

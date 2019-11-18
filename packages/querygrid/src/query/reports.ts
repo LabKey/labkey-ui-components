@@ -1,18 +1,8 @@
-import { Set } from 'immutable';
 import { buildURL, AppURL } from '@glass/base';
 import { Ajax } from '@labkey/api';
 
-import { DataViewInfoTypes, IDataViewInfo } from '../models';
+import { IDataViewInfo } from '../models';
 
-export const GRID_REPORTS = Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
-export const CHARTS = Set([
-    DataViewInfoTypes.AutomaticPlot,
-    DataViewInfoTypes.BarChart,
-    DataViewInfoTypes.BoxAndWhiskerPlot,
-    DataViewInfoTypes.PieChart,
-    DataViewInfoTypes.XYScatterPlot,
-    DataViewInfoTypes.XYSeriesLinePlot,
-]);
 export type ReportURLMapper = (report: IDataViewInfo) => AppURL
 
 /**

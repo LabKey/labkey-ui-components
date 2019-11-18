@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Set } from 'immutable';
+
 export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
@@ -182,3 +184,30 @@ export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
 export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';
 export const PARENT_ALIAS_HELPER_TEXT = "Column headings used during import to set a sample's parentage.";
 export const PARENT_ALIAS_DOC_URL = LABKEY.helpLinkPrefix + 'deriveSamples#alias';
+
+
+export enum DataViewInfoTypes {
+    AutomaticPlot = 'Automatic Plot',
+    BarChart = 'Bar Chart',
+    BoxAndWhiskerPlot = 'Box and Whisker Plot',
+    CrosstabReport = 'Crosstab Report',
+    Dataset = 'Dataset',
+    ParticipantReport = 'Participant Report',
+    PieChart = 'Pie Chart',
+    Query = 'Query',
+    RReport = 'R Report',
+    SampleComparison = 'Sample Comparison',
+    TimeChart = 'Time Chart',
+    XYScatterPlot = 'XY Scatter Plot',
+    XYSeriesLinePlot = 'XY Series Line Plot',
+}
+
+export const GRID_REPORTS = Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
+export const VISUALIZATION_REPORTS = Set([
+    DataViewInfoTypes.AutomaticPlot,
+    DataViewInfoTypes.BarChart,
+    DataViewInfoTypes.BoxAndWhiskerPlot,
+    DataViewInfoTypes.PieChart,
+    DataViewInfoTypes.XYScatterPlot,
+    DataViewInfoTypes.XYSeriesLinePlot,
+]);

@@ -55,6 +55,7 @@ export class ChangePasswordModal extends React.Component<Props, State> {
             .then((result) => {
                 this.props.onHide();
                 this.props.onSuccess();
+                this.setState(() => ({submitting: false}));
             })
             .catch((response) => {
                 this.setState(() => ({

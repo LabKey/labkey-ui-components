@@ -4,6 +4,11 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version TBD
+*Released*: TBD
+* Section component - make title prop optional
+* schemas.ts - add core.Users table to default set of SchemaQuerys
+
 ### version 0.21.2
 *Released*: 13 November 2019
 * export WHERE_FILTER_TYPE

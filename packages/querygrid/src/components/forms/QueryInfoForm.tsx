@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { ReactNode } from 'react'
-import { OrderedMap } from 'immutable'
+import { OrderedMap, List } from 'immutable'
 import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
@@ -42,6 +42,7 @@ export interface QueryInfoFormProps {
     isLoading?: boolean
     allowFieldDisable?: boolean
     initiallyDisableFields?: boolean
+    disabledFields?: List<string>
     cancelText?: string
     // this can be used when you want a form to supply a set of values to populate a grid, which will be filled in with additional data
     // (e.g., if you want to generate a set of samples with common properties but need to provide the individual, unique ids)
@@ -76,6 +77,7 @@ export interface QueryInfoFormProps {
     footer?: ReactNode
     singularNoun?: string
     pluralNoun?: string
+    showErrorsAtBottom?: boolean
 }
 
 
@@ -348,7 +350,11 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     }
 
     render() {
-        const { includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk, maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields, columnFilter } = this.props;
+        const {
+            includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk,
+            maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields,
+            disabledFields, columnFilter, showErrorsAtBottom
+        } = this.props;
         const { count } = this.state;
 
 
@@ -364,7 +370,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             content = (
                 <div>
                     {header}
-                    {this.renderError()}
+                    {!showErrorsAtBottom && this.renderError()}
                     <Formsy
                         className="form-horizontal"
                         onValidSubmit={this.handleValidSubmit}
@@ -388,17 +394,19 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                                 value={count ? count.toString() : 1}
                             />
                         )}
-                        <hr/>
+                        {(header || includeCountField) && <hr/>}
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}
                             initiallyDisableFields={initiallyDisableFields}
+                            disabledFields={disabledFields}
                             checkRequiredFields={checkRequiredFields}
                             showLabelAsterisk={showLabelAsterisk}
                             queryInfo={queryInfo}
                             columnFilter={columnFilter}
                             fieldValues={fieldValues}/>
                         {footer}
+                        {showErrorsAtBottom && this.renderError()}
                         {this.renderButtons()}
                     </Formsy>
 

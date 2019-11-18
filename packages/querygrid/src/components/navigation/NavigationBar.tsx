@@ -33,20 +33,20 @@ interface NavigationBarProps {
     onSearch?: (form: any) => any
     searchPlaceholder?: string
     user?: User
+    showSwitchToLabKey: boolean
 }
 
 export class NavigationBar extends React.Component<NavigationBarProps, any> {
     static defaultProps: {
-        showSearchBox: false
+        showSearchBox: false,
+        showSwitchToLabKey: true
     };
 
     render() {
-        const { brand, menuSectionConfigs, model, projectName, showSearchBox, onSearch, searchPlaceholder, user } = this.props;
-
+        const { brand, menuSectionConfigs, model, projectName, showSearchBox, onSearch, searchPlaceholder, user, showSwitchToLabKey } = this.props;
         const productMenu = model ? <ProductMenu model={model} sectionConfigs={menuSectionConfigs}/> : null;
-
         const searchBox = showSearchBox ? <SearchBox onSearch={onSearch} placeholder={searchPlaceholder}/> : null;
-        const userMenu = user ? <UserMenu model={model} user={user}/> : null;
+        const userMenu = user ? <UserMenu model={model} user={user} showSwitchToLabKey={showSwitchToLabKey}/> : null;
 
         return (
             <nav className="navbar navbar-container test-loc-nav-header">

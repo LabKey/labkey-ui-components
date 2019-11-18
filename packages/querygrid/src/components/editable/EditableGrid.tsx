@@ -115,7 +115,7 @@ export interface EditableGridProps {
     forUpdate?: boolean
     readOnlyColumns?: List<string>
     removeColumnTitle?: string
-    notDeletable?: List<any> // list if key values that cannot be deleted.
+    notDeletable?: List<any> // list of key values that cannot be deleted.
     striped?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel

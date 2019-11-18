@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.51-fb-smUserProfile.1",
+  "version": "0.0.51-fb-smUserProfile.2",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",
@@ -38,7 +38,7 @@
     "@fortawesome/free-regular-svg-icons": "5.11.2",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@glass/base": "0.21.2-fb-smUserProfile.1",
+    "@glass/base": "0.21.2-fb-smUserProfile.2",
     "react-beautiful-dnd": "11.0.3",
     "react-color": "2.17.3",
     "react-sticky": "6.0.3",

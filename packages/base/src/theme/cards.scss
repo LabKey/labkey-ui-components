@@ -123,3 +123,21 @@ $circle-size: 12 * $scale;
 .cards__block-disabled {
   background: linear-gradient(0.15turn, #aaa, #eee) no-repeat center;
 }
+
+.component-detail--container {
+  border: 1px solid lightgray;
+  cursor: pointer;
+
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+
+  &.disabled {
+    cursor: default;
+  }
+}

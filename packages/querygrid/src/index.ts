@@ -161,6 +161,9 @@ import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
+import { UserDetailHeader } from './components/user/UserDetailHeader';
+import { UserProfile } from './components/user/UserProfile';
+import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 
 export {
     // global state functions
@@ -266,6 +269,9 @@ export {
     getProjectUsers,
     invalidateProjectUsers,
     IUser,
+    UserDetailHeader,
+    UserProfile,
+    ChangePasswordModal,
 
     // samples-related
     SampleInsertPanel,

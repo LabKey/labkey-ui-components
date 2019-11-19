@@ -54,7 +54,7 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
         this.toggleDisabled = this.toggleDisabled.bind(this);
 
         this.state = {
-            isDisabled: props.allowDisable && props.initiallyDisabled
+            isDisabled: props.initiallyDisabled
         }
     }
 

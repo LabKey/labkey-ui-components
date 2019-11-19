@@ -65,6 +65,7 @@ import assayImageFieldRunsQueryInfo from '../test/data/assayImageFieldRuns-getQu
 import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.json';
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
+import usersQueryInfo from '../test/data/users-getQueryDetails.json';
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
@@ -76,6 +77,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     },
     'assay.general.imagefieldassay': {
         'runs': assayImageFieldRunsQueryInfo,
+    },
+    'core': {
+        'users': usersQueryInfo,
     },
     'exp': {
         'samplesetheatmap': sampleSetHeatMapQueryInfo,

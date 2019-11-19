@@ -41,6 +41,13 @@ export const EXP_TABLES = {
     SAMPLE_SET_HEAT_MAP:    SchemaQuery.create(EXP_SCHEMA, 'SampleSetHeatMap')
 };
 
+// CORE
+const CORE_SCHEMA = 'core';
+export const CORE_TABLES = {
+    SCHEMA: CORE_SCHEMA,
+    USERS: SchemaQuery.create('core', 'Users')
+};
+
 // DATA CLASSES
 const DATA_CLASS_SCHEMA = 'exp.data';
 export const DATA_CLASSES = {
@@ -84,6 +91,7 @@ export const SAMPLE_MANAGEMENT = {
 export const SCHEMAS = {
     ASSAY_TABLES: ASSAY_TABLES,
     EXP_TABLES: EXP_TABLES,
+    CORE_TABLES: CORE_TABLES,
     SAMPLE_SETS: SAMPLE_SETS,
     DATA_CLASSES: DATA_CLASSES,
     SAMPLE_MANAGEMENT: SAMPLE_MANAGEMENT,

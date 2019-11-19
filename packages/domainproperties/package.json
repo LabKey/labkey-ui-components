@@ -1,6 +1,6 @@
 {
   "name": "@glass/domainproperties",
-  "version": "0.0.53-fb-manageLocations.4",
+  "version": "0.0.54-fb-manageLocations.4",
   "description": "Domain property related components for LabKey domains.",
   "main": "dist/domainproperties.cjs.js",
   "module": "dist/domainproperties.es.js",

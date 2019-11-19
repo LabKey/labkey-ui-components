@@ -8,6 +8,10 @@ Domain property related components for LabKey domains
 *Released*: ???
 Package patch update for changes to @glass/base v???
 
+### version 0.0.53
+*Released*: 19 November 2019
+* Issues 39033-39035: Fix SM assay designer usages with extra app validation for sample lookup field
+
 ### version 0.0.52
 *Released*: 18 November 2019
 * Package patch update for changes to @glass/base v0.22.0 

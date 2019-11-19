@@ -14,6 +14,10 @@ from sampleManagement
 * in EditableGrid, change single-row deletion from delicate right-click on row number to separate icon column
 * add optional toolTip property to EditableColumnMetadata to allow display of overlay tip in column headers
 
+### version 0.23.1
+*Released*: 19 November 2019
+* Package patch update for changes to @glass/domainproperties v0.0.53
+
 ### version 0.23.0
 *Released*: 18 November 2019
 * Add components for user profile management in app - ChangePasswordModal, UserDetailHeader, UserProfile

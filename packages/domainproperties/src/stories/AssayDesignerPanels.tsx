@@ -6,9 +6,12 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { text, boolean, withKnobs } from '@storybook/addon-knobs'
+import { Utils } from '@labkey/api'
 
 import {AssayProtocolModel, DomainException} from "../models";
 import { AssayDesignerPanels } from "../components/assay/AssayDesignerPanels"
+import {SEVERITY_LEVEL_ERROR} from "../constants";
+import {setAssayDomainException} from "../actions/actions";
 import { initMocks } from "./mock";
 import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
 import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
@@ -17,8 +20,6 @@ import domainAssayException from "../test/data/assay-domainExceptionFromServer.j
 import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
 import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import './stories.scss'
-import {SEVERITY_LEVEL_ERROR} from "../constants";
-import {setAssayDomainException, setDomainException} from "../actions/actions";
 
 initMocks();
 
@@ -52,7 +53,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
     };
 
     render() {
-        const isValid = boolean('AppDesignValid', true);
+        const isValidMsg = text('AppDesignValidMsg', undefined);
 
         return (
             <AssayDesignerPanels
@@ -69,9 +70,9 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 onCancel={() => {
                     console.log('cancel clicked');
                 }}
-                appIsValid={()=>{
+                appIsValidMsg={()=>{
                     //Disables Finish button if false
-                    return isValid;
+                    return Utils.isString(isValidMsg) && isValidMsg.length > 0 ? isValidMsg : undefined;
                 }}
             />
         )

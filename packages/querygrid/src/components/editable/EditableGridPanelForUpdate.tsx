@@ -36,14 +36,9 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     constructor(props) {
         super(props);
 
-        const editorModel = getEditorModel(this.props.model.getId());
-        if (!editorModel) {
-            throw new Error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
-        }
         this.state = {
             isSubmitting: false
         };
-
     }
 
     updateDataFromGrid = () => {
@@ -52,6 +47,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         const editorModel = getEditorModel(model.getId());
         if (!editorModel) {
             onComplete();
+            console.error("Grid does not expose an editor. Ensure the grid is properly initialized for editing.")
         }
         else {
             // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used

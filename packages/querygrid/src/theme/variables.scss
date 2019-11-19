@@ -12,12 +12,26 @@ $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 $brand-danger: #d9534f;
 $brand-primary: #2980b9;
 $brand-secondary: #236fa0;
+$brand-success: #5cb85c;
 $border-color: #cccccc;
 
 $text-color:            $gray-dark !default;
 $link-hover-color:      darken($brand-primary, 15%) !default;
 
 $font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+
+// Domain properties variables
+$gray-border:           #CCC;
+$gray-shadow:           #F3F3F4;
+
+$red-border:            rgba(160, 80, 76, 1);
+$red-shadow:            rgba(160, 80, 76, 0.5);
+
+$yellow-border:         rgba(250, 200, 0, 1);
+$yellow-shadow:         rgba(250, 200, 0, 0.5);
+
+$blue-border:           rgba(41,128,185,0.5);
+$blue-border-solid:     rgba(41,128,185, 1);
 
 // OmniBox variables
 @mixin border-top-radius($radius)

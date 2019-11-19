@@ -15,8 +15,7 @@ the development process described below will change once this is done.
 | Package | Description |
 | --- | --- | 
 | [@glass/base](packages/base/README.md) | Base components, models, and utility functions for LabKey applications and pages
-| [@glass/domainproperties](packages/domainproperties/README.md) | Domain property related components for LabKey domains | 
-| [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views 
+| [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views and domain property-related components for LabKey domains
 | [template](packages/template/README.md) | A template for creating new packages
 
 ## Using @glass npm packages

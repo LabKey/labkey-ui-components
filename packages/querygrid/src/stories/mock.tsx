@@ -66,6 +66,10 @@ import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
 import usersQueryInfo from '../test/data/users-getQueryDetails.json';
+import getMaxPhiLevelJson from "../test/data/security-GetMaxPhiLevel.json";
+import inferDomainJson from '../test/data/property-inferDomain.json';
+import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
+
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
@@ -330,6 +334,25 @@ export function initMocks() {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(visualizationConfig),
     });
+
+    mock.post(/.*\/property\/inferDomain.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(inferDomainJson)
+    });
+
+    mock.get(/.*\/security\/GetMaxPhiLevel.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getMaxPhiLevelJson)
+    });
+
+    mock.get(/.*\/assay\/getValidPublishTargets.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getValidPublishTargetsJson)
+    });
+
 
     mock.use(proxy);
 }

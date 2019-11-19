@@ -38,10 +38,10 @@ import {
     getQueryGridModel,
     initQueryGridState,
     invalidateLineageResults,
+    invalidateProjectUsers,
     removeQueryGridModel,
     setQueryColumnRenderers,
-    setQueryMetadata,
-    invalidateProjectUsers
+    setQueryMetadata
 } from './global';
 import {
     deleteRows,
@@ -87,18 +87,14 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
-import { handleInputTab, handleTabKeyOnTextArea, getProjectUsers } from './components/forms/actions';
+import { getProjectUsers, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
 import { IUser } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
-import  {
-    addDateRangeFilter,
-    last12Months,
-    monthSort
-} from './components/heatmap/utils';
+import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
@@ -154,11 +150,42 @@ import { MenuSectionConfig } from './components/navigation/ProductMenuSection';
 import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
-import { MenuSectionModel, MenuItemModel, ProductMenuModel } from './components/navigation/model';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './components/navigation/model';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
+
+import {
+    createFormInputId,
+    fetchDomain,
+    fetchProtocol,
+    getBannerMessages,
+    saveAssayDesign,
+    saveDomain,
+    setDomainFields
+} from "./components/domainproperties/actions";
+import {
+    AssayProtocolModel,
+    DomainDesign,
+    DomainField,
+    IAppDomainHeader,
+    IBannerMessage,
+    SAMPLE_TYPE
+} from "./components/domainproperties/models";
+import DomainForm from "./components/domainproperties/DomainForm";
+import { DomainFieldsDisplay } from "./components/domainproperties/DomainFieldsDisplay";
+import { AssayPropertiesPanel } from "./components/domainproperties/assay/AssayPropertiesPanel";
+import { AssayDesignerPanels } from "./components/domainproperties/assay/AssayDesignerPanels";
+import {
+    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_TYPE,
+    RANGE_URIS,
+    SAMPLE_TYPE_CONCEPT_URI,
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN
+} from "./components/domainproperties/constants";
+
 
 export {
     // global state functions
@@ -353,5 +380,36 @@ export {
     NavigationBar,
     SubNav,
     Breadcrumb,
-    BreadcrumbCreate
+    BreadcrumbCreate,
+
+    // DomainProperties components
+    DomainForm,
+    DomainFieldsDisplay,
+    AssayPropertiesPanel,
+    AssayDesignerPanels,
+
+    // functions
+    fetchDomain,
+    saveDomain,
+    getBannerMessages,
+    fetchProtocol,
+    createFormInputId,
+    saveAssayDesign,
+    setDomainFields,
+
+    // models
+    AssayProtocolModel,
+    DomainDesign,
+    DomainField,
+    IBannerMessage,
+    IAppDomainHeader,
+
+    // constants
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN,
+    SAMPLE_TYPE,
+    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_TYPE,
+    RANGE_URIS,
+    SAMPLE_TYPE_CONCEPT_URI,
 }

@@ -58,7 +58,6 @@
   },
   "workspaces": [
     "packages/base",
-    "packages/querygrid",
-    "packages/domainproperties"
+    "packages/querygrid"
   ]
 }

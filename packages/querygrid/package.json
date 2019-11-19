@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.24.0-fb-manageLocations.13",
+  "version": "0.24.0-fb-manageLocations.14",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",

@@ -15,6 +15,7 @@
  */
 import * as React from 'react';
 import Formsy from 'formsy-react'
+import { List } from "immutable";
 import { SchemaQuery } from "@glass/base";
 import { QueryFormInputs } from "./QueryFormInputs";
 import { getQueryDetails } from "../..";
@@ -36,6 +37,7 @@ const SCHEMA_QUERY = new SchemaQuery({
 });
 
 describe("QueryFormInputs", () => {
+
     test("default properties with queryInfo", () => {
         return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
             const formWrapper = mount(
@@ -43,6 +45,8 @@ describe("QueryFormInputs", () => {
                     <QueryFormInputs queryInfo = {queryInfo}/>
                 </Formsy>
             );
+
+            expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(0);
             expect(formWrapper.find(TextInput)).toHaveLength(4);
             expect(formWrapper.find(DateInput)).toHaveLength(1);
             expect(formWrapper.find(CheckboxInput)).toHaveLength(1);
@@ -71,6 +75,7 @@ describe("QueryFormInputs", () => {
         const filter = (col) => {
             return col.name === "Healthy";
         };
+
         return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
             const formWrapper = mount(
                 <Formsy>
@@ -82,7 +87,21 @@ describe("QueryFormInputs", () => {
 
             formWrapper.unmount();
         });
+    });
 
+    test("disabledFields", () => {
+        return getQueryDetails(SCHEMA_QUERY).then((queryInfo) => {
+            const formWrapper = mount(
+                <Formsy>
+                    <QueryFormInputs queryInfo = {queryInfo} disabledFields={List<string>(['date', 'ParticipantID', 'textarea'])}/>
+                </Formsy>
+            );
+
+            expect(formWrapper.find('input').findWhere((input) => !input.prop('disabled'))).toHaveLength(4);
+            expect(formWrapper.find('input').findWhere((input) => input.prop('disabled'))).toHaveLength(1);
+
+            formWrapper.unmount();
+        });
     });
 
 });

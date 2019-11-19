@@ -4,6 +4,15 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.23.0
+*Released*: 18 November 2019
+* Add components for user profile management in app - ChangePasswordModal, UserDetailHeader, UserProfile
+* QueryFormInputs - add disabledFields property 
+* QueryInfoForm - add disabledFields and showErrorsAtBottom properties
+* FileInput - fix so that FieldLabel respects the showLabel boolean property
+* TextAreaInput, TextInput - fix for initial state isDisabled to only be based off of initiallyDisabled prop
+* NavigationBar, UserMenu - add showSwitchToLabKey boolean, default to true  
+
 ### version 0.22.4
 *Released*: 14 November 2019
 * Fix Issue 38804

@@ -23,6 +23,7 @@ import { MenuSectionModel, ProductMenuModel } from './model'
 interface UserMenuProps {
     model: ProductMenuModel
     user: User
+    showSwitchToLabKey: boolean
     extraDevItems?: any
     extraUserItems?: any
 }
@@ -38,44 +39,47 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
     }
 
     render() {
-        const { extraDevItems, extraUserItems, model, user } = this.props;
+        const { extraDevItems, extraUserItems, model, user, showSwitchToLabKey } = this.props;
 
         const menuSection = model.getSection("user");
 
         if (menuSection) {
-            let logoutLink,
-                logoutDivider;
-
             let menuItems = [];
             menuSection.items.forEach((item) => {
                 if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
                     menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
                 }
             });
-            menuItems.push(
-                <MenuItem key="projectBegin" href={buildURL('project', 'begin.view', undefined, {returnURL: false})}>
-                    Switch to LabKey
-                </MenuItem>
-            );
+
+            if (showSwitchToLabKey) {
+                menuItems.push(
+                    <MenuItem key="projectBegin" href={buildURL('project', 'begin.view', undefined, {returnURL: false})}>
+                        Switch to LabKey
+                    </MenuItem>
+                );
+            }
 
             // commenting this out for now because we have not implemented login/logout functionality
+            let logoutLink, logoutDivider;
             // if (user.isSignedIn) {
             //     logoutLink = <MenuItem onClick={this.logout}>Logout</MenuItem>;
             //     logoutDivider = <MenuItem divider/>;
             // }
 
-
             return (
                 <Dropdown id="user-menu-dropdown">
                     <Dropdown.Toggle useAnchor={true}>
-                        {user.avatar ? <Image src={user.avatar}
+                        {user.avatar
+                            ? <Image src={user.avatar}
                                alt="User Avatar"
                                rounded={true}
                                height={32}
-                               width={32}/> : <span className="navbar-item">
-
+                               width={32}
+                            />
+                           : <span className="navbar-item">
                                 <span className="user-name"><span className="fas fa-user-circle"/> {user.displayName} </span>
-                            </span>}
+                            </span>
+                        }
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu pullRight className="pull-right">

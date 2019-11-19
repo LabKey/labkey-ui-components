@@ -59,7 +59,7 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
 
         this.state = {
             didFocus: false,
-            isDisabled: props.allowDisable && props.initiallyDisabled
+            isDisabled: props.initiallyDisabled
         }
     }
 

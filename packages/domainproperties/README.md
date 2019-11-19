@@ -4,8 +4,8 @@ Domain property related components for LabKey domains
 
 ## Release Notes ##
 
-### version TBD
-*Released*: TBD
+### version 0.0.53
+*Released*: 19 November 2019
 * Issues 39033-39035: Fix SM assay designer usages with extra app validation for sample lookup field
 
 ### version 0.0.52

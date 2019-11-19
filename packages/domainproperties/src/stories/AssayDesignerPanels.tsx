@@ -71,8 +71,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                     console.log('cancel clicked');
                 }}
                 appIsValidMsg={()=>{
-                    //Disables Finish button if false
-                    return Utils.isString(isValidMsg) && isValidMsg.length > 0 ? isValidMsg : undefined;
+                    return Utils.isString(isValidMsg) && isValidMsg.trim().length > 0 ? isValidMsg : undefined;
                 }}
             />
         )

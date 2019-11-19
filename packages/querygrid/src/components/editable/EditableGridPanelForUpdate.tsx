@@ -2,14 +2,12 @@ import * as React from "react";
 import { List, Map } from "immutable";
 import {
     capitalizeFirstChar,
-    createNotification,
     getUpdatedDataFromGrid,
     QueryGridModel,
     SchemaQuery,
     WizardNavButtons
 } from "@glass/base";
 import { getEditorModel } from '../../global';
-import { NO_UPDATES_MESSAGE } from '../../constants';
 import { EditableGridPanel } from './EditableGridPanel';
 
 interface Props {
@@ -38,9 +36,14 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
     constructor(props) {
         super(props);
 
+        const editorModel = getEditorModel(this.props.model.getId());
+        if (!editorModel) {
+            throw new Error('Grid does not expose an editor. Ensure the grid is properly initialized for editing.');
+        }
         this.state = {
             isSubmitting: false
         };
+
     }
 
     updateDataFromGrid = () => {
@@ -49,12 +52,6 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
         const editorModel = getEditorModel(model.getId());
         if (!editorModel) {
             onComplete();
-
-            //TODO should this be moved to the constructor for this component?
-            createNotification({
-                alertClass: 'danger',
-                message: 'Grid does not expose an editor. Ensure the grid is properly initialized for editing.'
-            });
         }
         else {
             // Issue 37842: if we have data for the selection, this was the data that came from the display grid and was used
@@ -66,12 +63,10 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
 
             if (updatedRows.length > 0) {
                 this.setState(() => ({isSubmitting: true}));
-                updateRows(model.queryInfo.schemaQuery, updatedRows)
-                    .then(() => onComplete());
-            } else {
-                onComplete();
-                createNotification(NO_UPDATES_MESSAGE);
             }
+            updateRows(model.queryInfo.schemaQuery, updatedRows)
+                    .then(() => onComplete());
+
         }
     };
 

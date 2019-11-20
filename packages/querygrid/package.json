@@ -1,6 +1,6 @@
 {
   "name": "@glass/querygrid",
-  "version": "0.24.0-fb-manageLocations.16",
+  "version": "0.24.0",
   "description": "Query Grid for LabKey schema/query data views",
   "main": "dist/querygrid.cjs.js",
   "module": "dist/querygrid.es.js",
@@ -39,8 +39,8 @@
   },
   "homepage": "https://github.com/LabKey/glass-components#readme",
   "dependencies": {
-    "@glass/base": "0.22.1-fb-manageLocations.4",
-    "@glass/domainproperties": "0.0.54-fb-manageLocations.5",
+    "@glass/base": "0.22.1",
+    "@glass/domainproperties": "0.0.54",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",
     "history": "4.7.2",

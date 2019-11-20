@@ -15,11 +15,11 @@
  */
 import { fromJS, List, Map } from 'immutable'
 import { Option } from 'react-select';
-import { Filter, Security, Utils } from '@labkey/api'
-import { QueryInfo, similaritySortFactory } from '@glass/base'
+import { Ajax, Filter, Utils } from '@labkey/api'
+import { buildURL, PermissionTypes, QueryInfo, similaritySortFactory } from '@glass/base'
 
 import { FOCUS_FLAG } from './constants'
-import { selectRows, searchRows, ISelectRowsResult, getQueryDetails } from '../../query/api'
+import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api'
 import { QuerySelectOwnProps } from './QuerySelect'
 import { IUser, QuerySelectModel, QuerySelectModelProps } from './model'
 import { getUsers, setUsers } from "../../global";
@@ -366,18 +366,25 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
     }
 }
 
-export function getProjectUsers(permissions?: string | Array<string>): Promise<List<IUser>> {
+/**
+ * Retrieve users in current container with a given set of permissions.  If no permission is specified, defaults to Read permission
+ * @param permissions the PermissionType or array of PermissionType values that all users must have.
+ */
+export function getUsersWithPermissions(permissions: string | Array<string> = PermissionTypes.Read): Promise<List<IUser>> {
     const users = getUsers(permissions);
     if (users) {
         return Promise.resolve(users);
     }
 
     return new Promise((resolve, reject) => {
-        Security.getUsers({
-            active: true,  // Issue 30765: don't get deactivated users
-            permissions,
-            success: function(data) {
-                let users = List<IUser>(data.users);
+        let params =  Array.isArray(permissions) ? {permissions} : {permissions: [permissions]};
+
+        return Ajax.request({
+            url: buildURL('user', 'getUsersWithPermissions.api'),
+            method: 'GET',
+            params,
+            success: Utils.getCallbackWrapper((response) => {
+                let users = List<IUser>(response.users);
 
                 // sort by displayName
                 const sortedUsers = users.sort((a, b) => {
@@ -392,11 +399,11 @@ export function getProjectUsers(permissions?: string | Array<string>): Promise<L
 
                 setUsers(sortedUsers, permissions);
                 resolve(sortedUsers);
-            },
-            failure: function() {
-                // This API responds with HTML, lol
-                reject('LABKEY.Security.getUsers() failed. Check request log.');
-            }
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                console.error( "There was a problem retrieving users with permissions ", permissions, response);
+                reject("There was a problem retrieving users with the given permissions");
+            })
         });
     });
 }

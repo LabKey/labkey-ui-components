@@ -438,7 +438,8 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     updateEditorModel(editorModel, {
         colCount: columns.size,
         cellValues: cellValues.asImmutable(),
-        rowCount: rows.size > 0 ? rows.size : editorModel.rowCount
+        deletedIds: Set<any>(),  // when initially loaded, nothing has been deleted; need to clear out any ids possibly set from the last edit.
+        rowCount: rows.size > 0 ? rows.size : editorModel.rowCount,
     });
 }
 
@@ -480,7 +481,12 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
             fetchSelectedIfNeeded(newModel);
         }
     }, payload => {
-        gridShowError(payload.model, payload.error, connectedComponent);
+        if (payload.model) {
+            gridShowError(payload.model, payload.error, connectedComponent);
+        }
+        else {
+            console.error("No model available for loading.", payload.error);
+        }
     });
 }
 
@@ -2281,6 +2287,16 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     // sort descending so we remove the data for the row with the largest index first and don't mess up the index number for other rows
     const sortedIdIndexes = dataIdIndexes.sort().reverse();
 
+    let data = model.data;
+    let dataIds = model.dataIds;
+    let deletedIds = Set<any>();
+    sortedIdIndexes.forEach((dataIdIndex) => {
+        const dataId = dataIds.get(dataIdIndex);
+        deletedIds = deletedIds.add(dataId);
+        data = data.remove(dataId);
+        dataIds = dataIds.remove(dataIdIndex);
+    });
+
     if (model.editable) {
         let newCellMessages = editorModel.cellMessages;
         let newCellValues = editorModel.cellValues;
@@ -2311,6 +2327,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
         });
 
         updateEditorModel(editorModel, {
+            deletedIds: editorModel.deletedIds.merge(deletedIds),
             focusColIdx: -1,
             focusRowIdx: -1,
             rowCount: editorModel.rowCount - dataIdIndexes.size,
@@ -2321,14 +2338,6 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
             cellValues: newCellValues
         });
     }
-
-    let data = model.data;
-    let dataIds = model.dataIds;
-    sortedIdIndexes.forEach((dataIdIndex) => {
-        const dataId = dataIds.get(dataIdIndex);
-        data = data.remove(dataId);
-        dataIds = dataIds.remove(dataIdIndex);
-    });
 
     updateQueryGridModel(model, {
         data,

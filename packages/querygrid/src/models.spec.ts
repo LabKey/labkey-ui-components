@@ -15,10 +15,10 @@
  */
 import { fromJS, List, Map } from 'immutable';
 import { resetQueryGridState } from "./global";
-import { QueryGridModel, QueryInfo, SchemaQuery } from '@glass/base';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 
 import sampleSet2QueryInfo from "./test/data/sampleSet2-getQueryDetails.json";
+import { QueryGridModel, QueryInfo, SchemaQuery } from './components/base/models/model';
 
 const editableGridWithData = {
     "cellMessages": Map<string, CellMessage>({

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Map } from 'immutable'
-import { buildURL, ConfirmModal } from "@glass/base";
+import { ConfirmModal } from '../base/ConfirmModal';
+import { buildURL } from '../../url/ActionURL';
 
 interface Props {
     onConfirm: () => any

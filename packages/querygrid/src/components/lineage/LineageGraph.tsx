@@ -6,11 +6,24 @@ import * as OrigReact from 'react'
 import React from 'reactn'
 import { List } from 'immutable'
 import { ActionURL } from '@labkey/api'
-import { Alert, AppURL, LoadingSpinner, QueryGridModel, SchemaQuery, SVGIcon, Theme } from '@glass/base'
 
 import { LineageNodeList, LineageSummary } from "./LineageSummary";
-import { ILineageGroupingOptions, Lineage, LineageFilter, LineageGroupingOptions, LineageNode, LineageOptions } from "./models";
-import { VisGraphClusterNode, VisGraphCombinedNode, VisGraphNode, VisGraphOptions, LineageNodeCollection, createLineageNodeCollections } from "./vis/VisGraphGenerator";
+import {
+    ILineageGroupingOptions,
+    Lineage,
+    LineageFilter,
+    LineageGroupingOptions,
+    LineageNode,
+    LineageOptions
+} from "./models";
+import {
+    createLineageNodeCollections,
+    LineageNodeCollection,
+    VisGraphClusterNode,
+    VisGraphCombinedNode,
+    VisGraphNode,
+    VisGraphOptions
+} from "./vis/VisGraphGenerator";
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
 import { VisGraph } from "./vis/VisGraph";
 import { getStateQueryGridModel } from "../../models";
@@ -18,6 +31,11 @@ import { gridInit } from '../../actions';
 import { getQueryGridModel } from "../../global";
 import { Detail } from "../forms/detail/Detail";
 import { loadLineageIfNeeded } from "./actions";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { AppURL } from '../../url/AppURL';
+import { Alert } from '../base/Alert';
+import { QueryGridModel, SchemaQuery } from '../base/models/model';
+import { SVGIcon, Theme } from '../base/SVGIcon';
 
 const omittedColumns = List(['Alias', 'Description', 'Name', 'SampleSet', 'DataClass']);
 const requiredColumns = List(['Run']);

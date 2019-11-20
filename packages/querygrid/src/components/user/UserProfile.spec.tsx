@@ -2,13 +2,13 @@ import * as React from 'react';
 import { fromJS } from 'immutable';
 import { mount } from 'enzyme';
 import { Button } from "react-bootstrap";
-import { SCHEMAS } from "@glass/base";
 import { UserProfile } from './UserProfile';
 import { READER } from "../../test/data/users";
 import { FileInput } from "../forms/input/FileInput";
 import { TextInput } from "../forms/input/TextInput";
 import { getQueryDetails } from "../../query/api";
 import { initUnitTestMocks } from "../../testHelpers";
+import { SCHEMAS } from '../base/models/schemas';
 
 beforeAll(() => {
     initUnitTestMocks();

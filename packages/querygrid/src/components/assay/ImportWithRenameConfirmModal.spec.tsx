@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { mount } from 'enzyme';
-import { ConfirmModal } from '@glass/base';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 describe("<ImportWithRenameConfirmModal/>", () => {
 

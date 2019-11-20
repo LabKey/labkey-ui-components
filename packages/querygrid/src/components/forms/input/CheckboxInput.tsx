@@ -16,9 +16,9 @@
 import * as React from 'react'
 import { withFormsy } from 'formsy-react'
 import { Utils } from '@labkey/api'
-import { QueryColumn } from '@glass/base'
 import { FieldLabel } from '../FieldLabel'
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { QueryColumn } from '../../base/models/model';
 
 interface CheckboxInputProps extends DisableableInputProps {
     formsy?: boolean

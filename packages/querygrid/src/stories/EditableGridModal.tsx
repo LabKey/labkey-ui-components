@@ -16,13 +16,16 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { SchemaQuery } from "@glass/base";
 import { getStateQueryGridModel } from "../models";
 
 import './stories.scss'
-import { EditableColumnMetadata, EditableGridLoader, EditableGridModal, gridInit } from "..";
 import * as constants from '../test/data/constants';
 import { List, Map } from 'immutable';
+import { EditableGridModal } from '../components/editable/EditableGridModal';
+import { gridInit } from '../actions';
+import { EditableColumnMetadata } from '../components/editable/EditableGrid';
+import { EditableGridLoader } from '../components/editable/EditableGridLoader';
+import { SchemaQuery } from '../components/base/models/model';
 
 
 storiesOf('EditableGridModal', module)

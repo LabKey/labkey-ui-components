@@ -1,6 +1,5 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer'
-import { AssayUploadTabs } from "@glass/base";
 
 import { RunDataPanel } from "./RunDataPanel";
 import { getQueryGridModel } from "../../global";
@@ -9,6 +8,7 @@ import { gridInit } from "../../actions";
 import { withFormSteps, WithFormStepsProps } from "../forms/FormStep";
 import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
 import { initUnitTestMocks } from '../../testHelpers';
+import { AssayUploadTabs } from '../base/models/model';
 
 let MODEL_ID_NOT_LOADED;
 let MODEL_ID_LOADED;

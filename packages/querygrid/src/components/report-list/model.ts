@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AppURL } from '@glass/base';
 import { IDataViewInfo } from '../../models';
+import { AppURL } from '../../url/AppURL';
 
 export type ReportURLMapper = (report: IDataViewInfo) => AppURL
 

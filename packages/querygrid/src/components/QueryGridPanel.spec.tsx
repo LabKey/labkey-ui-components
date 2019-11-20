@@ -16,10 +16,11 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer'
 import { List } from 'immutable'
-import { QueryGridModel, TESTS_ONLY_RESET_DOM_COUNT } from '@glass/base'
 
 import { QueryGridPanel } from './QueryGridPanel'
 import { initQueryGridState, updateQueryGridModel } from '../global'
+import { QueryGridModel } from './base/models/model';
+import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 
 const modelIsLoaded = new QueryGridModel({
     id: 'queryGridLoaded',

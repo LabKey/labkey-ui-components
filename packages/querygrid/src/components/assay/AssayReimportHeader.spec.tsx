@@ -1,10 +1,10 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer'
 
-import { AssayDefinitionModel } from '@glass/base';
 import { fromJS } from 'immutable';
 import { AssayReimportHeader } from './AssayReimportHeader';
 import assayDefJSON from '../../test/data/assayDefinitionModel.json';
+import { AssayDefinitionModel } from '../base/models/model';
 
 
 describe("<AssayReimportHeader/>", () => {

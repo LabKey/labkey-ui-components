@@ -15,11 +15,13 @@
  */
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Router, Route, createMemoryHistory } from 'react-router';
+import { createMemoryHistory, Route, Router } from 'react-router';
 import data from '../test/data/example_browse_data_tree_api.json';
-import { ReportList, ReportItemModal, flattenBrowseDataTreeResponse } from '../';
-import { AppURL } from '@glass/base';
 import './stories.scss';
+import { ReportItemModal, ReportList } from '../components/report-list/ReportList';
+import { AppURL } from '../url/AppURL';
+import { flattenBrowseDataTreeResponse } from '../components/report-list/model';
+
 
 const history = createMemoryHistory();
 

@@ -16,7 +16,6 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { LoadingSpinner, QueryGridModel, SchemaQuery } from "@glass/base";
 
 import { getStateQueryGridModel } from "../models";
 import { QueryInfoForm } from "../components/forms/QueryInfoForm";
@@ -24,6 +23,8 @@ import * as constants from "../test/data/constants";
 import { gridInit } from "../actions";
 import './stories.scss'
 import { getQueryGridModel } from '../global';
+import { LoadingSpinner } from '../components/base/LoadingSpinner';
+import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 
 function formSubmit(data: any) : Promise<any> {
     console.log(data);

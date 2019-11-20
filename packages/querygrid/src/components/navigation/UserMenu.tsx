@@ -16,9 +16,11 @@
 
 import * as React from 'react'
 import { Dropdown, Image, MenuItem } from 'react-bootstrap'
-import { User, buildURL, devToolsActive, toggleDevTools } from '@glass/base'
 
 import { MenuSectionModel, ProductMenuModel } from './model'
+import { User } from '../base/models/model';
+import { devToolsActive, toggleDevTools } from '../../util/utils';
+import { buildURL } from '../../url/ActionURL';
 
 interface UserMenuProps {
     model: ProductMenuModel

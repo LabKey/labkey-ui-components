@@ -15,10 +15,10 @@
  */
 import React from 'reactn';
 import renderer from 'react-test-renderer';
-import { QueryGridModel, SchemaQuery } from '@glass/base'
 
 import { QueryGrid } from './QueryGrid'
 import { initQueryGridState, updateQueryGridModel } from '../global'
+import { QueryGridModel, SchemaQuery } from './base/models/model';
 
 beforeAll(() => {
     initQueryGridState()

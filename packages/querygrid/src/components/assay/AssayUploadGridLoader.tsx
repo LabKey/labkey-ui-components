@@ -15,15 +15,15 @@
  */
 import * as React from 'react'
 import { Map } from 'immutable'
-import {
-    QueryGridModel,
-    IGridLoader,
-    IGridResponse,
-    AssayDomainTypes,
-    AssayDefinitionModel,
-} from '@glass/base'
 
 import { AssayWizardModel } from "./models";
+import {
+    AssayDefinitionModel,
+    AssayDomainTypes,
+    IGridLoader,
+    IGridResponse,
+    QueryGridModel
+} from '../base/models/model';
 
 export class AssayUploadGridLoader implements IGridLoader {
 

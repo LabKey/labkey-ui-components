@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
-import { AppURL, AssayDefinitionModel } from '@glass/base';
+import { AppURL } from '../../url/AppURL';
+import { AssayDefinitionModel } from '../base/models/model';
 
 interface Props {
     hasBatchProperties?: boolean

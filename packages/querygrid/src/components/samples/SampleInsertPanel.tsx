@@ -18,22 +18,6 @@ import { Button, Form, Panel } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable'
 import { Link } from "react-router";
 import { Utils } from '@labkey/api'
-import {
-    AddEntityButton,
-    Alert, AppURL,
-    capitalizeFirstChar,
-    IGridLoader,
-    IGridResponse,
-    insertColumnFilter,
-    LoadingSpinner,
-    Progress,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo,
-    RemoveEntityButton,
-    SchemaQuery,
-    SCHEMAS
-} from '@glass/base';
 
 import { SAMPLE_UNIQUE_FIELD_KEY } from '../../constants'
 
@@ -57,6 +41,23 @@ import {
     SampleSetParentType
 } from './models';
 import { initSampleSetInsert } from './actions';
+import { Progress } from '../base/Progress';
+import { SCHEMAS } from '../base/models/schemas';
+import { AppURL } from '../../url/AppURL';
+import {
+    IGridLoader,
+    IGridResponse,
+    insertColumnFilter,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery
+} from '../base/models/model';
+import { capitalizeFirstChar } from '../../util/utils';
+import { AddEntityButton } from '../base/buttons/AddEntityButton';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { RemoveEntityButton } from '../base/buttons/RemoveEntityButton';
+import { Alert } from '../base/Alert';
 
 
 class SampleGridLoader implements IGridLoader {

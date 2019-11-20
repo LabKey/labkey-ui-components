@@ -1,11 +1,13 @@
 import * as React from "react";
-import {IParentOption, IParentAlias} from "./models";
-import {Col, FormControl, FormControlProps, Row} from "react-bootstrap";
-import {LabelOverlay} from "../..";
+import { IParentAlias, IParentOption } from "./models";
+import { Col, FormControl, FormControlProps, Row } from "react-bootstrap";
+
 import { SelectInput } from "../forms/input/SelectInput";
-import {RemoveEntityButton} from "@glass/base";
+
 import classNames from "classnames";
-import {PARENT_ALIAS_HELPER_TEXT} from "../../constants";
+import { PARENT_ALIAS_HELPER_TEXT } from "../../constants";
+import { LabelOverlay } from '../forms/LabelOverlay';
+import { RemoveEntityButton } from '../base/buttons/RemoveEntityButton';
 
 
 interface IParentAliasRow {

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Button, FormControl, Modal } from "react-bootstrap";
-import { Alert, LabelHelpTip } from "@glass/base";
 import { ChangePasswordModal } from './ChangePasswordModal';
 import { ChangePasswordModel } from "./models";
 import { READER } from "../../test/data/users";
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { Alert } from '../base/Alert';
 
 describe("<ChangePasswordModal/>", () => {
 

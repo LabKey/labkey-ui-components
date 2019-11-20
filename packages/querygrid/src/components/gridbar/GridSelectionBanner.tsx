@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import React from 'reactn'
-import { Button } from 'react-bootstrap'
-import { GRID_CHECKBOX_OPTIONS, QueryGridModel } from '@glass/base'
+import { Button } from 'react-bootstrap';
 
 import { gridClearAll, gridSelectAll } from '../../actions'
+import { QueryGridModel } from '../base/models/model';
 
 interface Props {
     containerCls?: string

@@ -17,7 +17,6 @@ import React from 'reactn'
 import { List } from 'immutable'
 
 import { Utils } from '@labkey/api'
-import { QueryGridModel, Alert, LoadingSpinner } from '@glass/base'
 
 import { gridInit } from '../actions'
 import { getQueryGridModel } from '../global'
@@ -25,6 +24,9 @@ import { QueryGrid } from './QueryGrid'
 import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar'
 
 import '../theme/index.scss'
+import { QueryGridModel } from './base/models/model';
+import { LoadingSpinner } from './base/LoadingSpinner';
+import { Alert } from './base/Alert';
 
 interface Props {
     model: QueryGridModel | List<QueryGridModel>

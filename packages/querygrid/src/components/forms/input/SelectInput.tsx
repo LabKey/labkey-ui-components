@@ -17,10 +17,10 @@ import * as React from 'react'
 import { withFormsy } from 'formsy-react'
 import ReactSelect, { Option } from 'react-select'
 import { Utils } from '@labkey/api'
-import { generateId } from '@glass/base'
 
 import { FieldLabel } from '../FieldLabel'
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { generateId } from '../../../util/utils';
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter

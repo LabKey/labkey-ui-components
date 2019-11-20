@@ -4,8 +4,8 @@
     "outDir": "dist"
   },
   "files": [
-    "../base/src/typings/react-bootstrap.d.ts",
-    "../base/src/typings/main.d.ts",
+    "./src/typings/react-bootstrap.d.ts",
+    "./src/typings/main.d.ts",
     "src/index.ts"
   ]
 }

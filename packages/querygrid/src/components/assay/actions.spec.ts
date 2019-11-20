@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { AssayDefinitionModel, QueryInfo, SchemaQuery } from "@glass/base";
+
 
 import { getImportItemsForAssayDefinitions } from "./actions";
 import { getStateQueryGridModel } from "../../models";
 import { initQueryGridState } from "../../global";
 import { ASSAY_DEFINITION_MODEL } from "../../test/data/constants";
 import sampleSet2QueryInfo from "../../test/data/sampleSet2-getQueryDetails.json";
+import { AssayDefinitionModel, SchemaQuery, QueryInfo } from '../../index';
 
 beforeAll(() => {
     initQueryGridState();

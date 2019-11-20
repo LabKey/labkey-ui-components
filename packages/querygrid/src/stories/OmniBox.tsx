@@ -6,14 +6,14 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import { Grid } from '@glass/base';
 
-import { OmniBox } from '..';
 import { SearchAction } from '../components/omnibox/actions/Search';
 import { FilterAction } from '../components/omnibox/actions/Filter';
 import { SortAction } from '../components/omnibox/actions/Sort';
 import { createMockActionContext } from '../test/OmniboxMock';
 import './stories.scss';
+import { OmniBox } from '../components/omnibox/OmniBox';
+import { Grid } from '../components/base/Grid';
 
 const { model, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 

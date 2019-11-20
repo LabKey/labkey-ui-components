@@ -15,18 +15,12 @@
  */
 import { List, OrderedMap, Map, Record } from 'immutable'
 import { AssayDOM } from '@labkey/api'
-import {
-    AppURL,
-    AssayDefinitionModel,
-    AssayUploadTabs,
-    QueryColumn,
-    QueryInfo,
-    FileAttachmentFormModel,
-    QueryGridModel,
-    generateNameWithTimestamp
-} from "@glass/base";
 
 import { getEditorModel } from "../../global";
+import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, QueryInfo } from '../base/models/model';
+import { FileAttachmentFormModel } from '../base/files/models';
+import { AppURL } from '../../url/AppURL';
+import { generateNameWithTimestamp } from '../../util/Date';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel

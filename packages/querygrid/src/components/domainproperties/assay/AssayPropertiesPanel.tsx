@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Col, Form, Row, Panel } from "react-bootstrap";
+import { Col, Form, Panel, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
 import { Utils } from "@labkey/api";
 
-import { DomainPanelStatus, AssayProtocolModel } from "../models";
+import { AssayProtocolModel, DomainPanelStatus } from "../models";
 import { LK_ASSAY_DESIGNER_HELP_URL } from "../constants";
 import {
     AutoCopyDataInput,
@@ -21,8 +21,9 @@ import {
     SaveScriptDataInput,
     TransformScriptsInput
 } from "./AssayPropertiesInput";
-import {Alert, LabelHelpTip} from "@glass/base";
-import {createFormInputName} from "../actions";
+import { createFormInputName } from "../actions";
+import { LabelHelpTip } from '../../base/LabelHelpTip';
+import { Alert } from '../../base/Alert';
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {

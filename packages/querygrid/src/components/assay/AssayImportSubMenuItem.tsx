@@ -1,10 +1,11 @@
 import * as React from "react";
 import { MenuItem, OverlayTrigger, Popover } from "react-bootstrap";
 import { List } from 'immutable'
-import { AssayDefinitionModel, ISubItem, QueryGridModel, SubMenuItem, SubMenuItemProps } from "@glass/base";
 
 import { getImportItemsForAssayDefinitions } from "./actions";
 import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+import { ISubItem, SubMenuItem, SubMenuItemProps } from '../base/menus/SubMenuItem';
+import { AssayDefinitionModel, QueryGridModel } from '../base/models/model';
 
 interface Props extends SubMenuItemProps {
     isLoaded: boolean

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import {Map, fromJS} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
-import { AppURL } from "@glass/base";
 import { BreadcrumbCreate } from "./BreadcrumbCreate";
+import { AppURL } from '../../url/AppURL';
 
 const createdModifiedRow = Map<string, any>(fromJS({
    Created: {

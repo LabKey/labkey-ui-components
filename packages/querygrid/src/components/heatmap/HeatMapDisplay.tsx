@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Map, List, Set } from 'immutable'
+import { List, Map, Set } from 'immutable'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
-import { naturalSort } from '@glass/base'
 
 import { HeatMapProps } from "./HeatMap";
+import { naturalSort } from '../../util/utils';
 
 interface HeatMapDisplayProps extends HeatMapProps {
     data: List<Map<string, any>>

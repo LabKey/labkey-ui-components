@@ -15,7 +15,6 @@
  */
 import * as React from 'react'
 import { Map } from 'immutable'
-import { AppURL, AssayDefinitionModel } from '@glass/base';
 
 interface AssayRunReferenceRendererProps {
     data: Map<any, any>

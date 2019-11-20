@@ -18,8 +18,8 @@ import { RefObject } from 'react';
 import classNames from 'classnames';
 import { FieldLabel } from '../FieldLabel'
 import { cancelEvent } from "../../../events";
-import { QueryColumn } from '@glass/base';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { QueryColumn } from '../../base/models/model';
 
 interface FileInputState extends DisableableInputState {
     isHover: boolean,

@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { hasAllPermissions, PermissionTypes, SVGIcon, User } from "@glass/base";
 
 import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger'
+import { hasAllPermissions } from '../../util/utils';
+import { User } from '../base/models/model';
+import { PermissionTypes } from '../base/models/constants';
+import { SVGIcon } from '../base/SVGIcon';
 
 interface Props {
     user: User

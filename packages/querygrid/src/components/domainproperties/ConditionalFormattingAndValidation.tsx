@@ -9,12 +9,12 @@ import {
     DOMAIN_RANGE_VALIDATOR,
     DOMAIN_REGEX_VALIDATOR
 } from "./constants";
-import {LabelHelpTip} from "@glass/base";
 import {ConditionalFormat, DomainField, PropertyValidator} from "./models";
 import {ValidatorModal} from "./validation/ValidatorModal";
 import {RegexValidationOptions} from "./validation/RegexValidationOptions";
 import {RangeValidationOptions} from "./validation/RangeValidationOptions";
 import {ConditionalFormatOptions} from "./validation/ConditionalFormatOptions";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface ConditionalFormattingAndValidationProps {
     index: number,

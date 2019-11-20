@@ -15,7 +15,6 @@
  */
 import { List, Map } from "immutable";
 import { Domain, Query, Security, Ajax, Utils } from "@labkey/api";
-import {Container, naturalSort, SchemaDetails, processSchemas, buildURL, QueryColumn} from "@glass/base";
 
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -43,6 +42,10 @@ import {
     AssayProtocolModel,
     IDomainField,
 } from "./models";
+import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
+import { naturalSort } from '../../util/utils';
+import { processSchemas } from '../base/models/schemas';
+import { buildURL } from '../../url/ActionURL';
 
 let sharedCache = Map<string, Promise<any>>();
 

@@ -1,17 +1,16 @@
 import * as React from 'react'
-import {Col, Form, FormControl, Panel, Row} from "react-bootstrap";
-import {List, Map} from 'immutable'
-import {Alert, AddEntityButton, WizardNavButtons, generateId} from "@glass/base";
+import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
+import { Map } from 'immutable'
 
-import { createSampleSet, updateSampleSet, initSampleSetSelects } from "./actions";
-import {
-    IParentOption,
-    ISampleSetDetails,
-    IParentAlias,
-} from "./models";
+import { createSampleSet, initSampleSetSelects, updateSampleSet } from "./actions";
+import { IParentAlias, IParentOption, ISampleSetDetails, } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
-import {SampleSetParentAliasRow} from "../../components/samples/SampleSetParentAliasRow";
-import {PARENT_ALIAS_DOC_URL, PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT} from "../../constants";
+import { SampleSetParentAliasRow } from "../../components/samples/SampleSetParentAliasRow";
+import { PARENT_ALIAS_DOC_URL, PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from "../../constants";
+import { AddEntityButton } from '../base/buttons/AddEntityButton';
+import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
+import { generateId } from '../../util/utils';
+import { Alert } from '../base/Alert';
 
 const UNKNOWN_ERROR_CREATE = `An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
 const UNKNOWN_ERROR_UPDATE = `An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;

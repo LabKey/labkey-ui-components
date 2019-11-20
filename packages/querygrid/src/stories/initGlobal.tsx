@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 import { fromJS } from 'immutable';
-import { initNotificationsState, SCHEMAS } from "@glass/base";
 
 import { initQueryGridState } from "../global";
 import { initBrowserHistoryState } from "../util/global";
 import { initMocks } from "./mock";
-import { FileColumnRenderer } from '..';
+import { FileColumnRenderer } from '../renderers/FileColumnRenderer';
+import { SCHEMAS } from '../components/base/models/schemas';
+import { initNotificationsState } from '../components/base/notifications/global';
 
 const QUERY_METADATA = fromJS({
     // hideEmptyChartSelector: true,

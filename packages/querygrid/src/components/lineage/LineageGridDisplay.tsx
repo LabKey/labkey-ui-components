@@ -5,12 +5,14 @@
 import * as React from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
-import { Alert, AppURL, Grid, GridProps } from '@glass/base';
 
 import { LineageGridModel } from "./models";
 import { getLocation } from "../../util/URL";
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
 import { getPageNumberChangeURL } from "./actions";
+import { AppURL } from '../../url/AppURL';
+import { Grid, GridProps } from '../base/Grid';
+import { Alert } from '../base/Alert';
 
 interface LineagePagingProps {
     model: LineageGridModel

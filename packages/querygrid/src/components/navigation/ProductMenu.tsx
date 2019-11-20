@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { Map, List } from 'immutable';
+import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap'
-import { LoadingSpinner } from '@glass/base'
 
-import { MenuSectionModel, ProductMenuModel} from './model'
+import { MenuSectionModel, ProductMenuModel } from './model'
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection'
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 
 interface ProductMenuProps {

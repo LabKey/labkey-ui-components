@@ -16,11 +16,14 @@
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { List, Map, Record } from 'immutable';
 import { Option } from 'react-select';
-import { buildURL, generateId, QueryColumn, QueryGridModel, QueryInfo, SchemaQuery, SCHEMAS } from '@glass/base';
 
 import { getEditorModel } from '../../global';
 import { insertRows } from '../../query/api';
 import { gridShowError } from '../../actions';
+import { SCHEMAS } from '../base/models/schemas';
+import { QueryColumn, QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
+import { generateId } from '../../util/utils';
+import { buildURL } from '../../url/ActionURL';
 
 export interface SampleInputProps {
     role: string

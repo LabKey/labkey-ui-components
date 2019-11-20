@@ -17,13 +17,13 @@ import * as React from 'react';
 import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
-import { SchemaQuery, QueryColumn } from '@glass/base';
 
 import { DELIMITER, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 function getValue(model: QuerySelectModel, props: any): any {
     const { rawSelectedValue } = model;

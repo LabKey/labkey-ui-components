@@ -1,8 +1,11 @@
 import moment from 'moment'
 import { Map, OrderedMap } from 'immutable'
-import { Ajax , ActionURL, Utils } from '@labkey/api'
-import { caseInsensitive, hasAllPermissions, PermissionTypes, SchemaQuery, User, buildURL } from "@glass/base";
+import { ActionURL, Ajax, Utils } from '@labkey/api'
 import { ChangePasswordModel } from "./models";
+import { caseInsensitive, hasAllPermissions } from '../../util/utils';
+import { SchemaQuery, User } from '../base/models/model';
+import { buildURL } from '../../url/ActionURL';
+import { PermissionTypes } from '../base/models/constants';
 
 export function getUserPermissionsDisplay(user: User): Array<string> {
     let permissions = [];

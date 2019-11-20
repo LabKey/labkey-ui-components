@@ -16,13 +16,16 @@
 import * as React from 'react'
 import { Link } from 'react-router'
 import { fromJS, List, Map } from 'immutable'
-import { AppURL, LoadingSpinner, naturalSort, QueryGridModel, SchemaQuery } from '@glass/base'
 
 import { HeatMapDisplay } from './HeatMapDisplay'
 import { addDateRangeFilter, last12Months, monthSort } from './utils'
 import { gridInit } from "../../actions";
 import { getStateQueryGridModel } from "../../models";
 import { getQueryGridModel } from "../../global";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { AppURL } from '../../url/AppURL';
+import { QueryGridModel, SchemaQuery } from '../base/models/model';
+import { naturalSort } from '../../util/utils';
 
 export interface HeatMapProps {
     schemaQuery: SchemaQuery

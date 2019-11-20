@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AppURL } from "@glass/base";
 import { Set } from 'immutable';
 import { addDateRangeFilter, last12Months, monthSort } from "./utils";
+import { AppURL } from '../../url/AppURL';
 
 describe("HeatMap utils", () => {
 

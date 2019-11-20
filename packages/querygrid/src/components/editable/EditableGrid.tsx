@@ -19,20 +19,7 @@ import React from 'reactn'
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
 import { List, Map, OrderedMap, Set } from 'immutable'
 import $ from 'jquery'
-import {
-    Alert,
-    capitalizeFirstChar,
-    caseInsensitive,
-    DeleteIcon,
-    Grid,
-    GRID_CHECKBOX_OPTIONS,
-    GRID_EDIT_INDEX,
-    GRID_SELECTION_INDEX,
-    GridColumn,
-    LoadingSpinner,
-    QueryColumn,
-    QueryGridModel
-} from '@glass/base'
+
 
 import {
     addRows,
@@ -52,6 +39,13 @@ import { AddRowsControl, AddRowsControlProps } from './Controls'
 import { headerSelectionCell } from "../../renderers";
 import { QueryInfoForm, QueryInfoFormProps } from "../forms/QueryInfoForm";
 import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+import { Grid, GridColumn } from '../base/Grid';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../base/models/constants';
+import { QueryColumn, QueryGridModel } from '../base/models/model';
+import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
+import { DeleteIcon } from '../base/DeleteIcon';
+import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,

@@ -2,8 +2,8 @@ import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 import { Button } from 'react-bootstrap'
-import { QueryGridModel } from '@glass/base';
 import { GridSelectionBanner } from './GridSelectionBanner';
+import { QueryGridModel } from '../base/models/model';
 
 describe("<GridSelectionBanner/>", () => {
     test("model not loaded", () => {

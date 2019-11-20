@@ -16,11 +16,13 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
 import { withKnobs } from '@storybook/addon-knobs'
-import { ManageDropdownButton, QueryGridModel, SchemaQuery, SelectionMenuItem } from "@glass/base";
 
 import { QueryGridPanel } from "../components/QueryGridPanel";
 import { getStateQueryGridModel } from "../models";
 import './stories.scss'
+import { ManageDropdownButton } from '../components/base/buttons/ManageDropdownButton';
+import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
+import { SelectionMenuItem } from '../components/base/menus/SelectionMenuItem';
 
 class QueryGridPanelWrapper extends React.Component {
     renderButtons = (model: QueryGridModel) => {

@@ -1,13 +1,13 @@
 import * as React from 'react'
-import { Map, List } from 'immutable'
-import { Alert } from "@glass/base";
+import { List, Map } from 'immutable'
 
-import {DomainPanelStatus, AssayProtocolModel, DomainDesign, HeaderRenderer} from "../models";
-import {saveAssayDesign} from "../actions";
+import { AssayProtocolModel, DomainDesign, DomainPanelStatus, HeaderRenderer } from "../models";
+import { saveAssayDesign } from "../actions";
 import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
-import DomainForm, {DomainFormImpl} from "../DomainForm";
-import {Button, Col, Row} from "react-bootstrap";
-import {SEVERITY_LEVEL_ERROR} from "../constants";
+import DomainForm, { DomainFormImpl } from "../DomainForm";
+import { Button, Col, Row } from "react-bootstrap";
+import { SEVERITY_LEVEL_ERROR } from "../constants";
+import { Alert } from '../../base/Alert';
 
 interface Props {
     onChange?: (model: AssayProtocolModel) => void

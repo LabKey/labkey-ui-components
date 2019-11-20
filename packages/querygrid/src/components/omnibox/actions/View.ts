@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { QueryGridModel, QueryColumn } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
+import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 export class ViewAction implements Action {
     iconCls = 'table';

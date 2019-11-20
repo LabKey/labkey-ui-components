@@ -15,9 +15,9 @@
  */
 import * as React from 'react'
 import { Map } from 'immutable'
-import { CreatedModified } from "@glass/base";
 
 import { Breadcrumb } from './Breadcrumb'
+import { CreatedModified } from '../base/CreatedModified';
 
 interface Props {
     row?: Map<string, any>

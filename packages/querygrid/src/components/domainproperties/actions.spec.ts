@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { List } from "immutable";
-import { QueryColumn } from "@glass/base";
 
 import { createFormInputId, getBannerMessages, setDomainFields, updateDomainException } from "./actions";
 import {
@@ -30,10 +29,11 @@ import {
     DOMAIN_FIELD_PREFIX,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
-    SEVERITY_LEVEL_ERROR, SEVERITY_LEVEL_WARN,
-    STRING_RANGE_URI,
-    USER_RANGE_URI
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN,
+    STRING_RANGE_URI
 } from "./constants";
+import { QueryColumn } from '../base/models/model';
 
 describe("domain properties actions", () => {
 

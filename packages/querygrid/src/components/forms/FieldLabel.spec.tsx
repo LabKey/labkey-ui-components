@@ -7,8 +7,8 @@ import renderer from 'react-test-renderer';
 import { mount, shallow } from 'enzyme'
 
 import { FieldLabel } from './FieldLabel'
-import { QueryColumn } from '@glass/base';
 import { LabelOverlay } from './LabelOverlay';
+import { QueryColumn } from '../base/models/model';
 
 const queryColumn = QueryColumn.create({
     name: "testColumn",

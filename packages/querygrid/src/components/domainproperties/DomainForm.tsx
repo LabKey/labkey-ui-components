@@ -36,14 +36,6 @@ import {
 import { StickyContainer, Sticky } from "react-sticky";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
-import {
-    AddEntityButton,
-    Alert,
-    FileAttachmentForm,
-    ConfirmModal,
-    InferDomainResponse,
-    LabelHelpTip
-} from "@glass/base";
 
 import { DomainRow } from "./DomainRow";
 import {
@@ -62,6 +54,12 @@ import {
     LK_DOMAIN_HELP_URL,
     PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR
 } from "./constants";
+import { AddEntityButton } from '../base/buttons/AddEntityButton';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { InferDomainResponse } from '../base/models/model';
+import { FileAttachmentForm } from '../base/files/FileAttachmentForm';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { Alert } from '../base/Alert';
 
 interface IDomainFormInput {
     domain: DomainDesign

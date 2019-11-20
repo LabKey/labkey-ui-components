@@ -1,7 +1,8 @@
-import { AssayResultDeleteConfirmModal, AssayRunDeleteConfirmModal } from '../..';
+
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { ConfirmModal } from '@glass/base';
+import { AssayResultDeleteConfirmModal } from './AssayResultDeleteConfirmModal';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 describe("<AssayResultDeleteConfirmModal/>", () => {
 

@@ -17,10 +17,10 @@
 import * as React from 'react'
 import { List } from 'immutable'
 import { Button } from 'react-bootstrap'
-import { AppURL } from '@glass/base'
 import $ from 'jquery'
 
 import { NavItem, ParentNavItem } from './NavItem'
+import { AppURL } from '../../url/AppURL';
 
 interface ISubNavProps {
     params?: any

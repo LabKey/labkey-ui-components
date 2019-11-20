@@ -16,10 +16,11 @@
 import * as React from 'react'
 import { List, Map } from 'immutable'
 import { Input } from 'formsy-react-components'
-import { generateId, QueryColumn } from '@glass/base'
 
 import { LabelOverlay } from './LabelOverlay'
 import { SelectInput } from './input/SelectInput'
+import { QueryColumn } from '../base/models/model';
+import { generateId } from '../../util/utils';
 
 interface AliasInputProps {
     col: QueryColumn

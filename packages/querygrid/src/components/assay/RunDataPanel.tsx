@@ -17,22 +17,18 @@ import * as React from 'react'
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { Map } from 'immutable';
-import {
-    Alert,
-    AssayUploadTabs,
-    FileAttachmentForm,
-    getActionErrorMessage,
-    getServerFilePreview,
-    InferDomainResponse,
-    LoadingSpinner,
-    QueryGridModel
-} from "@glass/base";
 
 import { AssayWizardModel } from "./models";
 import { EditableGridPanel } from "../../components/editable/EditableGridPanel";
 import { handleTabKeyOnTextArea } from "../../components/forms/actions";
 import { FormStep, FormTabs } from "../forms/FormStep";
 import { getRunPropertiesRow } from './actions';
+import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
+import { getServerFilePreview } from '../base/actions';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { FileAttachmentForm } from '../base/files/FileAttachmentForm';
+import { Alert } from '../base/Alert';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;

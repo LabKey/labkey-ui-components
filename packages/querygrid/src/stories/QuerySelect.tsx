@@ -2,9 +2,10 @@ import * as React from 'react';
 import { Option } from 'react-select';
 import { storiesOf } from "@storybook/react";
 
-import { QuerySelect, SelectInput } from '..';
 import './stories.scss';
-import { SchemaQuery } from '@glass/base/src';
+import { SelectInput } from '../components/forms/input/SelectInput';
+import { QuerySelect } from '../components/forms/QuerySelect';
+import { SchemaQuery } from '../components/base/models/model';
 
 const DATA_CLASSES = {
     INGREDIENTS: SchemaQuery.create('exp.data', 'expressionsystem'),

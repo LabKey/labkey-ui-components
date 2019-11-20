@@ -16,13 +16,16 @@
 import { fromJS, List, Map } from 'immutable'
 import { Option } from 'react-select';
 import { Ajax, Filter, Utils } from '@labkey/api'
-import { buildURL, PermissionTypes, QueryInfo, similaritySortFactory } from '@glass/base'
 
 import { FOCUS_FLAG } from './constants'
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api'
 import { QuerySelectOwnProps } from './QuerySelect'
 import { IUser, QuerySelectModel, QuerySelectModelProps } from './model'
 import { getUsers, setUsers } from "../../global";
+import { similaritySortFactory } from '../../util/utils';
+import { buildURL } from '../../url/ActionURL';
+import { PermissionTypes } from '../base/models/constants';
+import { QueryInfo } from '../base/models/model';
 
 const emptyMap = Map<string, any>();
 

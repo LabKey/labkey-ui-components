@@ -11,8 +11,8 @@ import {
     DOMAIN_FIELD_URL,
     LK_URL_ENCODING_DOC
 } from "./constants";
-import {LabelHelpTip} from "@glass/base";
 import {DomainField} from "./models";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface NameAndLinkingProps {
     index: number,

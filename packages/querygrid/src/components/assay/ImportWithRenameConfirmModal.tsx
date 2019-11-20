@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ConfirmModal } from '@glass/base';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
     onConfirm: () => any

@@ -3,10 +3,10 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import { QueryColumn } from '@glass/base'
 import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleWithInputField';
 import { getFieldEnabledFieldName } from './QueryFormInputs';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
+import { QueryColumn } from '../base/models/model';
 
 interface FieldLabelProps  {
     id?: any  // required if column is not provided and showToggle is true

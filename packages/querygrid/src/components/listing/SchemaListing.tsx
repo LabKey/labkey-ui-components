@@ -16,7 +16,11 @@
 import * as React from 'react'
 import { Link } from 'react-router'
 import { List, Map } from 'immutable'
-import { AppURL, Grid, GridColumn, SchemaDetails, LoadingSpinner, fetchSchemas } from '@glass/base'
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SchemaDetails } from '../base/models/model';
+import { AppURL } from '../../url/AppURL';
+import { Grid, GridColumn } from '../base/Grid';
+import { fetchSchemas } from '../base/models/schemas';
 
 const columns = List([
     new GridColumn({

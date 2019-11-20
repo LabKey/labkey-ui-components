@@ -1,14 +1,14 @@
 import * as React from "react";
 import { List } from "immutable";
-import { Container, SchemaDetails } from "@glass/base";
 
 import { ILookupContext, LookupContextProvider } from "../../components/domainproperties/Lookup/Context";
-import { processContainers, processQueries, handleSchemas } from "../../components/domainproperties/actions";
+import { handleSchemas, processContainers, processQueries } from "../../components/domainproperties/actions";
 import { QueryInfoLite } from "../../components/domainproperties/models";
 
 import containerData from "../data/project-getContainers.json";
 import queryData from "../data/query-getQueries.json";
 import schemaData from "../data/query-getSchemas.json";
+import { Container, SchemaDetails } from '../../components/base/models/model';
 
 export class MockLookupProvider extends React.Component<any, ILookupContext> {
 

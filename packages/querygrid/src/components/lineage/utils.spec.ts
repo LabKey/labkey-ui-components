@@ -1,7 +1,7 @@
 import { Map } from 'immutable'
-import { QueryInfo } from "@glass/base";
 import { getBackupImageFromLineageNode, getImageFromLineageNode, getImageNameWithTheme } from "./utils";
 import { LineageNode, LineageNodeMetadata } from "./models";
+import { QueryInfo } from '../base/models/model';
 
 describe("lineage utils", () => {
 

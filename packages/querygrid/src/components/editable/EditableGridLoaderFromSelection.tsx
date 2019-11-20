@@ -15,9 +15,9 @@
  */
 import * as React from 'react'
 import { List, Map } from 'immutable'
-import { IGridLoader, IGridResponse, QueryGridModel } from '@glass/base'
 import { getSelectedData } from '../../actions';
 import { EditorModel } from '../../models';
+import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';
 
 export class EditableGridLoaderFromSelection implements IGridLoader {
 

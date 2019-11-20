@@ -1,20 +1,21 @@
 import * as React from "react";
-import {Button, Checkbox, Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, createFormInputName, getNameFromId} from "../actions";
+import { Button, Checkbox, Col, FormControl, Row } from "react-bootstrap";
+import { createFormInputId, createFormInputName, getNameFromId } from "../actions";
 import {
     DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
     DOMAIN_CONDITION_FORMAT_TEXT_COLOR,
     DOMAIN_CONDITIONAL_FORMAT_PREFIX,
     DOMAIN_VALIDATOR_BOLD,
     DOMAIN_VALIDATOR_ITALIC,
-    DOMAIN_VALIDATOR_REMOVE, DOMAIN_VALIDATOR_STRIKETHROUGH,
+    DOMAIN_VALIDATOR_REMOVE,
+    DOMAIN_VALIDATOR_STRIKETHROUGH,
 } from "../constants";
-import {faPencilAlt, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {PropDescType, PropertyValidator} from "../models";
-import {Filters} from "./Filters";
+import { faCaretDown, faCaretUp, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PropDescType, PropertyValidator } from "../models";
+import { Filters } from "./Filters";
 import { CompactPicker } from 'react-color';
-import {LabelHelpTip} from "@glass/base";
+import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface ConditionalFormatOptionsProps {
     validator: any

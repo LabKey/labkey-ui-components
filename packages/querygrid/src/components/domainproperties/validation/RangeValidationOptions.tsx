@@ -8,7 +8,7 @@ import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {PropDescType, PropertyValidator} from "../models";
 import {Filters} from "./Filters";
-import {LabelHelpTip} from "@glass/base";
+import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface RangeValidationOptionsProps {
     validator: any

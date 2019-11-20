@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'reactn'
-import { QueryGridModel } from '@glass/base'
 
 import { ChartSelector } from '../chart/ChartSelector'
 import { Export } from './Export'
@@ -22,6 +21,7 @@ import { QueryGridPaging } from './QueryGridPaging'
 import { ViewSelector } from "./ViewSelector";
 import { URLBox } from './URLBox'
 import { GridSelectionBanner } from "./GridSelectionBanner";
+import { QueryGridModel } from '../base/models/model';
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;

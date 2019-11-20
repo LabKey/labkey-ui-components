@@ -49,7 +49,7 @@ import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "./propertiesUtil";
 import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
 import {AdvancedSettings} from "./AdvancedSettings";
-import {SCHEMAS} from "@glass/base";
+import { SCHEMAS } from '../base/models/schemas';
 
 interface IDomainRowProps {
     domainId?: number

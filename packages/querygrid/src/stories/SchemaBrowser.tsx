@@ -15,12 +15,13 @@
  */
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { Page, PageHeader } from '@glass/base'
+import { boolean, text, withKnobs } from '@storybook/addon-knobs'
 
 import { SchemaListing } from "../components/listing/SchemaListing";
 import { QueriesListing } from "../components/listing/QueriesListing";
 import './stories.scss'
+import { PageHeader } from '../components/base/PageHeader';
+import { Page } from '../components/base/Page';
 
 storiesOf('SchemaBrowser', module)
     .addDecorator(withKnobs)

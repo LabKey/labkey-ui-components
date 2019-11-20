@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Panel, Button } from 'react-bootstrap'
+import { Button, Panel } from 'react-bootstrap'
 import { List, Map } from 'immutable'
 import Formsy from 'formsy-react'
 import { Utils } from '@labkey/api'
-import { Alert, QueryColumn, QueryGridModel } from '@glass/base'
 
 import { updateRows } from "../../../query/api";
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from "./DetailEditRenderer";
 import { Detail } from "./Detail";
 import { DetailPanelHeader } from "./DetailPanelHeader";
+import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { Alert } from '../../base/Alert';
 
 interface DetailEditingProps {
     queryModel: QueryGridModel

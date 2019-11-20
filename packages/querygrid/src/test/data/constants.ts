@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { Map } from 'immutable';
-import { AssayDefinitionModel, AssayDomainTypes, QueryInfo } from "@glass/base";
 
 import { AssayWizardModel } from "../../components/assay/models";
 import assayWizardJSON from './assayWizardModel.json';
+import { AssayDefinitionModel, AssayDomainTypes, QueryInfo } from '../../components/base/models/model';
 
 export const GRID_DATA = Map<any, Map<string, any>>({
     "1": Map<string, any>({

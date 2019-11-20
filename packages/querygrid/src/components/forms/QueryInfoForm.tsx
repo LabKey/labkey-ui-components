@@ -15,16 +15,18 @@
  */
 import * as React from 'react'
 import { ReactNode } from 'react'
-import { OrderedMap, List } from 'immutable'
+import { List, OrderedMap } from 'immutable'
 import { Alert, Button, Modal } from 'react-bootstrap'
 import Formsy, { addValidationRule } from 'formsy-react'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import {LoadingSpinner, QueryColumn, QueryInfo, SchemaQuery, Tip} from '@glass/base'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
 import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
+import { Tip } from '../base/Tip';
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
     if (v === '' || v === undefined || isNaN(v)) {

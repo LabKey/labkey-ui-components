@@ -17,18 +17,6 @@ import * as React from 'react'
 import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable'
 import { Utils } from '@labkey/api'
-import {
-    Alert,
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    AssayUploadTabs,
-    getActionErrorMessage,
-    LoadingSpinner,
-    Progress,
-    QueryGridModel,
-    SchemaQuery,
-    WizardNavButtons
-} from '@glass/base';
 
 import { Location } from "../../util/URL"
 import { loadSelectedSamples } from "../samples/actions";
@@ -36,10 +24,10 @@ import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
     flattenQueryGridModelRow,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
     importAssayRun,
     uploadAssayRunFiles
 } from "./actions";
@@ -55,6 +43,18 @@ import { RunPropertiesPanel } from "./RunPropertiesPanel";
 import { RunDataPanel } from "./RunDataPanel";
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { AssayReimportHeader } from './AssayReimportHeader';
+import {
+    AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayUploadTabs,
+    QueryGridModel,
+    SchemaQuery
+} from '../base/models/model';
+import { getActionErrorMessage } from '../../util/messaging';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from '../base/Alert';
+import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
+import { Progress } from '../base/Progress';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});

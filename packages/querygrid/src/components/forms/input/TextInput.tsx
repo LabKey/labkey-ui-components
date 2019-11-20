@@ -15,10 +15,10 @@
  */
 import * as React from 'react'
 import { Input } from 'formsy-react-components'
-import { QueryColumn } from '@glass/base'
 
 import { FieldLabel } from '../FieldLabel'
-import { DisableableInputState, DisableableInputProps, DisableableInput } from './DisableableInput';
+import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { QueryColumn } from '../../base/models/model';
 
 export interface TextInputProps extends DisableableInputProps {
     changeDebounceInterval?: number

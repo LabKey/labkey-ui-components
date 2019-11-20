@@ -6,8 +6,9 @@ Query Grid for LabKey schema/query data views
 
 ### version ???
 *Released*: ???
-* Move `domainproperties` package into `querygrid`
+* Move `domainproperties` and `base` packages into `querygrid`
     * Old README for `domainproperties` can be found [here](../../legacy-docs/domainproperties.md)
+    * Old README for `base` can be found [here](../../legacy-docs/base.md)
     
 ### version 0.24.0
 *Released*: 19 November 2019

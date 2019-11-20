@@ -16,11 +16,12 @@
 import React from 'reactn'
 import { DropdownButton, MenuItem, Modal } from 'react-bootstrap'
 import { List } from 'immutable'
-import { QueryGridModel, naturalSort, generateId } from '@glass/base'
 
 import { DataViewInfo } from '../../models'
 import { Chart } from './Chart'
 import { setReportId } from '../../actions';
+import { QueryGridModel } from '../base/models/model';
+import { generateId, naturalSort } from '../../util/utils';
 
 interface Props {
     model: QueryGridModel

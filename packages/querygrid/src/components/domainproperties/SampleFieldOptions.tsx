@@ -1,24 +1,16 @@
-
-
 import * as React from 'react'
-import {Col, FormControl, Row} from "react-bootstrap";
-import {isFieldFullyLocked} from "./propertiesUtil";
-import {createFormInputId, createFormInputName, fetchQueries} from "./actions";
+import { Col, FormControl, Row } from "react-bootstrap";
+import { isFieldFullyLocked } from "./propertiesUtil";
+import { createFormInputId, createFormInputName, fetchQueries } from "./actions";
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_SAMPLE_TYPE,
     SAMPLE_TYPE_HELP_ANCHOR,
     SM_BASE_HELP_URL,
 } from "./constants";
-import {LabelHelpTip} from "@glass/base";
-import {
-    encodeLookup,
-    IDomainField,
-    ITypeDependentProps,
-    PropDescType,
-    QueryInfoLite
-} from "./models";
-import {List} from "immutable";
+import { encodeLookup, IDomainField, ITypeDependentProps, PropDescType, QueryInfoLite } from "./models";
+import { List } from "immutable";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface SampleFieldProps extends ITypeDependentProps {
     original: Partial<IDomainField>

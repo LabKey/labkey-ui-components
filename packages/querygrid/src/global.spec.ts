@@ -29,10 +29,11 @@ import {
     updateQueryGridModel,
     updateSelections,
 } from './global';
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, QueryGridModel, SchemaQuery } from '@glass/base'
 import { List } from 'immutable';
 
 import { DataViewInfo, DataViewInfoTypes, EditorModel, LookupStore } from './models'
+import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
 beforeEach(() => {
     resetQueryGridState();

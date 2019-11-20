@@ -15,10 +15,13 @@
  */
 import * as React from 'react'
 import $ from 'jquery'
-import { QueryGridModel, LoadingSpinner, generateId, debounce } from '@glass/base'
+
 
 import { DataViewInfo, VisualizationConfigModel } from '../../models'
 import { getVisualizationConfig } from '../../actions'
+import { QueryGridModel } from '../base/models/model';
+import { debounce, generateId } from '../../util/utils';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     chart: DataViewInfo

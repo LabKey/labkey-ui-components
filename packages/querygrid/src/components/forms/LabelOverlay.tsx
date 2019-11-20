@@ -15,7 +15,9 @@
  */
 import * as React from 'react'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import {generateId, LabelHelpTip, QueryColumn} from '@glass/base'
+import { QueryColumn } from '../base/models/model';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+import { generateId } from '../../util/utils';
 
 export interface LabelOverlayProps {
     inputId?: string

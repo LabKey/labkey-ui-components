@@ -16,12 +16,12 @@
 import * as React from 'react';
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
-import { QueryColumn } from '@glass/base';
 
 import { ActionOption, Value } from './Action';
 import { FilterAction } from './Filter';
 
 import { createMockActionContext } from '../../../test/OmniboxMock';
+import { QueryColumn } from '../../base/models/model';
 
 const { columns, columnsByName, resolveColumns, resolveModel } = createMockActionContext('toyStory');
 

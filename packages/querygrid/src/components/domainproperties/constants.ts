@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {List} from "immutable";
-import {GridColumn} from "@glass/base";
+import { GridColumn } from '../base/Grid';
 
 export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
 export const DOMAIN_FIELD_NAME = 'name';

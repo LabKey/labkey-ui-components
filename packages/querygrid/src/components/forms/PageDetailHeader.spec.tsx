@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
 import { PageDetailHeader } from "./PageDetailHeader";
-import { User } from "@glass/base";
+import { User } from '../base/models/model';
 
 describe("<PageDetailHeader/>", () => {
 

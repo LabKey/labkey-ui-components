@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Map, OrderedMap, List } from 'immutable'
+import { List, Map, OrderedMap } from 'immutable'
 import { Input } from 'formsy-react-components'
 import { Utils } from '@labkey/api'
-import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '@glass/base'
 
 import { resolveRenderer } from './renderers'
 import { QuerySelect } from './QuerySelect'
@@ -27,6 +26,8 @@ import { CheckboxInput } from './input/CheckboxInput'
 import { TextAreaInput } from './input/TextAreaInput'
 import { FileInput } from './input/FileInput'
 import { initLookup } from "../../actions";
+import { insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
+import { caseInsensitive } from '../../util/utils';
 
 const LABEL_FIELD_SUFFIX = '::label';
 

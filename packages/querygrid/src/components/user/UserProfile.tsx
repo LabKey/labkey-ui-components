@@ -4,14 +4,16 @@
  */
 import * as React from 'react'
 import { List, Map, OrderedMap } from 'immutable'
-import { Row, Col } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { ActionURL } from '@labkey/api'
-import { QueryInfo, LoadingSpinner, User, SCHEMAS, QueryColumn } from '@glass/base'
 
 import { getUserDetailsRowData, updateUserDetails } from "./actions";
 import { getQueryDetails } from "../../../src/query/api";
 import { FileInput } from "../forms/input/FileInput";
 import { QueryInfoForm } from "../forms/QueryInfoForm";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { QueryColumn, QueryInfo, User } from '../base/models/model';
+import { SCHEMAS } from '../base/models/schemas';
 
 const FIELDS_TO_EXCLUDE = List<string>(['userid', 'owner', 'groups', 'lastlogin', 'haspassword', 'phone', 'mobile', 'pager', 'im', 'avatar']);
 const DISABLED_FIELDS = List<string>(['email']);

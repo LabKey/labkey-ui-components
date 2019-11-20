@@ -15,11 +15,12 @@
  */
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { AppURL, SCHEMAS } from "@glass/base";
+import { text, withKnobs } from '@storybook/addon-knobs'
 
 import { HeatMap } from "../components/heatmap/HeatMap";
 import './stories.scss'
+import { SCHEMAS } from '../components/base/models/schemas';
+import { AppURL } from '../url/AppURL';
 
 storiesOf('HeatMap', module)
     .addDecorator(withKnobs)

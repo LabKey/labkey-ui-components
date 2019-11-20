@@ -1,17 +1,10 @@
-
-
 import * as React from 'react'
-import {Col, FormControl, Row} from "react-bootstrap";
-import {isFieldFullyLocked} from "./propertiesUtil";
-import {createFormInputId, createFormInputName} from "./actions";
-import {
-    DEFAULT_SCALE_LINEAR,
-    DEFAULT_SCALE_LOG,
-    DOMAIN_FIELD_DEFAULT_SCALE,
-    DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_LABEL
-} from "./constants";
-import {LabelHelpTip} from "@glass/base";
-import {ITypeDependentProps} from "./models";
+import { Col, FormControl, Row } from "react-bootstrap";
+import { isFieldFullyLocked } from "./propertiesUtil";
+import { createFormInputId, createFormInputName } from "./actions";
+import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT } from "./constants";
+import { ITypeDependentProps } from "./models";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface NumericFieldProps extends ITypeDependentProps {
     format: string,

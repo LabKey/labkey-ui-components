@@ -16,19 +16,11 @@
 import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { Filter, Query, QueryDOM } from '@labkey/api';
-import {
-    caseInsensitive,
-    QueryColumn,
-    QueryInfo,
-    QueryInfoStatus,
-    resolveKeyFromJson,
-    resolveSchemaQuery,
-    SchemaQuery,
-    ViewInfo,
-} from '@glass/base';
 
 import { URLResolver } from '../util/URLResolver';
 import { getQueryMetadata } from '../global';
+import { caseInsensitive, resolveKeyFromJson, resolveSchemaQuery } from '../util/utils';
+import { QueryColumn, QueryInfo, QueryInfoStatus, SchemaQuery, ViewInfo } from '../components/base/models/model';
 
 let queryDetailsCache: {[key: string]: Promise<QueryInfo>} = {};
 

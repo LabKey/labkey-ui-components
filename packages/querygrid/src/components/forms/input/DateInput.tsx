@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { datePlaceholder, QueryColumn } from '@glass/base'
 
 import { TextInput, TextInputProps } from './TextInput'
 import { DisableableInput, DisableableInputProps } from './DisableableInput';
+import { datePlaceholder } from '../../../util/Date';
+import { QueryColumn } from '../../base/models/model';
 
 interface DateInputProps extends DisableableInputProps {
     changeDebounceInterval?: number

@@ -15,9 +15,10 @@
  */
 import React from "reactn";
 import { Record } from 'immutable';
-import { AppURL, naturalSort } from '@glass/base'
 
 import { MenuSectionModel } from './model';
+import { AppURL } from '../../url/AppURL';
+import { naturalSort } from '../../util/utils';
 
 
 export class MenuSectionConfig extends Record({

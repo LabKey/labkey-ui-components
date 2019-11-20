@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { ConfirmModal, LoadingSpinner } from "@glass/base";
 import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actions';
 import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
+import { ConfirmModal } from '../base/ConfirmModal';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any

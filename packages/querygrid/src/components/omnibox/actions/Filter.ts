@@ -15,9 +15,10 @@
  */
 import { List, Map, Set } from 'immutable'
 import { Filter, Utils } from '@labkey/api'
-import { QueryGridModel, QueryColumn, naturalSort } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
+import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { naturalSort } from '../../../util/utils';
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances

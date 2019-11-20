@@ -36,7 +36,7 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR
 } from "./constants";
-import {SCHEMAS} from "@glass/base";
+import { SCHEMAS } from '../base/models/schemas';
 
 export interface IFieldChange {
     id: string,

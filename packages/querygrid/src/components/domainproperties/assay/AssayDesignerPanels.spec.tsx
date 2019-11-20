@@ -1,13 +1,13 @@
 import * as React from "react";
-import {List, Map} from "immutable";
-import {mount} from "enzyme";
-import { FileAttachmentForm } from "@glass/base";
+import { List, Map } from "immutable";
+import { mount } from "enzyme";
 
-import {AssayDesignerPanels} from "./AssayDesignerPanels";
+import { AssayDesignerPanels } from "./AssayDesignerPanels";
 import { AssayProtocolModel, DomainDesign } from "../models";
 import { DescriptionInput, NameInput } from "./AssayPropertiesInput";
-import {Panel} from "react-bootstrap";
+import { Panel } from "react-bootstrap";
 import toJson from "enzyme-to-json";
+import { FileAttachmentForm } from '../../base/files/FileAttachmentForm';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,

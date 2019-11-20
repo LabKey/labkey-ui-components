@@ -14,8 +14,7 @@ the development process described below will change once this is done.
 <!--- keep these alphabetical --->
 | Package | Description |
 | --- | --- | 
-| [@glass/base](packages/base/README.md) | Base components, models, and utility functions for LabKey applications and pages
-| [@glass/querygrid](packages/querygrid/README.md) | Query Grid for LabKey schema/query data views and domain property-related components for LabKey domains
+| [@glass/querygrid](packages/querygrid/README.md) | All components, models, actions, and utility functions for LabKey applications and pages
 | [template](packages/template/README.md) | A template for creating new packages
 
 ## Using @glass npm packages
@@ -49,7 +48,7 @@ npm install @glass/base
 ```
 You can then import `@glass/base` in your application as follows:
 ```js
-import { Grid } from '@glass/base';
+import { Grid } from '@glass/querygrid';
 ```
 
 ## Development
@@ -378,5 +377,5 @@ To prevent this problem in the future, you should pay attention to changes
 made to the `yarn.lock` file as you are doing development.  Generally, this
 file in the `glass-components` repository should not have references to any
 `@glass` packages.  If there are references, use `yarn list` to examine the full
-set of dependencies and find where differing versions of one of the `@glass` pacakges
+set of dependencies and find where differing versions of one of the `@glass` packages
 are being included.

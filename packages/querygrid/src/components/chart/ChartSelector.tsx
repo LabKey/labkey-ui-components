@@ -15,12 +15,13 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { QueryGridModel, resolveSchemaQuery } from '@glass/base'
 
 import { fetchCharts } from '../../actions'
 import { DataViewInfo } from '../../models'
 import { getCharts, updateCharts } from '../../global'
 import { ChartMenu } from './ChartMenu'
+import { resolveSchemaQuery } from '../../util/utils';
+import { QueryGridModel } from '../base/models/model';
 
 interface Props {
     model: QueryGridModel

@@ -2,9 +2,8 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, fromJS, Iterable, Seq } from 'immutable'
+import { fromJS, Iterable, List, Map, Seq } from 'immutable'
 import { Ajax, Filter, Utils } from '@labkey/api';
-import { AppURL, buildURL, GridColumn, SchemaQuery, SCHEMAS } from "@glass/base";
 
 import {
     Lineage,
@@ -20,6 +19,11 @@ import { getLineageResult, updateLineageResult } from "../../global";
 import { Location } from '../../util/URL'
 import { LINEAGE_DIRECTIONS } from "./constants";
 import { getLineageDepthFirstNodeList } from "./utils";
+import { SCHEMAS } from '../base/models/schemas';
+import { AppURL } from '../../url/AppURL';
+import { buildURL } from '../../url/ActionURL';
+import { GridColumn } from '../base/Grid';
+import { SchemaQuery } from '../base/models/model';
 
 const LINEAGE_METADATA_COLUMNS = List(['LSID', 'Name', 'Description', 'Alias', 'RowId', 'Created']);
 

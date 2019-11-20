@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { QueryColumn } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
+import { QueryColumn } from '../../base/models/model';
 
 export class SearchAction implements Action {
     isDefaultAction = true;
@@ -34,6 +34,7 @@ export class SearchAction implements Action {
 
     completeAction(tokens: Array<string>): Promise<Value> {
         const token = tokens.join(' ');
+        // @ts-ignore
         return Promise.resolve({
             value: token,
             param: token

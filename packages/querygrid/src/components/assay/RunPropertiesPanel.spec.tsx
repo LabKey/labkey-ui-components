@@ -2,7 +2,6 @@ import * as React from 'react';
 import { OrderedMap } from 'immutable';
 import { mount } from 'enzyme';
 import { Input, Textarea } from 'formsy-react-components';
-import { QueryColumn } from "@glass/base";
 
 import { RunPropertiesPanel } from "./RunPropertiesPanel";
 import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
@@ -12,6 +11,7 @@ import { CheckboxInput } from "../forms/input/CheckboxInput";
 import { SelectInput } from "../forms/input/SelectInput";
 import { AssayWizardModel } from "./models";
 import { QueryFormInputs } from "../forms/QueryFormInputs";
+import { QueryColumn } from '../base/models/model';
 
 beforeAll(() => {
     LABKEY.container = {

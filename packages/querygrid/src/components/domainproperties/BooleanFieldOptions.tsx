@@ -7,8 +7,8 @@ import {isFieldFullyLocked} from "./propertiesUtil";
 import {
     DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_SCALE
 } from "./constants";
-import {LabelHelpTip} from "@glass/base";
 import {ITypeDependentProps} from "./models";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface BooleanFieldProps extends ITypeDependentProps {
     format: string

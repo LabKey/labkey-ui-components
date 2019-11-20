@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter } from '@labkey/api'
+import { Ajax, Filter, Utils } from '@labkey/api'
 import { fromJS, List, Map, OrderedMap } from 'immutable'
-import { Ajax, Utils } from '@labkey/api';
-import { buildURL, naturalSort, QueryColumn, SchemaQuery, SCHEMAS } from '@glass/base';
 
 import {
     DisplayObject,
@@ -28,7 +26,12 @@ import {
     SampleSetParentType
 } from './models';
 import { getSelected, getSelection } from "../../actions";
-import { getQueryGridModel, selectRows } from "../..";
+import { SCHEMAS } from '../base/models/schemas';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
+import { buildURL } from '../../url/ActionURL';
+import { getQueryGridModel } from '../../global';
+import { naturalSort } from '../../util/utils';
+import { selectRows } from '../../query/api';
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
     return new Promise((resolve) => {

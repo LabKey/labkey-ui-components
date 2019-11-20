@@ -16,9 +16,9 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
-import { AppURL } from "@glass/base";
 
 import { Breadcrumb } from "./Breadcrumb";
+import { AppURL } from '../../url/AppURL';
 
 describe("<Breadcrumb/>", () => {
 

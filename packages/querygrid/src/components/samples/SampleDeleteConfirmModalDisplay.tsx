@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { ConfirmModal } from "@glass/base";
 import { DeleteConfirmationData } from './actions';
+import { ConfirmModal } from '../base/ConfirmModal';
 
 interface Props {
     onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any

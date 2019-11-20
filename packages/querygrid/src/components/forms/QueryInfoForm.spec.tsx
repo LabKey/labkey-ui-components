@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { SchemaQuery } from "@glass/base";
-import { getQueryDetails } from "../..";
 import { QueryInfoForm } from "./QueryInfoForm";
 import { mount, shallow } from "enzyme";
 import { QueryFormInputs } from "./QueryFormInputs";
 import { Button, Modal, ModalTitle } from "react-bootstrap";
-import {TextInput} from "./input/TextInput";
+import { TextInput } from "./input/TextInput";
 import { initUnitTestMocks } from '../../testHelpers';
+import { getQueryDetails } from '../../query/api';
+import { SchemaQuery } from '../base/models/model';
 
 beforeAll(() => {
     initUnitTestMocks();

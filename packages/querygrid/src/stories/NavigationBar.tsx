@@ -7,13 +7,14 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { List, Map } from 'immutable'
-import {AppURL, User} from '@glass/base'
 
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
 import { NavigationBar } from '../components/navigation/NavigationBar';
 
 import './stories.scss'
+import { User } from '../components/base/models/model';
+import { AppURL } from '../url/AppURL';
 
 const fruitTree = [
     "Apple",

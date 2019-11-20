@@ -15,19 +15,15 @@
  */
 import { getGlobal, setGlobal } from 'reactn'
 import { List, Map } from 'immutable'
-import {
-    GRID_CHECKBOX_OPTIONS,
-    naturalSort,
-    QueryColumn,
-    QueryGridModel,
-    resolveSchemaQuery,
-    SchemaQuery
-} from '@glass/base'
+
 
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
 import { Lineage } from './components/lineage/models';
 import { IUser } from "./components/forms/model";
+import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { naturalSort, resolveSchemaQuery } from './util/utils';
+import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
 /**
  * Initialize the global state object for this package.

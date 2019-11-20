@@ -5,8 +5,10 @@
  */
 import commonjs from 'rollup-plugin-commonjs';
 import resolve from 'rollup-plugin-node-resolve';
-import sass from "rollup-plugin-sass";
 import typescript from 'rollup-plugin-typescript2';
+import sass from "rollup-plugin-sass";
+import copy from 'rollup-plugin-copy';
+import json from 'rollup-plugin-json';
 
 const input = 'src/index.ts';
 
@@ -42,10 +44,19 @@ export default [
         plugins: [
             resolve(),
             commonjs({namedExports}),
-            typescript(),
+            typescript({
+                objectHashIgnoreUnknownHack: true,
+                clean: true
+            }),
             sass({
                 output: 'dist/querygrid.css'
-            })
+            }),
+            copy({
+                targets: {
+                    'src/typings/react-bootstrap.d.ts': 'dist/typings/react-bootstrap.d.ts'
+                }
+            }),
+            json()
         ]
     },
     {
@@ -59,7 +70,8 @@ export default [
             resolve(),
             commonjs({namedExports}),
             typescript(),
-            sass()
+            sass(),
+            json()
         ]
     }
 ]

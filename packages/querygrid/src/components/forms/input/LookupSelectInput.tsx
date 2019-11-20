@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import {Map, fromJS} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import { Filter } from '@labkey/api'
-import { QueryColumn, QueryLookup, naturalSort, generateId, LoadingSpinner, resolveKey } from '@glass/base'
 
 import { SelectInput, SelectInputProps } from "./SelectInput";
 import { ISelectRowsResult, selectRows } from "../../../query/api";
 import { LabelOverlay } from "../LabelOverlay";
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+import { QueryColumn, QueryLookup } from '../../base/models/model';
+import { generateId, naturalSort, resolveKey } from '../../../util/utils';
 
 interface LookupSelectOption {
     label: string

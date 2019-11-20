@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { Map, fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import { storiesOf } from "@storybook/react";
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { CreatedModified } from "@glass/base";
+import { text, withKnobs } from '@storybook/addon-knobs'
 
 import { PageDetailHeader } from "../components/forms/PageDetailHeader";
 import './stories.scss'
+import { CreatedModified } from '../components/base/CreatedModified';
 
 storiesOf('PageDetailHeader', module)
     .addDecorator(withKnobs)

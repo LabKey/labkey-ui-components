@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
-import { Grid, SchemaQuery, QueryInfo, LoadingSpinner } from '@glass/base';
-import { getQueryDetails, selectRows } from '..';
+import { getQueryDetails, Grid, LoadingSpinner, QueryInfo, SchemaQuery, selectRows } from '..';
 
 interface PreviewGridProps {
     schemaQuery: SchemaQuery,

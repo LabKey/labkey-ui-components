@@ -17,15 +17,15 @@ import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 import { fromJS } from 'immutable';
-import { SchemaQuery } from "@glass/base";
 
 import { Detail } from "./Detail";
 import { getStateQueryGridModel } from "../../../models";
-import { getQueryGridModel, initQueryGridState } from "../../../global";
-import { gridInit } from "../../..";
+import { getQueryGridModel } from "../../../global";
 
 import sampleDetailsQuery from '../../../test/data/sampleDetails-getQuery.json';
 import { initUnitTestMocks } from '../../../testHelpers';
+import { gridInit } from '../../../actions';
+import { SchemaQuery } from '../../base/models/model';
 
 let MODEL_ID;
 

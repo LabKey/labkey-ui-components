@@ -15,13 +15,13 @@
  */
 import { List, Map } from 'immutable'
 import { Utils } from '@labkey/api'
-import { AssayUploadTabs, QueryInfo, SchemaQuery } from "@glass/base";
 
 import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
 import { AssayWizardModel, parseDataTextToRunRows } from "./models";
 import { initQueryGridState } from "../../global";
 import { getStateQueryGridModel } from "../../models";
 import { gridInit } from "../../actions";
+import { AssayUploadTabs, QueryInfo, SchemaQuery } from '../base/models/model';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 

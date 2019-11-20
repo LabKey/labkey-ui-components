@@ -1,4 +1,4 @@
-import { User } from "@glass/base";
+import { User } from '../../components/base/models/model';
 
 
 export const GUEST = new User({

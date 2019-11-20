@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Modal } from "react-bootstrap";
-import { QueryGridModel, WizardNavButtons } from '@glass/base';
+
 import { AddRowsControlProps } from './Controls';
 import { gridInit, schemaGridInvalidate } from '../../actions';
 import { getQueryGridModel } from '../../global';
 import { EditableGridPanel } from './EditableGridPanel';
 import { EditableGridProps } from './EditableGrid';
+import { QueryGridModel } from '../base/models/model';
+import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
 
 interface Props extends EditableGridProps {
     show: boolean,

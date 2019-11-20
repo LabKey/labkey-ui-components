@@ -17,12 +17,12 @@ import * as OrigReact from 'react'
 import React from 'reactn'
 import classNames from 'classnames'
 import { List } from 'immutable'
-import { QueryColumn } from '@glass/base'
 
 import { initLookup, modifyCell, searchLookup } from '../../actions'
 import { cancelEvent } from '../../events'
 import { LookupStore, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES, LOOKUP_DEFAULT_SIZE } from '../../constants'
+import { QueryColumn } from '../base/models/model';
 
 const emptyList = List<ValueDescriptor>();
 

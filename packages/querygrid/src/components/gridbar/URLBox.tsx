@@ -16,15 +16,14 @@
 import React from 'reactn'
 import { List, Map } from 'immutable'
 
-import { QueryColumn, QueryGridModel } from '@glass/base'
-
-import { getLocation, replaceParameters, Location } from "../../util/URL";
+import { getLocation, Location, replaceParameters } from "../../util/URL";
 import { OmniBox } from '../omnibox/OmniBox';
 import { Action, ActionValue, ActionValueCollection } from '../omnibox/actions/Action';
 import { FilterAction } from '../omnibox/actions/Filter';
 import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
+import { QueryColumn, QueryGridModel } from '../base/models/model';
 
 const emptyList = List<QueryColumn>();
 

@@ -16,22 +16,6 @@
 import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
 import { Ajax, Filter, Query, Utils } from '@labkey/api'
 import $ from 'jquery'
-import {
-    AssayDefinitionModel,
-    buildURL,
-    getSortFromUrl,
-    GRID_CHECKBOX_OPTIONS,
-    GRID_EDIT_INDEX,
-    IGridResponse,
-    intersect,
-    naturalSort,
-    not,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo,
-    SchemaQuery,
-    ViewInfo
-} from '@glass/base'
 
 import { getQueryDetails, searchRows, selectRows } from './query/api'
 import { isEqual } from './query/filter'
@@ -76,6 +60,18 @@ import {
 } from './global'
 import { EditableColumnMetadata } from "./components/editable/EditableGrid";
 import { URLResolver } from "./util/URLResolver";
+import {
+    AssayDefinitionModel,
+    IGridResponse,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery,
+    ViewInfo
+} from './components/base/models/model';
+import { buildURL, getSortFromUrl } from './url/ActionURL';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
+import { intersect, naturalSort, not } from './util/utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;

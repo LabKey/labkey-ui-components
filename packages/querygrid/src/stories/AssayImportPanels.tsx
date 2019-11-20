@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { Map, fromJS } from "immutable";
+import { fromJS, Map } from "immutable";
 import { storiesOf } from "@storybook/react";
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { AssayDefinitionModel, AssayUploadTabs } from "@glass/base";
+import { boolean, number, withKnobs } from '@storybook/addon-knobs'
 
 
 import { gridInit } from "../actions";
@@ -35,6 +34,7 @@ import { ASSAY_WIZARD_MODEL } from "../test/data/constants";
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 
 import './stories.scss'
+import { AssayDefinitionModel, AssayUploadTabs } from '../components/base/models/model';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
 

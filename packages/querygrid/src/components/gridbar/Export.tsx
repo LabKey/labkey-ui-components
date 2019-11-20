@@ -16,10 +16,11 @@
 import * as React from 'react'
 import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { Set } from 'immutable'
-import { QueryGridModel, Tip } from '@glass/base'
 
 import { gridExport } from "../../actions";
 import { EXPORT_TYPES } from "../../constants";
+import { Tip } from '../base/Tip';
+import { QueryGridModel } from '../base/models/model';
 
 
 /**

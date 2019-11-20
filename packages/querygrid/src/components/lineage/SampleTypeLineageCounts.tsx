@@ -4,10 +4,12 @@
  */
 import * as React from 'react'
 import { List } from 'immutable'
-import { Alert, Grid, GridColumn, LoadingSpinner } from '@glass/base'
 
 import { loadSampleStatsIfNeeded } from "./actions";
 import { Lineage } from "./models";
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Grid, GridColumn } from '../base/Grid';
+import { Alert } from '../base/Alert';
 
 const columns = List([
     new GridColumn({

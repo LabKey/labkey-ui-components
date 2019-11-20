@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { storiesOf } from "@storybook/react";
-import { withKnobs, number } from '@storybook/addon-knobs'
+import { number, withKnobs } from '@storybook/addon-knobs'
 import './stories.scss'
-import { SchemaQuery } from '@glass/base';
-import { PreviewGrid } from '..';
+import { PreviewGrid } from '../components/PreviewGrid';
+import { SchemaQuery } from '../components/base/models/model';
 
 
 storiesOf('PreviewGrid', module)

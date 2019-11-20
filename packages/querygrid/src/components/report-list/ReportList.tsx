@@ -17,10 +17,12 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Image, Media, Modal, Panel } from 'react-bootstrap'
 import { Set } from 'immutable';
-import { LoadingSpinner, SchemaQuery, SVGIcon } from '@glass/base';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
-import { DataViewInfo, IDataViewInfo, DataViewInfoTypes } from '../../models';
+import { DataViewInfo, DataViewInfoTypes, IDataViewInfo } from '../../models';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { SVGIcon } from '../base/SVGIcon';
+import { SchemaQuery } from '../base/models/model';
 
 const GRID_REPORTS = Set([DataViewInfoTypes.Query, DataViewInfoTypes.Dataset]);
 const CHARTS = Set([

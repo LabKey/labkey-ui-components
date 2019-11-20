@@ -19,7 +19,7 @@ import toJson from "enzyme-to-json";
 import { List } from 'immutable';
 import { MenuSectionModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from "./ProductMenuSection";
-import { AppURL } from '@glass/base';
+import { AppURL } from '../../url/AppURL';
 
 describe("ProductMenuSection render", () => {
     const sampleSetItems = List<MenuSectionModel>([

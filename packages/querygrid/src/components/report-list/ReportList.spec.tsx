@@ -20,7 +20,8 @@ import { mount } from 'enzyme';
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
 import { flattenBrowseDataTreeResponse } from './model';
 import exampleData from '../../test/data/example_browse_data_tree_api.json';
-import { AppURL, LoadingSpinner } from '@glass/base';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { AppURL } from '../../url/AppURL';
 
 const history = createMemoryHistory();
 

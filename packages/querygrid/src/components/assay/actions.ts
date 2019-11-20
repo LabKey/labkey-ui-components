@@ -15,18 +15,14 @@
  */
 import { List, Map, OrderedMap } from 'immutable'
 import { ActionURL, Ajax, Filter, Utils, AssayDOM } from '@labkey/api'
-import {
-    AssayDefinitionModel,
-    AssayUploadTabs,
-    buildURL,
-    naturalSort,
-    QueryGridModel,
-    SchemaQuery, SCHEMAS
-} from '@glass/base'
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models'
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
+import { buildURL } from '../../url/ActionURL';
+import { naturalSort } from '../../util/utils';
+import { SCHEMAS } from '../base/models/schemas'
+import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model'
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {

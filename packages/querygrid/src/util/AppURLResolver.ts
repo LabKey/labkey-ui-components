@@ -15,11 +15,12 @@
  */
 import { List, Map } from 'immutable'
 import { Filter } from '@labkey/api'
-import { AppURL, SCHEMAS, spliceURL } from '@glass/base'
 import { AssayProtocolModel } from '../components/domainproperties/models'
 import { fetchProtocol } from '../components/domainproperties/actions'
 
 import { getQueryDetails, selectRows } from "../query/api";
+import { AppURL, spliceURL } from '../url/AppURL';
+import { SCHEMAS } from '../components/base/models/schemas';
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean

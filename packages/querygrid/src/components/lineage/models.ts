@@ -3,7 +3,6 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, Record } from 'immutable'
-import { GridColumn, QueryInfo } from '@glass/base'
 
 import {
     DEFAULT_LINEAGE_DIRECTION,
@@ -13,6 +12,8 @@ import {
 } from './constants'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator'
 import { LINEAGE_GRID_COLUMNS } from "./Tag";
+import { GridColumn } from '../base/Grid';
+import { QueryInfo } from '../base/models/model';
 
 /**
  * After the raw lineage result has been filtered, ILineageGroupingOptions determines

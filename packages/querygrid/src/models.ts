@@ -15,22 +15,21 @@
  */
 import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable'
 import { Filter } from '@labkey/api'
-import {
-    GRID_EDIT_INDEX,
-    IGridLoader,
-    IQueryGridModel,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo,
-    resolveSchemaQuery,
-    SchemaQuery,
-    ViewInfo
-} from '@glass/base'
 
 import { genCellKey } from './actions'
 import { getQueryGridModel, getQueryMetadata } from './global'
 import { DefaultGridLoader } from './components/GridLoader'
-import { AppURL } from '@glass/base/src';
+import {
+    IGridLoader,
+    IQueryGridModel, QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery,
+    ViewInfo
+} from './components/base/models/model';
+import { resolveSchemaQuery } from './util/utils';
+import { AppURL } from './url/AppURL';
+import { GRID_EDIT_INDEX } from './components/base/models/constants';
 
 const emptyList = List<string>();
 

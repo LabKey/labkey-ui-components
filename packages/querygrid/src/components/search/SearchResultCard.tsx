@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import {SVGIcon, SCHEMAS} from "@glass/base";
+import { SCHEMAS } from '../base/models/schemas';
+import { SVGIcon } from '../base/SVGIcon';
 
 interface SearchResultProps {
     title: string

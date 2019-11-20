@@ -1,17 +1,12 @@
 import * as React from "react";
 import { List, Map } from "immutable";
 import { Utils } from "@labkey/api";
-import {
-    capitalizeFirstChar,
-    getCommonDataValues,
-    getUpdatedData,
-    QueryGridModel,
-    QueryInfo,
-    SchemaQuery
-} from "@glass/base";
+
 import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { QueryInfoForm } from './QueryInfoForm';
+import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
+import { QueryGridModel, QueryInfo, SchemaQuery } from '../base/models/model';
 
 
 interface Props {

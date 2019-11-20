@@ -5,9 +5,10 @@
 import * as React from 'react';
 import { List } from 'immutable';
 import { BsStyleTypes, Button } from 'react-bootstrap';
-import { AppURL, GridColumn } from "@glass/base";
 
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
+import { AppURL } from '../../url/AppURL';
+import { GridColumn } from '../base/Grid';
 
 interface TagProps {
     bsStyle?: BsStyleTypes

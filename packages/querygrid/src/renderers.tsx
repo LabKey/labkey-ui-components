@@ -17,10 +17,13 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { OrderedMap } from 'immutable'
 import { Dropdown, MenuItem } from 'react-bootstrap'
-import { GRID_CHECKBOX_OPTIONS, QueryColumn, CustomToggle, GridColumn } from '@glass/base'
 
 import { DefaultRenderer } from './renderers/DefaultRenderer'
 import { getQueryColumnRenderers } from './global'
+import { GridColumn } from './components/base/Grid';
+import { CustomToggle } from './components/base/CustomToggle';
+import { QueryColumn } from './components/base/models/model';
+import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
 export function headerCell(handleSort: any, column: GridColumn, i: number, selectable?: boolean, sortable: boolean = true, columnCount?: number) {
 

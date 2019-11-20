@@ -15,8 +15,7 @@
  */
 import * as React from 'react'
 import { List, Map } from 'immutable'
-import { Input, Checkbox, Textarea } from 'formsy-react-components'
-import { QueryColumn, getUnFormattedNumber } from '@glass/base'
+import { Checkbox, Input, Textarea } from 'formsy-react-components'
 
 import { LabelOverlay } from "../LabelOverlay";
 import { DateInput } from "../input/DateInput";
@@ -27,6 +26,8 @@ import { AliasRenderer } from "../../../renderers/AliasRenderer";
 import { AppendUnits } from "../../../renderers/AppendUnits";
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 import { LookupSelectInput } from "../input/LookupSelectInput";
+import { QueryColumn } from '../../base/models/model';
+import { getUnFormattedNumber } from '../../../util/Date';
 
 function findValue(data: Map<string, any>, lookup?: boolean) {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value')

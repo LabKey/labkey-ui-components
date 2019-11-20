@@ -15,10 +15,10 @@
  */
 import * as React from 'react'
 import { Textarea } from 'formsy-react-components'
-import { QueryColumn } from '@glass/base'
 
 import { FieldLabel } from '../FieldLabel'
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
+import { QueryColumn } from '../../base/models/model';
 
 
 interface TextAreaInputProps extends DisableableInputProps {

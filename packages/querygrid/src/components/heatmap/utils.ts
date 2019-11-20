@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Filter } from '@labkey/api'
-import { AppURL } from '@glass/base'
+import { AppURL } from '../../url/AppURL';
 
 export const ALL_MONTHS = [
     'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {OrderedSet} from 'immutable'
-import {AppURL} from '@glass/base'
+import { OrderedSet } from 'immutable'
 
 import { AppRouteResolver } from "./AppURLResolver";
+import { AppURL } from '../url/AppURL';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 

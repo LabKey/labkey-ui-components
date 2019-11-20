@@ -1,14 +1,18 @@
 import * as React from "react";
-import {Button, Checkbox, Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, createFormInputName, getNameFromId} from "../actions";
+import { Button, Checkbox, Col, FormControl, Row } from "react-bootstrap";
+import { createFormInputId, createFormInputName, getNameFromId } from "../actions";
 import {
-    DOMAIN_VALIDATOR_DESCRIPTION, DOMAIN_VALIDATOR_ERRORMESSAGE,
-    DOMAIN_VALIDATOR_EXPRESSION, DOMAIN_VALIDATOR_FAILONMATCH, DOMAIN_VALIDATOR_NAME, DOMAIN_VALIDATOR_REMOVE,
+    DOMAIN_VALIDATOR_DESCRIPTION,
+    DOMAIN_VALIDATOR_ERRORMESSAGE,
+    DOMAIN_VALIDATOR_EXPRESSION,
+    DOMAIN_VALIDATOR_FAILONMATCH,
+    DOMAIN_VALIDATOR_NAME,
+    DOMAIN_VALIDATOR_REMOVE,
 } from "../constants";
-import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {PropDescType, PropertyValidator} from "../models";
-import {LabelHelpTip} from "@glass/base";
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PropDescType, PropertyValidator } from "../models";
+import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface RegexValidationOptionsProps {
     validator: any

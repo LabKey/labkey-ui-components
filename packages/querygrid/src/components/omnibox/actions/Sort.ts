@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { QueryColumn } from '@glass/base'
 
 import { Action, ActionOption, ActionValue, Value } from './Action'
 import { parseColumns } from './Filter'
+import { QueryColumn } from '../../base/models/model';
 
 export class SortAction implements Action {
     iconCls = 'sort';

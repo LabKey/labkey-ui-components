@@ -16,9 +16,10 @@
 import * as React from 'react'
 import { Panel } from 'react-bootstrap'
 import { List, Map, OrderedMap } from 'immutable'
-import { LoadingSpinner, QueryColumn, QueryGridModel } from '@glass/base'
 
 import { DefaultRenderer } from "../../../renderers/DefaultRenderer";
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 const className = 'table table-responsive table-condensed detail-component--table__fixed';
 

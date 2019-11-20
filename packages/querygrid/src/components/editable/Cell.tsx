@@ -18,13 +18,13 @@ import React from 'reactn'
 import classNames from 'classnames'
 import { List } from 'immutable'
 import { OverlayTrigger, Popover } from 'react-bootstrap'
-import { QueryColumn } from '@glass/base'
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events'
 import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions'
 import { CellMessage, EditorModel, ValueDescriptor } from '../../models'
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { LookupCell, LookupCellProps } from './LookupCell'
+import { QueryColumn } from '../base/models/model';
 
 interface Props {
     col: QueryColumn

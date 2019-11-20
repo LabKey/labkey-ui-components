@@ -3,7 +3,6 @@ import * as React from 'react';
 import {List} from "immutable";
 import {Button, Checkbox, Col, FormControl, Modal, Row} from "react-bootstrap";
 import { ActionURL } from "@labkey/api";
-import { LabelHelpTip } from "@glass/base";
 
 import {
     DATETIME_TYPE,
@@ -28,6 +27,7 @@ import {
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
     DOMAIN_PHI_LEVELS
 } from "./constants";
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface AdvancedSettingsProps {
     domainId?: number

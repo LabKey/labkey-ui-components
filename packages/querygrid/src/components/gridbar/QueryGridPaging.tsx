@@ -15,9 +15,10 @@
  */
 import React from 'reactn'
 import { Button } from 'react-bootstrap'
-import { QueryGridModel, Tip } from '@glass/base'
 
 import { loadPage } from '../../actions'
+import { Tip } from '../base/Tip';
+import { QueryGridModel } from '../base/models/model';
 
 
 interface Props {

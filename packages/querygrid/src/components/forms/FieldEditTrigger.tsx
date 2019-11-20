@@ -15,11 +15,11 @@
  */
 import * as React from 'react'
 import { OverlayTrigger } from 'react-bootstrap'
-import { List, Map } from 'immutable'
-import { QueryGridModel } from '@glass/base'
+import { List } from 'immutable'
 
 import { updateRows } from '../../query/api'
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput'
+import { QueryGridModel } from '../base/models/model';
 
 export interface FieldEditTriggerProps {
     canUpdate?: boolean

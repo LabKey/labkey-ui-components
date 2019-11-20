@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Map } from 'immutable'
-import { User } from "@glass/base";
 import { getUserLastLogin, getUserPermissionsDisplay } from "./actions";
 import { PageDetailHeader } from "../forms/PageDetailHeader";
+import { User } from '../base/models/model';
 
 interface HeaderProps {
     title: string

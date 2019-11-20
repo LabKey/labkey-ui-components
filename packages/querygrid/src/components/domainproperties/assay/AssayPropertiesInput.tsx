@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { Col, FormControl, Row } from "react-bootstrap";
 import { List } from "immutable";
-import { AddEntityButton, Container, LabelHelpTip, LoadingSpinner, RemoveEntityButton } from "@glass/base";
 import { ActionURL } from "@labkey/api";
 
 import { AssayProtocolModel } from "../models";
 import { FORM_IDS } from "./AssayPropertiesPanel";
-import { getValidPublishTargets, getSplitSentence } from "../actions";
+import { getSplitSentence, getValidPublishTargets } from "../actions";
+import { LabelHelpTip } from '../../base/LabelHelpTip';
+import { Container } from '../../base/models/model';
+import { LoadingSpinner } from '../../base/LoadingSpinner';
+import { RemoveEntityButton } from '../../base/buttons/RemoveEntityButton';
+import { AddEntityButton } from '../../base/buttons/AddEntityButton';
 
 interface AssayPropertiesInputProps {
     label: string

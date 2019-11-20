@@ -72,12 +72,17 @@ import {
 } from './util/AppURLResolver';
 import { QueryGridPanel } from './components/QueryGridPanel';
 import { EditableGridPanel } from './components/editable/EditableGridPanel';
+import { EditableGridPanelForUpdate } from './components/editable/EditableGridPanelForUpdate';
+import { EditableGridLoader } from './components/editable/EditableGridLoader';
+import { EditableGridLoaderFromSelection } from './components/editable/EditableGridLoaderFromSelection';
+import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { QueryInfoForm } from './components/forms/QueryInfoForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
@@ -206,6 +211,8 @@ export {
     removeColumn,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    EditableGridLoaderFromSelection,
+    EditableGridLoader,
 
     // location related items
     Location,
@@ -234,8 +241,11 @@ export {
     // components
     LabelOverlay,
     EditableGridPanel,
+    EditableGridPanelForUpdate,
+    EditableGridModal,
     QueryGridPanel,
     PreviewGrid,
+    BulkUpdateForm,
     QueryInfoForm,
     LookupSelectInput,
     SelectInput,

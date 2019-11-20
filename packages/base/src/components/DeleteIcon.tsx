@@ -15,7 +15,7 @@ export class DeleteIcon extends React.Component<Props, any> {
         const { title, onDelete } = this.props;
         return (
             <span title={title} className="field-icon" onClick={onDelete}>
-                <i className={'fa fa-trash-o field-delete'}/>
+                <i className={'fa fa-times-circle field-delete'}/>
             </span>
         )
     }

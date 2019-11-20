@@ -16,7 +16,7 @@ import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import generalAssaySavedDuplicates from "../test/data/assay-getProtocolGeneralDuplicateFields.json";
 import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
 
-import '../../../domainproperties/src/stories/stories.scss'
+import './stories.scss'
 
 interface Props {
     data: {}

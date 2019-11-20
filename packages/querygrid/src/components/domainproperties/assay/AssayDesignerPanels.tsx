@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Map, List } from 'immutable'
-import { Alert, WizardNavButtons } from "@glass/base";
+import { Alert } from "@glass/base";
 
 import {DomainPanelStatus, AssayProtocolModel, DomainDesign, HeaderRenderer} from "../models";
 import {saveAssayDesign} from "../actions";
@@ -19,7 +19,7 @@ interface Props {
     containerTop?: number // This sets the top of the sticky header, default is 0
     basePropertiesOnly?: boolean
     appDomainHeaders?: Map<string, HeaderRenderer>
-    appIsValid?: (model: AssayProtocolModel) => boolean
+    appIsValidMsg?: (model: AssayProtocolModel) => string
     useTheme?: boolean
 }
 
@@ -133,16 +133,18 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
         this.setState((state) => ({validatePanel: state.currentPanelIndex}), () => {
             this.setState((state) => ({validatePanel: undefined}), () => {
 
-                if (AssayProtocolModel.isValid(protocolModel)) {
+                if (this.isValid()) {
                     this.setSubmitting(true, protocolModel);
-                    if (beforeFinish)
-                    {
+                    if (beforeFinish) {
                         beforeFinish(protocolModel);
                     }
 
                     saveAssayDesign(protocolModel)
                         .then((response) => this.onFinishSuccess(response))
                         .catch((protocolModel) => this.onFinishFailure(protocolModel));
+                }
+                else if (this.getAppIsValidMsg() !== undefined) {
+                    this.setState(() => ({protocolModel: protocolModel.set('exception', this.getAppIsValidMsg()) as AssayProtocolModel}));
                 }
             })
 
@@ -167,10 +169,14 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     }
 
     isValid(): boolean {
-        const { appIsValid } = this.props;
+        return AssayProtocolModel.isValid(this.state.protocolModel) && this.getAppIsValidMsg() === undefined;
+    }
+
+    getAppIsValidMsg(): string {
+        const { appIsValidMsg } = this.props;
         const { protocolModel } = this.state;
 
-        return (appIsValid ? AssayProtocolModel.isValid(protocolModel) && appIsValid(protocolModel) : AssayProtocolModel.isValid(protocolModel));
+        return !appIsValidMsg ? undefined : appIsValidMsg(protocolModel);
     }
 
     onAssayPropertiesChange = (model: AssayProtocolModel) => {
@@ -269,13 +275,6 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
-                    // collapse domain panel for new assays (unless it is the active step)
-                    // for existing assays, collapse unless the assay is invalidate and the domain has appDomainHeaderRenderer
-                    let initCollapsed = currentPanelIndex !== (i+1);
-                    if (!this.isValid() && appDomainHeaderRenderer !== undefined) {
-                        initCollapsed = false;
-                    }
-
                     if (domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
                         errorDomains = errorDomains.push(DomainFormImpl.getHeaderName(domain.name, undefined, protocolModel.name));
                     }
@@ -286,7 +285,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             domain={domain}
                             headerPrefix={protocolModel.name}
                             controlledCollapse={true}
-                            initCollapsed={initCollapsed}
+                            initCollapsed={currentPanelIndex !== (i+1)}
                             validate={validatePanel === i + 1}
                             panelStatus={protocolModel.isNew() ? this.getPanelStatus(i + 1) : "COMPLETE"}
                             showInferFromFile={showInferFromFile}

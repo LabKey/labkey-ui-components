@@ -9,6 +9,10 @@ Query Grid for LabKey schema/query data views
 * Move `domainproperties` package into `querygrid`
     * Old README for `domainproperties` can be found [here](../../legacy-docs/domainproperties.md)
     
+### version 0.23.1
+*Released*: 19 November 2019
+* Package patch update for changes to @glass/domainproperties v0.0.53
+
 ### version 0.23.0
 *Released*: 18 November 2019
 * Add components for user profile management in app - ChangePasswordModal, UserDetailHeader, UserProfile

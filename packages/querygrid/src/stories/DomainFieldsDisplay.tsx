@@ -10,7 +10,7 @@ import { text, withKnobs } from '@storybook/addon-knobs'
 import { DomainFieldsDisplay } from "../components/domainproperties/DomainFieldsDisplay"
 import { DomainDesign } from "../components/domainproperties/models";
 import data from "../test/data/property-getDomain.json";
-import '../../../domainproperties/src/stories/stories.scss'
+import './stories.scss'
 
 storiesOf("DomainFieldsDisplay", module)
     .addDecorator(withKnobs)

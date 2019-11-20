@@ -6,19 +6,20 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { text, boolean, withKnobs } from '@storybook/addon-knobs'
+import { Utils } from '@labkey/api'
 
 import {AssayProtocolModel, DomainException} from "../components/domainproperties/models";
 import { AssayDesignerPanels } from "../components/domainproperties/assay/AssayDesignerPanels"
-import { initMocks } from "../../../domainproperties/src/stories/mock";
+import {SEVERITY_LEVEL_ERROR} from "../components/domainproperties/constants";
+import {setAssayDomainException} from "../components/domainproperties/actions";
+import { initMocks } from "./mock";
 import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
 import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
 import generalAssayDupes from "../test/data/assay-getProtocolGeneralDuplicateFields.json";
 import domainAssayException from "../test/data/assay-domainExceptionFromServer.json";
 import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
 import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
-import '../../../domainproperties/src/stories/stories.scss'
-import {SEVERITY_LEVEL_ERROR} from "../../../querygrid/src/components/domainproperties/constants";
-import {setAssayDomainException, setDomainException} from "../../../querygrid/src/components/domainproperties/actions";
+import './stories.scss'
 
 initMocks();
 
@@ -52,7 +53,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
     };
 
     render() {
-        const isValid = boolean('AppDesignValid', true);
+        const isValidMsg = text('AppDesignValidMsg', undefined);
 
         return (
             <AssayDesignerPanels
@@ -69,9 +70,8 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
                 onCancel={() => {
                     console.log('cancel clicked');
                 }}
-                appIsValid={()=>{
-                    //Disables Finish button if false
-                    return isValid;
+                appIsValidMsg={()=>{
+                    return Utils.isString(isValidMsg) && isValidMsg.trim().length > 0 ? isValidMsg : undefined;
                 }}
             />
         )

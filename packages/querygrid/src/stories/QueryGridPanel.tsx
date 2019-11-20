@@ -20,9 +20,9 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { QueryGridPanel } from "../components/QueryGridPanel";
 import { getStateQueryGridModel } from "../models";
 import './stories.scss'
-import { ManageDropdownButton } from '../components/base/buttons/ManageDropdownButton';
+import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
-import { SelectionMenuItem } from '../components/base/menus/SelectionMenuItem';
+import { SelectionMenuItem } from '../components/menus/SelectionMenuItem';
 
 class QueryGridPanelWrapper extends React.Component {
     renderButtons = (model: QueryGridModel) => {

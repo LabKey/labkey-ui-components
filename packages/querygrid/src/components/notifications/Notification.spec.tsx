@@ -15,13 +15,13 @@
  */
 import * as React from 'react'
 import renderer from 'react-test-renderer'
-import { User } from "../models/model";
+import { User } from "../base/models/model";
 import { Notification } from './Notification'
 import { createNotification } from "./actions";
 import { NotificationItemModel } from "./model";
 import { mount, shallow } from "enzyme";
 import { NotificationItem } from "./NotificationItem";
-import { notificationInit } from "../../../test/setupUtils";
+import { notificationInit } from "../../test/setupUtils";
 import moment = require("moment");
 
 beforeEach(() => {

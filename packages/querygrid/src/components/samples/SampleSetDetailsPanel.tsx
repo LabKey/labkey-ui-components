@@ -7,8 +7,8 @@ import { IParentAlias, IParentOption, ISampleSetDetails, } from "./models";
 import { LabelOverlay } from "../../components/forms/LabelOverlay";
 import { SampleSetParentAliasRow } from "../../components/samples/SampleSetParentAliasRow";
 import { PARENT_ALIAS_DOC_URL, PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from "../../constants";
-import { AddEntityButton } from '../base/buttons/AddEntityButton';
-import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
+import { AddEntityButton } from '../buttons/AddEntityButton';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
 

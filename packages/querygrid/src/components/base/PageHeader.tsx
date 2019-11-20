@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Notification } from './notifications/Notification'
+import { Notification } from '../notifications/Notification'
 import { User } from './models/model';
 
 interface PageHeaderProps {

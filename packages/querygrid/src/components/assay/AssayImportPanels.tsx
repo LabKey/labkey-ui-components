@@ -53,7 +53,7 @@ import {
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Progress } from '../base/Progress';
 
 let assayUploadTimer: number;

@@ -24,8 +24,8 @@ import { NotificationItem } from "./NotificationItem";
 
 import { dismissNotifications } from "./global";
 
-import { User } from "../models/model";
-import { getDateFormat } from '../../../util/Date';
+import { User } from "../base/models/model";
+import { getDateFormat } from '../../util/Date';
 
 
 interface NotificationProps {

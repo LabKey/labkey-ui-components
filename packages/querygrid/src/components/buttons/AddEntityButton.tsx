@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import {LabelHelpTip} from "../LabelHelpTip";
+import {LabelHelpTip} from "../base/LabelHelpTip";
 
 interface AddEntityButtonProps {
     buttonClass?: string

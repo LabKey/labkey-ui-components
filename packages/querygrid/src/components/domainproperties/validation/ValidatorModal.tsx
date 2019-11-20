@@ -9,7 +9,7 @@ import {
     DOMAIN_REGEX_VALIDATOR,
     DOMAIN_REGEX_VALIDATORS
 } from "../constants";
-import { AddEntityButton } from '../../base/buttons/AddEntityButton';
+import { AddEntityButton } from '../../buttons/AddEntityButton';
 
 
 export interface ValidatorModalProps {

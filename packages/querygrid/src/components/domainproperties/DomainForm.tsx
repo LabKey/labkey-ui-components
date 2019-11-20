@@ -54,10 +54,10 @@ import {
     LK_DOMAIN_HELP_URL,
     PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR
 } from "./constants";
-import { AddEntityButton } from '../base/buttons/AddEntityButton';
+import { AddEntityButton } from '../buttons/AddEntityButton';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';
-import { FileAttachmentForm } from '../base/files/FileAttachmentForm';
+import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 

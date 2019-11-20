@@ -8,12 +8,12 @@ import { storiesOf } from '@storybook/react'
 import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs'
 
 import './stories.scss';
-import { Notification } from '../components/base/notifications/Notification';
+import { Notification } from '../components/notifications/Notification';
 
 import { notificationInit } from "../test/setupUtils";
-import { createNotification } from '../components/base/notifications/actions';
+import { createNotification } from '../components/notifications/actions';
 import { User } from '../components/base/models/model';
-import { NotificationItemModel } from '../components/base/notifications/model';
+import { NotificationItemModel } from '../components/notifications/model';
 import { generateId } from '../util/utils';
 import moment = require("moment");
 

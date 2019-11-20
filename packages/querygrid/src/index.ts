@@ -76,17 +76,17 @@ import {
 import { getActionErrorMessage } from './util/messaging'
 import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType'
-import { AddEntityButton } from "./components/base/buttons/AddEntityButton"
-import { RemoveEntityButton } from "./components/base/buttons/RemoveEntityButton"
+import { AddEntityButton } from "./components/buttons/AddEntityButton"
+import { RemoveEntityButton } from "./components/buttons/RemoveEntityButton"
 import { AppURL, spliceURL } from "./url/AppURL";
 import { Alert } from './components/base/Alert'
 import { DeleteIcon } from './components/base/DeleteIcon';
 import { DragDropHandle } from './components/base/DragDropHandle';
 import { FieldExpansionToggle } from './components/base/FieldExpansionToggle';
-import { MultiMenuButton } from './components/base/menus/MultiMenuButton';
-import { MenuOption, SubMenu } from "./components/base/menus/SubMenu";
-import { ISubItem, SubMenuItem, SubMenuItemProps } from "./components/base/menus/SubMenuItem";
-import { SelectionMenuItem } from "./components/base/menus/SelectionMenuItem";
+import { MultiMenuButton } from './components/menus/MultiMenuButton';
+import { MenuOption, SubMenu } from "./components/menus/SubMenu";
+import { ISubItem, SubMenuItem, SubMenuItemProps } from "./components/menus/SubMenuItem";
+import { SelectionMenuItem } from "./components/menus/SelectionMenuItem";
 import { CustomToggle } from './components/base/CustomToggle'
 import { LoadingModal } from './components/base/LoadingModal'
 import { LoadingSpinner } from './components/base/LoadingSpinner'
@@ -100,11 +100,11 @@ import { Tip } from './components/base/Tip'
 import { Grid, GridColumn, GridData, GridProps } from './components/base/Grid'
 import { FormSection } from './components/base/FormSection'
 import { Section } from './components/base/Section'
-import { FileAttachmentForm } from './components/base/files/FileAttachmentForm'
-import { FileAttachmentFormModel } from './components/base/files/models'
-import { Notification } from './components/base/notifications/Notification'
-import { createNotification } from './components/base/notifications/actions'
-import { dismissNotifications, initNotificationsState } from './components/base/notifications/global'
+import { FileAttachmentForm } from './components/files/FileAttachmentForm'
+import { FileAttachmentFormModel } from './components/files/models'
+import { Notification } from './components/notifications/Notification'
+import { createNotification } from './components/notifications/actions'
+import { dismissNotifications, initNotificationsState } from './components/notifications/global'
 import { ConfirmModal } from './components/base/ConfirmModal'
 import {
     datePlaceholder,
@@ -121,12 +121,12 @@ import {
     NotificationItemModel,
     NotificationItemProps,
     Persistence,
-} from './components/base/notifications/model'
+} from './components/notifications/model'
 import { PermissionAllowed, PermissionNotAllowed, } from "./components/base/Permissions"
-import { PaginationButtons, PaginationButtonsProps } from './components/base/buttons/PaginationButtons';
-import { ManageDropdownButton } from './components/base/buttons/ManageDropdownButton';
-import { WizardNavButtons } from './components/base/buttons/WizardNavButtons';
-import { ToggleButtons } from './components/base/buttons/ToggleButtons';
+import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
+import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
+import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
 

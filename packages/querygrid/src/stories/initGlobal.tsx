@@ -20,7 +20,7 @@ import { initBrowserHistoryState } from "../util/global";
 import { initMocks } from "./mock";
 import { FileColumnRenderer } from '../renderers/FileColumnRenderer';
 import { SCHEMAS } from '../components/base/models/schemas';
-import { initNotificationsState } from '../components/base/notifications/global';
+import { initNotificationsState } from '../components/notifications/global';
 
 const QUERY_METADATA = fromJS({
     // hideEmptyChartSelector: true,

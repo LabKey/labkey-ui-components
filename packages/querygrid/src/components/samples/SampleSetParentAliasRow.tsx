@@ -7,7 +7,7 @@ import { SelectInput } from "../forms/input/SelectInput";
 import classNames from "classnames";
 import { PARENT_ALIAS_HELPER_TEXT } from "../../constants";
 import { LabelOverlay } from '../forms/LabelOverlay';
-import { RemoveEntityButton } from '../base/buttons/RemoveEntityButton';
+import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 
 
 interface IParentAliasRow {

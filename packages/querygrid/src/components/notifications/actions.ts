@@ -16,7 +16,7 @@
 import { Ajax, Utils } from '@labkey/api'
 
 import { NotificationItemModel, NotificationItemProps } from './model'
-import { buildURL } from "../../../url/ActionURL";
+import { buildURL } from "../../url/ActionURL";
 import { addNotification } from "./global";
 
 

@@ -16,7 +16,7 @@
 import * as React from 'react'
 import { NotificationItemModel } from "./model";
 import { NotificationItem } from "./NotificationItem";
-import { User } from "../models/model";
+import { User } from "../base/models/model";
 import { shallow } from "enzyme";
 import { initNotificationsState } from "./global";
 import { createNotification } from "./actions";

@@ -11,8 +11,8 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs'
 import './stories.scss';
 
 import { notificationInit } from "../test/setupUtils";
-import { NotificationItemModel, Persistence } from '../components/base/notifications/model';
-import { createNotification } from '../components/base/notifications/actions';
+import { NotificationItemModel, Persistence } from '../components/notifications/model';
+import { createNotification } from '../components/notifications/actions';
 import { PageHeader } from '../components/base/PageHeader';
 
 notificationInit();

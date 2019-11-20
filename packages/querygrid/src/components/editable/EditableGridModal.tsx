@@ -7,7 +7,7 @@ import { getQueryGridModel } from '../../global';
 import { EditableGridPanel } from './EditableGridPanel';
 import { EditableGridProps } from './EditableGrid';
 import { QueryGridModel } from '../base/models/model';
-import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
 interface Props extends EditableGridProps {
     show: boolean,

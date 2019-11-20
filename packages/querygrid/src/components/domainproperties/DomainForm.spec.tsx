@@ -38,7 +38,7 @@ import { mount } from "enzyme";
 import { clearFieldDetails, createFormInputId, updateDomainField } from "./actions";
 import toJson from "enzyme-to-json";
 import { DomainRow } from "./DomainRow";
-import { FileAttachmentForm } from '../base/files/FileAttachmentForm';
+import { FileAttachmentForm } from '../files/FileAttachmentForm';
 
 interface Props {
     showInferFromFile?: boolean

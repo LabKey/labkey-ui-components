@@ -4,7 +4,7 @@ import { List } from 'immutable'
 
 import { getImportItemsForAssayDefinitions } from "./actions";
 import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
-import { ISubItem, SubMenuItem, SubMenuItemProps } from '../base/menus/SubMenuItem';
+import { ISubItem, SubMenuItem, SubMenuItemProps } from '../menus/SubMenuItem';
 import { AssayDefinitionModel, QueryGridModel } from '../base/models/model';
 
 interface Props extends SubMenuItemProps {

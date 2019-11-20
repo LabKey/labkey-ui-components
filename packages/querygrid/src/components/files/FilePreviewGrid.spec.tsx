@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 import { fromJS, List } from 'immutable'
 
 import { FilePreviewGrid } from "./FilePreviewGrid";
-import { GridColumn } from "../Grid";
+import { GridColumn } from "../base/Grid";
 
 const DATA = fromJS([{
     col1: 'abc',

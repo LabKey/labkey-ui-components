@@ -7,7 +7,7 @@ import { AssayProtocolModel, DomainDesign } from "../models";
 import { DescriptionInput, NameInput } from "./AssayPropertiesInput";
 import { Panel } from "react-bootstrap";
 import toJson from "enzyme-to-json";
-import { FileAttachmentForm } from '../../base/files/FileAttachmentForm';
+import { FileAttachmentForm } from '../../files/FileAttachmentForm';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,

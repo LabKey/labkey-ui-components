@@ -9,7 +9,7 @@ import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import mock, { proxy } from 'xhr-mock';
 
-import { FileAttachmentForm } from '../components/base/files/FileAttachmentForm';
+import { FileAttachmentForm } from '../components/files/FileAttachmentForm';
 import inferDomainJson from '../test/data/property-inferDomainWithSpecimenId.json';
 import filePreviewJson from '../test/data/property-getFilePreview.json';
 

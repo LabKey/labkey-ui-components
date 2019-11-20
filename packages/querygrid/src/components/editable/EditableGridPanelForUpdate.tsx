@@ -4,7 +4,7 @@ import { getEditorModel } from '../../global';
 import { EditableGridPanel } from './EditableGridPanel';
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
-import { WizardNavButtons } from '../base/buttons/WizardNavButtons';
+import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
 interface Props {
     model: QueryGridModel

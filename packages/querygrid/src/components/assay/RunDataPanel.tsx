@@ -27,7 +27,7 @@ import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/mo
 import { getServerFilePreview } from '../base/actions';
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { FileAttachmentForm } from '../base/files/FileAttachmentForm';
+import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];

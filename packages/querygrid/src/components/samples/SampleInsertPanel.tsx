@@ -54,9 +54,9 @@ import {
     SchemaQuery
 } from '../base/models/model';
 import { capitalizeFirstChar } from '../../util/utils';
-import { AddEntityButton } from '../base/buttons/AddEntityButton';
+import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { RemoveEntityButton } from '../base/buttons/RemoveEntityButton';
+import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { Alert } from '../base/Alert';
 
 

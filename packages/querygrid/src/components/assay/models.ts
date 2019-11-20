@@ -18,7 +18,7 @@ import { AssayDOM } from '@labkey/api'
 
 import { getEditorModel } from "../../global";
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, QueryInfo } from '../base/models/model';
-import { FileAttachmentFormModel } from '../base/files/models';
+import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';
 

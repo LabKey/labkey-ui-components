@@ -4,8 +4,8 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.22.1
+*Released*: 19 November 2019
 * Change styling of DeleteIcon
 
 ### version 0.22.0

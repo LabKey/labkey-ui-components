@@ -4,8 +4,8 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
-### version ???
-*Released*: ???
+### version 0.24.0
+*Released*: 19 November 2019
 * update EditorModel with methods for converting from queryGrid results to the data format expected by 
 the editable grid
 * move EditableGridLoader, EditableGridLoaderForSelection, EditableGridPanelForUpdate, EditableGridModal, BulkUpdateForm

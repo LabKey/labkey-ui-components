@@ -4,6 +4,11 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.23.2
+*Released*: 19 Nov 2019
+* Issue 33849: change UserSelectInput to use getUsersWithPermissions instead of getUsers so we get all users
+with a particular set of permissions, not just those in some project or global group.
+
 ### version 0.23.1
 *Released*: 19 November 2019
 * Package patch update for changes to @glass/domainproperties v0.0.53

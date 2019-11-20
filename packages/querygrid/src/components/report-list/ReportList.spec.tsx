@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer';
 import { createMemoryHistory, Route, Router } from 'react-router';
 import { mount } from 'enzyme';
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
-import { flattenBrowseDataTreeResponse } from './model';
+import { flattenBrowseDataTreeResponse } from '../../';
 import exampleData from '../../test/data/example_browse_data_tree_api.json';
 import { AppURL, LoadingSpinner } from '@glass/base';
 

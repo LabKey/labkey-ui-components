@@ -14,7 +14,7 @@ the development process described below will change once this is done.
 <!--- keep these alphabetical --->
 | Package | Description |
 | --- | --- | 
-| [@glass/querygrid](packages/querygrid/README.md) | All components, models, actions, and utility functions for LabKey applications and pages
+| [@glass/querygrid](packages/components/README.md) | All components, models, actions, and utility functions for LabKey applications and pages
 | [template](packages/template/README.md) | A template for creating new packages
 
 ## Using @glass npm packages

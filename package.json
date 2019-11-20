@@ -57,6 +57,6 @@
     "**/event-stream": "^4.0.1"
   },
   "workspaces": [
-    "packages/querygrid"
+    "packages/components"
   ]
 }

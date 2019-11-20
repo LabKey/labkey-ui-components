@@ -37,9 +37,9 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/querygrid.es.js',
+            file: 'dist/components.es.js',
             format: 'es',
-            name: 'querygrid'
+            name: 'components'
         },
         plugins: [
             resolve(),
@@ -49,7 +49,7 @@ export default [
                 clean: true
             }),
             sass({
-                output: 'dist/querygrid.css'
+                output: 'dist/components.css'
             }),
             copy({
                 targets: {
@@ -63,7 +63,7 @@ export default [
         external: external,
         input: input,
         output: {
-            file: 'dist/querygrid.cjs.js',
+            file: 'dist/components.cjs.js',
             format: 'cjs'
         },
         plugins: [

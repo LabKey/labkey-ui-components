@@ -1,13 +1,10 @@
 {
-  "name": "@glass/querygrid",
-  "version": "0.25.0-fb-packageConsolidation.3",
-  "description": "Query Grid for LabKey schema/query data views",
-  "main": "dist/querygrid.cjs.js",
-  "module": "dist/querygrid.es.js",
+  "name": "@labkey/components",
+  "version": "0.0.1-fb-packageConsolidation.3",
+  "description": "Components, models, actions, and utility functions for LabKey applications and pages",
+  "main": "dist/components.cjs.js",
+  "module": "dist/components.es.js",
   "types": "dist/index.d.ts",
-  "config": {
-    "application_dir": "/path/to/application/node_modules/\\@glass/querygrid/dist"
-  },
   "files": [
     "dist/"
   ],
@@ -21,18 +18,16 @@
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter && yarn run build-storybook",
     "watch:build": "watch 'yarn build' ./src",
-    "watch:distCopy": "cpx --watch -v './dist/**/*' $npm_package_config_application_dir",
-    "watch:buildAndCopy": "npm run watch:build & npm run watch:distCopy",
     "watch": "npm run watch:build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LabKey/glass-components.git"
   },
-  "author": "Cory Nathe",
+  "author": "LabKey",
   "license": "SEE LICENSE IN LICENSE.txt",
   "bugs": {
-    "url": "https://github.com/LabKey/glass-components/issues"
+    "url": "https://www.labkey.org/project/home/Developer/issues/begin.view?"
   },
   "publishConfig": {
     "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"

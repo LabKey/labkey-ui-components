@@ -39,8 +39,6 @@ const exampleReports = flattenBrowseDataTreeResponse(data, (report) => {
     return AppURL.create(...parts);
 });
 
-// initQueryGridState(fromJS({}));
-
 class ReportListContainer extends React.PureComponent<any, any> {
     constructor(props) {
         super(props);

@@ -56,7 +56,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (!this.isLoading() && results !== undefined) {
-            const data = results.filter((result) => result.has('data'));
+            const data = results.filter((result) => result.get('category')=='material' || result.get('category')=='workflowJob');
 
             if (data.size > 0) {
                 return (

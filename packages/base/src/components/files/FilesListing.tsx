@@ -23,7 +23,7 @@ interface Props {
 
 interface State {
     selectedFiles?: Set<string>
-    showConfirmDelete: Set<string>
+    confirmDeletionSet: Set<string>
     showFileUploadPanel?: boolean
 }
 
@@ -45,7 +45,7 @@ export class FilesListing extends React.Component<Props, State> {
 
         this.state = {
             selectedFiles: Set<string>(),
-            showConfirmDelete: Set<string>(),
+            confirmDeletionSet: Set<string>(),
             showFileUploadPanel: false
         }
     }
@@ -114,17 +114,17 @@ export class FilesListing extends React.Component<Props, State> {
     }
 
     toggleDeleteConfirmation(fileName: string) {
-        const { showConfirmDelete } = this.state;
+        const { confirmDeletionSet } = this.state;
 
         this.setState({
-            showConfirmDelete: showConfirmDelete.has(fileName) ? showConfirmDelete.delete(fileName) : showConfirmDelete.add(fileName)
+            confirmDeletionSet: confirmDeletionSet.has(fileName) ? confirmDeletionSet.delete(fileName) : confirmDeletionSet.add(fileName)
         })
     }
 
     deleteFile(fileName: string) {
         const { handleDelete } = this.props;
         this.setState( {
-            showConfirmDelete: this.state.showConfirmDelete.delete(fileName),
+            confirmDeletionSet: this.state.confirmDeletionSet.delete(fileName),
             selectedFiles: this.state.selectedFiles.delete(fileName)
         });
         handleDelete(fileName);
@@ -138,10 +138,10 @@ export class FilesListing extends React.Component<Props, State> {
                 <div>
                     {files.map((file: IFile, key) => {
                         const {description, downloadUrl, name} = file;
-                        const confirmDelete = this.state.showConfirmDelete.has(name);
+                        const confirmDelete = this.state.confirmDeletionSet.has(name);
 
                         return (
-                            <div className="component component-detail--container" key={key}>
+                            <div className="component file-listing-row--container" key={key}>
                                 <div className="detail-component">
                                     <div className="row" key={key}>
                                         <div className="col-xs-4 file-listing-icon--container">
@@ -205,7 +205,6 @@ export class FilesListing extends React.Component<Props, State> {
                     <FileAttachmentForm
                         allowDirectories={false}
                         allowMultiple={true}
-                        label="Attach a file"
                         onCancel={this.toggleUploadSection}
                         onSubmit={this.uploadAttachedFiles}
                         showButtons={true}

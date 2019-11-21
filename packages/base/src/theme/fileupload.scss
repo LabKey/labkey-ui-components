@@ -151,3 +151,16 @@
 .test-loc-file-created-by {
   padding-right: 5px;
 }
+
+.file-listing-row--container {
+  border: 1px solid lightgray;
+
+  &:before, &:after {
+    content: " ";
+    display: table;
+  }
+
+  &:after {
+    clear: both;
+  }
+}

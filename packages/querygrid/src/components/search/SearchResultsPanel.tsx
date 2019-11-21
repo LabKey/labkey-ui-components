@@ -56,7 +56,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (!this.isLoading() && results !== undefined) {
-            const data = results.filter((result) => result.get('category')=='material' || result.get('category')=='workflowJob');
+            // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
+            const data = results.filter((result) => {
+                const category = result.get('category');
+                return category=='data' || category=='material' || category=='workflowJob' || result.has('data');
+            });
 
             if (data.size > 0) {
                 return (
@@ -68,6 +72,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     title={item.get('title')}
                                     summary={item.get('summary')}
                                     url={item.get('url')}
+                                    category={item.get('category')}
                                     data={item.get('data')}
                                     iconUrl={iconUrl}
                                 />

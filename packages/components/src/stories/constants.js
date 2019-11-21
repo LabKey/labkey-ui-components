@@ -5,7 +5,7 @@
  */
 import { fromJS, List } from 'immutable'
 
-import { GridColumn } from '@glass/querygrid/src/components/base/Grid'
+import { GridColumn } from '../components/base/Grid'
 
 export const gridData = fromJS([{
     name: 'Dee Gordon',

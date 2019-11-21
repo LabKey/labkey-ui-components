@@ -94,10 +94,10 @@
       "js"
     ],
     "moduleNameMapper": {
-      "\\.(scss)$": "<rootDir>/../../test/styleMock.ts"
+      "\\.(scss)$": "<rootDir>./src/test/styleMock.ts"
     },
     "setupFilesAfterEnv": [
-      "<rootDir>/../../test/jest.setup.ts"
+      "<rootDir>./src/test/jest.setup.ts"
     ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"

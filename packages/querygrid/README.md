@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version XXX
+*Released*: XXX
+* Package patch update for changes to @glass/base vXXX
+
 ### version 0.24.0
 *Released*: 19 November 2019
 * update EditorModel with methods for converting from queryGrid results to the data format expected by 
@@ -35,10 +39,6 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.22.4
 *Released*: 14 November 2019
 * Fix Issue 38804
-
-### version XXX
-*Released*: XXX
-* Package patch update for changes to @glass/base vXXX
 
 ### version 0.22.3
 *Released*: 13 November 2019

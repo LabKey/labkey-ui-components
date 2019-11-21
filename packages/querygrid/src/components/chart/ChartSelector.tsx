@@ -15,7 +15,7 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { naturalSort, QueryGridModel } from '@glass/base'
+import { naturalSort, QueryGridModel, SchemaQuery } from '@glass/base'
 
 import { fetchCharts } from '../../actions'
 import { DataViewInfo, IDataViewInfo } from '../../models'
@@ -74,9 +74,10 @@ export class ChartSelector extends React.Component<Props, State> {
     };
 
     requestChartsWithSampleComparisonReports = () => {
-        const queryInfo = this.props.model.queryInfo;
-        const targetSchema = queryInfo.schemaName;
-        const targetQuery = queryInfo.name;
+        const { model } = this.props;
+        const targetSchema = model.schema;
+        const targetQuery = model.query;
+
         // reset charts to null so we trigger loading status.
         this.setState({publicCharts: null, privateCharts: null});
         loadReports().then((charts) => {
@@ -109,10 +110,12 @@ export class ChartSelector extends React.Component<Props, State> {
     };
 
     requestChartsWithoutSampleComparisonReports = () => {
-        const { queryInfo } = this.props.model;
+        const { model } = this.props;
+        const sq = SchemaQuery.create(model.schema, model.query);
 
+        // reset charts to null so we trigger loading status.
         this.setState({publicCharts: null, privateCharts: null});
-        fetchCharts(queryInfo.schemaQuery).then(data => {
+        fetchCharts(sq).then(data => {
             let publicCharts = List<DataViewInfo>();
             let privateCharts = List<DataViewInfo>();
 
@@ -134,15 +137,6 @@ export class ChartSelector extends React.Component<Props, State> {
     };
 
     requestCharts() {
-        const queryInfo = this.props.model.queryInfo;
-
-        // TODO: Would it be safe to just use model.schema and model.query instead? As far as I can tell by the time
-        //  we're rendering the ChartSelector we will always a model with a schema and query. We won't always have a
-        //  QueryInfo because we have to wait for getQueryDetails.
-        if (!queryInfo || !queryInfo.schemaQuery) {
-            return;
-        }
-
         if (this.props.showSampleComparisonReports) {
             this.requestChartsWithSampleComparisonReports();
         } else {

@@ -204,13 +204,13 @@ import { QueryInfoForm } from './components/forms/QueryInfoForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
-import { QuerySelect } from './components/forms/QuerySelect';
+import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { handleInputTab, handleTabKeyOnTextArea, getUsersWithPermissions } from './components/forms/actions';
-import { IUser } from './components/forms/model';
+import { IUser, ISelectInitData } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
@@ -291,6 +291,8 @@ import {
     AssayProtocolModel,
     DomainDesign,
     DomainField,
+    IDomainField,
+    IFieldChange,
     IAppDomainHeader,
     IBannerMessage,
     SAMPLE_TYPE
@@ -394,6 +396,7 @@ export {
     LookupSelectInput,
     SelectInput,
     QuerySelect,
+    QuerySelectOwnProps,
     UserSelectInput,
     PageDetailHeader,
     DetailEditing,
@@ -464,6 +467,7 @@ export {
     WithFormStepsProps,
     FormStep,
     FormTabs,
+    ISelectInitData,
 
     // heatmap
     addDateRangeFilter,
@@ -528,6 +532,8 @@ export {
     AssayProtocolModel,
     DomainDesign,
     DomainField,
+    IDomainField,
+    IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
 

@@ -12,7 +12,7 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 <!--- keep these alphabetical --->
 | Package | Description |
 | --- | --- | 
-| [@labkey/components](packages/components/docs/ReleaseNotes.md) | All components, models, actions, and utility functions for LabKey applications and pages
+| [@labkey/components](packages/components/README.md) | All components, models, actions, and utility functions for LabKey applications and pages
 
 ## Using @labkey npm packages
 

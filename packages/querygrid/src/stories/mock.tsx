@@ -65,10 +65,14 @@ import assayImageFieldRunsQueryInfo from '../test/data/assayImageFieldRuns-getQu
 import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.json';
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
+import browseData from '../test/data/example_browse_data_tree_api.json';
+import assayAminoAcidsDataQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
+import assayAminoAcidsDataQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
         'runs': assayRunsWithQCFlagsQueryInfo,
+        'data': assayAminoAcidsDataQueryInfo,
     },
     'assay.general.gpat 1': {
         'data': assayGpatDataQueryInfo,
@@ -109,6 +113,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
 const QUERY_RESPONSES = fromJS({
     'assay.general.amino acids': {
         'runs': assayRunsWithQCFlagsQuery,
+        'data': assayAminoAcidsDataQuery,
     },
     'assay.general.gpat 1': {
         'runs': assayGpatRunData,
@@ -325,6 +330,12 @@ export function initMocks() {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(visualizationConfig),
+    });
+
+    mock.get(/.*browseData.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(browseData),
     });
 
     mock.use(proxy);

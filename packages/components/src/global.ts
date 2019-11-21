@@ -211,7 +211,7 @@ export function updateLineageResult(seed: string, lineage: Lineage) {
 /**
  * Invalidate the global state lineage results
  */
-export function invalidateLineageResults(seed: string, lineage: Lineage) {
+export function invalidateLineageResults() {
     setGlobal({
         QueryGrid_lineageResults: Map<string, Lineage>()
     });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import mock, { proxy } from 'xhr-mock';
+import mock, { proxy, delay } from 'xhr-mock';
 import { fromJS } from 'immutable';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
@@ -332,11 +332,11 @@ export function initMocks() {
         body: JSON.stringify(visualizationConfig),
     });
 
-    mock.get(/.*browseData.*/, {
+    mock.get(/.*browseData.*/, delay({
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(browseData),
-    });
+    }, 1000));
 
     mock.use(proxy);
 }

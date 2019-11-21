@@ -29,7 +29,7 @@ const namedExports = {
     // Error: 'DataSet' is not exported by ../../node_modules/vis/dist/vis.js
     'vis': ['DataSet', 'Network'],
     // Error: 'isValidElementType' is not exported by node_modules/react-is/index.js
-    'node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
+    '../../node_modules/react-redux/node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
 };
 
 export default [

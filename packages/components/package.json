@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.0.1-fb-packageConsolidation.3",
+  "version": "0.1.0-fb-packageConsolidation.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.cjs.js",
   "module": "dist/components.es.js",

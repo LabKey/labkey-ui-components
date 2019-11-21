@@ -5,2815 +5,36 @@
       "expanded": true,
       "children": [
         {
-          "expanded": true,
-          "children": [
-            {
-              "container": "/StudyVerifyProject/My Study",
-              "shared": true,
-              "access": {
-                "label": "public",
-                "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A953&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
-              },
-              "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A953",
-              "icon": "/labkey/visualization/report/scatter_plot.gif?revision=3",
-              "runUrl": "/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A953&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS",
-              "defaultThumbnailUrl": "/scatterplot.png",
-              "type": "XY Scatter Plot",
-              "schemaName": "study",
-              "defaultIconCls": "fa fa-area-chart",
-              "modified": "2019-04-04 15:27:58.107",
-              "modifiedBy": "Vader",
-              "id": "c819e9c0-3955-1037-8b24-c3b0ee0fc90b",
-              "iconCls": "fa fa-area-chart",
-              "createdByUserId": 1005,
-              "showInDashboard": true,
-              "thumbnail": "/scatterplot.png",
-              "visible": true,
-              "reportId": "db:953",
-              "contentModified": "2019-04-04 15:20:46.673",
-              "author": "-1.0",
-              "created": "2019-04-04 15:20:47.008",
-              "dataType": "reports",
-              "readOnly": false,
-              "leaf": true,
-              "createdBy": "Vader",
-              "name": "Chart View: Systolic vs Diastolic",
-              "queryName": "APX-1",
-              "allowCustomThumbnail": true,
-              "category": {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              "status": "None"
-            },
-            {
-              "container": "/StudyVerifyProject/My Study",
-              "shared": true,
-              "access": {
-                "label": "public",
-                "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A950&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
-              },
-              "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A950",
-              "icon": "/labkey/visualization/report/box_plot.gif?revision=3",
-              "runUrl": "/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A950&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS",
-              "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=3",
-              "type": "Automatic Plot",
-              "schemaName": "study",
-              "thumbnailType": "AUTO",
-              "defaultIconCls": "fa fa-sliders fa-rotate-90",
-              "modified": "2019-04-04 15:27:43.285",
-              "modifiedBy": "Vader",
-              "id": "c819e98f-3955-1037-8b24-c3b0ee0fc90b",
-              "iconCls": "fa fa-sliders fa-rotate-90",
-              "createdByUserId": 1005,
-              "showInDashboard": true,
-              "thumbnail": "/scatterplot.png",
-              "visible": true,
-              "reportId": "db:950",
-              "contentModified": "2019-04-04 15:20:46.438",
-              "author": "-1.0",
-              "created": "2019-04-04 15:20:46.443",
-              "dataType": "reports",
-              "readOnly": false,
-              "leaf": true,
-              "createdBy": "Vader",
-              "name": "Scatter: Systolic vs Diastolic",
-              "queryName": "APX-1",
-              "allowCustomThumbnail": true,
-              "category": {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              "status": "None"
-            },
-            {
-              "container": "/StudyVerifyProject/My Study",
-              "shared": true,
-              "access": {
-                "label": "public",
-                "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A952&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
-              },
-              "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A952",
-              "icon": "/labkey/visualization/report/timechart.gif?revision=3",
-              "runUrl": "/labkey/StudyVerifyProject/My%20Study/visualization-genericChartWizard.view?queryName=APX-1&schemaName=study&reportId=db%3A952",
-              "defaultThumbnailUrl": "/timechart.png",
-              "type": "Time Chart",
-              "schemaName": "study",
-              "thumbnailType": "AUTO",
-              "defaultIconCls": "fa fa-line-chart",
-              "modified": "2019-04-04 15:27:52.387",
-              "modifiedBy": "Vader",
-              "id": "c819e9a6-3955-1037-8b24-c3b0ee0fc90b",
-              "iconCls": "fa fa-line-chart",
-              "createdByUserId": 1005,
-              "showInDashboard": true,
-              "thumbnail": "/timechart.png",
-              "visible": true,
-              "reportId": "db:952",
-              "contentModified": "2019-04-04 15:21:11.231",
-              "author": "-1.0",
-              "created": "2019-04-04 15:20:46.607",
-              "dataType": "reports",
-              "readOnly": false,
-              "leaf": true,
-              "createdBy": "Vader",
-              "name": "Time Chart: Body Temp + Pulse For Group 2",
-              "queryName": "APX-1",
-              "allowCustomThumbnail": true,
-              "category": {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              "status": "None"
-            }
-          ],
-          "name": "Charts",
-          "icon": false,
-          "cls": "dvcategory",
-          "rowId": 10
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "access": {
-            "label": "public"
-          },
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=DEM-1&query.viewName=Abbreviated%20Demographics",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=DEM-1&query.viewName=Abbreviated%20Demographics",
-          "type": "Query",
-          "schemaName": "exp.data",
-          "modified": "2019-04-04 15:19:13.465",
-          "id": "34d3abe8-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1005,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=3",
-          "visible": true,
-          "reportId": null,
-          "author": "Vader",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "Vader",
-          "name": "Abbreviated Demographics",
-          "queryName": "mixtures",
-          "viewName": "~~default~~",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=5002",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=5002",
-          "description": "Contains up to one row of Alt ID mapping data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "Alt ID mapping",
-          "queryName": "Alt ID mapping",
-          "modified": "2019-04-04 15:21:45.357",
-          "allowCustomThumbnail": false,
-          "id": "34d3b4bb-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=136",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=136",
-          "description": "Contains up to one row of APX-1: Abbreviated Physical Exam data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "APX-1: Abbreviated Physical Exam",
-          "queryName": "APX-1",
-          "modified": "2019-04-04 15:21:45.048",
-          "allowCustomThumbnail": false,
-          "id": "34d3b45f-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
+          "container": "/Biologics",
           "shared": true,
           "access": {
             "label": "public",
-            "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A954&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A37"
           },
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A954",
-          "icon": "crosstab.png?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-datasetReport.view?datasetId=136&Dataset.reportId=db%3A954",
-          "defaultThumbnailUrl": "/report.jpg",
-          "type": "Crosstab Report",
-          "schemaName": "study",
-          "modified": "2019-04-04 15:21:11.283",
-          "modifiedBy": "Vader",
-          "id": "c819e9c1-3955-1037-8b24-c3b0ee0fc90b",
-          "iconCls": null,
-          "createdByUserId": 1005,
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A37",
+          "icon": "/labkey/reports/grid.gif?revision=4",
+          "runUrl": "/labkey/Biologics/assayreport-view.view?id=37",
+          "description": "From Kevin",
+          "defaultThumbnailUrl": "/labkey/report/report.jpg?revision=4",
+          "type": "Sample Comparison",
+          "defaultIconCls": "fa fa-table",
+          "modified": "2019-10-08 15:54:56.104",
+          "modifiedBy": "alanv",
+          "id": "68e786f1-cc4c-1037-a715-33650cffffb2",
+          "iconCls": "fa fa-table",
+          "createdByUserId": 1011,
           "showInDashboard": true,
-          "thumbnail": "/report.jpg",
+          "thumbnail": "/labkey/report/report.jpg?revision=4",
           "visible": true,
-          "reportId": "db:954",
-          "contentModified": "2019-04-04 15:20:47.052",
-          "author": "Vader",
-          "created": "2019-04-04 15:20:47.057",
+          "reportId": "db:37",
+          "contentModified": "2019-10-08 15:54:56.104",
+          "author": "alanv",
+          "created": "2019-10-08 15:54:56.104",
           "dataType": "reports",
           "readOnly": false,
           "leaf": true,
-          "createdBy": "Vader",
-          "name": "Crosstab: MouseId Counts",
-          "queryName": "APX-1",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=1",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=1",
-          "description": "This is the demographics dataset, dammit. Here are some \u2018special symbols\u2019 - they help test that we're roundtripping in UTF-8.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "DEM-1: Demographics",
-          "queryName": "DEM-1",
-          "modified": "2019-04-04 15:21:44.637",
-          "allowCustomThumbnail": false,
-          "id": "34d3b45b-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=200",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=200",
-          "description": "Contains up to one row of FPX-1: Final Complete Physical Exam data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "FPX-1: Final Complete Physical Exam",
-          "queryName": "FPX-1",
-          "modified": "2019-04-04 15:21:45.157",
-          "allowCustomThumbnail": false,
-          "id": "34d3b460-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=12",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=12",
-          "description": "Contains up to one row of PRE-1: Pre-Existing Conditions data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "PRE-1: Pre-Existing Conditions",
-          "queryName": "PRE-1",
-          "modified": "2019-04-04 15:21:45.467",
-          "allowCustomThumbnail": false,
-          "id": "34d3b461-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A951&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
-          },
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A951",
-          "icon": "/r_logo.svg?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-reports-runRReport.view?Dataset.reportId=db%3A951",
-          "defaultThumbnailUrl": "/r_logo.svg?revision=3",
-          "type": "R Report",
-          "schemaName": "study",
-          "thumbnailType": "AUTO",
-          "modified": "2019-04-04 15:21:11.213",
-          "modifiedBy": "Vader",
-          "id": "c819e9a4-3955-1037-8b24-c3b0ee0fc90b",
-          "iconCls": null,
-          "createdByUserId": 1005,
-          "showInDashboard": true,
-          "thumbnail": "/r_logo.svg?revision=3",
-          "visible": true,
-          "reportId": "db:951",
-          "contentModified": "2019-04-04 15:20:46.511",
-          "author": "Vader",
-          "created": "2019-04-04 15:20:46.515",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "Vader",
-          "name": "R Report: Dataset Column Names",
-          "queryName": "APX-1",
-          "allowCustomThumbnail": true,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=192",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=192",
-          "description": "Contains up to one row of RCP-1: Reactogenicity-Resolution data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCP-1: Reactogenicity-Resolution",
-          "queryName": "RCP-1",
-          "modified": "2019-04-04 15:21:44.531",
-          "allowCustomThumbnail": false,
-          "id": "34d3b45a-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=449",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=449",
-          "description": "Contains up to one row of SCL-1: Specimen Collection data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "SCL-1: Specimen Collection",
-          "queryName": "SCL-1",
-          "modified": "2019-04-04 15:21:44.730",
-          "allowCustomThumbnail": false,
-          "id": "34d3b45c-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=2",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=2",
-          "description": "Contains up to one row of Types data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "Types",
-          "queryName": "TYP",
-          "modified": "2019-04-04 15:21:44.818",
-          "allowCustomThumbnail": false,
-          "id": "34d3b45d-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=135",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=135",
-          "description": "Contains up to one row of VAC-1: Post-enrollment Vaccination data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "VAC-1: Post-enrollment Vaccination",
-          "queryName": "VAC-1",
-          "modified": "2019-04-04 15:21:44.929",
-          "allowCustomThumbnail": false,
-          "id": "34d3b45e-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=5001",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=5001",
-          "description": "Contains up to one row of verifyAssay data for each Mouse/Visit/SampleId combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "verifyAssay",
-          "queryName": "verifyAssay",
-          "modified": "2019-04-04 15:21:45.254",
-          "allowCustomThumbnail": false,
-          "id": "34d3b4ba-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.329",
-            "displayOrder": 1,
-            "modified": "2019-04-04 15:23:20.613",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "My Category",
-            "subCategories": [
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:23:32.856",
-                "displayOrder": 1,
-                "modified": "2019-04-04 15:27:32.747",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Charts",
-                "subCategories": [],
-                "rowid": 10
-              },
-              {
-                "parent": 5,
-                "createdBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "created": "2019-04-04 15:24:06.437",
-                "displayOrder": 2,
-                "modified": "2019-04-04 15:24:06.437",
-                "modifiedBy": {
-                  "displayValue": "Vader",
-                  "value": 1005
-                },
-                "label": "Subcat Two",
-                "subCategories": [],
-                "rowid": 11
-              }
-            ],
-            "rowid": 5
-          }
-        }
-      ],
-      "name": "My Category",
-      "icon": false,
-      "cls": "dvcategory",
-      "rowId": 5
-    },
-    {
-      "expanded": true,
-      "children": [
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=420",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=420",
-          "description": "Contains up to one row of AE-1:(VTN) AE Log data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "AE-1:(VTN) AE Log",
-          "queryName": "AE-1",
-          "modified": "2019-04-04 15:21:46.969",
-          "allowCustomThumbnail": false,
-          "id": "34d3b471-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "access": {
-            "label": "public"
-          },
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=CPS-1&query.viewName=Chemistry%20%2B%20Criteria%20%2B%20Demographics",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/query-executeQuery.view?schemaName=study&query.queryName=CPS-1&query.viewName=Chemistry%20%2B%20Criteria%20%2B%20Demographics",
-          "type": "Query",
-          "schemaName": "study",
-          "modified": "2019-04-04 15:21:11.151",
-          "id": "34d3abe7-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "createdByUserId": 1005,
-          "showInDashboard": false,
-          "thumbnail": "/labkey/query/query.png?revision=3",
-          "visible": true,
-          "reportId": null,
-          "author": "Vader",
-          "dataType": "queries",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "Vader",
-          "name": "Chemistry + Criteria + Demographics",
-          "queryName": "CPS-1",
-          "allowCustomThumbnail": false,
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=423",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=423",
-          "description": "Contains up to one row of CM-1:(Ph I/II) Concomitant Medications Log data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "CM-1:(Ph I/II) Concomitant Medications Log",
-          "queryName": "CM-1",
-          "modified": "2019-04-04 15:21:47.065",
-          "allowCustomThumbnail": false,
-          "id": "34d3b472-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=19",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=19",
-          "description": "Contains up to one row of CPS-1: Screening Chemistry Panel data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "CPS-1: Screening Chemistry Panel",
-          "queryName": "CPS-1",
-          "modified": "2019-04-04 15:21:46.479",
-          "allowCustomThumbnail": false,
-          "id": "34d3b46b-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=23",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=23",
-          "description": "Contains up to one row of ECI-1: Eligibility Criteria data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "ECI-1: Eligibility Criteria",
-          "queryName": "ECI-1",
-          "modified": "2019-04-04 15:21:46.766",
-          "allowCustomThumbnail": false,
-          "id": "34d3b46e-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=489",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=489",
-          "description": "Contains up to one row of ESI-1: End of Study Inventory data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "ESI-1: End of Study Inventory",
-          "queryName": "ESI-1",
-          "modified": "2019-04-04 15:21:47.351",
-          "allowCustomThumbnail": false,
-          "id": "34d3b474-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=360",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=360",
-          "description": "Contains up to one row of IHT-1:  Interim HIV Test data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "IHT-1:  Interim HIV Test",
-          "queryName": "IHT-1",
-          "modified": "2019-04-04 15:21:47.257",
-          "allowCustomThumbnail": false,
-          "id": "34d3b473-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=350",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=350",
-          "description": "Contains up to one row of IV-1:Interim Visit data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "IV-1:Interim Visit",
-          "queryName": "IV-1",
-          "modified": "2019-04-04 15:21:46.857",
-          "allowCustomThumbnail": false,
-          "id": "34d3b470-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=487",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=487",
-          "description": "Contains up to one row of PIL-1: Participant Incident Log data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "PIL-1: Participant Incident Log",
-          "queryName": "PIL-1",
-          "modified": "2019-04-04 15:21:47.167",
-          "allowCustomThumbnail": false,
-          "id": "34d3b4bd-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=150",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=150",
-          "description": "Contains up to one row of SIA-1: Social Impact Assessment data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "SIA-1: Social Impact Assessment",
-          "queryName": "SIA-1",
-          "modified": "2019-04-04 15:21:46.571",
-          "allowCustomThumbnail": false,
-          "id": "34d3b46c-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=151",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=151",
-          "description": "Contains up to one row of SIL-1: Social Impact Log data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "SIL-1: Social Impact Log",
-          "queryName": "SIL-1",
-          "modified": "2019-04-04 15:21:46.673",
-          "allowCustomThumbnail": false,
-          "id": "34d3b46f-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.742",
-            "displayOrder": 3,
-            "modified": "2019-04-04 15:26:17.382",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "<script>alert(\"hi\")<\/script>",
-            "subCategories": [],
-            "rowid": 7
-          }
-        }
-      ],
-      "name": "<script>alert(\"hi\")<\/script>",
-      "icon": false,
-      "cls": "dvcategory",
-      "rowId": 7
-    },
-    {
-      "expanded": true,
-      "children": [
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=144",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=144",
-          "description": "Contains up to one row of CPF-1: Follow-up Chemistry Panel data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "CPF-1: Follow-up Chemistry Panel",
-          "queryName": "CPF-1",
-          "modified": "2019-04-04 15:21:46.001",
-          "allowCustomThumbnail": false,
-          "id": "34d3b467-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=143",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=143",
-          "description": "Contains up to one row of LLF-1: Follow-up Local Lab Results (Page 1) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "LLF-1: Follow-up Local Lab Results (Page 1)",
-          "queryName": "LLF-1",
-          "modified": "2019-04-04 15:21:45.832",
-          "allowCustomThumbnail": false,
-          "id": "34d3b465-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=16",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=16",
-          "description": "Contains up to one row of LLS-1: Screening Local Lab Results (Page 1) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "LLS-1: Screening Local Lab Results (Page 1)",
-          "queryName": "LLS-1",
-          "modified": "2019-04-04 15:21:46.090",
-          "allowCustomThumbnail": false,
-          "id": "34d3b466-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=17",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=17",
-          "description": "Contains up to one row of LLS-2: Screening Local Lab Results (Page 2) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "LLS-2: Screening Local Lab Results (Page 2)",
-          "queryName": "LLS-2",
-          "modified": "2019-04-04 15:21:46.191",
-          "allowCustomThumbnail": false,
-          "id": "34d3b468-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=463",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=463",
-          "description": "Contains up to one row of MV-1: Missed Visit data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "MV-1: Missed Visit",
-          "queryName": "MV-1",
-          "modified": "2019-04-04 15:21:45.917",
-          "allowCustomThumbnail": false,
-          "id": "34d3b4bc-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=466",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=466",
-          "description": "Contains up to one row of PRC-1: Participant Receipt data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "PRC-1: Participant Receipt",
-          "queryName": "PRC-1",
-          "modified": "2019-04-04 15:21:46.388",
-          "allowCustomThumbnail": false,
-          "id": "34d3b46a-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=465",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=465",
-          "description": "Contains up to one row of PT-1: Participant Transfer data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "PT-1: Participant Transfer",
-          "queryName": "PT-1",
-          "modified": "2019-04-04 15:21:46.285",
-          "allowCustomThumbnail": false,
-          "id": "34d3b469-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=140",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=140",
-          "description": "Contains up to one row of URF-1: Follow-up Urinalysis (Page 1) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "URF-1: Follow-up Urinalysis (Page 1)",
-          "queryName": "URF-1",
-          "modified": "2019-04-04 15:21:45.573",
-          "allowCustomThumbnail": false,
-          "id": "34d3b462-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=141",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=141",
-          "description": "Contains up to one row of URF-2: Follow-up Urinalysis (Page 2) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "URF-2: Follow-up Urinalysis (Page 2)",
-          "queryName": "URF-2",
-          "modified": "2019-04-04 15:21:45.661",
-          "allowCustomThumbnail": false,
-          "id": "34d3b463-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=14",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=14",
-          "description": "Contains up to one row of URS-1: Screening Urinalysis data for each Mouse/Visit/autokey combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "URS-1: Screening Urinalysis",
-          "queryName": "URS-1",
-          "modified": "2019-04-04 15:21:45.745",
-          "allowCustomThumbnail": false,
-          "id": "34d3b464-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.549",
-            "displayOrder": 5,
-            "modified": "2019-04-04 15:21:31.549",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "EFGHIJKL><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 6
-          }
-        }
-      ],
-      "name": "EFGHIJKL><\/% 1äöüÅ",
-      "icon": false,
-      "cls": "dvcategory",
-      "rowId": 6
-    },
-    {
-      "expanded": true,
-      "children": [
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=171",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=171",
-          "description": "Contains up to one row of BRA-1: Behavioral Risk Assessment (Page 1) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "BRA-1: Behavioral Risk Assessment (Page 1)",
-          "queryName": "BRA-1",
-          "modified": "2019-04-04 15:21:47.546",
-          "allowCustomThumbnail": false,
-          "id": "34d3b479-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=172",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=172",
-          "description": "Contains up to one row of BRA-2: Behavioral Risk Assessment (Page 2) data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "BRA-2: Behavioral Risk Assessment (Page 2)",
-          "queryName": "BRA-2",
-          "modified": "2019-04-04 15:21:47.641",
-          "allowCustomThumbnail": false,
-          "id": "34d3b47a-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=300",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=300",
-          "description": "Contains up to one row of DOV-1: Discontinuation of Vaccination data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "DOV-1: Discontinuation of Vaccination",
-          "queryName": "DOV-1",
-          "modified": "2019-04-04 15:21:47.737",
-          "allowCustomThumbnail": false,
-          "id": "34d3b47b-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=173",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=173",
-          "description": "Contains up to one row of OTB-1: Outside Testing/Belief data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "OTB-1: Outside Testing/Belief",
-          "queryName": "OTB-1",
-          "modified": "2019-04-04 15:21:47.839",
-          "allowCustomThumbnail": false,
-          "id": "34d3b47c-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=501",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=501",
-          "description": "Contains up to one row of Quality Control Report data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "Quality Control Report",
-          "queryName": "QC",
-          "modified": "2019-04-04 15:21:48.045",
-          "allowCustomThumbnail": false,
-          "id": "34d3b4be-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=180",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=180",
-          "description": "Contains up to one row of RCB-1: Reactogenicity-Baseline data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCB-1: Reactogenicity-Baseline",
-          "queryName": "RCB-1",
-          "modified": "2019-04-04 15:21:47.943",
-          "allowCustomThumbnail": false,
-          "id": "34d3b47d-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=184",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=184",
-          "description": "Contains up to one row of RCE-1: Reactogenicity-Day 0 data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCE-1: Reactogenicity-Day 0",
-          "queryName": "RCE-1",
-          "modified": "2019-04-04 15:21:48.351",
-          "allowCustomThumbnail": false,
-          "id": "34d3b481-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=182",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=182",
-          "description": "Contains up to one row of RCM-1: Reactogenicity-Early Assessment data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCM-1: Reactogenicity-Early Assessment",
-          "queryName": "RCM-1",
-          "modified": "2019-04-04 15:21:48.144",
-          "allowCustomThumbnail": false,
-          "id": "34d3b47e-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=310",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=310",
-          "description": "Contains up to one row of SP-1: Study Product Admin. Error data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "SP-1: Study Product Admin. Error",
-          "queryName": "SP-1",
-          "modified": "2019-04-04 15:21:48.251",
-          "allowCustomThumbnail": false,
-          "id": "34d3b47f-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=490",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=490",
-          "description": "Contains up to one row of TM-1: Termination data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "TM-1: Termination",
-          "queryName": "TM-1",
-          "modified": "2019-04-04 15:21:47.441",
-          "allowCustomThumbnail": false,
-          "id": "34d3b475-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:31.933",
-            "displayOrder": 6,
-            "modified": "2019-04-04 15:21:31.933",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "MNOPQRST><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 8
-          }
-        }
-      ],
-      "name": "MNOPQRST><\/% 1äöüÅ",
-      "icon": false,
-      "cls": "dvcategory",
-      "rowId": 8
-    },
-    {
-      "expanded": true,
-      "children": [
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=124",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=124",
-          "description": "Contains up to one row of ENR-1: Enrollment data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "ENR-1: Enrollment",
-          "queryName": "ENR-1",
-          "modified": "2019-04-04 15:21:48.845",
-          "allowCustomThumbnail": false,
-          "id": "34d3b497-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=122",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=122",
-          "description": "Contains up to one row of EPX-1: Enrollment Abbreviated Physical Exam data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "EPX-1: Enrollment Abbreviated Physical Exam",
-          "queryName": "EPX-1",
-          "modified": "2019-04-04 15:21:48.651",
-          "allowCustomThumbnail": false,
-          "id": "34d3b495-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=125",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=125",
-          "description": "Contains up to one row of EVC-1: Enrollment Vaccination data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "EVC-1: Enrollment Vaccination",
-          "queryName": "EVC-1",
-          "modified": "2019-04-04 15:21:49.022",
-          "allowCustomThumbnail": false,
-          "id": "34d3b499-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=441",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=441",
-          "description": "Contains up to one row of PO-1: Pregnancy Outcome data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "PO-1: Pregnancy Outcome",
-          "queryName": "PO-1",
-          "modified": "2019-04-04 15:21:48.549",
-          "allowCustomThumbnail": false,
-          "id": "34d3b494-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=440",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=440",
-          "description": "Contains up to one row of PR-1: Pregnancy Report and History data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "PR-1: Pregnancy Report and History",
-          "queryName": "PR-1",
-          "modified": "2019-04-04 15:21:48.455",
-          "allowCustomThumbnail": false,
-          "id": "34d3b493-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=188",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=188",
-          "description": "Contains up to one row of RCF-1: Reactogenicity-Day 2 data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCF-1: Reactogenicity-Day 2",
-          "queryName": "RCF-1",
-          "modified": "2019-04-04 15:21:48.939",
-          "allowCustomThumbnail": false,
-          "id": "34d3b498-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": true,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=186",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=186",
-          "description": "Contains up to one row of RCH-1: Reactogenicity-Day 1 data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCH-1: Reactogenicity-Day 1",
-          "queryName": "RCH-1",
-          "modified": "2019-04-04 15:21:48.752",
-          "allowCustomThumbnail": false,
-          "id": "34d3b496-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        },
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "showInDashboard": false,
-          "thumbnail": "/dataset.png",
-          "visible": false,
-          "reportId": null,
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=190",
-          "dataType": "datasets",
-          "icon": "/labkey/reports/grid.gif?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/study-defaultDatasetReport.view?datasetId=190",
-          "description": "Contains up to one row of RCT-1: Reactogenicity-Day 3 data for each Mouse/Visit combination.",
-          "readOnly": false,
-          "type": "Dataset",
-          "schemaName": "study",
-          "leaf": true,
-          "name": "RCT-1: Reactogenicity-Day 3",
-          "queryName": "RCT-1",
-          "modified": "2019-04-04 15:21:49.106",
-          "allowCustomThumbnail": false,
-          "id": "34d3b49a-389a-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-table",
-          "category": {
-            "parent": -1,
-            "createdBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "created": "2019-04-04 15:21:32.104",
-            "displayOrder": 7,
-            "modified": "2019-04-04 15:21:32.104",
-            "modifiedBy": {
-              "displayValue": "Vader",
-              "value": 1005
-            },
-            "label": "QRSTUVWX><\/% 1äöüÅ",
-            "subCategories": [],
-            "rowid": 9
-          }
-        }
-      ],
-      "name": "QRSTUVWX><\/% 1äöüÅ",
-      "icon": false,
-      "cls": "dvcategory",
-      "rowId": 9
-    },
-    {
-      "expanded": true,
-      "children": [
-        {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": true,
-          "access": {
-            "label": "public",
-            "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A949&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
-          },
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A949",
-          "icon": "/labkey/reports/participantReport.png?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A949&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS",
-          "defaultThumbnailUrl": "/labkey/study/participantThumbnail.gif?revision=3",
-          "type": "Participant Report",
-          "schemaName": "study",
-          "defaultIconCls": "fa fa-clipboard",
-          "modified": "2019-04-04 15:21:11.163",
-          "modifiedBy": "Vader",
-          "id": "c819e98e-3955-1037-8b24-c3b0ee0fc90b",
-          "iconCls": "fa fa-clipboard",
-          "createdByUserId": 1005,
-          "showInDashboard": true,
-          "thumbnail": "/labkey/study/participantThumbnail.gif?revision=3",
-          "visible": true,
-          "reportId": "db:949",
-          "contentModified": "2019-04-04 15:20:46.202",
-          "author": "Vader",
-          "created": "2019-04-04 15:20:46.210",
-          "dataType": "reports",
-          "readOnly": false,
-          "leaf": true,
-          "createdBy": "Vader",
-          "name": "Mouse Report: 2 Dem Vars + 3 Other Vars",
+          "createdBy": "alanv",
+          "name": "Example SCR",
           "allowCustomThumbnail": true,
           "category": {
             "parent": -1,
@@ -2822,7 +43,7 @@
               "value": 0
             },
             "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 8,
+            "displayOrder": 1,
             "modified": "1969-12-31 16:00:00.000",
             "modifiedBy": {
               "displayValue": "guest",
@@ -2834,35 +55,39 @@
           }
         },
         {
-          "container": "/StudyVerifyProject/My Study",
-          "shared": false,
+          "container": "/Biologics",
+          "shared": true,
           "access": {
-            "label": "private",
-            "url": "/labkey/StudyVerifyProject/My%20Study/study-security-reportPermissions.view?reportId=db%3A955&returnUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A13"
           },
-          "detailsUrl": "/labkey/StudyVerifyProject/My%20Study/reports-details.view?reportId=db%3A955",
-          "icon": "/r_logo.svg?revision=3",
-          "runUrl": "/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A955&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS",
-          "defaultThumbnailUrl": "/r_logo.svg?revision=3",
-          "type": "R Report",
-          "thumbnailType": "NONE",
-          "modified": "2019-04-04 15:21:51.489",
-          "modifiedBy": "Vader",
-          "id": "c819f3c5-3955-1037-8b24-c3b0ee0fc90b",
-          "iconCls": null,
-          "createdByUserId": 1005,
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A13",
+          "thumbnailRevision": "2.0",
+          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A13&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+          "type": "XY Scatter Plot",
+          "schemaName": "assay.General.SEC",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-area-chart",
+          "modified": "2019-10-07 16:06:55.402",
+          "modifiedBy": "alanv",
+          "id": "0b913912-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-area-chart",
+          "createdByUserId": 1011,
           "showInDashboard": true,
-          "thumbnail": "/r_logo.svg?revision=3",
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A13&revision=2",
           "visible": true,
-          "reportId": "db:955",
-          "contentModified": "2019-04-04 15:21:51.488",
-          "author": "Vader",
-          "created": "2019-04-04 15:21:51.489",
+          "reportId": "db:13",
+          "contentModified": "2019-10-07 16:06:55.398",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.402",
           "dataType": "reports",
           "readOnly": false,
           "leaf": true,
-          "createdBy": "Vader",
-          "name": "TestReport",
+          "createdBy": "alanv",
+          "name": "Injection Volume Comparison 2",
+          "queryName": "Data",
           "allowCustomThumbnail": true,
           "category": {
             "parent": -1,
@@ -2871,7 +96,1007 @@
               "value": 0
             },
             "created": "1969-12-31 16:00:00.000",
-            "displayOrder": 8,
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A14"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A14",
+          "thumbnailRevision": "1.0",
+          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A14&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+          "type": "XY Scatter Plot",
+          "schemaName": "exp.data",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-area-chart",
+          "modified": "2019-10-07 16:06:55.478",
+          "modifiedBy": "alanv",
+          "id": "0b91393b-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-area-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A14&revision=1",
+          "visible": true,
+          "reportId": "db:14",
+          "contentModified": "2019-10-07 16:06:55.474",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.478",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Avg Mass vs pl",
+          "queryName": "MolecularSpecies",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A15"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A15",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A15&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "description": "This is a description for my private box plot fo the Arg data.",
+          "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
+          "type": "Box and Whisker Plot",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-sliders fa-rotate-90",
+          "modified": "2019-10-07 16:06:55.550",
+          "modifiedBy": "alanv",
+          "id": "0b91393e-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-sliders fa-rotate-90",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A15&revision=0",
+          "visible": true,
+          "reportId": "db:15",
+          "contentModified": "2019-10-07 16:06:55.546",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.550",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Arg Box Plot",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A16"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A16",
+          "thumbnailRevision": "1.0",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A16&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/barchart.png?revision=4",
+          "type": "Bar Chart",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-bar-chart",
+          "modified": "2019-10-07 16:06:55.655",
+          "modifiedBy": "alanv",
+          "id": "0b913940-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-bar-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A16&revision=1",
+          "visible": true,
+          "reportId": "db:16",
+          "contentModified": "2019-10-07 16:06:55.650",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.655",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Bar plot of Mean Cys for Runs",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A17"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A17",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A17&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/piechart.png?revision=4",
+          "type": "Pie Chart",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "NONE",
+          "defaultIconCls": "fa fa-pie-chart",
+          "modified": "2019-10-07 16:06:55.743",
+          "modifiedBy": "alanv",
+          "id": "0b913943-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-pie-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/visualization/images/piechart.png?revision=4",
+          "visible": true,
+          "reportId": "db:17",
+          "contentModified": "2019-10-07 16:06:55.740",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.743",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Pie chart example",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A18"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A18",
+          "thumbnailRevision": "2.0",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A18&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/barchart.png?revision=4",
+          "type": "Bar Chart",
+          "schemaName": "exp.data",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-bar-chart",
+          "modified": "2019-10-07 16:06:55.858",
+          "modifiedBy": "alanv",
+          "id": "0b913945-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-bar-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A18&revision=2",
+          "visible": true,
+          "reportId": "db:18",
+          "contentModified": "2019-10-07 16:06:55.852",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.858",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Sum of Molecular Weight by Chemical Formula",
+          "queryName": "Ingredients",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A19"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A19",
+          "icon": "/labkey/visualization/report/timechart.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A19&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/timechart.png?revision=4",
+          "type": "XY Series Line Plot",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-line-chart",
+          "modified": "2019-10-07 16:06:55.962",
+          "modifiedBy": "alanv",
+          "id": "0b913948-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-line-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A19&revision=0",
+          "visible": true,
+          "reportId": "db:19",
+          "contentModified": "2019-10-07 16:06:55.958",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:55.962",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Line plot: Pro by Sample Date",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A20"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A20",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A20&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
+          "type": "Box and Whisker Plot",
+          "schemaName": "assay.General.Titer",
+          "thumbnailType": "NONE",
+          "defaultIconCls": "fa fa-sliders fa-rotate-90",
+          "modified": "2019-10-07 16:06:56.076",
+          "modifiedBy": "alanv",
+          "id": "0b91394a-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-sliders fa-rotate-90",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/visualization/images/boxplot.png?revision=4",
+          "visible": true,
+          "reportId": "db:20",
+          "contentModified": "2019-10-07 16:06:56.073",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:56.076",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "MAb Box Plot",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A21"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A21",
+          "thumbnailRevision": "1.0",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A21&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/piechart.png?revision=4",
+          "type": "Pie Chart",
+          "schemaName": "samples",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-pie-chart",
+          "modified": "2019-10-07 16:06:56.201",
+          "modifiedBy": "alanv",
+          "id": "0b91394c-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-pie-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A21&revision=1",
+          "visible": true,
+          "reportId": "db:21",
+          "contentModified": "2019-10-07 16:06:56.197",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:56.201",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Distribution by Lot",
+          "queryName": "ExpressionSystemSamples",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A22"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A22",
+          "thumbnailRevision": "1.0",
+          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A22&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+          "type": "XY Scatter Plot",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-area-chart",
+          "modified": "2019-10-07 16:06:56.338",
+          "modifiedBy": "alanv",
+          "id": "0b91394f-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-area-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A22&revision=1",
+          "visible": true,
+          "reportId": "db:22",
+          "contentModified": "2019-10-07 16:06:56.334",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:56.338",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Scatter: Arg vs Ala (filtered)",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A23"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A23",
+          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A23&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+          "type": "XY Scatter Plot",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-area-chart",
+          "modified": "2019-10-07 16:06:56.553",
+          "modifiedBy": "alanv",
+          "id": "0b913952-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-area-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A23&revision=0",
+          "visible": true,
+          "reportId": "db:23",
+          "contentModified": "2019-10-07 16:06:56.549",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:56.553",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Scatter: Arg vs Ala",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A24"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A24",
+          "thumbnailRevision": "1.0",
+          "icon": "/labkey/visualization/report/scatter_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A24&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/scatterplot.png?revision=4",
+          "type": "XY Scatter Plot",
+          "schemaName": "assay.General.SEC",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-area-chart",
+          "modified": "2019-10-07 16:06:56.728",
+          "modifiedBy": "alanv",
+          "id": "0b913954-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-area-chart",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A24&revision=1",
+          "visible": true,
+          "reportId": "db:24",
+          "contentModified": "2019-10-07 16:06:56.725",
+          "author": "alanv",
+          "created": "2019-10-07 16:06:56.728",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Injection Volume Comparison",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": false,
+          "access": {
+            "label": "private",
+            "url": "/labkey/Biologics/study-security-reportPermissions.view?reportId=db%3A158"
+          },
+          "detailsUrl": "/labkey/Biologics/reports-details.view?reportId=db%3A158",
+          "thumbnailRevision": "1.0",
+          "icon": "/labkey/visualization/report/box_plot.gif?revision=4",
+          "runUrl": "/labkey/Biologics/reports-runReport.view?reportId=db%3A158&redirectUrl=%2Flabkey%2FBiologics%2Freports-browseDataTree.view%3F",
+          "defaultThumbnailUrl": "/labkey/visualization/images/boxplot.png?revision=4",
+          "type": "Box and Whisker Plot",
+          "schemaName": "assay.General.Amino Acids",
+          "thumbnailType": "AUTO",
+          "defaultIconCls": "fa fa-sliders fa-rotate-90",
+          "modified": "2019-11-19 16:10:29.056",
+          "modifiedBy": "alanv",
+          "id": "5bde837d-ed54-1037-b066-b67e942d8e23",
+          "iconCls": "fa fa-sliders fa-rotate-90",
+          "createdByUserId": 1011,
+          "showInDashboard": true,
+          "thumbnail": "/labkey/Biologics/reports-thumbnail.view?reportId=db%3A158&revision=1",
+          "visible": true,
+          "reportId": "db:158",
+          "contentModified": "2019-11-19 16:10:29.055",
+          "author": "alanv",
+          "created": "2019-11-19 16:10:29.056",
+          "dataType": "reports",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Private Chart",
+          "queryName": "Data",
+          "allowCustomThumbnail": true,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": false,
+          "access": {
+            "label": "private"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Test%20Custom%20View",
+          "icon": "/labkey/reports/icon_private_view.png?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Test%20Custom%20View",
+          "type": "Query",
+          "schemaName": "exp.data",
+          "viewName": "Test Custom View",
+          "modified": "2019-10-07 16:06:54.979",
+          "id": "0b91390e-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-lock fa-lg",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Test Custom View",
+          "queryName": "Ingredients",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": false,
+          "access": {
+            "label": "private"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=Test%20Custom%20View",
+          "icon": "/labkey/reports/icon_private_view.png?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=Test%20Custom%20View",
+          "type": "Query",
+          "schemaName": "assay.General.SEC",
+          "viewName": "Test Custom View",
+          "modified": "2019-10-07 16:06:54.977",
+          "id": "0b91390d-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-lock fa-lg",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Test Custom View",
+          "queryName": "Data",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Name%20only",
+          "icon": "/labkey/reports/grid.gif?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Name%20only",
+          "type": "Query",
+          "schemaName": "samples",
+          "viewName": "Name only",
+          "modified": "2019-10-07 16:06:54.969",
+          "id": "0b91390a-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-table",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Name only",
+          "queryName": "RawMaterials",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": false,
+          "access": {
+            "label": "private"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Private%20view",
+          "icon": "/labkey/reports/icon_private_view.png?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Private%20view",
+          "type": "Query",
+          "schemaName": "exp.data",
+          "viewName": "Private view",
+          "modified": "2019-10-07 16:06:54.966",
+          "id": "0b913909-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-lock fa-lg",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Private view",
+          "queryName": "Molecule",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Scientific%20Name%20only",
+          "icon": "/labkey/reports/grid.gif?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Ingredients&query.viewName=Scientific%20Name%20only",
+          "type": "Query",
+          "schemaName": "exp.data",
+          "viewName": "Scientific Name only",
+          "modified": "2019-10-07 16:06:54.981",
+          "id": "0b91390f-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-table",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Scientific Name only",
+          "queryName": "Ingredients",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Name%20only",
+          "icon": "/labkey/reports/grid.gif?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=exp.data&query.queryName=Molecule&query.viewName=Name%20only",
+          "type": "Query",
+          "schemaName": "exp.data",
+          "viewName": "Name only",
+          "modified": "2019-10-07 16:06:54.951",
+          "id": "0b913908-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-table",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Name only",
+          "queryName": "Molecule",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": true,
+          "access": {
+            "label": "public"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=SampleID%20only",
+          "icon": "/labkey/reports/grid.gif?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=assay.General.SEC&query.queryName=Data&query.viewName=SampleID%20only",
+          "type": "Query",
+          "schemaName": "assay.General.SEC",
+          "viewName": "SampleID only",
+          "modified": "2019-10-07 16:06:54.974",
+          "id": "0b91390c-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-table",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "SampleID only",
+          "queryName": "Data",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
+            "modified": "1969-12-31 16:00:00.000",
+            "modifiedBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "label": "Uncategorized",
+            "subCategories": [],
+            "rowid": 0
+          }
+        },
+        {
+          "container": "/Biologics",
+          "shared": false,
+          "access": {
+            "label": "private"
+          },
+          "detailsUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Test%20Custom%20View",
+          "icon": "/labkey/reports/icon_private_view.png?revision=4",
+          "runUrl": "/labkey/Biologics/query-executeQuery.view?schemaName=samples&query.queryName=RawMaterials&query.viewName=Test%20Custom%20View",
+          "type": "Query",
+          "schemaName": "samples",
+          "viewName": "Test Custom View",
+          "modified": "2019-10-07 16:06:54.971",
+          "id": "0b91390b-cb85-1037-9919-33650cffffb2",
+          "iconCls": "fa fa-lock fa-lg",
+          "createdByUserId": 1011,
+          "showInDashboard": false,
+          "thumbnail": "/labkey/query/query.png?revision=4",
+          "visible": true,
+          "reportId": null,
+          "author": "alanv",
+          "dataType": "queries",
+          "readOnly": false,
+          "leaf": true,
+          "createdBy": "alanv",
+          "name": "Test Custom View",
+          "queryName": "RawMaterials",
+          "allowCustomThumbnail": false,
+          "category": {
+            "parent": -1,
+            "createdBy": {
+              "displayValue": "guest",
+              "value": 0
+            },
+            "created": "1969-12-31 16:00:00.000",
+            "displayOrder": 1,
             "modified": "1969-12-31 16:00:00.000",
             "modifiedBy": {
               "displayValue": "guest",

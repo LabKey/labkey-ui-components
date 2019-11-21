@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './components/base/models/constants'
-import { fetchGetQueries, fetchSchemas, processSchemas, SCHEMAS } from './components/base/models/schemas'
+import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants'
+import { SCHEMAS } from './components/base/models/schemas'
 import {
     fetchAllAssays,
-    getServerFilePreview,
     importGeneralAssayRun,
     inferDomainFromFile,
     getUserProperties
@@ -30,10 +29,8 @@ import {
     Container,
     IGridLoader,
     IGridResponse,
-    IGridSelectionResponse,
     InferDomainResponse,
     insertColumnFilter,
-    IQueryGridModel,
     LastActionStatus,
     MessageLevel,
     QueryColumn,
@@ -41,7 +38,6 @@ import {
     QueryInfo,
     QueryInfoStatus,
     QueryLookup,
-    QuerySort,
     SchemaDetails,
     SchemaQuery,
     User,
@@ -52,29 +48,19 @@ import {
     capitalizeFirstChar,
     caseInsensitive,
     debounce,
-    decodePart,
     devToolsActive,
-    encodePart,
     generateId,
-    getCommonDataValues,
     getSchemaQuery,
-    getUpdatedData,
-    getUpdatedDataFromGrid,
     hasAllPermissions,
-    intersect,
     naturalSort,
-    not,
     resolveKey,
     resolveKeyFromJson,
     resolveSchemaQuery,
-    similaritySortFactory,
     toggleDevTools,
-    toLowerSafe,
-    unorderedEqual,
     valueIsEmpty,
 } from './util/utils'
 import { getActionErrorMessage } from './util/messaging'
-import { buildURL, getSortFromUrl, hasParameter, imageURL, setParameter, toggleParameter } from './url/ActionURL'
+import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL'
 import { WHERE_FILTER_TYPE } from './url/WhereFilterType'
 import { AddEntityButton } from "./components/base/buttons/AddEntityButton"
 import { RemoveEntityButton } from "./components/base/buttons/RemoveEntityButton"
@@ -87,7 +73,6 @@ import { MultiMenuButton } from './components/base/menus/MultiMenuButton';
 import { MenuOption, SubMenu } from "./components/base/menus/SubMenu";
 import { ISubItem, SubMenuItem, SubMenuItemProps } from "./components/base/menus/SubMenuItem";
 import { SelectionMenuItem } from "./components/base/menus/SelectionMenuItem";
-import { CustomToggle } from './components/base/CustomToggle'
 import { LoadingModal } from './components/base/LoadingModal'
 import { LoadingSpinner } from './components/base/LoadingSpinner'
 import { NotFound } from './components/base/NotFound'
@@ -97,7 +82,7 @@ import { PageHeader } from './components/base/PageHeader'
 import { Progress } from './components/base/Progress'
 import { LabelHelpTip } from './components/base/LabelHelpTip'
 import { Tip } from './components/base/Tip'
-import { Grid, GridColumn, GridData, GridProps } from './components/base/Grid'
+import { Grid, GridColumn, GridProps } from './components/base/Grid'
 import { FormSection } from './components/base/FormSection'
 import { Section } from './components/base/Section'
 import { FileAttachmentForm } from './components/base/files/FileAttachmentForm'
@@ -108,7 +93,6 @@ import { dismissNotifications, initNotificationsState } from './components/base/
 import { ConfirmModal } from './components/base/ConfirmModal'
 import {
     datePlaceholder,
-    generateNameWithTimestamp,
     getDateFormat,
     getUnFormattedNumber,
     formatDate,
@@ -118,7 +102,6 @@ import { SVGIcon, Theme } from './components/base/SVGIcon';
 import { CreatedModified } from './components/base/CreatedModified';
 import {
     MessageFunction,
-    NotificationItemModel,
     NotificationItemProps,
     Persistence,
 } from './components/base/notifications/model'
@@ -132,20 +115,14 @@ import { Footer } from './components/base/Footer';
 
 import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
 import {
-    addColumns,
-    changeColumn,
     createQueryGridModelFilteredBySample,
-    getFilterListFromQuery,
     getSelected,
-    getSelectedData,
     getSelection,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
-    gridRefresh,
     gridShowError,
     queryGridInvalidate,
-    removeColumn,
     schemaGridInvalidate,
     searchUsingIndex,
     setSelected
@@ -155,10 +132,7 @@ import {
     getQueryGridModel,
     initQueryGridState,
     invalidateLineageResults,
-    invalidateProjectUsers,
-    removeQueryGridModel,
-    setQueryColumnRenderers,
-    setQueryMetadata
+    removeQueryGridModel
 } from './global';
 import {
     deleteRows,
@@ -176,7 +150,7 @@ import {
     updateRows
 } from './query/api';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
-import { buildQueryString, getLocation, Location, pushParameter, pushParameters, replaceParameters } from './util/URL';
+import { getLocation, Location } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
 import {
@@ -200,7 +174,6 @@ import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
-import { QueryInfoForm } from './components/forms/QueryInfoForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
 import { SelectInput } from './components/forms/input/SelectInput';
@@ -212,7 +185,6 @@ import { Detail } from './components/forms/detail/Detail';
 import { handleInputTab, handleTabKeyOnTextArea, getUsersWithPermissions } from './components/forms/actions';
 import { IUser, ISelectInitData } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
-import { PlacementType } from './components/editable/Controls';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
@@ -255,16 +227,14 @@ import {
     importAssayRun,
     uploadAssayRunFiles
 } from './components/assay/actions';
-import { PreviewGrid } from './components/PreviewGrid';
-import { flattenBrowseDataTreeResponse, ReportURLMapper, } from './components/report-list/model';
-import { ReportItemModal, ReportList, ReportListItem, ReportListProps } from './components/report-list/ReportList';
+import { flattenBrowseDataTreeResponse } from './components/report-list/model';
+import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
 import { LineageFilter } from './components/lineage/models'
 import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
-import { OmniBox } from './components/omnibox/OmniBox';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
 import { NavItem } from './components/navigation/NavItem';
@@ -282,7 +252,6 @@ import {
     createFormInputId,
     fetchDomain,
     fetchProtocol,
-    getBannerMessages,
     saveAssayDesign,
     saveDomain,
     setDomainFields
@@ -305,9 +274,7 @@ import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
-    SAMPLE_TYPE_CONCEPT_URI,
-    SEVERITY_LEVEL_ERROR,
-    SEVERITY_LEVEL_WARN
+    SAMPLE_TYPE_CONCEPT_URI
 } from "./components/domainproperties/constants";
 
 
@@ -318,20 +285,15 @@ export {
     getQueryGridModel,
     getEditorModel,
     removeQueryGridModel,
-    setQueryMetadata,
-    setQueryColumnRenderers,
 
     // grid functions
     getSelected,
-    getSelectedData,
     getSelection,
-    getFilterListFromQuery,
     gridInit,
     gridInvalidate,
     gridIdInvalidate,
     queryGridInvalidate,
     schemaGridInvalidate,
-    gridRefresh,
     gridShowError,
 
     // query related items
@@ -352,9 +314,6 @@ export {
     setSelected,
 
     // editable grid related items
-    addColumns,
-    changeColumn,
-    removeColumn,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EditableGridLoaderFromSelection,
@@ -371,10 +330,6 @@ export {
     SamplesResolver,
     SampleSetResolver,
     getLocation,
-    pushParameter,
-    pushParameters,
-    replaceParameters,
-    buildQueryString,
 
     // renderers
     AliasRenderer,
@@ -390,9 +345,7 @@ export {
     EditableGridPanelForUpdate,
     EditableGridModal,
     QueryGridPanel,
-    PreviewGrid,
     BulkUpdateForm,
-    QueryInfoForm,
     LookupSelectInput,
     SelectInput,
     QuerySelect,
@@ -404,17 +357,11 @@ export {
     SchemaListing,
     QueriesListing,
     HeatMap,
-
-    // interfaces
     EditableColumnMetadata,
-
-    // types
-    PlacementType,
     EditorModel,
 
     // user-related
     getUsersWithPermissions,
-    invalidateProjectUsers,
     IUser,
     UserDetailHeader,
     UserProfile,
@@ -480,10 +427,8 @@ export {
 
     // report-list
     flattenBrowseDataTreeResponse,
-    ReportURLMapper,
     ReportListItem,
     ReportItemModal,
-    ReportListProps,
     ReportList,
 
     // lineage
@@ -494,9 +439,6 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
-
-    // OmniBox components
-    OmniBox,
 
     // Navigation types
     MenuSectionConfig,
@@ -522,7 +464,6 @@ export {
     // Domain properties functions
     fetchDomain,
     saveDomain,
-    getBannerMessages,
     fetchProtocol,
     createFormInputId,
     saveAssayDesign,
@@ -538,8 +479,6 @@ export {
     IAppDomainHeader,
 
     // Domain properties constants
-    SEVERITY_LEVEL_ERROR,
-    SEVERITY_LEVEL_WARN,
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -547,18 +486,14 @@ export {
     SAMPLE_TYPE_CONCEPT_URI,
 
     // Base constants
-    GRID_EDIT_INDEX,
-    GRID_SELECTION_INDEX,
     GRID_CHECKBOX_OPTIONS,
     PermissionTypes,
     Persistence,
     SCHEMAS,
 
     // Base interfaces
-    IQueryGridModel,
     IGridLoader,
     IGridResponse,
-    IGridSelectionResponse,
     GridProps,
     LoadingPageProps,
     PageProps,
@@ -576,7 +511,6 @@ export {
     QueryColumn,
     QueryGridModel,
     QueryInfo,
-    QuerySort,
     QueryLookup,
     QueryInfoStatus,
     SchemaDetails,
@@ -585,10 +519,8 @@ export {
     MessageLevel,
     MessageFunction,
     NotificationItemProps,
-    NotificationItemModel,
     LastActionStatus,
     GridColumn,
-    GridData,
     InferDomainResponse,
     FileAttachmentFormModel,
 
@@ -596,7 +528,6 @@ export {
     AddEntityButton,
     RemoveEntityButton,
     Alert,
-    CustomToggle,
     DeleteIcon,
     DragDropHandle,
     FieldExpansionToggle,
@@ -633,12 +564,9 @@ export {
 
     // Base actions
     fetchAllAssays,
-    fetchSchemas,
-    fetchGetQueries,
     importGeneralAssayRun,
     inferDomainFromFile,
     getUserProperties,
-    getServerFilePreview,
 
     // notification functions
     createNotification,
@@ -651,7 +579,6 @@ export {
     getUnFormattedNumber,
     formatDate,
     formatDateTime,
-    generateNameWithTimestamp,
 
     // images
     Theme,
@@ -660,35 +587,22 @@ export {
     // util functions
     caseInsensitive,
     capitalizeFirstChar,
-    decodePart,
-    encodePart,
-    getCommonDataValues,
-    getUpdatedData,
-    getUpdatedDataFromGrid,
     getSchemaQuery,
     resolveKey,
     resolveKeyFromJson,
     resolveSchemaQuery,
     insertColumnFilter,
-    intersect,
     hasAllPermissions,
     naturalSort,
-    not,
-    toLowerSafe,
     generateId,
     debounce,
-    processSchemas,
-    similaritySortFactory,
-    unorderedEqual,
     valueIsEmpty,
     getActionErrorMessage,
 
     // url functions
     buildURL,
-    getSortFromUrl,
     hasParameter,
     imageURL,
-    setParameter,
     toggleParameter,
     spliceURL,
     WHERE_FILTER_TYPE,

@@ -4,9 +4,7 @@
   "scripts": {
     "build:docs": "npm run clean:docs && typedoc --tsconfig tsconfig.base.json --options typedoc.js ./packages && touch docs/.nojekyll",
     "clean:docs": "rimraf docs",
-    "deploy:docs": "npm run build:docs && gh-pages -t -d docs",
-    "publish:prerelease": "lerna publish prerelease --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client",
-    "publish:patch": "lerna publish patch --exact --registry https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+    "deploy:docs": "npm run build:docs && gh-pages -t -d docs"
   },
   "devDependencies": {
     "@types/enzyme": "3.9.3",
@@ -52,11 +50,5 @@
     "typedoc": "0.14.2",
     "typescript": "3.1.6",
     "watch": "1.0.2"
-  },
-  "resolutions": {
-    "**/event-stream": "^4.0.1"
-  },
-  "workspaces": [
-    "packages/components"
-  ]
+  }
 }

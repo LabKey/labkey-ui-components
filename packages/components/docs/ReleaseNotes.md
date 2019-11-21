@@ -7,8 +7,8 @@ Query Grid for LabKey schema/query data views
 ### version ???
 *Released*: ???
 * Move `domainproperties` and `base` packages into `querygrid`
-    * Old README for `domainproperties` can be found [here](../../legacy-docs/domainproperties.md)
-    * Old README for `base` can be found [here](../../legacy-docs/base.md)
+    * Old README for `domainproperties` can be found [here](legacy/domainproperties.md)
+    * Old README for `base` can be found [here](legacy/base.md)
     
 ### version 0.24.0
 *Released*: 19 November 2019
@@ -112,9 +112,9 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.20.0
 *Released*: 8 October 2019
 * Move `omnibox` package into `querygrid`
-    * Old README for `omnibox` can be found [here](../../legacy-docs/omnibox.md)
+    * Old README for `omnibox` can be found [here](legacy/omnibox.md)
 * Move `navigation` package into `querygrid`
-    * Old README for `navigation` can be found [here](../../legacy-docs/navigation.md)
+    * Old README for `navigation` can be found [here](legacy/navigation.md)
 
 ### version 0.19.2
 *Released*: 7 October 2019
@@ -173,7 +173,7 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.14.0
 *Released*: 18 September 2019
 * Move `report-list` package into `querygrid`
-    * Old README for `report-list` can be found [here](../../legacy-docs/report-list.md)
+    * Old README for `report-list` can be found [here](legacy/report-list.md)
 * Update ReportList to improve rendering for Grids, Charts, and unsupported report types
 * Rename flattenApiResponse to flattenBrowseDataTreeResponse
     * Also added a new argument called urlMapper `(report: IDataViewInfo) => AppURL`

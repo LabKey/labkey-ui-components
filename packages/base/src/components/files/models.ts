@@ -23,23 +23,37 @@ export interface FileAttachmentFormModel {
 }
 
 export interface IFile {
-    name: string,
-    created: string,
-    createdById: number,
-    createdBy: string,
-    iconFontCls: string,
-    downloadUrl: string,
-    description: string,
+    contentLength: number;
+    created: string;
+    createdBy: string;
+    createdById: number;
+    dataFileUrl: string;
+    description: string;
+    downloadUrl: string;
+    href: string;
+    id: string;
+    iconFontCls: string;
+    isCollection: boolean;
+    isLeaf: boolean;
+    lastModified: string;
+    name: string;
     propertiesRowId?: number;
 }
 
 export const DEFAULT_FILE: IFile = {
-    name: undefined,
+    contentLength: 0,
     created: undefined,
-    createdById: -1,
     createdBy: undefined,
-    iconFontCls: undefined,
-    downloadUrl: undefined,
+    createdById: -1,
+    dataFileUrl: undefined,
     description: undefined,
+    downloadUrl: undefined,
+    href: undefined,
+    id: undefined,
+    iconFontCls: undefined,
+    isCollection: false,
+    isLeaf: false,
+    lastModified: undefined,
+    name: undefined,
     propertiesRowId: undefined
 };

@@ -241,9 +241,9 @@ export interface IDataViewInfo {
 
 interface DataViewClientMetadata extends IDataViewInfo {
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
-    isLoading?: false,
-    isLoaded?: false,
-    error?: undefined
+    isLoading?: boolean,
+    isLoaded?: boolean,
+    error?: any
 }
 
 const DataViewInfoDefaultValues = {

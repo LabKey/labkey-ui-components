@@ -27,16 +27,18 @@ import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar'
 import '../theme/index.scss'
 
 interface Props {
-    model: QueryGridModel | List<QueryGridModel>
-    buttons?: QueryGridBarButtons
-    header?: React.ReactNode
-    message?: any
-    asPanel?: boolean
-    showTabs?: boolean
-    showAllTabs?: boolean
-    showGridBar?: boolean
-    activeTab?: number
-    onChangeTab?: (tabInd : number) => any
+    model: QueryGridModel | List<QueryGridModel>,
+    buttons?: QueryGridBarButtons,
+    header?: React.ReactNode,
+    message?: any,
+    asPanel?: boolean,
+    showTabs?: boolean,
+    showAllTabs?: boolean,
+    showGridBar?: boolean,
+    showSampleComparisonReports?: boolean,
+    onChartClicked?: Function,
+    activeTab?: number,
+    onChangeTab?: (tabInd : number) => any,
 }
 
 interface State {
@@ -44,10 +46,10 @@ interface State {
 }
 
 export class QueryGridPanel extends React.Component<Props, State> {
-
     static defaultProps = {
         asPanel: true,
-        showGridBar: true
+        showGridBar: true,
+        showSampleComparisonReports: false,
     };
 
     constructor(props: Props) {
@@ -160,12 +162,34 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     render() {
-        const { asPanel, showGridBar, buttons, header, message, model } = this.props;
+        const {
+            asPanel,
+            showGridBar,
+            buttons,
+            header,
+            message,
+            model,
+            showSampleComparisonReports,
+            onChartClicked
+        } = this.props;
         const activeModel = this.getModel();
+        let gridBar;
+
+        if (showGridBar) {
+            gridBar = (
+                <QueryGridBar
+                    buttons={buttons}
+                    model={activeModel}
+                    showSampleComparisonReports={showSampleComparisonReports}
+                    onChartClicked={onChartClicked}
+                />
+            );
+        }
 
         const content = model ? (
             <>
-                {showGridBar && <QueryGridBar buttons={buttons} model={activeModel} />}
+                {gridBar}
+
                 {message}
 
                 {/* Grid row */}

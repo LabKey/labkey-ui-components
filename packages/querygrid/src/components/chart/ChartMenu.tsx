@@ -13,19 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { DropdownButton, MenuItem, Modal } from 'react-bootstrap'
-import { List } from 'immutable'
-import { QueryGridModel, naturalSort, generateId } from '@glass/base'
+import React from 'reactn';
+import { DropdownButton, MenuItem, Modal } from 'react-bootstrap';
+import { List } from 'immutable';
+import { generateId, QueryGridModel } from '@glass/base';
 
-import { DataViewInfo } from '../../models'
-import { Chart } from './Chart'
+import { DataViewInfo  } from '../../models';
+import { Chart } from './Chart';
 import { setReportId } from '../../actions';
 
+interface ChartModalProps {
+    selectedChart: DataViewInfo,
+    model: QueryGridModel,
+    onHide: Function,
+}
+
+class ChartModal extends React.PureComponent<ChartModalProps> {
+    render() {
+        const { selectedChart, model, onHide } = this.props;
+        let description;
+
+        if (selectedChart.description) {
+            description = <div><br/>{selectedChart.description}</div>;
+        }
+
+        return (
+            <Modal bsSize="large" show={selectedChart !== undefined} keyboard={true} onHide={onHide}>
+                <Modal.Header closeButton={true} closeLabel={"Close"}>
+                    <Modal.Title>{selectedChart.getLabel()}</Modal.Title>
+
+                    {description}
+                </Modal.Header>
+
+                <Modal.Body>
+                    <Chart chart={selectedChart} model={model}/>
+                </Modal.Body>
+            </Modal>
+        );
+    }
+}
+
 interface Props {
-    model: QueryGridModel
-    charts: List<DataViewInfo>
-    style?: Object
+    model: QueryGridModel,
+    charts: List<DataViewInfo>,
+    privateCharts: List<DataViewInfo>,
+    error: string,
+    onChartClicked?: Function,
 }
 
 export class ChartMenu extends React.PureComponent<Props> {
@@ -39,43 +72,52 @@ export class ChartMenu extends React.PureComponent<Props> {
         this.dropId = generateId('chartselector-');
     }
 
-    createItem(chart: DataViewInfo): React.ReactNode {
+    createItem = (chart: DataViewInfo) => {
+        // TODO: add a css class instead of using inline styles
         return (
             <MenuItem key={chart.reportId} onSelect={() => this.showChart(chart)}>
                 <i className={"pullLeft " + chart.iconCls} style={{width: '25px'}}/>
                 {chart.getLabel()}
             </MenuItem>
         );
-    }
+    };
 
     createMenuItems(): Array<React.ReactNode> {
-        const { charts } = this.props;
+        const { charts, privateCharts, error } = this.props;
+
+        if (error) {
+            return [
+                <MenuItem key='error'>
+                    <i className={"pullLeft"} style={{width: '25px'}}/>
+                    {error}
+                </MenuItem>
+            ];
+        }
+
         const items = [];
 
+        if (privateCharts && !privateCharts.isEmpty()) {
+            items.push(<MenuItem header key="private-header">My Saved Charts</MenuItem>);
+            privateCharts.forEach(chart => items.push(this.createItem(chart)));
+        }
+
         if (charts && !charts.isEmpty()) {
-            const visCharts = charts.filter((chart) => chart.isVisChartType());
-            const comparator = chart => chart.getLabel();
-            const privateCharts = visCharts.filter((chart) => !chart.isShared())
-                .sortBy(comparator, naturalSort);
-            const publicCharts = visCharts.filter((chart) => chart.isShared())
-                .sortBy(comparator, naturalSort);
-
-            if (privateCharts.size) {
-                items.push(<MenuItem header key="private-header">My Saved Charts</MenuItem>);
-                privateCharts.valueSeq().forEach(chart => items.push(this.createItem(chart)));
-            }
-
-            if (publicCharts.size) {
-                items.push(<MenuItem header key="public-header">All Saved Charts</MenuItem>);
-                publicCharts.valueSeq().forEach(chart => items.push(this.createItem(chart)));
-            }
+            items.push(<MenuItem header key="public-header">All Saved Charts</MenuItem>);
+            charts.forEach(chart => items.push(this.createItem(chart)));
         }
 
         return items;
     }
 
     showChart(chart: DataViewInfo) {
-        setReportId(this.props.model, chart.reportId);
+        const { onChartClicked } = this.props;
+
+        // If there is no user defined click handler then render the chart modal.
+        // If the user supplies a click handler then we use the response from that to determine if we should render
+        // the chart modal. This is needed so Biologics and redirect to Sample Comparison Reports.
+        if (!onChartClicked || (onChartClicked && onChartClicked(chart))) {
+            setReportId(this.props.model, chart.reportId);
+        }
     }
 
     hideChart() {
@@ -84,63 +126,47 @@ export class ChartMenu extends React.PureComponent<Props> {
 
     getSelectedChart() {
         let selectedChart;
-        const charts = this.props.charts;
+        const {charts, privateCharts } = this.props;
         const reportId = this.props.model.urlParamValues.get('reportId');
+        const searchFn = (dataViewInfo) => dataViewInfo.reportId === reportId;
 
         if (charts && reportId) {
-            selectedChart = charts.find((dataViewInfo) => dataViewInfo.reportId === reportId);
+            selectedChart = charts.find(searchFn) || privateCharts.find(searchFn);
         }
 
         return selectedChart;
     }
 
-    renderChartModal() {
-        const { model } = this.props;
-        const selectedChart = this.getSelectedChart();
-
-        return (
-            <Modal bsSize="large" show={selectedChart !== undefined} keyboard={true} onHide={this.hideChart}>
-                <Modal.Header closeButton={true} closeLabel={"Close"}>
-                    <Modal.Title>{selectedChart.getLabel()}</Modal.Title>
-                    {selectedChart.description
-                        ? <div><br/>{selectedChart.description}</div>
-                        : null
-                    }
-                </Modal.Header>
-                <Modal.Body>
-                    <Chart chart={selectedChart} model={model}/>
-                </Modal.Body>
-            </Modal>
-        )
-    }
-
     getChartButtonTitle() {
-        const { charts, model } = this.props;
+        const { charts, error } = this.props;
         const chartsLoaded = charts !== undefined && charts !== null;
-        return chartsLoaded || model.isError ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
+        return chartsLoaded || error ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
     }
 
     render() {
-        const { model, style } = this.props;
+        const { model } = this.props;
+        const title = this.getChartButtonTitle();
         const selectedChart = this.getSelectedChart();
         const chartItems = this.createMenuItems();
+        const disabled = chartItems.length === 0;
+        let chartModal;
 
         if (model.hideEmptyChartSelector && chartItems.length === 0) {
             return null;
         }
 
+        if (selectedChart) {
+            chartModal = <ChartModal selectedChart={selectedChart} model={model} onHide={this.hideChart} />;
+        }
+
         return (
-            <span style={style}>
-                <DropdownButton
-                    id={this.dropId}
-                    disabled={chartItems.length === 0}
-                    title={this.getChartButtonTitle()}
-                >
+            <span>
+                <DropdownButton id={this.dropId} disabled={disabled} title={title}>
                     {chartItems}
                 </DropdownButton>
 
-                {selectedChart && this.renderChartModal()}
+                {chartModal}
             </span>
-        )
+        );
     }
 }

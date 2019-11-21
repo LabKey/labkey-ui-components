@@ -29,7 +29,6 @@ import { EXPORT_TYPES } from "../../constants";
 interface Props {
     model: QueryGridModel
     supportedTypes?: Set<EXPORT_TYPES> // the types that are supported
-    style?: Object
 }
 
 /**
@@ -47,11 +46,12 @@ export class Export extends React.Component<Props, any> {
     }
 
     render() {
-        const { model, supportedTypes, style } = this.props;
+        const { model, supportedTypes } = this.props;
 
+        // FIXME: remove inline styles.
         return (
             model &&
-            <span style={style}>
+            <span style={{paddingLeft: '10px'}}>
                 <Tip caption="Export">
                     <DropdownButton
                         id={`export-drop-${model.getId()}`}

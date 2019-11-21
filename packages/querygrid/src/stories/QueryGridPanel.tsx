@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs'
-import { ManageDropdownButton, QueryGridModel, SchemaQuery, SelectionMenuItem } from "@glass/base";
+import { ManageDropdownButton, QueryGridModel, SchemaQuery, SelectionMenuItem } from '@glass/base';
 
-import { QueryGridPanel } from "../components/QueryGridPanel";
-import { getStateQueryGridModel } from "../models";
+import { QueryGridPanel } from '../components/QueryGridPanel';
+import { DataViewInfo, getStateQueryGridModel } from '../models';
 import './stories.scss'
+import { DataViewInfoTypes } from '../constants';
 
 class QueryGridPanelWrapper extends React.Component {
     renderButtons = (model: QueryGridModel) => {
@@ -148,6 +149,33 @@ class QueryGridPanelWithRenamedColumnsWrapper extends React.Component {
     }
 }
 
+class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
+    onChartClicked = (chart: DataViewInfo) => {
+        console.log('Chart Clicked!', chart);
+        return chart.type !== DataViewInfoTypes.SampleComparison;
+    };
+
+    getQueryGridModel() {
+        const modelId = "gridPanelWithSCR";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "assay.General.Amino Acids",
+            queryName: "Data"
+        });
+
+        return getStateQueryGridModel(modelId, schemaQuery, {});
+    }
+
+    render() {
+        return (
+            <QueryGridPanel
+                model={this.getQueryGridModel()}
+                showSampleComparisonReports={true}
+                onChartClicked={this.onChartClicked}
+            />
+        );
+    }
+}
+
 storiesOf('QueryGridPanel', module)
     .addDecorator(withKnobs)
     .add("with data", () => {
@@ -161,4 +189,7 @@ storiesOf('QueryGridPanel', module)
     })
     .add("with renamed columns", () => {
         return <QueryGridPanelWithRenamedColumnsWrapper/>;
+    })
+    .add('with showSampleComparisonReports', () => {
+        return <QueryGridPanelWithSampleComparisonWrapper/>;
     });

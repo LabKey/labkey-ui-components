@@ -15,69 +15,153 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { QueryGridModel, resolveSchemaQuery } from '@glass/base'
+import { naturalSort, QueryGridModel } from '@glass/base'
 
 import { fetchCharts } from '../../actions'
-import { DataViewInfo } from '../../models'
-import { getCharts, updateCharts } from '../../global'
+import { DataViewInfo, IDataViewInfo } from '../../models'
 import { ChartMenu } from './ChartMenu'
-import { loadReports } from '../../query/reports';
+import { loadReports } from '../../';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
 
-const VALID_REPORTS = VISUALIZATION_REPORTS.add(DataViewInfoTypes.SampleComparison);
+const CHART_COMPARATOR = (chart: DataViewInfo): string => chart.name;
 
 interface Props {
-    model: QueryGridModel
-    style?: Object
+    model: QueryGridModel,
+    showSampleComparisonReports?: boolean,
+    onChartClicked?: Function,
 }
 
-export class ChartSelector extends React.Component<Props, any> {
+interface State {
+    publicCharts: List<DataViewInfo>,
+    privateCharts: List<DataViewInfo>,
+    error: string,
+}
 
-    componentDidMount() {
-        this.requestCharts(this.props);
-    }
+export class ChartSelector extends React.Component<Props, State> {
+    static defaultProps = {
+        showSampleComparisonReports: false,
+        reportUrlMapper: undefined,
+    };
 
-    componentWillReceiveProps(nextProps: Props) {
-        this.requestCharts(nextProps);
-    }
-
-    requestCharts(props: Props) {
-        const { model } = props;
-
-        if (model && model.queryInfo && model.queryInfo.schemaQuery) {
-            const key = this.getSchemaQueryKey(props);
-
-            // if the key does not yet exist in the global state, then fetch the chart infos
-            if (key && getCharts(key) === undefined) {
-                updateCharts(key, null);
-
-                fetchCharts(model.queryInfo.schemaQuery).then(data => {
-                    updateCharts(key, data);
-                }).catch(error => {
-                    updateCharts(key, List.of(new DataViewInfo({error: error})));
-                });
-            }
+    constructor(props) {
+        super(props);
+        this.state = {
+            publicCharts: null,
+            privateCharts: null,
+            error: null,
         }
     }
 
-    getSchemaQueryKey(props: Props) {
-        const { model } = props;
-
-        return model.queryInfo && model.queryInfo.schemaQuery ? resolveSchemaQuery(model.queryInfo.schemaQuery) : null;
+    componentDidMount() {
+        this.requestCharts();
     }
 
-    getChartsForQuery() {
-        const key = this.getSchemaQueryKey(this.props);
+    componentDidUpdate(prevProps: Props) {
+        const prevSQ = prevProps.model.queryInfo ? prevProps.model.queryInfo.schemaQuery : null;
+        const curSQ = this.props.model.queryInfo ? this.props.model.queryInfo.schemaQuery : null;
 
-        // need to access this.global directly to connect this component to the re-render cycle
-        return this.global.QueryGrid_charts.get(key);
+        if (prevSQ !== curSQ) {
+            this.requestCharts();
+        }
+    }
+    
+    setErrorStatus = () => {
+        this.setState({
+            privateCharts: null,
+            publicCharts: null,
+            error: 'Error loading charts for grid',
+        });
+    };
+
+    requestChartsWithSampleComparisonReports = () => {
+        const queryInfo = this.props.model.queryInfo;
+        const targetSchema = queryInfo.schemaName;
+        const targetQuery = queryInfo.name;
+        // reset charts to null so we trigger loading status.
+        this.setState({publicCharts: null, privateCharts: null});
+        loadReports().then((charts) => {
+            let publicCharts = List<DataViewInfo>();
+            let privateCharts = List<DataViewInfo>();
+
+            charts.forEach((rawReport: IDataViewInfo) => {
+                const report = new DataViewInfo(rawReport);
+                const type = report.type;
+                // We have to check the schema and query here because loadReports loads *all* reports.
+                const matchingSq = report.schemaName === targetSchema && report.queryName === targetQuery;
+                const isVisualization = matchingSq && VISUALIZATION_REPORTS.contains(type);
+
+                if (isVisualization || type === DataViewInfoTypes.SampleComparison) {
+                    if (report.shared) {
+                        publicCharts = publicCharts.push(new DataViewInfo(report));
+                    } else {
+                        privateCharts = privateCharts.push(report);
+                    }
+                }
+            });
+
+            publicCharts = publicCharts.sortBy(CHART_COMPARATOR, naturalSort).toList();
+            privateCharts = privateCharts.sortBy(CHART_COMPARATOR, naturalSort).toList();
+            this.setState({
+                publicCharts,
+                privateCharts,
+            });
+        }).catch(this.setErrorStatus);
+    };
+
+    requestChartsWithoutSampleComparisonReports = () => {
+        const { queryInfo } = this.props.model;
+
+        this.setState({publicCharts: null, privateCharts: null});
+        fetchCharts(queryInfo.schemaQuery).then(data => {
+            let publicCharts = List<DataViewInfo>();
+            let privateCharts = List<DataViewInfo>();
+
+            data.forEach((report) => {
+                if (VISUALIZATION_REPORTS.contains(report.type)) {
+                    if (report.shared) {
+                        publicCharts = publicCharts.push(report);
+                    } else {
+                        privateCharts = privateCharts.push(report);
+                    }
+                }
+            });
+
+            this.setState({
+                privateCharts: privateCharts.sortBy(CHART_COMPARATOR, naturalSort).toList(),
+                publicCharts: publicCharts.sortBy(CHART_COMPARATOR, naturalSort).toList(),
+            });
+        }).catch(this.setErrorStatus);
+    };
+
+    requestCharts() {
+        const queryInfo = this.props.model.queryInfo;
+
+        // TODO: Would it be safe to just use model.schema and model.query instead? As far as I can tell by the time
+        //  we're rendering the ChartSelector we will always a model with a schema and query. We won't always have a
+        //  QueryInfo because we have to wait for getQueryDetails.
+        if (!queryInfo || !queryInfo.schemaQuery) {
+            return;
+        }
+
+        if (this.props.showSampleComparisonReports) {
+            this.requestChartsWithSampleComparisonReports();
+        } else {
+            this.requestChartsWithoutSampleComparisonReports();
+        }
     }
 
     render() {
-        const { model, style } = this.props;
+        const { model, onChartClicked } = this.props;
+        const { publicCharts, privateCharts, error } = this.state;
 
         return (
-            <ChartMenu model={model} charts={this.getChartsForQuery()} style={style}/>
-        )
+            <ChartMenu
+                model={model}
+                charts={publicCharts}
+                privateCharts={privateCharts}
+                onChartClicked={onChartClicked}
+                error={error}
+            />
+        );
     }
 }

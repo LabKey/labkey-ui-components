@@ -252,7 +252,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        Specimen ID 
+                        Specimen ID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -263,7 +263,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        Participant ID 
+                        Participant ID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -274,7 +274,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        Visit ID 
+                        Visit ID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -285,7 +285,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        Date 
+                        Date
                       </th>
                       <th
                         className="grid-header-cell"
@@ -296,7 +296,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        Healthy 
+                        Healthy
                       </th>
                       <th
                         className="grid-header-cell"
@@ -307,7 +307,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        File 
+                        File
                       </th>
                       <th
                         className="grid-header-cell"
@@ -318,7 +318,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           }
                         }
                       >
-                        Text Area 
+                        Text Area
                       </th>
                     </tr>
                   </thead>
@@ -610,7 +610,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        Specimen ID 
+                        Specimen ID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -621,7 +621,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        Participant ID 
+                        Participant ID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -632,7 +632,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        Visit ID 
+                        Visit ID
                       </th>
                       <th
                         className="grid-header-cell"
@@ -643,7 +643,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        Date 
+                        Date
                       </th>
                       <th
                         className="grid-header-cell"
@@ -654,7 +654,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        Healthy 
+                        Healthy
                       </th>
                       <th
                         className="grid-header-cell"
@@ -665,7 +665,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        File 
+                        File
                       </th>
                       <th
                         className="grid-header-cell"
@@ -676,7 +676,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           }
                         }
                       >
-                        Text Area 
+                        Text Area
                       </th>
                     </tr>
                   </thead>

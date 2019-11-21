@@ -16,11 +16,14 @@
 import * as OrigReact from 'react'
 import { ReactNode } from 'react'
 import React from 'reactn'
-import { Button, Dropdown, MenuItem } from 'react-bootstrap'
-import { List, Map, Set, OrderedMap } from 'immutable'
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
+import { List, Map, OrderedMap, Set } from 'immutable'
 import $ from 'jquery'
 import {
     Alert,
+    capitalizeFirstChar,
+    caseInsensitive,
+    DeleteIcon,
     Grid,
     GRID_CHECKBOX_OPTIONS,
     GRID_EDIT_INDEX,
@@ -28,8 +31,7 @@ import {
     GridColumn,
     LoadingSpinner,
     QueryColumn,
-    QueryGridModel,
-    capitalizeFirstChar
+    QueryGridModel
 } from '@glass/base'
 
 import {
@@ -46,7 +48,7 @@ import {
 } from '../../actions'
 import { getEditorModel, getQueryGridModel } from "../../global";
 import { Cell } from './Cell'
-import { AddRowsControl, AddRowsControlProps, RightClickToggle } from './Controls'
+import { AddRowsControl, AddRowsControlProps } from './Controls'
 import { headerSelectionCell } from "../../renderers";
 import { QueryInfoForm, QueryInfoFormProps } from "../forms/QueryInfoForm";
 import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
@@ -93,7 +95,8 @@ function inputCellKey(col: QueryColumn, row: any): string {
 
 export interface EditableColumnMetadata {
     placeholder?: string,
-    readOnly?: boolean
+    readOnly?: boolean,
+    toolTip?: React.ReactNode
 }
 
 export interface EditableGridProps {
@@ -111,6 +114,8 @@ export interface EditableGridProps {
     disabled?: boolean
     forUpdate?: boolean
     readOnlyColumns?: List<string>
+    removeColumnTitle?: string
+    notDeletable?: List<any> // list of key values that cannot be deleted.
     striped?: boolean
     initialEmptyRowCount?: number
     model: QueryGridModel
@@ -131,7 +136,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         allowAdd: true,
         allowBulkUpdate: false,
         allowBulkRemove: false,
-        allowRemove: true,
+        allowRemove: false,
+        removeColumnTitle: "Delete",
         addControlProps: {
             nounPlural: "Rows",
             nounSingular: "Row"
@@ -139,6 +145,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         bordered: false,
         bulkUpdateText: "Bulk Update",
         columnMetadata: Map<string, EditableColumnMetadata>(),
+        notDeletable: List<any>(),
         condensed: false,
         disabled: false,
         isSubmitting: false,
@@ -289,27 +296,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             });
             gridColumns = gridColumns.push(selColumn);
         }
-        gridColumns = gridColumns.push(
-            allowRemove ? new GridColumn({
-                index: GRID_EDIT_INDEX,
-                tableCell: true,
-                title: 'Row',
-                width: 45,
-                cell: (d,r,c,rn) => (
-                    <Dropdown key={c.index} id={`row-context-${rn}`} className="cellular-count" componentClass="td">
-                        <RightClickToggle bsRole="toggle">
-                            {rn+1}
-                        </RightClickToggle>
-                        <Dropdown.Menu>
-                            <MenuItem onSelect={() => {
-                                removeRow(model, d, rn);
-                                this.onRowCountChange();
-                            }}>Delete Row</MenuItem>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                )
-            }) : COUNT_COL
-        );
+        gridColumns = gridColumns.push(COUNT_COL);
 
         this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(new GridColumn({
@@ -321,8 +308,67 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 width: 100
             }));
         });
+        if (allowRemove) {
+            gridColumns = gridColumns.push(
+                 new GridColumn({
+                    index: GRID_EDIT_INDEX,
+                    tableCell: true,
+                    title: this.props.removeColumnTitle,
+                    width: 45,
+                    cell: (d, row: Map<string, any>, c,rn) => {
+                        const keyCols = model.getKeyColumns();
+                        let canDelete = true;
+                        if (keyCols.size == 1) {
+                            let key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                            canDelete = !key || !this.props.notDeletable.contains(key);
+                        }
+                        else {
+                            console.warn("Preventing deletion for models with " + keyCols.size + " keys is not currently supported.");
+                        }
+
+                        return (
+                            canDelete ?
+                            <td key={"delete" + rn}>
+                                <DeleteIcon onDelete={(event) => {
+                                    removeRow(model, d, rn);
+                                    this.onRowCountChange();
+                                }}/>
+                            </td>
+                            :
+                            <td key={"delete" + rn}>&nbsp;</td>
+                        );
+                    }
+                })
+            );
+        }
+
 
         return gridColumns;
+    }
+
+    renderColumnHeader(col:GridColumn, metadataKey: string, required?: boolean) {
+        const label = col.title;
+        const metadata = this.props.columnMetadata && this.props.columnMetadata.has(metadataKey) ? this.props.columnMetadata.get(metadataKey) : undefined;
+        const overlay = metadata && metadata.toolTip ?
+            <OverlayTrigger
+                placement={'bottom'}
+                overlay={<Popover id={'popover-' + label}  bsClass="popover">
+                    {metadata.toolTip}
+                </Popover>}>
+                <i className="fa fa-question-circle"/>
+            </OverlayTrigger> : undefined;
+        return (
+            <>
+                {label}
+                {required && <span className="required-symbol"> *</span>}
+                {overlay && (
+                    <>
+                        &nbsp;
+                        {overlay}
+                    </>
+                )}
+            </>
+        )
     }
 
     headerCell(col: GridColumn) {
@@ -332,10 +378,10 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         }
         if (model.queryInfo && model.queryInfo.getColumn(col.index)) {
             const qColumn = model.queryInfo.getColumn(col.index);
-            return [col.title, (qColumn.required ? '*': undefined)].join(' ');
+            return this.renderColumnHeader(col, qColumn.fieldKey, qColumn.required);
         }
         if (col && col.showHeader) {
-            return col.title;
+            return this.renderColumnHeader(col, col.title, false);
         }
     }
 
@@ -606,7 +652,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                             responsive={false}
                             rowKey={GRID_EDIT_INDEX}
                             striped={striped}
-                            tableRef={this.table} />
+                            tableRef={this.table}
+                        />
                     </div>
                     {allowAdd && (this.getControlsPlacement() != 'top') && (
                         <AddRowsControl

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable';
+import { fromJS, List, Map } from 'immutable';
 import { resetQueryGridState } from "./global";
 import { QueryGridModel, QueryInfo, SchemaQuery } from '@glass/base';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
@@ -523,6 +523,145 @@ describe("EditorModel", () => {
             expect(uniqueKeyViolations.get("Name").get("S-4")).toEqual(List<number>([4, 5]));
             const errors = editorModel.getValidationErrors(queryGridModel, "Name");
             expect(errors).toHaveLength(3);
+        });
+
+        test("getEditorDataFromQueryValueMap with displayValue", () => {
+            const data = Map<any, any>({
+                'value': 1,
+                'displayValue': 'one'
+            });
+            expect(EditorModel.getEditorDataFromQueryValueMap(data)).toStrictEqual(List<any>([{displayValue: 'one', value: 1}]));
+        });
+
+        test("getEditorDataFromQueryValueMap without displayValue", () => {
+            const data = Map<any, any>({
+                'value': 'blue',
+            });
+            expect(EditorModel.getEditorDataFromQueryValueMap(data)).toEqual('blue');
+        });
+
+        test("getEditorDataFromQueryValueMap without value", () => {
+            const data = Map<any, any>({
+                'color': 'blue',
+                'displayValue': "blue"
+            });
+            expect(EditorModel.getEditorDataFromQueryValueMap(data)).toEqual(undefined);
+        });
+
+        test("convertQueryDataToEditorData with updates", () => {
+            const queryData = fromJS({
+                1: {
+                    'noValue': {
+                        'color': 'blue',
+                        'displayValue': "blue"
+                    },
+                    'withValue': {
+                        'value': 'orange',
+                        'ignoreMe': 'nothing to see'
+                    },
+                    'withDisplayValue': {
+                        'value': 'b',
+                        'displayValue': 'blue',
+                        'otherField': 'irrelevant'
+                    },
+                    'doNotChangeMe': {
+                        'value': 'fred'
+                    }
+                },
+                2: {
+                    'noValue': {
+                        'color': 'blue',
+                        'displayValue': "blue"
+                    },
+                    'withValue': {
+                        'value': 'orangish',
+                        'ignoreMe': 'nothing to see'
+                    },
+                    'withDisplayValue': {
+                        'value': 'b',
+                        'displayValue': 'black',
+                        'otherField': 'irrelevant'
+                    },
+                    'doNotChangeMe': {
+                        'value': 'maroon'
+                    }
+                }
+            });
+            const updates = Map<any, any>({
+                'withValue': 'purple',
+                'withDisplayValue': 'teal'
+            });
+            expect(EditorModel.convertQueryDataToEditorData(queryData, updates)).toStrictEqual(Map<string, any>({
+                    1: Map<string, any>({
+                            'withValue': 'purple',
+                            'withDisplayValue': 'teal',
+                            'doNotChangeMe': 'fred'
+                    }),
+                    2: Map<string, any>({
+                        'withValue': 'purple',
+                        'withDisplayValue': 'teal',
+                        'doNotChangeMe': 'maroon'
+                    })
+            }))
+        });
+
+        test ("convertQueryDataToEditorData without updates", () => {
+            const queryData = fromJS({
+                1: {
+                    'noValue': {
+                        'color': 'blue',
+                        'displayValue': "blue"
+                    },
+                    'withValue': {
+                        'value': 'orange',
+                        'ignoreMe': 'nothing to see'
+                    },
+                    'withDisplayValue': {
+                        'value': 'b',
+                        'displayValue': 'blue',
+                        'otherField': 'irrelevant'
+                    },
+                    'doNotChangeMe': {
+                        'value': 'fred'
+                    }
+                },
+                2: {
+                    'noValue': {
+                        'color': 'blue',
+                        'displayValue': "blue"
+                    },
+                    'withValue': {
+                        'value': 'orangish',
+                        'ignoreMe': 'nothing to see'
+                    },
+                    'withDisplayValue': {
+                        'value': 'b',
+                        'displayValue': 'black',
+                        'otherField': 'irrelevant'
+                    },
+                    'doNotChangeMe': {
+                        'value': 'maroon'
+                    }
+                }
+            });
+            expect(EditorModel.convertQueryDataToEditorData(queryData)).toStrictEqual(Map<string, any>({
+                1: Map<string, any>({
+                    'withValue': 'orange',
+                    'withDisplayValue': List<any>([{
+                        'value': 'b',
+                        'displayValue': 'blue'
+                    }]),
+                    'doNotChangeMe': 'fred'
+                }),
+                2: Map<string, any>({
+                    'withValue': 'orangish',
+                    'withDisplayValue': List<any>([{
+                        'displayValue': 'black',
+                        'value': 'b'
+                    }]),
+                    'doNotChangeMe': 'maroon'
+                })
+            }))
         });
     });
 });

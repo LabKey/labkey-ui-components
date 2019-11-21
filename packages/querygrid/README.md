@@ -4,6 +4,25 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.24.0
+*Released*: 19 November 2019
+* update EditorModel with methods for converting from queryGrid results to the data format expected by 
+the editable grid
+* move EditableGridLoader, EditableGridLoaderForSelection, EditableGridPanelForUpdate, EditableGridModal, BulkUpdateForm
+from sampleManagement
+* allow selectRows results to be passed in to LookupSelectInput
+* in EditableGrid, change single-row deletion from delicate right-click on row number to separate icon column
+* add optional toolTip property to EditableColumnMetadata to allow display of overlay tip in column headers
+
+### version 0.23.2
+*Released*: 19 Nov 2019
+* Issue 33849: change UserSelectInput to use getUsersWithPermissions instead of getUsers so we get all users
+with a particular set of permissions, not just those in some project or global group.
+
+### version 0.23.1
+*Released*: 19 November 2019
+* Package patch update for changes to @glass/domainproperties v0.0.53
+
 ### version 0.23.0
 *Released*: 18 November 2019
 * Add components for user profile management in app - ChangePasswordModal, UserDetailHeader, UserProfile

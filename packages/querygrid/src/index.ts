@@ -72,12 +72,17 @@ import {
 } from './util/AppURLResolver';
 import { QueryGridPanel } from './components/QueryGridPanel';
 import { EditableGridPanel } from './components/editable/EditableGridPanel';
+import { EditableGridPanelForUpdate } from './components/editable/EditableGridPanelForUpdate';
+import { EditableGridLoader } from './components/editable/EditableGridLoader';
+import { EditableGridLoaderFromSelection } from './components/editable/EditableGridLoaderFromSelection';
+import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { QueryInfoForm } from './components/forms/QueryInfoForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
 import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
@@ -87,7 +92,7 @@ import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
 import { resolveDetailRenderer } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
-import { handleInputTab, handleTabKeyOnTextArea, getProjectUsers } from './components/forms/actions';
+import { handleInputTab, handleTabKeyOnTextArea, getUsersWithPermissions } from './components/forms/actions';
 import { IUser } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { PlacementType } from './components/editable/Controls';
@@ -206,6 +211,8 @@ export {
     removeColumn,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    EditableGridLoaderFromSelection,
+    EditableGridLoader,
 
     // location related items
     Location,
@@ -234,8 +241,11 @@ export {
     // components
     LabelOverlay,
     EditableGridPanel,
+    EditableGridPanelForUpdate,
+    EditableGridModal,
     QueryGridPanel,
     PreviewGrid,
+    BulkUpdateForm,
     QueryInfoForm,
     LookupSelectInput,
     SelectInput,
@@ -256,7 +266,7 @@ export {
     EditorModel,
 
     // user-related
-    getProjectUsers,
+    getUsersWithPermissions,
     invalidateProjectUsers,
     IUser,
     UserDetailHeader,

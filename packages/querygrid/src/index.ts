@@ -70,6 +70,7 @@ import {
     SampleSetResolver,
     SamplesResolver
 } from './util/AppURLResolver';
+import { ExpandableContainer } from './components/ExpandableContainer';
 import { QueryGridPanel } from './components/QueryGridPanel';
 import { EditableGridPanel } from './components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './components/editable/EditableGridPanelForUpdate';
@@ -257,6 +258,7 @@ export {
     SchemaListing,
     QueriesListing,
     HeatMap,
+    ExpandableContainer,
 
     // interfaces
     EditableColumnMetadata,

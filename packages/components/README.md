@@ -8,7 +8,7 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 :construction: **Warning** :construction:
 
 ## Release Notes
-Release notes for this package are available [here](docs/releaseNotes.md)
+Release notes for this package are available [here](releaseNotes/labkey/components.md)
 
 ## Development
 
@@ -87,7 +87,7 @@ next [SemVer](https://semver.org/) version that will include your changes, `fb-m
 feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning.
 You can do this editing manually within the `package.json` file or when running `yarn publish`.  See [below](#version-numbering) for
  more on version numbering.
-* Update the `docs/ReleaseNotes.md` file to document what is changing in this version.  
+* Update the `releaseNotes/labkey/components.md` file to document what is changing in this version.  
 * Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test 
 non-rendering functions and rendering of components with different sets of parameters.  Jest 
 tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood, 
@@ -100,7 +100,7 @@ testing and iteration on display updates.  Again, we have several examples of st
 from the server for various Ajax calls that are required.  
 * Test within the application once display and functionality are as expected from within storybook.  
   
-#### Getting @labkey/component packages to the application
+#### Getting @labkey/components packages to the application
 
 While you can [publish](#publishing) a pre-release version of the glass packages and then update your application's `package.json`
 to reference the new pre-release version in order to view the changes within the application, you will likely want to 

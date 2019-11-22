@@ -4,6 +4,10 @@ Base components, models, and utility functions for LabKey applications and pages
 
 ## Release Notes ##
 
+### version 0.23.0
+*Released*: 22 November 2019
+* port FilesListing from Biologics
+
 ### version 0.22.1
 *Released*: 19 November 2019
 * Change styling of DeleteIcon

@@ -102,7 +102,8 @@ import { Grid, GridColumn, GridData, GridProps } from './components/Grid'
 import { FormSection } from './components/FormSection'
 import { Section } from './components/Section'
 import { FileAttachmentForm } from './components/files/FileAttachmentForm'
-import { FileAttachmentFormModel } from './components/files/models'
+import { FilesListing } from './components/files/FilesListing'
+import { FileAttachmentFormModel, IFile, DEFAULT_FILE } from './components/files/models'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { dismissNotifications, initNotificationsState } from './components/notifications/global'
@@ -183,6 +184,8 @@ export {
     GridData,
     InferDomainResponse,
     FileAttachmentFormModel,
+    IFile,
+    DEFAULT_FILE,
 
     //components
     AddEntityButton,
@@ -214,6 +217,7 @@ export {
     FormSection,
     Section,
     FileAttachmentForm,
+    FilesListing,
     ConfirmModal,
     CreatedModified,
     SelectionMenuItem,

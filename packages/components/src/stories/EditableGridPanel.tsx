@@ -25,8 +25,8 @@ import * as constants from '../test/data/constants';
 
 import './stories.scss'
 import { EditableColumnMetadata } from "../components/editable/EditableGrid";
-import { PlacementType } from "..";
 import { SchemaQuery } from '../components/base/models/model';
+import { PlacementType } from '../components/editable/Controls';
 
 const CONTROLS_GROUP = "Grid controls";
 const PANEL_GROUP = "Grid";

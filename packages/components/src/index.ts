@@ -86,7 +86,8 @@ import { Grid, GridColumn, GridProps } from './components/base/Grid'
 import { FormSection } from './components/base/FormSection'
 import { Section } from './components/base/Section'
 import { FileAttachmentForm } from './components/files/FileAttachmentForm'
-import { FileAttachmentFormModel } from './components/files/models'
+import { FileAttachmentFormModel, DEFAULT_FILE, IFile } from './components/files/models'
+import { FilesListing } from './components/files/FilesListing'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
 import { dismissNotifications, initNotificationsState } from './components/notifications/global'
@@ -440,13 +441,11 @@ export {
     VisGraphNode,
     invalidateLineageResults,
 
-    // Navigation types
+    // Navigation
     MenuSectionConfig,
     ProductMenuModel,
     MenuSectionModel,
     MenuItemModel,
-
-    // Navigation components
     HeaderWrapper,
     ITab,
     NavItem,
@@ -455,21 +454,17 @@ export {
     Breadcrumb,
     BreadcrumbCreate,
 
-    // DomainProperties components
+    // DomainProperties
     DomainForm,
     DomainFieldsDisplay,
     AssayPropertiesPanel,
     AssayDesignerPanels,
-
-    // Domain properties functions
     fetchDomain,
     saveDomain,
     fetchProtocol,
     createFormInputId,
     saveAssayDesign,
     setDomainFields,
-
-    // Domain properties models
     AssayProtocolModel,
     DomainDesign,
     DomainField,
@@ -477,21 +472,17 @@ export {
     IFieldChange,
     IBannerMessage,
     IAppDomainHeader,
-
-    // Domain properties constants
     SAMPLE_TYPE,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
 
-    // Base constants
+    // Base
     GRID_CHECKBOX_OPTIONS,
     PermissionTypes,
     Persistence,
     SCHEMAS,
-
-    // Base interfaces
     IGridLoader,
     IGridResponse,
     GridProps,
@@ -499,8 +490,6 @@ export {
     PageProps,
     SubMenuItemProps,
     ISubItem,
-
-    // Base models
     AppURL,
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -523,8 +512,9 @@ export {
     GridColumn,
     InferDomainResponse,
     FileAttachmentFormModel,
-
-    // Base components
+    DEFAULT_FILE,
+    IFile,
+    FilesListing,
     AddEntityButton,
     RemoveEntityButton,
     Alert,
@@ -561,19 +551,13 @@ export {
     ToggleButtons,
     Cards,
     Footer,
-
-    // Base actions
     fetchAllAssays,
     importGeneralAssayRun,
     inferDomainFromFile,
     getUserProperties,
-
-    // notification functions
     createNotification,
     dismissNotifications,
     initNotificationsState,
-
-    // date and format functions
     datePlaceholder,
     getDateFormat,
     getUnFormattedNumber,

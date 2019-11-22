@@ -29,8 +29,7 @@ const namedExports = {
     // Error: 'DataSet' is not exported by ../../node_modules/vis/dist/vis.js
     'vis': ['DataSet', 'Network'],
     // Error: 'isValidElementType' is not exported by ../../node_modules/react-redux/node_modules/react-is/index.js
-    'node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer'],
-    '../../node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
+    'node_modules/react-is/index.js': ['isValidElementType', 'isContextConsumer']
 };
 
 export default [
@@ -57,21 +56,6 @@ export default [
                     'src/typings/react-bootstrap.d.ts': 'dist/typings/react-bootstrap.d.ts'
                 }
             }),
-            json()
-        ]
-    },
-    {
-        external: external,
-        input: input,
-        output: {
-            file: 'dist/components.cjs.js',
-            format: 'cjs'
-        },
-        plugins: [
-            resolve(),
-            commonjs({namedExports}),
-            typescript(),
-            sass(),
             json()
         ]
     }

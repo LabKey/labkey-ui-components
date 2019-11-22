@@ -2,8 +2,9 @@ import * as React from 'react'
 import { List } from 'immutable'
 import { shallow } from 'enzyme'
 import {FilesListing} from "./FilesListing";
-import {FILES_DATA} from "../../test/data/constants";
+
 import {IFile} from "./models";
+import { FILES_DATA } from '../../test/data/constants';
 
 describe("<FilesListing/>", () => {
 

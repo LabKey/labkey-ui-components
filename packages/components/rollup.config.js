@@ -58,5 +58,20 @@ export default [
             }),
             json()
         ]
+    },
+    {
+        external: external,
+        input: input,
+        output: {
+            file: 'dist/components.cjs.js',
+            format: 'cjs'
+        },
+        plugins: [
+            resolve(),
+            commonjs({namedExports}),
+            typescript(),
+            sass(),
+            json()
+        ]
     }
 ]

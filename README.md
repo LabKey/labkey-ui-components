@@ -13,6 +13,10 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 | Package | Description |
 | --- | --- | 
 | [@labkey/components](packages/components/README.md) | All components, models, actions, and utility functions for LabKey applications and pages
+| [@labkey/dependencies](packages/dependencies/README.md) | Defines the base set of shared npm package dependencies for application pages developed LabKey.
+| [@labkey/eslint-config-base](packages/eslint-config-base/README.md) | Base ESLint configuration with TypeScript and Prettier support.
+| [@labkey/eslint-config-react](packages/eslint-config-react/README.md) | Extends the base configuration with React support.
+
 
 ## Using @labkey npm packages
 
@@ -43,3 +47,10 @@ You can then import `@labkey/components` in your application as follows:
 ```js
 import { Grid } from '@labkey/components';
 ```
+
+# Linting and Prettifying
+
+First, install the `@labkey/eslint-config-base` or `@labkey/eslint-config-react` as appropriate.  
+Once configured, you can run eslint in a variety of ways as described in the [README](packages/eslint-config-base/README.md) for eslint-config-base
+
+

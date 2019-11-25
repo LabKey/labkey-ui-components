@@ -18,7 +18,7 @@ import { DropdownButton, MenuItem, Modal } from 'react-bootstrap';
 import { List } from 'immutable';
 import { generateId, QueryGridModel } from '@glass/base';
 
-import { DataViewInfo  } from '../../models';
+import { DataViewInfo } from '../../models';
 import { Chart } from './Chart';
 import { setReportId } from '../../actions';
 
@@ -53,12 +53,32 @@ class ChartModal extends React.PureComponent<ChartModalProps> {
     }
 }
 
+interface ChartMenuItemProps {
+    chart: DataViewInfo,
+    showChart: Function,
+}
+
+class ChartMenuItem extends React.PureComponent<ChartMenuItemProps> {
+    render() {
+        const { chart, showChart } = this.props;
+
+        return (
+            <MenuItem onSelect={() => showChart(chart)}>
+                <i className={`chart-menu-icon ${chart.iconCls}`} />
+                <span className="chart-menu-label">{chart.getLabel()}</span>
+            </MenuItem>
+        );
+    }
+}
+
 interface Props {
     model: QueryGridModel,
     charts: List<DataViewInfo>,
     privateCharts: List<DataViewInfo>,
     error: string,
+    onPreviewSCRClicked?: Function,
     onChartClicked?: Function,
+    showSampleComparisonReports?: boolean,
 }
 
 export class ChartMenu extends React.PureComponent<Props> {
@@ -66,29 +86,15 @@ export class ChartMenu extends React.PureComponent<Props> {
 
     constructor(props: Props) {
         super(props);
-        this.hideChart = this.hideChart.bind(this);
-        this.showChart = this.showChart.bind(this);
-        this.getSelectedChart = this.getSelectedChart.bind(this);
         this.dropId = generateId('chartselector-');
     }
 
-    createItem = (chart: DataViewInfo) => {
-        // TODO: add a css class instead of using inline styles
-        return (
-            <MenuItem key={chart.reportId} onSelect={() => this.showChart(chart)}>
-                <i className={"pullLeft " + chart.iconCls} style={{width: '25px'}}/>
-                {chart.getLabel()}
-            </MenuItem>
-        );
-    };
-
     createMenuItems(): Array<React.ReactNode> {
-        const { charts, privateCharts, error } = this.props;
+        const { charts, privateCharts, error, showSampleComparisonReports, onPreviewSCRClicked } = this.props;
 
         if (error) {
             return [
                 <MenuItem key='error'>
-                    <i className={"pullLeft"} style={{width: '25px'}}/>
                     {error}
                 </MenuItem>
             ];
@@ -96,20 +102,36 @@ export class ChartMenu extends React.PureComponent<Props> {
 
         const items = [];
 
+        if (showSampleComparisonReports) {
+            items.push(<MenuItem header key="new-charts">New Charts & Reports</MenuItem>);
+            // TODO: Should we pass the QueryGridModel to onPreviewSCRClicked? We might need to so consumers of QGP
+            //  have the most up to date model when it's clicked (for sample selections).
+            items.push((
+                <MenuItem key="preview-scr" onSelect={() => onPreviewSCRClicked()}>
+                    <i className={"chart-menu-icon fa fa-table"}/>
+                    <span className="chart-menu-label">Preview Sample Comparison Report</span>
+                </MenuItem>
+            ));
+        }
+
         if (privateCharts && !privateCharts.isEmpty()) {
             items.push(<MenuItem header key="private-header">My Saved Charts</MenuItem>);
-            privateCharts.forEach(chart => items.push(this.createItem(chart)));
+            privateCharts.forEach(chart => {
+                items.push(<ChartMenuItem key={chart.reportId} chart={chart} showChart={this.showChart} />);
+            });
         }
 
         if (charts && !charts.isEmpty()) {
             items.push(<MenuItem header key="public-header">All Saved Charts</MenuItem>);
-            charts.forEach(chart => items.push(this.createItem(chart)));
+            charts.forEach(chart => {
+                items.push(<ChartMenuItem key={chart.reportId} chart={chart} showChart={this.showChart} />);
+            });
         }
 
         return items;
     }
 
-    showChart(chart: DataViewInfo) {
+    showChart = (chart: DataViewInfo) => {
         const { onChartClicked } = this.props;
 
         // If there is no user defined click handler then render the chart modal.
@@ -118,13 +140,13 @@ export class ChartMenu extends React.PureComponent<Props> {
         if (!onChartClicked || (onChartClicked && onChartClicked(chart))) {
             setReportId(this.props.model, chart.reportId);
         }
-    }
+    };
 
-    hideChart() {
+    hideChart = () => {
         setReportId(this.props.model,undefined);
-    }
+    };
 
-    getSelectedChart() {
+    getSelectedChart = () => {
         let selectedChart;
         const {charts, privateCharts } = this.props;
         const reportId = this.props.model.urlParamValues.get('reportId');
@@ -135,13 +157,13 @@ export class ChartMenu extends React.PureComponent<Props> {
         }
 
         return selectedChart;
-    }
+    };
 
-    getChartButtonTitle() {
+    getChartButtonTitle = () => {
         const { charts, error } = this.props;
         const chartsLoaded = charts !== undefined && charts !== null;
         return chartsLoaded || error ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
-    }
+    };
 
     render() {
         const { model } = this.props;

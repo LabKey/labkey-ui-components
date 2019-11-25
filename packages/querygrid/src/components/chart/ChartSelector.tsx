@@ -27,8 +27,9 @@ const CHART_COMPARATOR = (chart: DataViewInfo): string => chart.name;
 
 interface Props {
     model: QueryGridModel,
-    showSampleComparisonReports?: boolean,
     onChartClicked?: Function,
+    onPreviewSCRClicked?: Function,
+    showSampleComparisonReports?: boolean,
 }
 
 interface State {
@@ -145,7 +146,7 @@ export class ChartSelector extends React.Component<Props, State> {
     }
 
     render() {
-        const { model, onChartClicked } = this.props;
+        const { model, onChartClicked, showSampleComparisonReports, onPreviewSCRClicked } = this.props;
         const { publicCharts, privateCharts, error } = this.state;
 
         return (
@@ -154,6 +155,8 @@ export class ChartSelector extends React.Component<Props, State> {
                 charts={publicCharts}
                 privateCharts={privateCharts}
                 onChartClicked={onChartClicked}
+                showSampleComparisonReports={showSampleComparisonReports}
+                onPreviewSCRClicked={onPreviewSCRClicked}
                 error={error}
             />
         );

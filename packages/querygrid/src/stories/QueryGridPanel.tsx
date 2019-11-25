@@ -155,6 +155,10 @@ class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
         return chart.type !== DataViewInfoTypes.SampleComparison;
     };
 
+    onPreviewSCRClicked = () => {
+        console.log('Preview SCR');
+    };
+
     getQueryGridModel() {
         const modelId = "gridPanelWithSCR";
         const schemaQuery = new SchemaQuery({
@@ -171,6 +175,7 @@ class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
                 model={this.getQueryGridModel()}
                 showSampleComparisonReports={true}
                 onChartClicked={this.onChartClicked}
+                onPreviewSCRClicked={this.onPreviewSCRClicked}
             />
         );
     }

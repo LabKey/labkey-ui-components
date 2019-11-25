@@ -31,6 +31,7 @@ interface QueryGridBarProps {
     model: QueryGridModel,
     showSampleComparisonReports?: boolean,
     onChartClicked?: Function,
+    onPreviewSCRClicked?: Function,
 }
 
 /**
@@ -45,7 +46,7 @@ interface QueryGridBarProps {
  */
 export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
-        const { buttons, model, showSampleComparisonReports, onChartClicked } = this.props;
+        const { buttons, model, showSampleComparisonReports, onChartClicked, onPreviewSCRClicked } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
         if (buttons) {
@@ -73,6 +74,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
                 model={model}
                 showSampleComparisonReports={showSampleComparisonReports}
                 onChartClicked={onChartClicked}
+                onPreviewSCRClicked={onPreviewSCRClicked}
             />
         ) : null;
 

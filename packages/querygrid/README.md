@@ -4,6 +4,10 @@ Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
+### version 0.24.1
+*Released*: TBD November 2019
+* render workflow jobs in search results
+
 ### version 0.24.0
 *Released*: 19 November 2019
 * update EditorModel with methods for converting from queryGrid results to the data format expected by 

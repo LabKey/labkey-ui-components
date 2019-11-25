@@ -41,6 +41,7 @@ export default [
             format: 'es',
             name: 'components'
         },
+        // perf: true, // enable to get some data about where time is spent during the build
         plugins: [
             resolve(),
             commonjs({namedExports}),

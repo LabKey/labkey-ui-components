@@ -17,7 +17,7 @@ import * as React from 'react'
 import {SVGIcon, SCHEMAS} from "@glass/base";
 
 interface SearchResultProps {
-    category: string
+    category?: string
     title: string
     summary: string
     url: string

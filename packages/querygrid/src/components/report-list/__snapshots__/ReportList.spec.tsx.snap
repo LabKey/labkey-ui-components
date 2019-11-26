@@ -37,42 +37,28 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                                   </CloseButton>
                                   <ModalTitle componentClass=\\"h4\\" bsClass=\\"modal-title\\">
                                     <h4 className=\\"modal-title\\">
-                                      Chart View: Systolic vs Diastolic
+                                      Example SCR
                                     </h4>
                                   </ModalTitle>
                                 </div>
                               </ModalHeader>
-                              <ChartReportBody report={{...}}>
+                              <UnsupportedReportBody report={{...}}>
                                 <ModalBody componentClass=\\"div\\" bsClass=\\"modal-body\\">
                                   <div className=\\"modal-body\\">
-                                    <div className=\\"report-list__chart-preview\\">
-                                      <ReportLinks report={{...}}>
-                                        <div className=\\"report-item__links\\">
-                                          <p>
-                                            <a href=\\"/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A953&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS\\">
-                                              View in LabKey Server
-                                            </a>
-                                          </p>
-                                          <p>
-                                            <Link to=\\"/q/study/apx-1\\" onlyActiveOnIndex={false} style={{...}}>
-                                              <a style={{...}} onClick={[Function: bound handleClick]}>
-                                                View in Biologics
-                                              </a>
-                                            </Link>
-                                          </p>
+                                    <div className=\\"report-list__unsupported-preview\\">
+                                      <div className=\\"alert alert-warning unsupported-alert\\">
+                                        <div className=\\"unsupported-alert__icon\\">
+                                          <span className=\\"fa fa-exclamation-circle\\" />
                                         </div>
-                                      </ReportLinks>
-                                      <Chart chart={{...}}>
-                                        <div id=\\"chart-0\\">
-                                          <LoadingSpinner msg=\\"Loading...\\" wrapperClassName=\\"\\">
-                                            <span className=\\"\\">
-                                              <i aria-hidden=\\"true\\" className=\\"fa fa-spinner fa-spin\\" />
-                                               
-                                              Loading...
-                                            </span>
-                                          </LoadingSpinner>
+                                        <p className=\\"unsupported-alert__message\\">
+                                          This report is not currently supported. It is recommended that you view the report in LabKey Server.
+                                        </p>
+                                        <div className=\\"unsupported-alert__view-link\\">
+                                          <a href=\\"/labkey/Biologics/assayreport-view.view?id=37\\" className=\\"btn btn-warning\\">
+                                            View in LabKey
+                                          </a>
                                         </div>
-                                      </Chart>
+                                      </div>
                                       <ReportMetadata report={{...}}>
                                         <div className=\\"report-item__metadata\\">
                                           <div className=\\"report-item__metadata-item\\">
@@ -80,7 +66,7 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                                               Created By:
                                             </label>
                                             <span>
-                                              Vader
+                                              alanv
                                             </span>
                                           </div>
                                           <div className=\\"report-item__metadata-item\\">
@@ -88,21 +74,23 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                                               Type:
                                             </label>
                                             <span>
-                                              XY Scatter Plot
+                                              Sample Comparison
                                             </span>
                                           </div>
                                           <div className=\\"report-item__metadata-item\\">
                                             <label>
                                               Description:
                                             </label>
-                                            <span />
+                                            <span>
+                                              From Kevin
+                                            </span>
                                           </div>
                                         </div>
                                       </ReportMetadata>
                                     </div>
                                   </div>
                                 </ModalBody>
-                              </ChartReportBody>
+                              </UnsupportedReportBody>
                             </div>
                           </div>
                         </div>
@@ -163,6 +151,42 @@ exports[`<ReportList /> Render with data 1`] = `
           className="media-left"
         >
           <img
+            alt="sample_comparison-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/sample_comparison.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              href="/labkey/Biologics/assayreport-view.view?id=37"
+              onClick={[Function]}
+            >
+              Example SCR
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
             alt="xy_scatter-icon"
             className="report-list-item__icon"
             height={null}
@@ -180,14 +204,194 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              Chart View: Systolic vs Diastolic
+              Injection Volume Comparison 2
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="xy_scatter-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/xy_scatter.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Avg Mass vs pl
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="box_plot-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/box_plot.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Arg Box Plot
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="bar_chart-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/bar_chart.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Bar plot of Mean Cys for Runs
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="pie_chart-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/pie_chart.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Pie chart example
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="bar_chart-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/bar_chart.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Sum of Molecular Weight by Chemical Formula
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
           </p>
         </div>
       </li>
@@ -216,14 +420,14 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              Scatter: Systolic vs Diastolic
+              Line plot: Pro by Sample Date
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
           </p>
         </div>
       </li>
@@ -235,10 +439,10 @@ exports[`<ReportList /> Render with data 1`] = `
           className="media-left"
         >
           <img
-            alt="xy_line-icon"
+            alt="box_plot-icon"
             className="report-list-item__icon"
             height={null}
-            src="/labkey/_images/xy_line.svg"
+            src="/labkey/_images/box_plot.svg"
             width="100%"
           />
         </div>
@@ -252,14 +456,14 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              Time Chart: Body Temp + Pulse For Group 2
+              MAb Box Plot
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
           </p>
         </div>
       </li>
@@ -271,10 +475,10 @@ exports[`<ReportList /> Render with data 1`] = `
           className="media-left"
         >
           <img
-            alt="custom_grid-icon"
+            alt="pie_chart-icon"
             className="report-list-item__icon"
             height={null}
-            src="/labkey/_images/custom_grid.svg"
+            src="/labkey/_images/pie_chart.svg"
             width="100%"
           />
         </div>
@@ -288,14 +492,14 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              Abbreviated Demographics
+              Distribution by Lot
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
           </p>
         </div>
       </li>
@@ -307,10 +511,10 @@ exports[`<ReportList /> Render with data 1`] = `
           className="media-left"
         >
           <img
-            alt="custom_grid-icon"
+            alt="xy_scatter-icon"
             className="report-list-item__icon"
             height={null}
-            src="/labkey/_images/custom_grid.svg"
+            src="/labkey/_images/xy_scatter.svg"
             width="100%"
           />
         </div>
@@ -324,71 +528,14 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              Alt ID mapping
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              APX-1: Abbreviated Physical Exam
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            className="report-list-item__icon"
-            src="crosstab.png?revision=3"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              Crosstab: MouseId Counts
+              Scatter: Arg vs Ala (filtered)
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
           </p>
         </div>
       </li>
@@ -400,10 +547,10 @@ exports[`<ReportList /> Render with data 1`] = `
           className="media-left"
         >
           <img
-            alt="custom_grid-icon"
+            alt="xy_scatter-icon"
             className="report-list-item__icon"
             height={null}
-            src="/labkey/_images/custom_grid.svg"
+            src="/labkey/_images/xy_scatter.svg"
             width="100%"
           />
         </div>
@@ -417,101 +564,86 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              DEM-1: Demographics
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              FPX-1: Final Complete Physical Exam
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              PRE-1: Pre-Existing Conditions
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            className="report-list-item__icon"
-            src="/r_logo.svg?revision=3"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              R Report: Dataset Column Names
+              Scatter: Arg vs Ala
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="xy_scatter-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/xy_scatter.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Injection Volume Comparison
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="box_plot-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/box_plot.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Private Chart
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
           </p>
         </div>
       </li>
@@ -540,194 +672,14 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              RCP-1: Reactogenicity-Resolution
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              SCL-1: Specimen Collection
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              Types
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              VAC-1: Post-enrollment Vaccination
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              verifyAssay
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              AE-1:(VTN) AE Log
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              Chemistry + Criteria + Demographics
+              Test Custom View
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
           </p>
         </div>
       </li>
@@ -756,1120 +708,14 @@ exports[`<ReportList /> Render with data 1`] = `
               onClick={[Function]}
               style={Object {}}
             >
-              CM-1:(Ph I/II) Concomitant Medications Log
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              CPS-1: Screening Chemistry Panel
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              ECI-1: Eligibility Criteria
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              ESI-1: End of Study Inventory
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              IHT-1:  Interim HIV Test
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              IV-1:Interim Visit
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              PIL-1: Participant Incident Log
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              SIA-1: Social Impact Assessment
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              SIL-1: Social Impact Log
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              CPF-1: Follow-up Chemistry Panel
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              LLF-1: Follow-up Local Lab Results (Page 1)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              LLS-1: Screening Local Lab Results (Page 1)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              LLS-2: Screening Local Lab Results (Page 2)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              MV-1: Missed Visit
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              PRC-1: Participant Receipt
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              PT-1: Participant Transfer
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              URF-1: Follow-up Urinalysis (Page 1)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              URF-2: Follow-up Urinalysis (Page 2)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              URS-1: Screening Urinalysis
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              BRA-1: Behavioral Risk Assessment (Page 1)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              BRA-2: Behavioral Risk Assessment (Page 2)
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              DOV-1: Discontinuation of Vaccination
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              OTB-1: Outside Testing/Belief
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              Quality Control Report
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              RCB-1: Reactogenicity-Baseline
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              RCE-1: Reactogenicity-Day 0
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              RCM-1: Reactogenicity-Early Assessment
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              SP-1: Study Product Admin. Error
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              TM-1: Termination
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              ENR-1: Enrollment
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              EPX-1: Enrollment Abbreviated Physical Exam
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              EVC-1: Enrollment Vaccination
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              PO-1: Pregnancy Outcome
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              PR-1: Pregnancy Report and History
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              RCF-1: Reactogenicity-Day 2
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              RCH-1: Reactogenicity-Day 1
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <img
-            alt="custom_grid-icon"
-            className="report-list-item__icon"
-            height={null}
-            src="/labkey/_images/custom_grid.svg"
-            width="100%"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              onClick={[Function]}
-              style={Object {}}
-            >
-              RCT-1: Reactogenicity-Day 3
-            </a>
-          </h4>
-        </div>
-      </li>
-      <li
-        className="report-list-item media"
-        onClick={[Function]}
-      >
-        <div
-          className="media-left"
-        >
-          <span
-            className="report-list-item__icon fa fa-clipboard fa-4x"
-          />
-        </div>
-        <div
-          className="media-body"
-        >
-          <h4
-            className="report-list-item__name media-heading"
-          >
-            <a
-              href="/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A949&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
-              onClick={[Function]}
-            >
-              Mouse Report: 2 Dem Vars + 3 Other Vars
+              Test Custom View
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
           </p>
         </div>
       </li>
@@ -1881,8 +727,11 @@ exports[`<ReportList /> Render with data 1`] = `
           className="media-left"
         >
           <img
+            alt="custom_grid-icon"
             className="report-list-item__icon"
-            src="/r_logo.svg?revision=3"
+            height={null}
+            src="/labkey/_images/custom_grid.svg"
+            width="100%"
           />
         </div>
         <div
@@ -1892,17 +741,197 @@ exports[`<ReportList /> Render with data 1`] = `
             className="report-list-item__name media-heading"
           >
             <a
-              href="/labkey/StudyVerifyProject/My%20Study/reports-runReport.view?reportId=db%3A955&redirectUrl=%2Flabkey%2FStudyVerifyProject%2FMy%2520Study%2Fproject-begin.view%3FpageId%3Dstudy.DATA_ANALYSIS"
               onClick={[Function]}
+              style={Object {}}
             >
-              TestReport
+              Name only
             </a>
           </h4>
           <p
             className="report-list-item__person"
           >
             Created by: 
-            Vader
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="custom_grid-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/custom_grid.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Private view
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="custom_grid-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/custom_grid.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Scientific Name only
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="custom_grid-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/custom_grid.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Name only
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="custom_grid-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/custom_grid.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              SampleID only
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
+          </p>
+        </div>
+      </li>
+      <li
+        className="report-list-item media"
+        onClick={[Function]}
+      >
+        <div
+          className="media-left"
+        >
+          <img
+            alt="custom_grid-icon"
+            className="report-list-item__icon"
+            height={null}
+            src="/labkey/_images/custom_grid.svg"
+            width="100%"
+          />
+        </div>
+        <div
+          className="media-body"
+        >
+          <h4
+            className="report-list-item__name media-heading"
+          >
+            <a
+              onClick={[Function]}
+              style={Object {}}
+            >
+              Test Custom View
+            </a>
+          </h4>
+          <p
+            className="report-list-item__person"
+          >
+            Created by: 
+            alanv
           </p>
         </div>
       </li>
@@ -1936,10 +965,10 @@ exports[`<ReportListItem /> ReportListItem renders 1`] = `
     className="media-left"
   >
     <img
-      alt="xy_scatter-icon"
+      alt="sample_comparison-icon"
       className="report-list-item__icon"
       height={null}
-      src="/labkey/_images/xy_scatter.svg"
+      src="/labkey/_images/sample_comparison.svg"
       width="100%"
     />
   </div>
@@ -1950,18 +979,17 @@ exports[`<ReportListItem /> ReportListItem renders 1`] = `
       className="report-list-item__name media-heading"
     >
       <a
-        href="/q/study/apx-1"
+        href="/labkey/Biologics/assayreport-view.view?id=37"
         onClick={[Function]}
-        style={Object {}}
       >
-        Chart View: Systolic vs Diastolic
+        Example SCR
       </a>
     </h4>
     <p
       className="report-list-item__person"
     >
       Created by: 
-      Vader
+      alanv
     </p>
   </div>
 </li>

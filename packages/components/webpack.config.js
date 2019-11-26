@@ -10,7 +10,7 @@ module.exports = {
     entry: './src/index.ts',
     target: 'web',
     mode: 'production',
-    // devtool: 'inline-source-map', //TODO https://webpack.js.org/configuration/devtool/#root
+    devtool: 'inline-source-map', // TODO source-map? See options here https://webpack.js.org/configuration/devtool/
     module: {
         rules: [
             {
@@ -46,16 +46,6 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loaders: [{
-                //     loader: 'babel-loader',
-                //     options: {
-                //         babelrc: false,
-                //         cacheDirectory: true,
-                //         presets: [
-                //             "@babel/preset-env",
-                //             "@babel/preset-react"
-                //         ]
-                //     }
-                // },{
                     loader: 'ts-loader',
                     options: {
                         // this flag and the test regex will make sure that test files do not get bundled
@@ -63,7 +53,7 @@ module.exports = {
                         onlyCompileBundledFiles: true
                     }
                 }],
-                exclude: /node_modules/,
+                exclude: /node_modules/
             }
         ]
     },
@@ -72,10 +62,9 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        publicPath: '',
         filename: 'components.js',
         library: '@labkey/components',
-        libraryTarget: 'commonjs2'
+        libraryTarget: 'umd'
     },
     plugins: [
         new MiniCssExtractPlugin({

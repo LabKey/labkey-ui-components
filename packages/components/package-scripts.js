@@ -11,7 +11,7 @@ module.exports = {
         build: {
             default: series(
                 rimraf('dist'),
-                'rollup -c'
+                'webpack --config webpack.config.js'
             ),
             description: 'Clean dist directory and run all builds'
         },
@@ -20,9 +20,8 @@ module.exports = {
         },
         cleanAll: {
             default: series(
-                rimraf('.rpt2_cache'),
-                rimraf('node_modules'),
-                rimraf('dist')
+                rimraf('dist'),
+                rimraf('node_modules')
             )
         }
     }

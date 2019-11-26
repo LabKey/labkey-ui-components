@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react'
+import moment from 'moment'
 import renderer from 'react-test-renderer'
 import { User } from "../base/models/model";
 import { Notification } from './Notification'
@@ -22,7 +23,6 @@ import { NotificationItemModel } from "./model";
 import { mount, shallow } from "enzyme";
 import { NotificationItem } from "./NotificationItem";
 import { notificationInit } from "../../test/setupUtils";
-import moment = require("moment");
 
 beforeEach(() => {
     notificationInit()

@@ -965,10 +965,10 @@ exports[`<ReportListItem /> ReportListItem renders 1`] = `
     className="media-left"
   >
     <img
-      alt="sample_comparison-icon"
+      alt="xy_scatter-icon"
       className="report-list-item__icon"
       height={null}
-      src="/labkey/_images/sample_comparison.svg"
+      src="/labkey/_images/xy_scatter.svg"
       width="100%"
     />
   </div>
@@ -979,10 +979,11 @@ exports[`<ReportListItem /> ReportListItem renders 1`] = `
       className="report-list-item__name media-heading"
     >
       <a
-        href="/labkey/Biologics/assayreport-view.view?id=37"
+        href="/q/assay.general.sec/data"
         onClick={[Function]}
+        style={Object {}}
       >
-        Example SCR
+        Injection Volume Comparison 2
       </a>
     </h4>
     <p

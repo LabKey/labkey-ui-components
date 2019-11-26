@@ -87,7 +87,7 @@ describe('<ReportList />', () => {
 
 describe('<ReportListItem />', () => {
     test('ReportListItem renders', () => {
-        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
+        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[1];
         const onClick = jest.fn();
         const component = (
             <Router history={history}>
@@ -107,7 +107,8 @@ describe('<ReportListItem />', () => {
 
     test('ReportListItem does not render non-existent createdBy', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
-        const report = reports.filter(r => !r.hasOwnProperty('createdBy'))[0];
+        const report = reports[1];
+        report.createdBy = undefined;
         const component = <ReportListItem report={report} onClick={noop}/>;
         const wrapper = mount(component);
         expect(wrapper.find(createdBySelector)).toHaveLength(0);

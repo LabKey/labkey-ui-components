@@ -70,5 +70,6 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'components.css'
         })
-    ]
+    ],
+    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
 };

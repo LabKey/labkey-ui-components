@@ -10,7 +10,7 @@ module.exports = {
     entry: './src/index.ts',
     target: 'web',
     mode: 'production',
-    devtool: 'inline-source-map', // TODO source-map? See options here https://webpack.js.org/configuration/devtool/
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -59,6 +59,10 @@ module.exports = {
     },
     resolve: {
         extensions: [ '.jsx', '.js', '.tsx', '.ts' ]
+    },
+    optimization: {
+        // don't minimize the code from components, module/app usages will be doing that if they want to
+        minimize: false
     },
     output: {
         path: path.resolve(__dirname, 'dist'),

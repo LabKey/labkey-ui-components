@@ -23,7 +23,6 @@ import {
     getQueryGridModelsForSchemaQuery,
     removeQueryGridModel,
     resetQueryGridState,
-    updateCharts,
     updateEditorModel,
     updateLookupStore,
     updateQueryGridModel,
@@ -147,28 +146,6 @@ describe("model updates", () => {
         });
         removeQueryGridModel(model);
         expect(getQueryGridModel("removeWithoutAddTest")).toBe(undefined);
-    });
-});
-
-describe("charts", () => {
-    test("update charts", () => {
-        const sqKey="key";
-        const dataViewInfo = List<DataViewInfo>().asMutable();
-        dataViewInfo.push(new DataViewInfo({
-            name: "chart1",
-            type: DataViewInfoTypes.BarChart
-        }));
-        expect(getCharts(sqKey)).toBe(undefined);
-        updateCharts(sqKey, dataViewInfo);
-        expect(getCharts(sqKey).size).toBe(1);
-        dataViewInfo.push(new DataViewInfo({
-            name: "chart2",
-            type: DataViewInfoTypes.PieChart
-        }));
-        updateCharts(sqKey, dataViewInfo);
-        expect(getCharts(sqKey).size).toBe(2);
-        updateCharts(sqKey, List<DataViewInfo>());
-        expect(getCharts(sqKey).size).toBe(0);
     });
 });
 

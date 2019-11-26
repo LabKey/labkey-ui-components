@@ -107,28 +107,30 @@ to reference the new pre-release version in order to view the changes within the
 be able to do this without publishing for quicker development iteration.
 
 In order to use and test the components you are developing or modifying in this repository within another application, 
-you can use [npm link](https://docs.npmjs.com/cli/link.html) (or `yarn link`, presumably)
-(also see [this discussion](https://medium.com/@the1mills/how-to-test-your-npm-module-without-publishing-it-every-5-minutes-1c4cb4b369be))
-to create symbolic links to your local versions of the packages.  Once modifications have been made and published, you can use [npm uninstall](https://docs.npmjs.com/cli/uninstall.html)
-(also see [this discussion](https://medium.com/@alexishevia/the-magic-behind-npm-link-d94dcb3a81af)) to remove the symbolic
-link (or, you can remove it yourself manually).  Please note that you will likely want to use the ``--no-save`` option 
-when uninstalling to prevent your ``package.json`` file from being updated.
+we currently recommend using `yarn watch` together with a copy command from the `dist` directory to the `node_modules/@labkey/components`
+directory of your application. The `watch` command will automatically build a package when the source code changes.  If you have hot reloading started for your application, after you copy the `dist` directory, changes made in the components
+will then get loaded into the application.
 
-**TODO try npm link and modify accordingly**.
-:warning: We do not currently recommend the `npm link` approach. The glass-components repository will soon be refactored
-to a single package. At that time, we will update this doc information with the commands/steps for using `npm link`. 
-In the meantime, an alternative process that seems to work, but is a bit more tedious, is the use `yarn watch` in 
-conjunction with a copy command. The `watch` command can automatically build a package when the source code changes (
-see the `packages/template/package.json` script declaration). You will then need to manually copy the `dist` directory
-created by the build into the application's `node_modules/@glass/<package_name>` directory.
-                                  
 For example, for the querygrid package, you could do:
-* ``cd packages/querygrid``
 * ``yarn watch``
 * edit files
 * wait for recompile triggered by the `watch` to happen
-* ``cp -r dist /path/to/my_app/node_modules/\@glass/querygrid``
-**TODO try npm link and modify accordingly**.
+* ``cp -r dist /path/to/my_app/node_modules/\@labkey/components``
+
+
+We do not currently recommend using [`npm link`](https://docs.npmjs.com/cli/link.html) (or [`yarn link`](https://yarnpkg.com/lang/en/docs/cli/link/)).  It seems promising,
+but when used it produces an empty page in the application in many cases and the following type of error in the console:
+```
+react-dom.development.js:55 Uncaught Invariant Violation: Element ref was specified as a string (reactSelect) but no owner was set. This could happen for one of the following reasons:
+1. You may be adding a ref to a function component
+2. You may be adding a ref to a component that was not created inside a component's render method
+3. You have multiple copies of React loaded
+```
+I believe this happens because the `node_modules` directory within this directory contains all of the dependencies for the package,
+including the ones that are excluded in our bundling of the package since they are also included by the application.
+This includes, most notably, a copy of `react`.  When the application loads it will get one copy of react from this
+`node_modules` and one copy from its own `node_modules` and unhappiness ensues.  There are probably things we can do to
+fix this, but for now use watch and copy instead.
 
 ### Package Dependencies
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)

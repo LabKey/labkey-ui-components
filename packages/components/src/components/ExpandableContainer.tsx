@@ -8,8 +8,9 @@ import { SVGIcon } from './base/SVGIcon';
 
 interface Props {
     clause: React.ReactNode
-    links?: React.ReactNode
-    iconSrc: string
+    links: React.ReactNode
+    iconSrc?: string
+    iconFaCls?: string
     isExpandable: boolean
 }
 
@@ -42,7 +43,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { children, iconSrc, isExpandable, clause, links } = this.props;
+        const { children, iconSrc, iconFaCls, isExpandable, clause, links } = this.props;
         const { visible, isHover } = this.state;
 
         return (
@@ -60,13 +61,19 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                     )}
                 >
                     <i className="container-expandable-child__img">
-                        <SVGIcon
-                            iconDir={'_images'}
-                            iconSrc={iconSrc}
-                            isActive={isHover || visible}
-                            height="50px"
-                            width="50px"
-                        />
+                        {iconFaCls
+                            ? <i
+                                style={{padding: '5px'}}
+                                className={'fa fa-' + iconFaCls}
+                            />
+                            : <SVGIcon
+                                iconDir={'_images'}
+                                iconSrc={iconSrc}
+                                isActive={isHover || visible}
+                                height="50px"
+                                width="50px"
+                            />
+                        }
                     </i>
                     <div className={classNames('pull-right', 'container-expandable-child__chevron', {'text-muted': !isExpandable})}>
                         <i

@@ -1,0 +1,150 @@
+.form-group-collapsed {
+  margin-bottom: 0;
+}
+
+.form-group-expanded {
+  margin-bottom: 22px;
+}
+
+.insert--sequence-container {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.field-edit-container {
+  color: gray;
+}
+
+.field-edit--input-container {
+  float: left;
+  width: 70%;
+  padding: 0 15px;
+}
+
+.field-edit--btn-group {
+  float: left;
+  display: block;
+}
+
+// Truncate overflow
+.text__truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Display tooltips on disabled buttons
+// this is borrowed from here https://github.com/pastaclub/react-bootstrap-tooltip-button
+.disabled-button-with-tooltip {
+  // intended styling for helper div itself
+  display: inline-block;
+  vertical-align: top;
+  cursor: not-allowed;
+
+    // disable events on button
+  button {
+    pointer-events: none;
+  }
+
+
+   // fix styling of buttons in ButtonGroups and ButtonToolbars which got broken by inserting another div
+  .btn-group-vertical>&, .btn-group>& {
+    float: left;
+    position: relative;
+  }
+
+  .btn-toolbar & {
+    float: left;
+  }
+
+  .btn-toolbar > & {
+    margin-left: 5px;
+  }
+
+  .btn-group>&:first-child:not(:last-child)>.btn:not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .btn-group>&:last-child:not(:first-child)>.btn, .btn-group>&:not(:first-child)>.dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .btn-group .btn+&, .btn-group &+.btn, .btn-group &+&, .btn-group &+.btn-group, .btn-group .btn-group+& {
+    margin-left: -1px;
+  }
+}
+
+.form-step {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+.form-step-tab {
+  float: left;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 0;
+  margin-right: 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #eeeeee;
+  }
+
+  &.list-group-item, &.list-group-item:last-child, &.list-group-item:first-child {
+    margin-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    border: none;
+  }
+}
+
+
+.wizard-row--container {
+  margin-bottom: 15px;
+  cursor: default;
+}
+
+.wizard-row--spacer {
+  padding-left: 35px;
+}
+
+.add-row--container {
+  position: relative;
+}
+
+.translator--toggle__wizard {
+  color: #3495D2;
+}
+
+.container--action-button {
+  cursor: pointer;
+}
+
+.container--removal-icon {
+  color: lightgrey;
+}
+
+.container--addition-icon {
+  color: $brand-success;
+}
+
+// CreatedModified component
+
+.createdmodified {
+  color: grey;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.cbmb-inline {
+  display: inline-block;
+  margin-right: 10px;
+}

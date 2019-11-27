@@ -77,6 +77,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.gpat 1': {
         'data': assayGpatDataQueryInfo,
         'runs': assayGpatRunsQueryInfo,
+        'emptyruns': assayGpatRunsQueryInfo,
     },
     'assay.general.imagefieldassay': {
         'runs': assayImageFieldRunsQueryInfo,
@@ -117,6 +118,11 @@ const QUERY_RESPONSES = fromJS({
     },
     'assay.general.gpat 1': {
         'runs': assayGpatRunData,
+        'emptyruns': {
+            ...assayGpatRunData,
+            rows: [],
+            rowCount: 0,
+        },
     },
     'assay.general.imagefieldassay': {
         'runs': assayImageFieldRunsQuery,

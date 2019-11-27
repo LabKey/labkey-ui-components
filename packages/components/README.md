@@ -8,7 +8,7 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 :construction: **Warning** :construction:
 
 ## Release Notes
-Release notes for this package are available [here](releaseNotes/labkey/components.md)
+Release notes for this package are available [here](releaseNotes/labkey/components.md).
 
 ## Development
 

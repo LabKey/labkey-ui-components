@@ -1,0 +1,154 @@
+{
+  "name": "@labkey/components",
+  "version": "0.1.0",
+  "description": "Components, models, actions, and utility functions for LabKey applications and pages",
+  "main": "dist/components.js",
+  "module": "dist/components.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "nps build",
+    "clean": "nps clean",
+    "cleanAll": "nps cleanAll",
+    "prepare": "yarn build",
+    "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
+    "build-storybook": "build-storybook -c .storybook -o .storybook-out",
+    "test": "cross-env NODE_ENV=test jest",
+    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter && yarn run build-storybook",
+    "watch:build": "watch 'yarn build' ./src",
+    "watch": "npm run watch:build",
+    "build:docs": "npm run clean:docs && typedoc --out ../../docs --tsconfig tsconfig.base.json --options typedoc.js . && touch ../../docs/.nojekyll",
+    "clean:docs": "rimraf ../../docs",
+    "deploy:docs": "npm run build:docs && gh-pages -t -d ../../docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LabKey/glass-components.git"
+  },
+  "author": "LabKey",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://www.labkey.org/project/home/Developer/issues/begin.view?"
+  },
+  "publishConfig": {
+    "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
+  },
+  "homepage": "https://github.com/LabKey/glass-components#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "5.9.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.19",
+    "@fortawesome/free-regular-svg-icons": "5.11.2",
+    "@fortawesome/free-solid-svg-icons": "5.9.0",
+    "@fortawesome/react-fontawesome": "0.1.4",
+    "@labkey/dependencies": "0.0.10",
+    "bootstrap": "3.4.1",
+    "formsy-react": "1.1.5",
+    "formsy-react-components": "1.1.0",
+    "history": "4.7.2",
+    "moment": "2.24.0",
+    "moment-jdateformatparser": "1.1.0",
+    "moment-timezone": "^0.5.27",
+    "normalizr": "3.4.0",
+    "numeral": "2.0.6",
+    "prop-types": "15.7.2",
+    "react-beautiful-dnd": "11.0.3",
+    "react-bootstrap-toggle": "2.3.2",
+    "react-color": "2.17.3",
+    "react-datepicker": "2.9.6",
+    "react-input-autosize": "2.2.1",
+    "react-router": "3.2.1",
+    "react-select": "1.0.0-rc.10",
+    "react-sticky": "6.0.3",
+    "react-transition-group": "4.2.2",
+    "vis": "4.21.0"
+  },
+  "devDependencies": {
+    "@babel/core": "7.4.5",
+    "@storybook/addon-knobs": "5.1.1",
+    "@storybook/addon-notes": "5.1.1",
+    "@storybook/react": "5.1.1",
+    "@types/enzyme": "3.9.3",
+    "@types/history": "4.7.2",
+    "@types/jest": "24.0.19",
+    "@types/jsdom": "12.2.3",
+    "@types/node": "12.0.4",
+    "@types/numeral": "0.0.25",
+    "@types/prop-types": "15.7.1",
+    "@types/react-beautiful-dnd": "11.0.2",
+    "@types/react-datepicker": "2.9.3",
+    "@types/react-router": "3.0.13",
+    "@types/react-select": "1.0.57",
+    "@types/storybook__react": "4.0.1",
+    "@types/vis": "4.21.16",
+    "babel-loader": "8.0.6",
+    "bootstrap-sass": "3.4.1",
+    "cpx": "1.5.0",
+    "cross-env": "5.2.0",
+    "dotenv": "8.0.0",
+    "enzyme": "3.10.0",
+    "enzyme-adapter-react-16": "1.14.0",
+    "enzyme-to-json": "3.3.5",
+    "gh-pages": "2.0.1",
+    "jest": "24.9.0",
+    "jest-cli": "24.9.0",
+    "jest-teamcity-reporter": "0.9.0",
+    "jsdom": "15.1.1",
+    "mini-css-extract-plugin": "0.8.0",
+    "node-sass": "4.12.0",
+    "nps": "5.9.5",
+    "nps-utils": "1.7.0",
+    "react-bootstrap": "0.32.4",
+    "react-test-renderer": "16.8.6",
+    "sass-loader": "7.1.0",
+    "ts-jest": "24.0.2",
+    "ts-loader": "6.0.2",
+    "typedoc": "0.14.2",
+    "typescript": "3.1.6",
+    "watch": "1.0.2",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10",
+    "xhr-mock": "2.4.1"
+  },
+  "peerDependencies": {
+    "immutable": "^3.8.2",
+    "jquery": "^3.4.1",
+    "react": "^16.0",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.0",
+    "reactn": "^1.0.0"
+  },
+  "jest": {
+    "globals": {
+      "LABKEY": {
+        "contextPath": "/labkey",
+        "container": {
+          "path": ""
+        }
+      }
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "moduleNameMapper": {
+      "\\.(scss)$": "<rootDir>./src/test/styleMock.ts"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>./src/test/jest.setup.ts"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testRegex": "(\\.(test|spec))\\.(ts|tsx)$",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  },
+  "gitHead": "4edd31c934e5bea492455ec2cedc7b083cff4ba5"
+}

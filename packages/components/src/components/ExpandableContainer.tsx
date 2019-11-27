@@ -4,7 +4,7 @@
  */
 import * as React from 'react';
 import classNames from 'classnames';
-import { SVGIcon } from '@glass/base';
+import { SVGIcon } from './base/SVGIcon';
 
 interface Props {
     clause: React.ReactNode

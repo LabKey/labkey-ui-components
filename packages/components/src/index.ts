@@ -277,6 +277,7 @@ import {
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI
 } from "./components/domainproperties/constants";
+import { ExpandableContainer } from "./components/ExpandableContainer";
 
 
 export {
@@ -360,6 +361,7 @@ export {
     HeatMap,
     EditableColumnMetadata,
     EditorModel,
+    ExpandableContainer,
 
     // user-related
     getUsersWithPermissions,

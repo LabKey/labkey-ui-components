@@ -1,0 +1,125 @@
+@mixin shadow($level: 1, $background: black) {
+  @if $level == 1 { box-shadow: 0 1px   3px rgba(0,0,0,0.12), 0   1px 2px rgba($background,0.24) }
+  @else if $level == 2 { box-shadow: 0 3px   6px rgba(0,0,0,0.16), 0   3px 6px rgba($background,0.23) }
+  @else if $level == 3 { box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0   6px 6px rgba($background,0.23) }
+  @else if $level == 4 { box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba($background,0.22) }
+  @else if $level == 5 { box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba($background,0.22) }
+}
+
+// cards scalars
+$scale: 8px;
+
+$block-height: 18 * $scale;
+$block-width: 31 * $scale;
+
+$card-min-height: 32 * $scale;
+$card-width: $block-width;
+$circle-size: 12 * $scale;
+
+.cards__card {
+  display: block;
+  width: $card-width;
+  border-radius: 2px;
+  height: $card-min-height;
+  background: white;
+  padding: 0;
+  transition: all 250ms;
+  font-size: 14px;
+
+  // these align the contents within a col-*
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: $scale * 2;
+
+  .cards__card-content {
+    color: #777;
+    margin: ($scale * 2) ($scale * 3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 90px;
+  }
+
+  .cards__card-title {
+    text-transform: uppercase;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: $scale;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @include shadow(1);
+
+  // focus isn't going to be visible unless it has an href or a tabindex
+  &:hover,&:focus {
+    text-decoration: none;
+
+    @include shadow(3);
+    transform: translateY(-5px);
+    cursor: pointer;
+
+    .cards__card-content {
+      color: #555;
+    }
+    .cards__card-title {
+      color: #333;
+    }
+  }
+
+  &:active {
+    @include shadow(2);
+    transform: translateY(-2px);
+
+    .cards__card-content {
+      color: #555;
+    }
+    .cards__card-title {
+      color: #333;
+    }
+  }
+}
+
+/* This parent can be any width and height */
+.cards__block-center {
+  border-radius: 2px;
+  text-align: center;
+  background: linear-gradient(0.15turn, $brand-secondary, $brand-primary) no-repeat center;
+
+  /* May want to do this if there is risk the container may be narrower than the element inside */
+  white-space: nowrap;
+
+  height: $block-height;
+  width: $block-width;
+
+  /* The ghost, nudged to maintain perfect centering */
+  &:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; /* Adjusts for spacing */
+  }
+}
+
+/* The element to be centered, can also be of any width and height */
+.cards__block-center-content {
+  display: inline-block;
+  vertical-align: middle;
+  height: $circle-size;
+  width: $circle-size;
+  background-color: white;
+  border-radius: 50%;
+  @include shadow(2);
+
+  img {
+    display: block;
+    margin: 11%;
+    height: 80%;
+    width: 80%;
+  }
+}
+
+.cards__block-disabled {
+  background: linear-gradient(0.15turn, #aaa, #eee) no-repeat center;
+}

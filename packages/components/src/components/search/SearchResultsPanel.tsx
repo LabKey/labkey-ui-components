@@ -15,12 +15,10 @@
  */
 import * as React from 'react'
 import { Panel } from "react-bootstrap";
-
-import { SearchResultsModel } from "../../models";
+import { SearchResultsModel } from "./models";
 import { SearchResultCard } from "./SearchResultCard";
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-
 
 interface Props {
     model: SearchResultsModel

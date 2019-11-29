@@ -114,7 +114,7 @@ import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
 
-import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
+import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo } from './models';
 import {
     createQueryGridModelFilteredBySample,
     getSelected,
@@ -125,7 +125,6 @@ import {
     gridShowError,
     queryGridInvalidate,
     schemaGridInvalidate,
-    searchUsingIndex,
     setSelected
 } from './actions';
 import {
@@ -194,6 +193,8 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
+import { searchUsingIndex}  from './components/search/actions'
+import { SearchResultsModel}  from './components/search/models'
 import {
     deleteSampleSet,
     getSampleDeleteConfirmationData,

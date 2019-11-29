@@ -16,14 +16,12 @@
 import * as React from 'react'
 import { fromJS } from 'immutable';
 import { mount } from "enzyme";
-
 import { SearchResultCard } from "./SearchResultCard";
 import { SearchResultsPanel } from "./SearchResultsPanel";
-import { SearchResultsModel } from "../../models";
-
-import entitiesJSON from "../../test/data/searchResults.json";
+import { SearchResultsModel } from "./models";
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
+import entitiesJSON from "../../test/data/searchResults.json";
 
 describe("<SearchResultsPanel/>", () => {
 

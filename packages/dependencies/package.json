@@ -1,12 +1,12 @@
 {
   "name": "@labkey/dependencies",
-  "version": "0.0.10",
+  "version": "0.0.11-fb-smPermissionsManagement.0",
   "description": "Shared internal package dependencies for LabKey apps",
   "publishConfig": {
     "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
   },
   "dependencies": {
-    "@labkey/api": "0.0.24",
+    "@labkey/api": "0.0.26-fb-smPermissionsManagement.0",
     "@types/classnames": "2.2.8",
     "@types/react": "16.8.19",
     "@types/react-dom": "16.8.4",

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.2.0-fb-smPermissionsManagement.1",
+  "version": "0.2.0-fb-smPermissionsManagement.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -42,7 +42,7 @@
     "@fortawesome/free-regular-svg-icons": "5.11.2",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
-    "@labkey/dependencies": "0.0.10",
+    "@labkey/dependencies": "0.0.11-fb-smPermissionsManagement.0",
     "bootstrap": "3.4.1",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",

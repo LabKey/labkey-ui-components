@@ -199,7 +199,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return(
             <div>
                 <p>Fields using this can hold special values to indicate data that has failed review or was originally missing. Administrators can set custom Missing Value indicators at the site and folder levels.</p>
-                <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=manageMissing">Missing Value Indicators</a></p>
+                <p>Learn more about using <a target='_blank' href="https://www.labkey.org/Documentation/wiki-page.view?name=manageMissing">Missing Value Indicators</a>.</p>
             </div>
         )
     };

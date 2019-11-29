@@ -278,6 +278,9 @@ import {
     SAMPLE_TYPE_CONCEPT_URI
 } from "./components/domainproperties/constants";
 import { ExpandableContainer } from "./components/ExpandableContainer";
+import { PermissionAssignments } from "./components/permissions/PermissionAssignments";
+import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
+import { PermissionsProviderProps, SecurityPolicy, SecurityRole } from './components/permissions/models';
 
 
 export {
@@ -596,5 +599,12 @@ export {
     // devTools functions
     applyDevTools,
     devToolsActive,
-    toggleDevTools
+    toggleDevTools,
+
+    // Permissions
+    PermissionAssignments,
+    PermissionsPageContextProvider,
+    PermissionsProviderProps,
+    SecurityPolicy,
+    SecurityRole
 }

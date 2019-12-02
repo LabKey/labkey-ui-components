@@ -20,92 +20,9 @@ import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import sampleSet2QueryInfo from "./test/data/sampleSet2-getQueryDetails.json";
 import { QueryGridModel, QueryInfo, SchemaQuery } from './components/base/models/model';
 
-const editableGridWithData = {
-    "cellMessages": Map<string, CellMessage>({
-        "1-0": "description 1 message"
-    }),
-    "cellValues": Map<string, List<ValueDescriptor>>({
-        "0-0": List<ValueDescriptor>([
-            {
-                "display": "S-1",
-                "raw": "S-1"
-            }
-        ]),
-        "0-1": List<ValueDescriptor>([
-            {
-                "display": "S-2",
-                "raw": "S-2"
-            }
-        ]),
-        "0-2": List<ValueDescriptor>([
-            {
-                "display": "S-3",
-                "raw": "S-3"
-            }
-        ]),
-        "1-0": List<ValueDescriptor>([
-            {
-                "display": "Description 1",
-                "raw": "Description 1"
-            }
-        ]),
-        "1-1": List<ValueDescriptor>([
-            {
-                "display": "Description 2",
-                "raw": "Description 2"
-            }
-        ]),
-        "1-2": List<ValueDescriptor>([
-            {
-                "display": "Description 3",
-                "raw": "Description 3"
-            }
-        ]),
-        "5-0": List<ValueDescriptor>([
-            {
-                "display": "requirement 1",
-                "raw": "requirement 1"
-            }
-        ])
-    }),
-    "colCount": 5,
-    "id": "insert-samples|samples\/sample set 2",
-    "isPasting": false,
-    "focusColIdx": 1,
-    "focusRowIdx": 1,
-    "numPastedRows": 0,
-    "rowCount": 3,
-    "selectedColIdx": 1,
-    "selectedRowIdx": 1,
-    "selectionCells": [
-
-    ]
-};
-
 const schemaQ = new SchemaQuery({
     schemaName: "samples",
     queryName: "Sample Set 2"
-});
-
-const queryGridModel = new QueryGridModel( {
-    schema: schemaQ.schemaName,
-    query: schemaQ.queryName,
-    id: 'insert-samples|samples/sample set 2',
-    queryInfo: QueryInfo.fromJSON(sampleSet2QueryInfo),
-    editable: true,
-    data: Map<any, Map<string, any>>(
-        {
-            "1": Map<string, any>({
-                "Description": "S-1 Description"
-            }),
-            "2": Map<string, any>({
-                "Description": "S-2 Description"
-            })
-        }
-    ),
-    dataIds: List<any>([
-        "1", "2"
-    ])
 });
 
 beforeEach(() => {

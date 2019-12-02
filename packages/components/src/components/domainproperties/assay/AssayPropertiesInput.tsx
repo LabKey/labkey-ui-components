@@ -132,10 +132,7 @@ export function PlateTemplatesInput(props: InputProps) {
                     <>
                         <p>
                             Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
-                            For additional information refer to the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=editPlateTemplate" target="_blank">help documentation</a>.
-                        </p>
-                        <p>
-                            <small><i>This field is required.</i></small>
+                            For additional information refer to the <a href={LABKEY.helpLinkPrefix + "editPlateTemplate"} target="_blank">help documentation</a>.
                         </p>
                     </>
                 )
@@ -200,9 +197,6 @@ export function MetadataInputFormatsInput(props: InputProps) {
                         </p>
                         <p>
                             <strong>Combined File Upload (metadata & run data): </strong> Metadata and run data are combined into a single file upload.
-                        </p>
-                        <p>
-                            <small><i>This field is required.</i></small>
                         </p>
                     </>
                 )
@@ -380,7 +374,7 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                             The extension of the script file identifies the script engine that will be used to run the validation script. For example,
                             a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
                             configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                            the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=configureScripting" target="_blank">help documentation</a>.
+                            the <a href={LABKEY.helpLinkPrefix + "configureScripting"} target="_blank">help documentation</a>.
                         </p>
                     </>
                 )
@@ -431,13 +425,13 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 <p>
                                     The full path to the transform script file. Transform scripts run before the assay data is imported and can reshape the data file to match
                                     the expected import format. For help writing a transform script refer to
-                                    the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=programmaticQC" target="_blank">Programmatic Quality Control & Transformations</a> guide.
+                                    the <a href={LABKEY.helpLinkPrefix + "programmaticQC"} target="_blank">Programmatic Quality Control & Transformations</a> guide.
                                 </p>
                                 <p>
                                     The extension of the script file identifies the script engine that will be used to run the validation script. For example,
                                     a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
                                     configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                                    the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=configureScripting" target="_blank">help documentation</a>.
+                                    the <a href={LABKEY.helpLinkPrefix + "configureScripting"} target="_blank">help documentation</a>.
                                 </p>
                             </>
                         )

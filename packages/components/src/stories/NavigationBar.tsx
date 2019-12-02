@@ -7,14 +7,9 @@ import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 import { List, Map } from 'immutable'
-
-import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
-import { NavigationBar } from '../components/navigation/NavigationBar';
-
+import { AppURL, User, NavigationBar, MenuSectionConfig, MenuItemModel, MenuSectionModel, ProductMenuModel } from '..';
+import { ICON_URL } from "./mock";
 import './stories.scss'
-import { User } from '../components/base/models/model';
-import { AppURL } from '../url/AppURL';
 
 const fruitTree = [
     "Apple",
@@ -74,7 +69,7 @@ storiesOf('NavigationBar', module)
             productId,
         });
 
-        const brandIcon = text("brand icon", "http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png");
+        const brandIcon = text("brand icon", ICON_URL);
         const brandText = text('brand text', 'Logo');
         const brand = brandIcon ? <img src={brandIcon}  height="38px" width="38px"/> : <b>{brandText}</b>;
 
@@ -195,14 +190,14 @@ storiesOf('NavigationBar', module)
 
         let fruitsSectionConfigs = new MenuSectionConfig({
             iconCls:  text('Fruit Section iconClass', undefined, fruitGroup),
-            iconURL: text("Fruit Section iconURL", "http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png", fruitGroup),
+            iconURL: text("Fruit Section iconURL", ICON_URL, fruitGroup),
             maxItemsPerColumn: number("Max Fruits per column", 2, {}, fruitGroup),
             maxColumns: number("Max Fruit columns", 1, {}, fruitGroup),
         });
 
         let vegetablesSectionConfigs = new MenuSectionConfig( {
             iconCls:  text('Veg Section iconClass', undefined, vegGroup),
-            iconURL: text("Veg Section iconURL", "http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png", vegGroup),
+            iconURL: text("Veg Section iconURL", ICON_URL, vegGroup),
             maxItemsPerColumn: number("Max veggies per column", 2, {}, vegGroup),
             maxColumns: number("Max veggie columns", 1, {}, vegGroup),
         });

@@ -17,10 +17,8 @@ import * as React from 'react';
 import { Map, fromJS } from 'immutable';
 import { storiesOf } from "@storybook/react";
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-
-import { SearchResultCard } from "../components/search/SearchResultCard";
-import { SearchResultsPanel } from "../components/search/SearchResultsPanel";
-import { SearchResultsModel } from "../components/search/models";
+import { ICON_URL } from "./mock";
+import { SearchResultsModel, SearchResultsPanel, SearchResultCard } from "..";
 import entitiesJSON from "../test/data/searchResults.json";
 import './stories.scss'
 
@@ -29,7 +27,7 @@ storiesOf('SearchResults', module)
     .add("search result card", () => {
         return (
             <SearchResultCard
-                iconUrl={'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'}
+                iconUrl={ICON_URL}
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
@@ -46,7 +44,7 @@ storiesOf('SearchResults', module)
 
         return (
             <SearchResultsPanel
-                iconUrl={'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'}
+                iconUrl={ICON_URL}
                 model={model}
             />
         )

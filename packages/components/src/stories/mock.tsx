@@ -70,6 +70,7 @@ import getMaxPhiLevelJson from "../test/data/security-GetMaxPhiLevel.json";
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
 
+export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {

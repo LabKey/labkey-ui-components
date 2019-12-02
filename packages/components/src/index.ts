@@ -193,8 +193,8 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
-import { searchUsingIndex}  from './components/search/actions'
-import { SearchResultsModel}  from './components/search/models'
+import { searchUsingIndex }  from './components/search/actions'
+import { SearchResultsModel }  from './components/search/models'
 import {
     deleteSampleSet,
     getSampleDeleteConfirmationData,

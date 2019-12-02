@@ -4,11 +4,7 @@ import {Button, Col, Row} from "react-bootstrap";
 import {List} from "immutable";
 import {isFieldFullyLocked} from "./propertiesUtil";
 import {createFormInputId, createFormInputName} from "./actions";
-import {
-    DOMAIN_COND_FORMAT,
-    DOMAIN_RANGE_VALIDATOR,
-    DOMAIN_REGEX_VALIDATOR
-} from "./constants";
+import {DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR} from "./constants";
 import {ConditionalFormat, DomainField, PropertyValidator} from "./models";
 import {ValidatorModal} from "./validation/ValidatorModal";
 import {RegexValidationOptions} from "./validation/RegexValidationOptions";
@@ -61,7 +57,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Range validators allow you to specify numeric comparisons that must be satisfied.</p>
 
-                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#range'>Range Validation</a>.</p>
+                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "fieldEditor#range"}>Range Validation</a>.</p>
             </>
         )
     };
@@ -71,7 +67,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>RegEx validators allow you to specify a regular expression that defines what string values are valid.</p>
 
-                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex'>Regular Expression Validation</a>.</p>
+                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "fieldEditor#regex"}>Regular Expression Validation</a>.</p>
             </>
         )
     };
@@ -81,7 +77,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Conditional formats allow targeted display formatting for values that meet defined conditions.</p>
 
-                <p>Learn more about using <a target='_blank' href='https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#conditional'>Conditional Formats</a>.</p>
+                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "fieldEditor#conditional"}>Conditional Formats</a>.</p>
             </>
         )
     };

@@ -50,7 +50,7 @@ export class PrincipalDetailsPanel extends React.PureComponent<Props, any> {
                             {this.renderEffectiveRoles()}
                             {/*TODO when groups are implemented, add "Member of" for users and "Members" for groups*/}
                         </>
-                        : <div>No user/group selected.</div>
+                        : <div>No user selected.</div> // TODO when groups are implemented, change this text accordingly
                     }
                 </Panel.Body>
             </Panel>

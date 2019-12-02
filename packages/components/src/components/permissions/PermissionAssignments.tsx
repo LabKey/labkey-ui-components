@@ -13,11 +13,14 @@ import { LoadingSpinner } from "../../components/base/LoadingSpinner";
 import { Alert } from "../../components/base/Alert";
 
 interface Props extends PermissionsProviderProps {
+    title?: string
+    containerPath: string
     policy: SecurityPolicy
     onChange: (policy: SecurityPolicy) => any
     onSuccess: () => any
     rolesToShow?: List<string>
     typesToShow?: List<string>
+    showDetailsPanel?: boolean
 }
 
 interface State {
@@ -30,7 +33,9 @@ interface State {
 export class PermissionAssignments extends React.PureComponent<Props, State> {
 
     static defaultProps = {
-        typesToShow: List<string>(['g', 'u'])
+        title: 'Security roles and assignments',
+        typesToShow: List<string>(['g', 'u']),
+        showDetailsPanel: true
     };
 
     constructor(props: Props) {
@@ -61,14 +66,23 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     };
 
     onSavePolicy = () => {
+        const { containerPath, policy} = this.props;
+
         this.setState(() => ({submitting: true}));
 
         Security.savePolicy({
-            containerPath: LABKEY.container.id,
-            policy: {policy: this.props.policy},
+            containerPath: containerPath,
+            policy: {policy},
             success: (response) => {
-                this.props.onSuccess();
-                this.setState(() => ({selectedPrincipal: undefined, submitting: false, dirty: false}));
+                if (response.success) {
+                    this.props.onSuccess();
+                    this.setState(() => ({selectedPrincipal: undefined, submitting: false, dirty: false}));
+                }
+                else {
+                    // TODO when this is used in LKS, need to support response.needsConfirmation
+                    const message = response.message.replace('Are you sure that you want to continue?', '');
+                    this.setState(() => ({saveErrorMsg: message, submitting: false}));
+                }
             },
             failure: (response) => {
                 this.setState(() => ({saveErrorMsg: response.exception, submitting: false}));
@@ -77,7 +91,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { policy, rolesToShow, typesToShow, roles, rolesByUniqueName, principals, error } = this.props;
+        const { title, policy, rolesToShow, typesToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel } = this.props;
         const { selectedPrincipal, saveErrorMsg, submitting, dirty } = this.state;
         const isLoading = (!policy || !roles || !principals) && !error;
 
@@ -93,10 +107,10 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
 
         return (
             <Row>
-                <Col xs={12} md={8}>
+                <Col xs={12} md={showDetailsPanel ? 8 : 12}>
                     <Panel>
                         <Panel.Heading>
-                            Roles and Assignments
+                            {title}
                         </Panel.Heading>
                         <Panel.Body className={'permissions-assignment-panel'}>
                             {visibleRoles.map((role, i) => {
@@ -127,13 +141,13 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                         </Panel.Body>
                     </Panel>
                 </Col>
-                <Col xs={12} md={4}>
+                {showDetailsPanel && <Col xs={12} md={4}>
                     <PrincipalDetailsPanel
                         principal={selectedPrincipal}
                         policy={policy}
                         rolesByUniqueName={rolesByUniqueName}
                     />
-                </Col>
+                </Col>}
             </Row>
         )
     }

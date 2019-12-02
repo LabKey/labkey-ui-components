@@ -2,6 +2,15 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.1.1
+*Released*: 2 December 2019
+* Misc fixes and cleanup post package consolidation
+    * add missing "Map" imports from immutable
+    * fix a few usages of this.state() that weren't using callback version
+    * remove source-map setting from webpack.config.js
+    * remove unneeded package.json dependencies and devDependencies
+    * replace hardcoded documentation links with LABKEY.helpLinkPrefix
+
 ### version 0.1.0
 *Released*: 27 November 2019
 * Consolidate all `@glass` packages into this single `@labkey/components` package. The release notes for the previous

@@ -11,7 +11,7 @@ exports[`<PageDetailHeader/> default props 1`] = `
       className="detail__header--image-container"
     >
       <img
-        alt="-icon"
+        alt="default-icon"
         className="detail__header-icon"
         height="100%"
         src="/labkey//default.svg"

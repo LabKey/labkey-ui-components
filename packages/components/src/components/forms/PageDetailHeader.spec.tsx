@@ -24,7 +24,7 @@ describe("<PageDetailHeader/>", () => {
 
    test("default props", () => {
       const component = (
-          <PageDetailHeader title={'Title'} user={new User()}/>
+          <PageDetailHeader title={'Title'} user={new User()} iconSrc={'default'}/>
       );
 
       const tree = renderer.create(component).toJSON();

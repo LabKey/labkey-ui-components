@@ -20,7 +20,7 @@ import { List, Map } from 'immutable'
 import { initBrowserHistoryState } from './util/global'
 import { DataViewInfo, EditorModel, LookupStore } from './models'
 import { Lineage } from './components/lineage/models';
-import { IUser } from "./components/forms/model";
+import { IUser } from './components/forms/model';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { naturalSort, resolveSchemaQuery } from './util/utils';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';

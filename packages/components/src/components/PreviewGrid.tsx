@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
-import { QueryInfo, SchemaQuery } from "./base/models/model";
-import { LoadingSpinner } from "./base/LoadingSpinner";
-import { Grid } from "./base/Grid";
-import { getQueryDetails, selectRows } from "../query/api";
+import { QueryInfo, SchemaQuery } from './base/models/model';
+import { LoadingSpinner } from './base/LoadingSpinner';
+import { Grid } from './base/Grid';
+import { getQueryDetails, selectRows } from '../query/api';
 
 interface PreviewGridProps {
     schemaQuery: SchemaQuery,

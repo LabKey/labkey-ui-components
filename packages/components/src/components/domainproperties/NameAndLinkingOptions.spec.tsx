@@ -1,14 +1,16 @@
-import {mount} from "enzyme";
-import {createFormInputId} from "./actions";
+import { mount } from 'enzyme';
+import { createFormInputId } from './actions';
 import {
     DOMAIN_FIELD_DESCRIPTION,
-    DOMAIN_FIELD_IMPORTALIASES, DOMAIN_FIELD_LABEL, DOMAIN_FIELD_URL,
-    STRING_RANGE_URI
-} from "./constants";
-import * as React from "react";
-import toJson from "enzyme-to-json";
-import {DomainField} from "./models";
-import {NameAndLinkingOptions} from "./NameAndLinkingOptions";
+    DOMAIN_FIELD_IMPORTALIASES,
+    DOMAIN_FIELD_LABEL,
+    DOMAIN_FIELD_URL,
+    STRING_RANGE_URI,
+} from './constants';
+import * as React from 'react';
+import toJson from 'enzyme-to-json';
+import { DomainField } from './models';
+import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 
 
 describe('NameAndLinkingOptions', () => {

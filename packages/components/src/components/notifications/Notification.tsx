@@ -20,11 +20,11 @@ import moment from 'moment'
 import { NotificationItemModel, NotificationItemProps, Persistence } from './model'
 import { createNotification, setTrialBannerDismissSessionKey } from './actions'
 
-import { NotificationItem } from "./NotificationItem";
+import { NotificationItem } from './NotificationItem';
 
-import { dismissNotifications } from "./global";
+import { dismissNotifications } from './global';
 
-import { User } from "../base/models/model";
+import { User } from '../base/models/model';
 import { getDateFormat } from '../../util/Date';
 
 

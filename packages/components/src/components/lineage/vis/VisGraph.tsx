@@ -11,7 +11,7 @@ import {
     VisGraphClusterNode,
     VisGraphCombinedNode,
     VisGraphNode,
-    VisGraphOptions
+    VisGraphOptions,
 } from './VisGraphGenerator'
 import { LineageNode } from '../models'
 

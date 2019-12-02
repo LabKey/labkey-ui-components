@@ -16,8 +16,8 @@
 import React from 'reactn'
 import { Panel } from 'react-bootstrap'
 
-import { gridInit } from "../../actions";
-import { EditableGrid, EditableGridProps } from "./EditableGrid";
+import { gridInit } from '../../actions';
+import { EditableGrid, EditableGridProps } from './EditableGrid';
 import { QueryGridModel } from '../base/models/model';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 

@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import renderer from 'react-test-renderer'
-import { NavigationBar } from "./NavigationBar";
+import { NavigationBar } from './NavigationBar';
 
 describe("<NavigationBar/>", () => {
 

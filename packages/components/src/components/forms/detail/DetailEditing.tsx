@@ -19,10 +19,10 @@ import { List, Map } from 'immutable'
 import Formsy from 'formsy-react'
 import { Utils } from '@labkey/api'
 
-import { updateRows } from "../../../query/api";
-import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from "./DetailEditRenderer";
-import { Detail } from "./Detail";
-import { DetailPanelHeader } from "./DetailPanelHeader";
+import { updateRows } from '../../../query/api';
+import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
+import { Detail } from './Detail';
+import { DetailPanelHeader } from './DetailPanelHeader';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import { Alert } from '../../base/Alert';
 

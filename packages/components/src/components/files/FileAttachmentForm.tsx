@@ -15,16 +15,16 @@
  */
 import * as React from 'react'
 import { Button } from 'react-bootstrap'
-import { Map, List } from 'immutable'
+import { List, Map } from 'immutable'
 
 import { FormSection } from '../base/FormSection'
 import { Progress } from '../base/Progress'
 import { FileAttachmentContainer } from './FileAttachmentContainer'
-import { FileGridPreviewProps, FilePreviewGrid } from "./FilePreviewGrid";
-import { LoadingSpinner } from "../base/LoadingSpinner";
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from "./actions";
-import { InferDomainResponse } from "../base/models/model";
-import { inferDomainFromFile } from "../base/actions";
+import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
+import { InferDomainResponse } from '../base/models/model';
+import { inferDomainFromFile } from '../base/actions';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

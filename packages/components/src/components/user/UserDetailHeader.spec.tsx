@@ -2,8 +2,8 @@ import * as React from 'react';
 import renderer from 'react-test-renderer'
 import { fromJS } from 'immutable';
 import { UserDetailHeader } from './UserDetailHeader';
-import { ASSAYDESIGNER, READER } from "../../test/data/users";
-import { Button } from "react-bootstrap";
+import { ASSAYDESIGNER, READER } from '../../test/data/users';
+import { Button } from 'react-bootstrap';
 
 
 describe("<UserDetailHeader/>", () => {

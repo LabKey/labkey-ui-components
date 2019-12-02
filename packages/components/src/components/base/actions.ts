@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { AssayDOM, Ajax, Utils, Assay } from '@labkey/api'
+import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api'
 
-import { AssayDefinitionModel, InferDomainResponse } from "./models/model";
-import { buildURL } from "../../url/ActionURL";
+import { AssayDefinitionModel, InferDomainResponse } from './models/model';
+import { buildURL } from '../../url/ActionURL';
 
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {

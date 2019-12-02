@@ -3,8 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { fromJS } from 'immutable'
-import { getUserLastLogin, getUserPermissionsDisplay } from "./actions";
-import { ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, GUEST, READER } from "../../test/data/users";
+import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
+import { ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, GUEST, READER } from '../../test/data/users';
 
 describe('User actions', () => {
 

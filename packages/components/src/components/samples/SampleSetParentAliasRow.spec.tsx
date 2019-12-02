@@ -2,8 +2,8 @@ import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
-import {SampleSetParentAliasRow} from "./SampleSetParentAliasRow";
-import {IParentOption, IParentAlias} from "./models";
+import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';
+import { IParentAlias, IParentOption } from './models';
 
 describe("<SampleSetParentAliasRow/>", () => {
 

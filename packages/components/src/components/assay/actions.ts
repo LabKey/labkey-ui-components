@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable'
-import { ActionURL, Ajax, Filter, Utils, AssayDOM } from '@labkey/api'
+import { ActionURL, Ajax, AssayDOM, Filter, Utils } from '@labkey/api'
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models'
 import { getStateQueryGridModel } from '../../models';

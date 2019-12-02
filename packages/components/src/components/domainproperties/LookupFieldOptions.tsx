@@ -1,17 +1,17 @@
-import * as React from "react";
-import { Checkbox, Col, Row } from "react-bootstrap";
-import { List } from "immutable";
-import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from "./actions";
+import * as React from 'react';
+import { Checkbox, Col, Row } from 'react-bootstrap';
+import { List } from 'immutable';
+import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';
 import {
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
-    DOMAIN_VALIDATOR_LOOKUP
-} from "./constants";
-import { IDomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from "./models";
-import { FolderSelect, SchemaSelect, TargetTableSelect } from "./Lookup/Fields";
+    DOMAIN_VALIDATOR_LOOKUP,
+} from './constants';
+import { IDomainField, IFieldChange, ITypeDependentProps, PropertyValidator } from './models';
+import { FolderSelect, SchemaSelect, TargetTableSelect } from './Lookup/Fields';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface LookupFieldProps extends ITypeDependentProps {

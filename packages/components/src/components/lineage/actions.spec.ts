@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable'
 import { Location } from '../../util/URL'
-import { getLocationString } from "./actions";
+import { getLocationString } from './actions';
 
 describe("lineage actions", () => {
 

@@ -17,7 +17,7 @@ import * as React from 'react'
 import classNames from 'classnames'
 import { Utils } from '@labkey/api'
 
-import { fileMatchesAcceptedFormat } from "./actions";
+import { fileMatchesAcceptedFormat } from './actions';
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

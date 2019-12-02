@@ -18,7 +18,7 @@ import { Filter } from '@labkey/api'
 import { AssayProtocolModel } from '../components/domainproperties/models'
 import { fetchProtocol } from '../components/domainproperties/actions'
 
-import { getQueryDetails, selectRows } from "../query/api";
+import { getQueryDetails, selectRows } from '../query/api';
 import { AppURL, spliceURL } from '../url/AppURL';
 import { SCHEMAS } from '../components/base/models/schemas';
 

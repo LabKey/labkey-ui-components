@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { DropdownButton } from "react-bootstrap";
+import { DropdownButton } from 'react-bootstrap';
 
 interface Props {
     disabled: boolean

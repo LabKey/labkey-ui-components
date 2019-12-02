@@ -21,7 +21,7 @@ import { FOCUS_FLAG } from './constants'
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api'
 import { QuerySelectOwnProps } from './QuerySelect'
 import { IUser, QuerySelectModel, QuerySelectModelProps } from './model'
-import { getUsers, setUsers } from "../../global";
+import { getUsers, setUsers } from '../../global';
 import { similaritySortFactory } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 import { PermissionTypes } from '../base/models/constants';

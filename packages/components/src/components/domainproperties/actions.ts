@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from "immutable";
-import { Domain, Query, Security, Ajax, Utils } from "@labkey/api";
+import { List, Map } from 'immutable';
+import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -26,22 +26,22 @@ import {
     DOMAIN_FIELD_TYPE,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-} from "./constants";
+} from './constants';
 
 import {
+    AssayProtocolModel,
     decodeLookup,
-    updateSampleField,
     DomainDesign,
+    DomainException,
     DomainField,
+    DomainFieldError,
+    IBannerMessage,
+    IDomainField,
+    IFieldChange,
     PROP_DESC_TYPES,
     QueryInfoLite,
-    DomainException,
-    DomainFieldError,
-    IFieldChange,
-    IBannerMessage,
-    AssayProtocolModel,
-    IDomainField,
-} from "./models";
+    updateSampleField,
+} from './models';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../util/utils';
 import { processSchemas } from '../base/models/schemas';

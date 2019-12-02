@@ -15,7 +15,7 @@
  */
 import createHistory from 'history/createBrowserHistory'
 
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from 'reactn';
 
 /**
  * Initialize the global state object for this package.

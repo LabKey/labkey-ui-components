@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Col, FormControl, Row } from "react-bootstrap";
-import { isFieldFullyLocked } from "./propertiesUtil";
-import { createFormInputId, createFormInputName, getNameFromId } from "./actions";
-import { DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT } from "./constants";
-import { ITypeDependentProps } from "./models";
+import { Col, FormControl, Row } from 'react-bootstrap';
+import { isFieldFullyLocked } from './propertiesUtil';
+import { createFormInputId, createFormInputName, getNameFromId } from './actions';
+import { DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT } from './constants';
+import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface DateTimeFieldProps extends ITypeDependentProps {

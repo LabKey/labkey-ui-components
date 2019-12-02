@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap'
-import { QueryGridModel } from "../base/models/model";
+import { QueryGridModel } from '../base/models/model';
 
 interface Props {
     id: string

@@ -15,10 +15,10 @@
  */
 import * as React from 'react';
 import { fromJS, Map } from 'immutable';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs'
 
-import { PageDetailHeader } from "../components/forms/PageDetailHeader";
+import { PageDetailHeader } from '../components/forms/PageDetailHeader';
 import './stories.scss'
 import { CreatedModified } from '../components/base/CreatedModified';
 

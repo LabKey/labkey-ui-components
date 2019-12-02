@@ -18,10 +18,10 @@ import { List, Map } from 'immutable'
 
 
 import { QUERY_GRID_PREFIX } from '../constants'
-import { gridInit, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from '../actions'
-import { getStateQueryGridModel, getStateModelId } from '../models'
+import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../actions'
+import { getStateModelId, getStateQueryGridModel } from '../models'
 import { headerCell, headerSelectionCell } from '../renderers'
-import { getBrowserHistory } from "../util/global";
+import { getBrowserHistory } from '../util/global';
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 import { generateId } from '../util/utils';
 import { Grid, GridColumn, GridProps } from './base/Grid';

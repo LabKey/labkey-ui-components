@@ -16,10 +16,9 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
 import { mount, shallow } from 'enzyme';
+import { PaginationButtons } from './PaginationButtons';
 // We use mount instead of shallow because there is a bug in enzyme where simulating clicks with shallow is broken:
 // https://github.com/airbnb/enzyme/issues/386
-
-import { PaginationButtons } from './PaginationButtons';
 
 const noop = () => {};
 const prevSelector = '.pagination-buttons__prev';

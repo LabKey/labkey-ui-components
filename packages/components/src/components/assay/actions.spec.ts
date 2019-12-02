@@ -16,12 +16,12 @@
 import { List } from 'immutable'
 
 
-import { getImportItemsForAssayDefinitions } from "./actions";
-import { getStateQueryGridModel } from "../../models";
-import { initQueryGridState } from "../../global";
-import { ASSAY_DEFINITION_MODEL } from "../../test/data/constants";
-import sampleSet2QueryInfo from "../../test/data/sampleSet2-getQueryDetails.json";
-import { AssayDefinitionModel, SchemaQuery, QueryInfo } from '../../index';
+import { getImportItemsForAssayDefinitions } from './actions';
+import { getStateQueryGridModel } from '../../models';
+import { initQueryGridState } from '../../global';
+import { ASSAY_DEFINITION_MODEL } from '../../test/data/constants';
+import sampleSet2QueryInfo from '../../test/data/sampleSet2-getQueryDetails.json';
+import { AssayDefinitionModel, QueryInfo, SchemaQuery } from '../../index';
 
 beforeAll(() => {
     initQueryGridState();

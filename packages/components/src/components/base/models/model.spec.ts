@@ -21,14 +21,14 @@ import {
     QueryColumn,
     QueryGridModel,
     QueryInfo,
-    SchemaQuery
+    SchemaQuery,
 } from './model'
 
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
-import sampleSetQueryInfo from "../../../test/data/sampleSet-getQueryDetails.json";
-import nameExpSetQueryColumn from "../../../test/data/NameExprParent-QueryColumn.json";
-import sampleSet3QueryColumn from "../../../test/data/SampleSet3Parent-QueryColumn.json";
+import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.json';
+import nameExpSetQueryColumn from '../../../test/data/NameExprParent-QueryColumn.json';
+import sampleSet3QueryColumn from '../../../test/data/SampleSet3Parent-QueryColumn.json';
 
 describe("QueryGridModel", () => {
 

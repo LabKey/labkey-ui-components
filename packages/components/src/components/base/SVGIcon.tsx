@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import {Utils} from '@labkey/api'
+import { Utils } from '@labkey/api'
 
-import { imageURL } from "../../url/ActionURL";
+import { imageURL } from '../../url/ActionURL';
 
 export enum Theme {
     DEFAULT,

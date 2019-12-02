@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
 
-import { getStateQueryGridModel } from "../models";
-import { QueryInfoForm } from "../components/forms/QueryInfoForm";
-import * as constants from "../test/data/constants";
-import { gridInit } from "../actions";
+import { getStateQueryGridModel } from '../models';
+import { QueryInfoForm } from '../components/forms/QueryInfoForm';
+import * as constants from '../test/data/constants';
+import { gridInit } from '../actions';
 import './stories.scss'
 import { getQueryGridModel } from '../global';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';

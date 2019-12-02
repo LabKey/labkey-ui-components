@@ -1,9 +1,7 @@
-import {
-    URLResolver, parsePathName
-} from './URLResolver'
+import { parsePathName, URLResolver } from './URLResolver'
 
-import {fromJS} from "immutable";
-import entitiesJSON from "../test/data/sampleSetSearchResult.json";
+import { fromJS } from 'immutable';
+import entitiesJSON from '../test/data/sampleSetSearchResult.json';
 
 
 describe("resolveSearchUsingIndex", () => {

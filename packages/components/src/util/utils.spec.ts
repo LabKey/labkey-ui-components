@@ -32,7 +32,7 @@ import {
     resolveSchemaQuery,
     similaritySortFactory,
     toLowerSafe,
-    unorderedEqual
+    unorderedEqual,
 } from './utils'
 import { PermissionTypes } from '../components/base/models/constants'
 

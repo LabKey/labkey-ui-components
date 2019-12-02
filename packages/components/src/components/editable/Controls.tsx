@@ -16,7 +16,7 @@
 import * as React from 'react'
 import { Button, MenuItem, SplitButton } from 'react-bootstrap'
 import classNames from 'classnames'
-import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 export type PlacementType = 'top' | 'bottom' | 'both';
 

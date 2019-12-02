@@ -16,7 +16,7 @@
 import { fromJS, List, Map } from 'immutable'
 
 import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './AppURLResolver'
-import { URLResolver } from "./URLResolver";
+import { URLResolver } from './URLResolver';
 import { AppURL } from '../url/AppURL';
 
 describe('URL Resolvers', () => {

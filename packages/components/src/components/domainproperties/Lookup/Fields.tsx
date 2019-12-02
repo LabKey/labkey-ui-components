@@ -1,12 +1,12 @@
-import * as React from "react";
-import { List } from "immutable";
-import { FormControl } from "react-bootstrap";
+import * as React from 'react';
+import { List } from 'immutable';
+import { FormControl } from 'react-bootstrap';
 
-import { decodeLookup, encodeLookup, PropDescType } from "../models";
+import { decodeLookup, encodeLookup, PropDescType } from '../models';
 
-import { ILookupContext, LookupContextConsumer } from "./Context";
-import { createFormInputName } from "../actions";
-import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA } from "../constants";
+import { ILookupContext, LookupContextConsumer } from './Context';
+import { createFormInputName } from '../actions';
+import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA } from '../constants';
 import { Container, SchemaDetails } from '../../base/models/model';
 
 interface ILookupProps {

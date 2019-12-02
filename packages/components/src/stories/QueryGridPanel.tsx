@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs'
 
-import { QueryGridPanel } from "../components/QueryGridPanel";
-import { getStateQueryGridModel } from "../models";
+import { QueryGridPanel } from '../components/QueryGridPanel';
+import { getStateQueryGridModel } from '../models';
 import './stories.scss'
 import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';

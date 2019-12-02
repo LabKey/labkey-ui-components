@@ -23,9 +23,9 @@ import {
     ISampleSetOption,
     SampleIdCreationModel,
     SampleSetOption,
-    SampleSetParentType
+    SampleSetParentType,
 } from './models';
-import { getSelected, getSelection } from "../../actions";
+import { getSelected, getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';

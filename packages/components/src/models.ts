@@ -21,11 +21,12 @@ import { getQueryGridModel, getQueryMetadata } from './global'
 import { DefaultGridLoader } from './components/GridLoader'
 import {
     IGridLoader,
-    IQueryGridModel, QueryColumn,
+    IQueryGridModel,
+    QueryColumn,
     QueryGridModel,
     QueryInfo,
     SchemaQuery,
-    ViewInfo
+    ViewInfo,
 } from './components/base/models/model';
 import { resolveSchemaQuery } from './util/utils';
 import { AppURL } from './url/AppURL';

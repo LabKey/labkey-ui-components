@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { Map, OrderedMap } from 'immutable'
 import { ActionURL, Ajax, Utils } from '@labkey/api'
-import { ChangePasswordModel } from "./models";
+import { ChangePasswordModel } from './models';
 import { caseInsensitive, hasAllPermissions } from '../../util/utils';
 import { SchemaQuery, User } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';

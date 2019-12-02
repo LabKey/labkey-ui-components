@@ -1,16 +1,10 @@
-
 import * as React from 'react';
-import {List} from "immutable";
-import {Button, Checkbox, Col, FormControl, Modal, Row} from "react-bootstrap";
-import { ActionURL } from "@labkey/api";
+import { List } from 'immutable';
+import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
+import { ActionURL } from '@labkey/api';
 
-import {
-    DATETIME_TYPE,
-    DomainField,
-    IFieldChange,
-    PropDescType
-} from "./models";
-import {createFormInputId, createFormInputName, getCheckedValue, getNameFromId} from "./actions";
+import { DATETIME_TYPE, DomainField, IFieldChange, PropDescType } from './models';
+import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
@@ -25,8 +19,8 @@ import {
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
     DOMAIN_FIELD_SHOWNINUPDATESVIEW,
-    DOMAIN_PHI_LEVELS
-} from "./constants";
+    DOMAIN_PHI_LEVELS,
+} from './constants';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface AdvancedSettingsProps {

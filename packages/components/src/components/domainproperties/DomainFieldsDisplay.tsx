@@ -16,8 +16,8 @@
 import * as React from 'react'
 import { Panel } from 'react-bootstrap'
 
-import { DomainDesign } from "./models";
-import { DOMAIN_FIELD_COLS } from "./constants";
+import { DomainDesign } from './models';
+import { DOMAIN_FIELD_COLS } from './constants';
 import { Grid } from '../base/Grid';
 
 type Props = {

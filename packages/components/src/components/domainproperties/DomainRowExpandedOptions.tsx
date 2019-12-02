@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-import { DomainField, IFieldChange } from "./models";
-import { NameAndLinkingOptions } from "./NameAndLinkingOptions";
-import { TextFieldOptions } from "./TextFieldOptions";
-import { BooleanFieldOptions } from "./BooleanFieldOptions";
-import { NumericFieldOptions } from "./NumericFieldOptions";
-import { DateTimeFieldOptions } from "./DateTimeFieldOptions";
-import { LookupFieldOptions } from "./LookupFieldOptions";
-import { List } from "immutable";
-import { ConditionalFormattingAndValidation } from "./ConditionalFormattingAndValidation";
-import { isFieldFullyLocked } from "./propertiesUtil";
-import { SampleFieldOptions } from "./SampleFieldOptions";
-import { Col } from "react-bootstrap";
+import * as React from 'react';
+import { DomainField, IFieldChange } from './models';
+import { NameAndLinkingOptions } from './NameAndLinkingOptions';
+import { TextFieldOptions } from './TextFieldOptions';
+import { BooleanFieldOptions } from './BooleanFieldOptions';
+import { NumericFieldOptions } from './NumericFieldOptions';
+import { DateTimeFieldOptions } from './DateTimeFieldOptions';
+import { LookupFieldOptions } from './LookupFieldOptions';
+import { List } from 'immutable';
+import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
+import { isFieldFullyLocked } from './propertiesUtil';
+import { SampleFieldOptions } from './SampleFieldOptions';
+import { Col } from 'react-bootstrap';
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField

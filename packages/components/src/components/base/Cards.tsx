@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import { SVGIcon } from "./SVGIcon";
+import { SVGIcon } from './SVGIcon';
 
 interface ICardProps {
     title: string

@@ -15,10 +15,10 @@
  */
 import * as React from 'react';
 import renderer from 'react-test-renderer'
-import { LoadingPage } from "./LoadingPage";
-import { shallow } from "enzyme";
-import { PageHeader } from "./PageHeader";
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingPage } from './LoadingPage';
+import { shallow } from 'enzyme';
+import { PageHeader } from './PageHeader';
+import { LoadingSpinner } from './LoadingSpinner';
 
 describe("<LoadingPage/>", () => {
     test("no props", () => {

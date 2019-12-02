@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Col, Form, Panel, Row } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from "@fortawesome/free-solid-svg-icons";
-import { Utils } from "@labkey/api";
+import { Col, Form, Panel, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { Utils } from '@labkey/api';
 
-import { AssayProtocolModel, DomainPanelStatus } from "../models";
-import { LK_ASSAY_DESIGNER_HELP_URL } from "../constants";
+import { AssayProtocolModel, DomainPanelStatus } from '../models';
+import { LK_ASSAY_DESIGNER_HELP_URL } from '../constants';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -19,9 +19,9 @@ import {
     PlateTemplatesInput,
     QCStatesInput,
     SaveScriptDataInput,
-    TransformScriptsInput
-} from "./AssayPropertiesInput";
-import { createFormInputName } from "../actions";
+    TransformScriptsInput,
+} from './AssayPropertiesInput';
+import { createFormInputName } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Alert } from '../../base/Alert';
 

@@ -17,7 +17,7 @@ import * as React from 'react'
 import { fromJS, Map } from 'immutable'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
-import { BreadcrumbCreate } from "./BreadcrumbCreate";
+import { BreadcrumbCreate } from './BreadcrumbCreate';
 import { AppURL } from '../../url/AppURL';
 
 const createdModifiedRow = Map<string, any>(fromJS({

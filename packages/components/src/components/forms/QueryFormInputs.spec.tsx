@@ -15,14 +15,14 @@
  */
 import * as React from 'react';
 import Formsy from 'formsy-react'
-import { List } from "immutable";
-import { QueryFormInputs } from "./QueryFormInputs";
-import { mount } from "enzyme";
-import { TextInput } from "./input/TextInput";
-import { DateInput } from "./input/DateInput";
-import { CheckboxInput } from "./input/CheckboxInput";
-import { FileInput } from "./input/FileInput";
-import { SelectInput } from "./input/SelectInput";
+import { List } from 'immutable';
+import { QueryFormInputs } from './QueryFormInputs';
+import { mount } from 'enzyme';
+import { TextInput } from './input/TextInput';
+import { DateInput } from './input/DateInput';
+import { CheckboxInput } from './input/CheckboxInput';
+import { FileInput } from './input/FileInput';
+import { SelectInput } from './input/SelectInput';
 import { initUnitTestMocks } from '../../testHelpers';
 import { getQueryDetails } from '../../query/api';
 import { SchemaQuery } from '../base/models/model';

@@ -11,7 +11,7 @@ import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs'
 import './stories.scss';
 import { Notification } from '../components/notifications/Notification';
 
-import { notificationInit } from "../test/setupUtils";
+import { notificationInit } from '../test/setupUtils';
 import { createNotification } from '../components/notifications/actions';
 import { User } from '../components/base/models/model';
 import { NotificationItemModel } from '../components/notifications/model';

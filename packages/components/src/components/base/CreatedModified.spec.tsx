@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import {Map, fromJS} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import { mount } from 'enzyme'
 
-import { CreatedModified } from "./CreatedModified";
+import { CreatedModified } from './CreatedModified';
 
 const createdRow = Map<string, any>(fromJS({
    Created: {

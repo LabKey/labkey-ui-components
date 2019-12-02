@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { number, withKnobs } from '@storybook/addon-knobs'
 import './stories.scss'
 import { PreviewGrid } from '../components/PreviewGrid';

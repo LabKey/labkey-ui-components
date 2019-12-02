@@ -16,7 +16,7 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
 
-import { FormTabs, FormStep, withFormSteps, WithFormStepsProps } from './FormStep'
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './FormStep'
 
 interface OwnProps {
    step?: number

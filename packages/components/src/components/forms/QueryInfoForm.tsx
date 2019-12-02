@@ -23,7 +23,7 @@ import { Utils } from '@labkey/api'
 
 import { selectRows } from '../../query/api'
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
-import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
 import { Tip } from '../base/Tip';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { number, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss'

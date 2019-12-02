@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { fromJS, List, Map } from "immutable";
-import { FileAttachmentForm } from "./FileAttachmentForm";
-import { shallow, mount } from "enzyme";
+import { fromJS, List, Map } from 'immutable';
+import { FileAttachmentForm } from './FileAttachmentForm';
+import { mount, shallow } from 'enzyme';
 
 describe("<FileAttachmentForm/>", () => {
 

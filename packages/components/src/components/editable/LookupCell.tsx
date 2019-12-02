@@ -21,7 +21,7 @@ import { List } from 'immutable'
 import { initLookup, modifyCell, searchLookup } from '../../actions'
 import { cancelEvent } from '../../events'
 import { LookupStore, ValueDescriptor } from '../../models'
-import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES, LOOKUP_DEFAULT_SIZE } from '../../constants'
+import { KEYS, LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
 import { QueryColumn } from '../base/models/model';
 
 const emptyList = List<ValueDescriptor>();

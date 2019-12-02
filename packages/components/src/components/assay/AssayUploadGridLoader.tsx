@@ -16,13 +16,13 @@
 import * as React from 'react'
 import { Map } from 'immutable'
 
-import { AssayWizardModel } from "./models";
+import { AssayWizardModel } from './models';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     IGridLoader,
     IGridResponse,
-    QueryGridModel
+    QueryGridModel,
 } from '../base/models/model';
 
 export class AssayUploadGridLoader implements IGridLoader {

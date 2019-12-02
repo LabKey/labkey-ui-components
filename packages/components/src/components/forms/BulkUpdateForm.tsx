@@ -1,6 +1,6 @@
-import * as React from "react";
-import { List, Map } from "immutable";
-import { Utils } from "@labkey/api";
+import * as React from 'react';
+import { List, Map } from 'immutable';
+import { Utils } from '@labkey/api';
 
 import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';

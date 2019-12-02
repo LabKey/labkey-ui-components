@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react'
-import { Popover, Button } from 'react-bootstrap'
+import { Button, Popover } from 'react-bootstrap'
 import Formsy, { withFormsy } from 'formsy-react'
 import { List, Record } from 'immutable'
 

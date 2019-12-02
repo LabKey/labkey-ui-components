@@ -15,9 +15,9 @@
  */
 import { fromJS } from 'immutable';
 
-import { initQueryGridState } from "../global";
-import { initBrowserHistoryState } from "../util/global";
-import { initMocks } from "./mock";
+import { initQueryGridState } from '../global';
+import { initBrowserHistoryState } from '../util/global';
+import { initMocks } from './mock';
 import { FileColumnRenderer } from '../renderers/FileColumnRenderer';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { initNotificationsState } from '../components/notifications/global';

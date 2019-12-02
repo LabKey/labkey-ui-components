@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { getStateQueryGridModel } from "../models";
+import { getStateQueryGridModel } from '../models';
 
 import './stories.scss'
 import * as constants from '../test/data/constants';

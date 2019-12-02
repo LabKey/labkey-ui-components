@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map } from 'immutable';
-import { resetQueryGridState } from "./global";
+import { resetQueryGridState } from './global';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 
-import sampleSet2QueryInfo from "./test/data/sampleSet2-getQueryDetails.json";
+import sampleSet2QueryInfo from './test/data/sampleSet2-getQueryDetails.json';
 import { QueryGridModel, QueryInfo, SchemaQuery } from './components/base/models/model';
 
 const editableGridWithData = {

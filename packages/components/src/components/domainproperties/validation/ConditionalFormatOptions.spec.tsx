@@ -1,15 +1,18 @@
-import {INTEGER_TYPE, TEXT_TYPE} from "../models";
-import {mount} from "enzyme";
-import * as React from "react";
-import toJson from "enzyme-to-json";
-import {createFormInputId} from "../actions";
+import { INTEGER_TYPE, TEXT_TYPE } from '../models';
+import { mount } from 'enzyme';
+import * as React from 'react';
+import toJson from 'enzyme-to-json';
+import { createFormInputId } from '../actions';
 import {
     DOMAIN_FIRST_FILTER_VALUE,
-    DOMAIN_SECOND_FILTER_VALUE, DOMAIN_VALIDATOR_BOLD, DOMAIN_VALIDATOR_ITALIC, DOMAIN_VALIDATOR_STRIKETHROUGH
-} from "../constants";
-import {ConditionalFormatOptions} from "./ConditionalFormatOptions";
-import conditionalFormat1 from "../../../test/data/conditionalFormat1.json";
-import conditionalFormat2 from "../../../test/data/conditionalFormat2.json";
+    DOMAIN_SECOND_FILTER_VALUE,
+    DOMAIN_VALIDATOR_BOLD,
+    DOMAIN_VALIDATOR_ITALIC,
+    DOMAIN_VALIDATOR_STRIKETHROUGH,
+} from '../constants';
+import { ConditionalFormatOptions } from './ConditionalFormatOptions';
+import conditionalFormat1 from '../../../test/data/conditionalFormat1.json';
+import conditionalFormat2 from '../../../test/data/conditionalFormat2.json';
 
 
 describe('ConditionalFormatOptions', () => {

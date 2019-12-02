@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetDeleteConfirmModal } from "../components/samples/SampleSetDeleteConfirmModal";
+import { storiesOf } from '@storybook/react';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { SampleSetDeleteConfirmModal } from '../components/samples/SampleSetDeleteConfirmModal';
 
 import './stories.scss'
 

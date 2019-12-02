@@ -5,7 +5,7 @@
 import { List, Map, OrderedSet, Set } from 'immutable'
 
 import { ILineageGroupingOptions, LineageLink, LineageNode } from './models'
-import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from "./constants";
+import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from './constants';
 import { imageURL } from '../../url/ActionURL';
 import { Theme } from '../base/SVGIcon';
 

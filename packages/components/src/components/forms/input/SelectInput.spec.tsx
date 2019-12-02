@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 
-import { SelectInputImpl, SelectInputState } from './SelectInput'
+import { SelectInputImpl } from './SelectInput'
 
 describe('SelectInput', () => {
 

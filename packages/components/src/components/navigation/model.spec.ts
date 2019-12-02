@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable'
-import { ProductMenuModel, MenuSectionModel } from "./model";
+import { MenuSectionModel, ProductMenuModel } from './model';
 
 describe("ProductMenuModel", () => {
 

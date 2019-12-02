@@ -17,7 +17,7 @@ import * as React from 'react';
 import { RefObject } from 'react';
 import classNames from 'classnames';
 import { FieldLabel } from '../FieldLabel'
-import { cancelEvent } from "../../../events";
+import { cancelEvent } from '../../../events';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { QueryColumn } from '../../base/models/model';
 

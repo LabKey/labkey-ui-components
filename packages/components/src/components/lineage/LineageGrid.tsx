@@ -5,12 +5,12 @@
 import React from 'reactn'
 import { List } from 'immutable';
 
-import { createGridModel, getLocationString, loadLineageIfNeeded } from "./actions";
-import { LineageGridDisplay } from "./LineageGridDisplay";
-import { Lineage, LineagePageModel } from "./models";
-import { getLocation } from "../../util/URL";
-import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from "./constants";
-import { LINEAGE_GRID_COLUMNS } from "./Tag";
+import { createGridModel, getLocationString, loadLineageIfNeeded } from './actions';
+import { LineageGridDisplay } from './LineageGridDisplay';
+import { Lineage, LineagePageModel } from './models';
+import { getLocation } from '../../util/URL';
+import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_GRID_COLUMNS } from './Tag';
 
 interface Props {
     lsid?: string

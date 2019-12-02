@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { FileAttachmentContainer } from "./FileAttachmentContainer";
-import {mount, shallow} from "enzyme";
+import { FileAttachmentContainer } from './FileAttachmentContainer';
+import { mount, shallow } from 'enzyme';
 
 describe("<FileAttachmentContainer/>", () => {
 

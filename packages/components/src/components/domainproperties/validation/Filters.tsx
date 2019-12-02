@@ -1,17 +1,17 @@
-import * as React from "react";
-import {Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, createFormInputName, getNameFromId} from "../actions";
+import * as React from 'react';
+import { ReactElement } from 'react';
+import { Col, FormControl, Row } from 'react-bootstrap';
+import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
 import {
     DOMAIN_FILTER_HASANYVALUE,
     DOMAIN_FIRST_FILTER_TYPE,
     DOMAIN_FIRST_FILTER_VALUE,
     DOMAIN_SECOND_FILTER_TYPE,
-    DOMAIN_SECOND_FILTER_VALUE
-} from "../constants";
+    DOMAIN_SECOND_FILTER_VALUE,
+} from '../constants';
 
 import { Filter, Utils } from '@labkey/api';
-import {ReactElement} from "react";
-import {JsonType} from "../models";
+import { JsonType } from '../models';
 
 export const NO_FILTER_TYPE = 'None';
 

@@ -1,12 +1,14 @@
-import {mount} from "enzyme";
-import {createFormInputId} from "./actions";
+import { mount } from 'enzyme';
+import { createFormInputId } from './actions';
 import {
     DOMAIN_FIELD_CUSTOM_LENGTH,
-    DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_SCALE
-} from "./constants";
-import * as React from "react";
-import toJson from "enzyme-to-json";
-import {TextFieldOptions, TextFieldState} from "./TextFieldOptions";
+    DOMAIN_FIELD_MAX_LENGTH,
+    DOMAIN_FIELD_NOT_LOCKED,
+    DOMAIN_FIELD_SCALE,
+} from './constants';
+import * as React from 'react';
+import toJson from 'enzyme-to-json';
+import { TextFieldOptions, TextFieldState } from './TextFieldOptions';
 
 
 describe('TextFieldOptions', () => {

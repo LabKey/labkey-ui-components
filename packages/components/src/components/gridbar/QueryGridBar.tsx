@@ -18,9 +18,9 @@ import React from 'reactn'
 import { ChartSelector } from '../chart/ChartSelector'
 import { Export } from './Export'
 import { QueryGridPaging } from './QueryGridPaging'
-import { ViewSelector } from "./ViewSelector";
+import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox'
-import { GridSelectionBanner } from "./GridSelectionBanner";
+import { GridSelectionBanner } from './GridSelectionBanner';
 import { QueryGridModel } from '../base/models/model';
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;

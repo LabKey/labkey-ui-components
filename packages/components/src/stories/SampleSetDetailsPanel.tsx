@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { Map, fromJS } from "immutable";
-import { storiesOf } from "@storybook/react";
+import { fromJS, Map } from 'immutable';
+import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetDetailsPanel } from "../components/samples/SampleSetDetailsPanel";
+import { SampleSetDetailsPanel } from '../components/samples/SampleSetDetailsPanel';
 
 import './stories.scss'
 

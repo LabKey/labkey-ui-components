@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 
-import { gridInit } from "../actions";
-import { getStateQueryGridModel } from "../models";
-import { EditableGridPanel } from "../components/editable/EditableGridPanel";
+import { gridInit } from '../actions';
+import { getStateQueryGridModel } from '../models';
+import { EditableGridPanel } from '../components/editable/EditableGridPanel';
 import * as constants from '../test/data/constants';
 
 import './stories.scss'
-import { EditableColumnMetadata } from "../components/editable/EditableGrid";
+import { EditableColumnMetadata } from '../components/editable/EditableGrid';
 import { SchemaQuery } from '../components/base/models/model';
 import { PlacementType } from '../components/editable/Controls';
 

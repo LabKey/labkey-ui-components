@@ -1,14 +1,14 @@
-import {ConditionalFormat, PropDescType, PropertyValidator} from "../models";
-import * as React from "react";
-import {List} from "immutable";
-import {Button, Modal} from "react-bootstrap";
+import { ConditionalFormat, PropDescType, PropertyValidator } from '../models';
+import * as React from 'react';
+import { List } from 'immutable';
+import { Button, Modal } from 'react-bootstrap';
 import {
     DOMAIN_COND_FORMAT,
     DOMAIN_COND_FORMATS,
     DOMAIN_RANGE_VALIDATORS,
     DOMAIN_REGEX_VALIDATOR,
-    DOMAIN_REGEX_VALIDATORS
-} from "../constants";
+    DOMAIN_REGEX_VALIDATORS,
+} from '../constants';
 import { AddEntityButton } from '../../buttons/AddEntityButton';
 
 

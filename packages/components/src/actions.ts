@@ -28,8 +28,8 @@ import {
     LOOKUP_DEFAULT_SIZE,
     MODIFICATION_TYPES,
     RELEVANT_SEARCH_RESULT_TYPES,
-    SELECTION_TYPES
-} from "./constants";
+    SELECTION_TYPES,
+} from './constants';
 import { cancelEvent, getPasteValue, setCopyValue } from './events'
 import {
     CellMessage,
@@ -42,7 +42,7 @@ import {
     LookupStore,
     SearchIdData,
     ValueDescriptor,
-    VisualizationConfigModel
+    VisualizationConfigModel,
 } from './models'
 import { bindColumnRenderers } from './renderers'
 import {
@@ -56,10 +56,10 @@ import {
     updateEditorModel,
     updateLookupStore,
     updateQueryGridModel,
-    updateSelections
+    updateSelections,
 } from './global'
-import { EditableColumnMetadata } from "./components/editable/EditableGrid";
-import { URLResolver } from "./util/URLResolver";
+import { EditableColumnMetadata } from './components/editable/EditableGrid';
+import { URLResolver } from './util/URLResolver';
 import {
     AssayDefinitionModel,
     IGridResponse,
@@ -67,7 +67,7 @@ import {
     QueryGridModel,
     QueryInfo,
     SchemaQuery,
-    ViewInfo
+    ViewInfo,
 } from './components/base/models/model';
 import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';

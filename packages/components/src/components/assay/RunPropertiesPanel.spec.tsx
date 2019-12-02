@@ -3,14 +3,14 @@ import { OrderedMap } from 'immutable';
 import { mount } from 'enzyme';
 import { Input, Textarea } from 'formsy-react-components';
 
-import { RunPropertiesPanel } from "./RunPropertiesPanel";
-import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
-import { TextInput } from "../forms/input/TextInput";
-import { DateInput } from "../forms/input/DateInput";
-import { CheckboxInput } from "../forms/input/CheckboxInput";
-import { SelectInput } from "../forms/input/SelectInput";
-import { AssayWizardModel } from "./models";
-import { QueryFormInputs } from "../forms/QueryFormInputs";
+import { RunPropertiesPanel } from './RunPropertiesPanel';
+import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
+import { TextInput } from '../forms/input/TextInput';
+import { DateInput } from '../forms/input/DateInput';
+import { CheckboxInput } from '../forms/input/CheckboxInput';
+import { SelectInput } from '../forms/input/SelectInput';
+import { AssayWizardModel } from './models';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { QueryColumn } from '../base/models/model';
 
 beforeAll(() => {

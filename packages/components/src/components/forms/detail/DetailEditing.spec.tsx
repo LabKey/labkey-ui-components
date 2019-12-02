@@ -18,9 +18,9 @@ import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 import { fromJS } from 'immutable';
 
-import { DetailEditing } from "./DetailEditing";
-import { getStateQueryGridModel } from "../../../models";
-import { getQueryGridModel } from "../../../global";
+import { DetailEditing } from './DetailEditing';
+import { getStateQueryGridModel } from '../../../models';
+import { getQueryGridModel } from '../../../global';
 
 import sampleDetailsQuery from '../../../test/data/sampleDetails-getQuery.json';
 import { initUnitTestMocks } from '../../../testHelpers';

@@ -1,4 +1,3 @@
-
 import { mount } from 'enzyme';
 import * as React from 'react';
 import { AssayResultDeleteConfirmModal } from './AssayResultDeleteConfirmModal';

@@ -19,9 +19,9 @@ import { fromJS, List, Map } from 'immutable'
 
 import { HeatMapDisplay } from './HeatMapDisplay'
 import { addDateRangeFilter, last12Months, monthSort } from './utils'
-import { gridInit } from "../../actions";
-import { getStateQueryGridModel } from "../../models";
-import { getQueryGridModel } from "../../global";
+import { gridInit } from '../../actions';
+import { getStateQueryGridModel } from '../../models';
+import { getQueryGridModel } from '../../global';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
@@ -149,7 +149,7 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
 
         return <span>{name}</span>
     };
-    
+
     renderYTotalCell = (cell: Map<string, any>) => {
         const { nounPlural } = this.props;
         let inRangeTotal = cell.get('inRangeTotal'),

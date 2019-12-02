@@ -16,7 +16,7 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
 
-import { ManageDropdownButton } from "./ManageDropdownButton";
+import { ManageDropdownButton } from './ManageDropdownButton';
 
 describe("<ManageDropdownButton/>", () => {
 

@@ -15,7 +15,7 @@
  */
 import * as React from 'react'
 import { fromJS, List } from 'immutable'
-import { mount, shallow } from 'enzyme'
+import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import { Grid, GridColumn } from './Grid'

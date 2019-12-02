@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Option } from 'react-select';
-import { storiesOf } from "@storybook/react";
+import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
 import { SelectInput } from '../components/forms/input/SelectInput';

@@ -6,8 +6,8 @@ import React from 'reactn'
 import { List } from 'immutable'
 
 import { SelectInput, SelectInputProps } from './SelectInput'
-import { IUser } from "../model";
-import { getUsersWithPermissions } from "../actions";
+import { IUser } from '../model';
+import { getUsersWithPermissions } from '../actions';
 
 interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server

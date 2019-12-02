@@ -15,7 +15,7 @@
  */
 import { OrderedMap } from 'immutable'
 import { ActionURL, Utils } from '@labkey/api'
-import { AppURL } from "./AppURL";
+import { AppURL } from './AppURL';
 
 function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {

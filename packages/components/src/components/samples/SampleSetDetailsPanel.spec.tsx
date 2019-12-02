@@ -16,9 +16,9 @@
 import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
-import { Map, fromJS } from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import { FORM_IDS, SampleSetDetailsPanel } from "./SampleSetDetailsPanel";
+import { FORM_IDS, SampleSetDetailsPanel } from './SampleSetDetailsPanel';
 
 describe("<SampleSetDetailsPanel/>", () => {
 

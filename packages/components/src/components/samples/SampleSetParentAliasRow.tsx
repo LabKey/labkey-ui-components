@@ -1,11 +1,11 @@
-import * as React from "react";
-import { IParentAlias, IParentOption } from "./models";
-import { Col, FormControl, FormControlProps, Row } from "react-bootstrap";
+import * as React from 'react';
+import { IParentAlias, IParentOption } from './models';
+import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
-import { SelectInput } from "../forms/input/SelectInput";
+import { SelectInput } from '../forms/input/SelectInput';
 
-import classNames from "classnames";
-import { PARENT_ALIAS_HELPER_TEXT } from "../../constants";
+import classNames from 'classnames';
+import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 import { LabelOverlay } from '../forms/LabelOverlay';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 

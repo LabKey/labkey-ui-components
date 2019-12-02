@@ -17,7 +17,7 @@ import * as React from 'react'
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
 
-import { Breadcrumb } from "./Breadcrumb";
+import { Breadcrumb } from './Breadcrumb';
 import { AppURL } from '../../url/AppURL';
 
 describe("<Breadcrumb/>", () => {

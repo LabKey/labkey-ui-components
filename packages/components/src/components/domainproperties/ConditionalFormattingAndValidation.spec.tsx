@@ -1,12 +1,12 @@
-import {mount} from "enzyme";
-import * as React from "react";
-import toJson from "enzyme-to-json";
-import {ConditionalFormattingAndValidation} from "./ConditionalFormattingAndValidation";
-import {BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE} from "./models";
-import propertyValidatorRange from "../../test/data/propertyValidator-range.json";
-import propertyValidatorRegex from "../../test/data/propertyValidator-regex.json";
-import conditionalFormat1 from "../../test/data/conditionalFormat1.json";
-import conditionalFormat2 from "../../test/data/conditionalFormat2.json";
+import { mount } from 'enzyme';
+import * as React from 'react';
+import toJson from 'enzyme-to-json';
+import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
+import { BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './models';
+import propertyValidatorRange from '../../test/data/propertyValidator-range.json';
+import propertyValidatorRegex from '../../test/data/propertyValidator-regex.json';
+import conditionalFormat1 from '../../test/data/conditionalFormat1.json';
+import conditionalFormat2 from '../../test/data/conditionalFormat2.json';
 
 
 describe('ConditionalFormattingAndValidation', () => {

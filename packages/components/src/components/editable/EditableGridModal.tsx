@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal } from "react-bootstrap";
+import { Modal } from 'react-bootstrap';
 
 import { AddRowsControlProps } from './Controls';
 import { gridInit, schemaGridInvalidate } from '../../actions';

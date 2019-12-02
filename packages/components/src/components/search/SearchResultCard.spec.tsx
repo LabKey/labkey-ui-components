@@ -15,9 +15,9 @@
  */
 import * as React from 'react'
 import renderer from 'react-test-renderer'
-import { Map, fromJS } from 'immutable'
-import { SearchResultCard } from "./SearchResultCard";
-import { mount } from "enzyme";
+import { fromJS } from 'immutable'
+import { SearchResultCard } from './SearchResultCard';
+import { mount } from 'enzyme';
 
 describe("<SearchResultCard/>", () => {
 

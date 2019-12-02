@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { Button } from "react-bootstrap";
+import { Button } from 'react-bootstrap';
 
 export interface PaginationButtonsProps {
     total: number,

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { AddRowsControl } from "./Controls";
-import { shallow } from "enzyme";
-import { MenuItem } from "react-bootstrap";
+import { AddRowsControl } from './Controls';
+import { shallow } from 'enzyme';
+import { MenuItem } from 'react-bootstrap';
 
 describe("Controls", () => {
    test("default properties", () => {

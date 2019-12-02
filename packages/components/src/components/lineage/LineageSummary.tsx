@@ -3,13 +3,13 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'reactn'
-import { Link } from "react-router";
+import { Link } from 'react-router';
 import { List } from 'immutable'
 
-import { LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from "./models";
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
-import { createLineageNodeCollections, getLineageNodeTitle, LineageNodeCollection } from "./vis/VisGraphGenerator";
-import { loadLineageIfNeeded } from "./actions";
+import { LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from './models';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
+import { createLineageNodeCollections, getLineageNodeTitle, LineageNodeCollection } from './vis/VisGraphGenerator';
+import { loadLineageIfNeeded } from './actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { SVGIcon } from '../base/SVGIcon';
 

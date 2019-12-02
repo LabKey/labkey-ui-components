@@ -16,17 +16,17 @@
 import React from 'reactn';
 import { Button, Form, Panel } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable'
-import { Link } from "react-router";
+import { Link } from 'react-router';
 import { Utils } from '@labkey/api'
 
 import { SAMPLE_UNIQUE_FIELD_KEY } from '../../constants'
 
-import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn, } from '../../actions';
+import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
 import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
 
 import { getStateQueryGridModel } from '../../models'
 
-import { EditableColumnMetadata } from "../editable/EditableGrid"
+import { EditableColumnMetadata } from '../editable/EditableGrid'
 import { EditableGridPanel } from '../editable/EditableGridPanel'
 import { getQueryDetails, InsertRowsResponse } from '../../query/api'
 import { Location } from '../../util/URL'
@@ -38,7 +38,7 @@ import {
     ISampleSetOption,
     SampleIdCreationModel,
     SampleSetOption,
-    SampleSetParentType
+    SampleSetParentType,
 } from './models';
 import { initSampleSetInsert } from './actions';
 import { Progress } from '../base/Progress';
@@ -51,7 +51,7 @@ import {
     QueryColumn,
     QueryGridModel,
     QueryInfo,
-    SchemaQuery
+    SchemaQuery,
 } from '../base/models/model';
 import { capitalizeFirstChar } from '../../util/utils';
 import { AddEntityButton } from '../buttons/AddEntityButton';

@@ -8,10 +8,10 @@ import {
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
     LINEAGE_DIRECTIONS,
-    LINEAGE_GROUPING_GENERATIONS
+    LINEAGE_GROUPING_GENERATIONS,
 } from './constants'
 import { generate, VisGraphOptions } from './vis/VisGraphGenerator'
-import { LINEAGE_GRID_COLUMNS } from "./Tag";
+import { LINEAGE_GRID_COLUMNS } from './Tag';
 import { GridColumn } from '../base/Grid';
 import { QueryInfo } from '../base/models/model';
 

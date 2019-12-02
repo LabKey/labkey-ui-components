@@ -6,9 +6,9 @@ import { List, Map, Record } from 'immutable'
 import { Filter, Utils } from '@labkey/api'
 import { DataSet, Edge, Network, Node } from 'vis'
 
-import { LineageGroupingOptions, ILineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models'
+import { ILineageGroupingOptions, LineageGroupingOptions, LineageLink, LineageNode, LineageResult } from '../models'
 import { getBackupImageFromLineageNode, getImageFromLineageNode } from '../utils'
-import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from "../constants";
+import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../constants';
 
 export const DEFAULT_EDGE_PROPS = {
     arrows: {

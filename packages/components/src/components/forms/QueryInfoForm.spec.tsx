@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import * as React from 'react';
-import { QueryInfoForm } from "./QueryInfoForm";
-import { mount, shallow } from "enzyme";
-import { QueryFormInputs } from "./QueryFormInputs";
-import { Button, Modal, ModalTitle } from "react-bootstrap";
-import { TextInput } from "./input/TextInput";
+import { QueryInfoForm } from './QueryInfoForm';
+import { mount, shallow } from 'enzyme';
+import { QueryFormInputs } from './QueryFormInputs';
+import { Button, Modal, ModalTitle } from 'react-bootstrap';
+import { TextInput } from './input/TextInput';
 import { initUnitTestMocks } from '../../testHelpers';
 import { getQueryDetails } from '../../query/api';
 import { SchemaQuery } from '../base/models/model';

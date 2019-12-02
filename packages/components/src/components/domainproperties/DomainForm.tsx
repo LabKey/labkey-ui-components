@@ -13,47 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-import { List } from "immutable";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
+import * as React from 'react';
+import { List } from 'immutable';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import {
+    ATTACHMENT_TYPE,
     DomainDesign,
+    DomainException,
     DomainField,
     DomainFieldError,
-    IFieldChange,
-    PropDescType,
-    PROP_DESC_TYPES,
-    FLAG_TYPE,
-    FILE_TYPE,
-    ATTACHMENT_TYPE,
-    IDomainField,
-    IAppDomainHeader,
-    HeaderRenderer,
     DomainPanelStatus,
-    DomainException
-} from "./models";
-import { StickyContainer, Sticky } from "react-sticky";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+    FILE_TYPE,
+    FLAG_TYPE,
+    HeaderRenderer,
+    IAppDomainHeader,
+    IDomainField,
+    IFieldChange,
+    PROP_DESC_TYPES,
+    PropDescType,
+} from './models';
+import { Sticky, StickyContainer } from 'react-sticky';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 
-import { DomainRow } from "./DomainRow";
+import { DomainRow } from './DomainRow';
 import {
     addDomainField,
+    clearAllClientValidationErrors,
+    createFormInputName,
     getIndexFromId,
-    handleDomainUpdates,
     getMaxPhiLevel,
+    handleDomainUpdates,
     removeField,
-    setDomainFields, setDomainException, clearAllFieldErrors, createFormInputName, clearAllClientValidationErrors
-} from "./actions";
+    setDomainFields,
+} from './actions';
 
-import { LookupProvider } from "./Lookup/Context";
+import { LookupProvider } from './Lookup/Context';
 import {
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     LK_DOMAIN_HELP_URL,
-    PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR
-} from "./constants";
+    PHILEVEL_NOT_PHI,
+    SEVERITY_LEVEL_ERROR,
+} from './constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';

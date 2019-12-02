@@ -17,7 +17,7 @@ import * as React from 'react'
 import { Panel } from 'react-bootstrap'
 import { List, Map, OrderedMap } from 'immutable'
 
-import { DefaultRenderer } from "../../../renderers/DefaultRenderer";
+import { DefaultRenderer } from '../../../renderers/DefaultRenderer';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 

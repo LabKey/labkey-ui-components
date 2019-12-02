@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import * as React from 'react';
 import renderer from 'react-test-renderer'
 
-import {DomainFieldsDisplay} from "./DomainFieldsDisplay";
-import {DomainDesign} from "./models";
+import { DomainFieldsDisplay } from './DomainFieldsDisplay';
+import { DomainDesign } from './models';
 
 const testDomain = new DomainDesign({name: 'test domain name'});
 

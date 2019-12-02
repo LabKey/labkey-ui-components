@@ -1,8 +1,8 @@
-import * as React from "react";
-import toJson from "enzyme-to-json";
-import { mount, ReactWrapper } from "enzyme";
+import * as React from 'react';
+import toJson from 'enzyme-to-json';
+import { mount, ReactWrapper } from 'enzyme';
 
-import { createFormInputId, createFormInputName } from "./actions";
+import { createFormInputId, createFormInputName } from './actions';
 import {
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -11,8 +11,8 @@ import {
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
     INT_RANGE_URI,
-} from "./constants";
-import { DomainField } from "./models";
+} from './constants';
+import { DomainField } from './models';
 import {
     FolderSelect,
     FolderSelectProps,
@@ -22,10 +22,10 @@ import {
     SchemaSelect,
     SchemaSelectProps,
     TargetTableSelect,
-    TargetTableSelectProps
-} from "./Lookup/Fields";
-import { LookupFieldOptions } from "./LookupFieldOptions";
-import { MockLookupProvider } from "../../test/components/Lookup";
+    TargetTableSelectProps,
+} from './Lookup/Fields';
+import { LookupFieldOptions } from './LookupFieldOptions';
+import { MockLookupProvider } from '../../test/components/Lookup';
 
 
 describe('LookupFieldOptions', () => {

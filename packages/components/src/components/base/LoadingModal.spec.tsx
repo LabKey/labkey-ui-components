@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap'
 import { mount } from 'enzyme'
 
 import { LoadingModal } from './LoadingModal'
-import {LoadingSpinner} from "./LoadingSpinner";
+import { LoadingSpinner } from './LoadingSpinner';
 
 describe("<LoadingModal />", () => {
 

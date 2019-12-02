@@ -12,13 +12,13 @@ import {
     LineageNode,
     LineageNodeMetadata,
     LineageOptions,
-    LineageResult
-} from "./models";
-import { ISelectRowsResult, selectRows } from "../../query/api";
-import { getLineageResult, updateLineageResult } from "../../global";
+    LineageResult,
+} from './models';
+import { ISelectRowsResult, selectRows } from '../../query/api';
+import { getLineageResult, updateLineageResult } from '../../global';
 import { Location } from '../../util/URL'
-import { LINEAGE_DIRECTIONS } from "./constants";
-import { getLineageDepthFirstNodeList } from "./utils";
+import { LINEAGE_DIRECTIONS } from './constants';
+import { getLineageDepthFirstNodeList } from './utils';
 import { SCHEMAS } from '../base/models/schemas';
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';

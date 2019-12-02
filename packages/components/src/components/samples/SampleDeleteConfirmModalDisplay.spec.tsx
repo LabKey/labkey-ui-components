@@ -16,7 +16,7 @@
 import * as React from 'react'
 import { mount } from 'enzyme'
 
-import { SampleDeleteConfirmModalDisplay } from "./SampleDeleteConfirmModalDisplay";
+import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 
 describe("<SampleDeleteConfirmModal/>", () => {
 

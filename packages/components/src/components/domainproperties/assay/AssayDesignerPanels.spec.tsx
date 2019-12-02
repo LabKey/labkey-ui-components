@@ -1,12 +1,12 @@
-import * as React from "react";
-import { List, Map } from "immutable";
-import { mount } from "enzyme";
+import * as React from 'react';
+import { List, Map } from 'immutable';
+import { mount } from 'enzyme';
 
-import { AssayDesignerPanels } from "./AssayDesignerPanels";
-import { AssayProtocolModel, DomainDesign } from "../models";
-import { DescriptionInput, NameInput } from "./AssayPropertiesInput";
-import { Panel } from "react-bootstrap";
-import toJson from "enzyme-to-json";
+import { AssayDesignerPanels } from './AssayDesignerPanels';
+import { AssayProtocolModel, DomainDesign } from '../models';
+import { DescriptionInput, NameInput } from './AssayPropertiesInput';
+import { Panel } from 'react-bootstrap';
+import toJson from 'enzyme-to-json';
 import { FileAttachmentForm } from '../../files/FileAttachmentForm';
 
 const EXISTING_MODEL = AssayProtocolModel.create({

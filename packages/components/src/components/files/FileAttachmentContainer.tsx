@@ -18,6 +18,7 @@ import classNames from 'classnames'
 import { Utils } from '@labkey/api'
 
 import { fileMatchesAcceptedFormat } from "./actions";
+import { FileAttachmentEntry } from './FileAttachmentEntry';
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -181,7 +182,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }
     }
 
-    handleRemove(name: string) {
+    handleRemove = (name: string) => {
         const { handleRemoval } = this.props;
 
         const fileNames = this.state.fileNames.filter((fileName) =>  (name !== fileName));
@@ -204,7 +205,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         if (Utils.isFunction(handleRemoval)) {
             handleRemoval(name);
         }
-    }
+    };
 
     renderErrorDetails() {
         const { errorMsg } = this.state;
@@ -258,18 +259,10 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
                 {fileNames.map((fileName: string) => {
                     return (
-                        <div key={fileName} className="attached-file--container">
-                            <span
-                                className="fa fa-times-circle file-upload__remove--icon"
-                                onClick={() => this.handleRemove(fileName)}
-                                title={"Remove file"}/>
-                            <span className="fa fa-file-text" style={{
-                                color: 'darkgray',
-                                fontSize: '20px',
-                                marginRight: '7px',
-                                marginBottom: '10px'}}/>
-                            {fileName}
-                        </div>
+                        <FileAttachmentEntry
+                            name={fileName}
+                            onDelete={this.handleRemove}
+                        />
                     )
                 })}
             </div>

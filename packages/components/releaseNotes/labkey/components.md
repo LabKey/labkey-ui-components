@@ -2,6 +2,11 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version ???
+*Released*: ???
+
+* Factor out FileAttachmentEntry from FileAttachmentContainer
+
 ### version 0.1.1
 *Released*: 2 December 2019
 * Misc fixes and cleanup post package consolidation

@@ -15,12 +15,13 @@
  */
 import React from 'reactn'
 import { List } from 'immutable'
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel, SchemaQuery } from '../base/models/model';
 import { DataViewInfo, IDataViewInfo } from '../../models'
 import { ChartMenu } from './ChartMenu'
 import { fetchCharts } from '../../actions'
-import { loadReports } from '../../';
+import { naturalSort } from '../../';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
+import { loadReports } from '../../query/reports';
 
 const CHART_COMPARATOR = (chart: DataViewInfo): string => chart.name;
 

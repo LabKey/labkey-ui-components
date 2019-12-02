@@ -1,7 +1,7 @@
-import { buildURL, AppURL } from '@glass/base';
 import { Ajax } from '@labkey/api';
 
 import { IDataViewInfo } from '../models';
+import { AppURL, buildURL } from '..';
 
 export type ReportURLMapper = (report: IDataViewInfo) => AppURL
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
+import React from 'react';
 import { DomainField, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';

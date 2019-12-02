@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 import { QueryInfo, SchemaQuery } from './base/models/model';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';

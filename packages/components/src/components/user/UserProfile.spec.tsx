@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { fromJS } from 'immutable';
 import { mount } from 'enzyme';
 import { Button } from 'react-bootstrap';

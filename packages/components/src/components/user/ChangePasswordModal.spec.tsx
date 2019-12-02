@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 import { ChangePasswordModal } from './ChangePasswordModal';

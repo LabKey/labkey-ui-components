@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import { createFormInputId } from './actions';
 import { DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
-import * as React from 'react';
+import React from 'react';
 import { NumericFieldOptions } from './NumericFieldOptions';
 import toJson from 'enzyme-to-json';
 

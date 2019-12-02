@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { IParentAlias, IParentOption } from './models';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 

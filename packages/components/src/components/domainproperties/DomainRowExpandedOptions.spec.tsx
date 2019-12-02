@@ -1,5 +1,5 @@
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
-import * as React from 'react';
+import React from 'react';
 import { DomainField } from './models';
 import { BOOLEAN_RANGE_URI, DATETIME_RANGE_URI, INT_RANGE_URI, STRING_RANGE_URI } from './constants';
 import { mount } from 'enzyme';

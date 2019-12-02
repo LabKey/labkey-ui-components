@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { NotificationItemModel } from './model';
-import * as React from 'react';
+import React from 'react';
 import { dismissNotifications } from './global';
 import { User } from '../base/models/model';
 

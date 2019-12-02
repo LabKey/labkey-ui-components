@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Overlay, Popover } from 'react-bootstrap'
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

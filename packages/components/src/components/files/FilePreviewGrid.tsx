@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { List, Map } from 'immutable';
 
 import { Alert } from '../base/Alert';

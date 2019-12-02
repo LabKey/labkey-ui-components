@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { List } from 'immutable'
 import { storiesOf } from '@storybook/react'
 import { boolean, text, withKnobs } from '@storybook/addon-knobs'

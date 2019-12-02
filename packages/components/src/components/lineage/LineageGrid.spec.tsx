@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import renderer from 'react-test-renderer'
 import { LineageGrid } from './LineageGrid';
 import { initUnitTestMocks } from '../../testHelpers';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
 import {

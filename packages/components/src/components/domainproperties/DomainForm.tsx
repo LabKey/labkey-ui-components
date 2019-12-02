@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
+import React from 'react';
 import { List } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';

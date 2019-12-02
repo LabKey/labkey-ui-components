@@ -1,6 +1,6 @@
 import { JsonType } from '../models';
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import { Filters, NO_FILTER_TYPE } from './Filters';
 import toJson from 'enzyme-to-json';
 import { createFormInputId } from '../actions';

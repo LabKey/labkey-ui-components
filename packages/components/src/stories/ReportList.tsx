@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
+import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { createMemoryHistory, Route, Router } from 'react-router';
 import data from '../test/data/example_browse_data_tree_api.json';

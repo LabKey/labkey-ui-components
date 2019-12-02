@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import { Map } from 'immutable'
 

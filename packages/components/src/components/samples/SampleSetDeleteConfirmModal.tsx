@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Map } from 'immutable'
 import { ConfirmModal } from '../base/ConfirmModal';
 import { buildURL } from '../../url/ActionURL';

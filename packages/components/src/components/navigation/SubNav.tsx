@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from 'react'
+import React from 'react'
 import { List } from 'immutable'
 import { Button } from 'react-bootstrap'
 import $ from 'jquery'

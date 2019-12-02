@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import { List } from 'immutable';
 import { createFormInputId } from './actions';
 import {

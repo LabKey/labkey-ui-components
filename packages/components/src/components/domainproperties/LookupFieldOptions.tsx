@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List } from 'immutable'
 

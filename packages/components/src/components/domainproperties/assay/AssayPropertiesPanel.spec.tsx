@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';

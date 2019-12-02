@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import toJson from 'enzyme-to-json';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './models';

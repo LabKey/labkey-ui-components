@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 import { changePassword, getPasswordRuleInfo } from './actions';
 import { ChangePasswordModel } from './models';

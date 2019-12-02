@@ -1,6 +1,6 @@
 import { INTEGER_TYPE, TEXT_TYPE } from '../models';
 import { mount } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import toJson from 'enzyme-to-json';
 import { createFormInputId } from '../actions';
 import {

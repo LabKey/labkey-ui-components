@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Col, Form, Panel, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';

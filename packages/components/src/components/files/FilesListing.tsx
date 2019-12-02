@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { List, Map, Set } from 'immutable';
 import { IFile } from './models';

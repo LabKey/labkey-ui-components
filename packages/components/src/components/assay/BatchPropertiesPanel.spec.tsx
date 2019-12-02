@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { OrderedMap } from 'immutable';
 import { mount } from 'enzyme';
 

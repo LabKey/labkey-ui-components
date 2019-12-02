@@ -1,5 +1,5 @@
 import { ConditionalFormat, PropDescType, PropertyValidator } from '../models';
-import * as React from 'react';
+import React from 'react';
 import { List } from 'immutable';
 import { Button, Modal } from 'react-bootstrap';
 import {

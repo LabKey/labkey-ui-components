@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react'
 import { Button, MenuItem, SplitButton } from 'react-bootstrap'
 import classNames from 'classnames'
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';

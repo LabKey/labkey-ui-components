@@ -2,14 +2,14 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
+import React from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { LineageGridModel } from "./models";
-import { getLocation } from "../../util/URL";
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
-import { getPageNumberChangeURL } from "./actions";
+import { LineageGridModel } from './models';
+import { getLocation } from '../../util/URL';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
+import { getPageNumberChangeURL } from './actions';
 import { AppURL } from '../../url/AppURL';
 import { Grid, GridProps } from '../base/Grid';
 import { Alert } from '../base/Alert';

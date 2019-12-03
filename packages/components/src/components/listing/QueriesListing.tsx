@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { Link } from 'react-router'
-import { List } from 'immutable'
+import React from 'react';
+import { Link } from 'react-router';
+import { List } from 'immutable';
 
-import { SchemaListing } from "./SchemaListing";
+import { SchemaListing } from './SchemaListing';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';

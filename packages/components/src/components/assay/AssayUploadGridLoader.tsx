@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { Map } from 'immutable'
+import React from 'react';
+import { Map } from 'immutable';
 
-import { AssayWizardModel } from "./models";
+import { AssayWizardModel } from './models';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     IGridLoader,
     IGridResponse,
-    QueryGridModel
+    QueryGridModel,
 } from '../base/models/model';
 
 export class AssayUploadGridLoader implements IGridLoader {

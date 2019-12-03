@@ -13,47 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-import { List } from "immutable";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { Col, Form, FormControl, Panel, Row } from "react-bootstrap";
+import React from 'react';
+import { List } from 'immutable';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import {
+    ATTACHMENT_TYPE,
     DomainDesign,
+    DomainException,
     DomainField,
     DomainFieldError,
-    IFieldChange,
-    PropDescType,
-    PROP_DESC_TYPES,
-    FLAG_TYPE,
-    FILE_TYPE,
-    ATTACHMENT_TYPE,
-    IDomainField,
-    IAppDomainHeader,
-    HeaderRenderer,
     DomainPanelStatus,
-    DomainException
-} from "./models";
-import { StickyContainer, Sticky } from "react-sticky";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusSquare, faMinusSquare, faCheckCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+    FILE_TYPE,
+    FLAG_TYPE,
+    HeaderRenderer,
+    IAppDomainHeader,
+    IDomainField,
+    IFieldChange,
+    PROP_DESC_TYPES,
+    PropDescType,
+} from './models';
+import { Sticky, StickyContainer } from 'react-sticky';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 
-import { DomainRow } from "./DomainRow";
+import { DomainRow } from './DomainRow';
 import {
     addDomainField,
+    clearAllClientValidationErrors,
+    createFormInputName,
     getIndexFromId,
-    handleDomainUpdates,
     getMaxPhiLevel,
+    handleDomainUpdates,
     removeField,
-    setDomainFields, setDomainException, clearAllFieldErrors, createFormInputName, clearAllClientValidationErrors
-} from "./actions";
+    setDomainFields,
+} from './actions';
 
-import { LookupProvider } from "./Lookup/Context";
+import { LookupProvider } from './Lookup/Context';
 import {
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     LK_DOMAIN_HELP_URL,
-    PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR
-} from "./constants";
+    PHILEVEL_NOT_PHI,
+    SEVERITY_LEVEL_ERROR,
+} from './constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';
@@ -137,7 +140,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (!this.props.maxPhiLevel) {
             getMaxPhiLevel()
                 .then((maxPhiLevel) => {
-                    this.setState({maxPhiLevel: maxPhiLevel})
+                    this.setState(() => ({maxPhiLevel}));
                 })
                 .catch((error) => {
                         console.error("Unable to retrieve max PHI level.")
@@ -240,12 +243,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
+    setExpandedState(expandedRowIndex: number, expandTransition: number) {
+        this.setState(() => ({expandedRowIndex, expandTransition}));
+    }
+
     collapseRow = (): void => {
         if (this.isExpanded()) {
-            this.setState({
-                expandedRowIndex: undefined,
-                expandTransition: EXPAND_TRANSITION
-            });
+            this.setExpandedState(undefined, EXPAND_TRANSITION);
         }
     };
 
@@ -254,10 +258,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { expandedRowIndex } = this.state;
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
-            this.setState({
-                expandedRowIndex: index,
-                expandTransition: EXPAND_TRANSITION
-            })
+            this.setExpandedState(index, EXPAND_TRANSITION);
         }
     };
 
@@ -266,10 +267,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { expandedRowIndex } = this.state;
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
-            this.setState({
-                expandedRowIndex: index,
-                expandTransition: EXPAND_TRANSITION_FAST
-            })
+            this.setExpandedState(index, EXPAND_TRANSITION_FAST);
         }
     };
 
@@ -306,10 +304,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     onDeleteConfirm = () => {
-        this.setState({
+        this.setState(() => ({
             expandedRowIndex: undefined,
             showConfirm: false
-        });
+        }));
 
         this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
@@ -320,9 +318,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (newDesignFields) {
              newDesignFields.forEach(this.applyAddField);
-             this.setState({
-                 expandedRowIndex: 0
-             });
+             this.setState(() => ({expandedRowIndex: 0}));
         }
         else
             this.applyAddField();
@@ -351,9 +347,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let field = domain.fields.get(index);
 
         if (field) {
-            this.setState({
-                showConfirm: true
-            });
+            this.setState(() => ({showConfirm: true}));
         }
         else {
             this.onDeleteConfirm();
@@ -361,9 +355,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onConfirmCancel = () => {
-        this.setState({
-            showConfirm: false
-        });
+        this.setState(() => ({showConfirm: false}));
     };
 
     onBeforeDragStart = (initial) => {

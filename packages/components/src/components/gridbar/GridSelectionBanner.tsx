@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
+import React from 'reactn';
 import { Button } from 'react-bootstrap';
 
-import { gridClearAll, gridSelectAll } from '../../actions'
+import { gridClearAll, gridSelectAll } from '../../actions';
 import { QueryGridModel } from '../base/models/model';
 
 interface Props {

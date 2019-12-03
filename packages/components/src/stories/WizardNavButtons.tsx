@@ -3,12 +3,12 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { WizardNavButtons } from "../components/buttons/WizardNavButtons";
-import './stories.scss'
+import { WizardNavButtons } from '../components/buttons/WizardNavButtons';
+import './stories.scss';
 
 storiesOf("WizardNavButtons", module)
     .addDecorator(withKnobs)

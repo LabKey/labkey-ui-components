@@ -4,9 +4,9 @@
  */
 import { List } from 'immutable';
 import { Edge } from 'vis';
-import { LineageGroupingOptions, Lineage, LineageFilter, LineageOptions, LineageResult } from './models'
-import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator'
-import { LINEAGE_GROUPING_GENERATIONS } from './constants'
+import { Lineage, LineageFilter, LineageGroupingOptions, LineageOptions, LineageResult } from './models';
+import { generate, VisGraphCombinedNode } from './vis/VisGraphGenerator';
+import { LINEAGE_GROUPING_GENERATIONS } from './constants';
 
 import {
     collapsedNodesTest1,
@@ -14,8 +14,8 @@ import {
     collapsedNodesTest3,
     fullScreenLineageSample,
     lineageExpressionSystem,
-    lineageSample
-} from '../../test/data/lineageData'
+    lineageSample,
+} from '../../test/data/lineageData';
 
 describe('Lineage Graph', () => {
 

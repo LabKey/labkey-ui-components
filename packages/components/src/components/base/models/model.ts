@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable'
-import { ActionURL, Filter, Utils } from '@labkey/api'
+import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
+import { ActionURL, Filter, Utils } from '@labkey/api';
 
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants'
-import { decodePart, getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../../../util/utils'
-import { AppURL } from "../../../url/AppURL";
-import { WHERE_FILTER_TYPE } from "../../../url/WhereFilterType";
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
+import {
+    decodePart,
+    getSchemaQuery,
+    intersect,
+    resolveKey,
+    resolveSchemaQuery,
+    toLowerSafe,
+} from '../../../util/utils';
+import { AppURL } from '../../../url/AppURL';
+import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();

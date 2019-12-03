@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import renderer from 'react-test-renderer'
-import { List } from 'immutable'
-import { QueryGridPanel } from './QueryGridPanel'
+import renderer from 'react-test-renderer';
+import { List } from 'immutable';
+
+import { QueryGridPanel } from './QueryGridPanel';
 import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 import { getStateQueryGridModel } from '../models';

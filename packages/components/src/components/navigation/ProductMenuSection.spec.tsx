@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { mount } from 'enzyme'
-import toJson from "enzyme-to-json";
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import { List } from 'immutable';
 import { MenuSectionModel } from './model';
-import { MenuSectionConfig, ProductMenuSection } from "./ProductMenuSection";
+import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
 import { AppURL } from '../../url/AppURL';
 
 describe("ProductMenuSection render", () => {

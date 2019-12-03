@@ -1,9 +1,9 @@
-import * as React from 'react';
-import {Map, List} from 'immutable';
+import React from 'react';
+import { List, Map } from 'immutable';
 
-import { Alert } from "../base/Alert";
-import { Grid, GridColumn } from "../base/Grid";
-import { InferDomainResponse } from "../base/models/model";
+import { Alert } from '../base/Alert';
+import { Grid, GridColumn } from '../base/Grid';
+import { InferDomainResponse } from '../base/models/model';
 
 export interface FileGridPreviewProps {
     previewCount: number

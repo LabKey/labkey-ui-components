@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { Panel } from 'react-bootstrap'
+import React from 'reactn';
+import { Panel } from 'react-bootstrap';
 
-import { gridInit } from "../../actions";
-import { EditableGrid, EditableGridProps } from "./EditableGrid";
+import { gridInit } from '../../actions';
+import { EditableGrid, EditableGridProps } from './EditableGrid';
 import { QueryGridModel } from '../base/models/model';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 

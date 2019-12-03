@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS } from 'immutable'
-
+import { fromJS } from 'immutable';
 // Tested components
-import { QuerySelectModel } from './model'
-import { parseSelectedQuery } from "./actions";
+import { QuerySelectModel } from './model';
+import { parseSelectedQuery } from './actions';
 
 describe('form actions', () => {
     const setSelectionModel = new QuerySelectModel({

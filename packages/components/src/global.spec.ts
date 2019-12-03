@@ -30,7 +30,7 @@ import {
 } from './global';
 import { List } from 'immutable';
 
-import { EditorModel, LookupStore } from './models'
+import { EditorModel, LookupStore } from './models';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { mount } from 'enzyme'
-import { List } from 'immutable'
+import React from 'react';
+import { mount } from 'enzyme';
+import { List } from 'immutable';
 
-import { SelectionMenuItem } from "./SelectionMenuItem";
-import { QueryGridModel } from "../base/models/model";
-import { MenuItem, OverlayTrigger } from "react-bootstrap";
+import { SelectionMenuItem } from './SelectionMenuItem';
+import { QueryGridModel } from '../base/models/model';
+import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 
 describe("<SelectionMenuItem/>", () => {
 

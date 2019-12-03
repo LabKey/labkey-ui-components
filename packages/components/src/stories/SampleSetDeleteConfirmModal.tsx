@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { SampleSetDeleteConfirmModal } from "../components/samples/SampleSetDeleteConfirmModal";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { SampleSetDeleteConfirmModal } from '../components/samples/SampleSetDeleteConfirmModal';
 
-import './stories.scss'
+import './stories.scss';
 
 storiesOf('SampleSetDeleteConfirmModal', module)
     .addDecorator(withKnobs)

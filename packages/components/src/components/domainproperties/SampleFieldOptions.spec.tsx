@@ -1,11 +1,11 @@
-import * as React from "react";
-import {mount, ReactWrapper} from "enzyme";
-import {ITargetTableSelectImplState, TargetTableSelectProps} from "./Lookup/Fields";
-import {DomainField} from "./models";
-import {createFormInputId, createFormInputName} from "./actions";
-import {DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_SAMPLE_TYPE, INT_RANGE_URI, SAMPLE_TYPE_CONCEPT_URI} from "./constants";
-import {SampleFieldOptions} from "./SampleFieldOptions";
-import {MockLookupProvider} from "../../test/components/Lookup";
+import React from 'react';
+import { mount, ReactWrapper } from 'enzyme';
+import { ITargetTableSelectImplState, TargetTableSelectProps } from './Lookup/Fields';
+import { DomainField } from './models';
+import { createFormInputId, createFormInputName } from './actions';
+import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_SAMPLE_TYPE, INT_RANGE_URI, SAMPLE_TYPE_CONCEPT_URI } from './constants';
+import { SampleFieldOptions } from './SampleFieldOptions';
+import { MockLookupProvider } from '../../test/components/Lookup';
 
 describe('SampleFieldOptions', () => {
 

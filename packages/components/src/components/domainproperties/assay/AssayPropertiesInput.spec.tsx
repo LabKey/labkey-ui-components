@@ -1,6 +1,6 @@
-import * as React from "react";
-import renderer from 'react-test-renderer'
-import { AssayPropertiesInput } from "./AssayPropertiesInput";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { AssayPropertiesInput } from './AssayPropertiesInput';
 
 describe('AssayPropertiesInput', () => {
 

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap } from 'immutable'
-import { ActionURL, Ajax, Filter, Utils, AssayDOM } from '@labkey/api'
+import { List, Map, OrderedMap } from 'immutable';
+import { ActionURL, Ajax, AssayDOM, Filter, Utils } from '@labkey/api';
 
-import { AssayUploadResultModel, IAssayUploadOptions } from './models'
+import { AssayUploadResultModel, IAssayUploadOptions } from './models';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
-import { SCHEMAS } from '../base/models/schemas'
-import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model'
+import { SCHEMAS } from '../base/models/schemas';
+import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {

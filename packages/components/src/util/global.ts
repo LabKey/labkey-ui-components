@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import createHistory from 'history/createBrowserHistory'
+import createHistory from 'history/createBrowserHistory';
 
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from 'reactn';
 
 /**
  * Initialize the global state object for this package.

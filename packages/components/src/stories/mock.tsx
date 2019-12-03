@@ -43,8 +43,8 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
-import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
-import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
+import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json';
+import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json';
 import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
 import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
 import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
@@ -66,7 +66,7 @@ import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
 import usersQueryInfo from '../test/data/users-getQueryDetails.json';
-import getMaxPhiLevelJson from "../test/data/security-GetMaxPhiLevel.json";
+import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
 import browseData from '../test/data/example_browse_data_tree_api.json';

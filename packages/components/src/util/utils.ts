@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Set } from 'immutable'
-import { Utils } from '@labkey/api'
+import { List, Map, Set } from 'immutable';
+import { Utils } from '@labkey/api';
 
-import { SchemaQuery, User } from '../components/base/models/model'
-import { hasParameter, toggleParameter } from '../url/ActionURL'
+import { SchemaQuery, User } from '../components/base/models/model';
+import { hasParameter, toggleParameter } from '../url/ActionURL';
 
 const emptyList = List<string>();
 

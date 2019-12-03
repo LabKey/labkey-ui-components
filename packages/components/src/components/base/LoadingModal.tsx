@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Modal } from "react-bootstrap";
-import { LoadingSpinner } from "./LoadingSpinner";
+import React from 'react';
+import { Modal } from 'react-bootstrap';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface Props {
     show: boolean

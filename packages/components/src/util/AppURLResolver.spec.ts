@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable';
 
-import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './AppURLResolver'
-import { URLResolver } from "./URLResolver";
+import { AssayResolver, AssayRunResolver, ListResolver, SampleSetResolver, SamplesResolver } from './AppURLResolver';
+import { URLResolver } from './URLResolver';
 import { AppURL } from '../url/AppURL';
 
 describe('URL Resolvers', () => {

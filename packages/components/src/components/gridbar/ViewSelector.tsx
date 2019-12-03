@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { List } from 'immutable'
+import React from 'reactn';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { List } from 'immutable';
 
-import { gridSelectView } from '../../actions'
+import { gridSelectView } from '../../actions';
 import { QueryGridModel, ViewInfo } from '../base/models/model';
 import { generateId, naturalSort } from '../../util/utils';
 

@@ -1,15 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { OrderedMap } from 'immutable';
 import { mount } from 'enzyme';
 
-import { BatchPropertiesPanel } from "./BatchPropertiesPanel";
-import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
-import { TextInput } from "../forms/input/TextInput";
-import { DateInput } from "../forms/input/DateInput";
-import { CheckboxInput } from "../forms/input/CheckboxInput";
-import { SelectInput } from "../forms/input/SelectInput";
-import { AssayWizardModel } from "./models";
-import { QueryFormInputs } from "../forms/QueryFormInputs";
+import { BatchPropertiesPanel } from './BatchPropertiesPanel';
+import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
+import { TextInput } from '../forms/input/TextInput';
+import { DateInput } from '../forms/input/DateInput';
+import { CheckboxInput } from '../forms/input/CheckboxInput';
+import { SelectInput } from '../forms/input/SelectInput';
+import { AssayWizardModel } from './models';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { QueryColumn } from '../base/models/model';
 
 beforeAll(() => {

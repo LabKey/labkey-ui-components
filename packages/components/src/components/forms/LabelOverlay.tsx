@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import React from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { QueryColumn } from '../base/models/model';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { generateId } from '../../util/utils';

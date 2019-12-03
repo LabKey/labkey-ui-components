@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss'
+import './stories.scss';
 import { AssayRunDeleteConfirmModal } from '..';
 
 storiesOf('AssayRunDeleteConfirmModal', module)

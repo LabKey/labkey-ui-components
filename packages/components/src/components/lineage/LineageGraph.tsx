@@ -2,35 +2,35 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as OrigReact from 'react'
-import React from 'reactn'
-import { List } from 'immutable'
-import { ActionURL } from '@labkey/api'
+import * as OrigReact from 'react';
+import React from 'reactn';
+import { List } from 'immutable';
+import { ActionURL } from '@labkey/api';
 
-import { LineageNodeList, LineageSummary } from "./LineageSummary";
+import { LineageNodeList, LineageSummary } from './LineageSummary';
 import {
     ILineageGroupingOptions,
     Lineage,
     LineageFilter,
     LineageGroupingOptions,
     LineageNode,
-    LineageOptions
-} from "./models";
+    LineageOptions,
+} from './models';
 import {
     createLineageNodeCollections,
     LineageNodeCollection,
     VisGraphClusterNode,
     VisGraphCombinedNode,
     VisGraphNode,
-    VisGraphOptions
-} from "./vis/VisGraphGenerator";
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
-import { VisGraph } from "./vis/VisGraph";
-import { getStateQueryGridModel } from "../../models";
+    VisGraphOptions,
+} from './vis/VisGraphGenerator';
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
+import { VisGraph } from './vis/VisGraph';
+import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
-import { getQueryGridModel } from "../../global";
-import { Detail } from "../forms/detail/Detail";
-import { loadLineageIfNeeded } from "./actions";
+import { getQueryGridModel } from '../../global';
+import { Detail } from '../forms/detail/Detail';
+import { loadLineageIfNeeded } from './actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { Alert } from '../base/Alert';

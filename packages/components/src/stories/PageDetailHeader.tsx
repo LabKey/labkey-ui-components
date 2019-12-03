@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
+import React from 'react';
 import { fromJS, Map } from 'immutable';
-import { storiesOf } from "@storybook/react";
-import { text, withKnobs } from '@storybook/addon-knobs'
+import { storiesOf } from '@storybook/react';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { PageDetailHeader } from "../components/forms/PageDetailHeader";
-import './stories.scss'
+import { PageDetailHeader } from '../components/forms/PageDetailHeader';
+import './stories.scss';
 import { CreatedModified } from '../components/base/CreatedModified';
 
 storiesOf('PageDetailHeader', module)

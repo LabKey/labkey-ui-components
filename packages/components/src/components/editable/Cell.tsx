@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react'
-import React from 'reactn'
-import classNames from 'classnames'
-import { List } from 'immutable'
-import { OverlayTrigger, Popover } from 'react-bootstrap'
+import * as OrigReact from 'react';
+import React from 'reactn';
+import classNames from 'classnames';
+import { List } from 'immutable';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events'
-import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions'
-import { CellMessage, EditorModel, ValueDescriptor } from '../../models'
-import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants'
-import { LookupCell, LookupCellProps } from './LookupCell'
+import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
+import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
+import { CellMessage, EditorModel, ValueDescriptor } from '../../models';
+import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
+import { LookupCell, LookupCellProps } from './LookupCell';
 import { QueryColumn } from '../base/models/model';
 
 interface Props {

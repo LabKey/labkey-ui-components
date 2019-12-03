@@ -1,15 +1,15 @@
-import {JsonType} from "../models";
-import {mount} from "enzyme";
-import * as React from "react";
-import { Filters, NO_FILTER_TYPE } from "./Filters";
-import toJson from "enzyme-to-json";
-import {createFormInputId} from "../actions";
+import { JsonType } from '../models';
+import { mount } from 'enzyme';
+import React from 'react';
+import { Filters, NO_FILTER_TYPE } from './Filters';
+import toJson from 'enzyme-to-json';
+import { createFormInputId } from '../actions';
 import {
     DOMAIN_FIRST_FILTER_TYPE,
     DOMAIN_FIRST_FILTER_VALUE,
     DOMAIN_SECOND_FILTER_TYPE,
-    DOMAIN_SECOND_FILTER_VALUE
-} from "../constants";
+    DOMAIN_SECOND_FILTER_VALUE,
+} from '../constants';
 
 
 describe('Filters', () => {

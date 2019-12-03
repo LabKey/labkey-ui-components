@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Record } from 'immutable'
-import { Filter } from '@labkey/api'
+import { List, Map, Record } from 'immutable';
+import { Filter } from '@labkey/api';
 
 export class AppURL extends Record({
     _baseUrl: undefined,

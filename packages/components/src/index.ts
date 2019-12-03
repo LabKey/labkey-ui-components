@@ -42,7 +42,7 @@ import {
     SchemaQuery,
     User,
     ViewInfo,
-} from './components/base/models/model'
+} from './components/base/models/model';
 import {
     applyDevTools,
     capitalizeFirstChar,
@@ -58,12 +58,12 @@ import {
     resolveSchemaQuery,
     toggleDevTools,
     valueIsEmpty,
-} from './util/utils'
-import { getActionErrorMessage } from './util/messaging'
-import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL'
-import { WHERE_FILTER_TYPE } from './url/WhereFilterType'
-import { AddEntityButton } from './components/buttons/AddEntityButton'
-import { RemoveEntityButton } from './components/buttons/RemoveEntityButton'
+} from './util/utils';
+import { getActionErrorMessage } from './util/messaging';
+import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
+import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
+import { AddEntityButton } from './components/buttons/AddEntityButton';
+import { RemoveEntityButton } from './components/buttons/RemoveEntityButton';
 import { AppURL, spliceURL } from './url/AppURL';
 import { Alert } from './components/base/Alert'
 import { DeleteIcon } from './components/base/DeleteIcon';
@@ -73,25 +73,25 @@ import { MultiMenuButton } from './components/menus/MultiMenuButton';
 import { MenuOption, SubMenu } from './components/menus/SubMenu';
 import { ISubItem, SubMenuItem, SubMenuItemProps } from './components/menus/SubMenuItem';
 import { SelectionMenuItem } from './components/menus/SelectionMenuItem';
-import { LoadingModal } from './components/base/LoadingModal'
-import { LoadingSpinner } from './components/base/LoadingSpinner'
-import { NotFound } from './components/base/NotFound'
-import { Page, PageProps } from './components/base/Page'
-import { LoadingPage, LoadingPageProps } from './components/base/LoadingPage'
-import { PageHeader } from './components/base/PageHeader'
-import { Progress } from './components/base/Progress'
-import { LabelHelpTip } from './components/base/LabelHelpTip'
-import { Tip } from './components/base/Tip'
-import { Grid, GridColumn, GridProps } from './components/base/Grid'
-import { FormSection } from './components/base/FormSection'
-import { Section } from './components/base/Section'
-import { FileAttachmentForm } from './components/files/FileAttachmentForm'
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models'
-import { FilesListing } from './components/files/FilesListing'
-import { Notification } from './components/notifications/Notification'
-import { createNotification } from './components/notifications/actions'
-import { dismissNotifications, initNotificationsState } from './components/notifications/global'
-import { ConfirmModal } from './components/base/ConfirmModal'
+import { LoadingModal } from './components/base/LoadingModal';
+import { LoadingSpinner } from './components/base/LoadingSpinner';
+import { NotFound } from './components/base/NotFound';
+import { Page, PageProps } from './components/base/Page';
+import { LoadingPage, LoadingPageProps } from './components/base/LoadingPage';
+import { PageHeader } from './components/base/PageHeader';
+import { Progress } from './components/base/Progress';
+import { LabelHelpTip } from './components/base/LabelHelpTip';
+import { Tip } from './components/base/Tip';
+import { Grid, GridColumn, GridProps } from './components/base/Grid';
+import { FormSection } from './components/base/FormSection';
+import { Section } from './components/base/Section';
+import { FileAttachmentForm } from './components/files/FileAttachmentForm';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
+import { FilesListing } from './components/files/FilesListing';
+import { Notification } from './components/notifications/Notification';
+import { createNotification } from './components/notifications/actions';
+import { dismissNotifications, initNotificationsState } from './components/notifications/global';
+import { ConfirmModal } from './components/base/ConfirmModal';
 import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './util/Date';
 import { SVGIcon, Theme } from './components/base/SVGIcon';
 import { CreatedModified } from './components/base/CreatedModified';
@@ -104,7 +104,7 @@ import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
 
-import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo, SearchResultsModel } from './models';
+import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo } from './models';
 import {
     createQueryGridModelFilteredBySample,
     getSelected,
@@ -115,7 +115,6 @@ import {
     gridShowError,
     queryGridInvalidate,
     schemaGridInvalidate,
-    searchUsingIndex,
     setSelected,
 } from './actions';
 import {
@@ -184,6 +183,8 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
+import { searchUsingIndex }  from './components/search/actions'
+import { SearchResultsModel }  from './components/search/models'
 import {
     deleteSampleSet,
     getSampleDeleteConfirmationData,

@@ -140,7 +140,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (!this.props.maxPhiLevel) {
             getMaxPhiLevel()
                 .then((maxPhiLevel) => {
-                    this.setState({maxPhiLevel: maxPhiLevel})
+                    this.setState(() => ({maxPhiLevel}));
                 })
                 .catch((error) => {
                         console.error("Unable to retrieve max PHI level.")
@@ -243,12 +243,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
+    setExpandedState(expandedRowIndex: number, expandTransition: number) {
+        this.setState(() => ({expandedRowIndex, expandTransition}));
+    }
+
     collapseRow = (): void => {
         if (this.isExpanded()) {
-            this.setState({
-                expandedRowIndex: undefined,
-                expandTransition: EXPAND_TRANSITION
-            });
+            this.setExpandedState(undefined, EXPAND_TRANSITION);
         }
     };
 
@@ -257,10 +258,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { expandedRowIndex } = this.state;
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
-            this.setState({
-                expandedRowIndex: index,
-                expandTransition: EXPAND_TRANSITION
-            })
+            this.setExpandedState(index, EXPAND_TRANSITION);
         }
     };
 
@@ -269,10 +267,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { expandedRowIndex } = this.state;
 
         if (expandedRowIndex !== index && index < domain.fields.size) {
-            this.setState({
-                expandedRowIndex: index,
-                expandTransition: EXPAND_TRANSITION_FAST
-            })
+            this.setExpandedState(index, EXPAND_TRANSITION_FAST);
         }
     };
 
@@ -309,10 +304,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     onDeleteConfirm = () => {
-        this.setState({
+        this.setState(() => ({
             expandedRowIndex: undefined,
             showConfirm: false
-        });
+        }));
 
         this.onDomainChange(removeField(this.props.domain, this.state.expandedRowIndex));
     };
@@ -323,9 +318,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         if (newDesignFields) {
              newDesignFields.forEach(this.applyAddField);
-             this.setState({
-                 expandedRowIndex: 0
-             });
+             this.setState(() => ({expandedRowIndex: 0}));
         }
         else
             this.applyAddField();
@@ -354,9 +347,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let field = domain.fields.get(index);
 
         if (field) {
-            this.setState({
-                showConfirm: true
-            });
+            this.setState(() => ({showConfirm: true}));
         }
         else {
             this.onDeleteConfirm();
@@ -364,9 +355,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onConfirmCancel = () => {
-        this.setState({
-            showConfirm: false
-        });
+        this.setState(() => ({showConfirm: false}));
     };
 
     onBeforeDragStart = (initial) => {

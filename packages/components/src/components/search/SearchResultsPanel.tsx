@@ -16,11 +16,10 @@
 import React from 'react'
 import { Panel } from 'react-bootstrap';
 
-import { SearchResultsModel } from '../../models';
+import { SearchResultsModel } from './models';
 import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-
 
 interface Props {
     model: SearchResultsModel
@@ -47,7 +46,9 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         if (!this.isLoading() && error) {
             console.error(error);
             return <Alert>
-                There was an error with your search term(s). See the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=luceneSearch" target="_blank">LabKey Search Documentation</a> page for more information on search terms and operators.
+                There was an error with your search term(s).
+                See the <a href={LABKEY.helpLinkPrefix + "luceneSearch"} target="_blank">LabKey Search Documentation</a> page
+                for more information on search terms and operators.
             </Alert>
         }
     }

@@ -16,11 +16,11 @@
 import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { SearchResultCard } from '../components/search/SearchResultCard';
 import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
-import { SearchResultsModel } from '../models';
+import { SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
 import './stories.scss'
 

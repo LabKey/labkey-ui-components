@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
-import { Ajax, Filter, Query, Utils } from '@labkey/api'
-import $ from 'jquery'
+import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
+import { Ajax, Filter, Query, Utils } from '@labkey/api';
+import $ from 'jquery';
 
-import { getQueryDetails, searchRows, selectRows } from './query/api'
-import { isEqual } from './query/filter'
-import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL'
+import { getQueryDetails, searchRows, selectRows } from './query/api';
+import { isEqual } from './query/filter';
+import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
@@ -27,10 +27,9 @@ import {
     KEYS,
     LOOKUP_DEFAULT_SIZE,
     MODIFICATION_TYPES,
-    RELEVANT_SEARCH_RESULT_TYPES,
     SELECTION_TYPES,
 } from './constants';
-import { cancelEvent, getPasteValue, setCopyValue } from './events'
+import { cancelEvent, getPasteValue, setCopyValue } from './events';
 import {
     CellMessage,
     CellMessages,
@@ -40,11 +39,10 @@ import {
     EditorModelProps,
     getStateQueryGridModel,
     LookupStore,
-    SearchIdData,
     ValueDescriptor,
     VisualizationConfigModel,
 } from './models'
-import { bindColumnRenderers } from './renderers'
+import { bindColumnRenderers } from './renderers';
 import {
     getEditorModel,
     getLookupStore,
@@ -57,9 +55,8 @@ import {
     updateLookupStore,
     updateQueryGridModel,
     updateSelections,
-} from './global'
+} from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
-import { URLResolver } from './util/URLResolver';
 import {
     AssayDefinitionModel,
     IGridResponse,
@@ -2345,54 +2342,6 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
 
 export function removeRow(model: QueryGridModel, dataId: any, rowIdx: number) {
     removeRows(model, List<number>([rowIdx]));
-}
-
-export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
-    return new Promise((resolve, reject) => {
-        Ajax.request({
-            url: buildURL('search', 'json.api'),
-            method: 'GET',
-            params: userConfig,
-            success: Utils.getCallbackWrapper((json) => {
-                addDataObjects(json);
-                const urlResolver = new URLResolver();
-                resolve(urlResolver.resolveSearchUsingIndex(json));
-            }),
-            failure: Utils.getCallbackWrapper((json) => {
-                reject(json);
-            }, null, false)
-        });
-    });
-}
-
-// Some search results will not have a data object.  Much of the display logic
-// relies on this, so for such results that we want to show the user, we add a
-// data element
-function addDataObjects(jsonResults) {
-    jsonResults.hits.forEach(hit => {
-
-        if (hit.data === undefined) {
-            let data = parseSearchIdToData(hit.id);
-            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0)
-                hit.data = data;
-        }
-    });
-}
-
-// Create a data object from the search id, which is assumed to be of the form:
-//      [group:][type:]rowId
-function parseSearchIdToData(idString): SearchIdData {
-    let idData = new SearchIdData();
-    if (idString) {
-        let idParts = idString.split(":");
-
-        idData.id = idParts[idParts.length - 1];
-        if (idParts.length > 1)
-            idData.type = idParts[idParts.length - 2];
-        if (idParts.length > 2)
-            idData.group = idParts[idParts.length - 3];
-    }
-    return idData;
 }
 
 /**

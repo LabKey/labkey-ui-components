@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Record } from 'immutable';
+import { fromJS, List, Map, Record } from 'immutable';
 import { Utils } from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
@@ -319,12 +319,12 @@ export class DomainDesign extends Record({
     }
 
     getInvalidFields(): Map<number, DomainField> {
-        let invalid = new Map<number, DomainField>();
+        let invalid = Map<number, DomainField>();
 
         for (let i=0; i<this.fields.size; i++) {
             let field = this.fields.get(i);
             if (!field.isValid()) {
-                invalid.set(i, field);
+                invalid = invalid.set(i, field);
             }
         }
 

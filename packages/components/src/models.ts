@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable'
-import { Filter } from '@labkey/api'
+import { List, Map, OrderedMap, Record, Set } from 'immutable';
+import { Filter } from '@labkey/api';
 
-import { genCellKey } from './actions'
-import { getQueryGridModel, getQueryMetadata } from './global'
-import { DefaultGridLoader } from './components/GridLoader'
+import { genCellKey } from './actions';
+import { getQueryGridModel, getQueryMetadata } from './global';
+import { DefaultGridLoader } from './components/GridLoader';
 import {
     IGridLoader,
     IQueryGridModel,
@@ -827,35 +827,4 @@ export class LookupStore extends Record({
 
         return values.find((value) => !displayValues.contains(value)) == undefined;
     }
-}
-
-export class SearchResultsModel extends Record({
-    entities: undefined,
-    error: undefined,
-    isLoading: false,
-    isLoaded: false,
-    lastUpdate: undefined,
-}) {
-    entities: List<Map<any, any>>;
-    error: string;
-    isLoading: boolean;
-    isLoaded: boolean;
-    lastUpdate: Date;
-
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
-    static create(raw: any): SearchResultsModel {
-        return new SearchResultsModel({
-            ...raw,
-            entities: raw.entities ? fromJS(raw.entities) : undefined
-        });
-    }
-}
-
-export class SearchIdData {
-    group: string;
-    id: string;
-    type: string;
 }

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { List } from 'immutable'
+import React from 'react';
+import { List } from 'immutable';
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
-import { DataViewInfo, IDataViewInfo } from '../../models'
-import { ChartMenu } from './ChartMenu'
-import { fetchCharts } from '../../actions'
+import { DataViewInfo, IDataViewInfo } from '../../models';
+import { ChartMenu } from './ChartMenu';
+import { fetchCharts } from '../../actions';
 import { naturalSort } from '../../';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
 import { loadReports } from '../../query/reports';

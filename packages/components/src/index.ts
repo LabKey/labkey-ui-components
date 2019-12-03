@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants'
-import { SCHEMAS } from './components/base/models/schemas'
+import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
+import { SCHEMAS } from './components/base/models/schemas';
 import {
     fetchAllAssays,
     getUserProperties,
     importGeneralAssayRun,
     inferDomainFromFile,
-} from './components/base/actions'
+} from './components/base/actions';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -65,7 +65,7 @@ import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
 import { AddEntityButton } from './components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './components/buttons/RemoveEntityButton';
 import { AppURL, spliceURL } from './url/AppURL';
-import { Alert } from './components/base/Alert'
+import { Alert } from './components/base/Alert';
 import { DeleteIcon } from './components/base/DeleteIcon';
 import { DragDropHandle } from './components/base/DragDropHandle';
 import { FieldExpansionToggle } from './components/base/FieldExpansionToggle';
@@ -95,8 +95,8 @@ import { ConfirmModal } from './components/base/ConfirmModal';
 import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './util/Date';
 import { SVGIcon, Theme } from './components/base/SVGIcon';
 import { CreatedModified } from './components/base/CreatedModified';
-import { MessageFunction, NotificationItemProps, Persistence } from './components/notifications/model'
-import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permissions'
+import { MessageFunction, NotificationItemProps, Persistence } from './components/notifications/model';
+import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
@@ -183,8 +183,8 @@ import { SampleInsertPanel } from './components/samples/SampleInsertPanel';
 import { SampleDeleteConfirmModal } from './components/samples/SampleDeleteConfirmModal';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
-import { searchUsingIndex }  from './components/search/actions'
-import { SearchResultsModel }  from './components/search/models'
+import { searchUsingIndex } from './components/search/actions';
+import { SearchResultsModel } from './components/search/models';
 import {
     deleteSampleSet,
     getSampleDeleteConfirmationData,
@@ -221,9 +221,9 @@ import {
 } from './components/assay/actions';
 import { flattenBrowseDataTreeResponse } from './components/report-list/model';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
-import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants'
-import { LineageFilter } from './components/lineage/models'
-import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator'
+import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
+import { LineageFilter } from './components/lineage/models';
+import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './components/lineage/LineageGraph';
 import { LineageGrid } from './components/lineage/LineageGrid';
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';

@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { number, text, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss'
+import './stories.scss';
 import { AssayDesignDeleteConfirmModal } from '..';
 
 storiesOf('AssayDesignDeleteConfirmModal', module)

@@ -28,7 +28,7 @@ import {
     TEXT_TYPE,
 } from './models';
 import { DomainRow } from './DomainRow';
-import { mount } from 'enzyme'
+import { mount } from 'enzyme';
 import {
     ATTACHMENT_RANGE_URI,
     DOMAIN_EDITABLE_DEFAULT,

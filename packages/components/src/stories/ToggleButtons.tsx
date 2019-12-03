@@ -3,12 +3,12 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { ToggleButtons } from '../components/buttons/ToggleButtons';
-import './stories.scss'
+import './stories.scss';
 
 interface State {
     selected: string

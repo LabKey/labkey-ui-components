@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 import { Filter } from '@labkey/api';
-import { buildURL } from './ActionURL'
-import { AppURL } from './AppURL'
+import { buildURL } from './ActionURL';
+import { AppURL } from './AppURL';
 
 describe('AppURL', () => {
 

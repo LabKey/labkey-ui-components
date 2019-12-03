@@ -18,7 +18,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { getStateQueryGridModel } from '../models';
 
-import './stories.scss'
+import './stories.scss';
 import * as constants from '../test/data/constants';
 import { List, Map } from 'immutable';
 import { EditableGridModal } from '../components/editable/EditableGridModal';

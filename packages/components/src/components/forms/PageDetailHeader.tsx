@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
+import React from 'react';
 
-import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger'
+import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger';
 import { hasAllPermissions } from '../../util/utils';
 import { User } from '../base/models/model';
 import { PermissionTypes } from '../base/models/constants';

@@ -3,10 +3,10 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import { fromJS } from 'immutable'
-import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { fromJS } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import mock, { proxy } from 'xhr-mock';
 
 import { FileAttachmentForm } from '../components/files/FileAttachmentForm';

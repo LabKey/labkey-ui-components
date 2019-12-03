@@ -15,11 +15,11 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, withKnobs } from '@storybook/addon-knobs'
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { QueryGrid } from '../components/QueryGrid';
 import { updateQueryGridModel } from '../global';
 import { getStateQueryGridModel } from '../models';
-import './stories.scss'
+import './stories.scss';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 
 storiesOf('QueryGrid', module)

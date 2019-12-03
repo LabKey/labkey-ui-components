@@ -2,9 +2,9 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'reactn'
+import React from 'reactn';
 import { Link } from 'react-router';
-import { List } from 'immutable'
+import { List } from 'immutable';
 
 import { LineageFilter, LineageLink, LineageNode, LineageOptions, LineageResult } from './models';
 import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';

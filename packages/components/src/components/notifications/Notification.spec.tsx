@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import moment from 'moment'
-import renderer from 'react-test-renderer'
+import React from 'react';
+import moment from 'moment';
+import renderer from 'react-test-renderer';
 import { User } from '../base/models/model';
-import { Notification } from './Notification'
+import { Notification } from './Notification';
 import { createNotification } from './actions';
 import { NotificationItemModel } from './model';
 import { mount, shallow } from 'enzyme';

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { List, Map } from 'immutable'
+import React from 'react';
+import { List, Map } from 'immutable';
 import { getSelectedData } from '../../actions';
 import { EditorModel } from '../../models';
 import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';

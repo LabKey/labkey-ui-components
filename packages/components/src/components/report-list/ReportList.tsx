@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import { Link } from 'react-router';
-import { Image, Media, Modal, Panel } from 'react-bootstrap'
+import { Image, Media, Modal, Panel } from 'react-bootstrap';
 import { Set } from 'immutable';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';

@@ -16,7 +16,7 @@
 import React from 'reactn';
 import renderer from 'react-test-renderer';
 import toJson from 'enzyme-to-json';
-import { mount } from 'enzyme'
+import { mount } from 'enzyme';
 import { List, Map } from 'immutable';
 
 import { ProductMenu } from './ProductMenu';

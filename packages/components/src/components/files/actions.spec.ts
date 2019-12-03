@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable'
+import { fromJS } from 'immutable';
 import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
 
 const DATA = fromJS([

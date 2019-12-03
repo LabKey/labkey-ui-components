@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { Button } from 'react-bootstrap'
-import { List, Map } from 'immutable'
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { List, Map } from 'immutable';
 
-import { FormSection } from '../base/FormSection'
-import { Progress } from '../base/Progress'
-import { FileAttachmentContainer } from './FileAttachmentContainer'
+import { FormSection } from '../base/FormSection';
+import { Progress } from '../base/Progress';
+import { FileAttachmentContainer } from './FileAttachmentContainer';
 import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';

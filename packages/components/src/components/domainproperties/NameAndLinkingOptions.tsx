@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';

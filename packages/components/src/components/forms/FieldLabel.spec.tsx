@@ -2,11 +2,11 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react'
+import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount, shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme';
 
-import { FieldLabel } from './FieldLabel'
+import { FieldLabel } from './FieldLabel';
 import { LabelOverlay } from './LabelOverlay';
 import { QueryColumn } from '../base/models/model';
 

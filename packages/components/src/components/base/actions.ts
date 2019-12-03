@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable'
-import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api'
+import { List } from 'immutable';
+import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
 
 import { AssayDefinitionModel, InferDomainResponse } from './models/model';
 import { buildURL } from '../../url/ActionURL';

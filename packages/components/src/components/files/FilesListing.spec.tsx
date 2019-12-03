@@ -1,6 +1,6 @@
-import React from 'react'
-import { List } from 'immutable'
-import { shallow } from 'enzyme'
+import React from 'react';
+import { List } from 'immutable';
+import { shallow } from 'enzyme';
 import { FilesListing } from './FilesListing';
 
 import { IFile } from './models';

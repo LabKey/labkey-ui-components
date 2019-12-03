@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map } from 'immutable'
-import { ActionURL, Filter } from '@labkey/api'
+import { fromJS, List, Map } from 'immutable';
+import { ActionURL, Filter } from '@labkey/api';
 import { AppURL } from '../url/AppURL';
 
 interface MapURLOptions {

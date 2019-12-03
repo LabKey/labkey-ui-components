@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { OverlayTrigger } from 'react-bootstrap'
-import { List } from 'immutable'
+import React from 'react';
+import { OverlayTrigger } from 'react-bootstrap';
+import { List } from 'immutable';
 
-import { updateRows } from '../../query/api'
-import { FieldEditForm, FieldEditProps } from './input/FieldEditInput'
+import { updateRows } from '../../query/api';
+import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
 import { QueryGridModel } from '../base/models/model';
 
 export interface FieldEditTriggerProps {

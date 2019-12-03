@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable';
 import { Option } from 'react-select';
-import { Ajax, Filter, Utils } from '@labkey/api'
+import { Ajax, Filter, Utils } from '@labkey/api';
 
-import { FOCUS_FLAG } from './constants'
-import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api'
-import { QuerySelectOwnProps } from './QuerySelect'
-import { IUser, QuerySelectModel, QuerySelectModelProps } from './model'
+import { FOCUS_FLAG } from './constants';
+import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api';
+import { QuerySelectOwnProps } from './QuerySelect';
+import { IUser, QuerySelectModel, QuerySelectModelProps } from './model';
 import { getUsers, setUsers } from '../../global';
 import { similaritySortFactory } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';

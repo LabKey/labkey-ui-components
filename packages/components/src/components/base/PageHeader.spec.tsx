@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer'
+import renderer from 'react-test-renderer';
 
-import { PageHeader } from './PageHeader'
-import { notificationInit } from '../../test/setupUtils'
+import { PageHeader } from './PageHeader';
+import { notificationInit } from '../../test/setupUtils';
 
 beforeEach(() => {
    notificationInit()

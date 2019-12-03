@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Utils } from '@labkey/api'
+import { Ajax, Utils } from '@labkey/api';
 
-import { NotificationItemModel, NotificationItemProps } from './model'
+import { NotificationItemModel, NotificationItemProps } from './model';
 import { buildURL } from '../../url/ActionURL';
 import { addNotification } from './global';
 

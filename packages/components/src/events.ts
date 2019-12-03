@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
+import React from 'react';
 
-import { KEYS } from './constants'
+import { KEYS } from './constants';
 
 export function cancelEvent(event: React.SyntheticEvent<any>): void {
     if (event) {

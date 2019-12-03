@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { List, Map } from 'immutable'
-import { Checkbox, Input, Textarea } from 'formsy-react-components'
+import React from 'react';
+import { List, Map } from 'immutable';
+import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { LabelOverlay } from '../LabelOverlay';
 import { DateInput } from '../input/DateInput';

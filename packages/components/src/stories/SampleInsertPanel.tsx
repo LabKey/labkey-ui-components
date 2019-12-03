@@ -16,11 +16,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-import { Location } from '../util/URL'
+import { Location } from '../util/URL';
 
 import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
 
-import './stories.scss'
+import './stories.scss';
 
 storiesOf('SampleInsertPanel', module)
     .addDecorator(withKnobs)

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { Button, Panel } from 'react-bootstrap'
-import { List, Map } from 'immutable'
-import Formsy from 'formsy-react'
-import { Utils } from '@labkey/api'
+import React from 'react';
+import { Button, Panel } from 'react-bootstrap';
+import { List, Map } from 'immutable';
+import Formsy from 'formsy-react';
+import { Utils } from '@labkey/api';
 
 import { updateRows } from '../../../query/api';
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';

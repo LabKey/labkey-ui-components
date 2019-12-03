@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { List, Map } from 'immutable'
-import { Input } from 'formsy-react-components'
+import React from 'react';
+import { List, Map } from 'immutable';
+import { Input } from 'formsy-react-components';
 
-import { LabelOverlay } from './LabelOverlay'
-import { SelectInput } from './input/SelectInput'
+import { LabelOverlay } from './LabelOverlay';
+import { SelectInput } from './input/SelectInput';
 import { QueryColumn } from '../base/models/model';
 import { generateId } from '../../util/utils';
 

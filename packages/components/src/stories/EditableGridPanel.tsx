@@ -23,7 +23,7 @@ import { getStateQueryGridModel } from '../models';
 import { EditableGridPanel } from '../components/editable/EditableGridPanel';
 import * as constants from '../test/data/constants';
 
-import './stories.scss'
+import './stories.scss';
 import { EditableColumnMetadata } from '../components/editable/EditableGrid';
 import { SchemaQuery } from '../components/base/models/model';
 import { PlacementType } from '../components/editable/Controls';

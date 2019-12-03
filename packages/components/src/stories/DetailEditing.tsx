@@ -15,13 +15,13 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { getStateQueryGridModel } from '../models';
 import { gridInit } from '../actions';
 import { DetailEditing } from '../components/forms/detail/DetailEditing';
 import { getQueryGridModel } from '../global';
-import './stories.scss'
+import './stories.scss';
 import { LoadingSpinner } from '../components/base/LoadingSpinner';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';

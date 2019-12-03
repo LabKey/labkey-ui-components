@@ -16,7 +16,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import './stories.scss'
+import './stories.scss';
 import { SampleDeleteConfirmModal } from '..';
 
 storiesOf('SampleDeleteConfirmModal', module)

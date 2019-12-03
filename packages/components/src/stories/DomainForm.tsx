@@ -3,9 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { DomainDesign } from '../components/domainproperties/models';
 import { DomainFormImpl } from '../components/domainproperties/DomainForm';
@@ -20,7 +20,7 @@ import exceptionDataClient from '../test/data/property-domainExceptionClient.jso
 import fullyLockedData from '../test/data/property-getDomainWithFullyLockedFields.json';
 import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
 import { initMocks } from './mock';
-import './stories.scss'
+import './stories.scss';
 
 initMocks();
 

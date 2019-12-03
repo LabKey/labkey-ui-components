@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { fromJS, Map } from 'immutable'
-import { Filter } from '@labkey/api'
+import React from 'react';
+import { fromJS, Map } from 'immutable';
+import { Filter } from '@labkey/api';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
 import { ISelectRowsResult, selectRows } from '../../../query/api';

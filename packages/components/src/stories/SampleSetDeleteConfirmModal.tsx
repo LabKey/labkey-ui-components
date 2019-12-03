@@ -18,7 +18,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { SampleSetDeleteConfirmModal } from '../components/samples/SampleSetDeleteConfirmModal';
 
-import './stories.scss'
+import './stories.scss';
 
 storiesOf('SampleSetDeleteConfirmModal', module)
     .addDecorator(withKnobs)

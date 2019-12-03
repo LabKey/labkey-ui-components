@@ -1,6 +1,6 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
-import { fromJS, List } from 'immutable'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { fromJS, List } from 'immutable';
 
 import { FilePreviewGrid } from './FilePreviewGrid';
 import { GridColumn } from '../base/Grid';

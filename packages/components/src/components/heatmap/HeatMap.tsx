@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { Link } from 'react-router'
-import { fromJS, List, Map } from 'immutable'
+import React from 'react';
+import { Link } from 'react-router';
+import { fromJS, List, Map } from 'immutable';
 
-import { HeatMapDisplay } from './HeatMapDisplay'
-import { addDateRangeFilter, last12Months, monthSort } from './utils'
+import { HeatMapDisplay } from './HeatMapDisplay';
+import { addDateRangeFilter, last12Months, monthSort } from './utils';
 import { gridInit } from '../../actions';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';

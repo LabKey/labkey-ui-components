@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, OrderedMap } from 'immutable'
+import { fromJS, List, OrderedMap } from 'immutable';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -22,7 +22,7 @@ import {
     QueryGridModel,
     QueryInfo,
     SchemaQuery,
-} from './model'
+} from './model';
 
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';

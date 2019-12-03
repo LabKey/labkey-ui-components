@@ -43,8 +43,8 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
-import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
-import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
+import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json';
+import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json';
 import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
 import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
 import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';

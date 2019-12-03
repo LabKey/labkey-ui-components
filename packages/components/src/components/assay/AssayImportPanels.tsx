@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
+import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Map, OrderedMap } from 'immutable'
-import { Utils } from '@labkey/api'
+import { Map, OrderedMap } from 'immutable';
+import { Utils } from '@labkey/api';
 
-import { Location } from '../../util/URL'
+import { Location } from '../../util/URL';
 import { loadSelectedSamples } from '../samples/actions';
 import {
     checkForDuplicateAssayFiles,
@@ -32,7 +32,7 @@ import {
     uploadAssayRunFiles,
 } from './actions';
 import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from './models';
-import { withFormSteps, WithFormStepsProps } from '../forms/FormStep'
+import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
 import { getQueryGridModel, removeQueryGridModel } from '../../global';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
 import { getStateQueryGridModel } from '../../models';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input } from 'formsy-react-components'
-import ReactBootstrapToggle from 'react-bootstrap-toggle'
+import { Input } from 'formsy-react-components';
+import ReactBootstrapToggle from 'react-bootstrap-toggle';
 
 export interface ToggleWithInputFieldProps {
     active: boolean

@@ -19,7 +19,7 @@ import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 import { SampleSetDetailsPanel } from '../components/samples/SampleSetDetailsPanel';
 
-import './stories.scss'
+import './stories.scss';
 
 storiesOf('SampleSetDetailsPanel', module)
     .addDecorator(withKnobs)

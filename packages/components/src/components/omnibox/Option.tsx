@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import classNames from 'classnames'
+import React from 'react';
+import classNames from 'classnames';
 
-import { ActionOption } from './actions/Action'
+import { ActionOption } from './actions/Action';
 
 interface OptionProps {
     // required

@@ -1,4 +1,4 @@
-import { Filter } from '@labkey/api'
+import { Filter } from '@labkey/api';
 
 /**
  * This implements the filter corresponding to <code>QueryServiceImpl.WhereClause</code>

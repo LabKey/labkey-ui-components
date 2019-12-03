@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { ReactNode } from 'react'
-import { List, OrderedMap } from 'immutable'
-import { Alert, Button, Modal } from 'react-bootstrap'
-import Formsy, { addValidationRule } from 'formsy-react'
-import { Input } from 'formsy-react-components'
-import { Utils } from '@labkey/api'
+import React, { ReactNode } from 'react';
+import { List, OrderedMap } from 'immutable';
+import { Alert, Button, Modal } from 'react-bootstrap';
+import Formsy, { addValidationRule } from 'formsy-react';
+import { Input } from 'formsy-react-components';
+import { Utils } from '@labkey/api';
 
-import { selectRows } from '../../query/api'
-import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs'
+import { selectRows } from '../../query/api';
+import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';

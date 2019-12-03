@@ -3,16 +3,16 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { List, Map } from 'immutable'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
+import { List, Map } from 'immutable';
 
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
 import { NavigationBar } from '../components/navigation/NavigationBar';
 
-import './stories.scss'
+import './stories.scss';
 import { User } from '../components/base/models/model';
 import { AppURL } from '../url/AppURL';
 

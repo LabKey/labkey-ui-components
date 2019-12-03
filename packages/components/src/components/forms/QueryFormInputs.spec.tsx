@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import Formsy from 'formsy-react'
+import Formsy from 'formsy-react';
 import { List } from 'immutable';
 import { QueryFormInputs } from './QueryFormInputs';
 import { mount } from 'enzyme';

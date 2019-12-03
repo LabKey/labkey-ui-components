@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { fromJS, List } from 'immutable'
+import React from 'react';
+import { fromJS, List } from 'immutable';
 
-import { selectRows } from '../query/api'
-import { getSelected } from '../actions'
+import { selectRows } from '../query/api';
+import { getSelected } from '../actions';
 import { IGridLoader, IGridResponse, IGridSelectionResponse, QueryGridModel } from './base/models/model';
 
 class GridLoader implements IGridLoader {

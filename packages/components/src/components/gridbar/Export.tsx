@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
-import { Set } from 'immutable'
+import React from 'react';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { Set } from 'immutable';
 
 import { gridExport } from '../../actions';
 import { EXPORT_TYPES } from '../../constants';

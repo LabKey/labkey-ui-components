@@ -2,9 +2,9 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, OrderedSet, Set } from 'immutable'
+import { List, Map, OrderedSet, Set } from 'immutable';
 
-import { ILineageGroupingOptions, LineageLink, LineageNode } from './models'
+import { ILineageGroupingOptions, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from './constants';
 import { imageURL } from '../../url/ActionURL';
 import { Theme } from '../base/SVGIcon';

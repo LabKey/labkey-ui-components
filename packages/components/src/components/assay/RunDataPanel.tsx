@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
+import React from 'react';
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { Map } from 'immutable';

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer'
+import renderer from 'react-test-renderer';
 
-import { LoadingSpinner } from './LoadingSpinner'
+import { LoadingSpinner } from './LoadingSpinner';
 
 describe("<LoadingSpinner />", () => {
     test("render without properties", () => {

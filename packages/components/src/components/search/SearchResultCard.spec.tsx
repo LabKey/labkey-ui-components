@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import renderer from 'react-test-renderer'
-import { fromJS } from 'immutable'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { fromJS } from 'immutable';
 import { SearchResultCard } from './SearchResultCard';
 import { mount } from 'enzyme';
 

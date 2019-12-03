@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import { Breadcrumb } from './Breadcrumb';
 import { AppURL } from '../../url/AppURL';

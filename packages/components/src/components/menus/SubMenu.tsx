@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import React from 'react';
-import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap'
-import { List } from 'immutable'
+import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { List } from 'immutable';
 
-import { ISubItem, SubMenuItem } from './SubMenuItem'
+import { ISubItem, SubMenuItem } from './SubMenuItem';
 
 export interface MenuOption {
     disabled?: boolean

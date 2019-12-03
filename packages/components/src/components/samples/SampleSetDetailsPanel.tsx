@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
-import { Map } from 'immutable'
+import { Map } from 'immutable';
 
 import { createSampleSet, initSampleSetSelects, updateSampleSet } from './actions';
 import { IParentAlias, IParentOption, ISampleSetDetails } from './models';

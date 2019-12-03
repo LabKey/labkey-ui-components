@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap, Record } from 'immutable'
-import { AssayDOM } from '@labkey/api'
+import { List, Map, OrderedMap, Record } from 'immutable';
+import { AssayDOM } from '@labkey/api';
 
 import { getEditorModel } from '../../global';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, QueryInfo } from '../base/models/model';

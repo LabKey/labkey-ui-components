@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer'
+import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
 import { UserDetailHeader } from './UserDetailHeader';
 import { ASSAYDESIGNER, READER } from '../../test/data/users';

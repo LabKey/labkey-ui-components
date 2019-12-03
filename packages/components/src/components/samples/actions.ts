@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Utils } from '@labkey/api'
-import { fromJS, List, Map, OrderedMap } from 'immutable'
+import { Ajax, Filter, Utils } from '@labkey/api';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import {
     DisplayObject,

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import $ from 'jquery'
-import classNames from 'classnames'
-import AutosizeInput from 'react-input-autosize'
+import React from 'react';
+import $ from 'jquery';
+import classNames from 'classnames';
+import AutosizeInput from 'react-input-autosize';
 
-import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action'
-import { Option } from './Option'
-import { Value, valueClassName } from './Value'
+import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action';
+import { Option } from './Option';
+import { Value, valueClassName } from './Value';
 
 // Export for type declarations (.d.ts)
 export {

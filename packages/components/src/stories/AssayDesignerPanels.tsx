@@ -3,13 +3,13 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
-import { Utils } from '@labkey/api'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { Utils } from '@labkey/api';
 
 import { AssayProtocolModel, DomainException } from '../components/domainproperties/models';
-import { AssayDesignerPanels } from '../components/domainproperties/assay/AssayDesignerPanels'
+import { AssayDesignerPanels } from '../components/domainproperties/assay/AssayDesignerPanels';
 import { SEVERITY_LEVEL_ERROR } from '../components/domainproperties/constants';
 import { setAssayDomainException } from '../components/domainproperties/actions';
 import { initMocks } from './mock';
@@ -19,7 +19,7 @@ import generalAssayDupes from '../test/data/assay-getProtocolGeneralDuplicateFie
 import domainAssayException from '../test/data/assay-domainExceptionFromServer.json';
 import elispotAssayTemplate from '../test/data/assay-getProtocolELISpotTemplate.json';
 import elispotAssaySaved from '../test/data/assay-getProtocolELISpot.json';
-import './stories.scss'
+import './stories.scss';
 
 initMocks();
 

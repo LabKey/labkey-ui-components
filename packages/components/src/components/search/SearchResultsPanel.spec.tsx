@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
+import React from 'react';
 import { fromJS } from 'immutable';
 import { mount } from 'enzyme';
 
@@ -22,7 +22,7 @@ import { SearchResultsPanel } from './SearchResultsPanel';
 import { SearchResultsModel } from './models';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-import entitiesJSON from "../../test/data/searchResults.json";
+import entitiesJSON from '../../test/data/searchResults.json';
 
 describe("<SearchResultsPanel/>", () => {
 

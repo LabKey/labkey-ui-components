@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { fromJS, List } from 'immutable'
-import { shallow } from 'enzyme'
-import renderer from 'react-test-renderer'
+import React from 'react';
+import { fromJS, List } from 'immutable';
+import { shallow } from 'enzyme';
+import renderer from 'react-test-renderer';
 
-import { Grid, GridColumn } from './Grid'
+import { Grid, GridColumn } from './Grid';
 
 const gridData = fromJS([{
     name: 'Dee Gordon',

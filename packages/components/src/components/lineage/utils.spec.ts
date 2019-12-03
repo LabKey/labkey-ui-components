@@ -1,4 +1,4 @@
-import { Map } from 'immutable'
+import { Map } from 'immutable';
 import { getBackupImageFromLineageNode, getImageFromLineageNode, getImageNameWithTheme } from './utils';
 import { LineageNode, LineageNodeMetadata } from './models';
 import { QueryInfo } from '../base/models/model';

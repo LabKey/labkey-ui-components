@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import classNames from 'classnames'
-import { OrderedMap } from 'immutable'
-import { Dropdown, MenuItem } from 'react-bootstrap'
+import React from 'react';
+import classNames from 'classnames';
+import { OrderedMap } from 'immutable';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import { DefaultRenderer } from './renderers/DefaultRenderer'
-import { getQueryColumnRenderers } from './global'
+import { DefaultRenderer } from './renderers/DefaultRenderer';
+import { getQueryColumnRenderers } from './global';
 import { GridColumn } from './components/base/Grid';
 import { CustomToggle } from './components/base/CustomToggle';
 import { QueryColumn } from './components/base/models/model';

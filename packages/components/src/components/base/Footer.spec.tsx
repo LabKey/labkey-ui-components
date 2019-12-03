@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 
-import { Footer } from './Footer'
+import { Footer } from './Footer';
 
 describe("<Footer/>", () => {
    test("test render", () => {

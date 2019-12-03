@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import classNames from 'classnames'
-import { Utils } from '@labkey/api'
+import React from 'react';
+import classNames from 'classnames';
+import { Utils } from '@labkey/api';
 
 interface Props {
     addContent?: React.ReactNode

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer'
+import renderer from 'react-test-renderer';
 
-import { Section } from './Section'
+import { Section } from './Section';
 
 describe("<Section />", () => {
 

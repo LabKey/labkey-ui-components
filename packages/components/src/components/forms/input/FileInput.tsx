@@ -13,10 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { RefObject } from 'react';
+import React, { RefObject } from 'react';
 import classNames from 'classnames';
-import { FieldLabel } from '../FieldLabel'
+import { FieldLabel } from '../FieldLabel';
 import { cancelEvent } from '../../../events';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { QueryColumn } from '../../base/models/model';

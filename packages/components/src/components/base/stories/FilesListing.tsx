@@ -1,7 +1,7 @@
-import React from 'react'
-import { List } from 'immutable'
-import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { List } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
 import { FilesListing } from '../components/files/FilesListing';

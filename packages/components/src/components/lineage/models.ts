@@ -2,15 +2,15 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { List, Map, Record } from 'immutable'
+import { List, Map, Record } from 'immutable';
 
 import {
     DEFAULT_LINEAGE_DIRECTION,
     DEFAULT_LINEAGE_DISTANCE,
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
-} from './constants'
-import { generate, VisGraphOptions } from './vis/VisGraphGenerator'
+} from './constants';
+import { generate, VisGraphOptions } from './vis/VisGraphGenerator';
 import { LINEAGE_GRID_COLUMNS } from './Tag';
 import { GridColumn } from '../base/Grid';
 import { QueryInfo } from '../base/models/model';

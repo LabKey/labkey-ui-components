@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable'
-import { Utils } from '@labkey/api'
+import { List, Map } from 'immutable';
+import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
 import { AssayWizardModel, parseDataTextToRunRows } from './models';

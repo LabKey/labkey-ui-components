@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { List, Map } from 'immutable'
+import React from 'reactn';
+import { List, Map } from 'immutable';
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';

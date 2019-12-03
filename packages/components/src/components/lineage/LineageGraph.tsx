@@ -2,10 +2,10 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as OrigReact from 'react'
-import React from 'reactn'
-import { List } from 'immutable'
-import { ActionURL } from '@labkey/api'
+import * as OrigReact from 'react';
+import React from 'reactn';
+import { List } from 'immutable';
+import { ActionURL } from '@labkey/api';
 
 import { LineageNodeList, LineageSummary } from './LineageSummary';
 import {

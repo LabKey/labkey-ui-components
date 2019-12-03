@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable'
-import { Filter } from '@labkey/api'
-import { AssayProtocolModel } from '../components/domainproperties/models'
-import { fetchProtocol } from '../components/domainproperties/actions'
+import { List, Map } from 'immutable';
+import { Filter } from '@labkey/api';
+import { AssayProtocolModel } from '../components/domainproperties/models';
+import { fetchProtocol } from '../components/domainproperties/actions';
 
 import { getQueryDetails, selectRows } from '../query/api';
 import { AppURL, spliceURL } from '../url/AppURL';

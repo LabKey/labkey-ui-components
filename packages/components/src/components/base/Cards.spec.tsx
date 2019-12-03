@@ -1,8 +1,8 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
-import { Cards } from './Cards'
+import { Cards } from './Cards';
 
 describe("<Cards/>", () => {
 

@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { Map } from 'immutable'
+import React from 'react';
+import { Map } from 'immutable';
 
 import { AssayWizardModel } from './models';
 import {

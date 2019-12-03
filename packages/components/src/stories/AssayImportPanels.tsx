@@ -16,7 +16,7 @@
 import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs'
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 
 
 import { gridInit } from '../actions';
@@ -33,7 +33,7 @@ import { AssayReimportHeader } from '../components/assay/AssayReimportHeader';
 import { ASSAY_WIZARD_MODEL } from '../test/data/constants';
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 
-import './stories.scss'
+import './stories.scss';
 import { AssayDefinitionModel, AssayUploadTabs } from '../components/base/models/model';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import React from 'react'
-import { Dropdown, Image, MenuItem } from 'react-bootstrap'
+import React from 'react';
+import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 
-import { MenuSectionModel, ProductMenuModel } from './model'
+import { MenuSectionModel, ProductMenuModel } from './model';
 import { User } from '../base/models/model';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';

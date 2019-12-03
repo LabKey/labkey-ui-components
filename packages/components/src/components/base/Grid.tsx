@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import classNames from 'classnames'
-import { fromJS, List, Map } from 'immutable'
+import React from 'react';
+import classNames from 'classnames';
+import { fromJS, List, Map } from 'immutable';
 
 interface ColumnProps {
     align?: string

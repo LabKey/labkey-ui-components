@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
-import { List } from 'immutable'
+import { List } from 'immutable';
 
 import { getImportItemsForAssayDefinitions } from './actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';

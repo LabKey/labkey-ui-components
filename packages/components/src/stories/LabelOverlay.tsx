@@ -1,9 +1,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { LabelOverlay } from '../components/forms/LabelOverlay';
-import './stories.scss'
+import './stories.scss';
 
 storiesOf('LabelOverlay', module)
     .addDecorator(withKnobs)

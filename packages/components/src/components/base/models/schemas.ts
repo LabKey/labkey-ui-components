@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map } from 'immutable'
-import { Query } from '@labkey/api'
+import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
 import { QueryInfo, SchemaDetails, SchemaQuery } from './model';
 
 // Created By / Modified By

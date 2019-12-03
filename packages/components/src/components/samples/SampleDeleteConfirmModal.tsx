@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
+import React from 'react';
 import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actions';
 import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 import { ConfirmModal } from '../base/ConfirmModal';

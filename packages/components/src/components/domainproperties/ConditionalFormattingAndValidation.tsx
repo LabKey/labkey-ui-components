@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { isFieldFullyLocked } from './propertiesUtil';

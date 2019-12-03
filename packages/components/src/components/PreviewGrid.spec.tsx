@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer'
+import renderer from 'react-test-renderer';
 
 import { initUnitTestMocks } from '../testHelpers';
 import { PreviewGrid } from './PreviewGrid';

@@ -3,10 +3,10 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import moment from 'moment'
-import { storiesOf } from '@storybook/react'
-import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import moment from 'moment';
+import { storiesOf } from '@storybook/react';
+import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
 import { Notification } from '../components/notifications/Notification';

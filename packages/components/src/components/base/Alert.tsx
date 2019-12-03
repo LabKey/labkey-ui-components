@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { Alert as BootstrapAlert, AlertProps } from 'react-bootstrap'
+import React from 'react';
+import { Alert as BootstrapAlert, AlertProps } from 'react-bootstrap';
 
 /**
  * An Alert that will only display if children are available. Defaults to bsStyle "danger".

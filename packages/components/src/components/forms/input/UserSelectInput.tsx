@@ -2,10 +2,10 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'reactn'
-import { List } from 'immutable'
+import React from 'reactn';
+import { List } from 'immutable';
 
-import { SelectInput, SelectInputProps } from './SelectInput'
+import { SelectInput, SelectInputProps } from './SelectInput';
 import { IUser } from '../model';
 import { getUsersWithPermissions } from '../actions';
 

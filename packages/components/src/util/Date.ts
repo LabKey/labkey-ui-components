@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import moment from 'moment-jdateformatparser'
+import moment from 'moment-jdateformatparser';
 import 'moment-timezone';
-import numeral from 'numeral'
+import numeral from 'numeral';
 import { QueryColumn } from '../components/base/models/model';
 
 export function datePlaceholder(col: QueryColumn): string {

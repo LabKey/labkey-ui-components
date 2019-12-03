@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import $ from 'jquery'
+import React from 'react';
+import $ from 'jquery';
 
 
-import { DataViewInfo, VisualizationConfigModel } from '../../models'
-import { getVisualizationConfig } from '../../actions'
+import { DataViewInfo, VisualizationConfigModel } from '../../models';
+import { getVisualizationConfig } from '../../actions';
 import { QueryGridModel } from '../base/models/model';
 import { debounce, generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';

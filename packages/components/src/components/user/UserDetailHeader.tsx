@@ -1,5 +1,5 @@
-import React from 'react'
-import { Map } from 'immutable'
+import React from 'react';
+import { Map } from 'immutable';
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 import { PageDetailHeader } from '../forms/PageDetailHeader';
 import { User } from '../base/models/model';

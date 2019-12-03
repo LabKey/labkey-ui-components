@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 import { RemoveEntityButton } from './RemoveEntityButton';
 

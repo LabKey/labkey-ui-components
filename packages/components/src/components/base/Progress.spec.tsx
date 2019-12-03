@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react'
-import { Modal, ProgressBar } from 'react-bootstrap'
-import { mount } from 'enzyme'
+import React from 'react';
+import { Modal, ProgressBar } from 'react-bootstrap';
+import { mount } from 'enzyme';
 
-import { Progress } from './Progress'
+import { Progress } from './Progress';
 
 beforeAll(() => {
     jest.useFakeTimers();

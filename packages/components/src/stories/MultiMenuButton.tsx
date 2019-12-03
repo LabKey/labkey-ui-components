@@ -3,10 +3,10 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react'
-import { List, Map } from 'immutable'
-import { storiesOf } from '@storybook/react'
-import { select, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { List, Map } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
 import { MenuOption, SubMenu } from '../components/menus/SubMenu';

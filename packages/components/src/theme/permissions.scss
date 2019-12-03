@@ -1,0 +1,49 @@
+
+.permissions-assignment-panel {
+    padding-top: 0px;
+
+    & > .row {
+        margin: 15px 0 0 0;
+    }
+
+    & .container-expandable-heading--clause {
+        margin-left: 55px !important;
+    }
+}
+
+.permissions-role-container {
+    padding: 15px;
+}
+
+.permissions-principal-button-group {
+    margin: 5px 5px 0 0;
+}
+
+.permissions-title {
+    font-size: 130%;
+    overflow-wrap: break-word;
+}
+.permissions-title-primary {
+    font-size: 130%;
+    overflow-wrap: break-word;
+    color: $brand-primary;
+}
+
+.permissions-ul {
+    padding-left: 15px;
+}
+
+.permissions-members-ul {
+    padding-left: 0;
+}
+.permissions-member-li {
+    display: block;
+}
+.permissions-member-none {
+    color: $list-group-disabled-text-color
+}
+
+.permissions-assignments-row {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

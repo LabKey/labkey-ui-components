@@ -21,7 +21,7 @@ export class RemovableButton extends React.PureComponent<Props, any> {
         return (
             <ButtonGroup className={'permissions-principal-button-group'}>
                 <Button bsStyle={bsStyle} onClick={() => onRemove(id)}><i className={'fa fa-remove'}/></Button>
-                <Button bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
+                <Button className={'permissions-button-display'} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
             </ButtonGroup>
         )
     }

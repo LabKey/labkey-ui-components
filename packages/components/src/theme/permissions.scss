@@ -17,6 +17,12 @@
 
 .permissions-principal-button-group {
     margin: 5px 5px 0 0;
+    display: flex;
+
+    & .permissions-button-display {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .permissions-title {

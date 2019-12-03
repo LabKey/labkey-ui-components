@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Filter } from '@labkey/api'
+import { Filter } from '@labkey/api';
 import { AppURL } from '../../url/AppURL';
 
 export const ALL_MONTHS = [

@@ -13,42 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-import {Row, Col, FormControl, Checkbox, Button, Collapse} from "react-bootstrap";
-import { List } from "immutable";
+import React from 'react';
+import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
+import { List } from 'immutable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusSquare, faMinusSquare, faGripVertical } from '@fortawesome/free-solid-svg-icons';
-import { Draggable } from "react-beautiful-dnd";
+import { faGripVertical, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { Draggable } from 'react-beautiful-dnd';
 import {
+    ALL_SAMPLES_DISPLAY_TEXT,
+    DOMAIN_FIELD_ADV,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
-    SEVERITY_LEVEL_WARN,
-    SEVERITY_LEVEL_ERROR,
+    DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_DETAILS,
+    DOMAIN_FIELD_EXPAND,
+    DOMAIN_FIELD_FULLY_LOCKED,
+    DOMAIN_FIELD_NAME,
+    DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_ROW,
+    DOMAIN_FIELD_TYPE,
     HIGHLIGHT_BLUE,
     NOT_HIGHLIGHT_GRAY,
-    ALL_SAMPLES_DISPLAY_TEXT,
-} from "./constants";
-
-import {
-    DOMAIN_FIELD_ADV,
-    DOMAIN_FIELD_DELETE,
-    DOMAIN_FIELD_DETAILS, DOMAIN_FIELD_EXPAND,
-    DOMAIN_FIELD_NAME,
-    DOMAIN_FIELD_REQUIRED, DOMAIN_FIELD_ROW,
-    DOMAIN_FIELD_TYPE,
-    DOMAIN_FIELD_FULLY_LOCKED,
-} from "./constants";
+    SEVERITY_LEVEL_ERROR,
+    SEVERITY_LEVEL_WARN,
+} from './constants';
 import {
     DomainField,
-    IFieldChange,
-    FieldErrors,
     DomainFieldError,
+    FieldErrors,
+    IFieldChange,
     PropDescType,
-    resolveAvailableTypes
-} from "./models";
-import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from "./actions";
-import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from "./propertiesUtil";
-import { DomainRowExpandedOptions } from "./DomainRowExpandedOptions";
-import {AdvancedSettings} from "./AdvancedSettings";
+    resolveAvailableTypes,
+} from './models';
+import { createFormInputId, createFormInputName, getCheckedValue, getIndexFromId } from './actions';
+import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName } from './propertiesUtil';
+import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
+import { AdvancedSettings } from './AdvancedSettings';
 import { SCHEMAS } from '../base/models/schemas';
 
 interface IDomainRowProps {

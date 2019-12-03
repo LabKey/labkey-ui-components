@@ -1,12 +1,12 @@
-import * as React from 'react'
-import { List } from 'immutable'
-import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { List } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { FilesListing } from "../components/files/FilesListing";
-import { IFile } from "..";
-import { FILES_DATA } from "../test/data/constants";
+import { FilesListing } from '../components/files/FilesListing';
+import { IFile } from '..';
+import { FILES_DATA } from '../test/data/constants';
 
 storiesOf("FilesListing", module)
     .addDecorator(withKnobs)

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
-import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
-import { Location } from "../util/URL"
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
+import { Location } from '../util/URL';
 
 import { SampleInsertPanel } from '../components/samples/SampleInsertPanel';
 
-import './stories.scss'
+import './stories.scss';
 
 storiesOf('SampleInsertPanel', module)
     .addDecorator(withKnobs)

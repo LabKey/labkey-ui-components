@@ -3,12 +3,12 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
 import { Cards } from '../components/base/Cards';
 import { ICON_URL } from "./mock";
-import './stories.scss'
+import './stories.scss';
 
 const cards = [{
     title: 'Test Title',

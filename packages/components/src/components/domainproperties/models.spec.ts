@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from "immutable";
+import { List } from 'immutable';
 import {
-    PropDescType,
-    TEXT_TYPE,
-    LOOKUP_TYPE,
-    MULTILINE_TYPE,
-    BOOLEAN_TYPE,
-    INTEGER_TYPE,
-    DOUBLE_TYPE,
-    DATETIME_TYPE,
-    FLAG_TYPE,
-    FILE_TYPE,
+    AssayProtocolModel,
     ATTACHMENT_TYPE,
-    USERS_TYPE,
-    PARTICIPANT_TYPE,
-    SAMPLE_TYPE,
+    BOOLEAN_TYPE,
+    DATETIME_TYPE,
     DomainDesign,
     DomainField,
-    AssayProtocolModel
-} from "./models";
-import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from "./constants";
+    DOUBLE_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    INTEGER_TYPE,
+    LOOKUP_TYPE,
+    MULTILINE_TYPE,
+    PARTICIPANT_TYPE,
+    PropDescType,
+    SAMPLE_TYPE,
+    TEXT_TYPE,
+    USERS_TYPE,
+} from './models';
+import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from './constants';
 
 describe('PropDescType', () => {
     test("isInteger", () => {

@@ -1,5 +1,5 @@
-import { fromJS } from 'immutable'
-import {convertRowDataIntoPreviewData, fileMatchesAcceptedFormat} from "./actions";
+import { fromJS } from 'immutable';
+import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
 
 const DATA = fromJS([
     ['str', 'int', 'int-excelupload', 'double', 'date'],

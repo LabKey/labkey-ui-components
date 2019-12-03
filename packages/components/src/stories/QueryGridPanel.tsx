@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
-import { withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
 
-import { QueryGridPanel } from "../components/QueryGridPanel";
-import { getStateQueryGridModel } from "../models";
-import './stories.scss'
+import { QueryGridPanel } from '../components/QueryGridPanel';
+import { getStateQueryGridModel } from '../models';
+import './stories.scss';
 import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 import { SelectionMenuItem } from '../components/menus/SelectionMenuItem';

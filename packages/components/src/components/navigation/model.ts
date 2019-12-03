@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Record } from 'immutable'
-import { ActionURL, Ajax, Utils } from '@labkey/api'
+import { List, Record } from 'immutable';
+import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
 

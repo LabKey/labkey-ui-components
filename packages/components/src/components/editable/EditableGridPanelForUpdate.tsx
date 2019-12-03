@@ -1,5 +1,5 @@
-import * as React from "react";
-import { List, Map } from "immutable";
+import React from 'react';
+import { List, Map } from 'immutable';
 import { getEditorModel } from '../../global';
 import { EditableGridPanel } from './EditableGridPanel';
 import { QueryGridModel, SchemaQuery } from '../base/models/model';

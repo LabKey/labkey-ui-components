@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 import { is } from 'immutable';
 
-import { AssayPropertiesPanelProps } from "./models";
-import { QueryFormInputs } from "../forms/QueryFormInputs";
-import { LabelOverlay } from "../forms/LabelOverlay";
+import { AssayPropertiesPanelProps } from './models';
+import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { LabelOverlay } from '../forms/LabelOverlay';
 
 const ASSAY_ID_LABEL = <LabelOverlay
     label="Assay Id"

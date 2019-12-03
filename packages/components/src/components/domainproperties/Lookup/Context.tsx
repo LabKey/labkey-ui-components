@@ -1,9 +1,9 @@
-import * as React from "react";
-import { List } from "immutable";
-import { Security } from "@labkey/api";
+import React from 'react';
+import { List } from 'immutable';
+import { Security } from '@labkey/api';
 
-import { fetchContainers, fetchQueries, fetchSchemas } from "../actions";
-import { QueryInfoLite } from "../models";
+import { fetchContainers, fetchQueries, fetchSchemas } from '../actions';
+import { QueryInfoLite } from '../models';
 import { Container, SchemaDetails } from '../../base/models/model';
 
 export interface ILookupContext {

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
+import React from 'react';
 import { List, Map } from 'immutable';
-import { DropdownButton } from 'react-bootstrap'
+import { DropdownButton } from 'react-bootstrap';
 
-import { MenuSectionModel, ProductMenuModel } from './model'
-import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection'
+import { MenuSectionModel, ProductMenuModel } from './model';
+import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 

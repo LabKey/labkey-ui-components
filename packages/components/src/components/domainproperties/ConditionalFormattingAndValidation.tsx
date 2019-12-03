@@ -1,15 +1,14 @@
-
-import * as React from 'react'
-import {Button, Col, Row} from "react-bootstrap";
-import {List} from "immutable";
-import {isFieldFullyLocked} from "./propertiesUtil";
-import {createFormInputId, createFormInputName} from "./actions";
-import {DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR} from "./constants";
-import {ConditionalFormat, DomainField, PropertyValidator} from "./models";
-import {ValidatorModal} from "./validation/ValidatorModal";
-import {RegexValidationOptions} from "./validation/RegexValidationOptions";
-import {RangeValidationOptions} from "./validation/RangeValidationOptions";
-import {ConditionalFormatOptions} from "./validation/ConditionalFormatOptions";
+import React from 'react';
+import { Button, Col, Row } from 'react-bootstrap';
+import { List } from 'immutable';
+import { isFieldFullyLocked } from './propertiesUtil';
+import { createFormInputId, createFormInputName } from './actions';
+import { DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
+import { ConditionalFormat, DomainField, PropertyValidator } from './models';
+import { ValidatorModal } from './validation/ValidatorModal';
+import { RegexValidationOptions } from './validation/RegexValidationOptions';
+import { RangeValidationOptions } from './validation/RangeValidationOptions';
+import { ConditionalFormatOptions } from './validation/ConditionalFormatOptions';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface ConditionalFormattingAndValidationProps {

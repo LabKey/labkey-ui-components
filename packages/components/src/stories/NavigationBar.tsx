@@ -3,13 +3,16 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
-import { List, Map } from 'immutable'
-import { AppURL, User, NavigationBar, MenuSectionConfig, MenuItemModel, MenuSectionModel, ProductMenuModel } from '..';
-import { ICON_URL } from "./mock";
-import './stories.scss'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
+import { List, Map } from 'immutable';
+import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
+import { NavigationBar } from '../components/navigation/NavigationBar';
+import { User } from '../components/base/models/model';
+import { AppURL } from '../url/AppURL';
+import './stories.scss';
 
 const fruitTree = [
     "Apple",

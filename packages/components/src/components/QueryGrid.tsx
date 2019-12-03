@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { List, Map } from 'immutable'
+import React from 'reactn';
+import { List, Map } from 'immutable';
 
 
-import { QUERY_GRID_PREFIX } from '../constants'
-import { gridInit, toggleGridRowSelection, toggleGridSelected, sort, reloadQueryGridModel } from '../actions'
-import { getStateQueryGridModel, getStateModelId } from '../models'
-import { headerCell, headerSelectionCell } from '../renderers'
-import { getBrowserHistory } from "../util/global";
+import { QUERY_GRID_PREFIX } from '../constants';
+import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../actions';
+import { getStateModelId, getStateQueryGridModel } from '../models';
+import { headerCell, headerSelectionCell } from '../renderers';
+import { getBrowserHistory } from '../util/global';
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 import { generateId } from '../util/utils';
 import { Grid, GridColumn, GridProps } from './base/Grid';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { mount } from 'enzyme';
 import { ConfirmModal } from '../base/ConfirmModal';

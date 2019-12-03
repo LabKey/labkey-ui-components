@@ -2,8 +2,8 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { Map, OrderedMap, List, fromJS } from "immutable";
-import { QueryColumn } from "../base/models/model";
+import { fromJS, List, Map, OrderedMap } from 'immutable';
+import { QueryColumn } from '../base/models/model';
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
 export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: number, fields?: List<QueryColumn>): List<Map<string, any>> {

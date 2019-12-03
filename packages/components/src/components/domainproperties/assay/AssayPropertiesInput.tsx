@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { Col, FormControl, Row } from "react-bootstrap";
-import { List } from "immutable";
-import { ActionURL } from "@labkey/api";
+import React from 'react';
+import { Col, FormControl, Row } from 'react-bootstrap';
+import { List } from 'immutable';
+import { ActionURL } from '@labkey/api';
 
-import { AssayProtocolModel } from "../models";
-import { FORM_IDS } from "./AssayPropertiesPanel";
-import { getSplitSentence, getValidPublishTargets } from "../actions";
+import { AssayProtocolModel } from '../models';
+import { FORM_IDS } from './AssayPropertiesPanel';
+import { getSplitSentence, getValidPublishTargets } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Container } from '../../base/models/model';
 import { LoadingSpinner } from '../../base/LoadingSpinner';

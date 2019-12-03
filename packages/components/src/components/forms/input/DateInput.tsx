@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
+import React from 'react';
 
-import { TextInput, TextInputProps } from './TextInput'
+import { TextInput, TextInputProps } from './TextInput';
 import { DisableableInput, DisableableInputProps } from './DisableableInput';
 import { datePlaceholder } from '../../../util/Date';
 import { QueryColumn } from '../../base/models/model';

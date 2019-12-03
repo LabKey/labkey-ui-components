@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Map, Set, List } from 'immutable';
-import { IFile } from "./models";
-import { FileAttachmentForm } from "./FileAttachmentForm";
+import { List, Map, Set } from 'immutable';
+import { IFile } from './models';
+import { FileAttachmentForm } from './FileAttachmentForm';
 
 interface Props {
     files: List<IFile>

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
-import { PageDetailHeader } from "./PageDetailHeader";
+import { PageDetailHeader } from './PageDetailHeader';
 import { User } from '../base/models/model';
 
 describe("<PageDetailHeader/>", () => {

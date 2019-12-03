@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import {List} from "immutable";
+import React from 'react';
+import { List } from 'immutable';
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,
@@ -25,27 +25,30 @@ import {
     PARTICIPANT_TYPE,
     PROP_DESC_TYPES,
     SAMPLE_TYPE,
-    TEXT_TYPE
-} from "./models";
-import {DomainRow} from "./DomainRow";
-import { mount } from "enzyme"
+    TEXT_TYPE,
+} from './models';
+import { DomainRow } from './DomainRow';
+import { mount } from 'enzyme';
 import {
     ATTACHMENT_RANGE_URI,
+    DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_ADV,
     DOMAIN_FIELD_DELETE,
+    DOMAIN_FIELD_DETAILS,
     DOMAIN_FIELD_EXPAND,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
+    DOMAIN_LAST_ENTERED_DEFAULT,
+    DOMAIN_NON_EDITABLE_DEFAULT,
+    EXPAND_TRANSITION,
     PHILEVEL_RESTRICTED_PHI,
-    DOMAIN_FIELD_DETAILS,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-    EXPAND_TRANSITION, DOMAIN_EDITABLE_DEFAULT, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT
-} from "./constants";
-import {DragDropContext, Droppable} from "react-beautiful-dnd";
-import toJson from "enzyme-to-json";
-import {createFormInputId} from "./actions";
+} from './constants';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import toJson from 'enzyme-to-json';
+import { createFormInputId } from './actions';
 
 const wrapDraggable = (element) => {
     return (

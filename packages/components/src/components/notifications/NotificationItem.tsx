@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { NotificationItemModel } from "./model";
-import * as React from "react";
-import { dismissNotifications } from "./global";
+import { NotificationItemModel } from './model';
+import React from 'react';
+import { dismissNotifications } from './global';
 import { User } from '../base/models/model';
 
 interface ItemProps {

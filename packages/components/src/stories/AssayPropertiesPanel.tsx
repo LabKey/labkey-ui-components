@@ -3,20 +3,18 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { text, boolean, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 
-import { AssayProtocolModel } from "../components/domainproperties/models";
-import { AssayPropertiesPanel } from "../components/domainproperties/assay/AssayPropertiesPanel"
-import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
-import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
-import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
-import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
-import generalAssaySavedDuplicates from "../test/data/assay-getProtocolGeneralDuplicateFields.json";
-import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
+import { AssayProtocolModel } from '../components/domainproperties/models';
+import { AssayPropertiesPanel } from '../components/domainproperties/assay/AssayPropertiesPanel';
+import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
+import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';
+import elispotAssayTemplate from '../test/data/assay-getProtocolELISpotTemplate.json';
+import elispotAssaySaved from '../test/data/assay-getProtocolELISpot.json';
 
-import './stories.scss'
+import './stories.scss';
 
 interface Props {
     data: {}

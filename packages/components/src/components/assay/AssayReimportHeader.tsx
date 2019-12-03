@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 import { AppURL } from '../../url/AppURL';

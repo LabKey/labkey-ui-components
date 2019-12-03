@@ -39,7 +39,7 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
         const { isLoaded, model, requireSelection } = this.props;
 
         if (!isLoaded) {
-            return <MenuItem disabled={true}><span className='fa fa-spinner fa-spin' /> Loading assays...</MenuItem>;
+            return <MenuItem disabled={true}><span className='fa fa-spinner fa-pulse' /> Loading assays...</MenuItem>;
         }
 
         const items = this.getItems();

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import renderer from 'react-test-renderer'
-import { NavigationBar } from "./NavigationBar";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { NavigationBar } from './NavigationBar';
 
 describe("<NavigationBar/>", () => {
 

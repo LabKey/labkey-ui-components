@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
-import { Button, FormControl, Modal } from "react-bootstrap";
+import { Button, FormControl, Modal } from 'react-bootstrap';
 import { ChangePasswordModal } from './ChangePasswordModal';
-import { ChangePasswordModel } from "./models";
-import { READER } from "../../test/data/users";
+import { ChangePasswordModel } from './models';
+import { READER } from '../../test/data/users';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 

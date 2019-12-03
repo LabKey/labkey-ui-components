@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable'
-import { Filter } from '@labkey/api'
+import { List } from 'immutable';
+import { Filter } from '@labkey/api';
 
 export function isEqual(first: List<Filter.IFilter>, second: List<Filter.IFilter>): boolean {
     if (first.size !== second.size) {

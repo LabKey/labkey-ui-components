@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, OrderedMap, Set } from 'immutable'
-import { Ajax, Filter, Query, Utils } from '@labkey/api'
-import $ from 'jquery'
+import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
+import { Ajax, Filter, Query, Utils } from '@labkey/api';
+import $ from 'jquery';
 
-import { getQueryDetails, searchRows, selectRows } from './query/api'
-import { isEqual } from './query/filter'
-import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL'
+import { getQueryDetails, searchRows, selectRows } from './query/api';
+import { isEqual } from './query/filter';
+import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import {
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
@@ -27,9 +27,9 @@ import {
     KEYS,
     LOOKUP_DEFAULT_SIZE,
     MODIFICATION_TYPES,
-    SELECTION_TYPES
-} from "./constants";
-import { cancelEvent, getPasteValue, setCopyValue } from './events'
+    SELECTION_TYPES,
+} from './constants';
+import { cancelEvent, getPasteValue, setCopyValue } from './events';
 import {
     CellMessage,
     CellMessages,
@@ -40,9 +40,9 @@ import {
     getStateQueryGridModel,
     LookupStore,
     ValueDescriptor,
-    VisualizationConfigModel
-} from './models'
-import { bindColumnRenderers } from './renderers'
+    VisualizationConfigModel,
+} from './models';
+import { bindColumnRenderers } from './renderers';
 import {
     getEditorModel,
     getLookupStore,
@@ -54,9 +54,9 @@ import {
     updateEditorModel,
     updateLookupStore,
     updateQueryGridModel,
-    updateSelections
-} from './global'
-import { EditableColumnMetadata } from "./components/editable/EditableGrid";
+    updateSelections,
+} from './global';
+import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import {
     AssayDefinitionModel,
     IGridResponse,
@@ -64,7 +64,7 @@ import {
     QueryGridModel,
     QueryInfo,
     SchemaQuery,
-    ViewInfo
+    ViewInfo,
 } from './components/base/models/model';
 import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';

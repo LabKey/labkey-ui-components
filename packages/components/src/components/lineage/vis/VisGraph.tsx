@@ -2,18 +2,18 @@
  * Copyright (c) 2017-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react'
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap'
-import { DataSet, Edge, Network, Node, Options } from 'vis'
+import React from 'react';
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { DataSet, Edge, Network, Node, Options } from 'vis';
 
 import {
     isCombinedNode,
     VisGraphClusterNode,
     VisGraphCombinedNode,
     VisGraphNode,
-    VisGraphOptions
-} from './VisGraphGenerator'
-import { LineageNode } from '../models'
+    VisGraphOptions,
+} from './VisGraphGenerator';
+import { LineageNode } from '../models';
 
 enum LayoutTypes {
     VERTICAL = 'VERTICAL',

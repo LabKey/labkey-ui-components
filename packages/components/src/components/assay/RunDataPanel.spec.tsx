@@ -1,12 +1,12 @@
-import * as React from 'react';
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 
-import { RunDataPanel } from "./RunDataPanel";
-import { getQueryGridModel } from "../../global";
-import { getStateQueryGridModel } from "../../models";
-import { gridInit } from "../../actions";
-import { withFormSteps, WithFormStepsProps } from "../forms/FormStep";
-import { ASSAY_WIZARD_MODEL } from "../../test/data/constants";
+import { RunDataPanel } from './RunDataPanel';
+import { getQueryGridModel } from '../../global';
+import { getStateQueryGridModel } from '../../models';
+import { gridInit } from '../../actions';
+import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { ASSAY_WIZARD_MODEL } from '../../test/data/constants';
 import { initUnitTestMocks } from '../../testHelpers';
 import { AssayUploadTabs } from '../base/models/model';
 

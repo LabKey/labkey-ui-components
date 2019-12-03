@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { fromJS, Map } from "immutable";
-import { storiesOf } from "@storybook/react";
-import { boolean, number, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { fromJS, Map } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 
 
-import { gridInit } from "../actions";
-import { getStateQueryGridModel } from "../models";
-import { getQueryGridModel } from "../global";
-import { withFormSteps, WithFormStepsProps } from "../components/forms/FormStep";
-import { RunDataPanel } from "../components/assay/RunDataPanel";
-import { RunPropertiesPanel } from "../components/assay/RunPropertiesPanel";
-import { BatchPropertiesPanel } from "../components/assay/BatchPropertiesPanel";
-import { AssayImportPanels } from "../components/assay/AssayImportPanels";
+import { gridInit } from '../actions';
+import { getStateQueryGridModel } from '../models';
+import { getQueryGridModel } from '../global';
+import { withFormSteps, WithFormStepsProps } from '../components/forms/FormStep';
+import { RunDataPanel } from '../components/assay/RunDataPanel';
+import { RunPropertiesPanel } from '../components/assay/RunPropertiesPanel';
+import { BatchPropertiesPanel } from '../components/assay/BatchPropertiesPanel';
+import { AssayImportPanels } from '../components/assay/AssayImportPanels';
 import { getRunPropertiesModel } from '../components/assay/actions';
-import { AssayReimportHeader } from "../components/assay/AssayReimportHeader";
+import { AssayReimportHeader } from '../components/assay/AssayReimportHeader';
 
-import { ASSAY_WIZARD_MODEL } from "../test/data/constants";
+import { ASSAY_WIZARD_MODEL } from '../test/data/constants';
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 
-import './stories.scss'
+import './stories.scss';
 import { AssayDefinitionModel, AssayUploadTabs } from '../components/base/models/model';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {

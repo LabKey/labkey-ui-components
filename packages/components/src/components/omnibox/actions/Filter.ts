@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Set } from 'immutable'
-import { Filter, Utils } from '@labkey/api'
+import { List, Map, Set } from 'immutable';
+import { Filter, Utils } from '@labkey/api';
 
-import { Action, ActionOption, ActionValue, Value } from './Action'
+import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import { naturalSort } from '../../../util/utils';
 
@@ -365,7 +365,7 @@ export class FilterAction implements Action {
     isEqual(action: Action): boolean {
         return false;
     }
-    
+
     buildParams(actionValues: Array<ActionValue>) {
         return actionValues.map((actionValue: ActionValue) => {
             const [ paramKey, paramValue ] = actionValue.param.split('=');

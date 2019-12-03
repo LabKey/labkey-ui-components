@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { Panel } from "react-bootstrap";
-import { List } from 'immutable'
-import { storiesOf } from "@storybook/react";
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { Panel } from 'react-bootstrap';
+import { List } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
 
-import { LineageGraph } from "../components/lineage/LineageGraph";
-import { LineageGrid } from "../components/lineage/LineageGrid";
-import { LINEAGE_GROUPING_GENERATIONS } from "../components/lineage/constants";
-import { LineageFilter } from "../components/lineage/models";
-import './stories.scss'
+import { LineageGraph } from '../components/lineage/LineageGraph';
+import { LineageGrid } from '../components/lineage/LineageGrid';
+import { LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/constants';
+import { LineageFilter } from '../components/lineage/models';
+import './stories.scss';
 
 storiesOf('Lineage', module)
     .addDecorator(withKnobs)

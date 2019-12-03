@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { withKnobs, text, boolean } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss'
-import {AddEntityButton} from "..";
+import './stories.scss';
+import { AddEntityButton } from '..';
 
 interface State {
     added: Array<string>

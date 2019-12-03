@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 export function getActionErrorMessage(problemStatement: string, noun: string, showRefresh : boolean = true) : React.ReactNode
 {

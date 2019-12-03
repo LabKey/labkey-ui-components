@@ -1,17 +1,17 @@
-import {INTEGER_TYPE, PropertyValidator} from "../models";
-import {mount} from "enzyme";
-import * as React from "react";
-import toJson from "enzyme-to-json";
-import {createFormInputId} from "../actions";
+import { INTEGER_TYPE, PropertyValidator } from '../models';
+import { mount } from 'enzyme';
+import React from 'react';
+import toJson from 'enzyme-to-json';
+import { createFormInputId } from '../actions';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,
     DOMAIN_VALIDATOR_ERRORMESSAGE,
     DOMAIN_VALIDATOR_EXPRESSION,
     DOMAIN_VALIDATOR_FAILONMATCH,
     DOMAIN_VALIDATOR_NAME,
-} from "../constants";
-import propertyValidator from "../../../test/data/propertyValidator-regex.json";
-import {RegexValidationOptions} from "./RegexValidationOptions";
+} from '../constants';
+import propertyValidator from '../../../test/data/propertyValidator-regex.json';
+import { RegexValidationOptions } from './RegexValidationOptions';
 
 
 describe('RegexValidationOptions', () => {

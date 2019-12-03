@@ -3,14 +3,14 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { DomainFieldsDisplay } from "../components/domainproperties/DomainFieldsDisplay"
-import { DomainDesign } from "../components/domainproperties/models";
-import data from "../test/data/property-getDomain.json";
-import './stories.scss'
+import { DomainFieldsDisplay } from '../components/domainproperties/DomainFieldsDisplay';
+import { DomainDesign } from '../components/domainproperties/models';
+import data from '../test/data/property-getDomain.json';
+import './stories.scss';
 
 storiesOf("DomainFieldsDisplay", module)
     .addDecorator(withKnobs)

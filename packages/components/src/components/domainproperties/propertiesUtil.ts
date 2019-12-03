@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED} from "./constants";
+import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from './constants';
 
 //this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string) : boolean {

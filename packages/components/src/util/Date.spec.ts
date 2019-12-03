@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { generateNameWithTimestamp } from "./Date";
+import { generateNameWithTimestamp } from './Date';
 
 describe('generateNameWithTimestamp', () => {
     test("generated text", () => {

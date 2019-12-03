@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable';
 
-import { SchemaQuery, User } from '../components/base/models/model'
+import { SchemaQuery, User } from '../components/base/models/model';
 import {
     caseInsensitive,
     contains,
@@ -32,9 +32,9 @@ import {
     resolveSchemaQuery,
     similaritySortFactory,
     toLowerSafe,
-    unorderedEqual
-} from './utils'
-import { PermissionTypes } from '../components/base/models/constants'
+    unorderedEqual,
+} from './utils';
+import { PermissionTypes } from '../components/base/models/constants';
 
 const emptyList = List<string>();
 

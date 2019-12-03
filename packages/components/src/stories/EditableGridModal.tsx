@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { getStateQueryGridModel } from "../models";
+import { getStateQueryGridModel } from '../models';
 
-import './stories.scss'
+import './stories.scss';
 import * as constants from '../test/data/constants';
 import { List, Map } from 'immutable';
 import { EditableGridModal } from '../components/editable/EditableGridModal';

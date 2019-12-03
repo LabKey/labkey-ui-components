@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 
 export class AppendUnits extends React.Component<{data: any, col: any}, any> {
 

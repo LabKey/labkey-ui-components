@@ -15,12 +15,12 @@
  */
 import React from 'reactn';
 import { Map } from 'immutable';
-import { mount } from "enzyme";
-import { Cell } from "./Cell";
-import mock from "xhr-mock";
-import { getStateQueryGridModel } from "../../models";
-import * as constants from "../../test/data/constants";
-import { gridInit } from "../../actions";
+import { mount } from 'enzyme';
+import { Cell } from './Cell';
+import mock from 'xhr-mock';
+import { getStateQueryGridModel } from '../../models';
+import * as constants from '../../test/data/constants';
+import { gridInit } from '../../actions';
 import { initUnitTestMocks } from '../../testHelpers';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 

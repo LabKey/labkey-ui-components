@@ -1,9 +1,9 @@
-import { List, Map } from 'immutable'
-import { Ajax, Utils } from '@labkey/api'
-import { buildURL } from "../../url/ActionURL";
-import { RELEVANT_SEARCH_RESULT_TYPES } from "../../constants";
-import { SearchIdData } from "./models";
-import { URLResolver } from "../../util/URLResolver";
+import { List, Map } from 'immutable';
+import { Ajax, Utils } from '@labkey/api';
+import { buildURL } from '../../url/ActionURL';
+import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
+import { SearchIdData } from './models';
+import { URLResolver } from '../../util/URLResolver';
 
 export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
     return new Promise((resolve, reject) => {

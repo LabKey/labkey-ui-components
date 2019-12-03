@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import React from 'react';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 interface Props {
     caption: React.ReactNode

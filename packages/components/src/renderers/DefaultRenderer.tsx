@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { List } from 'immutable'
-import { MultiValueRenderer } from './MultiValueRenderer'
+import React from 'react';
+import { List } from 'immutable';
+import { MultiValueRenderer } from './MultiValueRenderer';
 
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.

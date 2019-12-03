@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Filter, Utils } from '@labkey/api'
-import { fromJS, List, Map, OrderedMap } from 'immutable'
+import { Ajax, Filter, Utils } from '@labkey/api';
+import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import {
     DisplayObject,
@@ -23,9 +23,9 @@ import {
     ISampleSetOption,
     SampleIdCreationModel,
     SampleSetOption,
-    SampleSetParentType
+    SampleSetParentType,
 } from './models';
-import { getSelected, getSelection } from "../../actions";
+import { getSelected, getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';

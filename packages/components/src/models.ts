@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap, Record, Set } from 'immutable'
-import { Filter } from '@labkey/api'
+import { List, Map, OrderedMap, Record, Set } from 'immutable';
+import { Filter } from '@labkey/api';
 
-import { genCellKey } from './actions'
-import { getQueryGridModel, getQueryMetadata } from './global'
-import { DefaultGridLoader } from './components/GridLoader'
+import { genCellKey } from './actions';
+import { getQueryGridModel, getQueryMetadata } from './global';
+import { DefaultGridLoader } from './components/GridLoader';
 import {
     IGridLoader,
-    IQueryGridModel, QueryColumn,
+    IQueryGridModel,
+    QueryColumn,
     QueryGridModel,
     QueryInfo,
     SchemaQuery,
-    ViewInfo
+    ViewInfo,
 } from './components/base/models/model';
 import { resolveSchemaQuery } from './util/utils';
 import { AppURL } from './url/AppURL';

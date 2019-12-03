@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
-import { text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { HeatMap } from "../components/heatmap/HeatMap";
-import './stories.scss'
+import { HeatMap } from '../components/heatmap/HeatMap';
+import './stories.scss';
 import { SCHEMAS } from '../components/base/models/schemas';
 import { AppURL } from '../url/AppURL';
 

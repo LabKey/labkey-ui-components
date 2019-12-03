@@ -12,6 +12,7 @@ import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components
 import { NavigationBar } from '../components/navigation/NavigationBar';
 import { User } from '../components/base/models/model';
 import { AppURL } from '../url/AppURL';
+import { ICON_URL } from "./mock";
 import './stories.scss';
 
 const fruitTree = [

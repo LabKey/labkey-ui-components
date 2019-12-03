@@ -21,6 +21,7 @@ import { SearchResultCard } from '../components/search/SearchResultCard';
 import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
 import { SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
+import { ICON_URL } from "./mock";
 import './stories.scss';
 
 storiesOf('SearchResults', module)

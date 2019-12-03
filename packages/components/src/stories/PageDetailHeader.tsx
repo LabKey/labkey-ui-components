@@ -19,6 +19,7 @@ import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 import { PageDetailHeader } from '../components/forms/PageDetailHeader';
 import { CreatedModified } from '../components/base/CreatedModified';
+import { ICON_URL } from "./mock";
 import './stories.scss';
 
 storiesOf('PageDetailHeader', module)

@@ -3,11 +3,11 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import * as React from 'react'
-import { List, Map, fromJS } from 'immutable'
+import { List } from 'immutable'
 import { Security } from '@labkey/api'
-import { PermissionsProviderProps, Principal, SecurityRole } from "./models";
-import { ISelectRowsResult, selectRows } from "../../query/api";
+import { PermissionsProviderProps, Principal } from "./models";
 import { LoadingPage } from "../../components/base/LoadingPage";
+import { getPrincipals, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "./actions";
 
 const Context = React.createContext<PermissionsProviderProps>(undefined);
 const PermissionsContextProvider = Context.Provider;
@@ -40,17 +40,9 @@ export const PermissionsPageContextProvider = <P extends PermissionsProviderProp
 
         loadSecurityRoles() {
             Security.getRoles({
-                success: (data) => {
-                    let roles = List<SecurityRole>();
-                    data.forEach((role) => {
-                        roles = roles.push(SecurityRole.create(role));
-                    });
-
-                    let rolesByUniqueName = Map<string, SecurityRole>();
-                    roles.map((role) => {
-                        rolesByUniqueName = rolesByUniqueName.set(role.uniqueName, role)
-                    });
-
+                success: (response: any) => {
+                    const roles = processGetRolesResponse(response);
+                    const rolesByUniqueName = getRolesByUniqueName(roles);
                     this.setState(() => ({roles, rolesByUniqueName}));
                 },
                 failure: (response) => {
@@ -60,28 +52,13 @@ export const PermissionsPageContextProvider = <P extends PermissionsProviderProp
         }
 
         loadPrincipals() {
-            selectRows({
-                saveInSession: true, // needed so that we can call getQueryDetails
-                schemaName: 'core',
-                // issue 17704, add displayName for users
-                sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId"
-            }).then((data: ISelectRowsResult) => {
-                const models = fromJS(data.models[data.key]);
-                let principals = List<Principal>();
-                let principalsById = Map<number, Principal>();
-
-                data.orderedModels[data.key].forEach((modelKey) => {
-                    const row = models.get(modelKey);
-                    const principal = Principal.createFromSelectRow(row);
-
-                    principals = principals.push(principal);
-                    principalsById = principalsById.set(principal.userId, principal);
+            getPrincipals()
+                .then((principals: List<Principal>) => {
+                    const principalsById = getPrincipalsById(principals);
+                    this.setState(() => ({principals, principalsById}));
+                }).catch((response) => {
+                    this.setState(() => ({error: response.message}));
                 });
-
-                this.setState(() => ({principals, principalsById}));
-            }).catch((response) => {
-                this.setState(() => ({error: response.message}));
-            });
         }
 
         render() {

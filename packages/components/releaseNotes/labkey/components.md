@@ -2,6 +2,11 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.2.0
+*Released*: ?? December 2019
+* Add selectionKey getter to QueryGridModel
+* Add `showSampleComparisonReports`, `onChartClicked`, and `onPreviewSCRClicked` props to QueryGridPanel.
+
 ### version 0.1.0
 *Released*: 27 November 2019
 * Consolidate all `@glass` packages into this single `@labkey/components` package. The release notes for the previous

@@ -33,7 +33,7 @@ storiesOf("PageHeader", module)
 
         return (
             <PageHeader
-                iconCls={text("Icon class name", "fa fa-spinner fa-spin")}
+                iconCls={text("Icon class name", "fa fa-spinner fa-pulse")}
                 showNotifications={showNotifications}
                 title={text("Title", "Loading...")}
                 >

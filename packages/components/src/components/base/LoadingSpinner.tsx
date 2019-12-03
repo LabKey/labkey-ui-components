@@ -32,7 +32,7 @@ export class LoadingSpinner extends React.Component<SpinnerProps, any> {
 
         return (
             <span className={wrapperClassName}>
-                <i aria-hidden="true" className="fa fa-spinner fa-spin"/> {msg}
+                <i aria-hidden="true" className="fa fa-spinner fa-pulse"/> {msg}
             </span>
         )
     }

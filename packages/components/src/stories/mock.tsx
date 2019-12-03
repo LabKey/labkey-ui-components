@@ -159,42 +159,8 @@ const QUERY_RESPONSES = fromJS({
 export function initMocks() {
     mock.setup();
 
-    mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
-        const queryParams = req.url().query;
-        const schemaName = queryParams.schemaName.toLowerCase();
-        const queryName = queryParams.queryName.toLowerCase();
-        const responseBody = QUERY_DETAILS_RESPONSES.getIn([schemaName, queryName]);
-
-        return res
-            .status(200)
-            .headers({'Content-Type': 'application/json'})
-            .body(JSON.stringify(responseBody));
-    });
-
-    mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
-        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
-            const [name, value] = param.split('=');
-            result[name] = value;
-            return result;
-        }, {}) as any;
-        const queryName = params['query.queryName'].toLowerCase();
-        const schemaName = params.schemaName.toLowerCase();
-        let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
-
-        if (!responseBody) {
-            console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);
-        }
-
-        if (schemaName === 'samples' && queryName === 'samples' && params.hasOwnProperty('query.rowId~in')) {
-            // Used in lineage stories.
-            responseBody = samplesLineageQuery;
-        }
-
-        return res
-            .status(200)
-            .headers({'Content-Type': 'application/json'})
-            .body(JSON.stringify(responseBody));
-    });
+    initQueryGridMocks();
+    initLineageMocks();
 
     mock.post(/.*\/query\/.*\/executeSql.*/,  (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -339,19 +305,6 @@ export function initMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.get(/.*lineage.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-        if (queryParams.lsid.indexOf('ES-1.2') > -1) {
-            responseBody = lineageData;
-        }
-
-        return res
-            .status(200)
-            .headers({'Content-Type': 'application/json'})
-            .body(JSON.stringify(responseBody));
-    });
-
     mock.post(/.*\/visualization\/.*\/getVisualization.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
@@ -382,6 +335,59 @@ export function initMocks() {
         body: JSON.stringify(getValidPublishTargetsJson)
     });
 
-
     mock.use(proxy);
+}
+
+export function initQueryGridMocks() {
+    mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
+        const queryParams = req.url().query;
+        const schemaName = queryParams.schemaName.toLowerCase();
+        const queryName = queryParams.queryName.toLowerCase();
+        const responseBody = QUERY_DETAILS_RESPONSES.getIn([schemaName, queryName]);
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
+        const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
+            const [name, value] = param.split('=');
+            result[name] = value;
+            return result;
+        }, {}) as any;
+        const queryName = params['query.queryName'].toLowerCase();
+        const schemaName = params.schemaName.toLowerCase();
+        let responseBody = QUERY_RESPONSES.getIn([schemaName, queryName]);
+
+        if (!responseBody) {
+            console.log(`getQuery response not found! schemaName: "${schemaName}" queryName: "${queryName}"`);
+        }
+
+        if (schemaName === 'samples' && queryName === 'samples' && params.hasOwnProperty('query.rowId~in')) {
+            // Used in lineage stories.
+            responseBody = samplesLineageQuery;
+        }
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+}
+
+export function initLineageMocks() {
+    mock.get(/.*lineage.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+        if (queryParams.lsid.indexOf('ES-1.2') > -1) {
+            responseBody = lineageData;
+        }
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
 }

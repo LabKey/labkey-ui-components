@@ -67,6 +67,9 @@ import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
 import usersQueryInfo from '../test/data/users-getQueryDetails.json';
 import getMaxPhiLevelJson from "../test/data/security-GetMaxPhiLevel.json";
+import getRolesJson from "../test/data/security-getRoles.json";
+import getPrincipalsJson from "../test/data/security-getPrincipals.json";
+import getQueryDetailsPrincipalsJson from "../test/data/security-getQueryDetailsPrincipals.json";
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
 
@@ -85,6 +88,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     },
     'core': {
         'users': usersQueryInfo,
+        'core_temp_240': getQueryDetailsPrincipalsJson,
     },
     'exp': {
         'samplesetheatmap': sampleSetHeatMapQueryInfo,
@@ -184,6 +188,24 @@ export function initMocks() {
         if (schemaName === 'samples' && queryName === 'samples' && params.hasOwnProperty('query.rowId~in')) {
             // Used in lineage stories.
             responseBody = samplesLineageQuery;
+        }
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+
+    mock.post(/.*\/query\/.*\/executeSql.*/,  (req, res) => {
+        const body = decodeURIComponent(req.body());
+
+        let responseBody;
+        if (body.indexOf('"core"') > -1 && body.indexOf('FROM Principals') > -1) {
+            responseBody = getPrincipalsJson
+        }
+
+        if (!responseBody) {
+            console.log(`executeSql response not found! "${body}"`);
         }
 
         return res
@@ -346,6 +368,12 @@ export function initMocks() {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(getMaxPhiLevelJson)
+    });
+
+    mock.get(/.*\/security\/.*\/getRoles.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(getRolesJson)
     });
 
     mock.get(/.*\/assay\/getValidPublishTargets.*/, {

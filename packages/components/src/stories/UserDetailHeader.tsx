@@ -4,13 +4,13 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import * as React from 'react'
+import { Button } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react'
 import { withKnobs, text } from '@storybook/addon-knobs'
 import { Map, fromJS } from 'immutable'
 import { ICON_URL } from "./mock";
 import { UserDetailHeader, User } from "..";
 import './stories.scss'
-import { Button } from 'react-bootstrap';
 
 storiesOf("UserDetailHeader", module)
     .addDecorator(withKnobs)

@@ -12,7 +12,6 @@ import {AssayProtocolModel, DomainException} from "../components/domainpropertie
 import { AssayDesignerPanels } from "../components/domainproperties/assay/AssayDesignerPanels"
 import {SEVERITY_LEVEL_ERROR} from "../components/domainproperties/constants";
 import {setAssayDomainException} from "../components/domainproperties/actions";
-import { initMocks } from "./mock";
 import generalAssayTemplate from "../test/data/assay-getProtocolGeneralTemplate.json";
 import generalAssaySaved from "../test/data/assay-getProtocolGeneral.json";
 import generalAssayDupes from "../test/data/assay-getProtocolGeneralDuplicateFields.json";
@@ -20,8 +19,6 @@ import domainAssayException from "../test/data/assay-domainExceptionFromServer.j
 import elispotAssayTemplate from "../test/data/assay-getProtocolELISpotTemplate.json";
 import elispotAssaySaved from "../test/data/assay-getProtocolELISpot.json";
 import './stories.scss'
-
-initMocks();
 
 interface Props {
     data: {},

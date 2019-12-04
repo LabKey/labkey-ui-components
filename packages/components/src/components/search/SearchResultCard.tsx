@@ -18,6 +18,7 @@ import { SCHEMAS } from '../base/models/schemas';
 import { SVGIcon } from '../base/SVGIcon';
 
 interface SearchResultProps {
+    category?: string
     title: string
     summary: string
     url: string
@@ -51,7 +52,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
     }
 
     resolveImage() {
-        const { data, iconUrl } = this.props;
+        const { category, data, iconUrl } = this.props;
 
         if (iconUrl) {
             return <img className="search-result__card-icon" src={iconUrl}/>
@@ -82,6 +83,17 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
             }
             else if (data.get('type')) {
                 iconSrc=data.get('type').toLowerCase();
+            }
+        }
+        if (!iconSrc && category) {
+            switch (category)
+            {
+                case 'workflowJob':
+                    iconSrc = 'workflow';
+                    break;
+                case 'material':
+                    iconSrc = 'samples';
+                    break;
             }
         }
 

@@ -174,14 +174,17 @@ export class SchemaQuery extends Record({
         super(values);
     }
 
+    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getSchema() {
         return this.schemaName;
     }
 
+    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getQuery() {
         return this.queryName;
     }
 
+    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getView() {
         return this.viewName;
     }

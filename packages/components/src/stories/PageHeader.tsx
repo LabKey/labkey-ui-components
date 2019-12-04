@@ -3,14 +3,14 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { Button } from 'react-bootstrap'
-import { storiesOf } from '@storybook/react'
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
 
-import { notificationInit } from "../test/setupUtils";
+import { notificationInit } from '../test/setupUtils';
 import { NotificationItemModel, Persistence } from '../components/notifications/model';
 import { createNotification } from '../components/notifications/actions';
 import { PageHeader } from '../components/base/PageHeader';
@@ -33,7 +33,7 @@ storiesOf("PageHeader", module)
 
         return (
             <PageHeader
-                iconCls={text("Icon class name", "fa fa-spinner fa-spin")}
+                iconCls={text("Icon class name", "fa fa-spinner fa-pulse")}
                 showNotifications={showNotifications}
                 title={text("Title", "Loading...")}
                 >

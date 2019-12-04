@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import * as React from 'react'
-import { List } from 'immutable'
-import { Button } from 'react-bootstrap'
-import $ from 'jquery'
+import React from 'react';
+import { List } from 'immutable';
+import { Button } from 'react-bootstrap';
+import $ from 'jquery';
 
-import { NavItem, ParentNavItem } from './NavItem'
+import { NavItem, ParentNavItem } from './NavItem';
 import { AppURL } from '../../url/AppURL';
 
 interface ISubNavProps {

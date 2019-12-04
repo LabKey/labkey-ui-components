@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-import { DomainDesign } from "./models";
-import DomainForm from "./DomainForm";
+import React from 'react';
+import { DomainDesign } from './models';
+import DomainForm from './DomainForm';
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -32,12 +32,12 @@ import {
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
-    STRING_RANGE_URI
-} from "./constants";
-import { mount } from "enzyme";
-import { clearFieldDetails, createFormInputId, updateDomainField } from "./actions";
-import toJson from "enzyme-to-json";
-import { DomainRow } from "./DomainRow";
+    STRING_RANGE_URI,
+} from './constants';
+import { mount } from 'enzyme';
+import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
+import toJson from 'enzyme-to-json';
+import { DomainRow } from './DomainRow';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 
 interface Props {
@@ -370,7 +370,7 @@ describe('DomainForm', () => {
         expandButton = form.find({id: createFormInputId(DOMAIN_FIELD_EXPAND, 0)});
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
-        
+
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
 

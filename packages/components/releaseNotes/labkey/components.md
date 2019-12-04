@@ -9,6 +9,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
 * Allow FileListingForm to optionally include a read-only set of files (available for download only)
 
+### version 0.1.2
+*Released*: 2 December 2019
+* Optimized imports
+* Changed react imports from `import * as React` to `import React`
+* Re-add `lib` section to tsconfig.base.json
+
 ### version 0.1.1
 *Released*: 2 December 2019
 * Misc fixes and cleanup post package consolidation

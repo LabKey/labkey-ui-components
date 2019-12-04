@@ -1,9 +1,10 @@
-import {mount} from "enzyme";
-import * as React from "react";
-import {List} from "immutable";
-import {createFormInputId} from "./actions";
+import { mount } from 'enzyme';
+import React from 'react';
+import { List } from 'immutable';
+import { createFormInputId } from './actions';
 import {
-    DOMAIN_EDITABLE_DEFAULT, DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
+    DOMAIN_EDITABLE_DEFAULT,
+    DOMAIN_FIELD_DEFAULT_VALUE_TYPE,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_HIDDEN,
     DOMAIN_FIELD_MEASURE,
@@ -12,12 +13,15 @@ import {
     DOMAIN_FIELD_RECOMMENDEDVARIABLE,
     DOMAIN_FIELD_SHOWNINDETAILSVIEW,
     DOMAIN_FIELD_SHOWNININSERTVIEW,
-    DOMAIN_FIELD_SHOWNINUPDATESVIEW, DOMAIN_LAST_ENTERED_DEFAULT, DOMAIN_NON_EDITABLE_DEFAULT,
-    INT_RANGE_URI, PHILEVEL_FULL_PHI,
-    PHILEVEL_LIMITED_PHI
-} from "./constants";
-import {AdvancedSettings} from "./AdvancedSettings";
-import {DomainField} from "./models";
+    DOMAIN_FIELD_SHOWNINUPDATESVIEW,
+    DOMAIN_LAST_ENTERED_DEFAULT,
+    DOMAIN_NON_EDITABLE_DEFAULT,
+    INT_RANGE_URI,
+    PHILEVEL_FULL_PHI,
+    PHILEVEL_LIMITED_PHI,
+} from './constants';
+import { AdvancedSettings } from './AdvancedSettings';
+import { DomainField } from './models';
 
 
 describe('AdvancedSettings', () => {

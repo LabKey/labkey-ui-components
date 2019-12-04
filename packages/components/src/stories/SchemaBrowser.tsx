@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { storiesOf } from "@storybook/react";
-import { boolean, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { SchemaListing } from "../components/listing/SchemaListing";
-import { QueriesListing } from "../components/listing/QueriesListing";
-import './stories.scss'
+import { SchemaListing } from '../components/listing/SchemaListing';
+import { QueriesListing } from '../components/listing/QueriesListing';
+import './stories.scss';
 import { PageHeader } from '../components/base/PageHeader';
 import { Page } from '../components/base/Page';
 

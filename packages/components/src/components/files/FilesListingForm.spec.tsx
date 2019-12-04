@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { List } from 'immutable'
-import { shallow } from 'enzyme'
-import { FilesListingForm } from "./FilesListingForm";
+import React from 'react';
+import { List } from 'immutable';
+import { shallow } from 'enzyme';
+import { FilesListingForm } from './FilesListingForm';
 
-import { IFile } from "./models";
+import { IFile } from './models';
 import { FILES_DATA } from '../../test/data/constants';
 
 describe("<FilesListingForm/>", () => {

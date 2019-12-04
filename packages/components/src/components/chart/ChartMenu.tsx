@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn'
-import { DropdownButton, MenuItem, Modal } from 'react-bootstrap'
-import { List } from 'immutable'
+import React from 'reactn';
+import { DropdownButton, MenuItem, Modal } from 'react-bootstrap';
+import { List } from 'immutable';
 
-import { DataViewInfo } from '../../models'
-import { Chart } from './Chart'
+import { DataViewInfo } from '../../models';
+import { Chart } from './Chart';
 import { setReportId } from '../../actions';
 import { QueryGridModel } from '../base/models/model';
 import { generateId, naturalSort } from '../../util/utils';
@@ -118,7 +118,7 @@ export class ChartMenu extends React.PureComponent<Props> {
     getChartButtonTitle() {
         const { charts, model } = this.props;
         const chartsLoaded = charts !== undefined && charts !== null;
-        return chartsLoaded || model.isError ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
+        return chartsLoaded || model.isError ? "Charts" : <span className="fa fa-spinner fa-pulse"/>;
     }
 
     render() {

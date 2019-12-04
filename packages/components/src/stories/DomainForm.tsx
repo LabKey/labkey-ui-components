@@ -3,24 +3,24 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
-import { storiesOf } from '@storybook/react'
-import { text, boolean, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { DomainDesign } from "../components/domainproperties/models";
-import { DomainFormImpl } from "../components/domainproperties/DomainForm";
-import { MockLookupProvider } from "../test/components/Lookup";
-import { PHILEVEL_RESTRICTED_PHI } from "../components/domainproperties/constants";
+import { DomainDesign } from '../components/domainproperties/models';
+import { DomainFormImpl } from '../components/domainproperties/DomainForm';
+import { MockLookupProvider } from '../test/components/Lookup';
+import { PHILEVEL_RESTRICTED_PHI } from '../components/domainproperties/constants';
 
-import domainData from "../test/data/property-getDomain.json";
-import errorData from "../test/data/property-saveDomainWithDuplicateField.json";
-import warningData from "../test/data/property-unexpectedCharInFieldName.json";
-import exceptionDataServer from "../test/data/property-domainExceptionFromServer.json";
-import exceptionDataClient from "../test/data/property-domainExceptionClient.json";
-import fullyLockedData from "../test/data/property-getDomainWithFullyLockedFields.json";
-import partiallyLockedData from "../test/data/property-getDomainWithPartiallyLockedFields.json";
-import { initMocks } from "./mock";
-import './stories.scss'
+import domainData from '../test/data/property-getDomain.json';
+import errorData from '../test/data/property-saveDomainWithDuplicateField.json';
+import warningData from '../test/data/property-unexpectedCharInFieldName.json';
+import exceptionDataServer from '../test/data/property-domainExceptionFromServer.json';
+import exceptionDataClient from '../test/data/property-domainExceptionClient.json';
+import fullyLockedData from '../test/data/property-getDomainWithFullyLockedFields.json';
+import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
+import { initMocks } from './mock';
+import './stories.scss';
 
 initMocks();
 

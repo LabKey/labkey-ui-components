@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { Panel } from 'react-bootstrap'
-import { List, Map, OrderedMap } from 'immutable'
+import React from 'react';
+import { Panel } from 'react-bootstrap';
+import { List, Map, OrderedMap } from 'immutable';
 
-import { DefaultRenderer } from "../../../renderers/DefaultRenderer";
+import { DefaultRenderer } from '../../../renderers/DefaultRenderer';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, OrderedMap } from 'immutable'
+import { fromJS, List, OrderedMap } from 'immutable';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -21,14 +21,14 @@ import {
     QueryColumn,
     QueryGridModel,
     QueryInfo,
-    SchemaQuery
-} from './model'
+    SchemaQuery,
+} from './model';
 
 import assayDefJSON from '../../../test/data/assayDefinitionModel.json';
 import assayDefNoSampleIdJSON from '../../../test/data/assayDefinitionModelNoSampleId.json';
-import sampleSetQueryInfo from "../../../test/data/sampleSet-getQueryDetails.json";
-import nameExpSetQueryColumn from "../../../test/data/NameExprParent-QueryColumn.json";
-import sampleSet3QueryColumn from "../../../test/data/SampleSet3Parent-QueryColumn.json";
+import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.json';
+import nameExpSetQueryColumn from '../../../test/data/NameExprParent-QueryColumn.json';
+import sampleSet3QueryColumn from '../../../test/data/SampleSet3Parent-QueryColumn.json';
 
 describe("QueryGridModel", () => {
 

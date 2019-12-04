@@ -1,4 +1,4 @@
-import { Record } from 'immutable'
+import { Record } from 'immutable';
 
 export class ChangePasswordModel extends Record({
     email: undefined,

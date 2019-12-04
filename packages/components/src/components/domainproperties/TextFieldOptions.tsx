@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { Col, FormControl, Row } from "react-bootstrap";
-import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from "./actions";
-import { isFieldFullyLocked } from "./propertiesUtil";
-import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from "./constants";
-import { ITypeDependentProps } from "./models";
+import React from 'react';
+import { Col, FormControl, Row } from 'react-bootstrap';
+import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';
+import { isFieldFullyLocked } from './propertiesUtil';
+import { DOMAIN_FIELD_CUSTOM_LENGTH, DOMAIN_FIELD_MAX_LENGTH, DOMAIN_FIELD_SCALE, MAX_TEXT_LENGTH } from './constants';
+import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface TextFieldProps extends ITypeDependentProps {

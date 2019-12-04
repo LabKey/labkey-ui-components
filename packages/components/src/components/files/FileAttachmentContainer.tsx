@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import classNames from 'classnames'
-import { Utils } from '@labkey/api'
+import React from 'react';
+import classNames from 'classnames';
+import { Utils } from '@labkey/api';
 
-import { fileMatchesAcceptedFormat } from "./actions";
+import { fileMatchesAcceptedFormat } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 
 interface FileAttachmentContainerProps {

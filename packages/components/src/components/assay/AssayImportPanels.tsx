@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 import { Button } from 'react-bootstrap';
-import { Map, OrderedMap } from 'immutable'
-import { Utils } from '@labkey/api'
+import { Map, OrderedMap } from 'immutable';
+import { Utils } from '@labkey/api';
 
-import { Location } from "../../util/URL"
-import { loadSelectedSamples } from "../samples/actions";
+import { Location } from '../../util/URL';
+import { loadSelectedSamples } from '../samples/actions';
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
@@ -29,18 +29,18 @@ import {
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
-    uploadAssayRunFiles
-} from "./actions";
-import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from "./models";
-import { withFormSteps, WithFormStepsProps } from "../forms/FormStep"
-import { getQueryGridModel, removeQueryGridModel } from "../../global";
-import { AssayUploadGridLoader } from "./AssayUploadGridLoader";
-import { getStateQueryGridModel } from "../../models";
-import { gridInit } from "../../actions";
-import { getQueryDetails } from "../../query/api";
-import { BatchPropertiesPanel } from "./BatchPropertiesPanel";
-import { RunPropertiesPanel } from "./RunPropertiesPanel";
-import { RunDataPanel } from "./RunDataPanel";
+    uploadAssayRunFiles,
+} from './actions';
+import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from './models';
+import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { getQueryGridModel, removeQueryGridModel } from '../../global';
+import { AssayUploadGridLoader } from './AssayUploadGridLoader';
+import { getStateQueryGridModel } from '../../models';
+import { gridInit } from '../../actions';
+import { getQueryDetails } from '../../query/api';
+import { BatchPropertiesPanel } from './BatchPropertiesPanel';
+import { RunPropertiesPanel } from './RunPropertiesPanel';
+import { RunDataPanel } from './RunDataPanel';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { AssayReimportHeader } from './AssayReimportHeader';
 import {
@@ -48,7 +48,7 @@ import {
     AssayDomainTypes,
     AssayUploadTabs,
     QueryGridModel,
-    SchemaQuery
+    SchemaQuery,
 } from '../base/models/model';
 import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';

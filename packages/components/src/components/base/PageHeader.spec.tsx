@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 
-import { PageHeader } from './PageHeader'
-import { notificationInit } from '../../test/setupUtils'
+import { PageHeader } from './PageHeader';
+import { notificationInit } from '../../test/setupUtils';
 
 beforeEach(() => {
    notificationInit()

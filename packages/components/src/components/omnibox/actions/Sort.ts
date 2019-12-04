@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable'
+import { List } from 'immutable';
 
-import { Action, ActionOption, ActionValue, Value } from './Action'
-import { parseColumns } from './Filter'
+import { Action, ActionOption, ActionValue, Value } from './Action';
+import { parseColumns } from './Filter';
 import { QueryColumn } from '../../base/models/model';
 
 export class SortAction implements Action {

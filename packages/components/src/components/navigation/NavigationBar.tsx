@@ -13,15 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { ReactNode } from 'react'
-import { List, Map } from 'immutable'
+import React, { ReactNode } from 'react';
+import { List, Map } from 'immutable';
 
-import { ProductMenu } from "./ProductMenu";
-import { SearchBox } from "./SearchBox";
-import { UserMenu } from "./UserMenu";
-import { MenuSectionConfig } from "./ProductMenuSection";
-import { ProductMenuModel } from "./model";
+import { ProductMenu } from './ProductMenu';
+import { SearchBox } from './SearchBox';
+import { UserMenu } from './UserMenu';
+import { MenuSectionConfig } from './ProductMenuSection';
+import { ProductMenuModel } from './model';
 import { User } from '../base/models/model';
 
 interface NavigationBarProps {

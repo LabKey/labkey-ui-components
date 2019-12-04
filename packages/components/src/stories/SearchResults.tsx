@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import { Map, fromJS } from 'immutable';
-import { storiesOf } from "@storybook/react";
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs'
+import React from 'react';
+import { fromJS, Map } from 'immutable';
+import { storiesOf } from '@storybook/react';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { SearchResultCard } from "../components/search/SearchResultCard";
-import { SearchResultsPanel } from "../components/search/SearchResultsPanel";
-import { SearchResultsModel } from "../components/search/models";
-import entitiesJSON from "../test/data/searchResults.json";
-import './stories.scss'
+import { SearchResultCard } from '../components/search/SearchResultCard';
+import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
+import { SearchResultsModel } from '../components/search/models';
+import entitiesJSON from '../test/data/searchResults.json';
+import './stories.scss';
 
 storiesOf('SearchResults', module)
     .addDecorator(withKnobs)

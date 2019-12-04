@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { fromJS, List, Map, Record } from 'immutable'
+import { fromJS, List, Map, Record } from 'immutable';
 
 export class SearchResultsModel extends Record({
     entities: undefined,

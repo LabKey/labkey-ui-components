@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { withFormsy } from 'formsy-react'
-import { Utils } from '@labkey/api'
-import { FieldLabel } from '../FieldLabel'
+import React from 'react';
+import { withFormsy } from 'formsy-react';
+import { Utils } from '@labkey/api';
+import { FieldLabel } from '../FieldLabel';
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 import { QueryColumn } from '../../base/models/model';
 

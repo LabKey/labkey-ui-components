@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
-import renderer from 'react-test-renderer'
-import { LoadingPage } from "./LoadingPage";
-import { shallow } from "enzyme";
-import { PageHeader } from "./PageHeader";
-import { LoadingSpinner } from "./LoadingSpinner";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { LoadingPage } from './LoadingPage';
+import { shallow } from 'enzyme';
+import { PageHeader } from './PageHeader';
+import { LoadingSpinner } from './LoadingSpinner';
 
 describe("<LoadingPage/>", () => {
     test("no props", () => {

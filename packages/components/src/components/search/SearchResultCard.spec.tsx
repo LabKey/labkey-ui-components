@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import renderer from 'react-test-renderer'
-import { fromJS } from 'immutable'
-import { SearchResultCard } from "./SearchResultCard";
-import { mount } from "enzyme";
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { fromJS } from 'immutable';
+import { SearchResultCard } from './SearchResultCard';
+import { mount } from 'enzyme';
 
 describe("<SearchResultCard/>", () => {
 

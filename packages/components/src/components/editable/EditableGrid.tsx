@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react'
-import { ReactNode } from 'react'
-import React from 'reactn'
-import { Button, OverlayTrigger, Popover } from 'react-bootstrap'
-import { List, Map, OrderedMap, Set } from 'immutable'
-import $ from 'jquery'
+import * as OrigReact from 'react';
+import { ReactNode } from 'react';
+import React from 'reactn';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import { List, Map, OrderedMap, Set } from 'immutable';
+import $ from 'jquery';
 
 
 import {
@@ -31,14 +31,14 @@ import {
     pasteEvent,
     removeRow,
     removeRows,
-    select
-} from '../../actions'
-import { getEditorModel, getQueryGridModel } from "../../global";
-import { Cell } from './Cell'
-import { AddRowsControl, AddRowsControlProps } from './Controls'
-import { headerSelectionCell } from "../../renderers";
-import { QueryInfoForm, QueryInfoFormProps } from "../forms/QueryInfoForm";
-import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+    select,
+} from '../../actions';
+import { getEditorModel, getQueryGridModel } from '../../global';
+import { Cell } from './Cell';
+import { AddRowsControl, AddRowsControlProps } from './Controls';
+import { headerSelectionCell } from '../../renderers';
+import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { Grid, GridColumn } from '../base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../base/models/constants';
 import { QueryColumn, QueryGridModel } from '../base/models/model';

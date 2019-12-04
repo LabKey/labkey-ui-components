@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { Link } from 'react-router'
-import { List, Map } from 'immutable'
+import React from 'react';
+import { Link } from 'react-router';
+import { List, Map } from 'immutable';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { SchemaDetails } from '../base/models/model';
 import { AppURL } from '../../url/AppURL';

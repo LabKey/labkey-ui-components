@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilesListingForm/> empty files custom msg 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    />
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <FilesListing
+    files={Immutable.List []}
+    noFilesMessage="the file list is empty"
+    onDelete={[Function]}
+    onFileSelection={[Function]}
+    selectedFiles={Immutable.Set []}
+  />
+</Fragment>
+`;
+
+exports[`<FilesListingForm/> empty files default props 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    />
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <FilesListing
+    files={Immutable.List []}
+    noFilesMessage="No files currently attached."
+    onDelete={[Function]}
+    onFileSelection={[Function]}
+    selectedFiles={Immutable.Set []}
+  />
+</Fragment>
+`;
+
+exports[`<FilesListingForm/> with files custom props 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    >
+      <Button
+        active={false}
+        block={false}
+        bsClass="btn"
+        bsStyle="primary"
+        disabled={false}
+        onClick={[Function]}
+        title="add more files"
+      >
+        add more files
+      </Button>
+    </div>
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <FilesListing
+    canDelete={true}
+    files={
+      Immutable.List [
+        Object {
+          "created": "2019-11-08 12:26:30.064",
+          "createdBy": "Vader",
+          "createdById": 1005,
+          "description": "i'm an excel file",
+          "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=exam.xlsx&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles",
+          "iconFontCls": "fa fa-file-excel-o",
+          "name": "exam.xlsx",
+        },
+        Object {
+          "created": "2019-11-14 15:47:51.931",
+          "createdBy": "Skywalker",
+          "createdById": 1100,
+          "description": "i'm gif",
+          "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=xray.gif&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles",
+          "iconFontCls": "fa fa-file-image-o",
+          "name": "xray.gif",
+        },
+        Object {
+          "created": "2019-11-14 15:48:11.472",
+          "createdBy": "Vader",
+          "createdById": 1005,
+          "description": "i'm a json file",
+          "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=sreport.json&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles",
+          "iconFontCls": "fa fa-file-o",
+          "name": "report.json",
+        },
+      ]
+    }
+    noFilesMessage="No files currently attached."
+    onDelete={[Function]}
+    onFileSelection={[Function]}
+    selectedFiles={Immutable.Set []}
+  />
+</Fragment>
+`;
+
+exports[`<FilesListingForm/> with files default props 1`] = `
+<Fragment>
+  <div
+    className="row bottom-spacing"
+  >
+    <div
+      className="col-md-7"
+    />
+    <div
+      className="col-md-5"
+    >
+      <div
+        className="pull-right"
+      >
+        <Button
+          active={false}
+          block={false}
+          bsClass="btn"
+          bsStyle="default"
+          disabled={true}
+          onClick={[Function]}
+          title="Download selected files"
+        >
+          <i
+            className="fa fa-download"
+          />
+        </Button>
+      </div>
+    </div>
+  </div>
+  <FilesListing
+    files={
+      Immutable.List [
+        Object {
+          "created": "2019-11-08 12:26:30.064",
+          "createdBy": "Vader",
+          "createdById": 1005,
+          "description": "i'm an excel file",
+          "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=exam.xlsx&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles",
+          "iconFontCls": "fa fa-file-excel-o",
+          "name": "exam.xlsx",
+        },
+        Object {
+          "created": "2019-11-14 15:47:51.931",
+          "createdBy": "Skywalker",
+          "createdById": 1100,
+          "description": "i'm gif",
+          "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=xray.gif&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles",
+          "iconFontCls": "fa fa-file-image-o",
+          "name": "xray.gif",
+        },
+        Object {
+          "created": "2019-11-14 15:48:11.472",
+          "createdBy": "Vader",
+          "createdById": 1005,
+          "description": "i'm a json file",
+          "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=sreport.json&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles",
+          "iconFontCls": "fa fa-file-o",
+          "name": "report.json",
+        },
+      ]
+    }
+    noFilesMessage="No files currently attached."
+    onDelete={[Function]}
+    onFileSelection={[Function]}
+    selectedFiles={Immutable.Set []}
+  />
+</Fragment>
+`;

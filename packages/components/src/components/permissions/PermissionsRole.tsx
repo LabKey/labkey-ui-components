@@ -101,6 +101,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                             onClick={(userId: number) => onClickAssignment(userId)}
                                                             onRemove={(userId: number) => onRemoveAssignment(userId, role)}
                                                             bsStyle={selected && selected.userId === assignment.userId ? 'primary' : undefined}
+                                                            added={assignment.isNew}
                                                         />
                                                     </li>
                                                 )

@@ -1,7 +1,6 @@
 
 .container-expandable {
   border: 1px solid lightgray;
-  cursor: pointer;
 
   &:before, &:after {
     content: " ";
@@ -21,26 +20,21 @@
   padding: 15px 20px 15px 5px;
   max-width: 100%;
   position: relative;
+  cursor: pointer;
 
   h4 {
     display: inline;
     color: $brand-primary;
   }
-}
 
-.container-expandable-detail__active {
-  background: $brand-primary;
-  color: $white;
-  position: relative;
+  &:hover {
+      background: $brand-primary;
+      color: $white;
 
-  a, h4 {
-    color: $white;
+      h4, a {
+          color: $white;
+      }
   }
-}
-
-.container-expandable-detail__inactive {
-  background: $white;
-  color: inherit;
 }
 
 .container-expandable-child__img {
@@ -48,7 +42,7 @@
 }
 
 .container-expandable-child__inactive {
-  border-bottom: 1px solid $brand-primary;
+  border-bottom: 1px solid lightgray;
 }
 
 .container-expandable-child__chevron {

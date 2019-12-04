@@ -15,15 +15,38 @@
     padding: 15px;
 }
 
-.permissions-principal-button-group {
+.permissions-button-group {
     margin: 5px 5px 0 0;
     display: flex;
 
-    & .permissions-button-display {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: none;
+    opacity: 1;
+    transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    -webkit-transition: opacity .5s ease-in-out;
+}
+
+.permissions-button-removed {
+    opacity: 0;
+}
+
+.permissions-button-display {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: none;
+}
+
+@keyframes shadow-pulse
+{
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
     }
+    100% {
+        box-shadow: 0 0 0 20px rgba(0, 0, 0, 0);
+    }
+}
+
+.permissions-button-added {
+    animation: shadow-pulse 1s 1;
 }
 
 .permissions-title {

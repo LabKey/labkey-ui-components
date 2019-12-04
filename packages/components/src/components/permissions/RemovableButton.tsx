@@ -4,6 +4,7 @@
  */
 import * as React from 'react';
 import { Button, ButtonGroup } from "react-bootstrap";
+import { List } from 'immutable';
 
 interface Props {
     id: number
@@ -11,17 +12,54 @@ interface Props {
     onRemove: (userId: number) => any
     onClick: (userId: number) => any
     bsStyle?: string
+    added?: boolean
 }
 
-export class RemovableButton extends React.PureComponent<Props, any> {
+interface State {
+    removed: boolean
+}
+
+export class RemovableButton extends React.PureComponent<Props, State> {
+
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            removed: false
+        };
+    }
+
+    onRemoveClick = () => {
+        if (!this.state.removed) {
+            // set the button state as removed and then wait for fade out animation before calling onRemove
+            this.setState(() => ({removed: true}), () => {
+                window.setTimeout(this.onRemove, 500);
+            });
+        }
+    };
+
+    onRemove = () => {
+        const { id, onRemove } = this.props;
+        onRemove(id);
+    };
 
     render() {
-        const { id, display, onClick, onRemove, bsStyle } = this.props;
+        const { id, display, onClick, bsStyle, added } = this.props;
+
+        let btnGroupCls = List<string>(['permissions-button-group']);
+        if (this.state.removed) {
+            btnGroupCls = btnGroupCls.push('permissions-button-removed');
+        }
+
+        let btnCls = List<string>(['permissions-button-display']);
+        if (added) {
+            btnCls = btnCls.push('permissions-button-added');
+        }
 
         return (
-            <ButtonGroup className={'permissions-principal-button-group'}>
-                <Button bsStyle={bsStyle} onClick={() => onRemove(id)}><i className={'fa fa-remove'}/></Button>
-                <Button className={'permissions-button-display'} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
+            <ButtonGroup className={btnGroupCls.join(' ')}>
+                <Button bsStyle={bsStyle} onClick={this.onRemoveClick}><i className={'fa fa-remove'}/></Button>
+                <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
             </ButtonGroup>
         )
     }

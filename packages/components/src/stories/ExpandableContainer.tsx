@@ -15,7 +15,7 @@ storiesOf("ExpandableContainer", module)
     .add("default props", () => {
         return (
             <ExpandableContainer
-                iconFaCls={'users fa-4x'}
+                iconFaCls={'users fa-3x'}
                 clause={
                     <div className="container-expandable-heading--clause">
                         <h4>Title for My Container</h4>

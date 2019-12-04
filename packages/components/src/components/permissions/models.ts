@@ -93,12 +93,14 @@ export class SecurityAssignment extends Record({
     role: undefined,
     userId: undefined,
     displayName: undefined,
-    type: undefined
+    type: undefined,
+    isNew: false
 }) {
     role: string;
     userId: number;
     displayName: string;
     type: string;
+    isNew: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -185,7 +187,7 @@ export class SecurityPolicy extends Record({
 
     static addAssignment(policy: SecurityPolicy, principal: Principal, role: SecurityRole): SecurityPolicy {
         const assignments = policy.assignments.push(new SecurityAssignment(
-            Object.assign({role: role.uniqueName}, principal.toJS())
+            Object.assign({role: role.uniqueName, isNew: true}, principal.toJS())
         ));
 
         return policy.merge({

@@ -40,7 +40,7 @@ export class PrincipalDetailsPanel extends React.PureComponent<Props, any> {
         return (
             <Panel>
                 <Panel.Heading>
-                    Details
+                    {principal && principal.type === 'g' ? 'Group Details' : 'User Details'}
                 </Panel.Heading>
                 <Panel.Body>
                     {principal

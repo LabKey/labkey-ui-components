@@ -88,6 +88,7 @@ import { Section } from './components/base/Section'
 import { FileAttachmentForm } from './components/files/FileAttachmentForm'
 import { FileAttachmentFormModel, DEFAULT_FILE, IFile } from './components/files/models'
 import { FilesListing } from './components/files/FilesListing'
+import { FilesListingForm } from './components/files/FilesListingForm'
 import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
 import { Notification } from './components/notifications/Notification'
 import { createNotification } from './components/notifications/actions'
@@ -517,6 +518,7 @@ export {
     DEFAULT_FILE,
     IFile,
     FilesListing,
+    FilesListingForm,
     FileAttachmentEntry,
     AddEntityButton,
     RemoveEntityButton,

@@ -5,7 +5,7 @@ interface Props {
     allowDelete?: boolean
     onDelete?: (name: string) => any
     name: string
-    key?: string
+    downloadUrl?: string
     titleText?: string
 }
 
@@ -17,17 +17,24 @@ export class FileAttachmentEntry extends React.PureComponent<Props, any> {
     };
 
     render() {
-        const { allowDelete, onDelete, key, name, titleText } = this.props;
-
+        const { allowDelete, downloadUrl, onDelete, name, titleText } = this.props;
         return (
-            <div key={key || name} className="attached-file--container">
+            <div key={name} className="attached-file--container">
                 {allowDelete && <span
                     className="fa fa-times-circle file-upload__remove--icon"
                     onClick={() => onDelete(name)}
                     title={titleText}
                 />}
                 <span className="fa fa-file-text attached-file--icon attached-file--bottom-spacing"/>
-                {name}
+                {downloadUrl ? (
+                        <strong>
+                            <a href={downloadUrl} title={name}>
+                                <div className={"file-listing-filename"}>{name}</div>
+                            </a>
+                        </strong>
+                    )
+                    : name
+                }
             </div>
         )
     }

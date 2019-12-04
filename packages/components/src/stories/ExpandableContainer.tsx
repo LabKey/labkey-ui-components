@@ -5,7 +5,7 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, boolean } from '@storybook/addon-knobs'
 
 import './stories.scss'
 import { ExpandableContainer } from "../components/ExpandableContainer";
@@ -30,7 +30,7 @@ storiesOf("ExpandableContainer", module)
                         </span>
                     </div>
                 }
-                isExpandable={true}
+                isExpandable={boolean('isExpandable', true)}
             >
                 <div style={{padding: '20px'}}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut

@@ -18,8 +18,8 @@ interface Props extends PermissionsProviderProps {
     policy: SecurityPolicy
     onChange: (policy: SecurityPolicy) => any
     onSuccess: () => any
-    rolesToShow?: List<string>
-    typesToShow?: List<string>
+    rolesToShow?: List<string> // a subset list of role uniqueNames to show in this component usage, see sampleManagement PermissionsPanel.tsx for example
+    typeToShow?: string // a specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage, see sampleManagement PermissionsPanel.tsx for example
     showDetailsPanel?: boolean
 }
 
@@ -34,7 +34,6 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
 
     static defaultProps = {
         title: 'Security roles and assignments',
-        typesToShow: List<string>(['g', 'u']),
         showDetailsPanel: true
     };
 
@@ -91,7 +90,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { title, policy, rolesToShow, typesToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel } = this.props;
+        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel } = this.props;
         const { selectedPrincipal, saveErrorMsg, submitting, dirty } = this.state;
         const isLoading = (!policy || !roles || !principals) && !error;
 
@@ -102,7 +101,8 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
             return <Alert>{error}</Alert>
         }
 
-        // use the explicit set if passes as a prop, fall back to the relevant roles for the policy
+        // use the explicit set of role uniqueNames from the rolesToShow prop, if provided.
+        // fall back to show all of the relevant roles for the policy, if the rolesToShow prop is undefined
         const visibleRoles = SecurityRole.filter(roles, policy, rolesToShow);
 
         return (
@@ -119,7 +119,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                                         key={i}
                                         role={role}
                                         assignments={policy.assignmentsByRole.get(role.uniqueName)}
-                                        typesToShow={typesToShow}
+                                        typeToShow={typeToShow}
                                         principals={principals}
                                         onClickAssignment={this.showDetails}
                                         onRemoveAssignment={this.removeAssignment}

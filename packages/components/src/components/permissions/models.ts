@@ -30,10 +30,10 @@ export class Principal extends Record({
         return new Principal({userId, name, type, displayName});
     }
 
-    static filter(principals: List<Principal>, typesToShow: List<string>, excludeUserIds: List<number>): List<Principal> {
+    static filterAndSort(principals: List<Principal>, typeToShow: string, excludeUserIds: List<number>): List<Principal> {
         return principals
-            // filter for typesToShow, if only showing one type
-            .filter((principal) => typesToShow.size > 1 || principal.type === typesToShow.get(0))
+            // filter for a specific typeToShow
+            .filter((principal) => typeToShow === undefined || principal.type === typeToShow)
             // filter out any principals that are already members of this role
             .filter((principal) => !excludeUserIds.contains(principal.userId))
             // finally sort by display name
@@ -196,7 +196,7 @@ export class SecurityPolicy extends Record({
 
     static updateAssignmentsData(policy: SecurityPolicy, principalsById: Map<number, Principal>): SecurityPolicy {
         const assignments = policy.assignments.map((assignment) => {
-            const principal = principalsById.get(assignment.userId);
+            const principal = principalsById ? principalsById.get(assignment.userId) : undefined;
 
             return assignment.merge({
                 displayName: principal ? principal.displayName : undefined,

@@ -5,7 +5,7 @@
  */
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, text, boolean } from '@storybook/addon-knobs'
+import { boolean, text, withKnobs } from '@storybook/addon-knobs'
 import { List, Map } from 'immutable'
 import { Security } from '@labkey/api'
 import { PermissionAssignments, SecurityPolicy, SecurityRole } from "..";
@@ -21,7 +21,7 @@ import './stories.scss'
 
 interface Props {
     title?: string
-    hideGroups?: boolean
+    showUsersOnly?: boolean
     showFilteredRoles?: boolean
     showDetailsPanel?: boolean
 }
@@ -78,7 +78,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { title, hideGroups, showFilteredRoles } = this.props;
+        const { title, showUsersOnly, showFilteredRoles } = this.props;
         const rolesToShow = showFilteredRoles
             ? List<string>(['org.labkey.api.security.roles.FolderAdminRole', 'org.labkey.api.security.roles.EditorRole', 'org.labkey.api.security.roles.ReaderRole'])
             : undefined;
@@ -88,7 +88,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
                 {...this.props}
                 {...this.state}
                 title={title && title.length > 0 ? title : undefined}
-                typesToShow={hideGroups ? List<string>(['u']) : List<string>(['g', 'u'])}
+                typeToShow={showUsersOnly ? 'u' : undefined}
                 rolesToShow={rolesToShow}
                 containerPath={'test'}
                 onChange={this.onChange}
@@ -104,7 +104,7 @@ storiesOf("PermissionAssignments", module)
         return (
             <PermissionAssignmentsWrapper
                 title={text('title', undefined)}
-                hideGroups={boolean('hideGroups', false)}
+                showUsersOnly={boolean('showUsersOnly', false)}
                 showFilteredRoles={boolean('showFilteredRoles', true)}
                 showDetailsPanel={boolean('showDetailsPanel', true)}
             />

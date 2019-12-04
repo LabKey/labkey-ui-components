@@ -2,11 +2,11 @@
  * Copyright (c) 2016-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
-import { List } from 'immutable';
+import React from 'react';
+import { List, Map } from 'immutable';
 import { BsStyleTypes, Button } from 'react-bootstrap';
 
-import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from "./constants";
+import { DEFAULT_LINEAGE_DISTANCE, LINEAGE_DIRECTIONS } from './constants';
 import { AppURL } from '../../url/AppURL';
 import { GridColumn } from '../base/Grid';
 

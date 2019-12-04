@@ -2,15 +2,15 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'reactn'
+import React from 'reactn';
 import { List } from 'immutable';
 
-import { createGridModel, getLocationString, loadLineageIfNeeded } from "./actions";
-import { LineageGridDisplay } from "./LineageGridDisplay";
-import { Lineage, LineagePageModel } from "./models";
-import { getLocation } from "../../util/URL";
-import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from "./constants";
-import { LINEAGE_GRID_COLUMNS } from "./Tag";
+import { createGridModel, getLocationString, loadLineageIfNeeded } from './actions';
+import { LineageGridDisplay } from './LineageGridDisplay';
+import { Lineage, LineagePageModel } from './models';
+import { getLocation } from '../../util/URL';
+import { DEFAULT_LINEAGE_DIRECTION, DEFAULT_LINEAGE_DISTANCE } from './constants';
+import { LINEAGE_GRID_COLUMNS } from './Tag';
 
 interface Props {
     lsid?: string

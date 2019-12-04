@@ -1,9 +1,9 @@
-import {mount} from "enzyme";
-import * as React from "react";
-import {BooleanFieldOptions} from "./BooleanFieldOptions";
-import {createFormInputId} from "./actions";
-import {DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED} from "./constants";
-import toJson from "enzyme-to-json";
+import { mount } from 'enzyme';
+import React from 'react';
+import { BooleanFieldOptions } from './BooleanFieldOptions';
+import { createFormInputId } from './actions';
+import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
+import toJson from 'enzyme-to-json';
 
 
 describe('BooleanFieldOptions', () => {

@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { List, Map, OrderedMap } from 'immutable'
-import { Input } from 'formsy-react-components'
-import { Utils } from '@labkey/api'
+import React from 'react';
+import { List, Map, OrderedMap } from 'immutable';
+import { Input } from 'formsy-react-components';
+import { Utils } from '@labkey/api';
 
-import { resolveRenderer } from './renderers'
-import { QuerySelect } from './QuerySelect'
-import { TextInput } from './input/TextInput'
-import { DateInput } from './input/DateInput'
-import { CheckboxInput } from './input/CheckboxInput'
-import { TextAreaInput } from './input/TextAreaInput'
-import { FileInput } from './input/FileInput'
-import { initLookup } from "../../actions";
+import { resolveRenderer } from './renderers';
+import { QuerySelect } from './QuerySelect';
+import { TextInput } from './input/TextInput';
+import { DateInput } from './input/DateInput';
+import { CheckboxInput } from './input/CheckboxInput';
+import { TextAreaInput } from './input/TextAreaInput';
+import { FileInput } from './input/FileInput';
+import { initLookup } from '../../actions';
 import { insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
 import { caseInsensitive } from '../../util/utils';
 

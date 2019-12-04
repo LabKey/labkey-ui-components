@@ -5,10 +5,6 @@ Query Grid for LabKey schema/query data views
 ## Release Notes ##
 
 ### version ???
-*Released*: TBD November 2019
-* render workflow jobs in search results
-
-### version ???
 *Released*: ???
 * Move `domainproperties` and `base` packages into `querygrid`
     * Old README for `domainproperties` can be found [here](domainproperties.md)

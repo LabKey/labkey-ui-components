@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 
-import { mount, shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme';
 
-import { OmniBox, OmniBoxState } from './OmniBox'
-import { Action, ActionOption, ActionValue, Value } from './actions/Action'
+import { OmniBox, OmniBoxState } from './OmniBox';
+import { Action, ActionOption, ActionValue, Value } from './actions/Action';
 
 export class HelloWorldAction implements Action {
     keyword = 'hello';

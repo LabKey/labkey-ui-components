@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import renderer from 'react-test-renderer'
-import { shallow } from 'enzyme'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 
-import { CustomToggle } from './CustomToggle'
+import { CustomToggle } from './CustomToggle';
 
 describe("<CustomToggle />", () => {
    test("render children", () => {

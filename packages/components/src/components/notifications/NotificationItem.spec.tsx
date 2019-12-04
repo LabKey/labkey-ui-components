@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { NotificationItemModel } from "./model";
-import { NotificationItem } from "./NotificationItem";
-import { User } from "../base/models/model";
-import { shallow } from "enzyme";
-import { initNotificationsState } from "./global";
-import { createNotification } from "./actions";
+import React from 'react';
+import { NotificationItemModel } from './model';
+import { NotificationItem } from './NotificationItem';
+import { User } from '../base/models/model';
+import { shallow } from 'enzyme';
+import { initNotificationsState } from './global';
+import { createNotification } from './actions';
 
 describe("<NotificationItem />", () => {
     test("not dismissible item", () => {

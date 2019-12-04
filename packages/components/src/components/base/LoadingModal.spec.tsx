@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { Modal } from 'react-bootstrap'
-import { mount } from 'enzyme'
+import React from 'react';
+import { Modal } from 'react-bootstrap';
+import { mount } from 'enzyme';
 
-import { LoadingModal } from './LoadingModal'
-import {LoadingSpinner} from "./LoadingSpinner";
+import { LoadingModal } from './LoadingModal';
+import { LoadingSpinner } from './LoadingSpinner';
 
 describe("<LoadingModal />", () => {
 

@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getGlobal, setGlobal } from 'reactn'
-import { Map } from 'immutable'
+import { getGlobal, setGlobal } from 'reactn';
+import { Map } from 'immutable';
 
-import { NotificationItemModel, Persistence } from './model'
+import { NotificationItemModel, Persistence } from './model';
 
 
 /**

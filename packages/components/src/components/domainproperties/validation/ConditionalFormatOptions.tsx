@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Button, Checkbox, Col, FormControl, Row } from "react-bootstrap";
-import { createFormInputId, createFormInputName, getNameFromId } from "../actions";
+import React from 'react';
+import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
+import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
 import {
     DOMAIN_CONDITION_FORMAT_BACKGROUND_COLOR,
     DOMAIN_CONDITION_FORMAT_TEXT_COLOR,
@@ -9,11 +9,11 @@ import {
     DOMAIN_VALIDATOR_ITALIC,
     DOMAIN_VALIDATOR_REMOVE,
     DOMAIN_VALIDATOR_STRIKETHROUGH,
-} from "../constants";
+} from '../constants';
 import { faCaretDown, faCaretUp, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PropDescType, PropertyValidator } from "../models";
-import { Filters } from "./Filters";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PropDescType, PropertyValidator } from '../models';
+import { Filters } from './Filters';
 import { CompactPicker } from 'react-color';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 

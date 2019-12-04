@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { getGlobal, setGlobal } from 'reactn'
-import { List, Map } from 'immutable'
+import { getGlobal, setGlobal } from 'reactn';
+import { List, Map } from 'immutable';
 
 
-import { initBrowserHistoryState } from './util/global'
-import { DataViewInfo, EditorModel, LookupStore } from './models'
+import { initBrowserHistoryState } from './util/global';
+import { DataViewInfo, EditorModel, LookupStore } from './models';
 import { Lineage } from './components/lineage/models';
-import { IUser } from "./components/forms/model";
+import { IUser } from './components/forms/model';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { naturalSort, resolveSchemaQuery } from './util/utils';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';

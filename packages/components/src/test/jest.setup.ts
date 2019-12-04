@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { configure } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import { JSDOM } from 'jsdom'
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import { JSDOM } from 'jsdom';
 
 // Enzyme expects an adapter to be configured
 // http://airbnb.io/enzyme/docs/installation/react-16.html

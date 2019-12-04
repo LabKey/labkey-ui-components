@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { Col, FormControl, Row } from "react-bootstrap";
-import { isFieldFullyLocked } from "./propertiesUtil";
-import { createFormInputId, createFormInputName } from "./actions";
-import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT } from "./constants";
-import { ITypeDependentProps } from "./models";
+import React from 'react';
+import { Col, FormControl, Row } from 'react-bootstrap';
+import { isFieldFullyLocked } from './propertiesUtil';
+import { createFormInputId, createFormInputName } from './actions';
+import { DEFAULT_SCALE_LINEAR, DEFAULT_SCALE_LOG, DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT } from './constants';
+import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface NumericFieldProps extends ITypeDependentProps {
@@ -24,18 +24,11 @@ export class NumericFieldOptions extends React.PureComponent<NumericFieldProps, 
     };
 
     getFormatHelpText = () => {
-        let helpPrefix = "https://www.labkey.org/Documentation/wiki-page.view?name=";
-
-        if (LABKEY && LABKEY.helpLinkPrefix) {
-            helpPrefix = LABKEY.helpLinkPrefix;
-        }
-
         return (
             <>
                 To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
                 <br/><br/>
-                Learn more about using <a target='_blank'
-                                          href={helpPrefix + 'dateFormats#number'}>Number formats</a> in LabKey.
+                Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + 'dateFormats#number'}>Number formats</a> in LabKey.
             </>
         )
     };

@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 import Formsy from 'formsy-react';
 import { Textarea } from 'formsy-react-components';
 import { Map } from 'immutable';
 
-import { AssayWizardModel } from "./models";
-import { EditableGridPanel } from "../../components/editable/EditableGridPanel";
-import { handleTabKeyOnTextArea } from "../../components/forms/actions";
-import { FormStep, FormTabs } from "../forms/FormStep";
+import { AssayWizardModel } from './models';
+import { EditableGridPanel } from '../../components/editable/EditableGridPanel';
+import { handleTabKeyOnTextArea } from '../../components/forms/actions';
+import { FormStep, FormTabs } from '../forms/FormStep';
 import { getRunPropertiesRow } from './actions';
 import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
 import { getServerFilePreview } from '../base/actions';

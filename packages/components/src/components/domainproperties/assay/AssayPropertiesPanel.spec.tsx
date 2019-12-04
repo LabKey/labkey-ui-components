@@ -1,9 +1,9 @@
-import * as React from "react";
-import {List} from "immutable";
-import {mount} from "enzyme";
-import { AssayPropertiesPanel } from "./AssayPropertiesPanel";
-import { AssayProtocolModel, DomainDesign } from "../models";
-import { LK_DOMAIN_HELP_URL } from "../constants";
+import React from 'react';
+import { List } from 'immutable';
+import { mount } from 'enzyme';
+import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+import { AssayProtocolModel, DomainDesign } from '../models';
+import { LK_DOMAIN_HELP_URL } from '../constants';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -17,9 +17,9 @@ import {
     PlateTemplatesInput,
     QCStatesInput,
     SaveScriptDataInput,
-    TransformScriptsInput
-} from "./AssayPropertiesInput";
-import toJson from "enzyme-to-json";
+    TransformScriptsInput,
+} from './AssayPropertiesInput';
+import toJson from 'enzyme-to-json';
 
 const EMPTY_MODEL = AssayProtocolModel.create({
     providerName: 'General',

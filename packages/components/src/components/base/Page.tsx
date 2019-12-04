@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 
-import { PageHeader } from './PageHeader'
-import { NotFound } from './NotFound'
+import { PageHeader } from './PageHeader';
+import { NotFound } from './NotFound';
 
 export interface PageProps {
     notFound?: boolean

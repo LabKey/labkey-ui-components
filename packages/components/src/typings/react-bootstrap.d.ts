@@ -17,8 +17,8 @@
 // Project: http://react-bootstrap.github.io/
 // Definitions by: Nick Arnold <https://github.com/labkey-nicka>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-import * as React from 'react';
-import {AppURL} from "../../../base/src";
+import React from 'react';
+import { AppURL } from '../../../base/src';
 
 
 declare module "react-bootstrap" {

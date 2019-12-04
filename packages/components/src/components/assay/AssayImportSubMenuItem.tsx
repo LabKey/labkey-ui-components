@@ -1,9 +1,9 @@
-import * as React from "react";
-import { MenuItem, OverlayTrigger, Popover } from "react-bootstrap";
-import { List } from 'immutable'
+import React from 'react';
+import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { List } from 'immutable';
 
-import { getImportItemsForAssayDefinitions } from "./actions";
-import { MAX_EDITABLE_GRID_ROWS } from "../../constants";
+import { getImportItemsForAssayDefinitions } from './actions';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { ISubItem, SubMenuItem, SubMenuItemProps } from '../menus/SubMenuItem';
 import { AssayDefinitionModel, QueryGridModel } from '../base/models/model';
 
@@ -39,7 +39,7 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
         const { isLoaded, model, requireSelection } = this.props;
 
         if (!isLoaded) {
-            return <MenuItem disabled={true}><span className='fa fa-spinner fa-spin' /> Loading assays...</MenuItem>;
+            return <MenuItem disabled={true}><span className='fa fa-spinner fa-pulse' /> Loading assays...</MenuItem>;
         }
 
         const items = this.getItems();

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable'
+import { List } from 'immutable';
 
-import { Action, ActionOption, ActionValue, Value } from './Action'
+import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QueryColumn } from '../../base/models/model';
 
 export class SearchAction implements Action {

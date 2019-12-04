@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 
-import { ManageDropdownButton } from "./ManageDropdownButton";
+import { ManageDropdownButton } from './ManageDropdownButton';
 
 describe("<ManageDropdownButton/>", () => {
 

@@ -1,13 +1,16 @@
-import * as React from "react";
-import {Button, Col, FormControl, Row} from "react-bootstrap";
-import {createFormInputId, createFormInputName, getNameFromId} from "../actions";
+import React from 'react';
+import { Button, Col, FormControl, Row } from 'react-bootstrap';
+import { createFormInputId, createFormInputName, getNameFromId } from '../actions';
 import {
-    DOMAIN_VALIDATOR_DESCRIPTION, DOMAIN_VALIDATOR_ERRORMESSAGE, DOMAIN_VALIDATOR_NAME, DOMAIN_VALIDATOR_REMOVE
-} from "../constants";
-import {faPencilAlt} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {PropDescType, PropertyValidator} from "../models";
-import {Filters} from "./Filters";
+    DOMAIN_VALIDATOR_DESCRIPTION,
+    DOMAIN_VALIDATOR_ERRORMESSAGE,
+    DOMAIN_VALIDATOR_NAME,
+    DOMAIN_VALIDATOR_REMOVE,
+} from '../constants';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PropDescType, PropertyValidator } from '../models';
+import { Filters } from './Filters';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface RangeValidationOptionsProps {
@@ -147,7 +150,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
     secondFilterTooltip = () => {
         return (<LabelHelpTip title='Second Condition' body={this.secondFilterTooltipText}/>)
     };
-    
+
     renderCollapsed = () => {
         const { validator } = this.props;
 
@@ -173,7 +176,7 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                              expression={validator.expression}
                              firstFilterTooltip={this.firstFilterTooltip()}
                              secondFilterTooltip={this.secondFilterTooltip()}
-                             
+
                     />
                     {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validatorIndex, validator.description)}
                     {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validatorIndex, validator.errorMessage)}

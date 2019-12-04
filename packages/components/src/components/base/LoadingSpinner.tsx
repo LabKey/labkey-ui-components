@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
+import React from 'react';
 
 interface SpinnerProps {
     msg?: React.ReactNode
@@ -32,7 +32,7 @@ export class LoadingSpinner extends React.Component<SpinnerProps, any> {
 
         return (
             <span className={wrapperClassName}>
-                <i aria-hidden="true" className="fa fa-spinner fa-spin"/> {msg}
+                <i aria-hidden="true" className="fa fa-spinner fa-pulse"/> {msg}
             </span>
         )
     }

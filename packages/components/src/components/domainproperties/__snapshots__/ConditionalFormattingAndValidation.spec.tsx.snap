@@ -977,13 +977,11 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                       placement="right"
                       rootClose={false}
                       show={false}
-                      target={null}
                     >
                       <Overlay
                         placement="right"
                         rootClose={false}
                         show={false}
-                        target={null}
                         transition={[Function]}
                       />
                     </Overlay>

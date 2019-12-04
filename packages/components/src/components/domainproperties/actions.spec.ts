@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from "immutable";
+import { List } from 'immutable';
 
-import { createFormInputId, getBannerMessages, setDomainFields, updateDomainException } from "./actions";
+import { createFormInputId, getBannerMessages, setDomainFields, updateDomainException } from './actions';
 import {
     DATETIME_TYPE,
     DomainDesign,
@@ -23,16 +23,16 @@ import {
     DomainField,
     DOUBLE_TYPE,
     INTEGER_TYPE,
-    TEXT_TYPE
-} from "./models";
+    TEXT_TYPE,
+} from './models';
 import {
     DOMAIN_FIELD_PREFIX,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
-    STRING_RANGE_URI
-} from "./constants";
+    STRING_RANGE_URI,
+} from './constants';
 import { QueryColumn } from '../base/models/model';
 
 describe("domain properties actions", () => {

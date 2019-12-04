@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
-import { Map, fromJS } from 'immutable'
+import React from 'react';
+import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
+import { fromJS, Map } from 'immutable';
 
-import { FORM_IDS, SampleSetDetailsPanel } from "./SampleSetDetailsPanel";
+import { FORM_IDS, SampleSetDetailsPanel } from './SampleSetDetailsPanel';
 
 describe("<SampleSetDetailsPanel/>", () => {
 

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons'
+import { faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 
 interface Props {

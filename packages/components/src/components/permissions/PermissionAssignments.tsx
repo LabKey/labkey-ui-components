@@ -90,6 +90,21 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
         });
     };
 
+    renderSaveButton() {
+        const { submitting, dirty } = this.state;
+
+        return (
+            <Button
+                className={'pull-right'}
+                bsStyle={'success'}
+                disabled={submitting || !dirty}
+                onClick={this.onSavePolicy}
+            >
+                Save
+            </Button>
+        )
+    }
+
     render() {
         const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel, disabledId } = this.props;
         const { selectedPrincipal, saveErrorMsg, submitting, dirty } = this.state;
@@ -114,6 +129,12 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                             {title}
                         </Panel.Heading>
                         <Panel.Body className={'permissions-assignment-panel'}>
+                            {dirty && <div className={'permissions-save-alert'}>
+                                <Alert bsStyle={'info'}>
+                                    You have unsaved changes.
+                                    {this.renderSaveButton()}
+                                </Alert>
+                            </div>}
                             {visibleRoles.map((role, i) => {
                                 return (
                                     <PermissionsRole
@@ -132,14 +153,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                             })}
                             <br/>
                             {saveErrorMsg && <Alert>{saveErrorMsg}</Alert>}
-                            <Button
-                                className={'pull-right'}
-                                bsStyle={'success'}
-                                disabled={submitting || !dirty}
-                                onClick={this.onSavePolicy}
-                            >
-                                Save
-                            </Button>
+                            {this.renderSaveButton()}
                         </Panel.Body>
                     </Panel>
                 </Col>

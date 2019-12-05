@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 import { List, Map, fromJS } from 'immutable';
-import { Principal, SecurityPolicy, SecurityRole } from "./models";
+import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from "./models";
 import policyJSON from "../../test/data/security-getPolicy.json";
 import rolesJSON from "../../test/data/security-getRoles.json";
-import { processGetRolesResponse } from "./actions";
+import { getRolesByUniqueName, processGetRolesResponse } from "./actions";
+import {
+    SECURITY_ROLE_APPADMIN, SECURITY_ROLE_AUTHOR,
+    SECURITY_ROLE_EDITOR,
+    SECURITY_ROLE_FOLDERADMIN,
+    SECURITY_ROLE_READER
+} from "../../test/data/constants";
 
 const GROUP = Principal.createFromSelectRow(fromJS({
     UserId: {value: 1},
@@ -39,6 +45,10 @@ const USER2 = Principal.createFromSelectRow(fromJS({
     Name: {value: 'aUser2'},
     DisplayName: {value: 'User 2 Display'},
 }));
+
+const POLICY = SecurityPolicy.create(policyJSON);
+const ROLES = processGetRolesResponse(rolesJSON.roles);
+const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('Principal model', () => {
 
@@ -88,17 +98,94 @@ describe('Principal model', () => {
 describe('SecurityRole model', () => {
 
     test("filter", () => {
-        const policy = SecurityPolicy.create(policyJSON);
-        const roles = processGetRolesResponse(rolesJSON.roles);
-
         // check that we default to filtering to the policy relevantRoles
-        const relevantRoles = SecurityRole.filter(roles, policy);
-        expect(relevantRoles.size).toBe(policy.relevantRoles.size);
+        const relevantRoles = SecurityRole.filter(ROLES, POLICY);
+        expect(relevantRoles.size).toBe(POLICY.relevantRoles.size);
 
         // check that we can filter for an explicit list
-        expect(SecurityRole.filter(roles, policy, List<string>()).size).toBe(0);
+        expect(SecurityRole.filter(ROLES, POLICY, List<string>()).size).toBe(0);
         const roleArr = ["org.labkey.api.security.roles.EditorRole", "org.labkey.api.security.roles.AuthorRole", "org.labkey.api.security.roles.ReaderRole"];
-        expect(SecurityRole.filter(roles, policy, List<string>(roleArr)).size).toBe(3);
+        expect(SecurityRole.filter(ROLES, POLICY, List<string>(roleArr)).size).toBe(3);
+    });
+
+});
+
+describe('SecurityAssignment model', () => {
+
+    test("isTypeMatch", () => {
+        expect(SecurityAssignment.isTypeMatch('g', 'g')).toBeTruthy();
+        expect(SecurityAssignment.isTypeMatch('g', 'u')).toBeFalsy();
+        expect(SecurityAssignment.isTypeMatch('u', 'u')).toBeTruthy();
+        expect(SecurityAssignment.isTypeMatch('u', 'g')).toBeFalsy();
+        expect(SecurityAssignment.isTypeMatch(undefined, 'u')).toBeTruthy();
+        expect(SecurityAssignment.isTypeMatch(undefined, 'g')).toBeFalsy();
+    });
+
+    test("getDisplayName", () => {
+        const group = new SecurityAssignment({userId: 1, type: 'g', displayName: 'DisplayName'});
+        expect(SecurityAssignment.getDisplayName(group)).toBe('DisplayName');
+
+        const userActive = new SecurityAssignment({userId: 1, type: 'u', displayName: 'DisplayName'});
+        expect(SecurityAssignment.getDisplayName(userActive)).toBe('DisplayName');
+
+        const userActiveNoDisplay = new SecurityAssignment({userId: 1, type: 'u', displayName: undefined});
+        expect(SecurityAssignment.getDisplayName(userActiveNoDisplay)).toBe('1');
+
+        const userInactive = new SecurityAssignment({userId: 1, type: undefined, displayName: 'DisplayName'});
+        expect(SecurityAssignment.getDisplayName(userInactive)).toBe('Inactive User (1)');
+    });
+
+});
+
+describe('SecurityPolicy model', () => {
+
+    test("getAssignmentsByRole", () => {
+        const byRole = SecurityPolicy.getAssignmentsByRole(POLICY.assignments);
+        expect(byRole.size).toBe(7);
+        expect(byRole.get(SECURITY_ROLE_APPADMIN)).toBe(undefined);
+        expect(byRole.get(SECURITY_ROLE_FOLDERADMIN).size).toBe(2);
+        expect(byRole.get(SECURITY_ROLE_EDITOR).size).toBe(3);
+        expect(byRole.get(SECURITY_ROLE_READER).size).toBe(5);
+    });
+
+    test("removeAssignment", () => {
+        const originalAssignmentSize = POLICY.assignments.size;
+
+        // test for a valid removal
+        let updatedPolicy = SecurityPolicy.removeAssignment(POLICY, 4971, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
+        expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize - 1);
+        let byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);
+        expect(byRole.get(SECURITY_ROLE_EDITOR).size).toBe(2);
+
+        // test removing all assignments for a role
+        updatedPolicy = SecurityPolicy.removeAssignment(updatedPolicy, 1004, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
+        updatedPolicy = SecurityPolicy.removeAssignment(updatedPolicy, 11842, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
+        expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize - 3);
+        byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);
+        expect(byRole.get(SECURITY_ROLE_EDITOR)).toBe(undefined);
+
+        // test for a invalid removal (userId that doesn't exist for role, userId in another role)
+        expect(SecurityPolicy.removeAssignment(POLICY, 49711111, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR)).assignments.size).toBe(originalAssignmentSize);
+        expect(SecurityPolicy.removeAssignment(POLICY, 4971, ROLES_BY_NAME.get(SECURITY_ROLE_READER)).assignments.size).toBe(originalAssignmentSize);
+    });
+
+    test("addAssignment", () => {
+        const originalAssignmentSize = POLICY.assignments.size;
+
+        // test for a valid addition of a group and then a user to role that has existing assignments
+        let updatedPolicy = SecurityPolicy.addAssignment(POLICY, GROUP, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
+        updatedPolicy = SecurityPolicy.addAssignment(updatedPolicy, USER1, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
+        expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize + 2);
+        let byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);
+        expect(byRole.get(SECURITY_ROLE_EDITOR).size).toBe(5);
+
+        // test for a valid addition of a group and then a user to role that has no existing assignments
+        expect(byRole.get(SECURITY_ROLE_AUTHOR)).toBe(undefined);
+        updatedPolicy = SecurityPolicy.addAssignment(updatedPolicy, GROUP, ROLES_BY_NAME.get(SECURITY_ROLE_AUTHOR));
+        updatedPolicy = SecurityPolicy.addAssignment(updatedPolicy, USER1, ROLES_BY_NAME.get(SECURITY_ROLE_AUTHOR));
+        expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize + 4);
+        byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);
+        expect(byRole.get(SECURITY_ROLE_AUTHOR).size).toBe(2);
     });
 
 });

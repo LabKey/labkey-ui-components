@@ -71,3 +71,9 @@ export const FILES_DATA = List<IFile>([
         "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=sreport.json&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
     }
 ]);
+
+export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';
+export const SECURITY_ROLE_FOLDERADMIN = 'org.labkey.api.security.roles.FolderAdminRole';
+export const SECURITY_ROLE_EDITOR = 'org.labkey.api.security.roles.EditorRole';
+export const SECURITY_ROLE_AUTHOR = 'org.labkey.api.security.roles.AuthorRole';
+export const SECURITY_ROLE_READER = 'org.labkey.api.security.roles.ReaderRole';

@@ -27,9 +27,6 @@
       "role" : "org.labkey.api.security.roles.EditorRole",
       "userId" : 4971
     }, {
-      "role" : "org.labkey.api.security.roles.AuthorRole",
-      "userId" : 4972
-    }, {
       "role" : "org.labkey.api.security.roles.ReaderRole",
       "userId" : 4973
     }, {

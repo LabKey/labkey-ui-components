@@ -1,6 +1,9 @@
 # @labkey/components
 
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 0.1.3
+*Released*: 4 December 2019
+* render workflow jobs in search results
 
 ### version 0.2.0
 *Released*: ?? December 2019

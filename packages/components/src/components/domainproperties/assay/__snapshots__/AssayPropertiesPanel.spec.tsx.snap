@@ -2395,7 +2395,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     >
                                       <i
                                         aria-hidden="true"
-                                        className="fa fa-spinner fa-spin"
+                                        className="fa fa-spinner fa-pulse"
                                       />
                                        
                                       Loading...
@@ -3796,7 +3796,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     >
                                       <i
                                         aria-hidden="true"
-                                        className="fa fa-spinner fa-spin"
+                                        className="fa fa-spinner fa-pulse"
                                       />
                                        
                                       Loading...
@@ -4891,7 +4891,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     >
                                       <i
                                         aria-hidden="true"
-                                        className="fa fa-spinner fa-spin"
+                                        className="fa fa-spinner fa-pulse"
                                       />
                                        
                                       Loading...

@@ -163,7 +163,7 @@ export class ChartMenu extends React.PureComponent<Props> {
     getChartButtonTitle = () => {
         const { charts, error } = this.props;
         const chartsLoaded = charts !== undefined && charts !== null;
-        return chartsLoaded || error ? "Charts" : <span className="fa fa-spinner fa-spin"/>;
+        return chartsLoaded || error ? "Charts" : <span className="fa fa-spinner fa-pulse"/>;
     };
 
     render() {

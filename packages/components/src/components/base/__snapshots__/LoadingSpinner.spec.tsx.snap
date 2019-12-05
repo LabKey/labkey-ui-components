@@ -6,7 +6,7 @@ exports[`<LoadingSpinner /> render with react node message 1`] = `
 >
   <i
     aria-hidden="true"
-    className="fa fa-spinner fa-spin"
+    className="fa fa-spinner fa-pulse"
   />
    
   <div
@@ -23,7 +23,7 @@ exports[`<LoadingSpinner /> render with text message 1`] = `
 >
   <i
     aria-hidden="true"
-    className="fa fa-spinner fa-spin"
+    className="fa fa-spinner fa-pulse"
   />
    
   my message here
@@ -36,7 +36,7 @@ exports[`<LoadingSpinner /> render without properties 1`] = `
 >
   <i
     aria-hidden="true"
-    className="fa fa-spinner fa-spin"
+    className="fa fa-spinner fa-pulse"
   />
    
   Loading...

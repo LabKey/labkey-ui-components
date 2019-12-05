@@ -4,7 +4,7 @@
  */
 import { fromJS } from 'immutable';
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
-import { ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, GUEST, READER } from '../../test/data/users';
+import { FOLDER_ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, GUEST, READER } from '../../test/data/users';
 
 describe('User actions', () => {
 
@@ -25,7 +25,7 @@ describe('User actions', () => {
 
     test('getUserPermissionsDisplay editor', () => {
         const displayStrs = getUserPermissionsDisplay(EDITOR);
-        expect(displayStrs.join(', ')).toBe('Sample Set Designer, Editor');
+        expect(displayStrs.join(', ')).toBe('Editor');
     });
 
     test('getUserPermissionsDisplay assaydesigner', () => {
@@ -33,8 +33,13 @@ describe('User actions', () => {
         expect(displayStrs.join(', ')).toBe('Assay Designer, Reader');
     });
 
-    test('getUserPermissionsDisplay admin', () => {
-        const displayStrs = getUserPermissionsDisplay(ADMIN);
+    test('getUserPermissionsDisplay folder admin', () => {
+        const displayStrs = getUserPermissionsDisplay(FOLDER_ADMIN);
+        expect(displayStrs.join(', ')).toBe('Administrator');
+    });
+
+    test('getUserPermissionsDisplay app admin', () => {
+        const displayStrs = getUserPermissionsDisplay(FOLDER_ADMIN);
         expect(displayStrs.join(', ')).toBe('Administrator');
     });
 

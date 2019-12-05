@@ -2,6 +2,11 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.??.0
+*Released*: ?? December 2019
+* Add selectionKey getter to QueryGridModel
+* Add `showSampleComparisonReports`, `onChartClicked`, and `onPreviewSCRClicked` props to QueryGridPanel.
+
 ### version 0.2.0
 *Released*: 5 December 2019
 * Upgrade TypeScript to 3.7.3
@@ -11,11 +16,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.1.3
 *Released*: 4 December 2019
 * render workflow jobs in search results
-
-### version 0.2.0
-*Released*: ?? December 2019
-* Add selectionKey getter to QueryGridModel
-* Add `showSampleComparisonReports`, `onChartClicked`, and `onPreviewSCRClicked` props to QueryGridPanel.
 
 ### version 0.1.2
 *Released*: 2 December 2019

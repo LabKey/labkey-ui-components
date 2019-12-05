@@ -81,7 +81,7 @@ class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
     }
 }
 
-const RunDataPanelWrapper = withFormSteps<WithFormStepsProps>(RunDataPanelWrapperImpl, {
+const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
     currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Grid,
     hasDependentSteps: false
@@ -132,7 +132,7 @@ storiesOf('AssayImportPanels', module)
                 assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
                 onCancel={() => console.log("onCancel clicked")}
                 onComplete={(response) => console.log("onComplete", response)}
-                runId={number("RunId", "568")}
+                runId={number("RunId", 568)}
             />
         )
     })

@@ -9,6 +9,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
 * Allow FileListingForm to optionally include a read-only set of files (available for download only)
 
+
+### version 0.2.0
+*Released*: 5 December 2019
+* Upgrade TypeScript to 3.7.3
+* Upgrade Storybook to 5.2.8
+* Add "@types/react-test-renderer" to devDependencies
+
 ### version 0.1.3
 *Released*: 4 December 2019
 * render workflow jobs in search results

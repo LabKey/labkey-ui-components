@@ -616,7 +616,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 }
 
-export const AssayImportPanels = withFormSteps<Props>(AssayImportPanelsImpl, {
+export const AssayImportPanels = withFormSteps(AssayImportPanelsImpl, {
     currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Grid,
     hasDependentSteps: false

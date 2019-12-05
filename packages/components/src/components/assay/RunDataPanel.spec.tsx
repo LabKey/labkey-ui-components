@@ -60,7 +60,7 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
     }
 }
 
-const RunDataPanelWrapper = withFormSteps<Props>(RunDataPanelWrapperImpl, {
+const RunDataPanelWrapper = withFormSteps(RunDataPanelWrapperImpl, {
     currentStep: AssayUploadTabs.Files,
     furthestStep: AssayUploadTabs.Grid,
     hasDependentSteps: false

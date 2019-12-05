@@ -123,9 +123,6 @@ export class FormTabs extends React.Component<FormTabsProps, any> {
     }
 }
 
-type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
-type Subtract<T, K> = Omit<T, keyof K>;
-
 export interface WithFormStepsState {
     currentStep?: number
     furthestStep?: number
@@ -138,8 +135,8 @@ export interface WithFormStepsProps extends WithFormStepsState {
     previousStep: () => any
 }
 
-export const withFormSteps = <P extends WithFormStepsProps>(Component: React.ComponentType<P>, defaultState?: WithFormStepsState) => (
-    class WithFormSteps extends React.Component<Subtract<P, WithFormStepsProps>, WithFormStepsState> {
+export const withFormSteps = (Component: any, defaultState?: WithFormStepsState) => (
+    class WithFormSteps extends React.Component<any, any> {
 
         constructor(props) {
             super(props);

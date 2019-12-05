@@ -27,6 +27,7 @@ describe("<ExpandableContainer/>", () => {
                 clause={<div>Clause</div>}
                 links={<div>links</div>}
                 isExpandable={false}
+                initExpanded={true}
                 iconFaCls={'fa-test'}
             >
                 <div>Body</div>

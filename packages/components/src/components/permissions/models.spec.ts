@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from "./models";
 import policyJSON from "../../test/data/security-getPolicy.json";
 import rolesJSON from "../../test/data/security-getRoles.json";
 import { getRolesByUniqueName, processGetRolesResponse } from "./actions";
 import {
-    SECURITY_ROLE_APPADMIN, SECURITY_ROLE_AUTHOR,
+    SECURITY_ROLE_APPADMIN,
+    SECURITY_ROLE_AUTHOR,
     SECURITY_ROLE_EDITOR,
     SECURITY_ROLE_FOLDERADMIN,
     SECURITY_ROLE_READER
@@ -29,7 +30,6 @@ const GROUP = Principal.createFromSelectRow(fromJS({
     UserId: {value: 1},
     Type: {value: 'g'},
     Name: {value: 'Group1'},
-    DisplayName: {value: undefined},
 }));
 
 const USER1 = Principal.createFromSelectRow(fromJS({

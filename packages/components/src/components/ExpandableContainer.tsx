@@ -12,6 +12,7 @@ interface Props {
     iconSrc?: string
     iconFaCls?: string
     isExpandable: boolean
+    initExpanded?: boolean
 }
 
 interface State {
@@ -25,7 +26,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            visible: false,
+            visible: props.initExpanded || false,
             isHover: false
         };
     }

@@ -21,6 +21,7 @@ interface Props {
     onClickAssignment: (userId: number) => any
     selected: Principal
     disabledId?: number
+    initExpanded?: boolean
 }
 
 export class PermissionsRole extends React.PureComponent<Props, any> {
@@ -63,7 +64,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
     }
 
     render() {
-        const { role, assignments, typeToShow, onRemoveAssignment, onClickAssignment, onAddAssignment, principals, selected, disabledId } = this.props;
+        const { role, assignments, typeToShow, onRemoveAssignment, onClickAssignment, onAddAssignment, principals, selected, disabledId, initExpanded } = this.props;
         const existingAssignments = assignments && assignments.size > 0 ? assignments.map((assignment) => assignment.userId).toList() : List<number>();
         const principalsToAdd = Principal.filterAndSort(principals, typeToShow, existingAssignments);
         const showOneType = typeToShow !== undefined;
@@ -74,6 +75,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                 links={this.generateLinks()}
                 iconFaCls={'users fa-3x'}
                 isExpandable={true}
+                initExpanded={initExpanded}
             >
                 <div className={'permissions-role-container'}>
                     {role.description && <div>{role.description}</div>}

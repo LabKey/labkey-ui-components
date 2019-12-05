@@ -123,7 +123,7 @@ exports[`<ReportList /> Render loading 1`] = `
       >
         <i
           aria-hidden="true"
-          className="fa fa-spinner fa-spin"
+          className="fa fa-spinner fa-pulse"
         />
          
         Loading...

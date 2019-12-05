@@ -32,7 +32,7 @@ exports[`QueryGridPanel render loading 1`] = `
                 type="button"
               >
                 <span
-                  className="fa fa-spinner fa-spin"
+                  className="fa fa-spinner fa-pulse"
                 />
                  
                 <span
@@ -305,7 +305,7 @@ exports[`QueryGridPanel render loading 1`] = `
                   >
                     <i
                       aria-hidden="true"
-                      className="fa fa-spinner fa-spin"
+                      className="fa fa-spinner fa-pulse"
                     />
                      
                     Loading...
@@ -812,7 +812,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                 type="button"
               >
                 <span
-                  className="fa fa-spinner fa-spin"
+                  className="fa fa-spinner fa-pulse"
                 />
                  
                 <span
@@ -1088,7 +1088,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                   >
                     <i
                       aria-hidden="true"
-                      className="fa fa-spinner fa-spin"
+                      className="fa fa-spinner fa-pulse"
                     />
                      
                     Loading...
@@ -1136,7 +1136,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                 type="button"
               >
                 <span
-                  className="fa fa-spinner fa-spin"
+                  className="fa fa-spinner fa-pulse"
                 />
                  
                 <span
@@ -1409,7 +1409,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                   >
                     <i
                       aria-hidden="true"
-                      className="fa fa-spinner fa-spin"
+                      className="fa fa-spinner fa-pulse"
                     />
                      
                     Loading...
@@ -1457,7 +1457,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                 type="button"
               >
                 <span
-                  className="fa fa-spinner fa-spin"
+                  className="fa fa-spinner fa-pulse"
                 />
                  
                 <span
@@ -1758,7 +1758,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                   >
                     <i
                       aria-hidden="true"
-                      className="fa fa-spinner fa-spin"
+                      className="fa fa-spinner fa-pulse"
                     />
                      
                     Loading...

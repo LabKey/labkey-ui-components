@@ -5,6 +5,7 @@
 import * as React from 'react';
 import { Button, ButtonGroup } from "react-bootstrap";
 import { List } from 'immutable';
+import { Tip } from "../../components/base/Tip";
 
 interface Props {
     id: number
@@ -13,6 +14,7 @@ interface Props {
     onClick: (userId: number) => any
     bsStyle?: string
     added?: boolean
+    disabledMsg?: string
 }
 
 interface State {
@@ -44,7 +46,7 @@ export class RemovableButton extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { id, display, onClick, bsStyle, added } = this.props;
+        const { id, display, onClick, bsStyle, added, disabledMsg } = this.props;
 
         let btnGroupCls = List<string>(['permissions-button-group']);
         if (this.state.removed) {
@@ -58,7 +60,14 @@ export class RemovableButton extends React.PureComponent<Props, State> {
 
         return (
             <ButtonGroup className={btnGroupCls.join(' ')}>
-                <Button bsStyle={bsStyle} onClick={this.onRemoveClick}><i className={'fa fa-remove'}/></Button>
+                {disabledMsg
+                    ? <Tip caption={disabledMsg}>
+                        <div className={'disabled-button-with-tooltip'}>
+                            <Button bsStyle={bsStyle} disabled={true}><i className={'fa fa-remove'}/></Button>
+                        </div>
+                    </Tip>
+                    : <Button bsStyle={bsStyle} onClick={this.onRemoveClick}><i className={'fa fa-remove'}/></Button>
+                }
                 <Button className={btnCls.join(' ')} bsStyle={bsStyle} onClick={() => onClick(id)}>{display}</Button>
             </ButtonGroup>
         )

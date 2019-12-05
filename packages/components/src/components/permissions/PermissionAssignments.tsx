@@ -21,6 +21,7 @@ interface Props extends PermissionsProviderProps {
     rolesToShow?: List<string> // a subset list of role uniqueNames to show in this component usage, see sampleManagement PermissionsPanel.tsx for example
     typeToShow?: string // a specific principal type (i.e. 'u' for users and 'g' for groups) to show in this component usage, see sampleManagement PermissionsPanel.tsx for example
     showDetailsPanel?: boolean
+    disabledId?: number // a userId to disable to prevent removing assignments for that id
 }
 
 interface State {
@@ -90,7 +91,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel } = this.props;
+        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel, disabledId } = this.props;
         const { selectedPrincipal, saveErrorMsg, submitting, dirty } = this.state;
         const isLoading = (!policy || !roles || !principals) && !error;
 
@@ -125,6 +126,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                                         onRemoveAssignment={this.removeAssignment}
                                         onAddAssignment={this.addAssignment}
                                         selected={selectedPrincipal}
+                                        disabledId={disabledId}
                                     />
                                 )
                             })}

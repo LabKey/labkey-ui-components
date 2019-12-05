@@ -91,6 +91,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
                 typeToShow={showUsersOnly ? 'u' : undefined}
                 rolesToShow={rolesToShow}
                 containerPath={'test'}
+                disabledId={1004}
                 onChange={this.onChange}
                 onSuccess={() => console.log('Success')}
             />

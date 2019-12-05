@@ -20,6 +20,7 @@ interface Props {
     onRemoveAssignment: (userId: number, role: SecurityRole) => any
     onClickAssignment: (userId: number) => any
     selected: Principal
+    disabledId?: number
 }
 
 export class PermissionsRole extends React.PureComponent<Props, any> {
@@ -62,7 +63,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
     }
 
     render() {
-        const { role, assignments, typeToShow, onRemoveAssignment, onClickAssignment, onAddAssignment, principals, selected } = this.props;
+        const { role, assignments, typeToShow, onRemoveAssignment, onClickAssignment, onAddAssignment, principals, selected, disabledId } = this.props;
         const existingAssignments = assignments && assignments.size > 0 ? assignments.map((assignment) => assignment.userId).toList() : List<number>();
         const principalsToAdd = Principal.filterAndSort(principals, typeToShow, existingAssignments);
         const showOneType = typeToShow !== undefined;
@@ -92,6 +93,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                             .sortBy((assignment) => assignment.displayName, naturalSort)
                                             .map((assignment) => {
                                                 const key = role.uniqueName + ':' + assignment.userId;
+                                                const disabledMsg = assignment.userId === disabledId ? 'You are not allowed to remove yourself from this role.' : undefined;
 
                                                 return (
                                                     <li key={key} className={'permissions-member-li'}>
@@ -102,6 +104,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                             onRemove={(userId: number) => onRemoveAssignment(userId, role)}
                                                             bsStyle={selected && selected.userId === assignment.userId ? 'primary' : undefined}
                                                             added={assignment.isNew}
+                                                            disabledMsg={disabledMsg}
                                                         />
                                                     </li>
                                                 )

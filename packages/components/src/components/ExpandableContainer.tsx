@@ -47,13 +47,11 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
         const { visible, isHover } = this.state;
 
         return (
-            <div
-                className={classNames('row', 'container-expandable', {'disabled': !isExpandable})}
-                onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
-                onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
-            >
+            <div className={classNames('row', 'container-expandable', {'disabled': !isExpandable})}>
                 <div
                     onClick={isExpandable ? this.handleClick : undefined}
+                    onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
+                    onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames('container-expandable-detail',
                         {'container-expandable-child__inactive': visible},
                         {'container-expandable-detail__active': isHover || visible},
@@ -69,7 +67,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                             : <SVGIcon
                                 iconDir={'_images'}
                                 iconSrc={iconSrc}
-                                isActive={isHover || visible}
+                                isActive={isHover}
                                 height="50px"
                                 width="50px"
                             />

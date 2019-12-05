@@ -45,7 +45,7 @@ class FormStepTestImpl extends React.Component<Props, any> {
    }
 }
 
-const FormStepTest = withFormSteps<Props>(FormStepTestImpl, {
+const FormStepTest = withFormSteps(FormStepTestImpl, {
    currentStep: 1,
    furthestStep: 2,
    hasDependentSteps: true

@@ -271,7 +271,7 @@ import {
 import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
-import { PermissionsProviderProps, SecurityPolicy, SecurityRole } from './components/permissions/models';
+import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
 
 
 export {
@@ -597,5 +597,6 @@ export {
     PermissionsPageContextProvider,
     PermissionsProviderProps,
     SecurityPolicy,
-    SecurityRole
+    SecurityRole,
+    Principal
 }

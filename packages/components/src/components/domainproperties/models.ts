@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Record, fromJS } from "immutable";
-import { Utils } from "@labkey/api";
+import { fromJS, List, Map, Record } from 'immutable';
+import { Utils } from '@labkey/api';
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
+    DATETIME_RANGE_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_MEASURE,
-    FLAG_CONCEPT_URI,
-    DATETIME_RANGE_URI,
     DOMAIN_FIELD_NOT_LOCKED,
+    DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FILTER_HASANYVALUE,
     DOUBLE_RANGE_URI,
     FILELINK_RANGE_URI,
+    FLAG_CONCEPT_URI,
     INT_RANGE_URI,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
+    SAMPLE_TYPE_CONCEPT_URI,
+    SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
     USER_RANGE_URI,
-    DOMAIN_FILTER_HASANYVALUE,
-    DOMAIN_FIELD_PARTIALLY_LOCKED,
-    SAMPLE_TYPE_CONCEPT_URI,
-    SEVERITY_LEVEL_ERROR
-} from "./constants";
+} from './constants';
 import { SCHEMAS } from '../base/models/schemas';
 
 export interface IFieldChange {
@@ -319,12 +319,12 @@ export class DomainDesign extends Record({
     }
 
     getInvalidFields(): Map<number, DomainField> {
-        let invalid = new Map<number, DomainField>();
+        let invalid = Map<number, DomainField>();
 
         for (let i=0; i<this.fields.size; i++) {
             let field = this.fields.get(i);
             if (!field.isValid()) {
-                invalid.set(i, field);
+                invalid = invalid.set(i, field);
             }
         }
 

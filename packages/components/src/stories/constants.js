@@ -3,9 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import { fromJS, List } from 'immutable'
+import {fromJS, List} from 'immutable'
 
-import { GridColumn } from '../components/base/Grid'
+import {GridColumn} from '../components/base/Grid'
 
 export const gridData = fromJS([{
     name: 'Dee Gordon',

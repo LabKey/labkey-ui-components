@@ -17459,7 +17459,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                               >
                                                 <i
                                                   aria-hidden="true"
-                                                  className="fa fa-spinner fa-spin"
+                                                  className="fa fa-spinner fa-pulse"
                                                 />
                                                  
                                                 Loading...
@@ -21250,7 +21250,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                               >
                                                 <i
                                                   aria-hidden="true"
-                                                  className="fa fa-spinner fa-spin"
+                                                  className="fa fa-spinner fa-pulse"
                                                 />
                                                  
                                                 Loading...
@@ -26140,7 +26140,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                               >
                                                 <i
                                                   aria-hidden="true"
-                                                  className="fa fa-spinner fa-spin"
+                                                  className="fa fa-spinner fa-pulse"
                                                 />
                                                  
                                                 Loading...
@@ -38521,7 +38521,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                               >
                                                 <i
                                                   aria-hidden="true"
-                                                  className="fa fa-spinner fa-spin"
+                                                  className="fa fa-spinner fa-pulse"
                                                 />
                                                  
                                                 Loading...

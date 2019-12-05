@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map, List } from 'immutable'
-import { Query } from '@labkey/api'
-import { QueryInfo, SchemaDetails, SchemaQuery } from "./model";
+import { List, Map } from 'immutable';
+import { Query } from '@labkey/api';
+import { QueryInfo, SchemaDetails, SchemaQuery } from './model';
 
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);

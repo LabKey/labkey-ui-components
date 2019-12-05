@@ -31,7 +31,7 @@ import {
 } from './global';
 import { List } from 'immutable';
 
-import { DataViewInfo, DataViewInfoTypes, EditorModel, LookupStore } from './models'
+import { DataViewInfo, DataViewInfoTypes, EditorModel, LookupStore } from './models';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 

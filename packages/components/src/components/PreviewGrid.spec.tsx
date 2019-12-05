@@ -1,8 +1,8 @@
-import * as React from 'react';
-import renderer from 'react-test-renderer'
+import React from 'react';
+import renderer from 'react-test-renderer';
 
 import { initUnitTestMocks } from '../testHelpers';
-import { PreviewGrid, } from './PreviewGrid';
+import { PreviewGrid } from './PreviewGrid';
 import { SchemaQuery } from './base/models/model';
 
 beforeAll(() => {

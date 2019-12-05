@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Set } from 'immutable';
-import { addDateRangeFilter, last12Months, monthSort } from "./utils";
+import { addDateRangeFilter, last12Months, monthSort } from './utils';
 import { AppURL } from '../../url/AppURL';
 
 describe("HeatMap utils", () => {

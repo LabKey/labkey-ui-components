@@ -43,8 +43,8 @@ import sampleSetsQuery from '../test/data/sampleSets-getQuery.json';
 import sampleSetsQueryInfo from '../test/data/sampleSets-getQueryDetails.json';
 import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQueryDetails.json';
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
-import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json'
-import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json'
+import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json';
+import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json';
 import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
 import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
 import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
@@ -66,7 +66,7 @@ import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
 import usersQueryInfo from '../test/data/users-getQueryDetails.json';
-import getMaxPhiLevelJson from "../test/data/security-GetMaxPhiLevel.json";
+import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
 
@@ -214,7 +214,7 @@ export function initMocks() {
         if (queryParams.schemaName.toLowerCase() === 'assay') {
             responseBody = assayGetQueriesJson;
         }
-        
+
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -224,11 +224,11 @@ export function initMocks() {
     mock.post(/.*\/query\/.*\/updateRows.*/,  (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
-        
+
         if (bodyParams.indexOf("\"queryname\":\"samples\"") > -1) {
             responseBody = samplesUpdate;
         }
-        
+
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -246,7 +246,7 @@ export function initMocks() {
         const queryParams = req.url().query;
         const key = queryParams.key;
         let responseBody;
-        
+
         if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
             responseBody = nameExpressionSelected;
         } else {
@@ -279,7 +279,7 @@ export function initMocks() {
         } else if (selectionKey === 'deleteAll') {
             responseBody = deleteAllConfirmation;
         }
-        
+
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -289,13 +289,13 @@ export function initMocks() {
     mock.post(/.*FileDuplicateCheck.*/, (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
-        
+
         if ((bodyParams.indexOf(".csv") > -1) || (bodyParams.indexOf('.tsv') > -1)) {
             responseBody = assayFileDuplicateCheck;
         } else if (bodyParams.indexOf(".xls") > -1) {
             responseBody= assayFileNoDuplicateCheck;
         }
-        
+
         return res
             .status(200)
             .headers({'Content-Type': 'application/json'})
@@ -305,7 +305,7 @@ export function initMocks() {
     mock.get(/.*getFilePreview.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
-        
+
         if (queryParams.file === "1949" || queryParams.file === "2010") {
             responseBody = filePreviewData;
         }

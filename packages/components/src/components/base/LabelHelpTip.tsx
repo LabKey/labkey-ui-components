@@ -1,9 +1,7 @@
-
-
-import * as React from 'react'
-import {Overlay, Popover} from 'react-bootstrap'
-import {faQuestionCircle} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { Overlay, Popover } from 'react-bootstrap';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface LabelHelpTipProps {
     title: string,
@@ -18,7 +16,6 @@ interface LabelHelpTipProps {
 
 interface LabelHelpTipState {
     show: boolean,
-    attachRef: (any) => void,
     target: any
 }
 
@@ -28,8 +25,7 @@ export class LabelHelpTip extends React.PureComponent<LabelHelpTipProps, LabelHe
 
         this.state = {
             show: false,
-            attachRef: target => this.setState({ target }),
-            target: null
+            target: undefined
         };
     }
 
@@ -39,16 +35,28 @@ export class LabelHelpTip extends React.PureComponent<LabelHelpTipProps, LabelHe
         customStyle: {}
     };
 
+    attachRef = (target: any) => {
+        if (!this.state.target && target) {
+            this.setState(() => ({ target }));
+        }
+    };
+
+    toggleShow = () => {
+        this.setState((state) => ({show: !state.show}));
+    };
+
     render() {
         const { title, body, placement, id, size, customStyle, required, iconComponent } = this.props;
-        const { target, show, attachRef } = this.state;
+        const { target, show } = this.state;
 
         return (
             <>
-                <span className='label-help-target' ref={attachRef}
-                     onMouseOver={() => this.setState({ show: !show })}
-                     onMouseOut={() => this.setState({ show: !show })}>
-
+                <span
+                    className='label-help-target'
+                    ref={this.attachRef}
+                    onMouseOver={this.toggleShow}
+                    onMouseOut={this.toggleShow}
+                >
                     {/* Need to have both icon and overlay inside mouse handlers div so overlay stays visible when moused over*/}
                     {iconComponent ? iconComponent() :
                         <FontAwesomeIcon size={size} style={customStyle} className='label-help-icon'

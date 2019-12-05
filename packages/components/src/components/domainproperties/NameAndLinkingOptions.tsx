@@ -1,17 +1,15 @@
-
-
-import * as React from 'react'
-import {Col, FormControl, Row} from "react-bootstrap";
-import {isFieldFullyLocked} from "./propertiesUtil";
-import {createFormInputId, createFormInputName} from "./actions";
+import React from 'react';
+import { Col, FormControl, Row } from 'react-bootstrap';
+import { isFieldFullyLocked } from './propertiesUtil';
+import { createFormInputId, createFormInputName } from './actions';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
-    DOMAIN_FIELD_LABEL, DOMAIN_FIELD_REQUIRED,
+    DOMAIN_FIELD_LABEL,
     DOMAIN_FIELD_URL,
-    LK_URL_ENCODING_DOC
-} from "./constants";
-import {DomainField} from "./models";
+    LK_URL_ENCODING_DOC,
+} from './constants';
+import { DomainField } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
 interface NameAndLinkingProps {
@@ -46,7 +44,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
             <>
                 Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
                 <br/><br/>
-                Learn more about using <a target="_blank" href={LK_URL_ENCODING_DOC}>URL Formatting Options</a>
+                Learn more about using <a target="_blank" href={LK_URL_ENCODING_DOC}>URL Formatting Options</a>.
             </>
         )
     }

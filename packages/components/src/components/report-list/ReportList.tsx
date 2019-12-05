@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-import { Image, Media, Modal, Panel } from 'react-bootstrap'
+import { Image, Media, Modal, Panel } from 'react-bootstrap';
 import { Set } from 'immutable';
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';

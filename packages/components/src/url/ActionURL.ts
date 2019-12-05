@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { OrderedMap } from 'immutable'
-import { ActionURL, Utils } from '@labkey/api'
-import { AppURL } from "./AppURL";
+import { OrderedMap } from 'immutable';
+import { ActionURL, Utils } from '@labkey/api';
+import { AppURL } from './AppURL';
 
 function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {

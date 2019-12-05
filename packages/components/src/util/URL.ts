@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable'
+import { Map } from 'immutable';
 
-import { getBrowserHistory } from "./global";
+import { getBrowserHistory } from './global';
 
 // This type is roughly equivalent to the Location object from this history package
 // but here we have all fields optional to make it also compatible with the window.location object

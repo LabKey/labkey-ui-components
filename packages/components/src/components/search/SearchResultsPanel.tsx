@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { Panel } from "react-bootstrap";
+import React from 'react';
+import { Panel } from 'react-bootstrap';
 
-import { SearchResultsModel } from "../../models";
-import { SearchResultCard } from "./SearchResultCard";
+import { SearchResultsModel } from './models';
+import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-
 
 interface Props {
     model: SearchResultsModel
@@ -47,7 +46,9 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         if (!this.isLoading() && error) {
             console.error(error);
             return <Alert>
-                There was an error with your search term(s). See the <a href="https://www.labkey.org/Documentation/wiki-page.view?name=luceneSearch" target="_blank">LabKey Search Documentation</a> page for more information on search terms and operators.
+                There was an error with your search term(s).
+                See the <a href={LABKEY.helpLinkPrefix + "luceneSearch"} target="_blank">LabKey Search Documentation</a> page
+                for more information on search terms and operators.
             </Alert>
         }
     }
@@ -57,7 +58,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (!this.isLoading() && results !== undefined) {
-            const data = results.filter((result) => result.has('data'));
+            // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
+            const data = results.filter((result) => {
+                const category = result.get('category');
+                return category=='data' || category=='material' || category=='workflowJob' || result.has('data');
+            });
 
             if (data.size > 0) {
                 return (
@@ -69,6 +74,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     title={item.get('title')}
                                     summary={item.get('summary')}
                                     url={item.get('url')}
+                                    category={item.get('category')}
                                     data={item.get('data')}
                                     iconUrl={iconUrl}
                                 />

@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from 'react'
-import { List, Map } from 'immutable'
-import { Checkbox, Input, Textarea } from 'formsy-react-components'
+import React from 'react';
+import { List, Map } from 'immutable';
+import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
-import { LabelOverlay } from "../LabelOverlay";
-import { DateInput } from "../input/DateInput";
-import { _defaultRenderer } from "./Detail";
-import { resolveRenderer } from "../renderers";
-import { MultiValueRenderer } from "../../../renderers/MultiValueRenderer";
-import { AliasRenderer } from "../../../renderers/AliasRenderer";
-import { AppendUnits } from "../../../renderers/AppendUnits";
+import { LabelOverlay } from '../LabelOverlay';
+import { DateInput } from '../input/DateInput';
+import { _defaultRenderer } from './Detail';
+import { resolveRenderer } from '../renderers';
+import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
+import { AliasRenderer } from '../../../renderers/AliasRenderer';
+import { AppendUnits } from '../../../renderers/AppendUnits';
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
-import { LookupSelectInput } from "../input/LookupSelectInput";
+import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 

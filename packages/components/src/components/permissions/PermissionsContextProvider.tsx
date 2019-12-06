@@ -17,7 +17,7 @@ type Props = PermissionsProviderProps;
 
 interface State extends PermissionsProviderProps {}
 
-export const PermissionsPageContextProvider = <P extends PermissionsProviderProps>(Component: React.ComponentType<P>) => {
+export const PermissionsPageContextProvider = (Component: React.ComponentType) => {
 
     class PermissionsProviderImpl extends React.Component<Props, State> {
 

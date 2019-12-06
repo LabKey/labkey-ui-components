@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.3.0",
+  "version": "0.3.0-fb-removeAtLabKeyDependencies.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -43,8 +43,8 @@
     "@fortawesome/free-solid-svg-icons": "5.9.0",
     "@fortawesome/react-fontawesome": "0.1.4",
     "@labkey/api": "0.0.26",
-    "classnames": "2.2.6",
     "bootstrap": "3.4.1",
+    "classnames": "2.2.6",
     "font-awesome": "4.7.0",
     "formsy-react": "1.1.5",
     "formsy-react-components": "1.1.0",

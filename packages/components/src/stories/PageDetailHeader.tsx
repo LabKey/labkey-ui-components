@@ -17,10 +17,10 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
-
 import { PageDetailHeader } from '../components/forms/PageDetailHeader';
-import './stories.scss';
 import { CreatedModified } from '../components/base/CreatedModified';
+import { ICON_URL } from "./mock";
+import './stories.scss';
 
 storiesOf('PageDetailHeader', module)
     .addDecorator(withKnobs)
@@ -49,7 +49,7 @@ storiesOf('PageDetailHeader', module)
         return (
             <PageDetailHeader
                 user={null}
-                iconUrl={'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'}
+                iconUrl={ICON_URL}
                 title={text('title', 'Page Detail Header')}
                 subTitle={text('subtitle', 'With a subtitle')}
             >

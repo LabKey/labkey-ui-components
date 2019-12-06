@@ -46,7 +46,7 @@ export class PageDetailHeader extends React.Component<Props, any> {
         return (
             <div className="page-header">
                 <div className={`col-md-${leftColumns} detail__header--container`}>
-                    <div className="detail__header--image-container">
+                    {(iconUrl || iconSrc) && <div className="detail__header--image-container">
                         {iconUrl ? <img
                                 src={iconUrl}
                                 className="detail__header-icon"
@@ -57,7 +57,7 @@ export class PageDetailHeader extends React.Component<Props, any> {
                                 className="detail__header-icon"
                             />
                         }
-                    </div>
+                    </div>}
                     <h2 className="no-margin-top detail__header--name">{title}</h2>
                     {subTitle && (
                         <h4 className="test-loc-detail-subtitle">{subTitle}</h4>

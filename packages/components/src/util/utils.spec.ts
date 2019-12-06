@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { SchemaQuery, User } from '../components/base/models/model';
+import { SchemaQuery } from '../components/base/models/model';
 import {
     caseInsensitive,
     contains,
@@ -35,6 +35,7 @@ import {
     unorderedEqual,
 } from './utils';
 import { PermissionTypes } from '../components/base/models/constants';
+import { APP_ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, FOLDER_ADMIN, READER } from "../test/data/users";
 
 const emptyList = List<string>();
 
@@ -162,34 +163,30 @@ describe("toLowerSafe", () => {
 
 describe("hasAllPermissions", () => {
     test("user without permission", () => {
-        expect(hasAllPermissions(new User(), [PermissionTypes.Insert])).toBe(false);
+        expect(hasAllPermissions(READER, [PermissionTypes.Insert])).toBe(false);
     });
 
-
     test("user has some but not all permissions", () => {
-        expect(hasAllPermissions(new User({
-            permissionsList: [PermissionTypes.Read]
-        }), [PermissionTypes.Insert, PermissionTypes.Read])).toBe(false);
+        expect(hasAllPermissions(READER, [PermissionTypes.Insert, PermissionTypes.Read])).toBe(false);
     });
 
     test("user has only required permission", () => {
-        expect(hasAllPermissions(new User({
-            permissionsList: [PermissionTypes.Insert]
-        }), [PermissionTypes.Insert])).toBe(true);
+        expect(hasAllPermissions(AUTHOR, [PermissionTypes.Insert])).toBe(true);
     });
 
     test("user has more permission", () => {
-        expect(hasAllPermissions(new User({
-            permissionsList: [PermissionTypes.Insert, PermissionTypes.Delete, PermissionTypes.Read]
-        }), [PermissionTypes.Insert])).toBe(true);
+        expect(hasAllPermissions(EDITOR, [PermissionTypes.Insert])).toBe(true);
     });
 
-
     test("user permissions do not intersect", () => {
-        expect(hasAllPermissions(new User({
-            permissionsList: [PermissionTypes.Delete, PermissionTypes.Read]
-        }), [PermissionTypes.Insert])).toBe(false);
+        expect(hasAllPermissions(ASSAYDESIGNER, [PermissionTypes.Insert])).toBe(false);
+    });
 
+    test("user permissions admin prop", () => {
+        expect(hasAllPermissions(FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
+        expect(hasAllPermissions(FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
+        expect(hasAllPermissions(APP_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
+        expect(hasAllPermissions(APP_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(true);
     });
 });
 

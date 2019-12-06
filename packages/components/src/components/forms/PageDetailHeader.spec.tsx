@@ -24,7 +24,7 @@ describe("<PageDetailHeader/>", () => {
 
    test("default props", () => {
       const component = (
-          <PageDetailHeader title={'Title'} user={new User()}/>
+          <PageDetailHeader title={'Title'} user={new User()} iconSrc={'default'}/>
       );
 
       const tree = renderer.create(component).toJSON();
@@ -42,7 +42,7 @@ describe("<PageDetailHeader/>", () => {
               iconSrc={'iconSrc'}
               leftColumns={5}
           >
-             <div>Someting off to the right</div>
+             <div>Something off to the right</div>
           </PageDetailHeader>
       );
 
@@ -65,6 +65,18 @@ describe("<PageDetailHeader/>", () => {
       const srcAttr = wrapper.find('img').getDOMNode().getAttribute('src');
       expect(srcAttr).toBe('iconUrl');
       wrapper.unmount();
+   });
+
+   test("without icon", () => {
+      const component = (
+          <PageDetailHeader
+              user={new User()}
+              title={'Title'}
+          />
+      );
+
+       const tree = renderer.create(component).toJSON();
+       expect(tree).toMatchSnapshot();
    });
 
 });

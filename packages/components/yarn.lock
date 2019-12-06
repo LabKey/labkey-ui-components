@@ -1949,17 +1949,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.26-fb-smPermissionsManagement.0":
-  version "0.0.26-fb-smPermissionsManagement.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.26-fb-smPermissionsManagement.0.tgz#150786a38e544b18854086c6dfcc81c3abc3bb62"
-  integrity sha1-FQeGo45USxiFQIbG38yBw6vDu2I=
+"@labkey/api@0.0.26":
+  version "0.0.26"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.26.tgz#4d2a20cdfd5adf8e676296a8718b4ed8d7be4243"
+  integrity sha1-TSogzf1a345nYpaocYtO2Ne+QkM=
 
-"@labkey/dependencies@0.0.11-fb-smPermissionsManagement.0":
-  version "0.0.11-fb-smPermissionsManagement.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.11-fb-smPermissionsManagement.0.tgz#69aa67e1a0bd3d95eb8131593d0ac59936f8c2d6"
-  integrity sha1-aapn4aC9PZXrgTFZPQrFmTb4wtY=
+"@labkey/dependencies@0.0.11":
+  version "0.0.11"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.11.tgz#1a3e3c4e760f47c9a1381f508e057fd8cd573594"
+  integrity sha1-Gj48TnYPR8mhOB9QjgV/2M1XNZQ=
   dependencies:
-    "@labkey/api" "0.0.26-fb-smPermissionsManagement.0"
+    "@labkey/api" "0.0.26"
     "@types/classnames" "2.2.8"
     "@types/react" "16.8.19"
     "@types/react-bootstrap" "0.32.17"

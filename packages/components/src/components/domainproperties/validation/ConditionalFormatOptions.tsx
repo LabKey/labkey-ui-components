@@ -161,7 +161,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
         }
     };
 
-    onColorChange = (color, event) => {
+    onColorChange = (color) => {
         const { onChange, validator, validatorIndex } = this.props;
         const { showTextColor } = this.state;
 
@@ -219,7 +219,7 @@ export class ConditionalFormatOptions extends React.PureComponent<ConditionalFor
                 {showColorPicker &&
                 <div className='domain-validator-color-popover'>
                     <div className='domain-validator-color-cover' id={createFormInputId(name, validatorIndex)} onClick={this.onColorShow}/>
-                    <CompactPicker id={createFormInputId(name, validatorIndex)} onChangeComplete={this.onColorChange} color={color}/>
+                    <CompactPicker onChangeComplete={this.onColorChange} color={color}/>
                 </div>
                 }
                 <div className='domain-color-preview' style={{backgroundColor: color}} />

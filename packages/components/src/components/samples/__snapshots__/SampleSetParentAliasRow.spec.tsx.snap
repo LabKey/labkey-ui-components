@@ -7,7 +7,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
   <div
     className="col-xs-3"
   >
-     
+
     <span>
       Parent Alias *
        
@@ -118,7 +118,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
                     }
                   }
                 >
-                  
+
                 </div>
               </div>
             </span>
@@ -167,7 +167,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
         <i
           className="fa fa-times container--removal-icon"
         />
-        
+
       </span>
     </div>
   </div>
@@ -181,7 +181,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
   <div
     className="col-xs-3"
   >
-     
+
     <span>
       Parent Alias *
        
@@ -305,7 +305,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
                     }
                   }
                 >
-                  
+
                 </div>
               </div>
             </span>
@@ -354,7 +354,7 @@ exports[`<SampleSetParentAliasRow/> With values 1`] = `
         <i
           className="fa fa-times container--removal-icon"
         />
-        
+
       </span>
     </div>
   </div>

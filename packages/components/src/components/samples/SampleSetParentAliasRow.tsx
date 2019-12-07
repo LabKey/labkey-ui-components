@@ -69,7 +69,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         name={"parentValue"}
                         onChange={this.onSelectChange}
                         options={parentOptions}
-                        placeholder={'Select a sample set...'}
+                        placeholder={'Select a sample type...'}
                         value={parentValue ? parentValue.value : undefined }
                     />
                 </Col>

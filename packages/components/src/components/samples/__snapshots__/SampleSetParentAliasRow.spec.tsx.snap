@@ -75,7 +75,7 @@ exports[`<SampleSetParentAliasRow/> No values 1`] = `
               <div
                 className="Select-placeholder"
               >
-                Select a sample set...
+                Select a sample type...
               </div>
               <div
                 className="Select-input"
@@ -230,7 +230,7 @@ exports[`<SampleSetParentAliasRow/> With parent value not an option in select 1`
               <div
                 className="Select-placeholder"
               >
-                Select a sample set...
+                Select a sample type...
               </div>
               <div
                 className="Select-input"

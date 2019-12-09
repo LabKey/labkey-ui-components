@@ -7,7 +7,6 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { Utils } from '@labkey/api';
-
 import { AssayProtocolModel, DomainException } from '../components/domainproperties/models';
 import { AssayDesignerPanels } from '../components/domainproperties/assay/AssayDesignerPanels';
 import { SEVERITY_LEVEL_ERROR } from '../components/domainproperties/constants';
@@ -20,8 +19,6 @@ import domainAssayException from '../test/data/assay-domainExceptionFromServer.j
 import elispotAssayTemplate from '../test/data/assay-getProtocolELISpotTemplate.json';
 import elispotAssaySaved from '../test/data/assay-getProtocolELISpot.json';
 import './stories.scss';
-
-initMocks();
 
 interface Props {
     data: {},

@@ -10,6 +10,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Allow FileListingForm to optionally include a read-only set of files (available for download only)
 
 
+### version 0.3.0
+*Released*: 6 December 2019
+* Item 6508: Permissions management components, models, and actions
+* port ExpandableContainer component from biologics RelatedData component
+
 ### version 0.2.0
 *Released*: 5 December 2019
 * Upgrade TypeScript to 3.7.3

@@ -1,0 +1,51 @@
+{
+  "relevantRoles" : [ "org.labkey.api.security.roles.ProjectAdminRole", "org.labkey.api.security.roles.FolderAdminRole", "org.labkey.api.security.roles.EditorRole", "org.labkey.api.security.roles.AuthorRole", "org.labkey.api.security.roles.ReaderRole", "org.labkey.api.security.roles.RestrictedReaderRole", "org.labkey.api.security.roles.SubmitterRole", "org.labkey.api.security.roles.SharedViewEditorRole", "org.labkey.compliance.security.RestrictedPHIRole", "org.labkey.compliance.security.FullPHIRole", "org.labkey.compliance.security.LimitedPHIRole", "org.labkey.compliance.security.PatientRecordReviewerRole", "org.labkey.compliance.security.ElecSignerRole", "org.labkey.assay.security.AssayDesignerRole", "org.labkey.announcements.model.MessageBoardContributorRole" ],
+  "policy" : {
+    "resourceId" : "AECB96A8-EEA7-1037-A650-59E03C1CD480",
+    "assignments" : [ {
+      "role" : "org.labkey.api.security.roles.EditorRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.FolderAdminRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.ProjectAdminRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.ReaderRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.RestrictedReaderRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.SubmitterRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.FolderAdminRole",
+      "userId" : 4970
+    }, {
+      "role" : "org.labkey.api.security.roles.EditorRole",
+      "userId" : 4971
+    }, {
+      "role" : "org.labkey.api.security.roles.ReaderRole",
+      "userId" : 4973
+    }, {
+      "role" : "org.labkey.api.security.roles.ReaderRole",
+      "userId" : 6834
+    }, {
+      "role" : "org.labkey.api.security.roles.ReaderRole",
+      "userId" : 11046
+    }, {
+      "role" : "org.labkey.assay.security.AssayDesignerRole",
+      "userId" : 11046
+    }, {
+      "role" : "org.labkey.api.security.roles.ReaderRole",
+      "userId" : 11841
+    }, {
+      "role" : "org.labkey.api.security.roles.EditorRole",
+      "userId" : 11842
+    } ],
+    "modifiedMillis" : 1575321542253,
+    "modified" : "2019-12-02 15:19:02.253"
+  }
+}

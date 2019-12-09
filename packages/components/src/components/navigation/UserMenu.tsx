@@ -16,11 +16,11 @@
 
 import React from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
-
-import { MenuSectionModel, ProductMenuModel } from './model';
+import { ProductMenuModel } from './model';
 import { User } from '../base/models/model';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
+import { signOut, signIn } from "./actions";
 
 interface UserMenuProps {
     model: ProductMenuModel
@@ -32,17 +32,8 @@ interface UserMenuProps {
 
 export class UserMenu extends React.Component<UserMenuProps, any> {
 
-    getSection() : MenuSectionModel {
-        return this.props.model.getSection("user");
-    }
-
-    logout() {
-        console.log("Not logging you out.  Just so you know.");
-    }
-
     render() {
         const { extraDevItems, extraUserItems, model, user, showSwitchToLabKey } = this.props;
-
         const menuSection = model.getSection("user");
 
         if (menuSection) {
@@ -55,18 +46,11 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
 
             if (showSwitchToLabKey) {
                 menuItems.push(
-                    <MenuItem key="projectBegin" href={buildURL('project', 'begin.view', undefined, {returnURL: false})}>
+                    <MenuItem key="projectBegin" href={buildURL('project', 'begin', undefined, {returnURL: false})}>
                         Switch to LabKey
                     </MenuItem>
                 );
             }
-
-            // commenting this out for now because we have not implemented login/logout functionality
-            let logoutLink, logoutDivider;
-            // if (user.isSignedIn) {
-            //     logoutLink = <MenuItem onClick={this.logout}>Logout</MenuItem>;
-            //     logoutDivider = <MenuItem divider/>;
-            // }
 
             return (
                 <Dropdown id="user-menu-dropdown">
@@ -100,8 +84,11 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                                 {extraDevItems}
                             </>
                         ) : null}
-                        {logoutDivider}
-                        {logoutLink}
+                        <MenuItem divider/>
+                        {user.isSignedIn
+                            ? <MenuItem onClick={signOut}>Sign Out</MenuItem>
+                            : <MenuItem onClick={signIn}>Sign In</MenuItem>
+                        }
                     </Dropdown.Menu>
                 </Dropdown>
             )

@@ -6,12 +6,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-
 import { DomainDesign } from '../components/domainproperties/models';
 import { DomainFormImpl } from '../components/domainproperties/DomainForm';
 import { MockLookupProvider } from '../test/components/Lookup';
 import { PHILEVEL_RESTRICTED_PHI } from '../components/domainproperties/constants';
-
 import domainData from '../test/data/property-getDomain.json';
 import errorData from '../test/data/property-saveDomainWithDuplicateField.json';
 import warningData from '../test/data/property-unexpectedCharInFieldName.json';
@@ -21,8 +19,6 @@ import fullyLockedData from '../test/data/property-getDomainWithFullyLockedField
 import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
 import { initMocks } from './mock';
 import './stories.scss';
-
-initMocks();
 
 interface Props {
     showInferFromFile?: boolean

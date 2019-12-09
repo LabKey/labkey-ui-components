@@ -1,5 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<UserDetailHeader/> custom description 1`] = `
+<div
+  className="page-header"
+>
+  <div
+    className="col-md-10 detail__header--container"
+  >
+    <div
+      className="detail__header--image-container"
+    >
+      <img
+        className="detail__header-icon"
+        src="/labkey/_images/defaultavatar.png"
+      />
+    </div>
+    <h2
+      className="no-margin-top detail__header--name"
+    >
+      Title
+    </h2>
+    <span
+      className="detail__header--desc"
+    >
+      My custom description
+    </span>
+  </div>
+  <div
+    className="pull-right"
+  />
+  <div
+    className="clearfix"
+  />
+</div>
+`;
+
 exports[`<UserDetailHeader/> custom properties 1`] = `
 <div
   className="page-header"

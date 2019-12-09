@@ -11,7 +11,7 @@ exports[`<PageDetailHeader/> default props 1`] = `
       className="detail__header--image-container"
     >
       <img
-        alt="-icon"
+        alt="default-icon"
         className="detail__header-icon"
         height="100%"
         src="/labkey//default.svg"
@@ -68,8 +68,27 @@ exports[`<PageDetailHeader/> with additional props 1`] = `
     className="pull-right"
   >
     <div>
-      Someting off to the right
+      Something off to the right
     </div>
+  </div>
+  <div
+    className="clearfix"
+  />
+</div>
+`;
+
+exports[`<PageDetailHeader/> without icon 1`] = `
+<div
+  className="page-header"
+>
+  <div
+    className="col-md-6 detail__header--container"
+  >
+    <h2
+      className="no-margin-top detail__header--name"
+    >
+      Title
+    </h2>
   </div>
   <div
     className="clearfix"

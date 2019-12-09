@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExpandableContainer/> custom props 1`] = `
+<div
+  className="row container-expandable disabled"
+>
+  <div
+    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
+  >
+    <i
+      className="container-expandable-child__img"
+    >
+      <i
+        className="fa fa-fa-test"
+        style={
+          Object {
+            "padding": "5px",
+          }
+        }
+      />
+    </i>
+    <div
+      className="pull-right container-expandable-child__chevron text-muted"
+    >
+      <i
+        className="fa fa-chevron-down"
+      />
+    </div>
+    <div
+      className="container-expandable-heading"
+    >
+      <div>
+        Clause
+      </div>
+      <div>
+        links
+      </div>
+    </div>
+  </div>
+  <div>
+    Body
+  </div>
+</div>
+`;
+
+exports[`<ExpandableContainer/> default props 1`] = `
+<div
+  className="row container-expandable"
+>
+  <div
+    className="container-expandable-detail container-expandable-detail__inactive"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <i
+      className="container-expandable-child__img"
+    >
+      <img
+        alt="test-icon"
+        height="50px"
+        src="/labkey/_images/test.svg"
+        width="50px"
+      />
+    </i>
+    <div
+      className="pull-right container-expandable-child__chevron"
+    >
+      <i
+        className="fa fa-chevron-right"
+      />
+    </div>
+    <div
+      className="container-expandable-heading"
+    >
+      <div>
+        Clause
+      </div>
+      <div>
+        links
+      </div>
+    </div>
+  </div>
+</div>
+`;

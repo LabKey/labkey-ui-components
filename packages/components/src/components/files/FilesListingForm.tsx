@@ -6,11 +6,11 @@ import { FileAttachmentForm } from "./FileAttachmentForm";
 import { FilesListing } from './FilesListing';
 
 interface Props {
-    files: List<IFile>
+    files?: List<IFile>
     headerText?: string
     readOnlyFiles?: List<IFile>
     readOnlyHeaderText?: string
-    addFileText: string
+    addFileText?: string
     noFilesMessage: string
 
     handleUpload?: (files: Map<string, File>, cb: () => any) => any
@@ -137,6 +137,8 @@ export class FilesListingForm extends React.Component<Props, State> {
         const { files, headerText, noFilesMessage, useFilePropertiesEditTrigger, getFilePropertiesEditTrigger, canDelete } = this.props;
         const { selectedFiles, showFileUploadPanel } = this.state;
 
+        const hasReadOnly = this.props.readOnlyFiles && !this.props.readOnlyFiles.isEmpty();
+        const hasEditable = this.props.files && !this.props.files.isEmpty();
         return (
             <>
                 {this.renderButtons()}
@@ -150,30 +152,32 @@ export class FilesListingForm extends React.Component<Props, State> {
                         showLabel={false}
                         showProgressBar={true}/>
                 )}
-                {this.props.readOnlyFiles && !this.props.readOnlyFiles.isEmpty() &&
+                {hasReadOnly &&
                 <>
-                    <hr/>
+                    {hasEditable && <hr/>}
                     <FilesListing
-                            files={this.props.readOnlyFiles}
-                            headerText={this.props.readOnlyHeaderText}
-                            noFilesMessage={noFilesMessage}
-                            onFileSelection={this.toggleFileSelection}
-                            selectedFiles={selectedFiles}
-                            canDelete={false}
+                        files={this.props.readOnlyFiles}
+                        headerText={this.props.readOnlyHeaderText}
+                        noFilesMessage={noFilesMessage}
+                        onFileSelection={this.toggleFileSelection}
+                        selectedFiles={selectedFiles}
+                        canDelete={false}
                     />
-                    <hr/>
+                    {hasEditable && <hr/>}
                 </>}
-                <FilesListing
-                    files={files}
-                    headerText={headerText}
-                    noFilesMessage={noFilesMessage}
-                    useFilePropertiesEditTrigger={useFilePropertiesEditTrigger}
-                    getFilePropertiesEditTrigger={getFilePropertiesEditTrigger}
-                    canDelete={canDelete}
-                    onDelete={this.deleteFile}
-                    onFileSelection={this.toggleFileSelection}
-                    selectedFiles={selectedFiles}
-                />
+                {hasEditable &&
+                    <FilesListing
+                        files={files}
+                        headerText={headerText}
+                        noFilesMessage={noFilesMessage}
+                        useFilePropertiesEditTrigger={useFilePropertiesEditTrigger}
+                        getFilePropertiesEditTrigger={getFilePropertiesEditTrigger}
+                        canDelete={canDelete}
+                        onDelete={this.deleteFile}
+                        onFileSelection={this.toggleFileSelection}
+                        selectedFiles={selectedFiles}
+                    />
+                }
 
             </>
         )

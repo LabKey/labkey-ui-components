@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { FilesListingForm } from './FilesListingForm';
 
 import { IFile } from './models';
-import { FILES_DATA } from '../../test/data/constants';
+import { FILES_DATA, FILES_DATA_2 } from '../../test/data/constants';
 
 describe("<FilesListingForm/>", () => {
 
@@ -31,6 +31,7 @@ describe("<FilesListingForm/>", () => {
         const wrapper = shallow(<FilesListingForm
             files={FILES_DATA}
             addFileText={'add more files'}
+            noFilesMessage="No files currently attached."
             canInsert={true}
             canDelete={true}
             handleUpload={jest.fn()}
@@ -39,5 +40,75 @@ describe("<FilesListingForm/>", () => {
         />);
         expect(wrapper).toMatchSnapshot();
     });
-
+    test("with only readOnly files", () => {
+        const wrapper = shallow(<FilesListingForm
+            readOnlyFiles={FILES_DATA}
+            readOnlyHeaderText={"Read-only files"}
+        />);
+        expect(wrapper).toMatchSnapshot();
+    });
+    test("with readOnly and editable files", () => {
+        const wrapper = shallow(<FilesListingForm
+            files={FILES_DATA}
+            readOnlyFiles={FILES_DATA_2}
+            headerText={"Your files"}
+            readOnlyHeaderText={"Other files you can't remove"}
+            noFilesMessage={"No files for you!"}
+            noReadOnlyFilesMessage={"No other files for you either!"}
+            addFileText={"more files"}
+            canInsert={true}
+            canDelete={true}
+            handleUpload={jest.fn()}
+            handleDelete={jest.fn()}
+            handleDownload={jest.fn()}
+        />);
+        expect(wrapper).toMatchSnapshot();
+    });
+    test("with readOnly and noFilesMessage", () => {
+        const wrapper = shallow(<FilesListingForm
+            readOnlyFiles={FILES_DATA_2}
+            headerText={"Your files"}
+            readOnlyHeaderText={"Other files you can't remove"}
+            noFilesMessage={"No files for you!"}
+            noReadOnlyFilesMessage={"No other files for you either!"}
+            addFileText={"more files"}
+            canInsert={true}
+            canDelete={true}
+            handleUpload={jest.fn()}
+            handleDelete={jest.fn()}
+            handleDownload={jest.fn()}
+        />);
+        expect(wrapper).toMatchSnapshot();
+    });
+    test("with editable and noReadOnlyFilesMessage", () => {
+        const wrapper = shallow(<FilesListingForm
+            files={FILES_DATA}
+            headerText={"Your files"}
+            readOnlyHeaderText={"Other files you can't remove"}
+            noFilesMessage={"No files for you!"}
+            noReadOnlyFilesMessage={"No other files for you either!"}
+            addFileText={"more files"}
+            canInsert={true}
+            canDelete={true}
+            handleUpload={jest.fn()}
+            handleDelete={jest.fn()}
+            handleDownload={jest.fn()}
+        />);
+        expect(wrapper).toMatchSnapshot();
+    });
+    test("with no files and both messages", () => {
+        const wrapper = shallow(<FilesListingForm
+            headerText={"Your files"}
+            readOnlyHeaderText={"Other files you can't remove"}
+            noFilesMessage={"No files for you!"}
+            noReadOnlyFilesMessage={"No other files for you either!"}
+            addFileText={"more files"}
+            canInsert={true}
+            canDelete={true}
+            handleUpload={jest.fn()}
+            handleDelete={jest.fn()}
+            handleDownload={jest.fn()}
+        />);
+        expect(wrapper).toMatchSnapshot();
+    })
 });

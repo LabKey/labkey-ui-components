@@ -11,7 +11,8 @@ interface Props {
     readOnlyFiles?: List<IFile>
     readOnlyHeaderText?: string
     addFileText?: string
-    noFilesMessage: string
+    noFilesMessage?: string
+    noReadOnlyFilesMessage?: string
 
     handleUpload?: (files: Map<string, File>, cb: () => any) => any
     handleDelete?: (file: string) => any
@@ -34,8 +35,7 @@ interface State {
 export class FilesListingForm extends React.Component<Props, State> {
 
     static defaultProps = {
-        addFileText: "Attach File",
-        noFilesMessage: "No files currently attached."
+        addFileText: "Attach File"
     };
 
     constructor(props: Props) {
@@ -91,8 +91,8 @@ export class FilesListingForm extends React.Component<Props, State> {
     }
 
     renderButtons() {
-        const { addFileText, canInsert } = this.props;
-
+        const { addFileText, canInsert, files, readOnlyFiles } = this.props;
+        const haveFiles = (files && files.size > 0) || (readOnlyFiles && readOnlyFiles.size > 0);
         return (
             <div className="row bottom-spacing">
                 <div className="col-md-7">
@@ -107,11 +107,15 @@ export class FilesListingForm extends React.Component<Props, State> {
                     }
                 </div>
                 <div className="col-md-5">
-                    <div className="pull-right">
-                        <Button disabled={this.state.selectedFiles.size == 0} onClick={this.downloadSelectedFiles} title="Download selected files">
-                            <i className="fa fa-download"/>
-                        </Button>
-                    </div>
+                    {
+                        haveFiles &&
+                        <div className="pull-right">
+                            <Button disabled={this.state.selectedFiles.size == 0} onClick={this.downloadSelectedFiles}
+                                    title="Download selected files">
+                                <i className="fa fa-download"/>
+                            </Button>
+                        </div>
+                    }
                 </div>
             </div>
         )
@@ -134,7 +138,7 @@ export class FilesListingForm extends React.Component<Props, State> {
     };
 
     render() {
-        const { files, headerText, noFilesMessage, useFilePropertiesEditTrigger, getFilePropertiesEditTrigger, canDelete } = this.props;
+        const { files, headerText, noFilesMessage, noReadOnlyFilesMessage, useFilePropertiesEditTrigger, getFilePropertiesEditTrigger, canDelete } = this.props;
         const { selectedFiles, showFileUploadPanel } = this.state;
 
         const hasReadOnly = this.props.readOnlyFiles && !this.props.readOnlyFiles.isEmpty();
@@ -152,20 +156,20 @@ export class FilesListingForm extends React.Component<Props, State> {
                         showLabel={false}
                         showProgressBar={true}/>
                 )}
-                {hasReadOnly &&
+                {(hasReadOnly || noReadOnlyFilesMessage) &&
                 <>
                     {hasEditable && <hr/>}
                     <FilesListing
                         files={this.props.readOnlyFiles}
                         headerText={this.props.readOnlyHeaderText}
-                        noFilesMessage={noFilesMessage}
+                        noFilesMessage={noReadOnlyFilesMessage}
                         onFileSelection={this.toggleFileSelection}
                         selectedFiles={selectedFiles}
                         canDelete={false}
                     />
                     {hasEditable && <hr/>}
                 </>}
-                {hasEditable &&
+                {(hasEditable || noFilesMessage) &&
                     <FilesListing
                         files={files}
                         headerText={headerText}

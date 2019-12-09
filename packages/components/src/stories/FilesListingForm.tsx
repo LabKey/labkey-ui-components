@@ -20,7 +20,7 @@ storiesOf("FilesListingForm", module)
                 handleDownload={() => {}}
 
                 addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', undefined)}
+                noFilesMessage={text('noFilesMessage', "No files currently attached.")}
                 canInsert={boolean('canInsert', true)}
                 canDelete={boolean('canDelete', true)}
                 useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
@@ -36,7 +36,7 @@ storiesOf("FilesListingForm", module)
                 handleDelete={() => {}}
                 handleDownload={() => {}}
                 addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', undefined)}
+                noFilesMessage={text('noFilesMessage', "No files currently attached.")}
                 canInsert={boolean('canInsert', true)}
                 canDelete={boolean('canDelete', true)}
                 useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
@@ -55,7 +55,7 @@ storiesOf("FilesListingForm", module)
                 handleDelete={() => {}}
                 handleDownload={() => {}}
                 addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', undefined)}
+                noFilesMessage={text('noFilesMessage', "No files currently attached.")}
                 canInsert={boolean('canInsert', true)}
                 canDelete={boolean('canDelete', true)}
                 useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}

@@ -609,6 +609,20 @@ exports[`UserMenu user logged in, without switch to labkey 1`] = `
       </a>
     </li>
     <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="/labkey/project/begin.view"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Switch to LabKey
+      </a>
+    </li>
+    <li
       className="divider"
       onKeyDown={[Function]}
       role="separator"

@@ -1,0 +1,660 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PermissionsRole/> showing only a single type and a selected and disabled principal 1`] = `
+<div
+  className="row container-expandable"
+>
+  <div
+    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <i
+      className="container-expandable-child__img"
+    >
+      <i
+        className="fa fa-users fa-3x"
+        style={
+          Object {
+            "padding": "5px",
+          }
+        }
+      />
+    </i>
+    <div
+      className="pull-right container-expandable-child__chevron"
+    >
+      <i
+        className="fa fa-chevron-down"
+      />
+    </div>
+    <div
+      className="container-expandable-heading"
+    >
+      <div
+        className="container-expandable-heading--clause"
+      >
+        <span
+          className="permissions-title"
+        >
+          Editor
+        </span>
+      </div>
+      <div>
+        <span
+          className="container-expandable-heading"
+        >
+          <span>
+            <a>
+              2
+               member
+              s
+            </a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="permissions-role-container"
+  >
+    <div>
+      Editors may read, add, update and delete information.
+    </div>
+    <div
+      className="permissions-assignments-row row"
+    >
+      <div
+        className="col-sm-12 col-xs-12"
+      >
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li"
+          >
+            <div
+              className="permissions-button-group btn-group"
+            >
+              <div
+                className="disabled-button-with-tooltip"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                onMouseOut={[Function]}
+                onMouseOver={[Function]}
+              >
+                <button
+                  className="btn btn-primary"
+                  disabled={true}
+                  type="button"
+                >
+                  <i
+                    className="fa fa-remove"
+                  />
+                </button>
+              </div>
+              <button
+                className="permissions-button-display btn btn-primary"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                cnathe@labkey.com (Cory Nathe)
+              </button>
+            </div>
+          </li>
+          <li
+            className="permissions-member-li"
+          >
+            <div
+              className="permissions-button-group btn-group"
+            >
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <i
+                  className="fa fa-remove"
+                />
+              </button>
+              <button
+                className="permissions-button-display btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Inactive User (4971)
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="form-group row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="Select Select--single is-clearable is-searchable"
+        >
+          <div
+            className="Select-control"
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+          >
+            <span
+              className="Select-multi-value-wrapper"
+              id="react-select-4--value"
+            >
+              <div
+                className="Select-placeholder"
+              >
+                Add member...
+              </div>
+              <div
+                className="Select-input"
+                style={
+                  Object {
+                    "display": "inline-block",
+                  }
+                }
+              >
+                <input
+                  aria-activedescendant="react-select-4--value"
+                  aria-expanded="false"
+                  aria-haspopup="false"
+                  aria-owns=""
+                  id="selectinput-2"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  role="combobox"
+                  style={
+                    Object {
+                      "boxSizing": "content-box",
+                      "width": "5px",
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  style={
+                    Object {
+                      "height": 0,
+                      "left": 0,
+                      "overflow": "scroll",
+                      "position": "absolute",
+                      "top": 0,
+                      "visibility": "hidden",
+                      "whiteSpace": "pre",
+                    }
+                  }
+                >
+                  
+                </div>
+              </div>
+            </span>
+            <span
+              className="Select-arrow-zone"
+              onMouseDown={[Function]}
+            >
+              <span
+                className="Select-arrow"
+                onMouseDown={[Function]}
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PermissionsRole/> with both group and user assignments 1`] = `
+<div
+  className="row container-expandable"
+>
+  <div
+    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <i
+      className="container-expandable-child__img"
+    >
+      <i
+        className="fa fa-users fa-3x"
+        style={
+          Object {
+            "padding": "5px",
+          }
+        }
+      />
+    </i>
+    <div
+      className="pull-right container-expandable-child__chevron"
+    >
+      <i
+        className="fa fa-chevron-down"
+      />
+    </div>
+    <div
+      className="container-expandable-heading"
+    >
+      <div
+        className="container-expandable-heading--clause"
+      >
+        <span
+          className="permissions-title"
+        >
+          Editor
+        </span>
+      </div>
+      <div>
+        <span
+          className="container-expandable-heading"
+        >
+          <span>
+            <a>
+              3
+               member
+              s
+            </a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="permissions-role-container"
+  >
+    <div>
+      Editors may read, add, update and delete information.
+    </div>
+    <div
+      className="permissions-assignments-row row"
+    >
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Groups:
+        </div>
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li"
+          >
+            <div
+              className="permissions-button-group btn-group"
+            >
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <i
+                  className="fa fa-remove"
+                />
+              </button>
+              <button
+                className="permissions-button-display btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Editor User Group
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Users:
+        </div>
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li"
+          >
+            <div
+              className="permissions-button-group btn-group"
+            >
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <i
+                  className="fa fa-remove"
+                />
+              </button>
+              <button
+                className="permissions-button-display btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                cnathe@labkey.com (Cory Nathe)
+              </button>
+            </div>
+          </li>
+          <li
+            className="permissions-member-li"
+          >
+            <div
+              className="permissions-button-group btn-group"
+            >
+              <button
+                className="btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                <i
+                  className="fa fa-remove"
+                />
+              </button>
+              <button
+                className="permissions-button-display btn btn-default"
+                disabled={false}
+                onClick={[Function]}
+                type="button"
+              >
+                Inactive User (4971)
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="form-group row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="Select Select--single is-clearable is-searchable"
+        >
+          <div
+            className="Select-control"
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+          >
+            <span
+              className="Select-multi-value-wrapper"
+              id="react-select-3--value"
+            >
+              <div
+                className="Select-placeholder"
+              >
+                Add member or group...
+              </div>
+              <div
+                className="Select-input"
+                style={
+                  Object {
+                    "display": "inline-block",
+                  }
+                }
+              >
+                <input
+                  aria-activedescendant="react-select-3--value"
+                  aria-expanded="false"
+                  aria-haspopup="false"
+                  aria-owns=""
+                  id="selectinput-1"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  role="combobox"
+                  style={
+                    Object {
+                      "boxSizing": "content-box",
+                      "width": "5px",
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  style={
+                    Object {
+                      "height": 0,
+                      "left": 0,
+                      "overflow": "scroll",
+                      "position": "absolute",
+                      "top": 0,
+                      "visibility": "hidden",
+                      "whiteSpace": "pre",
+                    }
+                  }
+                >
+                  
+                </div>
+              </div>
+            </span>
+            <span
+              className="Select-arrow-zone"
+              onMouseDown={[Function]}
+            >
+              <span
+                className="Select-arrow"
+                onMouseDown={[Function]}
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PermissionsRole/> without assignments 1`] = `
+<div
+  className="row container-expandable"
+>
+  <div
+    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
+    onClick={[Function]}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+  >
+    <i
+      className="container-expandable-child__img"
+    >
+      <i
+        className="fa fa-users fa-3x"
+        style={
+          Object {
+            "padding": "5px",
+          }
+        }
+      />
+    </i>
+    <div
+      className="pull-right container-expandable-child__chevron"
+    >
+      <i
+        className="fa fa-chevron-down"
+      />
+    </div>
+    <div
+      className="container-expandable-heading"
+    >
+      <div
+        className="container-expandable-heading--clause"
+      >
+        <span
+          className="permissions-title"
+        >
+          Author
+        </span>
+      </div>
+      <div>
+        <span
+          className="container-expandable-heading"
+        >
+          <span>
+            <a>
+              0
+               member
+              s
+            </a>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    className="permissions-role-container"
+  >
+    <div>
+      Authors may read and add information in some cases, but may update and delete only information they added. Supported for only Message Boards. See the online documentation for details.
+    </div>
+    <div
+      className="permissions-assignments-row row"
+    >
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Groups:
+        </div>
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li permissions-member-none"
+          >
+            None
+          </li>
+        </ul>
+      </div>
+      <div
+        className="col-sm-6 col-xs-12"
+      >
+        <div>
+          Users:
+        </div>
+        <ul
+          className="permissions-members-ul"
+        >
+          <li
+            className="permissions-member-li permissions-member-none"
+          >
+            None
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="form-group row"
+    >
+      <div
+        className="col-xs-12"
+      >
+        <div
+          className="Select Select--single is-clearable is-searchable"
+        >
+          <div
+            className="Select-control"
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            onTouchEnd={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+          >
+            <span
+              className="Select-multi-value-wrapper"
+              id="react-select-2--value"
+            >
+              <div
+                className="Select-placeholder"
+              >
+                Add member or group...
+              </div>
+              <div
+                className="Select-input"
+                style={
+                  Object {
+                    "display": "inline-block",
+                  }
+                }
+              >
+                <input
+                  aria-activedescendant="react-select-2--value"
+                  aria-expanded="false"
+                  aria-haspopup="false"
+                  aria-owns=""
+                  id="selectinput-0"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  required={false}
+                  role="combobox"
+                  style={
+                    Object {
+                      "boxSizing": "content-box",
+                      "width": "5px",
+                    }
+                  }
+                  value=""
+                />
+                <div
+                  style={
+                    Object {
+                      "height": 0,
+                      "left": 0,
+                      "overflow": "scroll",
+                      "position": "absolute",
+                      "top": 0,
+                      "visibility": "hidden",
+                      "whiteSpace": "pre",
+                    }
+                  }
+                >
+                  
+                </div>
+              </div>
+            </span>
+            <span
+              className="Select-arrow-zone"
+              onMouseDown={[Function]}
+            >
+              <span
+                className="Select-arrow"
+                onMouseDown={[Function]}
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

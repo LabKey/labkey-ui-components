@@ -37,20 +37,15 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
         const menuSection = model.getSection("user");
 
         if (menuSection) {
+            const beginUrl = buildURL('project', 'begin', undefined, {returnURL: false});
+            const switchToLabKeyItem = <MenuItem key="projectBegin" href={beginUrl}>Switch to LabKey</MenuItem>;
+
             let menuItems = [];
             menuSection.items.forEach((item) => {
                 if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
                     menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
                 }
             });
-
-            if (showSwitchToLabKey) {
-                menuItems.push(
-                    <MenuItem key="projectBegin" href={buildURL('project', 'begin', undefined, {returnURL: false})}>
-                        Switch to LabKey
-                    </MenuItem>
-                );
-            }
 
             return (
                 <Dropdown id="user-menu-dropdown">
@@ -71,16 +66,16 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
                     <Dropdown.Menu pullRight className="pull-right">
                         <div className="navbar-connector"/>
                         {menuItems}
+                        {showSwitchToLabKey && switchToLabKeyItem}
                         {extraUserItems}
                         {LABKEY.devMode ? (
                             <>
                                 <MenuItem divider/>
-                                <MenuItem header>
-                                    Dev Tools
-                                </MenuItem>
+                                <MenuItem header>Dev Tools</MenuItem>
                                 <MenuItem onClick={toggleDevTools}>
                                     {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
                                 </MenuItem>
+                                {!showSwitchToLabKey && switchToLabKeyItem}
                                 {extraDevItems}
                             </>
                         ) : null}

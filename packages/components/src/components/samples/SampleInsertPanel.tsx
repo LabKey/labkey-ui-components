@@ -517,8 +517,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     {name && (
                         this.isNameRequired() ?
                             <p>
-                                A sample ID is required for each new sample since this sample type has no name expression.
-                                You can provide a name expression by editing the sample type definition.
+                                A sample ID is required for each new sample since this sample type has no naming pattern.
+                                You can provide a naming pattern by editing the sample type definition.
                             </p> :
                             <p>
                                 Sample IDs will be generated for any samples that have no sample ID provided in the grid.

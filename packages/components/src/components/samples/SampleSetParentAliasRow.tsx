@@ -1,4 +1,5 @@
 import React from 'react';
+import * as ReactDOM from 'react-dom'
 import { IParentAlias, IParentOption } from './models';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
@@ -20,6 +21,26 @@ interface IParentAliasRow {
 
 export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
+    private nameInput: React.RefObject<FormControl>;
+
+    constructor(props) {
+        super(props);
+        this.nameInput = React.createRef();
+    }
+
+    componentDidMount(): void {
+        const {parentAlias} = this.props;
+        if (!(parentAlias && parentAlias.alias))
+            this.focusNameInput();
+    }
+
+    focusNameInput = () => {
+        if (this.nameInput && this.nameInput.current) {
+            const domEl = ReactDOM.findDOMNode(this.nameInput.current) as HTMLInputElement;
+            domEl.focus();
+        }
+    };
+
     onChange = (e: React.ChangeEvent<FormControlProps>): void => {
         const { name, value } = e.target;
         this.props.onAliasChange(this.props.id, name, value);
@@ -34,12 +55,20 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
         this.props.onRemove(id);
     };
 
+    onAliasBlur = (e: React.ChangeEvent<FormControl>): void => {
+        this.props.onAliasChange(this.props.id, 'ignoreAliasError', false);
+    };
+
+    onSelectBlur = () => {
+        this.props.onAliasChange(this.props.id, 'ignoreSelectError', false);
+    };
+
     render() {
-        const {id, parentAlias, parentOptions} = this.props;
+        const {id, parentAlias, parentOptions,} = this.props;
         if (!parentOptions)
             return null;
 
-        const {alias, parentValue} = parentAlias;
+        const {alias, parentValue, ignoreAliasError, ignoreSelectError} = parentAlias;
 
         const aliasBlank = !alias || alias.trim().length === 0;
 
@@ -53,16 +82,18 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         canMouseOverTooltip={true}
                     />
                 </Col>
-                <Col xs={3} className={classNames({'has-error': aliasBlank})}>
+                <Col xs={3} className={classNames({'has-error': !ignoreAliasError && aliasBlank})}>
                     <FormControl
+                        ref = {this.nameInput}
                         name={"alias"}
                         type="text"
                         placeholder={'Enter an alias for import'}
                         value={alias}
                         onChange={this.onChange}
+                        onBlur={this.onAliasBlur}
                     />
                 </Col>
-                <Col xs={5} className={classNames({'has-error': !parentValue})}>
+                <Col xs={5} className={classNames({'has-error': !ignoreSelectError && !parentValue})}>
                     <SelectInput
                         formsy={false}
                         inputClass={"sampleset-insert--parent-select"}
@@ -71,6 +102,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         options={parentOptions}
                         placeholder={'Select a sample type...'}
                         value={parentValue ? parentValue.value : undefined }
+                        onBlur={this.onSelectBlur}
                     />
                 </Col>
                 <Col>

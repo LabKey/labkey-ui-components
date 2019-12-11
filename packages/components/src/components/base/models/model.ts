@@ -28,6 +28,7 @@ import {
 import { AppURL } from '../../../url/AppURL';
 import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
+const MATERIALS_SQ = SchemaQuery.create('exp', 'Materials');
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
@@ -382,6 +383,22 @@ export class QueryColumn extends Record({
 
     isLookup(): boolean {
         return this.lookup !== undefined;
+    }
+
+    isSampleLookup(): boolean {
+        /**
+         * 35881: Ensure that a column is a valid lookup to one of the following
+         * - exp.Materials
+         * - samples.* (any sample set)
+         */
+
+        if (!this.isLookup()) {
+            return false;
+        }
+
+        const lookupSQ = SchemaQuery.create(this.lookup.schemaName, this.lookup.queryName);
+
+        return MATERIALS_SQ.isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
     }
 
     isMaterialInput(): boolean {
@@ -1638,7 +1655,7 @@ export class AssayDefinitionModel extends Record({
         const columns = this.getDomainByType(domainType);
 
         if (columns) {
-            return columns.find(c => isSampleLookup(c));
+            return columns.find(c => c.isSampleLookup());
         }
 
         return null;
@@ -1721,22 +1738,6 @@ export class AssayDefinitionModel extends Record({
 
         return columns;
     }
-}
-
-export function isSampleLookup(column: QueryColumn) {
-    /**
-     * 35881: Ensure that a column is a valid lookup to one of the following
-     * - exp.Materials
-     * - samples.* (any sample set)
-     */
-
-    if (!column.isLookup()) {
-        return false;
-    }
-
-    const lookupSQ = SchemaQuery.create(column.lookup.schemaName, column.lookup.queryName);
-
-    return SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
 }
 
 export class InferDomainResponse extends Record({

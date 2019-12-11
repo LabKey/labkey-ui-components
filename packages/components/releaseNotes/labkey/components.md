@@ -2,6 +2,11 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* add handleUpdateRows to FieldEditTrigger
+* add SplitButtonGroup
+
 ### version 0.3.0
 *Released*: 6 December 2019
 * Item 6508: Permissions management components, models, and actions
@@ -31,10 +36,6 @@ Components, models, actions, and utility functions for LabKey applications and p
     * remove source-map setting from webpack.config.js
     * remove unneeded package.json dependencies and devDependencies
     * replace hardcoded documentation links with LABKEY.helpLinkPrefix
-
-### version XXX
-*Released*: XXX
-* add handleUpdateRows to FieldEditTrigger
 
 ### version 0.1.0
 *Released*: 27 November 2019

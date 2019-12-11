@@ -64,7 +64,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
     }
 
     componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
-        if (this.props.initialFileNames != nextProps.initialFileNames && Object.keys(this.state.files).length === 0) {
+        if (this.props.initialFileNames != nextProps.initialFileNames) {
             this.initFileNames(nextProps);
         }
     }
@@ -260,6 +260,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 {fileNames.map((fileName: string) => {
                     return (
                         <FileAttachmentEntry
+                            key={fileName}
                             name={fileName}
                             onDelete={this.handleRemove}
                         />

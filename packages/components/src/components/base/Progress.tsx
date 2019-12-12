@@ -119,7 +119,7 @@ export class Progress extends React.Component<Props, State> {
 
         if (modal) {
             element = (
-                <Modal bsSize="large" show={show}>
+                <Modal bsSize="large" show={show} onHide={() => {}}>
                     {title && (
                         <Modal.Header>
                             <Modal.Title>{title}</Modal.Title>

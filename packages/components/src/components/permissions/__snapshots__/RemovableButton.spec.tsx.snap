@@ -7,7 +7,7 @@ exports[`<RemovableButton/> custom props 1`] = `
   <div
     className="disabled-button-with-tooltip"
     onBlur={[Function]}
-    onClick={[Function]}
+    onClick={null}
     onFocus={[Function]}
     onMouseOut={[Function]}
     onMouseOver={[Function]}

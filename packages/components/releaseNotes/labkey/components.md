@@ -11,6 +11,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Change check for reinitializing FileAttachmentContainer to look only for a change in the initial file set
 * Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
 
+### version 0.4.0
+*Released*: 12 December 2019
+* Remove @labkey/dependencies and move all dependencies to components/package.json
+* Remove our local version of react-bootsrap.d.ts
+
+### version 0.3.1
+*Released*: 12 December 2019
+* Search job attachments
+
 ### version 0.3.0
 *Released*: 6 December 2019
 * Item 6508: Permissions management components, models, and actions
@@ -44,9 +53,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.1.0
 *Released*: 27 November 2019
 * Consolidate all `@glass` packages into this single `@labkey/components` package. The release notes for the previous
-packages ([@glass/base](../glass/base.md), 
+packages ([@glass/base](../glass/base.md),
 [@glass/domainproperties](../glass/domainproperties.md),  [@glass/navigation](../glass/navigation.md), [@glass/omnibox](../glass/omnibox.md), [@glass/querygrid](../glass/querygrid.md), and [@glass/report-list](../glass/report-list.md))
 can be found in the [glass](../glass) directory.
 * Convert build/bundle from rollupjs to webpack, output UMD format for module/app usages.
 * Move files from shared-config repository into this repository.
-  
+

@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * add handleUpdateRows to FieldEditTrigger
+* add initialFiles to FileAttachmentForm
 * add SplitButtonGroup
 
 ### version 0.3.0

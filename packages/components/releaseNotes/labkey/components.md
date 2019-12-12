@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add handleUpdateRows to FieldEditTrigger
 * add initialFiles to FileAttachmentForm
 * add SplitButtonGroup
+* add samplemanagerJob search result mapping in URLResolver
 
 ### version 0.3.0
 *Released*: 6 December 2019

@@ -21,6 +21,7 @@ import { MenuSectionModel, ProductMenuModel } from './model';
 import { User } from '../base/models/model';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
+import { AppURL } from "../../url/AppURL";
 
 interface UserMenuProps {
     model: ProductMenuModel
@@ -49,7 +50,8 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
             let menuItems = [];
             menuSection.items.forEach((item) => {
                 if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
-                    menuItems.push(<MenuItem key={item.key} href={item.url} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
+                    const href = item.url instanceof AppURL ? item.url.toHref() : item.url;
+                    menuItems.push(<MenuItem key={item.key} href={href} target={item.key === "docs" ? "_blank" : "_self"}>{item.label}</MenuItem>)
                 }
             });
 

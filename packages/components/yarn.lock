@@ -1954,25 +1954,6 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.26.tgz#4d2a20cdfd5adf8e676296a8718b4ed8d7be4243"
   integrity sha1-TSogzf1a345nYpaocYtO2Ne+QkM=
 
-"@labkey/dependencies@0.0.11":
-  version "0.0.11"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/dependencies/-/@labkey/dependencies-0.0.11.tgz#1a3e3c4e760f47c9a1381f508e057fd8cd573594"
-  integrity sha1-Gj48TnYPR8mhOB9QjgV/2M1XNZQ=
-  dependencies:
-    "@labkey/api" "0.0.26"
-    "@types/classnames" "2.2.8"
-    "@types/react" "16.8.19"
-    "@types/react-bootstrap" "0.32.17"
-    "@types/react-dom" "16.8.4"
-    classnames "2.2.6"
-    font-awesome "4.7.0"
-    immutable "3.8.2"
-    jquery "3.4.1"
-    react "16.8.6"
-    react-bootstrap "0.32.4"
-    react-dom "16.8.6"
-    reactn "1.0.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -2650,10 +2631,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-bootstrap@0.32.17":
-  version "0.32.17"
-  resolved "https://registry.yarnpkg.com/@types/react-bootstrap/-/react-bootstrap-0.32.17.tgz#62be3350734c7433683f54ec02afba69e7412427"
-  integrity sha512-w/Agv91PQ2q5w4MK+plWshyvLMFePxdl+b2KtlFHBSbr6FgaguIGEAdhA3l0hyKDmEj3VMHGFiBqwhsQJ2Rltg==
+"@types/react-bootstrap@0.32.20":
+  version "0.32.20"
+  resolved "https://registry.yarnpkg.com/@types/react-bootstrap/-/react-bootstrap-0.32.20.tgz#8d90e625a1b2d92d169de27e40b3d20057efa1ae"
+  integrity sha512-lc7bUHGMfVkbH9B7EKPD/9AYtgtFYP5go5D3tqIUN4O0znPX1UwBY4wUeicJPONaMpYtmVUGSdbDDqK9lXUCFQ==
   dependencies:
     "@types/react" "*"
 

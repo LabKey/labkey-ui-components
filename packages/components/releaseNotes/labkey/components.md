@@ -2,6 +2,11 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* UserMenu support for Sign In and Sign Out menu items
+* Add NoPermissionsAlert component
+
 ### version 0.4.0
 *Released*: 12 December 2019
 * Remove @labkey/dependencies and move all dependencies to components/package.json

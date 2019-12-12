@@ -188,8 +188,9 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         const fileNames = this.state.fileNames.filter((fileName) =>  (name !== fileName));
 
         let files = {};
-        for (let filename of Object.keys(fileNames)) {
-            files[filename] = this.state.files[filename];
+        for (let filename of Object.keys(this.state.files)) {
+            if (fileNames.indexOf(filename) >=0)
+                files[filename] = this.state.files[filename];
         }
 
         // NOTE: This will clear the field entirely so multiple file support

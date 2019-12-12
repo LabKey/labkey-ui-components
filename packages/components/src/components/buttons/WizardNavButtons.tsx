@@ -22,9 +22,9 @@ interface Props {
     isFinishedText?: string
     isFinishing?: boolean
     isFinishingText?: string
-    nextStep?: Function
+    nextStep?: (evt: any) => any
     nextStyle?: string
-    previousStep?: Function
+    previousStep?: (evt: any) => any
     singularNoun?: string
 }
 
@@ -41,7 +41,7 @@ export class WizardNavButtons extends React.Component<Props, any> {
         includeNext: true,
         isFinishedText: 'Finished',
         isFinishingText: 'Finishing...',
-        nextStyle: undefined,
+        nextStyle: 'default',
     };
 
     render() {

@@ -9,7 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
 * Allow FileListingForm to optionally include a read-only set of files (available for download only)
 * Change check for reinitializing FileAttachmentContainer to look only for a change in the initial file set
-
+* Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
 
 ### version 0.3.0
 *Released*: 6 December 2019

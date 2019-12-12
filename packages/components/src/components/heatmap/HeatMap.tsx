@@ -29,6 +29,7 @@ import { naturalSort } from '../../util/utils';
 
 export interface HeatMapProps {
     schemaQuery: SchemaQuery
+    displayNamePath?: Array<string> // path within a query row to use for displaying the y axis and by which to sort the rows of data
     nounSingular: string
     nounPlural: string
     yAxis: string
@@ -36,15 +37,20 @@ export interface HeatMapProps {
     measure: string
     yInRangeTotal?: string // property name in 'cell' containing the in-range total amount (not the complete total)
     yTotalLabel?: string
-    getCellUrl: (protocolName: string, providerName: string) => AppURL
+    getCellUrl: (row: Map<string, any>) => AppURL
     getHeaderUrl: (cell: any) => AppURL
     getTotalUrl: (cell: any) => AppURL
     headerClickUrl: AppURL
     emptyDisplay?: any
-    navigate?: (url: AppURL) => any
+    navigate?: (url: string | AppURL) => any
+    urlPrefix?: string // prefix to use when creating urls for cells and rows and headers
 }
 
 export class HeatMap extends React.Component<HeatMapProps, any> {
+
+    static defaultProps = {
+        displayNamePath: ['Protocol', 'displayValue']
+    };
 
     componentDidMount() {
         this.initModel();
@@ -65,55 +71,52 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
     }
 
     _prepareHeatMapData(data): List<Map<string, any>> {
-        const { getCellUrl } = this.props;
+        const { getCellUrl, displayNamePath } = this.props;
 
         // expected pivot column names
         let months = last12Months();
         let pivotColumns  = months.reverse();
 
         return data
-            .sortBy(row => row.getIn(['Protocol', 'displayValue'], naturalSort))
+            .sortBy(row => row.getIn(displayNamePath), naturalSort)
             .map((row: Map<string, any>) => {
-            const protocolName = row.getIn(['Protocol', 'displayValue']),
-                providerName = row.getIn(['Provider', 'value']),
-                completeTotal = row.getIn(['CompleteCount', 'value']),
-                inRangeTotal = row.getIn(['InRangeCount', 'value']);
+                const protocolName = row.getIn(displayNamePath),
+                    providerName = row.getIn(['Provider', 'value']),
+                    completeTotal = row.getIn(['CompleteCount', 'value']),
+                    inRangeTotal = row.getIn(['InRangeCount', 'value']);
 
-            let url;
-            if (protocolName) {
-                url = getCellUrl(protocolName, providerName);
-            }
+                let url = getCellUrl(row);
 
-            // create cells for the last 12 months including values for which there is no data
-            let cells = [];
-            for (let i = 0; i < pivotColumns.length; i++) {
-                let pivotCol = pivotColumns[i];
-                const pivotColName = pivotCol.yearMonth + '::MonthCount';
+                // create cells for the last 12 months including values for which there is no data
+                let cells = [];
+                for (let i = 0; i < pivotColumns.length; i++) {
+                    let pivotCol = pivotColumns[i];
+                    const pivotColName = pivotCol.yearMonth + '::MonthCount';
 
-                // Get the count for the year-month.
-                // The pivot column will not be present if no <Protocol>s have run count for that month.
-                // The pivot column value will be null if this <Protocol> has no runs, but others do.
-                let monthTotal = 0;
-                if (row.hasIn([pivotColName, 'value']))
-                    monthTotal = row.getIn([pivotColName, 'value']) || 0;
+                    // Get the count for the year-month.
+                    // The pivot column will not be present if no <Protocol>s have run count for that month.
+                    // The pivot column value will be null if this <Protocol> has no runs, but others do.
+                    let monthTotal = 0;
+                    if (row.hasIn([pivotColName, 'value']))
+                        monthTotal = row.getIn([pivotColName, 'value']) || 0;
 
-                cells.push(Map({
-                    monthName: pivotCol.monthName,
-                    monthNum: pivotCol.month,
-                    yearNum: pivotCol.year,
-                    title: pivotCol.displayValue,
-                    providerName,
-                    protocolName,
-                    monthTotal,
-                    completeTotal,
-                    inRangeTotal,
-                    url
-                }));
-            }
+                    cells.push(Map({
+                        monthName: pivotCol.monthName,
+                        monthNum: pivotCol.month,
+                        yearNum: pivotCol.year,
+                        title: pivotCol.displayValue,
+                        providerName,
+                        protocolName,
+                        monthTotal,
+                        completeTotal,
+                        inRangeTotal,
+                        url
+                    }));
+                }
 
-            return List(cells);
+                return List(cells);
 
-        }).flatten(true);
+            }).flatten(true);
     }
 
     _prepareYAxisColumns(heatMapData) {
@@ -151,7 +154,7 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
     };
 
     renderYTotalCell = (cell: Map<string, any>) => {
-        const { nounPlural } = this.props;
+        const { nounPlural, urlPrefix } = this.props;
         let inRangeTotal = cell.get('inRangeTotal'),
             completeTotal = cell.get('completeTotal'),
             url = cell.get('totalUrl');
@@ -165,14 +168,14 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
             if (inRangeTotal === completeTotal) {
                 return (
                     <span title={"All " + completeTotal + " " + nounPlural + " created in last 12 months"}>
-                        <Link to={dateUrl.toString()}>{inRangeTotal}</Link>
+                        <Link to={dateUrl.toString(urlPrefix)}>{inRangeTotal}</Link>
                     </span>
                 );
             }
 
             return (
                 <span title={inRangeTotal + " of " + completeTotal + " total " + nounPlural + " created in last 12 months"}>
-                    <Link to={dateUrl.toString()}>{inRangeTotal}</Link> / <Link to={url.toString()}>{completeTotal}</Link>
+                    <Link to={dateUrl.toString(urlPrefix)}>{inRangeTotal}</Link> / <Link to={url.toString(urlPrefix)}>{completeTotal}</Link>
                 </span>
             );
         }
@@ -181,7 +184,7 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
     };
 
     onCellClick = (cell: Map<string, any>) => {
-        const { navigate } = this.props;
+        const { navigate, urlPrefix } = this.props;
 
         // only allow click through on cells with a monthTotal
         if (navigate && cell.get('monthTotal') && cell.get('url')) {
@@ -193,12 +196,12 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
             const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
 
             const dateUrl = addDateRangeFilter(cell.get('url'), 'Created', dateBegin, dateEnd);
-            navigate(dateUrl);
+            navigate(dateUrl.toString(urlPrefix));
         }
     };
 
     onHeaderClick = (headerText: string, data: List<Map<string, any>>) => {
-        const { navigate, headerClickUrl } = this.props;
+        const { navigate, headerClickUrl, urlPrefix } = this.props;
         const anyCell = data.filter(d => d.get('monthName') === headerText).first();
 
         if (navigate && anyCell) {
@@ -210,7 +213,7 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
             const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
 
             const dateUrl = addDateRangeFilter(headerClickUrl, 'Created', dateBegin, dateEnd);
-            navigate(dateUrl);
+            navigate(dateUrl.toString(urlPrefix));
         }
     };
 

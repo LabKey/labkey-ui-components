@@ -16,7 +16,7 @@
 import React from 'react';
 import { Alert } from "./Alert";
 
-export function NoPermissionsAlert(props: any) {
+export function InsufficientPermissionsAlert(props: any) {
     return (
         <Alert>You do not have permissions for this action.</Alert>
     )

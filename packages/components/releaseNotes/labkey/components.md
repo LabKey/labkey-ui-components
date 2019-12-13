@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Change check for reinitializing FileAttachmentContainer to look only for a change in the initial file set
 * Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
 * export replaceParameter and replaceParameters methods from URL
+* add optional parameter to QueryGridPanel so some tabs can be pull right
 
 ### version 0.4.0
 *Released*: 12 December 2019

@@ -126,6 +126,16 @@ export class URLResolver {
                 }
             }),
 
+            new ActionMapper('samplesworkflow', 'templateJobs', (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const templateId = params.templateId;
+                const url = ['workflow', "template", templateId, 'jobs'];
+                if (templateId !== undefined) {
+                    return AppURL.create(...url);
+                }
+            }),
+
             new ActionMapper('assay', 'assayDetailRedirect', (row) => {
                 if (row.has('url')) {
                     const rowURL = row.get('url');

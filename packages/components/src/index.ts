@@ -142,7 +142,7 @@ import {
     updateRows,
 } from './query/api';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
-import { getLocation, Location } from './util/URL';
+import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
 import {
@@ -328,6 +328,8 @@ export {
     SamplesResolver,
     SampleSetResolver,
     getLocation,
+    replaceParameter,
+    replaceParameters,
 
     // renderers
     AliasRenderer,

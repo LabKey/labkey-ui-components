@@ -132,7 +132,7 @@ export class URLResolver {
                 const templateId = params.templateId;
                 const url = ['workflow', "template", templateId, 'jobs'];
                 if (templateId !== undefined) {
-                    return AppURL.create(...url);
+                    return AppURL.create(...url).addParam("tab", "all");
                 }
             }),
 

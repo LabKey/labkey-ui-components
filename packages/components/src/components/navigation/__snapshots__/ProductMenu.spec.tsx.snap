@@ -227,14 +227,12 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
     id="product-menu"
     onToggle={[Function]}
     open={false}
-    rootCloseEvent="mousedown"
     title="Menu"
   >
     <Uncontrolled(Dropdown)
       id="product-menu"
       onToggle={[Function]}
       open={false}
-      rootCloseEvent="mousedown"
     >
       <Dropdown
         bsClass="dropdown"
@@ -242,7 +240,6 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
         id="product-menu"
         onToggle={[Function]}
         open={false}
-        rootCloseEvent="mousedown"
       >
         <ButtonGroup
           block={false}
@@ -306,11 +303,10 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               onSelect={[Function]}
               open={false}
               pullRight={false}
-              rootCloseEvent="mousedown"
             >
               <RootCloseWrapper
                 disabled={true}
-                event="mousedown"
+                event="click"
                 onRootClose={[Function]}
               >
                 <ul
@@ -763,14 +759,12 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
     id="product-menu"
     onToggle={[Function]}
     open={false}
-    rootCloseEvent="mousedown"
     title="Menu"
   >
     <Uncontrolled(Dropdown)
       id="product-menu"
       onToggle={[Function]}
       open={false}
-      rootCloseEvent="mousedown"
     >
       <Dropdown
         bsClass="dropdown"
@@ -778,7 +772,6 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
         id="product-menu"
         onToggle={[Function]}
         open={false}
-        rootCloseEvent="mousedown"
       >
         <ButtonGroup
           block={false}
@@ -842,11 +835,10 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               onSelect={[Function]}
               open={false}
               pullRight={false}
-              rootCloseEvent="mousedown"
             >
               <RootCloseWrapper
                 disabled={true}
-                event="mousedown"
+                event="click"
                 onRootClose={[Function]}
               >
                 <ul

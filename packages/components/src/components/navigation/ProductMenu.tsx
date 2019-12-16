@@ -109,11 +109,10 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
         }
         return (
             <DropdownButton
-                    id="product-menu"
-                    title="Menu"
-                    open={this.state.menuOpen}
-                    onToggle={this.toggleMenu}
-                    rootCloseEvent="mousedown"
+                id="product-menu"
+                title="Menu"
+                open={this.state.menuOpen}
+                onToggle={this.toggleMenu}
             >
                 <div className={containerCls} onClick={this.toggleMenu}>
                     <div>

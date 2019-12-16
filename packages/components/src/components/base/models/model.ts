@@ -28,7 +28,6 @@ import {
 import { AppURL } from '../../../url/AppURL';
 import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
-const MATERIALS_SQ = SchemaQuery.create('exp', 'Materials');
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
@@ -405,6 +404,9 @@ export class QueryColumn extends Record({
         return this.name && this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1;
     }
 }
+
+// MATERIALS_SQ defined here to prevent compiler error "Class 'SchemaQuery' used before its declaration"
+const MATERIALS_SQ = SchemaQuery.create('exp', 'Materials');
 
 export class QueryLookup extends Record({
     // server defaults

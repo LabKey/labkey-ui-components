@@ -47,7 +47,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
 
         return (
             <Modal show={show} onHide={onCancel}>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={onCancel !== undefined}>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 

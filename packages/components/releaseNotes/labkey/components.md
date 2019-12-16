@@ -2,6 +2,10 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 6392: ConfirmModal fix to now show close icon in upper right if onCancel prop is undefined
+
 ### version 0.4.0
 *Released*: 12 December 2019
 * Remove @labkey/dependencies and move all dependencies to components/package.json

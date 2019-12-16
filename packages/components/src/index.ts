@@ -100,6 +100,7 @@ import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permi
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { SplitButtonGroup } from './components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
@@ -544,6 +545,7 @@ export {
     SelectionMenuItem,
     ManageDropdownButton,
     WizardNavButtons,
+    SplitButtonGroup,
     ToggleButtons,
     Cards,
     Footer,

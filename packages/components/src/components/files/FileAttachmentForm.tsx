@@ -33,6 +33,7 @@ interface FileAttachmentFormProps {
     allowMultiple?: boolean
     cancelText?: string
     initialFileNames?: Array<string>
+    initialFiles?: {[key:string]: File}
     label?: string
     labelLong?: string
     onCancel?: () => any
@@ -323,6 +324,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             allowDirectories,
             allowMultiple,
             initialFileNames,
+            initialFiles,
             label,
             labelLong,
             showButtons,
@@ -344,6 +346,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             handleChange={this.handleFileChange}
                             handleRemoval={this.handleFileRemoval}
                             initialFileNames={initialFileNames}
+                            initialFiles={initialFiles}
                             allowMultiple={allowMultiple}
                             labelLong={labelLong}/>
                     </FormSection>

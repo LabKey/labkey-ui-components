@@ -67,20 +67,20 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
     return parts.join('|').toLowerCase();
 }
 
+export type PropsInitializer = () => IStateModelProps;
+
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
  * @param gridId
  * @param schemaQuery
- * @param [initProps] can be either a props object or a function that returns a props object. The advantage of using
- * a function is that it is only called once for the lifetime of the model thus saving cycles constructing the prop
- * object.
+ * @param [initProps] can be either a props object or a function that returns a props object.
  * @param [keyValue]
  * @returns {QueryGridModel}
  */
 export function getStateQueryGridModel(
     gridId: string,
     schemaQuery: SchemaQuery,
-    initProps?: IStateModelProps | Function, // () => IStateModelProps
+    initProps?: IStateModelProps | PropsInitializer,
     keyValue?: any
 ): QueryGridModel {
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);

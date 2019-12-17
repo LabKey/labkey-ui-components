@@ -2,6 +2,10 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* QueryGrid fix to remove extra call to reloadQueryGridModel when it is being unmounted
+
 ### version 0.5.0
 *Released*: 16 December 2019
 * add handleUpdateRows to FieldEditTrigger

@@ -610,6 +610,7 @@ export class QueryGridModel extends Record({
     }
 
     canImport() {
+        // TODO: Remove this. It Looks to be unused in this repo and consuming applications.
         return this.showImportDataButton().get('canImport');
     }
 
@@ -911,6 +912,8 @@ export class QueryGridModel extends Record({
     }
 
     showImportDataButton(): Map<any, any> {
+        // TODO: Make this just return the canInsert boolean. The only usages of this in Biologics/SampleManager only
+        //  use the boolean and not the url.
         const query = this.queryInfo;
 
         if (query) {
@@ -927,6 +930,8 @@ export class QueryGridModel extends Record({
     }
 
     showInsertNewButton(): Map<any, any> {
+        // TODO: Make this just return the canInsert boolean. The only usages of this in Biologics/SampleManager only
+        //  use the boolean and not the url.
         const query = this.queryInfo;
 
         if (query) {
@@ -956,6 +961,8 @@ export class QueryGridModel extends Record({
     }
 
     getRowIdsList(useSelectedIds: boolean): List<Map<string, any>> {
+        // TODO: remove this method. It looks to only be used by SampleManager in a method called deleteSamples, but
+        //  that method looks to be unused.
         let rows = List<Map<string, any>>();
         if (!useSelectedIds) {
             this.getData().forEach( (data) => {

@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * UserMenu support for Sign In and Sign Out menu items
 * Add InsufficientPermissionsAlert component
 
+### version 0.5.0
+*Released*: 16 December 2019
+* add handleUpdateRows to FieldEditTrigger
+* add initialFiles to FileAttachmentForm
+* add SplitButtonGroup
+* add samplemanagerJob search result mapping in URLResolver
+
 ### version 0.4.0
 *Released*: 12 December 2019
 * Remove @labkey/dependencies and move all dependencies to components/package.json

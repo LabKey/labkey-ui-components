@@ -28,6 +28,7 @@ interface FileAttachmentContainerProps {
     handleRemoval?: any
     labelLong?: string
     initialFileNames?: Array<string>
+    initialFiles?: {[key:string]: File}
 }
 
 interface FileAttachmentContainerState {
@@ -53,7 +54,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         this.fileInput = React.createRef();
 
         this.state = {
-            files: {},
+            files: props.initialFiles ? props.initialFiles : {},
             fileNames: props.initialFileNames || [],
             isHover: false
         }
@@ -73,7 +74,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         // since we do not have the file objects themselves, we do not check if the
         // file "type" is valid.  There is presumably nothing a user could do if it were
         // invalid.
-        this.setState(() => ({fileNames: props.initialFileNames || []}))
+        this.setState(() => ({fileNames: props.initialFileNames || (props.initialFiles && Object.keys(props.initialFiles)) || []}))
     }
 
 
@@ -186,13 +187,12 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         const { handleRemoval } = this.props;
 
         const fileNames = this.state.fileNames.filter((fileName) =>  (name !== fileName));
-        const files = Object.keys(this.state.files)
-            .filter(fileName => fileName !== name)
-            .reduce((prev, next) => {
-                const file = this.state.files[next];
-                prev[file.name] = file;
-                return prev;
-            }, {});
+
+        let files = {};
+        for (let filename of Object.keys(this.state.files)) {
+            if (fileNames.indexOf(filename) >=0)
+                files[filename] = this.state.files[filename];
+        }
 
         // NOTE: This will clear the field entirely so multiple file support
         // will need to account for this and rewrite this clearing mechanism

@@ -418,6 +418,9 @@ export class URLResolver {
                             query = row.getIn(['data', 'type']);
                             return row.set('url', this.mapURL({url, row, column, query}))
                         }
+                        else if (id.indexOf('samplemanagerJob') >= 0) {
+                            return row.set('url', this.mapURL({url, row, column}));
+                        }
                     }
                     return row;
                 });

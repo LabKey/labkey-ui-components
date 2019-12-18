@@ -2,10 +2,10 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
-* UserMenu support for Sign In and Sign Out menu items
-* Add InsufficientPermissionsAlert component
+### version 0.6.0
+*Released*: 18 December 2019
+* Item 5511: UserMenu support for Sign In and Sign Out menu items
+* Item 5511: Add InsufficientPermissionsAlert component
 
 ### version 0.5.0
 *Released*: 16 December 2019

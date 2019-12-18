@@ -12,6 +12,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
 * export replaceParameter and replaceParameters methods from URL
 * add optional parameter to QueryGridPanel so some tabs can be pull right
+* Add description property to QuerySelect to pass it through to SelectInput
+* Increase label field size on SelectInput
 
 ### version 0.5.0
 *Released*: 16 December 2019

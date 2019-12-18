@@ -75,6 +75,7 @@ import { ISubItem, SubMenuItem, SubMenuItemProps } from './components/menus/SubM
 import { SelectionMenuItem } from './components/menus/SelectionMenuItem';
 import { LoadingModal } from './components/base/LoadingModal';
 import { LoadingSpinner } from './components/base/LoadingSpinner';
+import { InsufficientPermissionsAlert } from './components/base/InsufficientPermissionsAlert';
 import { NotFound } from './components/base/NotFound';
 import { Page, PageProps } from './components/base/Page';
 import { LoadingPage, LoadingPageProps } from './components/base/LoadingPage';
@@ -527,6 +528,7 @@ export {
     LoadingModal,
     LoadingSpinner,
     LoadingPage,
+    InsufficientPermissionsAlert,
     NotFound,
     Page,
     PageHeader,

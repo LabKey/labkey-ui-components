@@ -15,6 +15,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add description property to QuerySelect to pass it through to SelectInput
 * Increase label field size on SelectInput
 
+### version 0.6.0
+*Released*: 18 December 2019
+* Item 5511: UserMenu support for Sign In and Sign Out menu items
+* Item 5511: Add InsufficientPermissionsAlert component
+
 ### version 0.5.0
 *Released*: 16 December 2019
 * add handleUpdateRows to FieldEditTrigger

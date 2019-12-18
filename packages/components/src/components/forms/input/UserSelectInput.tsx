@@ -42,6 +42,7 @@ export class UserSelectInput extends React.Component<UserSelectInputProps, any> 
             });
         }).catch((error) => {
             console.error(error);
+            cb(null, {complete: true, options: []})
         });
     }
 

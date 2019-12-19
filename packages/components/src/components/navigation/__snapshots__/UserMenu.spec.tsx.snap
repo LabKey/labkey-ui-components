@@ -105,6 +105,25 @@ exports[`UserMenu user logged in dev mode 1`] = `
          Redux Tools
       </a>
     </li>
+    <li
+      className="divider"
+      onKeyDown={[Function]}
+      role="separator"
+    />
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Sign Out
+      </a>
+    </li>
   </ul>
 </div>
 `;
@@ -232,6 +251,25 @@ exports[`UserMenu user logged in extra dev mode items 1`] = `
     <div>
       Extra Dev Two
     </div>
+    <li
+      className="divider"
+      onKeyDown={[Function]}
+      role="separator"
+    />
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Sign Out
+      </a>
+    </li>
   </ul>
 </div>
 `;
@@ -353,6 +391,25 @@ exports[`UserMenu user logged in extra items 1`] = `
          Redux Tools
       </a>
     </li>
+    <li
+      className="divider"
+      onKeyDown={[Function]}
+      role="separator"
+    />
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Sign Out
+      </a>
+    </li>
   </ul>
 </div>
 `;
@@ -435,6 +492,25 @@ exports[`UserMenu user logged in, but not in dev mode 1`] = `
         tabIndex="-1"
       >
         Switch to LabKey
+      </a>
+    </li>
+    <li
+      className="divider"
+      onKeyDown={[Function]}
+      role="separator"
+    />
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Sign Out
       </a>
     </li>
   </ul>
@@ -532,6 +608,39 @@ exports[`UserMenu user logged in, without switch to labkey 1`] = `
          Redux Tools
       </a>
     </li>
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="/labkey/project/begin.view"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Switch to LabKey
+      </a>
+    </li>
+    <li
+      className="divider"
+      onKeyDown={[Function]}
+      role="separator"
+    />
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Sign Out
+      </a>
+    </li>
   </ul>
 </div>
 `;
@@ -599,6 +708,25 @@ exports[`UserMenu user not logged in 1`] = `
         tabIndex="-1"
       >
         Switch to LabKey
+      </a>
+    </li>
+    <li
+      className="divider"
+      onKeyDown={[Function]}
+      role="separator"
+    />
+    <li
+      className=""
+      role="presentation"
+    >
+      <a
+        href="#"
+        onClick={[Function]}
+        onKeyDown={[Function]}
+        role="menuitem"
+        tabIndex="-1"
+      >
+        Sign In
       </a>
     </li>
   </ul>

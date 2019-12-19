@@ -18,6 +18,7 @@ import { DeleteConfirmationData, getSampleDeleteConfirmationData } from './actio
 import { SampleDeleteConfirmModalDisplay } from './SampleDeleteConfirmModalDisplay';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { LoadingSpinner } from '../base/LoadingSpinner';
+import { Alert } from "../base/Alert";
 
 interface Props {
     onConfirm: (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
@@ -101,7 +102,7 @@ export class SampleDeleteConfirmModal extends React.Component<Props, State> {
                 <ConfirmModal
                     title={"Deletion Error"}
                     onCancel={onCancel}
-                    msg={this.state.error}
+                    msg={<Alert>{this.state.error}</Alert>}
                     onConfirm={undefined}
                     cancelButtonText={"Dismiss"}
                 />

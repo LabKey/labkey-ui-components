@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 6392: ConfirmModal fix to now show close icon in upper right if onCancel prop is undefined
+* Item 6392: Misc fixes for error messaging on user logged out / session timeout
 
 ### version 0.6.0
 *Released*: 18 December 2019

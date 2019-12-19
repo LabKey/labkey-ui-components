@@ -90,6 +90,9 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                 }));
             }).catch((reason) => {
                 console.error(reason);
+                this.setState(() => ({
+                    parentOptions: [NEW_SAMPLE_SET_OPTION]
+                }))
             });
         }
     }

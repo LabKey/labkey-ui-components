@@ -2,8 +2,8 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.6.1
+*Released*: 20 December 2019
 * QueryGrid fix to remove extra call to reloadQueryGridModel when it is being unmounted
 
 ### version 0.6.0

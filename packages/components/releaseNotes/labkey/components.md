@@ -2,6 +2,11 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.6.2
+*Released*: 20 December 2019
+* Item 6261: Update Sample Set --> Sample Type where applicable for Sample ui components
+* Fix Issue 38700: Parent alias field in sample type design is in error state too early
+
 ### version 0.6.1
 *Released*: 20 December 2019
 * QueryGrid fix to remove extra call to reloadQueryGridModel when it is being unmounted

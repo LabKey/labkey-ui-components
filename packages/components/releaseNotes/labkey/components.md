@@ -5,10 +5,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Misc domain designer fixes for Sample Manager
-  - Issue 39256: No margin between panel and buttons on single domain for sample type
-  - Issue 39225: Sample Manager profile page doesn't block whitespace only display name
+  - Issue 39256: Fix margin between panel and buttons on sample type field designer
+  - Issue 39225: Fix so profile form trims display name before submit
   - Issue 39093: Help link in core domain designer points to future Sample Manager docs
-  - Issue 39079: Assay Design page resizing produces strange layout
+  - Issue 39079: Fix assay design properties, error messages, and buttons for page layout size changes
+  - Issue 38853: Change floating subnav to use display:none instead of visibility: hidden
 
 ### version 0.6.2
 *Released*: 20 December 2019

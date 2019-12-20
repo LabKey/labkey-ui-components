@@ -28,7 +28,6 @@ import {
     FILELINK_RANGE_URI,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
-    LK_DOMAIN_HELP_URL,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -93,7 +92,7 @@ describe('DomainForm', () => {
         expect(searchField.length).toEqual(0);
 
         // Help link
-        const helpLink = form.find({className: 'domain-field-float-right', href: LK_DOMAIN_HELP_URL});
+        const helpLink = form.find({className: 'domain-field-float-right', href: 'https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor'});
         expect(helpLink.length).toEqual(1);
 
         expect(toJson(form)).toMatchSnapshot();

@@ -367,16 +367,15 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                         >
                           <Col
                             bsClass="col"
-                            className="domain-field-no-padding-right"
                             componentClass="div"
-                            lg={5}
-                            xs={11}
+                            lg={12}
+                            xs={12}
                           >
                             <div
-                              className="domain-field-no-padding-right col-lg-5 col-xs-11"
+                              className="col-lg-12 col-xs-12"
                             >
                               <div
-                                className="domain-field-padding-bottom domain-field-no-padding-right"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
@@ -408,6 +407,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <NameInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -504,6 +504,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Name"
                                     required={true}
@@ -519,11 +520,11 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             <span
                                               className="domain-no-wrap"
@@ -655,11 +656,11 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <FormControl
                                               bsClass="form-control"
@@ -688,6 +689,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                   </AssayPropertiesInput>
                                 </NameInput>
                                 <DescriptionInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -784,6 +786,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Description"
                                   >
@@ -798,11 +801,11 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             <span
                                               className="domain-no-wrap"
@@ -932,11 +935,11 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <textarea
                                               className="form-control domain-field-textarea"
@@ -983,6 +986,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <EditableRunsInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -1079,6 +1083,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Editable Runs"
                                   >
@@ -1093,11 +1098,11 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             Editable 
                                             <span
@@ -1228,11 +1233,11 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <input
                                               checked={false}
@@ -1251,22 +1256,12 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                           </Col>
                           <Col
                             bsClass="col"
-                            className="domain-field-no-side-padding"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="domain-field-no-side-padding col-xs-1"
-                            />
-                          </Col>
-                          <Col
-                            bsClass="col"
                             componentClass="div"
                             lg={6}
-                            xs={11}
+                            xs={12}
                           >
                             <div
-                              className="col-lg-6 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             />
                           </Col>
                         </form>
@@ -3389,99 +3384,48 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
       </DomainFormImpl>
     </LookupProvider>
   </DomainForm>
-  <Row
-    bsClass="row"
-    className="domain-field-padding-top"
-    componentClass="div"
+  <div
+    className="domain-form-panel"
+  />
+  <div
+    className="domain-form-panel domain-assay-buttons"
   >
-    <div
-      className="domain-field-padding-top row"
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={12}
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-12"
-        />
-      </Col>
-    </div>
-  </Row>
-  <Row
-    bsClass="row"
-    componentClass="div"
-  >
-    <div
-      className="row"
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
+      <button
+        className="pull-right btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="default"
-            className="domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="domain-assay-save-btn btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </Button>
-        </div>
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={10}
-      >
-        <div
-          className="col-xs-10"
-        />
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
-      >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="success"
-            className="pull-right domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="pull-right domain-assay-save-btn btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Save
-            </button>
-          </Button>
-        </div>
-      </Col>
-    </div>
-  </Row>
+        Save
+      </button>
+    </Button>
+  </div>
 </AssayDesignerPanels>
 `;
 
@@ -4322,16 +4266,15 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                         >
                           <Col
                             bsClass="col"
-                            className="domain-field-no-padding-right"
                             componentClass="div"
-                            lg={5}
-                            xs={11}
+                            lg={12}
+                            xs={12}
                           >
                             <div
-                              className="domain-field-no-padding-right col-lg-5 col-xs-11"
+                              className="col-lg-12 col-xs-12"
                             >
                               <div
-                                className="domain-field-padding-bottom domain-field-no-padding-right"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
@@ -4363,6 +4306,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <NameInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -4668,6 +4612,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Name"
                                     required={true}
@@ -4683,11 +4628,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             <span
                                               className="domain-no-wrap"
@@ -4819,11 +4764,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <FormControl
                                               bsClass="form-control"
@@ -4852,6 +4797,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   </AssayPropertiesInput>
                                 </NameInput>
                                 <DescriptionInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -5157,6 +5103,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Description"
                                   >
@@ -5171,11 +5118,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             <span
                                               className="domain-no-wrap"
@@ -5305,11 +5252,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <textarea
                                               className="form-control domain-field-textarea"
@@ -5356,6 +5303,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <EditableRunsInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -5661,6 +5609,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Editable Runs"
                                   >
@@ -5675,11 +5624,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             Editable 
                                             <span
@@ -5810,11 +5759,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <input
                                               checked={true}
@@ -5829,6 +5778,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   </AssayPropertiesInput>
                                 </EditableRunsInput>
                                 <EditableResultsInput
+                                  basePropertiesOnly={true}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -6134,6 +6084,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={true}
                                     helpTipBody={[Function]}
                                     label="Editable Results"
                                   >
@@ -6148,11 +6099,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={4}
+                                          lg={2}
                                           xs={3}
                                         >
                                           <div
-                                            className="col-lg-4 col-xs-3"
+                                            className="col-lg-2 col-xs-3"
                                           >
                                             Editable 
                                             <span
@@ -6283,11 +6234,11 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                         <Col
                                           bsClass="col"
                                           componentClass="div"
-                                          lg={8}
+                                          lg={10}
                                           xs={9}
                                         >
                                           <div
-                                            className="col-lg-8 col-xs-9"
+                                            className="col-lg-10 col-xs-9"
                                           >
                                             <input
                                               checked={true}
@@ -6306,22 +6257,12 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                           </Col>
                           <Col
                             bsClass="col"
-                            className="domain-field-no-side-padding"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="domain-field-no-side-padding col-xs-1"
-                            />
-                          </Col>
-                          <Col
-                            bsClass="col"
                             componentClass="div"
                             lg={6}
-                            xs={11}
+                            xs={12}
                           >
                             <div
-                              className="col-lg-6 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             />
                           </Col>
                         </form>
@@ -15804,99 +15745,48 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
       </DomainFormImpl>
     </LookupProvider>
   </DomainForm>
-  <Row
-    bsClass="row"
-    className="domain-field-padding-top"
-    componentClass="div"
+  <div
+    className="domain-form-panel"
+  />
+  <div
+    className="domain-form-panel domain-assay-buttons"
   >
-    <div
-      className="domain-field-padding-top row"
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={12}
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-12"
-        />
-      </Col>
-    </div>
-  </Row>
-  <Row
-    bsClass="row"
-    componentClass="div"
-  >
-    <div
-      className="row"
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
+      <button
+        className="pull-right btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="default"
-            className="domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="domain-assay-save-btn btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </Button>
-        </div>
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={10}
-      >
-        <div
-          className="col-xs-10"
-        />
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
-      >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="success"
-            className="pull-right domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="pull-right domain-assay-save-btn btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Save
-            </button>
-          </Button>
-        </div>
-      </Col>
-    </div>
-  </Row>
+        Save
+      </button>
+    </Button>
+  </div>
 </AssayDesignerPanels>
 `;
 
@@ -16266,16 +16156,15 @@ exports[`AssayDesignerPanels default properties 1`] = `
                         >
                           <Col
                             bsClass="col"
-                            className="domain-field-no-padding-right"
                             componentClass="div"
-                            lg={5}
-                            xs={11}
+                            lg={6}
+                            xs={12}
                           >
                             <div
-                              className="domain-field-no-padding-right col-lg-5 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="domain-field-padding-bottom domain-field-no-padding-right"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
@@ -16307,6 +16196,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <NameInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -16403,6 +16293,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Name"
                                     required={true}
@@ -16587,6 +16478,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   </AssayPropertiesInput>
                                 </NameInput>
                                 <DescriptionInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -16683,6 +16575,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Description"
                                   >
@@ -16882,6 +16775,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <EditableRunsInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -16978,6 +16872,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Editable Runs"
                                   >
@@ -17150,25 +17045,15 @@ exports[`AssayDesignerPanels default properties 1`] = `
                           </Col>
                           <Col
                             bsClass="col"
-                            className="domain-field-no-side-padding"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="domain-field-no-side-padding col-xs-1"
-                            />
-                          </Col>
-                          <Col
-                            bsClass="col"
                             componentClass="div"
                             lg={6}
-                            xs={11}
+                            xs={12}
                           >
                             <div
-                              className="col-lg-6 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="assay-props-column domain-field-padding-bottom"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   title="Import Settings"
@@ -19594,99 +19479,48 @@ exports[`AssayDesignerPanels default properties 1`] = `
       </DomainFormImpl>
     </LookupProvider>
   </DomainForm>
-  <Row
-    bsClass="row"
-    className="domain-field-padding-top"
-    componentClass="div"
+  <div
+    className="domain-form-panel"
+  />
+  <div
+    className="domain-form-panel domain-assay-buttons"
   >
-    <div
-      className="domain-field-padding-top row"
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={12}
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-12"
-        />
-      </Col>
-    </div>
-  </Row>
-  <Row
-    bsClass="row"
-    componentClass="div"
-  >
-    <div
-      className="row"
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
+      <button
+        className="pull-right btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="default"
-            className="domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="domain-assay-save-btn btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </Button>
-        </div>
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={10}
-      >
-        <div
-          className="col-xs-10"
-        />
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
-      >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="success"
-            className="pull-right domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="pull-right domain-assay-save-btn btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Save
-            </button>
-          </Button>
-        </div>
-      </Col>
-    </div>
-  </Row>
+        Save
+      </button>
+    </Button>
+  </div>
 </AssayDesignerPanels>
 `;
 
@@ -20057,16 +19891,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                         >
                           <Col
                             bsClass="col"
-                            className="domain-field-no-padding-right"
                             componentClass="div"
-                            lg={5}
-                            xs={11}
+                            lg={6}
+                            xs={12}
                           >
                             <div
-                              className="domain-field-no-padding-right col-lg-5 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="domain-field-padding-bottom domain-field-no-padding-right"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
@@ -20098,6 +19931,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <NameInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -20194,6 +20028,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Name"
                                     required={true}
@@ -20378,6 +20213,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   </AssayPropertiesInput>
                                 </NameInput>
                                 <DescriptionInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -20474,6 +20310,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Description"
                                   >
@@ -20673,6 +20510,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <EditableRunsInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": false,
@@ -20769,6 +20607,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Editable Runs"
                                   >
@@ -20941,25 +20780,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                           </Col>
                           <Col
                             bsClass="col"
-                            className="domain-field-no-side-padding"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="domain-field-no-side-padding col-xs-1"
-                            />
-                          </Col>
-                          <Col
-                            bsClass="col"
                             componentClass="div"
                             lg={6}
-                            xs={11}
+                            xs={12}
                           >
                             <div
-                              className="col-lg-6 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="assay-props-column domain-field-padding-bottom"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   title="Import Settings"
@@ -22705,99 +22534,48 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
       </DomainFormImpl>
     </LookupProvider>
   </DomainForm>
-  <Row
-    bsClass="row"
-    className="domain-field-padding-top"
-    componentClass="div"
+  <div
+    className="domain-form-panel"
+  />
+  <div
+    className="domain-form-panel domain-assay-buttons"
   >
-    <div
-      className="domain-field-padding-top row"
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={12}
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-12"
-        />
-      </Col>
-    </div>
-  </Row>
-  <Row
-    bsClass="row"
-    componentClass="div"
-  >
-    <div
-      className="row"
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
+      <button
+        className="pull-right btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="default"
-            className="domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="domain-assay-save-btn btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </Button>
-        </div>
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={10}
-      >
-        <div
-          className="col-xs-10"
-        />
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
-      >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="success"
-            className="pull-right domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="pull-right domain-assay-save-btn btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Save
-            </button>
-          </Button>
-        </div>
-      </Col>
-    </div>
-  </Row>
+        Save
+      </button>
+    </Button>
+  </div>
 </AssayDesignerPanels>
 `;
 
@@ -23638,16 +23416,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         >
                           <Col
                             bsClass="col"
-                            className="domain-field-no-padding-right"
                             componentClass="div"
-                            lg={5}
-                            xs={11}
+                            lg={6}
+                            xs={12}
                           >
                             <div
-                              className="domain-field-no-padding-right col-lg-5 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="domain-field-padding-bottom domain-field-no-padding-right"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
@@ -23679,6 +23456,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <NameInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -23984,6 +23762,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Name"
                                     required={true}
@@ -24168,6 +23947,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   </AssayPropertiesInput>
                                 </NameInput>
                                 <DescriptionInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -24473,6 +24253,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Description"
                                   >
@@ -24672,6 +24453,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <EditableRunsInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -24977,6 +24759,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Editable Runs"
                                   >
@@ -25145,6 +24928,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   </AssayPropertiesInput>
                                 </EditableRunsInput>
                                 <EditableResultsInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -25450,6 +25234,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Editable Results"
                                   >
@@ -25622,25 +25407,15 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                           </Col>
                           <Col
                             bsClass="col"
-                            className="domain-field-no-side-padding"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="domain-field-no-side-padding col-xs-1"
-                            />
-                          </Col>
-                          <Col
-                            bsClass="col"
                             componentClass="div"
                             lg={6}
-                            xs={11}
+                            xs={12}
                           >
                             <div
-                              className="col-lg-6 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="assay-props-column domain-field-padding-bottom"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   title="Import Settings"
@@ -35087,99 +34862,48 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       </DomainFormImpl>
     </LookupProvider>
   </DomainForm>
-  <Row
-    bsClass="row"
-    className="domain-field-padding-top"
-    componentClass="div"
+  <div
+    className="domain-form-panel"
+  />
+  <div
+    className="domain-form-panel domain-assay-buttons"
   >
-    <div
-      className="domain-field-padding-top row"
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={12}
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-12"
-        />
-      </Col>
-    </div>
-  </Row>
-  <Row
-    bsClass="row"
-    componentClass="div"
-  >
-    <div
-      className="row"
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
+      <button
+        className="pull-right btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="default"
-            className="domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="domain-assay-save-btn btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </Button>
-        </div>
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={10}
-      >
-        <div
-          className="col-xs-10"
-        />
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
-      >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="success"
-            className="pull-right domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="pull-right domain-assay-save-btn btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Save
-            </button>
-          </Button>
-        </div>
-      </Col>
-    </div>
-  </Row>
+        Save
+      </button>
+    </Button>
+  </div>
 </AssayDesignerPanels>
 `;
 
@@ -36019,16 +35743,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         >
                           <Col
                             bsClass="col"
-                            className="domain-field-no-padding-right"
                             componentClass="div"
-                            lg={5}
-                            xs={11}
+                            lg={6}
+                            xs={12}
                           >
                             <div
-                              className="domain-field-no-padding-right col-lg-5 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="domain-field-padding-bottom domain-field-no-padding-right"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
@@ -36060,6 +35783,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <NameInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -36365,6 +36089,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Name"
                                     required={true}
@@ -36549,6 +36274,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   </AssayPropertiesInput>
                                 </NameInput>
                                 <DescriptionInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -36854,6 +36580,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Description"
                                   >
@@ -37053,6 +36780,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   </Row>
                                 </SectionHeading>
                                 <EditableRunsInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -37358,6 +37086,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Editable Runs"
                                   >
@@ -37526,6 +37255,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   </AssayPropertiesInput>
                                 </EditableRunsInput>
                                 <EditableResultsInput
+                                  basePropertiesOnly={false}
                                   model={
                                     Immutable.Record {
                                       "allowBackgroundUpload": true,
@@ -37831,6 +37561,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                   onChange={[Function]}
                                 >
                                   <AssayPropertiesInput
+                                    basePropertiesOnly={false}
                                     helpTipBody={[Function]}
                                     label="Editable Results"
                                   >
@@ -38003,25 +37734,15 @@ exports[`AssayDesignerPanels initModel 1`] = `
                           </Col>
                           <Col
                             bsClass="col"
-                            className="domain-field-no-side-padding"
-                            componentClass="div"
-                            xs={1}
-                          >
-                            <div
-                              className="domain-field-no-side-padding col-xs-1"
-                            />
-                          </Col>
-                          <Col
-                            bsClass="col"
                             componentClass="div"
                             lg={6}
-                            xs={11}
+                            xs={12}
                           >
                             <div
-                              className="col-lg-6 col-xs-11"
+                              className="col-lg-6 col-xs-12"
                             >
                               <div
-                                className="assay-props-column domain-field-padding-bottom"
+                                className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
                                   title="Import Settings"
@@ -48489,98 +48210,47 @@ exports[`AssayDesignerPanels initModel 1`] = `
       </DomainFormImpl>
     </LookupProvider>
   </DomainForm>
-  <Row
-    bsClass="row"
-    className="domain-field-padding-top"
-    componentClass="div"
+  <div
+    className="domain-form-panel"
+  />
+  <div
+    className="domain-form-panel domain-assay-buttons"
   >
-    <div
-      className="domain-field-padding-top row"
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="default"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={12}
+      <button
+        className="btn btn-default"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-12"
-        />
-      </Col>
-    </div>
-  </Row>
-  <Row
-    bsClass="row"
-    componentClass="div"
-  >
-    <div
-      className="row"
+        Cancel
+      </button>
+    </Button>
+    <Button
+      active={false}
+      block={false}
+      bsClass="btn"
+      bsStyle="success"
+      className="pull-right"
+      disabled={false}
+      onClick={[Function]}
     >
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
+      <button
+        className="pull-right btn btn-success"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
       >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="default"
-            className="domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="domain-assay-save-btn btn btn-default"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Cancel
-            </button>
-          </Button>
-        </div>
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={10}
-      >
-        <div
-          className="col-xs-10"
-        />
-      </Col>
-      <Col
-        bsClass="col"
-        componentClass="div"
-        xs={1}
-      >
-        <div
-          className="col-xs-1"
-        >
-          <Button
-            active={false}
-            block={false}
-            bsClass="btn"
-            bsStyle="success"
-            className="pull-right domain-assay-save-btn"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <button
-              className="pull-right domain-assay-save-btn btn btn-success"
-              disabled={false}
-              onClick={[Function]}
-              type="button"
-            >
-              Save
-            </button>
-          </Button>
-        </div>
-      </Col>
-    </div>
-  </Row>
+        Save
+      </button>
+    </Button>
+  </div>
 </AssayDesignerPanels>
 `;

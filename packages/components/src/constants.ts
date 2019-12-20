@@ -181,4 +181,3 @@ export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
 
 export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';
 export const PARENT_ALIAS_HELPER_TEXT = "Column headings used during import to set a sample's parentage.";
-export const PARENT_ALIAS_DOC_URL = LABKEY.helpLinkPrefix + 'deriveSamples#alias';

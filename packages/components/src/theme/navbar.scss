@@ -12,14 +12,14 @@
     top: -44px;
 
     & > .sub-nav {
-      visibility: hidden;
+      display: none;
     }
 
     &.show-sub-nav {
 
       & > .sub-nav {
         box-shadow: 0 2px 4px darkgrey;
-        visibility: visible;
+        display: block;
       }
     }
   }

@@ -2,6 +2,14 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Misc domain designer fixes for Sample Manager
+  - Issue 39256: No margin between panel and buttons on single domain for sample type
+  - Issue 39225: Sample Manager profile page doesn't block whitespace only display name
+  - Issue 39093: Help link in core domain designer points to future Sample Manager docs
+  - Issue 39079: Assay Design page resizing produces strange layout
+
 ### version 0.6.2
 *Released*: 20 December 2019
 * Item 6261: Update Sample Set --> Sample Type where applicable for Sample ui components

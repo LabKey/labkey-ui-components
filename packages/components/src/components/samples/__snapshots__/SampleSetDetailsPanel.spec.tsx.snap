@@ -66,7 +66,7 @@ Array [
               className="form-control"
               id="sample-set-create-name"
               onChange={[Function]}
-              placeholder="Enter a name for this sample set"
+              placeholder="Enter a name for this sample type"
               type="text"
             />
           </div>
@@ -123,7 +123,7 @@ Array [
             className="col-xs-3"
           >
             <span>
-              Name Expression
+              Naming Pattern
                
               <span
                 className="label-help-target"
@@ -319,7 +319,7 @@ Array [
               className="form-control"
               id="sample-set-create-name"
               onChange={[Function]}
-              placeholder="Enter a name for this sample set"
+              placeholder="Enter a name for this sample type"
               type="text"
             />
           </div>
@@ -376,7 +376,7 @@ Array [
             className="col-xs-3"
           >
             <span>
-              Name Expression
+              Naming Pattern
                
               <span
                 className="label-help-target"

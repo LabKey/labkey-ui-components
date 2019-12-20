@@ -33,7 +33,7 @@ storiesOf('SearchResults', module)
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
-                data={Map(fromJS({sampleSet: {name: 'Sample Set 1'}}))}
+                data={Map(fromJS({sampleSet: {name: 'Sample Type 1'}}))}
             />
         )
     })
@@ -48,6 +48,7 @@ storiesOf('SearchResults', module)
             <SearchResultsPanel
                 iconUrl={ICON_URL}
                 model={model}
+                useSampleType={boolean('useSampleType', false) /*Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps*/ }
             />
         )
     });

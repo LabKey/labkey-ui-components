@@ -24,6 +24,7 @@ interface SearchResultProps {
     url: string
     data?: any
     iconUrl?: string
+    useSampleType?: boolean  // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
@@ -52,13 +53,14 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
     }
 
     resolveImage() {
-        const { category, data, iconUrl } = this.props;
+        const { category, data, iconUrl, useSampleType } = this.props;
 
         if (iconUrl) {
             return <img className="search-result__card-icon" src={iconUrl}/>
         }
 
         let iconSrc = '';
+        let altText;
         if (data) {
             if (data.getIn(['dataClass', 'name'])) {
                 iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
@@ -80,6 +82,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
             }
             else if (data.get('type') === 'sampleSet') {
                 iconSrc = 'sample_set';
+                altText = useSampleType ? 'sample_type-icon' : undefined;
             }
             else if (data.get('type')) {
                 iconSrc=data.get('type').toLowerCase();
@@ -100,11 +103,30 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         return <SVGIcon
             iconDir={'_images'}
             iconSrc={iconSrc}
+            alt={altText}
             className="search-result__card-icon"/>
     }
 
+    /**
+     * Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
+     */
+    resolveTitle = () => {
+        const {data, title, useSampleType} = this.props;
+        if (!data)
+            return title;
+
+        let titleText = title;
+        const type = data.get("type");
+        if (type && type === "sampleSet" && useSampleType)
+        {
+            const name = data.get("name");
+            titleText = "Sample Type - " + name;
+        }
+        return titleText;
+    };
+
     render () {
-        const { title, summary, url } = this.props;
+        const { summary, url, } = this.props;
 
         return (
             <a href={url}>
@@ -115,7 +137,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                     <div className="col-md-10 col-sm-12">
                         <div>
                             <h4 className="text-capitalize">
-                                {title}
+                                {this.resolveTitle()}
                             </h4>
                         </div>
                         {this.resolveType()}

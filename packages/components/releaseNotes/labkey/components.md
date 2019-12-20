@@ -2,6 +2,10 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.6.1
+*Released*: 20 December 2019
+* QueryGrid fix to remove extra call to reloadQueryGridModel when it is being unmounted
+
 ### version 0.6.0
 *Released*: 18 December 2019
 * Item 5511: UserMenu support for Sign In and Sign Out menu items

@@ -1462,7 +1462,7 @@
     "selectedMetadataInputFormat" : "MANUAL",
     "selectedDetectionMethod" : "fluorescent",
     "availableDetectionMethods" : [ "colorimetric", "fluorescent" ],
-    "moduleTransformScripts" : [ "/path/to/foo.pl", "/path/to/another/bar.R" ],
+    "moduleTransformScripts" : [ "/path/to/foo.pl", "/path/withamuchlongerpathtotesttheoverlowwrapping/another/bar.R" ],
     "qcEnabled" : false,
     "protocolTransformScripts" : [ ],
     "autoCopyTargetContainer" : null,

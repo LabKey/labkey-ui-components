@@ -132,7 +132,8 @@
         "contextPath": "/labkey",
         "container": {
           "path": ""
-        }
+        },
+        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name="
       }
     },
     "moduleFileExtensions": [

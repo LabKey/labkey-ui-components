@@ -53,7 +53,6 @@ import { LookupProvider } from './Lookup/Context';
 import {
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
-    LK_DOMAIN_HELP_URL,
     PHILEVEL_NOT_PHI,
     SEVERITY_LEVEL_ERROR,
 } from './constants';
@@ -115,7 +114,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'field designer',
-        helpURL: LK_DOMAIN_HELP_URL,
+        helpURL: LABKEY.helpLinkPrefix + 'fieldEditor',
         showHeader: true,
         initCollapsed: false,
         isNew: false
@@ -881,7 +880,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
                 {/*Header name*/}
-                <span>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
+                <span className={'domain-panel-title'}>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
 
                 {/*Expand/Collapse Icon*/}
                 {(collapsible || controlledCollapse) && collapsed &&

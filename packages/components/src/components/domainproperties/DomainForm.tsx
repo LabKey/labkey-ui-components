@@ -880,7 +880,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
                 {/*Header name*/}
-                <span>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
+                <span className={'domain-panel-title'}>{DomainFormImpl.getHeaderName(domain.name, headerTitle, headerPrefix)}</span>
 
                 {/*Expand/Collapse Icon*/}
                 {(collapsible || controlledCollapse) && collapsed &&

@@ -364,7 +364,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 }
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
-                <span>{(name ? name + ' - ' : '') + 'Assay Properties'}</span>
+                <span className={'domain-panel-title'}>{(name ? name + ' - ' : '') + 'Assay Properties'}</span>
                 {(controlledCollapse || collapsible) && collapsed &&
                 <span className={'pull-right'}>
                             <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>

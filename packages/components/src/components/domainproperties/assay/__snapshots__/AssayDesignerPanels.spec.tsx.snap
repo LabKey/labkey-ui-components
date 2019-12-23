@@ -230,7 +230,9 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
               id="domainpropertiesrow-assay-properties-hdr"
               onClick={[Function]}
             >
-              <span>
+              <span
+                className="domain-panel-title"
+              >
                 Assay Properties
               </span>
               <span
@@ -1631,7 +1633,9 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Batch Fields
                   </span>
                   <span
@@ -2311,7 +2315,9 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Run Fields
                   </span>
                   <span
@@ -2991,7 +2997,9 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Results Fields
                   </span>
                   <span
@@ -4129,7 +4137,9 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                   </svg>
                 </FontAwesomeIcon>
               </span>
-              <span>
+              <span
+                className="domain-panel-title"
+              >
                 Test Assay Protocol - Assay Properties
               </span>
               <span
@@ -6973,7 +6983,9 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                       </svg>
                     </FontAwesomeIcon>
                   </span>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Batch Fields
                   </span>
                   <span
@@ -8452,7 +8464,9 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                       </svg>
                     </FontAwesomeIcon>
                   </span>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Sample Fields
                   </span>
                   <span
@@ -16019,7 +16033,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
               id="domainpropertiesrow-assay-properties-hdr"
               onClick={[Function]}
             >
-              <span>
+              <span
+                className="domain-panel-title"
+              >
                 Assay Properties
               </span>
               <span
@@ -17726,7 +17742,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Batch Fields
                   </span>
                   <span
@@ -18406,7 +18424,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Run Fields
                   </span>
                   <span
@@ -19086,7 +19106,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Results Fields
                   </span>
                   <span
@@ -19754,7 +19776,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               id="domainpropertiesrow-assay-properties-hdr"
               onClick={[Function]}
             >
-              <span>
+              <span
+                className="domain-panel-title"
+              >
                 Assay Properties
               </span>
               <span
@@ -21461,7 +21485,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Run Fields
                   </span>
                   <span
@@ -22141,7 +22167,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                       </Overlay>
                     </span>
                   </LabelHelpTip>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Results Fields
                   </span>
                   <span
@@ -23279,7 +23307,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   </svg>
                 </FontAwesomeIcon>
               </span>
-              <span>
+              <span
+                className="domain-panel-title"
+              >
                 Test Assay Protocol - Assay Properties
               </span>
               <span
@@ -27569,7 +27599,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       </svg>
                     </FontAwesomeIcon>
                   </span>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Sample Fields
                   </span>
                   <span
@@ -35606,7 +35638,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   </svg>
                 </FontAwesomeIcon>
               </span>
-              <span>
+              <span
+                className="domain-panel-title"
+              >
                 Test Assay Protocol - Assay Properties
               </span>
               <span
@@ -39438,7 +39472,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       </svg>
                     </FontAwesomeIcon>
                   </span>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Batch Fields
                   </span>
                   <span
@@ -40917,7 +40953,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       </svg>
                     </FontAwesomeIcon>
                   </span>
-                  <span>
+                  <span
+                    className="domain-panel-title"
+                  >
                     Sample Fields
                   </span>
                   <span

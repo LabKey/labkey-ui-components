@@ -1144,7 +1144,9 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             id="domainpropertiesrow-assay-properties-hdr"
             onClick={[Function]}
           >
-            <span>
+            <span
+              className="domain-panel-title"
+            >
               Assay Properties
             </span>
           </div>
@@ -2540,7 +2542,9 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             id="domainpropertiesrow-assay-properties-hdr"
             onClick={[Function]}
           >
-            <span>
+            <span
+              className="domain-panel-title"
+            >
               Assay Properties
             </span>
           </div>
@@ -3874,7 +3878,9 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
             id="domainpropertiesrow-assay-properties-hdr"
             onClick={[Function]}
           >
-            <span>
+            <span
+              className="domain-panel-title"
+            >
               name should not be editable - Assay Properties
             </span>
           </div>
@@ -5025,7 +5031,9 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
             id="domainpropertiesrow-assay-properties-hdr"
             onClick={[Function]}
           >
-            <span>
+            <span
+              className="domain-panel-title"
+            >
               Assay Properties
             </span>
           </div>

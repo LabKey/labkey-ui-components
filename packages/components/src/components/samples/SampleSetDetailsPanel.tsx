@@ -6,7 +6,7 @@ import { createSampleSet, initSampleSetSelects, updateSampleSet } from './action
 import { IParentAlias, IParentOption, ISampleSetDetails } from './models';
 import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
-import { PARENT_ALIAS_DOC_URL, PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
+import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
@@ -306,7 +306,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             <>
                 <span>
                     {PARENT_ALIAS_HELPER_TEXT}
-                    <p><a href={PARENT_ALIAS_DOC_URL} target='_blank' >More info</a></p>
+                    <p><a href={LABKEY.helpLinkPrefix + 'deriveSamples#alias'} target='_blank' >More info</a></p>
                 </span>
             </>
         );

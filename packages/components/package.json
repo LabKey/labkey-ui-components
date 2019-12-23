@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -132,7 +132,8 @@
         "contextPath": "/labkey",
         "container": {
           "path": ""
-        }
+        },
+        "helpLinkPrefix": "https://www.labkey.org/Documentation/wiki-page.view?name="
       }
     },
     "moduleFileExtensions": [

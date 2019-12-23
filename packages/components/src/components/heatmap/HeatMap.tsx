@@ -143,11 +143,12 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
     }
 
     renderYCell = (cell) => {
+        const { urlPrefix } = this.props;
         const url = cell.get('headerUrl');
         const name = cell.get('name') ? cell.get('name') : '<Name not provided>';
 
         if (url) {
-            return <Link to={url.toString()}>{name}</Link>
+            return <Link to={url.toString(urlPrefix)}>{name}</Link>
         }
 
         return <span>{name}</span>

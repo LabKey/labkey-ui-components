@@ -17,16 +17,17 @@ interface AssayPropertiesInputProps {
     required?: boolean
     colSize?: number
     helpTipBody?: () => any
+    basePropertiesOnly?: boolean
 }
 
 export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
 
     render() {
-        const { label, required, helpTipBody, colSize, children } = this.props;
+        const { label, required, helpTipBody, colSize, basePropertiesOnly, children } = this.props;
 
         return (
             <Row className={'margin-top'}>
-                <Col xs={3} lg={4}>
+                <Col xs={3} lg={basePropertiesOnly ? 2 : 4}>
                     {getSplitSentence(label, false)}
                     <span className='domain-no-wrap'>
                         {getSplitSentence(label, true)}
@@ -40,7 +41,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
                         }
                     </span>
                 </Col>
-                <Col xs={colSize || 9} lg={8}>
+                <Col xs={colSize || 9} lg={basePropertiesOnly ? 10 : 8}>
                     {children}
                 </Col>
             </Row>
@@ -51,6 +52,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
 interface InputProps {
     model: AssayProtocolModel
     onChange: (evt) => void
+    basePropertiesOnly?: boolean
 }
 
 export function NameInput(props: InputProps) {
@@ -58,6 +60,7 @@ export function NameInput(props: InputProps) {
         <AssayPropertiesInput
             label={'Name'}
             required={true}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -82,6 +85,7 @@ export function DescriptionInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Description'}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>A short description for this assay design.</p>
@@ -127,6 +131,7 @@ export function PlateTemplatesInput(props: InputProps) {
             label={'Plate Template'}
             required={true}
             colSize={6}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -162,6 +167,7 @@ export function DetectionMethodsInput(props: InputProps) {
             label={'Detection Method'}
             required={true}
             colSize={6}
+            basePropertiesOnly={props.basePropertiesOnly}
         >
             <FormControl
                 componentClass="select"
@@ -186,6 +192,7 @@ export function MetadataInputFormatsInput(props: InputProps) {
             label={'Metadata Input Format'}
             required={true}
             colSize={6}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -222,6 +229,7 @@ export function EditableRunsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Editable Runs'}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>
@@ -246,6 +254,7 @@ export function EditableResultsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Editable Results'}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>
@@ -380,7 +389,9 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                 )
             }}
         >
-            {props.model.moduleTransformScripts.map((script, i) => <div key={i}>{script}</div>)}
+            {props.model.moduleTransformScripts.map((script, i) => {
+                return <div key={i} style={{overflowWrap: 'break-word'}}>{script}</div>;
+            })}
         </AssayPropertiesInput>
     )
 }
@@ -415,7 +426,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const label = 'Transform Scripts';
 
         return (
-            <Col className='domain-field-no-padding-right' xs={3} lg={4}>
+            <Col xs={3} lg={4}>
                 {label}
                 <LabelHelpTip
                     title={label}
@@ -476,7 +487,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         <AddEntityButton entity={'Script'} containerClass={''} onClick={this.addScript}/>
                     </Col>
                     {protocolTransformScripts.size > 0 && !model.isNew() &&
-                        <Col xs={3} lg={4}>
+                        <Col xs={5} lg={4}>
                             <span className={'pull-right'}>
                                 <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', LABKEY.container.path, {rowId: model.protocolId})}
                                    target={'_blank'}

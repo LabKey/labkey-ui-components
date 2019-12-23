@@ -84,6 +84,12 @@ export class UserProfile extends React.Component<Props, State> {
         const { user } = this.props;
         const avatar = this.state.avatar || (this.state.removeCurrentAvatar ? null : undefined);
 
+        // Issue 39225: don't submit empty string for required DisplayName
+        const displayName = data.get('DisplayName');
+        if (displayName.trim() === '') {
+            return Promise.reject({exception: 'Missing required value for Display Name.'});
+        }
+
         // need to reload the page if the avatar changes or is removed since that is coming from LABKEY.user on page load
         if (avatar !== undefined) {
             this.setState(() => ({reloadRequired: true}));

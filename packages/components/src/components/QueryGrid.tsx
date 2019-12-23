@@ -16,7 +16,6 @@
 import React from 'reactn';
 import { List, Map } from 'immutable';
 
-
 import { QUERY_GRID_PREFIX } from '../constants';
 import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../actions';
 import { getStateModelId, getStateQueryGridModel } from '../models';
@@ -28,6 +27,7 @@ import { Grid, GridColumn, GridProps } from './base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './base/models/constants';
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Alert } from './base/Alert';
+import { getRouteFromLocationHash } from "../util/URL";
 
 interface QueryGridProps {
     model?: QueryGridModel
@@ -40,6 +40,11 @@ interface QueryGridState {
      * is not provided but persistence of the generated model is desired (fetched results, etc)
      */
     modelId: string
+
+    /**
+     * Original location.hash value so that we can avoid calling the reloadQueryGridModel listener on navigation
+     */
+    locationHash: string
 
     /**
      * Function returned by the getBrowserHistory().listen() call so that we can cleanup after unmount
@@ -72,6 +77,13 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         }
 
         const unlisten = getBrowserHistory().listen((location, action) => {
+            // this listener only applies if we are staying on the same route, exit early if we are navigating
+            const originalRoute = getRouteFromLocationHash(this.state.locationHash);
+            const currentRoute = getRouteFromLocationHash(location.hash);
+            if (originalRoute !== currentRoute) {
+                return;
+            }
+
             if (this.props.model && this.props.model.bindURL) {
                 reloadQueryGridModel(this.props.model);
             }
@@ -80,7 +92,8 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         // set local state for this component
         this.state = {
             modelId: _modelId,
-            unlisten
+            locationHash: getBrowserHistory().location.hash,
+            unlisten,
         };
     }
 

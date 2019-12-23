@@ -6,7 +6,7 @@ import { createSampleSet, initSampleSetSelects, updateSampleSet } from './action
 import { IParentAlias, IParentOption, ISampleSetDetails } from './models';
 import { LabelOverlay } from '../../components/forms/LabelOverlay';
 import { SampleSetParentAliasRow } from '../../components/samples/SampleSetParentAliasRow';
-import { PARENT_ALIAS_DOC_URL, PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
+import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
@@ -42,6 +42,7 @@ const NEW_SAMPLE_SET_OPTION : IParentOption = {
     label: `(Current ${SAMPLE_SET_DISPLAY_TEXT})`,
     value: "{{this_sample_set}}"
 };
+
 const IMPORT_PREFIX :string = 'materialInputs/';
 
 export class SampleSetDetailsPanel extends React.Component<Props, State> {
@@ -77,6 +78,8 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                             id: newId,
                             alias: key,
                             parentValue: options.find(opt => opt.value === val),
+                            ignoreAliasError: false,
+                            ignoreSelectError: false,
                         } as IParentAlias);
                     });
                 }
@@ -251,7 +254,9 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         parentAliases = parentAliases.set(newId, {
             id: newId,
             alias:'',
-            parentValue: undefined
+            parentValue: undefined,
+            ignoreAliasError: true,
+            ignoreSelectError: true,
         });
 
         this.setState({parentAliases});
@@ -307,7 +312,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             <>
                 <span>
                     {PARENT_ALIAS_HELPER_TEXT}
-                    <p><a href={PARENT_ALIAS_DOC_URL} target='_blank' >More info</a></p>
+                    <p><a href={LABKEY.helpLinkPrefix + 'deriveSamples#alias'} target='_blank' >More info</a></p>
                 </span>
             </>
         );
@@ -372,9 +377,9 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                             <Row className={'margin-bottom'}>
                                 <Col xs={3}>
                                     <LabelOverlay
-                                        label={'Name Expression'}
+                                        label={'Naming Pattern'}
                                         type={'Text (String)'}
-                                        description={`Expression that will be used for generating unique sample IDs for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
+                                        description={`Pattern used for generating unique sample IDs for this ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`}
                                         content={moreInfoLink}
                                         canMouseOverTooltip={true}
                                     />

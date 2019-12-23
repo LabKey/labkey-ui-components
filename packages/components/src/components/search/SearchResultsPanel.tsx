@@ -24,6 +24,7 @@ import { Alert } from '../base/Alert';
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
+    useSampleType?: boolean   // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
@@ -54,7 +55,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl } = this.props;
+        const { model, iconUrl, useSampleType } = this.props;
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (!this.isLoading() && results !== undefined) {
@@ -77,6 +78,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     category={item.get('category')}
                                     data={item.get('data')}
                                     iconUrl={iconUrl}
+                                    useSampleType={useSampleType}
                                 />
                             </div>
                         ))}

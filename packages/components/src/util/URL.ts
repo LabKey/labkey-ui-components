@@ -61,6 +61,19 @@ export function getLocation() : Location
     return location;
 }
 
+export function getRouteFromLocationHash(hash: string) {
+    if (hash) {
+        const index = hash.indexOf('?');
+        if (index > -1) {
+            return hash.substring(0, index);
+        }
+
+        return hash;
+    }
+
+    return undefined;
+}
+
 export function buildQueryString(params: Map<string, string | number>): string {
     let q = '', sep = '';
     params.forEach((v, k) => {

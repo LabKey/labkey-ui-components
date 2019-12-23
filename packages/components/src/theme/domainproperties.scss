@@ -2,7 +2,7 @@
 .domain-form-panel {
   min-width: 1000px;
   margin-bottom: 0 !important;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .domain-form-panel input[type="checkbox"],
@@ -227,10 +227,6 @@
 
 .domain-field-padding-bottom {
   padding-bottom: 20px;
-}
-
-.domain-field-no-padding-right {
-  padding-right: 0 !important;
 }
 
 .domain-field-no-side-padding {
@@ -592,6 +588,7 @@
 }
 
 .domain-bottom-alert div {
+  min-width: 1000px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   margin-top: -4px;
@@ -618,11 +615,6 @@
   margin-top: 20px;
 }
 
-.domain-assay-save-btn {
-  margin-top: 5%;
-  width: 100%
-}
-
-.assay-props-column {
-  padding-right: 35px;
+.domain-assay-buttons .btn {
+    width: 75px;
 }

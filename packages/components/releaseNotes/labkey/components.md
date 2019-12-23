@@ -2,8 +2,8 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.6.3
+*Released*: 23 December 2019
 * Misc domain designer fixes for Sample Manager
   - Issue 39256: Fix margin between panel and buttons on sample type field designer
   - Issue 39225: Fix so profile form trims display name before submit

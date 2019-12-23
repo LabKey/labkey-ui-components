@@ -176,12 +176,12 @@ export function getMaxPhiLevel(): Promise<string> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('security', 'GetMaxPhiLevel.api'),
-            success: (data) => {
-                resolve(JSON.parse(data.response).maxPhiLevel);
-            },
-            failure: (error) => {
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response.maxPhiLevel);
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
                 reject(error);
-            }
+            })
         });
     });
 }

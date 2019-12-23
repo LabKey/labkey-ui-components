@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
-import { fromJS } from 'immutable';
+import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import mock, { proxy } from 'xhr-mock';
@@ -62,6 +62,23 @@ storiesOf('FileAttachmentForm', module)
                     initialData: fromJS(filePreviewJson)
                 }}
                 initialFileNames={["test.txt", "other.csv"]}
+            />
+        )
+    })
+    .add("with initial files and preview data", () => {
+        let files = {};
+        files["test1.txt"] = undefined;
+        files["test2.txt"] = undefined;
+        return (
+            <FileAttachmentForm
+                showLabel={true}
+                label={'Attachments'}
+                labelLong={'Select file or drag and drop here'}
+                acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                showAcceptedFormats={true}
+                allowMultiple={true}
+                showButtons={false}
+                initialFiles={files}
             />
         )
     })

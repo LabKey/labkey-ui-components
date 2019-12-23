@@ -17,11 +17,11 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-
 import { SearchResultCard } from '../components/search/SearchResultCard';
 import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
 import { SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
+import { ICON_URL } from "./mock";
 import './stories.scss';
 
 storiesOf('SearchResults', module)
@@ -29,11 +29,11 @@ storiesOf('SearchResults', module)
     .add("search result card", () => {
         return (
             <SearchResultCard
-                iconUrl={'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'}
+                iconUrl={ICON_URL}
                 title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
-                data={Map(fromJS({sampleSet: {name: 'Sample Set 1'}}))}
+                data={Map(fromJS({sampleSet: {name: 'Sample Type 1'}}))}
             />
         )
     })
@@ -46,8 +46,9 @@ storiesOf('SearchResults', module)
 
         return (
             <SearchResultsPanel
-                iconUrl={'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'}
+                iconUrl={ICON_URL}
                 model={model}
+                useSampleType={boolean('useSampleType', false) /*Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps*/ }
             />
         )
     });

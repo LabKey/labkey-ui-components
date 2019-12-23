@@ -75,6 +75,7 @@ import { ISubItem, SubMenuItem, SubMenuItemProps } from './components/menus/SubM
 import { SelectionMenuItem } from './components/menus/SelectionMenuItem';
 import { LoadingModal } from './components/base/LoadingModal';
 import { LoadingSpinner } from './components/base/LoadingSpinner';
+import { InsufficientPermissionsAlert } from './components/base/InsufficientPermissionsAlert';
 import { NotFound } from './components/base/NotFound';
 import { Page, PageProps } from './components/base/Page';
 import { LoadingPage, LoadingPageProps } from './components/base/LoadingPage';
@@ -100,6 +101,7 @@ import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permi
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { SplitButtonGroup } from './components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
@@ -268,6 +270,10 @@ import {
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
 } from './components/domainproperties/constants';
+import { ExpandableContainer } from './components/ExpandableContainer';
+import { PermissionAssignments } from './components/permissions/PermissionAssignments';
+import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
+import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
 
 
 export {
@@ -351,6 +357,7 @@ export {
     HeatMap,
     EditableColumnMetadata,
     EditorModel,
+    ExpandableContainer,
 
     // user-related
     getUsersWithPermissions,
@@ -516,6 +523,7 @@ export {
     LoadingModal,
     LoadingSpinner,
     LoadingPage,
+    InsufficientPermissionsAlert,
     NotFound,
     Page,
     PageHeader,
@@ -540,6 +548,7 @@ export {
     SelectionMenuItem,
     ManageDropdownButton,
     WizardNavButtons,
+    SplitButtonGroup,
     ToggleButtons,
     Cards,
     Footer,
@@ -586,5 +595,13 @@ export {
     // devTools functions
     applyDevTools,
     devToolsActive,
-    toggleDevTools
+    toggleDevTools,
+
+    // Permissions
+    PermissionAssignments,
+    PermissionsPageContextProvider,
+    PermissionsProviderProps,
+    SecurityPolicy,
+    SecurityRole,
+    Principal
 }

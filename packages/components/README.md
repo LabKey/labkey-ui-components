@@ -37,7 +37,7 @@ Yarn should now be available on the command line.
 Now that yarn is set up, you can go ahead and clone this repository to a local directory.
 
 ```sh
-git clone https://github.com/LabKey/glass-components.git # or via ssh
+git clone https://github.com/LabKey/labkey-ui-components.git # or via ssh
 ```
 
 Navigate into the directory and run:
@@ -51,7 +51,7 @@ Once this is complete you can utilize either yarn to run builds for a specific p
 
 
 ### Technologies 
-For doing development of glass components, you should be familiar with the following technologies:
+For doing development of LabKey UI Components, you should be familiar with the following technologies:
 * [React](https://reactjs.org/) - used for building the UI components
 * [Bootstrap](https://getbootstrap.com/docs/3.4/) - for consistent, responsive styling
 * [React-Bootstrap](https://5c507d49471426000887a6a7--react-bootstrap.netlify.com/) - bootstrap styling for react components
@@ -142,18 +142,18 @@ command to show which packages are out of date and then compare to the spreadshe
 been investigation into the cost of upgrading packages that are out of date.  
  
 ### Documentation
-We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/glass-components/).  
+We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/labkey-ui-components/).  
 
 All exported components, methods, interfaces, etc. should include 
 documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/) to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.
 
-You can generate the docs locally by running the following command in the ```glass-components``` directory.
+You can generate the docs locally by running the following command in the ```labkey-ui-components``` directory.
 * ``yarn run build:docs``
  
 **N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such. 
 Try to eliminate as many of these as possible before deploying the docs.
 
-To publish the documentation to [GitHub pages](https://labkey.github.io/glass-components/) use the following command in the ```glass-components``` directory:
+To publish the documentation to [GitHub pages](https://labkey.github.io/labkey-ui-components/) use the following command in the ```labkey-ui-components``` directory:
 * ``yarn run deploy:docs``
 
 This deployment of docs should be done after each pull request is merged into ```master```. 
@@ -198,7 +198,7 @@ The next version you go to for a package should be based on the following guidel
 1. Am I breaking something existing because of my changes - use the next major version
 
 With that in mind, we want to make use of "prerelease" version numbers while a feature / story is being developed 
-and only go to that next “release” version right before the feature branch on glass-components is ready to 
+and only go to that next “release” version right before the feature branch on labkey-ui-components is ready to 
 merge back to master. 
 
 Steps for package version numbering during feature branch development:

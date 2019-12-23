@@ -3,7 +3,6 @@ import { List } from 'immutable';
 import { mount } from 'enzyme';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import { AssayProtocolModel, DomainDesign } from '../models';
-import { LK_DOMAIN_HELP_URL } from '../constants';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -50,7 +49,7 @@ describe('AssayPropertiesPanel', () => {
                 model={EMPTY_MODEL}
                 asPanel={false}
                 basePropertiesOnly={true}
-                helpURL={LK_DOMAIN_HELP_URL}
+                helpURL={'https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema'}
                 onChange={jest.fn}
             />
         );

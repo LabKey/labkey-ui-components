@@ -26,6 +26,7 @@ interface Props {
     content?: Array<any>
     description?: string
     fieldTriggerProps?: FieldEditTriggerProps
+    iconAltText?: string
     iconDir?: string
     iconSrc?: string
     iconUrl?: string
@@ -41,12 +42,12 @@ export class PageDetailHeader extends React.Component<Props, any> {
     };
 
     render() {
-        const { children, description, fieldTriggerProps, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title, user } = this.props;
+        const { children, description, fieldTriggerProps, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title, user, iconAltText } = this.props;
 
         return (
             <div className="page-header">
                 <div className={`col-md-${leftColumns} detail__header--container`}>
-                    <div className="detail__header--image-container">
+                    {(iconUrl || iconSrc) && <div className="detail__header--image-container">
                         {iconUrl ? <img
                                 src={iconUrl}
                                 className="detail__header-icon"
@@ -55,9 +56,10 @@ export class PageDetailHeader extends React.Component<Props, any> {
                                 iconDir={iconDir}
                                 iconSrc={iconSrc ? iconSrc : ''}
                                 className="detail__header-icon"
+                                alt={iconAltText ? iconAltText : ''}
                             />
                         }
-                    </div>
+                    </div>}
                     <h2 className="no-margin-top detail__header--name">{title}</h2>
                     {subTitle && (
                         <h4 className="test-loc-detail-subtitle">{subTitle}</h4>

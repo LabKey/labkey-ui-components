@@ -34,4 +34,19 @@ describe("<UserDetailHeader/>", () => {
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
+
+    test("custom description", () => {
+        const component = (
+            <UserDetailHeader
+                title={'Title'}
+                user={ASSAYDESIGNER}
+                userProperties={fromJS({})}
+                dateFormat={undefined}
+                description={'My custom description'}
+            />
+        );
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
 });

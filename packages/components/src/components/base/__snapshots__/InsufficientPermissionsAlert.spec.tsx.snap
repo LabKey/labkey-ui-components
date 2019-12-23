@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InsufficientPermissionsAlert/> default properties 1`] = `
+<div
+  className="alert alert-danger"
+  role="alert"
+>
+  You do not have permissions for this action.
+</div>
+`;

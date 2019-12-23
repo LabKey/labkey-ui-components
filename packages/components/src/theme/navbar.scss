@@ -12,14 +12,14 @@
     top: -44px;
 
     & > .sub-nav {
-      visibility: hidden;
+      display: none;
     }
 
     &.show-sub-nav {
 
       & > .sub-nav {
         box-shadow: 0 2px 4px darkgrey;
-        visibility: visible;
+        display: block;
       }
     }
   }
@@ -345,7 +345,8 @@
 }
 
 .navbar__xs-search-icon {
-  cursor: pointer;
-  font-size: 20px;
-  margin-top: 2px;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 6px;
+    color: $white;
 }

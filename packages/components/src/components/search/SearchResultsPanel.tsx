@@ -24,6 +24,7 @@ import { Alert } from '../base/Alert';
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
+    useSampleType?: boolean   // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
@@ -54,14 +55,14 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl } = this.props;
+        const { model, iconUrl, useSampleType } = this.props;
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (!this.isLoading() && results !== undefined) {
             // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
             const data = results.filter((result) => {
                 const category = result.get('category');
-                return category=='data' || category=='material' || category=='workflowJob' || result.has('data');
+                return category=='data' || category=='material' || category=='workflowJob' || category=='file workflowJob' || result.has('data');
             });
 
             if (data.size > 0) {
@@ -77,6 +78,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     category={item.get('category')}
                                     data={item.get('data')}
                                     iconUrl={iconUrl}
+                                    useSampleType={useSampleType}
                                 />
                             </div>
                         ))}

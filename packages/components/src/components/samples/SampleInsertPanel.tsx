@@ -53,7 +53,7 @@ import {
     QueryInfo,
     SchemaQuery,
 } from '../base/models/model';
-import { capitalizeFirstChar } from '../../util/utils';
+import { capitalizeFirstChar, } from '../../util/utils';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
@@ -191,7 +191,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     return {
                         insertModel: insertModel.merge({
                             isError: true,
-                            errors: "Problem retrieving data for sample set '" + insertModel.getTargetSampleSetName() + "'."
+                            errors: "Problem retrieving data for sample type '" + insertModel.getTargetSampleSetName() + "'."
                         }) as SampleIdCreationModel
                     }
                 })
@@ -485,7 +485,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     onClick={this.addParent}/>
                             </div> :
                             <div className="sample-insert--header">
-                                Only {parentOptions.size} parent {parentOptions.size === 1 ? 'sample set' : 'sample sets'} available.
+                                Only {parentOptions.size} parent {parentOptions.size === 1 ? 'sample type' : 'sample types'} available.
                             </div>
                         }
                     </>
@@ -502,7 +502,6 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
 
         // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
-
         const sampleSet = insertModel.getTargetSampleSetName();
         const importFromFileLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import') : undefined;
 
@@ -518,8 +517,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                     {name && (
                         this.isNameRequired() ?
                             <p>
-                                A sample ID is required for each new sample since this sample set has no name expression.
-                                You can provide a name expression by editing the sample set definition.
+                                A sample ID is required for each new sample since this sample type has no naming pattern.
+                                You can provide a naming pattern by editing the sample type definition.
                             </p> :
                             <p>
                                 Sample IDs will be generated for any samples that have no sample ID provided in the grid.
@@ -534,7 +533,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                         label="Sample Type"
                         labelClass="col-sm-3 col-xs-12 sample-insert--parent-label"
                         name="targetSampleSet"
-                        placeholder={'Select a Sample Set...'}
+                        placeholder={'Select a Sample Type...'}
                         onChange={this.changeTargetSampleSet}
                         options={insertModel.sampleSetOptions.toArray()}
                         required

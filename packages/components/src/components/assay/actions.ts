@@ -82,8 +82,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
             url: ActionURL.buildURL('assay', 'assayFileUpload.view', LABKEY.container.path),
             method: 'POST',
             form: formData,
-            success: (result) => {
-                let response = JSON.parse(result.responseText);
+            success: Utils.getCallbackWrapper((response) => {
                 const batchPaths = {};
                 const runPaths = {};
 
@@ -117,12 +116,12 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
                         ...runPaths,
                     }
                 })
-            },
-            failure: (resp) => {
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
                 // As far as I can tell errors returned from assay FileUpload are only ever strings.
-                const message = `Error while uploading files: ${resp.responseText}`;
+                const message = `Error while uploading files: ${error}`;
                 reject({message});
-            }
+            })
         });
     });
 }

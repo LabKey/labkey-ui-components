@@ -6,11 +6,9 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
-
-import './stories.scss';
 import { Cards } from '../components/base/Cards';
-
-const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
+import { ICON_URL } from "./mock";
+import './stories.scss';
 
 const cards = [{
     title: 'Test Title',

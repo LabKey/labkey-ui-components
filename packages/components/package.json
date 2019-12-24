@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.7.0-fb-jobFromTemplate.17",
+  "version": "0.7.0-fb-jobFromTemplate.18",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

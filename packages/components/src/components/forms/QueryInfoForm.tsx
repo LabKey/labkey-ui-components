@@ -177,8 +177,9 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
 
     handleSubmitError(error: any) {
         console.error(error);
+        const errorMsg = error ? error.exception : 'Your session may have expired or the form may no longer be valid.';
         this.setState({
-            errorMsg: "There was an error submitting the data.  " + error.exception, // TODO add some actionable text here
+            errorMsg: "There was an error submitting the data. " + errorMsg, // TODO add some actionable text here
             isSubmitting: false
         });
     }

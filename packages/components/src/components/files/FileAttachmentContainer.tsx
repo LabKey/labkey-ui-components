@@ -34,6 +34,7 @@ interface FileAttachmentContainerProps {
 interface FileAttachmentContainerState {
     errorMsg?: string
     files?: {[key:string]: File}
+    isDirty?: boolean
     fileNames?: Array<string> // separate list of names for the case when an initial set of file names is provided for which we have no file object
     isHover?: boolean
 }
@@ -56,6 +57,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         this.state = {
             files: props.initialFiles ? props.initialFiles : {},
             fileNames: props.initialFileNames || [],
+            isDirty: false,
             isHover: false
         }
     }
@@ -65,7 +67,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
     }
 
     componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
-        if (this.props.initialFileNames != nextProps.initialFileNames) {
+        if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty)  {
             this.initFileNames(nextProps);
         }
     }
@@ -164,7 +166,8 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 files,
                 fileNames: Object.keys(files),
                 errorMsg: undefined,
-                isHover: false
+                isHover: false,
+                isDirty: true,
             });
 
             if (Utils.isFunction(handleChange)) {
@@ -200,7 +203,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             this.fileInput.current.value = '';
         }
 
-        this.setState({files, fileNames});
+        this.setState({isDirty: true, files, fileNames});
 
         if (Utils.isFunction(handleRemoval)) {
             handleRemoval(name);

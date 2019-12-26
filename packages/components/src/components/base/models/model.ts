@@ -420,6 +420,7 @@ export interface IQueryGridModel {
     allowSelection?: boolean
     baseFilters?: List<Filter.IFilter>
     bindURL?: boolean
+    containerPath?: string
     data?: Map<any, Map<string, any>>
     dataIds?: List<any>
     displayColumns?: List<string>
@@ -482,6 +483,7 @@ export class QueryGridModel extends Record({
     allowSelection: true,
     baseFilters: List<Filter.IFilter>(),
     bindURL: true,
+    containerPath: undefined,
     data: Map<any, Map<string, any>>(),
     dataIds: List<any>(),
     displayColumns: undefined,
@@ -530,6 +532,7 @@ export class QueryGridModel extends Record({
     allowSelection: boolean;
     baseFilters: List<Filter.IFilter>;
     bindURL: boolean;
+    containerPath?: string;
     data: Map<any, Map<string, any>>;
     dataIds: List<any>;
     displayColumns: List<string>;

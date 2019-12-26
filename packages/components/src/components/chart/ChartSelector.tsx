@@ -48,7 +48,7 @@ export class ChartSelector extends React.Component<Props, any> {
             if (key && getCharts(key) === undefined) {
                 updateCharts(key, null);
 
-                fetchCharts(model.queryInfo.schemaQuery).then(data => {
+                fetchCharts(model.queryInfo.schemaQuery, model.containerPath).then(data => {
                     updateCharts(key, data);
                 }).catch(error => {
                     updateCharts(key, List.of(new DataViewInfo({error: error})));

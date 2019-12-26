@@ -2,6 +2,10 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 6506: QueryGridModel support for containerPath (in getQueryDetails, selection state, getQuery, getReportInfos)
+
 ### version 0.6.4
 *Released*: 26 December 2019
 * Item 6392: ConfirmModal fix to not show close icon in upper right if onCancel prop is undefined

@@ -31,6 +31,7 @@ export function invalidateQueryDetailsCacheKey(key: string): void {
 interface GetQueryDetailsOptions {
     schemaName: string
     queryName: string
+    containerPath?: string
 }
 
 export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryInfo> {
@@ -41,6 +42,7 @@ export function getQueryDetails(options: GetQueryDetailsOptions): Promise<QueryI
         queryDetailsCache[key] = new Promise((resolve, reject) => {
 
             Query.getQueryDetails({
+                containerPath: options.containerPath,
                 schemaName: options.schemaName,
                 queryName: options.queryName,
                 viewName: '*',

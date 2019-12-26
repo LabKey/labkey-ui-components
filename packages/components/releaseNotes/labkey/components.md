@@ -15,6 +15,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add description property to QuerySelect to pass it through to SelectInput
 * Increase label field size on SelectInput
 
+### version 0.6.4
+*Released*: 26 December 2019
+* Item 6392: ConfirmModal fix to not show close icon in upper right if onCancel prop is undefined
+* Item 6392: Misc fixes for error messaging on user logged out / session timeout
+
 ### version 0.6.3
 *Released*: 23 December 2019
 * Misc domain designer fixes for Sample Manager

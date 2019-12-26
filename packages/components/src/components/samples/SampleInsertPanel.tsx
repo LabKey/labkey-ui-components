@@ -88,6 +88,7 @@ interface StateProps {
     insertModel: SampleIdCreationModel
     originalQueryInfo: QueryInfo
     isSubmitting: boolean
+    error: string
 }
 
 export class SampleInsertPanel extends React.Component<SampleInsertPageProps, StateProps> {
@@ -105,7 +106,8 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         this.state = {
             insertModel: undefined,
             originalQueryInfo: undefined,
-            isSubmitting: false
+            isSubmitting: false,
+            error: undefined
         };
     }
 
@@ -167,10 +169,14 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
             sampleCount: 0,
         });
 
-        initSampleSetInsert(insertModel).then((partialModel) => {
-            const updatedModel = insertModel.merge(partialModel) as SampleIdCreationModel;
-            this.gridInit(updatedModel);
-        });
+        initSampleSetInsert(insertModel)
+            .then((partialModel) => {
+                const updatedModel = insertModel.merge(partialModel) as SampleIdCreationModel;
+                this.gridInit(updatedModel);
+            })
+            .catch((reason) => {
+                this.setState(() => ({error: reason}));
+            });
     }
 
     gridInit(insertModel: SampleIdCreationModel) {
@@ -711,10 +717,14 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
     };
 
     render() {
-        const { insertModel, isSubmitting } = this.state;
+        const { insertModel, isSubmitting, error } = this.state;
 
-        if (!insertModel)
+        if (error) {
+            return <Alert>{error}</Alert>;
+        }
+        else if (!insertModel) {
             return <LoadingSpinner wrapperClassName="loading-data-message"/>;
+        }
 
         const bulkUpdateProps = {
             title: "Bulk Creation of Samples",

@@ -17,29 +17,37 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
-
 import { FORM_IDS, SampleSetDetailsPanel } from './SampleSetDetailsPanel';
+import { initUnitTestMocks } from "../../testHelpers";
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 describe("<SampleSetDetailsPanel/>", () => {
 
-    test("default props", () => {
-        const component = (
+    test("default props", (done) => {
+        const tree = renderer.create(
             <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}/>
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
     });
 
-    test("nameExpressionInfoUrl", () => {
-        const component = (
+    test("nameExpressionInfoUrl", (done) => {
+        const tree = renderer.create(
             <SampleSetDetailsPanel onCancel={jest.fn()} onComplete={jest.fn()}
                nameExpressionInfoUrl={'#anything'}
             />
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
     });
 
     test("button clicks", () => {

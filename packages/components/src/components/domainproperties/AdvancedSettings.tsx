@@ -22,6 +22,14 @@ import {
     DOMAIN_PHI_LEVELS,
 } from './constants';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import {
+    ADVANCED_FIELD_EDITOR_TOPIC,
+    ADVANCED_PROPERTY_FIELDS_TOPIC,
+    CHART_MEASURES_AND_DIMENSIONS_TOPIC,
+    COMPLIANCE_PHI_TOPIC,
+    helpLinkNode,
+    MISSING_VALUES_TOPIC
+} from '../../util/helpLinks';
 
 interface AdvancedSettingsProps {
     domainId?: number
@@ -175,7 +183,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return(
             <div>
                 <p>Indicates fields that contain data subject to charting and other analysis. These are typically numeric results.</p>
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "chartTrouble"}>Measures and Dimensions</a> for analysis.</p>
+                <p>Learn more about using {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, "Measures and Dimensions")} for analysis.</p>
             </div>
         )
     };
@@ -184,7 +192,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return(
             <div>
                 <p>Indicates a field of non-numerical categories that can be included in a chart. Dimensions define logical groupings of measures.</p>
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "chartTrouble"}>Measures and Dimensions</a> for analysis.</p>
+                <p>Learn more about using {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, "Measures and Dimensions")} for analysis.</p>
             </div>
         )
     };
@@ -193,7 +201,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return(
             <div>
                 <p>Fields using this can hold special values to indicate data that has failed review or was originally missing. Administrators can set custom Missing Value indicators at the site and folder levels.</p>
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "manageMissing"}>Missing Value Indicators</a>.</p>
+                <p>Learn more about using {helpLinkNode(MISSING_VALUES_TOPIC, "Missing Value Indicators")}.</p>
             </div>
         )
     };
@@ -210,7 +218,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return(
             <div>
                 <p>Sets Protected Health Information (PHI) level for this field. This is a premium LabKey feature.</p>
-                <p>Learn more about <a target='_blank' href={LABKEY.helpLinkPrefix + "compliancePHI"}>PHI Compliance</a> in LabKey.</p>
+                <p>Learn more about {helpLinkNode(COMPLIANCE_PHI_TOPIC, "PHI Compliance")} in LabKey.</p>
             </div>
         )
     };
@@ -221,7 +229,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <p>Editable default: Provides the same default value for every user, which allows editing.</p>
                 <p>Fixed value: Provides fixed data with each inserted data row that cannot be edited.</p>
                 <p>Last entered: An editable default value is provided on first use. The last value entered will be provided on later imports.</p>
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "propertyFields#advanced"}>Default Type</a> settings.</p>
+                <p>Learn more about using {helpLinkNode(ADVANCED_PROPERTY_FIELDS_TOPIC, "Default Type")} settings.</p>
             </div>
         )
     };
@@ -436,9 +444,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             className='domain-adv-footer domain-adv-cancel-btn'>
                         Cancel
                     </Button>
-                    <a target='_blank'
-                       href={LABKEY.helpLinkPrefix + "fieldEditor#advanced"}
-                       className='domain-adv-footer domain-adv-link'>Get help with field designer settings</a>
+                    {helpLinkNode(ADVANCED_FIELD_EDITOR_TOPIC, "Get help with field designer settings", 'domain-adv-footer domain-adv-link')}
                     <Button onClick={this.handleApply} bsClass='btn btn-success'
                             className='domain-adv-footer domain-adv-apply-btn'>
                         Apply

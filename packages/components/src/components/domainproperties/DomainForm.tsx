@@ -50,18 +50,14 @@ import {
 } from './actions';
 
 import { LookupProvider } from './Lookup/Context';
-import {
-    EXPAND_TRANSITION,
-    EXPAND_TRANSITION_FAST,
-    PHILEVEL_NOT_PHI,
-    SEVERITY_LEVEL_ERROR,
-} from './constants';
+import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR, } from './constants';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
+import { FIELD_EDITOR_TOPIC, getHelpLink } from '../../util/helpLinks';
 
 interface IDomainFormInput {
     domain: DomainDesign
@@ -114,7 +110,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'field designer',
-        helpURL: LABKEY.helpLinkPrefix + 'fieldEditor',
+        helpURL: getHelpLink(FIELD_EDITOR_TOPIC),
         showHeader: true,
         initCollapsed: false,
         isNew: false

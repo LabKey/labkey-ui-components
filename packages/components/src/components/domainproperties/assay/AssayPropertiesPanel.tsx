@@ -23,6 +23,7 @@ import {
 import { createFormInputName } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Alert } from '../../base/Alert';
+import { DEFINE_ASSAY_SCHEMA_TOPIC, getHelpLink } from '../../../util/helpLinks';
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -71,7 +72,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         asPanel: true,
         initCollapsed: false,
         validate: false,
-        helpURL: LABKEY.helpLinkPrefix + 'defineAssaySchema'
+        helpURL: getHelpLink(DEFINE_ASSAY_SCHEMA_TOPIC)
     };
 
     constructor(props) {

@@ -1949,10 +1949,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@labkey/api@0.0.26":
-  version "0.0.26"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.26.tgz#4d2a20cdfd5adf8e676296a8718b4ed8d7be4243"
-  integrity sha1-TSogzf1a345nYpaocYtO2Ne+QkM=
+"@labkey/api@0.0.26-fb-smUserManagement.0":
+  version "0.0.26-fb-smUserManagement.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.0.26-fb-smUserManagement.0.tgz#00dbf989228d2148bde68d207e984988cdd935c5"
+  integrity sha1-ANv5iSKNIUi95o0gfphJiM3ZNcU=
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"

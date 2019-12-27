@@ -19,7 +19,7 @@ export const CONFIGURE_SCRIPTING_TOPIC =  "configureScripting";
 export const PROGRAMMATIC_QC_TOPIC = "programmaticQC";
 export const DEFINE_ASSAY_SCHEMA_TOPIC = "defineAssaySchema";
 
-export const VIEW_SAMPLE_SETS_TOPIC = "viewSampleSets";
+export const DELETE_SAMPLES_TOPIC = "viewSampleSets#delete";
 export const DERIVE_SAMPLES_TOPIC = 'deriveSamples#alias';
 
 export const URL_ENCODING_TOPIC = 'urlEncoding';

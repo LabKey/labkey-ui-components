@@ -16,7 +16,7 @@
 import React from 'react';
 import { DeleteConfirmationData } from './actions';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { helpLinkNode, VIEW_SAMPLE_SETS_TOPIC } from '../../util/helpLinks';
+import { helpLinkNode, DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
 interface Props {
     onConfirm:  (rowsToDelete: Array<any>, rowsToKeep: Array<any>) => any
@@ -73,7 +73,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(VIEW_SAMPLE_SETS_TOPIC, "more info")})</>}
+                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(DELETE_SAMPLES_TOPIC, "more info")})</>}
                 {numCanDelete > 0 && <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</p>}
             </span>
         );

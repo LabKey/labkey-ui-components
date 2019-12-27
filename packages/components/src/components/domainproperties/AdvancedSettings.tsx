@@ -26,7 +26,7 @@ import {
     ADVANCED_FIELD_EDITOR_TOPIC,
     ADVANCED_PROPERTY_FIELDS_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
-    COMPLIANCE_PHI_TOPIC,
+    PROPERTY_FIELDS_PHI_TOPIC,
     helpLinkNode,
     MISSING_VALUES_TOPIC
 } from '../../util/helpLinks';
@@ -218,7 +218,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         return(
             <div>
                 <p>Sets Protected Health Information (PHI) level for this field. This is a premium LabKey feature.</p>
-                <p>Learn more about {helpLinkNode(COMPLIANCE_PHI_TOPIC, "PHI Compliance")} in LabKey.</p>
+                <p>Learn more about {helpLinkNode(PROPERTY_FIELDS_PHI_TOPIC, "PHI Compliance")} in LabKey.</p>
             </div>
         )
     };

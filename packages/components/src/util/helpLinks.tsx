@@ -2,7 +2,7 @@ import React from 'react';
 
 export const CHART_MEASURES_AND_DIMENSIONS_TOPIC = "chartTrouble";
 export const MISSING_VALUES_TOPIC = "manageMissing";
-export const COMPLIANCE_PHI_TOPIC = "compliancePHI";
+export const PROPERTY_FIELDS_PHI_TOPIC = "propertyFields#phi";
 export const ADVANCED_PROPERTY_FIELDS_TOPIC =  "propertyFields#advanced";
 
 export const FIELD_EDITOR_TOPIC = "fieldEditor";

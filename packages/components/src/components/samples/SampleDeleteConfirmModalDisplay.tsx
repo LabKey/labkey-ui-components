@@ -73,7 +73,7 @@ export class SampleDeleteConfirmModalDisplay extends React.Component<Props, any>
         const message = (
             <span>
                 {text}
-                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(VIEW_SAMPLE_SETS_TOPIC, "more info")}</>}
+                {numCannotDelete > 0 && <>&nbsp;({helpLinkNode(VIEW_SAMPLE_SETS_TOPIC, "more info")})</>}
                 {numCanDelete > 0 && <p className={'top-spacing'}><strong>Deletion cannot be undone.</strong>  Do you want to proceed?</p>}
             </span>
         );

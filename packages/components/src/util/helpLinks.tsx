@@ -20,7 +20,10 @@ export const PROGRAMMATIC_QC_TOPIC = "programmaticQC";
 export const DEFINE_ASSAY_SCHEMA_TOPIC = "defineAssaySchema";
 
 export const DELETE_SAMPLES_TOPIC = "viewSampleSets#delete";
-export const DERIVE_SAMPLES_TOPIC = 'deriveSamples#alias';
+export const DERIVE_SAMPLES_TOPIC = 'deriveSamples';
+export const DERIVE_SAMPLES_ALIAS_TOPIC = DERIVE_SAMPLES_TOPIC + '#alias';
+// export const DERIVE_SAMPLES_GRAPH_TOPIC = DERIVE_SAMPLES_TOPIC + '#graph';
+// export const DERIVE_SAMPLES_GRID_TOPIC = DERIVE_SAMPLES_TOPIC + '#grid';
 
 export const URL_ENCODING_TOPIC = 'urlEncoding';
 

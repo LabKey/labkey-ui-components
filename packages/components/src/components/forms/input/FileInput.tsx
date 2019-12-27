@@ -133,11 +133,11 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     render() {
-        const { queryColumn, allowDisable, addLabelAsterisk, showLabel, key } = this.props;
+        const { queryColumn, allowDisable, addLabelAsterisk, showLabel } = this.props;
         const { isHover,  isDisabled,  file } = this.state;
 
         const name = this.getInputName();
-        const inputId = `${name}-${key}-fileUpload`;
+        const inputId = `${name}-fileUpload`;
         let body;
 
         if (file === null) {

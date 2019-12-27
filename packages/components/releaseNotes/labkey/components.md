@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 6506: QueryGridModel support for containerPath (in getQueryDetails, selection state, getQuery, getReportInfos)
+* Item 6506: SecurityPolicy.addUserIdAssignment helper function
+* Item 6506: Update to @labkey/api release version TBD
 
 ### version 0.6.4
 *Released*: 26 December 2019

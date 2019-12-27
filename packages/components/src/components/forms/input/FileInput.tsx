@@ -69,7 +69,9 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     getInputName(): string {
-        return this.props.name ? this.props.name : this.props.queryColumn.name;
+        // if there's more than one of these on the page with the same inputName
+        // files will go to the wrong place when uploaded unless the names are unique
+        return (this.props.name ? this.props.name : this.props.queryColumn.name) + (this.props.key);
     }
 
     processFiles(fileList: FileList, transferItems?: DataTransferItemList) {
@@ -131,11 +133,11 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     render() {
-        const { queryColumn, allowDisable, addLabelAsterisk, showLabel } = this.props;
+        const { queryColumn, allowDisable, addLabelAsterisk, showLabel, key } = this.props;
         const { isHover,  isDisabled,  file } = this.state;
 
         const name = this.getInputName();
-        const inputId = `${name}-fileUpload`;
+        const inputId = `${name}-${key}-fileUpload`;
         let body;
 
         if (file === null) {

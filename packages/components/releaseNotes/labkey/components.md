@@ -1,6 +1,9 @@
 # @labkey/components
 
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Add helper methods and constants for documentation links
 
 ### version 0.6.4
 *Released*: 26 December 2019

@@ -27,11 +27,11 @@ export const URL_ENCODING_TOPIC = 'urlEncoding';
 export const SEARCH_SYNTAX_TOPIC = "luceneSearch";
 
 export function getHelpLink(topic: string) {
-    return LABKEY.helpLinkPrefix + topic
+    return LABKEY.helpLinkPrefix + topic;
 }
 
 export function helpLinkNode(topic: string, text: React.ReactNode, className?: string): React.ReactNode {
     return (
-        <a target="_blank" href={getHelpLink(topic)}>{text}</a>
-    )
+        <a target="_blank" href={getHelpLink(topic)} className={className}>{text}</a>
+    );
 }

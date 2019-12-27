@@ -145,6 +145,7 @@ import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
 import { getLocation, Location } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
+import { getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -582,6 +583,8 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    getHelpLink,
+    helpLinkNode,
 
     // url functions
     buildURL,

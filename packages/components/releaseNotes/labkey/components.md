@@ -2,8 +2,8 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version ???
-*Released*: ???
+### version 0.7.0
+*Released*: 27 Dec 2019
 
 * Factor out FileAttachmentEntry from FileAttachmentContainer
 * Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component

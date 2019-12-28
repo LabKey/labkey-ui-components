@@ -368,7 +368,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                         addLabelAsterisk: addLabelAsterisk,
                         isFormsy: false,
                         required: required,
-                        labelClass: !allowDisable ? 'control-label text-left col-sm-3 col-xs-12' : undefined
+                        labelClass: !allowDisable ? 'control-label text-left col-sm-4 col-xs-12' : undefined
                     }}
                     showLabel={showLabel}
                     showToggle={allowDisable}

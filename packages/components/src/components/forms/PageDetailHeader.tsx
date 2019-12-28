@@ -24,7 +24,7 @@ import { SVGIcon } from '../base/SVGIcon';
 interface Props {
     user: User
     content?: Array<any>
-    description?: string
+    description?: React.ReactNode
     fieldTriggerProps?: FieldEditTriggerProps
     iconAltText?: string
     iconDir?: string

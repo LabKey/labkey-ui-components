@@ -35,7 +35,7 @@ storiesOf('HeatMap', module)
                 measure={'monthTotal'}
                 yInRangeTotal={'InRangeTotal'}
                 yTotalLabel={text('yTotalLabel', '12 month total samples')}
-                getCellUrl={(protocolName) => AppURL.create('samples', protocolName.toLowerCase())}
+                getCellUrl={(row) => AppURL.create('samples', row.getIn(['Protocol', 'displayValue']).toLowerCase())}
                 getHeaderUrl={(cell) => cell.get('url')}
                 getTotalUrl={(cell) => cell.get('url')}
                 headerClickUrl={AppURL.create('q', 'exp', 'materials')}
@@ -54,7 +54,7 @@ storiesOf('HeatMap', module)
                 measure={'monthTotal'}
                 yInRangeTotal={'InRangeTotal'}
                 yTotalLabel={text('yTotalLabel', '12 month total runs')}
-                getCellUrl={(protocolName, providerName) => AppURL.create('assays', providerName, protocolName, 'runs')}
+                getCellUrl={(row) => AppURL.create('assays', row.getIn(['Provider', 'value']), row.getIn(['Protocol', 'displayValue']), 'runs')}
                 getHeaderUrl={(cell) => {
                     const provider = cell.get('providerName');
                     const protocol = cell.get('protocolName');

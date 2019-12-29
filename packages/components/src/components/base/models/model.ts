@@ -421,6 +421,7 @@ export interface IQueryGridModel {
     baseFilters?: List<Filter.IFilter>
     bindURL?: boolean
     containerPath?: string
+    containerFilter?: string // TODO why can't I use the @labkey/api enum def of containerFilter?
     data?: Map<any, Map<string, any>>
     dataIds?: List<any>
     displayColumns?: List<string>
@@ -484,6 +485,7 @@ export class QueryGridModel extends Record({
     baseFilters: List<Filter.IFilter>(),
     bindURL: true,
     containerPath: undefined,
+    containerFilter: undefined,
     data: Map<any, Map<string, any>>(),
     dataIds: List<any>(),
     displayColumns: undefined,
@@ -533,6 +535,7 @@ export class QueryGridModel extends Record({
     baseFilters: List<Filter.IFilter>;
     bindURL: boolean;
     containerPath?: string;
+    containerFilter?: string;
     data: Map<any, Map<string, any>>;
     dataIds: List<any>;
     displayColumns: List<string>;

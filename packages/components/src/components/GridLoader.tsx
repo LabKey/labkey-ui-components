@@ -26,6 +26,7 @@ class GridLoader implements IGridLoader {
         return new Promise((resolve, reject) => {
             return selectRows({
                 containerPath: model.containerPath,
+                containerFilter: model.containerFilter,
                 schemaName: model.schema,
                 queryName: model.query,
                 viewName: model.view,

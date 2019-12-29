@@ -57,13 +57,13 @@ import { InferDomainResponse } from '../base/models/model';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
-import { FIELD_EDITOR_TOPIC, getHelpLink } from '../../util/helpLinks';
+import { FIELD_EDITOR_TOPIC, getHelpLink, helpLinkNode } from '../../util/helpLinks';
 
 interface IDomainFormInput {
     domain: DomainDesign
     onChange: (newDomain: DomainDesign, dirty: boolean) => any
     onToggle?: (collapsed: boolean, callback?: () => any) => any
-    helpURL?: string
+    helpTopic?: string
     helpNoun?: string
     showHeader?: boolean
     initCollapsed?: boolean
@@ -110,7 +110,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
     static defaultProps = {
         helpNoun: 'field designer',
-        helpURL: getHelpLink(FIELD_EDITOR_TOPIC),
+        helpTopic: FIELD_EDITOR_TOPIC,
         showHeader: true,
         initCollapsed: false,
         isNew: false
@@ -633,18 +633,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderPanelHeaderContent() {
-        const { helpURL, controlledCollapse } = this.props;
+        const { helpTopic, controlledCollapse } = this.props;
 
         return(
-            <Row className={helpURL ? 'domain-form-hdr-margins' : ''}>
-                <Col xs={helpURL ? 9 : 12}>
+            <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
+                <Col xs={helpTopic ? 9 : 12}>
                     {!controlledCollapse &&
                         'Adjust fields and their properties. Expand a row to set additional properties.'
                     }
                 </Col>
-                {helpURL &&
+                {helpTopic &&
                     <Col xs={3}>
-                        <a className='domain-field-float-right' target="_blank" href={helpURL}>Learn more about this tool</a>
+                        {helpLinkNode(helpTopic, "Learn more about this tool", 'domain-field-float-right')}
                     </Col>
                 }
             </Row>

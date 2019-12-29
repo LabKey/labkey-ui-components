@@ -290,7 +290,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             panelStatus={protocolModel.isNew() ? this.getPanelStatus(i + 1) : "COMPLETE"}
                             showInferFromFile={showInferFromFile}
                             containerTop={containerTop}
-                            helpURL={null} // so we only show the helpURL link for the first assay domain
+                            helpTopic={null} // so we only show the help link for the first assay domain
                             onChange={(updatedDomain, dirty) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}

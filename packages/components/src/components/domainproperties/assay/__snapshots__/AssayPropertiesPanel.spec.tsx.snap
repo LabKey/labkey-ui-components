@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
+exports[`AssayPropertiesPanel asPanel, helpTopic, and basePropertiesOnly 1`] = `
 <AssayPropertiesPanel
   asPanel={false}
   basePropertiesOnly={true}
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+  helpTopic="defineAssaySchema"
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -124,7 +124,7 @@ exports[`AssayPropertiesPanel asPanel, helpURL, and basePropertiesOnly 1`] = `
             className="domain-field-padding-bottom"
           >
             <SectionHeading
-              helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              helpTopic="defineAssaySchema"
               title="Basic Properties"
             >
               <Row
@@ -1019,7 +1019,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
 <AssayPropertiesPanel
   asPanel={true}
   basePropertiesOnly={false}
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+  helpTopic="defineAssaySchema"
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -1159,7 +1159,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             className="panel-body"
           >
             <HelpURL
-              helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              helpTopic="defineAssaySchema"
             >
               <Row
                 bsClass="row"
@@ -1210,7 +1210,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                       className="domain-field-padding-bottom"
                     >
                       <SectionHeading
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                         title="Basic Properties"
                       >
                         <Row
@@ -2417,7 +2417,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
   asPanel={true}
   basePropertiesOnly={false}
   collapsible={false}
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+  helpTopic="defineAssaySchema"
   initCollapsed={true}
   model={
     Immutable.Record {
@@ -2557,7 +2557,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             className="panel-body"
           >
             <HelpURL
-              helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              helpTopic="defineAssaySchema"
             >
               <Row
                 bsClass="row"
@@ -2608,7 +2608,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                       className="domain-field-padding-bottom"
                     >
                       <SectionHeading
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                         title="Basic Properties"
                       >
                         <Row
@@ -3814,7 +3814,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
 <AssayPropertiesPanel
   asPanel={true}
   basePropertiesOnly={false}
-  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+  helpTopic="defineAssaySchema"
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -3893,7 +3893,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
             className="panel-body"
           >
             <HelpURL
-              helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+              helpTopic="defineAssaySchema"
             >
               <Row
                 bsClass="row"
@@ -3944,7 +3944,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                       className="domain-field-padding-bottom"
                     >
                       <SectionHeading
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                         title="Basic Properties"
                       >
                         <Row
@@ -4902,11 +4902,11 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
 </AssayPropertiesPanel>
 `;
 
-exports[`AssayPropertiesPanel without helpURL 1`] = `
+exports[`AssayPropertiesPanel without helpTopic 1`] = `
 <AssayPropertiesPanel
   asPanel={true}
   basePropertiesOnly={true}
-  helpURL={null}
+  helpTopic={null}
   initCollapsed={false}
   model={
     Immutable.Record {
@@ -5067,7 +5067,7 @@ exports[`AssayPropertiesPanel without helpURL 1`] = `
                       className="domain-field-padding-bottom"
                     >
                       <SectionHeading
-                        helpURL={null}
+                        helpTopic={null}
                         title="Basic Properties"
                       >
                         <Row

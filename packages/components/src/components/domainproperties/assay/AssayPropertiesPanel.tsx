@@ -23,7 +23,7 @@ import {
 import { createFormInputName } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Alert } from '../../base/Alert';
-import { DEFINE_ASSAY_SCHEMA_TOPIC, getHelpLink } from '../../../util/helpLinks';
+import { DEFINE_ASSAY_SCHEMA_TOPIC, getHelpLink, helpLinkNode } from '../../../util/helpLinks';
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -56,7 +56,7 @@ interface Props {
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
-    helpURL?: string
+    helpTopic?: string
     onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
@@ -72,7 +72,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         asPanel: true,
         initCollapsed: false,
         validate: false,
-        helpURL: getHelpLink(DEFINE_ASSAY_SCHEMA_TOPIC)
+        helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
     };
 
     constructor(props) {
@@ -189,12 +189,12 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderBasicProperties() {
-        const { model, basePropertiesOnly, helpURL } = this.props;
+        const { model, basePropertiesOnly, helpTopic } = this.props;
 
         return (
             <>
                 <div className='domain-field-padding-bottom'>
-                    <SectionHeading title={'Basic Properties'} helpURL={helpURL}/>
+                    <SectionHeading title={'Basic Properties'} helpTopic={helpTopic}/>
                     <NameInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>
                     <DescriptionInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>
                     {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
@@ -391,7 +391,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                     {this.renderHeader()}
                 </Panel.Heading>
                 <Panel.Body collapsible={collapsible || controlledCollapse}>
-                    {this.props.helpURL && <HelpURL helpURL={this.props.helpURL}/>}
+                    {this.props.helpTopic && <HelpURL helpTopic={this.props.helpTopic}/>}
                     {this.renderForm()}
                 </Panel.Body>
             </Panel>
@@ -416,13 +416,13 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 interface SectionHeadingProps {
     title: string
     paddingTop?: boolean
-    helpURL?: string
+    helpTopic?: string
 }
 
 function SectionHeading(props: SectionHeadingProps) {
     return (
         <Row>
-            <Col xs={props.helpURL ? 9 : 12}>
+            <Col xs={props.helpTopic ? 9 : 12}>
                 <div className={'domain-field-section-heading'}>
                     {props.title}
                 </div>
@@ -432,14 +432,14 @@ function SectionHeading(props: SectionHeadingProps) {
 }
 
 interface HelpURLProps {
-    helpURL: string
+    helpTopic: string
 }
 
 function HelpURL(props: HelpURLProps) {
     return (
         <Row>
             <Col xs={12}>
-                <a className='domain-field-float-right' target="_blank" href={props.helpURL}>Learn more about designing assays</a>
+                {helpLinkNode(props.helpTopic, 'Learn more about designing assays', 'domain-field-float-right')}
             </Col>
         </Row>
     )

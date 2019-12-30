@@ -1,12 +1,12 @@
 # @labkey/components
 
 Components, models, actions, and utility functions for LabKey applications and pages.
-### version TBD
-*Released*: TBD
+### version 0.8.0
+*Released*: 30 December 2019
 * Add helper methods and constants for documentation links
 
 ### version 0.7.0
-*Released*: 27 Dec 2019
+*Released*: 27 December 2019
 
 * Factor out FileAttachmentEntry from FileAttachmentContainer
 * Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component

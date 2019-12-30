@@ -9,6 +9,8 @@ Components, models, actions, and utility functions for LabKey applications and p
     - QueryGridModel support for containerFilter in getQuery call
     - QueryGridPanel support for onSelectionChange callback function prop
     - SecurityPolicy.addUserIdAssignment helper function
+    - SiteUsersGridPanel with row selection to show UserDetailsPanel
+    - CreateUsersModal for creating new site users from SiteUsersGridPanel button
     - Update to @labkey/api release version TBD
 
 ### version 0.6.4

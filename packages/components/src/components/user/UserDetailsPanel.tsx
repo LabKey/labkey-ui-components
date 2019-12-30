@@ -15,8 +15,8 @@ import { getDateTimeFormat } from "../../util/Date";
 
 interface Props {
     principal: Principal
-    policy: SecurityPolicy
-    rolesByUniqueName: Map<string, SecurityRole>
+    policy?: SecurityPolicy
+    rolesByUniqueName?: Map<string, SecurityRole>
 }
 
 interface State {
@@ -72,12 +72,14 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             value = moment(value).format(getDateTimeFormat());
         }
 
-        return (
-            <Row className={'principal-detail'}>
-                <Col xs={4} className={'principal-detail-label'}>{title}:</Col>
-                <Col xs={8} className={'principal-detail-value'}>{value}</Col>
-            </Row>
-        )
+        if (value) {
+            return (
+                <Row>
+                    <Col xs={4} className={'principal-detail-label'}>{title}:</Col>
+                    <Col xs={8} className={'principal-detail-value'}>{value}</Col>
+                </Row>
+            )
+        }
     }
 
     renderBody() {
@@ -94,22 +96,22 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             return (
                 <>
                     <p className={'principal-title-primary'}>{principal.displayName}</p>
+
                     {this.renderUserProp('Email', 'email')}
                     {this.renderUserProp('First Name', 'firstName')}
                     {this.renderUserProp('Last Name', 'lastName')}
-                    <hr/>
+
                     {description &&
                         <>
-                            <Row className={'principal-detail'}>
-                                <Col xs={12} className={'principal-detail-label'}>Description:</Col>
-                                <Col xs={12} className={'principal-detail-value'}>{description}</Col>
-                            </Row>
-                            <hr/>
+                            <hr className={'principal-hr'}/>
+                            {this.renderUserProp('Description', 'description')}
                         </>
                     }
+
+                    <hr className={'principal-hr'}/>
                     {this.renderUserProp('Created', 'created', true)}
                     {this.renderUserProp('Last Login', 'lastLogin', true)}
-                    <hr/>
+
                     <EffectiveRolesList {...this.props}/>
                     {/*TODO when groups are implemented, add "Member of" for users*/}
                 </>

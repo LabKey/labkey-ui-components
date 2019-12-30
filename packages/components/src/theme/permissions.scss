@@ -86,15 +86,17 @@
     color: $brand-primary;
 }
 
-.principal-detail {
+.principal-detail-label {
+    color: $gray;
     padding-bottom: 15px;
+}
 
-    .principal-detail-label {
-        color: $gray;
-        padding-bottom: 8px;
-    }
+.principal-detail-value {
+    overflow-wrap: break-word;
+    padding-bottom: 15px;
+}
 
-    .principal-detail-value {
-        overflow-wrap: break-word;
-    }
+.principal-hr {
+    margin-top: 5px;
+    margin-bottom: 20px;
 }

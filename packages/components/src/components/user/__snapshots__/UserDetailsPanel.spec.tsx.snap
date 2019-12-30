@@ -37,7 +37,7 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
       cnathe@labkey.com (Cory Nathe)
     </p>
     <div
-      className="principal-detail row"
+      className="row"
     >
       <div
         className="principal-detail-label col-xs-4"
@@ -52,7 +52,7 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
       </div>
     </div>
     <div
-      className="principal-detail row"
+      className="row"
     >
       <div
         className="principal-detail-label col-xs-4"
@@ -67,7 +67,7 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
       </div>
     </div>
     <div
-      className="principal-detail row"
+      className="row"
     >
       <div
         className="principal-detail-label col-xs-4"
@@ -81,24 +81,29 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
         test2
       </div>
     </div>
-    <hr />
+    <hr
+      className="principal-hr"
+    />
     <div
-      className="principal-detail row"
+      className="row"
     >
       <div
-        className="principal-detail-label col-xs-12"
+        className="principal-detail-label col-xs-4"
       >
-        Description:
+        Description
+        :
       </div>
       <div
-        className="principal-detail-value col-xs-12"
+        className="principal-detail-value col-xs-8"
       >
         This is my user description of what I do for the company. Isn't it really interesting?
       </div>
     </div>
-    <hr />
+    <hr
+      className="principal-hr"
+    />
     <div
-      className="principal-detail row"
+      className="row"
     >
       <div
         className="principal-detail-label col-xs-4"
@@ -113,7 +118,7 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
       </div>
     </div>
     <div
-      className="principal-detail row"
+      className="row"
     >
       <div
         className="principal-detail-label col-xs-4"
@@ -127,10 +132,14 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
         2019-11-18 09:15
       </div>
     </div>
-    <hr />
-    <p>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="principal-detail-label"
+    >
       Effective Roles:
-    </p>
+    </div>
     <ul
       className="permissions-ul"
     >

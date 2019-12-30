@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<GroupDetailsPanel/> no principal 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    Group Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div>
+      No group selected.
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<GroupDetailsPanel/> with principal 1`] = `
 <div
   className="panel panel-default"
@@ -17,9 +36,14 @@ exports[`<GroupDetailsPanel/> with principal 1`] = `
     >
       Editor User Group
     </p>
-    <p>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="principal-detail-label"
+    >
       Effective Roles:
-    </p>
+    </div>
     <ul
       className="permissions-ul"
     >
@@ -27,25 +51,6 @@ exports[`<GroupDetailsPanel/> with principal 1`] = `
         Editor
       </li>
     </ul>
-  </div>
-</div>
-`;
-
-exports[`<GroupDetailsPanel/> no principal 1`] = `
-<div
-  className="panel panel-default"
->
-  <div
-    className="panel-heading"
-  >
-    Group Details
-  </div>
-  <div
-    className="panel-body"
-  >
-    <div>
-      No group selected.
-    </div>
   </div>
 </div>
 `;

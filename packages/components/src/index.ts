@@ -241,6 +241,8 @@ import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
+import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
+import { ACTIVE_USER_GRID_ID } from './components/user/constants';
 
 import {
     createFormInputId,
@@ -365,6 +367,8 @@ export {
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
+    ACTIVE_USER_GRID_ID,
+    SiteUsersGridPanel,
 
     // samples-related
     SampleInsertPanel,

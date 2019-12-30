@@ -107,7 +107,9 @@ export function getServerFilePreview(file: string, numLinesToInclude: number) : 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('user', 'getUserProps.api', {userId}),
+            url: buildURL('user', 'getUserProps.api', {userId}, {
+                container: '/' // always use root container for this API call
+            }),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),

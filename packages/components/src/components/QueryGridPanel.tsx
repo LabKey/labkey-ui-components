@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 
 import { Utils } from '@labkey/api';
 
@@ -39,6 +39,7 @@ interface Props {
     showGridBar?: boolean
     activeTab?: number
     onChangeTab?: (tabInd : number) => any
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
 }
 
 interface State {
@@ -162,7 +163,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     render() {
-        const { asPanel, showGridBar, buttons, header, message, model } = this.props;
+        const { asPanel, showGridBar, buttons, header, message, model, onSelectionChange } = this.props;
         const activeModel = this.getModel();
 
         const content = model ? (
@@ -175,7 +176,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     <div className="col-md-12">
                         {this.renderTabs()}
                         {activeModel
-                            ? <QueryGrid model={activeModel} />
+                            ? <QueryGrid model={activeModel} onSelectionChange={onSelectionChange}/>
                             : <LoadingSpinner/>
                         }
                     </div>

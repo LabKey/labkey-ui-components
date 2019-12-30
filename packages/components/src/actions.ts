@@ -192,7 +192,7 @@ export function sort(model: QueryGridModel, columnIndex: string, dir: string) {
 }
 
 // Handle single row select/deselect from the QueryGrid checkbox column
-export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, any>, checked: boolean) {
+export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, any>, checked: boolean, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     let pkValue;
     let pkCols: List<QueryColumn> = model.queryInfo.getPkCols();
 
@@ -229,11 +229,15 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
 
             const selectedIds = checked ? model.selectedIds.push(stringKey) : model.selectedIds.delete(model.selectedIds.findIndex(item => item === stringKey));
 
-            updateQueryGridModel(model, {
+            const updatedModel = updateQueryGridModel(model, {
                 selectedState: selectedState,
                 selectedQuantity: selectedIds.size,
                 selectedIds: selectedIds
             });
+
+            if (Utils.isFunction(onSelectionChange)) {
+                onSelectionChange(updatedModel, row, checked);
+            }
         }).catch(reason => {
             const error = reason ? reason : {message: 'There was a problem updating the selection for this grid.'};
             gridShowError(model, error);
@@ -244,12 +248,12 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
     }
 }
 
-export function toggleGridSelected(model: QueryGridModel, checked: boolean) {
+export function toggleGridSelected(model: QueryGridModel, checked: boolean, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     if (checked) {
-        setGridSelected(model, checked);
+        setGridSelected(model, checked, onSelectionChange);
     }
     else {
-        setGridUnselected(model);
+        setGridUnselected(model, onSelectionChange);
     }
 }
 
@@ -859,7 +863,7 @@ function removeAll(selected: List<string>, toDelete: List<string>) : List<string
 /**
  * Selects all the items on the current page of the grid.
  */
-function setGridSelected(model: QueryGridModel, checked: boolean) {
+function setGridSelected(model: QueryGridModel, checked: boolean, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     const { dataIds } = model;
     const modelId = model.getId();
 
@@ -883,16 +887,20 @@ function setGridSelected(model: QueryGridModel, checked: boolean) {
             selected = removeAll(selected, dataIds);
         }
 
-        updateQueryGridModel(model, {
+        const updatedModel = updateQueryGridModel(model, {
             selectedIds: selected,
             selectedQuantity: selected.size,
             selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
         });
+
+        if (Utils.isFunction(onSelectionChange)) {
+            onSelectionChange(updatedModel, undefined, checked);
+        }
     });
 }
 
-function setGridUnselected(model: QueryGridModel) {
-    setGridSelected(model, false);
+function setGridUnselected(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
+    setGridSelected(model, false, onSelectionChange);
 }
 
 export function unselectAll(model: QueryGridModel) {

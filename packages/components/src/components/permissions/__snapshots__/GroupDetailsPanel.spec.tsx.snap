@@ -13,7 +13,7 @@ exports[`<GroupDetailsPanel/> with principal 1`] = `
     className="panel-body"
   >
     <p
-      className="permissions-title-primary"
+      className="principal-title-primary"
     >
       Editor User Group
     </p>

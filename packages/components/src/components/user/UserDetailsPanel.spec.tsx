@@ -7,6 +7,11 @@ import { Principal, SecurityPolicy } from "../permissions/models";
 import { getRolesByUniqueName, processGetRolesResponse } from "../permissions/actions";
 import policyJSON from "../../test/data/security-getPolicy.json";
 import rolesJSON from "../../test/data/security-getRoles.json";
+import { initUnitTestMocks } from "../../testHelpers";
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 const USER = Principal.createFromSelectRow(fromJS({
     UserId: {value: 1004},
@@ -21,7 +26,7 @@ const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe("<UserDetailsPanel/>", () => {
 
-    test("no principal", () => {
+    test("no principal", (done) => {
         const component = (
             <UserDetailsPanel
                 principal={undefined}
@@ -30,11 +35,14 @@ describe("<UserDetailsPanel/>", () => {
             />
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        const tree = renderer.create(component);
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
     });
 
-    test("with principal", () => {
+    test("with principal", (done) => {
         const component = (
             <UserDetailsPanel
                 principal={USER}
@@ -43,8 +51,11 @@ describe("<UserDetailsPanel/>", () => {
             />
         );
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        const tree = renderer.create(component);
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
     });
 
 });

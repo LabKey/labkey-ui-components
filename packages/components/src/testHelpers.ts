@@ -1,7 +1,7 @@
-import { initQueryGridState } from './global';
-import { initQueryGridMocks, initLineageMocks } from './stories/mock';
 import { Map } from 'immutable';
 import mock, { proxy } from "xhr-mock";
+import { initQueryGridState } from './global';
+import { initQueryGridMocks, initLineageMocks, initUserPropsMocks } from './stories/mock';
 
 /**
  * Use this method in beforeAll() for your jest tests and you'll have full access
@@ -23,5 +23,6 @@ export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?:
     mock.setup();
     initQueryGridMocks();
     initLineageMocks();
+    initUserPropsMocks();
     mock.use(proxy);
 }

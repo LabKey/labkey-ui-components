@@ -66,6 +66,7 @@ import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
 import usersQueryInfo from '../test/data/users-getQueryDetails.json';
+import userPropsInfo from '../test/data/user-getUserProps.json';
 import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
 import getRolesJson from "../test/data/security-getRoles.json";
 import getPrincipalsJson from "../test/data/security-getPrincipals.json";
@@ -161,6 +162,7 @@ export function initMocks() {
 
     initQueryGridMocks();
     initLineageMocks();
+    initUserPropsMocks();
 
     mock.post(/.*\/query\/.*\/executeSql.*/,  (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -389,5 +391,14 @@ export function initLineageMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+}
+
+export function initUserPropsMocks() {
+    //TODO conditionalize based on userId
+    mock.get(/.*\/user\/getUserProps.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(userPropsInfo)
     });
 }

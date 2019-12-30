@@ -32,10 +32,102 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
     className="panel-body"
   >
     <p
-      className="permissions-title-primary"
+      className="principal-title-primary"
     >
       cnathe@labkey.com (Cory Nathe)
     </p>
+    <div
+      className="principal-detail row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Email
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        reader_email_address_might_be_long@localhost.test
+      </div>
+    </div>
+    <div
+      className="principal-detail row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        First Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test1
+      </div>
+    </div>
+    <div
+      className="principal-detail row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Name
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        test2
+      </div>
+    </div>
+    <hr />
+    <div
+      className="principal-detail row"
+    >
+      <div
+        className="principal-detail-label col-xs-12"
+      >
+        Description:
+      </div>
+      <div
+        className="principal-detail-value col-xs-12"
+      >
+        This is my user description of what I do for the company. Isn't it really interesting?
+      </div>
+    </div>
+    <hr />
+    <div
+      className="principal-detail row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Created
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2017-10-27 11:34
+      </div>
+    </div>
+    <div
+      className="principal-detail row"
+    >
+      <div
+        className="principal-detail-label col-xs-4"
+      >
+        Last Login
+        :
+      </div>
+      <div
+        className="principal-detail-value col-xs-8"
+      >
+        2019-11-18 09:15
+      </div>
+    </div>
+    <hr />
     <p>
       Effective Roles:
     </p>

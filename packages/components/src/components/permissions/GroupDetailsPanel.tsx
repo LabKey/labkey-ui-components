@@ -27,7 +27,7 @@ export class GroupDetailsPanel extends React.PureComponent<Props, any> {
                 <Panel.Body>
                     {principal
                         ? <>
-                            <p className={'permissions-title-primary'}>{principal.displayName}</p>
+                            <p className={'principal-title-primary'}>{principal.displayName}</p>
                             <EffectiveRolesList {...this.props}/>
                             {/*TODO when groups are implemented, "Members" for groups*/}
                         </>

@@ -8,9 +8,10 @@ import { List } from 'immutable'
 import { Security } from '@labkey/api'
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from "./models";
 import { PermissionsRole } from "./PermissionsRole";
-import { PrincipalDetailsPanel } from "./PrincipalDetailsPanel";
+import { GroupDetailsPanel } from "./GroupDetailsPanel";
 import { LoadingSpinner } from "../../components/base/LoadingSpinner";
 import { Alert } from "../../components/base/Alert";
+import { UserDetailsPanel } from "../user/UserDetailsPanel";
 
 interface Props extends PermissionsProviderProps {
     title?: string
@@ -158,11 +159,18 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                     </Panel>
                 </Col>
                 {showDetailsPanel && <Col xs={12} md={4}>
-                    <PrincipalDetailsPanel
-                        principal={selectedPrincipal}
-                        policy={policy}
-                        rolesByUniqueName={rolesByUniqueName}
-                    />
+                    {selectedPrincipal && selectedPrincipal.type === 'g'
+                        ? <GroupDetailsPanel
+                            principal={selectedPrincipal}
+                            policy={policy}
+                            rolesByUniqueName={rolesByUniqueName}
+                        />
+                        : <UserDetailsPanel
+                            principal={selectedPrincipal}
+                            policy={policy}
+                            rolesByUniqueName={rolesByUniqueName}
+                        />
+                    }
                 </Col>}
             </Row>
         )

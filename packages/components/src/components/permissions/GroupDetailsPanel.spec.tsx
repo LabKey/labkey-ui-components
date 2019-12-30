@@ -2,7 +2,7 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme';
-import { PrincipalDetailsPanel } from "./PrincipalDetailsPanel";
+import { GroupDetailsPanel } from "./GroupDetailsPanel";
 import { Principal, SecurityPolicy } from "./models";
 import { getRolesByUniqueName, processGetRolesResponse } from "./actions";
 import policyJSON from "../../test/data/security-getPolicy.json";
@@ -14,22 +14,15 @@ const GROUP = Principal.createFromSelectRow(fromJS({
     Name: {value: 'Editor User Group'}
 }));
 
-const USER = Principal.createFromSelectRow(fromJS({
-    UserId: {value: 1004},
-    Type: {value: 'u'},
-    Name: {value: 'cnathe@labkey.com'},
-    DisplayName: {value: 'Cory Nathe'},
-}));
-
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
-describe("<PrincipalDetailsPanel/>", () => {
+describe("<GroupDetailsPanel/>", () => {
 
     test("no principal", () => {
         const component = (
-            <PrincipalDetailsPanel
+            <GroupDetailsPanel
                 principal={undefined}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -40,22 +33,9 @@ describe("<PrincipalDetailsPanel/>", () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("for user", () => {
+    test("with principal", () => {
         const component = (
-            <PrincipalDetailsPanel
-                principal={USER}
-                policy={POLICY}
-                rolesByUniqueName={ROLES_BY_NAME}
-            />
-        );
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
-
-    test("for group", () => {
-        const component = (
-            <PrincipalDetailsPanel
+            <GroupDetailsPanel
                 principal={GROUP}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}

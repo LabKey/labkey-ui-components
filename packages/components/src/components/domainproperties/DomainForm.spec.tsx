@@ -99,13 +99,13 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with showHeader, helpNoun, and helpURL', () => {
+    test('with showHeader, helpNoun, and helpTopic', () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainForm
                 domain={domain}
                 helpNoun='assay'
-                helpURL='https://www.labkey.com'
+                helpTopic='assays'
                 showHeader={false}
                 onChange={jest.fn()}
             />
@@ -525,15 +525,15 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const helpURL = "https://www.labkey.org/home/project-begin.view?";
+        const helpTopic = "Your topic";
         const form = mount(<DomainForm
-            helpURL={helpURL}
+            helpTopic={helpTopic}
             domain={domain}
             onChange={changeHandler}
         />);
 
         // Check help link
-        const helpLink = form.find({className: 'domain-field-float-right', href: helpURL});
+        const helpLink = form.find('a.domain-field-float-right');
         expect(helpLink.length).toEqual(1);
 
         // Search field test

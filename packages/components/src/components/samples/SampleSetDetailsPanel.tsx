@@ -12,6 +12,7 @@ import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
 import { getActionErrorMessage } from "../../util/messaging";
+import { DERIVE_SAMPLES_ALIAS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 const UNKNOWN_ERROR_CREATE = getActionErrorMessage(`An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 const UNKNOWN_ERROR_UPDATE = getActionErrorMessage(`An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
@@ -312,7 +313,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             <>
                 <span>
                     {PARENT_ALIAS_HELPER_TEXT}
-                    <p><a href={LABKEY.helpLinkPrefix + 'deriveSamples#alias'} target='_blank' >More info</a></p>
+                    <p>{helpLinkNode(DERIVE_SAMPLES_ALIAS_TOPIC, "More info")}</p>
                 </span>
             </>
         );

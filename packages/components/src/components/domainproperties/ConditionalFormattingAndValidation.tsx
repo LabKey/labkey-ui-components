@@ -10,6 +10,12 @@ import { RegexValidationOptions } from './validation/RegexValidationOptions';
 import { RangeValidationOptions } from './validation/RangeValidationOptions';
 import { ConditionalFormatOptions } from './validation/ConditionalFormatOptions';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import {
+    FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC,
+    FIELD_EDITOR_RANGE_VALIDATION_TOPIC,
+    FIELD_EDITOR_REGEX_TOPIC,
+    helpLinkNode
+} from '../../util/helpLinks';
 
 interface ConditionalFormattingAndValidationProps {
     index: number,
@@ -56,7 +62,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Range validators allow you to specify numeric comparisons that must be satisfied.</p>
 
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "fieldEditor#range"}>Range Validation</a>.</p>
+                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_RANGE_VALIDATION_TOPIC, "Range Validation")}.</p>
             </>
         )
     };
@@ -66,7 +72,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>RegEx validators allow you to specify a regular expression that defines what string values are valid.</p>
 
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "fieldEditor#regex"}>Regular Expression Validation</a>.</p>
+                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_REGEX_TOPIC, "Regular Expression Validation")}.</p>
             </>
         )
     };
@@ -76,7 +82,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<Cond
             <>
                 <p>Conditional formats allow targeted display formatting for values that meet defined conditions.</p>
 
-                <p>Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + "fieldEditor#conditional"}>Conditional Formats</a>.</p>
+                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC, "Conditional Formats")}.</p>
             </>
         )
     };

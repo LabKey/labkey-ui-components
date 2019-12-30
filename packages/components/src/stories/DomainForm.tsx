@@ -25,7 +25,7 @@ interface Props {
     data: {}
     exception?: {}
     helpNoun?: any
-    helpURL?: any
+    helpTopic?: any
 }
 
 class DomainFormContainer extends React.PureComponent<Props, any> {
@@ -66,7 +66,7 @@ storiesOf("DomainForm", module)
             <DomainFormContainer
                 data={undefined}
                 helpNoun={text('helpNoun', undefined)}
-                helpURL={text('helpURL', undefined)}
+                helpTopic={text('helpTopic', undefined)}
             />
         )
     })

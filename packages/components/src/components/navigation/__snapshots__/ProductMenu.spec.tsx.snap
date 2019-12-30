@@ -7,7 +7,7 @@ exports[`ProductMenu render error display 1`] = `
   <button
     aria-expanded={false}
     aria-haspopup={true}
-    className="dropdown-toggle btn btn-default"
+    className="product-menu-button dropdown-toggle btn btn-default"
     disabled={false}
     id="product-menu"
     onClick={[Function]}
@@ -52,7 +52,7 @@ exports[`ProductMenu render loading 1`] = `
   <button
     aria-expanded={false}
     aria-haspopup={true}
-    className="dropdown-toggle btn btn-default"
+    className="product-menu-button dropdown-toggle btn btn-default"
     disabled={false}
     id="product-menu"
     onClick={[Function]}
@@ -224,6 +224,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
   }
 >
   <DropdownButton
+    className="product-menu-button"
     id="product-menu"
     onToggle={[Function]}
     open={false}
@@ -254,6 +255,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
             <DropdownToggle
               bsClass="dropdown-toggle"
               bsRole="toggle"
+              className="product-menu-button"
               id="product-menu"
               key=".0"
               onClick={[Function]}
@@ -268,7 +270,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                 block={false}
                 bsClass="btn"
                 bsStyle="default"
-                className="dropdown-toggle"
+                className="product-menu-button dropdown-toggle"
                 disabled={false}
                 id="product-menu"
                 onClick={[Function]}
@@ -278,7 +280,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                 <button
                   aria-expanded={false}
                   aria-haspopup={true}
-                  className="dropdown-toggle btn btn-default"
+                  className="product-menu-button dropdown-toggle btn btn-default"
                   disabled={false}
                   id="product-menu"
                   onClick={[Function]}
@@ -756,6 +758,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
   }
 >
   <DropdownButton
+    className="product-menu-button"
     id="product-menu"
     onToggle={[Function]}
     open={false}
@@ -786,6 +789,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
             <DropdownToggle
               bsClass="dropdown-toggle"
               bsRole="toggle"
+              className="product-menu-button"
               id="product-menu"
               key=".0"
               onClick={[Function]}
@@ -800,7 +804,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                 block={false}
                 bsClass="btn"
                 bsStyle="default"
-                className="dropdown-toggle"
+                className="product-menu-button dropdown-toggle"
                 disabled={false}
                 id="product-menu"
                 onClick={[Function]}
@@ -810,7 +814,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                 <button
                   aria-expanded={false}
                   aria-haspopup={true}
-                  className="dropdown-toggle btn btn-default"
+                  className="product-menu-button dropdown-toggle btn btn-default"
                   disabled={false}
                   id="product-menu"
                   onClick={[Function]}

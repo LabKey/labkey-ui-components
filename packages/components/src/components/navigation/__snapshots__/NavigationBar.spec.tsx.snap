@@ -11,17 +11,17 @@ exports[`<NavigationBar/> default props 1`] = `
       className="row"
     >
       <div
-        className="navbar-left col-sm-6 col-xs-9"
+        className="navbar-left col-sm-6 col-xs-7"
       >
         <span
           className="navbar-item pull-left"
         />
         <span
-          className="navbar-item"
+          className="navbar-item-padded"
         />
       </div>
       <div
-        className="navbar-right col-sm-6 col-xs-3"
+        className="navbar-right col-sm-6 col-xs-5"
       >
         <div
           className="navbar-item pull-right"
@@ -54,17 +54,17 @@ exports[`<NavigationBar/> with search box 1`] = `
       className="row"
     >
       <div
-        className="navbar-left col-sm-6 col-xs-9"
+        className="navbar-left col-sm-6 col-xs-7"
       >
         <span
           className="navbar-item pull-left"
         />
         <span
-          className="navbar-item"
+          className="navbar-item-padded"
         />
       </div>
       <div
-        className="navbar-right col-sm-6 col-xs-3"
+        className="navbar-right col-sm-6 col-xs-5"
       >
         <div
           className="navbar-item pull-right"

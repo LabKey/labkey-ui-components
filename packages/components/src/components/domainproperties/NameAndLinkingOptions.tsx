@@ -10,6 +10,7 @@ import {
 } from './constants';
 import { DomainField } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 interface NameAndLinkingProps {
     index: number,
@@ -36,17 +37,17 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                 Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
             </>
         )
-    }
+    };
 
     getURLHelpText = () => {
         return (
             <>
                 Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
                 <br/><br/>
-                Learn more about using <a target="_blank" href={LABKEY.helpLinkPrefix + 'urlEncoding'}>URL Formatting Options</a>.
+                Learn more about using {helpLinkNode(URL_ENCODING_TOPIC, "URL Formatting Options")}.
             </>
         )
-    }
+    };
 
     render() {
         const { index, field } = this.props;

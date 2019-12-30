@@ -117,6 +117,7 @@ interface InheritedSelectInputProps {
     clearCacheOnChange?: boolean
     clearable?: boolean
     delimiter?: string
+    description?: string
     disabled?: boolean
     filterOptions?: (options, filterString, values) => any // from ReactSelect
     formsy?: boolean
@@ -292,12 +293,13 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     }
 
     render() {
-        const { allowDisable, filterOptions, initiallyDisabled, label, previewOptions, required, showLoading } = this.props;
+        const { allowDisable, description, filterOptions, initiallyDisabled, label, previewOptions, required, showLoading } = this.props;
         const { error, model } = this.state;
 
         if ( error ) {
             const inputProps = {
                 allowDisable: allowDisable,
+                description: description,
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,
                 formsy: this.props.formsy,
@@ -320,6 +322,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
                 autoload: true,
                 cache: true,
+                description: description,
                 filterOptions: Utils.isFunction(filterOptions) ? this.filterOptions : noopFilterOptions,
                 ignoreCase: false,
                 loadOptions: this.loadOptions,
@@ -339,6 +342,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
             // even while QuerySelects are being initialized
             const inputProps = {
                 allowDisable: allowDisable,
+                description: description,
                 initiallyDisabled: initiallyDisabled,
                 disabled: true,
                 formsy: this.props.formsy,

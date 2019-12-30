@@ -5,6 +5,7 @@ import { createFormInputId, createFormInputName, getNameFromId } from './actions
 import { DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, DOMAIN_FIELD_FORMAT } from './constants';
 import { ITypeDependentProps } from './models';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { DATE_FORMATS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 interface DateTimeFieldProps extends ITypeDependentProps {
     format: string,
@@ -33,7 +34,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
             <>
                 To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
                 <br/><br/>
-                Learn more about using <a target='_blank' href={LABKEY.helpLinkPrefix + 'dateFormats#date'}>Date and Time formats</a> in LabKey.
+                Learn more about using {helpLinkNode(DATE_FORMATS_TOPIC, "Date and Time formats")} in LabKey.
             </>
         )
     };

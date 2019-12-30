@@ -1,6 +1,22 @@
 # @labkey/components
 
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 0.8.0
+*Released*: 30 December 2019
+* Add helper methods and constants for documentation links
+
+### version 0.7.0
+*Released*: 27 December 2019
+
+* Factor out FileAttachmentEntry from FileAttachmentContainer
+* Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
+* Allow FileListingForm to optionally include a read-only set of files (available for download only)
+* Change check for reinitializing FileAttachmentContainer to look only for a change in the initial file set
+* Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
+* export replaceParameter and replaceParameters methods from URL
+* add optional parameter to QueryGridPanel so some tabs can be pull right
+* Add description property to QuerySelect to pass it through to SelectInput
+* Increase label field size on SelectInput
 
 ### version TBD
 *Released*: TBD

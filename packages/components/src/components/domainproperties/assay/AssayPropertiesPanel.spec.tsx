@@ -43,13 +43,13 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('asPanel, helpURL, and basePropertiesOnly', () => {
+    test('asPanel, helpTopic, and basePropertiesOnly', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 asPanel={false}
                 basePropertiesOnly={true}
-                helpURL={'https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema'}
+                helpTopic={'defineAssaySchema'}
                 onChange={jest.fn}
             />
         );
@@ -58,11 +58,11 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('without helpURL', () => {
+    test('without helpTopic', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
-                helpURL={null}
+                helpTopic={null}
                 basePropertiesOnly={true}
                 onChange={jest.fn}
             />

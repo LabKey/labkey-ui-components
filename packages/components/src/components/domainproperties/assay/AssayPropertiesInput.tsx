@@ -11,6 +11,12 @@ import { Container } from '../../base/models/model';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 import { AddEntityButton } from '../../buttons/AddEntityButton';
+import {
+    ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
+    CONFIGURE_SCRIPTING_TOPIC,
+    helpLinkNode,
+    PROGRAMMATIC_QC_TOPIC
+} from '../../../util/helpLinks';
 
 interface AssayPropertiesInputProps {
     label: string
@@ -137,7 +143,7 @@ export function PlateTemplatesInput(props: InputProps) {
                     <>
                         <p>
                             Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
-                            For additional information refer to the <a href={LABKEY.helpLinkPrefix + "editPlateTemplate"} target="_blank">help documentation</a>.
+                            For additional information refer to the {helpLinkNode(ASSAY_EDIT_PLATE_TEMPLATE_TOPIC, "help documentation")}.
                         </p>
                     </>
                 )
@@ -383,7 +389,7 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                             The extension of the script file identifies the script engine that will be used to run the validation script. For example,
                             a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
                             configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                            the <a href={LABKEY.helpLinkPrefix + "configureScripting"} target="_blank">help documentation</a>.
+                            the {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, "help documentation")}.
                         </p>
                     </>
                 )
@@ -436,13 +442,13 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 <p>
                                     The full path to the transform script file. Transform scripts run before the assay data is imported and can reshape the data file to match
                                     the expected import format. For help writing a transform script refer to
-                                    the <a href={LABKEY.helpLinkPrefix + "programmaticQC"} target="_blank">Programmatic Quality Control & Transformations</a> guide.
+                                    the {helpLinkNode(PROGRAMMATIC_QC_TOPIC,"Programmatic Quality Control & Transformations")} guide.
                                 </p>
                                 <p>
                                     The extension of the script file identifies the script engine that will be used to run the validation script. For example,
                                     a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
                                     configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                                    the <a href={LABKEY.helpLinkPrefix + "configureScripting"} target="_blank">help documentation</a>.
+                                    the {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, "help documentation")}.
                                 </p>
                             </>
                         )

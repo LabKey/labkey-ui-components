@@ -42,7 +42,7 @@ describe("<PermissionsRole/>", () => {
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
-                selected={undefined}
+                selectedUserId={undefined}
                 initExpanded={true}
             />
         );
@@ -63,7 +63,7 @@ describe("<PermissionsRole/>", () => {
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
-                selected={undefined}
+                selectedUserId={undefined}
                 initExpanded={true}
             />
         );
@@ -84,7 +84,7 @@ describe("<PermissionsRole/>", () => {
                 onAddAssignment={jest.fn()}
                 onRemoveAssignment={jest.fn()}
                 onClickAssignment={jest.fn()}
-                selected={USER}
+                selectedUserId={USER.userId}
                 disabledId={USER.userId}
                 initExpanded={true}
             />

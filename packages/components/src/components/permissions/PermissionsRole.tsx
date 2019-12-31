@@ -19,7 +19,7 @@ interface Props {
     onAddAssignment: (principal: Principal, role: SecurityRole) => any
     onRemoveAssignment: (userId: number, role: SecurityRole) => any
     onClickAssignment: (userId: number) => any
-    selected: Principal
+    selectedUserId: number
     disabledId?: number
     initExpanded?: boolean
 }
@@ -64,7 +64,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
     }
 
     render() {
-        const { role, assignments, typeToShow, onRemoveAssignment, onClickAssignment, onAddAssignment, principals, selected, disabledId, initExpanded } = this.props;
+        const { role, assignments, typeToShow, onRemoveAssignment, onClickAssignment, onAddAssignment, principals, selectedUserId, disabledId, initExpanded } = this.props;
         const existingAssignments = assignments && assignments.size > 0 ? assignments.map((assignment) => assignment.userId).toList() : List<number>();
         const principalsToAdd = Principal.filterAndSort(principals, typeToShow, existingAssignments);
         const showOneType = typeToShow !== undefined;
@@ -104,7 +104,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                                             display={SecurityAssignment.getDisplayName(assignment)}
                                                             onClick={(userId: number) => onClickAssignment(userId)}
                                                             onRemove={(userId: number) => onRemoveAssignment(userId, role)}
-                                                            bsStyle={selected && selected.userId === assignment.userId ? 'primary' : undefined}
+                                                            bsStyle={selectedUserId === assignment.userId ? 'primary' : undefined}
                                                             added={assignment.isNew}
                                                             disabledMsg={disabledMsg}
                                                         />

@@ -4,10 +4,10 @@
  */
 import * as React from 'react';
 import { Map, List } from 'immutable'
-import { Principal, SecurityAssignment, SecurityPolicy, SecurityRole } from "./models";
+import { SecurityAssignment, SecurityPolicy, SecurityRole } from "./models";
 
 interface Props {
-    principal: Principal
+    userId: number
     policy?: SecurityPolicy
     rolesByUniqueName?: Map<string, SecurityRole>
 }
@@ -15,9 +15,9 @@ interface Props {
 export class EffectiveRolesList extends React.PureComponent<Props, any> {
 
     render() {
-        const { principal, policy, rolesByUniqueName } = this.props;
+        const { userId, policy, rolesByUniqueName } = this.props;
         const assignments = policy && rolesByUniqueName
-            ? policy.assignments.filter((assignment) => assignment.userId === principal.userId).toList()
+            ? policy.assignments.filter((assignment) => assignment.userId === userId).toList()
             : List<SecurityAssignment>();
 
         if (assignments.size === 0) {

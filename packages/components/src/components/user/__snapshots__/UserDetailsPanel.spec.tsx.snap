@@ -34,7 +34,7 @@ exports[`<UserDetailsPanel/> with principal 1`] = `
     <p
       className="principal-title-primary"
     >
-      cnathe@labkey.com (Cory Nathe)
+      ReaderDisplayName
     </p>
     <div
       className="row"

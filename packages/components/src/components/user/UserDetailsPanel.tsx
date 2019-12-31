@@ -6,7 +6,7 @@ import * as React from 'react';
 import moment from 'moment';
 import { Panel, Row, Col } from "react-bootstrap";
 import { Map } from 'immutable'
-import { Principal, SecurityPolicy, SecurityRole } from "../permissions/models";
+import { SecurityPolicy, SecurityRole } from "../permissions/models";
 import { EffectiveRolesList } from "../permissions/EffectiveRolesList";
 import { getUserProperties } from "../base/actions";
 import { LoadingSpinner } from "../base/LoadingSpinner";
@@ -14,7 +14,7 @@ import { caseInsensitive } from "../../util/utils";
 import { getDateTimeFormat } from "../../util/Date";
 
 interface Props {
-    principal: Principal
+    userId: number
     policy?: SecurityPolicy
     rolesByUniqueName?: Map<string, SecurityRole>
 }
@@ -40,19 +40,18 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>) {
-        const notMatchingUserId = this.props.principal && prevProps.principal && this.props.principal.userId !== prevProps.principal.userId;
-        if (this.props.principal === undefined || prevProps.principal === undefined || notMatchingUserId) {
+        if (this.props.userId !== prevProps.userId) {
             this.loadUserDetails();
         }
     }
 
     loadUserDetails() {
-        const { principal } = this.props;
+        const { userId } = this.props;
 
-        if (principal && principal.userId) {
+        if (userId) {
             this.setState(() => ({loading: true}));
 
-            getUserProperties(principal.userId)
+            getUserProperties(userId)
                 .then(response => {
                     this.setState(() => ({userProperties: response.props, loading: false}));
                 })
@@ -72,30 +71,28 @@ export class UserDetailsPanel extends React.PureComponent<Props, State> {
             value = moment(value).format(getDateTimeFormat());
         }
 
-        if (value) {
-            return (
-                <Row>
-                    <Col xs={4} className={'principal-detail-label'}>{title}:</Col>
-                    <Col xs={8} className={'principal-detail-value'}>{value}</Col>
-                </Row>
-            )
-        }
+        return (
+            <Row>
+                <Col xs={4} className={'principal-detail-label'}>{title}:</Col>
+                <Col xs={8} className={'principal-detail-value'}>{value}</Col>
+            </Row>
+        )
     }
 
     renderBody() {
-        const { principal } = this.props;
         const { loading, userProperties } = this.state;
 
         if (loading) {
             return <LoadingSpinner/>
         }
 
-        if (principal) {
+        if (userProperties) {
+            const displayName = caseInsensitive(userProperties, 'displayName');
             const description = caseInsensitive(userProperties, 'description');
 
             return (
                 <>
-                    <p className={'principal-title-primary'}>{principal.displayName}</p>
+                    <p className={'principal-title-primary'}>{displayName}</p>
 
                     {this.renderUserProp('Email', 'email')}
                     {this.renderUserProp('First Name', 'firstName')}

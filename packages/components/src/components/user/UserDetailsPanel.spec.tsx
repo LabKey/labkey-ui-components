@@ -13,13 +13,6 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
-const USER = Principal.createFromSelectRow(fromJS({
-    UserId: {value: 1004},
-    Type: {value: 'u'},
-    Name: {value: 'cnathe@labkey.com'},
-    DisplayName: {value: 'Cory Nathe'},
-}));
-
 const POLICY = SecurityPolicy.create(policyJSON);
 const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
@@ -29,7 +22,7 @@ describe("<UserDetailsPanel/>", () => {
     test("no principal", (done) => {
         const component = (
             <UserDetailsPanel
-                principal={undefined}
+                userId={undefined}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
             />
@@ -45,7 +38,7 @@ describe("<UserDetailsPanel/>", () => {
     test("with principal", (done) => {
         const component = (
             <UserDetailsPanel
-                principal={USER}
+                userId={1004}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
             />

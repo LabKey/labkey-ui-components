@@ -26,7 +26,7 @@ interface Props extends PermissionsProviderProps {
 }
 
 interface State {
-    selectedPrincipal: Principal
+    selectedUserId: number
     dirty: boolean
     submitting: boolean
     saveErrorMsg: string
@@ -43,7 +43,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            selectedPrincipal: undefined,
+            selectedUserId: undefined,
             dirty: false,
             submitting: false,
             saveErrorMsg: undefined
@@ -53,17 +53,17 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     addAssignment = (principal: Principal, role: SecurityRole) => {
         const { policy, onChange } = this.props;
         onChange(SecurityPolicy.addAssignment(policy, principal, role));
-        this.setState(() => ({selectedPrincipal: principal, dirty: true}));
+        this.setState(() => ({selectedUserId: principal.userId, dirty: true}));
     };
 
     removeAssignment = (userId: number, role: SecurityRole) => {
         const { policy, onChange } = this.props;
         onChange(SecurityPolicy.removeAssignment(policy, userId, role));
-        this.setState(() => ({selectedPrincipal: undefined, dirty: true}))
+        this.setState(() => ({selectedUserId: undefined, dirty: true}))
     };
 
     showDetails = (selectedUserId: number) => {
-        this.setState(() => ({selectedPrincipal: this.props.principalsById.get(selectedUserId)}));
+        this.setState(() => ({selectedUserId: selectedUserId}));
     };
 
     onSavePolicy = () => {
@@ -77,7 +77,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
             success: (response) => {
                 if (response.success) {
                     this.props.onSuccess();
-                    this.setState(() => ({selectedPrincipal: undefined, submitting: false, dirty: false}));
+                    this.setState(() => ({selectedUserId: undefined, submitting: false, dirty: false}));
                 }
                 else {
                     // TODO when this is used in LKS, need to support response.needsConfirmation
@@ -107,8 +107,9 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel, disabledId } = this.props;
-        const { selectedPrincipal, saveErrorMsg, submitting, dirty } = this.state;
+        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel, disabledId, principalsById } = this.props;
+        const { selectedUserId, saveErrorMsg, dirty } = this.state;
+        const selectedPrincipal = principalsById ? principalsById.get(selectedUserId) : undefined;
         const isLoading = (!policy || !roles || !principals) && !error;
 
         if (isLoading) {
@@ -147,7 +148,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                                         onClickAssignment={this.showDetails}
                                         onRemoveAssignment={this.removeAssignment}
                                         onAddAssignment={this.addAssignment}
-                                        selected={selectedPrincipal}
+                                        selectedUserId={selectedUserId}
                                         disabledId={disabledId}
                                     />
                                 )
@@ -166,7 +167,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                             rolesByUniqueName={rolesByUniqueName}
                         />
                         : <UserDetailsPanel
-                            principal={selectedPrincipal}
+                            userId={selectedUserId}
                             policy={policy}
                             rolesByUniqueName={rolesByUniqueName}
                         />

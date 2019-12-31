@@ -94,7 +94,7 @@ describe("<PermissionAssignments/>", () => {
         expect(wrapper.find('.panel-body').filterWhere((panel) => panel.text() === 'No user selected.')).toHaveLength(1);
 
         wrapper.setState({
-            selectedPrincipal: USER,
+            selectedUserId: USER.userId,
             dirty: true,
             submitting: true,
             saveErrorMsg: 'Save error message'

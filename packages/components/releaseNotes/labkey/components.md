@@ -2,8 +2,8 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.8.1
+*Released*: 2 January 2020
 * Update styling for some navbar components
 
 ### version 0.8.0

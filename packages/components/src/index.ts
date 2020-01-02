@@ -88,6 +88,7 @@ import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
 import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
+import { WebDavFile, WebDavContainer, WebDav } from './components/files/WebDav';
 import { Notification } from './components/notifications/Notification';
 import { createNotification } from './components/notifications/actions';
 import { dismissNotifications, initNotificationsState } from './components/notifications/global';
@@ -120,6 +121,7 @@ import {
 import {
     getEditorModel,
     getQueryGridModel,
+    getQueryGridModelsForGridId,
     initQueryGridState,
     invalidateLineageResults,
     removeQueryGridModel,
@@ -158,6 +160,8 @@ import { EditableGridLoader } from './components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './components/editable/EditableGridLoaderFromSelection';
 import { EditableGridModal } from './components/editable/EditableGridModal';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
+import { CollapsiblePanel } from './components/CollapsiblePanel';
+import { ExpandableDndRow } from './components/ExpandableDndRow';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
@@ -279,6 +283,7 @@ export {
     initQueryGridState,
     getStateQueryGridModel,
     getQueryGridModel,
+    getQueryGridModelsForGridId,
     getEditorModel,
     removeQueryGridModel,
 
@@ -341,6 +346,8 @@ export {
     EditableGridPanelForUpdate,
     EditableGridModal,
     QueryGridPanel,
+    CollapsiblePanel,
+    ExpandableDndRow,
     BulkUpdateForm,
     LookupSelectInput,
     SelectInput,
@@ -511,6 +518,9 @@ export {
     DEFAULT_FILE,
     IFile,
     FilesListing,
+    WebDavFile,
+    WebDavContainer,
+    WebDav,
     AddEntityButton,
     RemoveEntityButton,
     Alert,

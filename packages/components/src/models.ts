@@ -51,6 +51,7 @@ interface IStateModelProps {
     omittedColumns?: List<string>
     showChartSelector?: boolean
     showViewSelector?: boolean
+    showExport?: boolean
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -191,6 +192,10 @@ export function getStateQueryGridModel(
 
             if (props.showViewSelector !== undefined) {
                 modelProps.showViewSelector = props.showViewSelector;
+            }
+
+            if (props.showExport !== undefined) {
+                modelProps.showExport = props.showExport;
             }
         }
     }

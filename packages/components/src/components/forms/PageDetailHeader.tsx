@@ -24,8 +24,9 @@ import { SVGIcon } from '../base/SVGIcon';
 interface Props {
     user: User
     content?: Array<any>
-    description?: string
+    description?: React.ReactNode
     fieldTriggerProps?: FieldEditTriggerProps
+    iconAltText?: string
     iconDir?: string
     iconSrc?: string
     iconUrl?: string
@@ -41,7 +42,7 @@ export class PageDetailHeader extends React.Component<Props, any> {
     };
 
     render() {
-        const { children, description, fieldTriggerProps, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title, user } = this.props;
+        const { children, description, fieldTriggerProps, iconUrl, iconDir, iconSrc, leftColumns, subTitle, title, user, iconAltText } = this.props;
 
         return (
             <div className="page-header">
@@ -55,6 +56,7 @@ export class PageDetailHeader extends React.Component<Props, any> {
                                 iconDir={iconDir}
                                 iconSrc={iconSrc ? iconSrc : ''}
                                 className="detail__header-icon"
+                                alt={iconAltText ? iconAltText : ''}
                             />
                         }
                     </div>}

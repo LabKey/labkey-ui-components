@@ -75,6 +75,7 @@ import { ISubItem, SubMenuItem, SubMenuItemProps } from './components/menus/SubM
 import { SelectionMenuItem } from './components/menus/SelectionMenuItem';
 import { LoadingModal } from './components/base/LoadingModal';
 import { LoadingSpinner } from './components/base/LoadingSpinner';
+import { InsufficientPermissionsAlert } from './components/base/InsufficientPermissionsAlert';
 import { NotFound } from './components/base/NotFound';
 import { Page, PageProps } from './components/base/Page';
 import { LoadingPage, LoadingPageProps } from './components/base/LoadingPage';
@@ -88,6 +89,8 @@ import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
 import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
+import { FilesListingForm } from './components/files/FilesListingForm'
+import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
 import { WebDavFile, WebDavContainer, WebDav } from './components/files/WebDav';
 import { Notification } from './components/notifications/Notification';
 import { createNotification } from './components/notifications/actions';
@@ -101,6 +104,7 @@ import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permi
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './components/buttons/WizardNavButtons';
+import { SplitButtonGroup } from './components/buttons/SplitButtonGroup';
 import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
@@ -142,16 +146,17 @@ import {
     updateRows,
 } from './query/api';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
-import { getLocation, Location } from './util/URL';
+import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
+import { getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,
     SampleSetResolver,
-    SamplesResolver,
+    SamplesResolver
 } from './util/AppURLResolver';
 import { QueryGridPanel } from './components/QueryGridPanel';
 import { EditableGridPanel } from './components/editable/EditableGridPanel';
@@ -331,6 +336,8 @@ export {
     SamplesResolver,
     SampleSetResolver,
     getLocation,
+    replaceParameter,
+    replaceParameters,
 
     // renderers
     AliasRenderer,
@@ -518,6 +525,8 @@ export {
     DEFAULT_FILE,
     IFile,
     FilesListing,
+    FilesListingForm,
+    FileAttachmentEntry,
     WebDavFile,
     WebDavContainer,
     WebDav,
@@ -530,6 +539,7 @@ export {
     LoadingModal,
     LoadingSpinner,
     LoadingPage,
+    InsufficientPermissionsAlert,
     NotFound,
     Page,
     PageHeader,
@@ -554,6 +564,7 @@ export {
     SelectionMenuItem,
     ManageDropdownButton,
     WizardNavButtons,
+    SplitButtonGroup,
     ToggleButtons,
     Cards,
     Footer,
@@ -588,6 +599,8 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    getHelpLink,
+    helpLinkNode,
 
     // url functions
     buildURL,

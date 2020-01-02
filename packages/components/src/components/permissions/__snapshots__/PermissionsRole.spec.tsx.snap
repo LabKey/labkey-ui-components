@@ -80,7 +80,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
               <div
                 className="disabled-button-with-tooltip"
                 onBlur={[Function]}
-                onClick={[Function]}
+                onClick={null}
                 onFocus={[Function]}
                 onMouseOut={[Function]}
                 onMouseOver={[Function]}

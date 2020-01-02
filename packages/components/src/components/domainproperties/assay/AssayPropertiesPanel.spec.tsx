@@ -3,7 +3,6 @@ import { List } from 'immutable';
 import { mount } from 'enzyme';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
 import { AssayProtocolModel, DomainDesign } from '../models';
-import { LK_DOMAIN_HELP_URL } from '../constants';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -44,13 +43,13 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('asPanel, helpURL, and basePropertiesOnly', () => {
+    test('asPanel, helpTopic, and basePropertiesOnly', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 asPanel={false}
                 basePropertiesOnly={true}
-                helpURL={LK_DOMAIN_HELP_URL}
+                helpTopic={'defineAssaySchema'}
                 onChange={jest.fn}
             />
         );
@@ -59,11 +58,11 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('without helpURL', () => {
+    test('without helpTopic', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
-                helpURL={null}
+                helpTopic={null}
                 basePropertiesOnly={true}
                 onChange={jest.fn}
             />

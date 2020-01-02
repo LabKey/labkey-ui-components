@@ -100,12 +100,20 @@
   margin-right: 7px;
 }
 
+.attached-file--bottom-spacing {
+    margin-bottom: 10px;
+}
+
 .attached-file--remove-icon {
   color: $brand-danger;
   display: inline-block;
   margin-right: 10px;
   font-size: 20px;
   cursor: pointer;
+}
+
+.file-listing--header {
+    font-weight: bold;
 }
 
 .file-listing-icon {

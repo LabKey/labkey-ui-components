@@ -14,6 +14,8 @@ import { QueryInfoForm } from '../forms/QueryInfoForm';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryColumn, QueryInfo, User } from '../base/models/model';
 import { SCHEMAS } from '../base/models/schemas';
+import { getActionErrorMessage } from "../../util/messaging";
+import { Alert } from "../base/Alert";
 
 const FIELDS_TO_EXCLUDE = List<string>(['userid', 'owner', 'groups', 'lastlogin', 'haspassword', 'phone', 'mobile', 'pager', 'im', 'avatar']);
 const DISABLED_FIELDS = List<string>(['email']);
@@ -25,6 +27,7 @@ interface State {
     avatar: File
     removeCurrentAvatar: boolean
     reloadRequired: boolean
+    hasError: boolean
 }
 
 interface Props {
@@ -43,13 +46,17 @@ export class UserProfile extends React.Component<Props, State> {
             queryInfo: undefined,
             avatar: undefined,
             removeCurrentAvatar: false,
-            reloadRequired: false
+            reloadRequired: false,
+            hasError: false
         };
     }
 
     componentDidMount() {
         getQueryDetails(SCHEMAS.CORE_TABLES.USERS).then((queryInfo) => {
             this.setState(() => ({queryInfo}));
+        }).catch(reason => {
+            console.error(reason);
+            this.setState(() => ({hasError: true}));
         });
     }
 
@@ -76,6 +83,12 @@ export class UserProfile extends React.Component<Props, State> {
     submitUserDetails = (data: OrderedMap<string, any>) : Promise<any> => {
         const { user } = this.props;
         const avatar = this.state.avatar || (this.state.removeCurrentAvatar ? null : undefined);
+
+        // Issue 39225: don't submit empty string for required DisplayName
+        const displayName = data.get('DisplayName');
+        if (displayName.trim() === '') {
+            return Promise.reject({exception: 'Missing required value for Display Name.'});
+        }
 
         // need to reload the page if the avatar changes or is removed since that is coming from LABKEY.user on page load
         if (avatar !== undefined) {
@@ -152,9 +165,14 @@ export class UserProfile extends React.Component<Props, State> {
     }
 
     render() {
+        const { hasError, queryInfo } = this.state;
+
         return (
             <>
-                {!this.state.queryInfo ? <LoadingSpinner/> : this.renderForm()}
+                {hasError
+                    ? <Alert>{getActionErrorMessage('There was a problem loading your user profile', 'profile')}</Alert>
+                    : (!queryInfo ? <LoadingSpinner/> : this.renderForm())
+                }
             </>
         )
     }

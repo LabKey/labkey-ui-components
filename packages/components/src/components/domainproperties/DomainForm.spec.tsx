@@ -28,7 +28,6 @@ import {
     FILELINK_RANGE_URI,
     FLAG_CONCEPT_URI,
     INT_RANGE_URI,
-    LK_DOMAIN_HELP_URL,
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
@@ -93,20 +92,20 @@ describe('DomainForm', () => {
         expect(searchField.length).toEqual(0);
 
         // Help link
-        const helpLink = form.find({className: 'domain-field-float-right', href: LK_DOMAIN_HELP_URL});
+        const helpLink = form.find({className: 'domain-field-float-right', href: 'https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor'});
         expect(helpLink.length).toEqual(1);
 
         expect(toJson(form)).toMatchSnapshot();
         form.unmount();
     });
 
-    test('with showHeader, helpNoun, and helpURL', () => {
+    test('with showHeader, helpNoun, and helpTopic', () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainForm
                 domain={domain}
                 helpNoun='assay'
-                helpURL='https://www.labkey.com'
+                helpTopic='assays'
                 showHeader={false}
                 onChange={jest.fn()}
             />
@@ -526,15 +525,15 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const helpURL = "https://www.labkey.org/home/project-begin.view?";
+        const helpTopic = "Your topic";
         const form = mount(<DomainForm
-            helpURL={helpURL}
+            helpTopic={helpTopic}
             domain={domain}
             onChange={changeHandler}
         />);
 
         // Check help link
-        const helpLink = form.find({className: 'domain-field-float-right', href: helpURL});
+        const helpLink = form.find('a.domain-field-float-right');
         expect(helpLink.length).toEqual(1);
 
         // Search field test

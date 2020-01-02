@@ -32,6 +32,7 @@ export interface FieldEditTriggerProps {
     showIconText?: boolean
     showValueOnNotAllowed?: boolean
     onUpdate?: () => void
+    handleUpdateRows?: (any) => Promise<any>
 }
 
 interface State {
@@ -73,7 +74,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
 
     init(props: Props) {
         const { fieldKeys, queryModel } = props;
-        if (queryModel.isLoaded) {
+        if (queryModel.isLoaded && queryModel.queryInfo) {
             const row = queryModel.getRow();
             let fields = List<FieldEditProps>();
             fieldKeys.forEach((key) => {
@@ -124,7 +125,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
     }
 
     updateFields(submittedValues) {
-        const { containerPath, queryModel, onUpdate } = this.props;
+        const { containerPath, queryModel, onUpdate, handleUpdateRows } = this.props;
 
         const row = queryModel.getRow();
         const name = row.getIn(['Name', 'value']);
@@ -146,13 +147,16 @@ export class FieldEditTrigger extends React.Component<Props, State> {
             if (containerPath) {
                 options.containerPath = containerPath;
             }
-            return updateRows(options).then(() => {
+
+            const updateRowsFn = handleUpdateRows ? handleUpdateRows : updateRows;
+            return updateRowsFn(options).then(() => {
                 this.handleOverlayClose();
 
                 if (onUpdate) {
                     onUpdate();
                 }
             }).catch((error) => {
+                console.error(error);
                 this.setState({
                     error: error.exception
                 });

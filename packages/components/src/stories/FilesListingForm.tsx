@@ -4,23 +4,23 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { FilesListing } from '../components/files/FilesListing';
+import { FilesListingForm } from '../components/files/FilesListingForm';
+import { FILES_DATA, FILES_DATA_2 } from "../test/data/constants";
 import { IFile } from '..';
-import { FILES_DATA } from '../test/data/constants';
 
-storiesOf("FilesListing", module)
+storiesOf("FilesListingForm", module)
     .addDecorator(withKnobs)
     .add("with no files", () => {
 
         return (
-            <FilesListing
+            <FilesListingForm
                 files={List<IFile>()}
                 handleUpload={() => {}}
                 handleDelete={() => {}}
                 handleDownload={() => {}}
 
                 addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', undefined)}
+                noFilesMessage={text('noFilesMessage', "No files currently attached.")}
                 canInsert={boolean('canInsert', true)}
                 canDelete={boolean('canDelete', true)}
                 useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
@@ -30,17 +30,37 @@ storiesOf("FilesListing", module)
     })
     .add("with files", () => {
         return (
-            <FilesListing
+            <FilesListingForm
                 files={FILES_DATA}
                 handleUpload={() => {}}
                 handleDelete={() => {}}
                 handleDownload={() => {}}
                 addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', undefined)}
+                noFilesMessage={text('noFilesMessage', "No files currently attached.")}
                 canInsert={boolean('canInsert', true)}
                 canDelete={boolean('canDelete', true)}
                 useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
                 getFilePropertiesEditTrigger={() => <><b>click me!</b></>}
             />
         )
-    });
+    })
+    .add("with readOnly files", () => {
+        return (
+            <FilesListingForm
+                files={FILES_DATA}
+                readOnlyFiles={FILES_DATA_2}
+                headerText={text("headerText", "Editable files")}
+                readOnlyHeaderText={text("readOnlyHeaderText", "Read-only files")}
+                handleUpload={() => {}}
+                handleDelete={() => {}}
+                handleDownload={() => {}}
+                addFileText={text('addFileText', undefined)}
+                noFilesMessage={text('noFilesMessage', "No files currently attached.")}
+                canInsert={boolean('canInsert', true)}
+                canDelete={boolean('canDelete', true)}
+                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
+                getFilePropertiesEditTrigger={() => <><b>click me!</b></>}
+            />
+        )
+    })
+;

@@ -290,7 +290,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             panelStatus={protocolModel.isNew() ? this.getPanelStatus(i + 1) : "COMPLETE"}
                             showInferFromFile={showInferFromFile}
                             containerTop={containerTop}
-                            helpURL={null} // so we only show the helpURL link for the first assay domain
+                            helpTopic={null} // so we only show the help link for the first assay domain
                             onChange={(updatedDomain, dirty) => {
                                 this.onDomainChange(i, updatedDomain);
                             }}
@@ -305,20 +305,13 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                         </DomainForm>
                     )
                 })}
-                <Row className='domain-field-padding-top'>
-                    <Col xs={12}>
-                        {this.getBottomErrorBanner(errorDomains)}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col xs={1}>
-                        <Button className='domain-assay-save-btn' onClick={onCancel}>Cancel</Button>
-                    </Col>
-                    <Col xs={10} />
-                    <Col xs={1}>
-                        <Button className='pull-right domain-assay-save-btn' bsStyle='success' disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
-                    </Col>
-                </Row>
+                <div className={'domain-form-panel'}>
+                    {this.getBottomErrorBanner(errorDomains)}
+                </div>
+                <div className={'domain-form-panel domain-assay-buttons'}>
+                    <Button onClick={onCancel}>Cancel</Button>
+                    <Button className='pull-right' bsStyle='success' disabled={this.state.submitting} onClick={this.onFinish}>Save</Button>
+                </div>
             </>
         )
     }

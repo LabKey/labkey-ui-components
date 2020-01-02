@@ -16,7 +16,7 @@
 export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
-export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Set';
+export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
 
 export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
@@ -181,4 +181,3 @@ export const SAMPLE_UNIQUE_FIELD_KEY = 'Name';
 
 export const NO_UPDATES_MESSAGE = 'No changes were made because the provided values match the existing values.';
 export const PARENT_ALIAS_HELPER_TEXT = "Column headings used during import to set a sample's parentage.";
-export const PARENT_ALIAS_DOC_URL = LABKEY.helpLinkPrefix + 'deriveSamples#alias';

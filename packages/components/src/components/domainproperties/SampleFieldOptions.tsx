@@ -2,15 +2,11 @@ import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, fetchQueries } from './actions';
-import {
-    ALL_SAMPLES_DISPLAY_TEXT,
-    DOMAIN_FIELD_SAMPLE_TYPE,
-    SAMPLE_TYPE_HELP_ANCHOR,
-    SM_BASE_HELP_URL,
-} from './constants';
+import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
 import { encodeLookup, IDomainField, ITypeDependentProps, PropDescType, QueryInfoLite } from './models';
 import { List } from 'immutable';
 import { LabelHelpTip } from '../base/LabelHelpTip';
+import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 interface SampleFieldProps extends ITypeDependentProps {
     original: Partial<IDomainField>
@@ -43,7 +39,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
             <>
                 <p>Select the sample reference for this field. You can choose to reference all available samples or select a specific sample type to filter by.</p>
                 <p>This selection will be used to validate and link incoming data, populate lists for data entry, etc.</p>
-                <p>Learn more about using <a target='_blank' href={SM_BASE_HELP_URL + SAMPLE_TYPE_HELP_ANCHOR}>sample types</a> in LabKey.</p> {/*TODO: contextualize help link based on app (SM, LKS, etc.)*/}
+                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_SAMPLE_TYPES_TOPIC, "sample types")} in LabKey.</p> {/*TODO: contextualize help link based on app (SM, LKS, etc.)*/}
             </>
         );
     };

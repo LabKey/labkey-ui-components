@@ -30,7 +30,7 @@ storiesOf("WizardNavButtons", module)
                 isFinishing={boolean('isFinishing', false)}
                 isFinishingText={text('isFinishingText', 'Finishing...')}
                 nextStep={() => console.log('WizardNavButtons next button clicked')}
-                nextStyle={text('nextStyle', '')}
+                nextStyle={text('nextStyle', 'success')}
                 previousStep={() => console.log('WizardNavButtons previous button clicked')}
                 singularNoun={text('singularNoun', '')}
             />

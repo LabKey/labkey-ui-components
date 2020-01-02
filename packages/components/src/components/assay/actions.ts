@@ -78,6 +78,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
             fileCounter++;
         });
 
+        // N.B. assayFileUpload's success response is not handled well by Utils.getCallbackWrapper.
         Ajax.request({
             url: ActionURL.buildURL('assay', 'assayFileUpload.view', LABKEY.container.path),
             method: 'POST',
@@ -118,11 +119,11 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
                     }
                 })
             },
-            failure: (resp) => {
+            failure: Utils.getCallbackWrapper((error) => {
                 // As far as I can tell errors returned from assay FileUpload are only ever strings.
-                const message = `Error while uploading files: ${resp.responseText}`;
+                const message = `Error while uploading files: ${error}`;
                 reject({message});
-            }
+            })
         });
     });
 }

@@ -2,6 +2,71 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.8.1
+*Released*: 2 January 2020
+* Update styling for some navbar components
+
+### version 0.8.0
+*Released*: 30 December 2019
+* Add helper methods and constants for documentation links
+
+### version 0.7.0
+*Released*: 27 December 2019
+
+* Factor out FileAttachmentEntry from FileAttachmentContainer
+* Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
+* Allow FileListingForm to optionally include a read-only set of files (available for download only)
+* Change check for reinitializing FileAttachmentContainer to look only for a change in the initial file set
+* Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
+* export replaceParameter and replaceParameters methods from URL
+* add optional parameter to QueryGridPanel so some tabs can be pull right
+* Add description property to QuerySelect to pass it through to SelectInput
+* Increase label field size on SelectInput
+
+### version 0.6.4
+*Released*: 26 December 2019
+* Item 6392: ConfirmModal fix to not show close icon in upper right if onCancel prop is undefined
+* Item 6392: Misc fixes for error messaging on user logged out / session timeout
+
+### version 0.6.3
+*Released*: 23 December 2019
+* Misc domain designer fixes for Sample Manager
+  - Issue 39256: Fix margin between panel and buttons on sample type field designer
+  - Issue 39225: Fix so profile form trims display name before submit
+  - Issue 39093: Help link in core domain designer points to future Sample Manager docs
+  - Issue 39079: Fix assay design properties, error messages, and buttons for page layout size changes
+  - Issue 38853: Change floating subnav to use display:none instead of visibility: hidden
+
+### version 0.6.2
+*Released*: 20 December 2019
+* Item 6261: Update Sample Set --> Sample Type where applicable for Sample ui components
+* Fix Issue 38700: Parent alias field in sample type design is in error state too early
+
+### version 0.6.1
+*Released*: 20 December 2019
+* QueryGrid fix to remove extra call to reloadQueryGridModel when it is being unmounted
+
+### version 0.6.0
+*Released*: 18 December 2019
+* Item 5511: UserMenu support for Sign In and Sign Out menu items
+* Item 5511: Add InsufficientPermissionsAlert component
+
+### version 0.5.0
+*Released*: 16 December 2019
+* add handleUpdateRows to FieldEditTrigger
+* add initialFiles to FileAttachmentForm
+* add SplitButtonGroup
+* add samplemanagerJob search result mapping in URLResolver
+
+### version 0.4.0
+*Released*: 12 December 2019
+* Remove @labkey/dependencies and move all dependencies to components/package.json
+* Remove our local version of react-bootsrap.d.ts
+
+### version 0.3.1
+*Released*: 12 December 2019
+* Search job attachments
+
 ### version 0.3.0
 *Released*: 6 December 2019
 * Item 6508: Permissions management components, models, and actions
@@ -35,9 +100,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.1.0
 *Released*: 27 November 2019
 * Consolidate all `@glass` packages into this single `@labkey/components` package. The release notes for the previous
-packages ([@glass/base](../glass/base.md), 
+packages ([@glass/base](../glass/base.md),
 [@glass/domainproperties](../glass/domainproperties.md),  [@glass/navigation](../glass/navigation.md), [@glass/omnibox](../glass/omnibox.md), [@glass/querygrid](../glass/querygrid.md), and [@glass/report-list](../glass/report-list.md))
 can be found in the [glass](../glass) directory.
 * Convert build/bundle from rollupjs to webpack, output UMD format for module/app usages.
 * Move files from shared-config repository into this repository.
-  
+

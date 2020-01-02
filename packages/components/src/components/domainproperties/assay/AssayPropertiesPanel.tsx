@@ -5,7 +5,6 @@ import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from 
 import { Utils } from '@labkey/api';
 
 import { AssayProtocolModel, DomainPanelStatus } from '../models';
-import { LK_ASSAY_DESIGNER_HELP_URL } from '../constants';
 import {
     AutoCopyDataInput,
     BackgroundUploadInput,
@@ -24,6 +23,7 @@ import {
 import { createFormInputName } from '../actions';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 import { Alert } from '../../base/Alert';
+import { DEFINE_ASSAY_SCHEMA_TOPIC, getHelpLink, helpLinkNode } from '../../../util/helpLinks';
 
 const FORM_ID_PREFIX = 'assay-design-';
 export const FORM_IDS = {
@@ -56,7 +56,7 @@ interface Props {
     validate?: boolean
     useTheme?: boolean
     panelStatus?: DomainPanelStatus
-    helpURL?: string
+    helpTopic?: string
     onToggle?: (collapsed: boolean, callback: () => any) => any
 }
 
@@ -72,7 +72,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
         asPanel: true,
         initCollapsed: false,
         validate: false,
-        helpURL: LK_ASSAY_DESIGNER_HELP_URL
+        helpTopic: DEFINE_ASSAY_SCHEMA_TOPIC,
     };
 
     constructor(props) {
@@ -189,17 +189,17 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderBasicProperties() {
-        const { model, basePropertiesOnly, helpURL } = this.props;
+        const { model, basePropertiesOnly, helpTopic } = this.props;
 
         return (
             <>
-                <div className='domain-field-padding-bottom domain-field-no-padding-right'>
-                    <SectionHeading title={'Basic Properties'} helpURL={helpURL}/>
-                    <NameInput model={model} onChange={this.onInputChange}/>
-                    <DescriptionInput model={model} onChange={this.onInputChange}/>
-                    {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange}/>}
-                    {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange}/>}
-                    {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange}/>}
+                <div className='domain-field-padding-bottom'>
+                    <SectionHeading title={'Basic Properties'} helpTopic={helpTopic}/>
+                    <NameInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>
+                    <DescriptionInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>
+                    {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
+                    {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
+                    {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
                     {!basePropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
                 </div>
             </>
@@ -211,7 +211,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                <div className='assay-props-column domain-field-padding-bottom'>
+                <div className='domain-field-padding-bottom'>
                     <SectionHeading title={'Import Settings'}/>
                     {<AutoCopyDataInput model={model} onChange={this.onInputChange}/>}
                     {model.allowBackgroundUpload && <BackgroundUploadInput model={model} onChange={this.onInputChange}/>}
@@ -224,14 +224,14 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderEditSettings() {
-        const { model } = this.props;
+        const { model, basePropertiesOnly } = this.props;
 
         return (
             <>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title={'Editing Settings'}/>
-                    {<EditableRunsInput model={model} onChange={this.onInputChange}/>}
-                    {model.allowEditableResults && <EditableResultsInput model={model} onChange={this.onInputChange}/>}
+                    {<EditableRunsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
+                    {model.allowEditableResults && <EditableResultsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
                 </div>
             </>
         )
@@ -247,12 +247,11 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                         <Col xs={12}>{children}</Col>
                     </Row>
                 }
-                <Col className='domain-field-no-padding-right' xs={11} lg={5}>
+                <Col xs={12} lg={basePropertiesOnly ? 12 : 6}>
                     {this.renderBasicProperties()}
                     {this.renderEditSettings()}
                 </Col>
-                <Col className='domain-field-no-side-padding' xs={1}/>
-                <Col xs={11} lg={6}>
+                <Col xs={12} lg={6}>
                     {!basePropertiesOnly && this.renderImportSettings()}
                 </Col>
             </Form>
@@ -366,7 +365,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                 }
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
-                <span>{(name ? name + ' - ' : '') + 'Assay Properties'}</span>
+                <span className={'domain-panel-title'}>{(name ? name + ' - ' : '') + 'Assay Properties'}</span>
                 {(controlledCollapse || collapsible) && collapsed &&
                 <span className={'pull-right'}>
                             <FontAwesomeIcon size={'lg'} icon={faPlusSquare} className={"domain-form-expand-btn"}/>
@@ -392,7 +391,7 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                     {this.renderHeader()}
                 </Panel.Heading>
                 <Panel.Body collapsible={collapsible || controlledCollapse}>
-                    {this.props.helpURL && <HelpURL helpURL={this.props.helpURL}/>}
+                    {this.props.helpTopic && <HelpURL helpTopic={this.props.helpTopic}/>}
                     {this.renderForm()}
                 </Panel.Body>
             </Panel>
@@ -417,13 +416,13 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 interface SectionHeadingProps {
     title: string
     paddingTop?: boolean
-    helpURL?: string
+    helpTopic?: string
 }
 
 function SectionHeading(props: SectionHeadingProps) {
     return (
         <Row>
-            <Col xs={props.helpURL ? 9 : 12}>
+            <Col xs={props.helpTopic ? 9 : 12}>
                 <div className={'domain-field-section-heading'}>
                     {props.title}
                 </div>
@@ -433,14 +432,14 @@ function SectionHeading(props: SectionHeadingProps) {
 }
 
 interface HelpURLProps {
-    helpURL: string
+    helpTopic: string
 }
 
 function HelpURL(props: HelpURLProps) {
     return (
         <Row>
             <Col xs={12}>
-                <a className='domain-field-float-right' target="_blank" href={props.helpURL}>Learn more about designing assays</a>
+                {helpLinkNode(props.helpTopic, 'Learn more about designing assays', 'domain-field-float-right')}
             </Col>
         </Row>
     )

@@ -20,10 +20,12 @@ import { SearchResultsModel } from './models';
 import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
+import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 interface Props {
     model: SearchResultsModel
     iconUrl?: string
+    useSampleType?: boolean   // Hack to update "Sample Set" --> "Sample Type" for Sample Manager, but not other apps
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
@@ -47,21 +49,21 @@ export class SearchResultsPanel extends React.Component<Props, any> {
             console.error(error);
             return <Alert>
                 There was an error with your search term(s).
-                See the <a href={LABKEY.helpLinkPrefix + "luceneSearch"} target="_blank">LabKey Search Documentation</a> page
+                See the {helpLinkNode(SEARCH_SYNTAX_TOPIC, "LabKey Search Documentation")} page
                 for more information on search terms and operators.
             </Alert>
         }
     }
 
     renderResults() {
-        const { model, iconUrl } = this.props;
+        const { model, iconUrl, useSampleType } = this.props;
         const results = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (!this.isLoading() && results !== undefined) {
             // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
             const data = results.filter((result) => {
                 const category = result.get('category');
-                return category=='data' || category=='material' || category=='workflowJob' || result.has('data');
+                return category=='data' || category=='material' || category=='workflowJob' || category=='file workflowJob' || result.has('data');
             });
 
             if (data.size > 0) {
@@ -77,6 +79,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                                     category={item.get('category')}
                                     data={item.get('data')}
                                     iconUrl={iconUrl}
+                                    useSampleType={useSampleType}
                                 />
                             </div>
                         ))}

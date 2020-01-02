@@ -65,7 +65,7 @@ export function getUserDetailsRowData(user: User, data: OrderedMap<string, any>,
 export function updateUserDetails(schemaQuery: SchemaQuery, data: FormData): Promise<any> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('user', 'updateUserDetails.view', LABKEY.container.path),
+            url: ActionURL.buildURL('user', 'updateUserDetails.api', LABKEY.container.path),
             method: 'POST',
             form: data,
             success: Utils.getCallbackWrapper(result => {

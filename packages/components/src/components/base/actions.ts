@@ -66,14 +66,13 @@ export function inferDomainFromFile(file: File, numLinesToInclude: number) : Pro
             url: buildURL('property', 'inferDomain'),
             method: 'POST',
             form,
-            success: (response) => {
-                const json = JSON.parse(response.responseText);
-                resolve(InferDomainResponse.create(json));
-            },
-            failure: (response) => {
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(InferDomainResponse.create(response));
+            }),
+            failure: Utils.getCallbackWrapper((error) => {
+                console.error(error);
                 reject("There was a problem uploading the data file for inferring the domain.");
-                console.error(response);
-            }
+            })
         });
     })
 }

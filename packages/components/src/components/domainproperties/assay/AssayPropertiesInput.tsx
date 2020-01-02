@@ -11,22 +11,29 @@ import { Container } from '../../base/models/model';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
 import { AddEntityButton } from '../../buttons/AddEntityButton';
+import {
+    ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
+    CONFIGURE_SCRIPTING_TOPIC,
+    helpLinkNode,
+    PROGRAMMATIC_QC_TOPIC
+} from '../../../util/helpLinks';
 
 interface AssayPropertiesInputProps {
     label: string
     required?: boolean
     colSize?: number
     helpTipBody?: () => any
+    basePropertiesOnly?: boolean
 }
 
 export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
 
     render() {
-        const { label, required, helpTipBody, colSize, children } = this.props;
+        const { label, required, helpTipBody, colSize, basePropertiesOnly, children } = this.props;
 
         return (
             <Row className={'margin-top'}>
-                <Col xs={3} lg={4}>
+                <Col xs={3} lg={basePropertiesOnly ? 2 : 4}>
                     {getSplitSentence(label, false)}
                     <span className='domain-no-wrap'>
                         {getSplitSentence(label, true)}
@@ -40,7 +47,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
                         }
                     </span>
                 </Col>
-                <Col xs={colSize || 9} lg={8}>
+                <Col xs={colSize || 9} lg={basePropertiesOnly ? 10 : 8}>
                     {children}
                 </Col>
             </Row>
@@ -51,6 +58,7 @@ export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInp
 interface InputProps {
     model: AssayProtocolModel
     onChange: (evt) => void
+    basePropertiesOnly?: boolean
 }
 
 export function NameInput(props: InputProps) {
@@ -58,6 +66,7 @@ export function NameInput(props: InputProps) {
         <AssayPropertiesInput
             label={'Name'}
             required={true}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -82,6 +91,7 @@ export function DescriptionInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Description'}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>A short description for this assay design.</p>
@@ -127,12 +137,13 @@ export function PlateTemplatesInput(props: InputProps) {
             label={'Plate Template'}
             required={true}
             colSize={6}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
                         <p>
                             Specify the plate template definition used to map spots or wells on the plate to data fields in this assay design.
-                            For additional information refer to the <a href={LABKEY.helpLinkPrefix + "editPlateTemplate"} target="_blank">help documentation</a>.
+                            For additional information refer to the {helpLinkNode(ASSAY_EDIT_PLATE_TEMPLATE_TOPIC, "help documentation")}.
                         </p>
                     </>
                 )
@@ -162,6 +173,7 @@ export function DetectionMethodsInput(props: InputProps) {
             label={'Detection Method'}
             required={true}
             colSize={6}
+            basePropertiesOnly={props.basePropertiesOnly}
         >
             <FormControl
                 componentClass="select"
@@ -186,6 +198,7 @@ export function MetadataInputFormatsInput(props: InputProps) {
             label={'Metadata Input Format'}
             required={true}
             colSize={6}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <>
@@ -222,6 +235,7 @@ export function EditableRunsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Editable Runs'}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>
@@ -246,6 +260,7 @@ export function EditableResultsInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label={'Editable Results'}
+            basePropertiesOnly={props.basePropertiesOnly}
             helpTipBody={() => {
                 return (
                     <p>
@@ -374,13 +389,15 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
                             The extension of the script file identifies the script engine that will be used to run the validation script. For example,
                             a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
                             configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                            the <a href={LABKEY.helpLinkPrefix + "configureScripting"} target="_blank">help documentation</a>.
+                            the {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, "help documentation")}.
                         </p>
                     </>
                 )
             }}
         >
-            {props.model.moduleTransformScripts.map((script, i) => <div key={i}>{script}</div>)}
+            {props.model.moduleTransformScripts.map((script, i) => {
+                return <div key={i} style={{overflowWrap: 'break-word'}}>{script}</div>;
+            })}
         </AssayPropertiesInput>
     )
 }
@@ -415,7 +432,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
         const label = 'Transform Scripts';
 
         return (
-            <Col className='domain-field-no-padding-right' xs={3} lg={4}>
+            <Col xs={3} lg={4}>
                 {label}
                 <LabelHelpTip
                     title={label}
@@ -425,13 +442,13 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                                 <p>
                                     The full path to the transform script file. Transform scripts run before the assay data is imported and can reshape the data file to match
                                     the expected import format. For help writing a transform script refer to
-                                    the <a href={LABKEY.helpLinkPrefix + "programmaticQC"} target="_blank">Programmatic Quality Control & Transformations</a> guide.
+                                    the {helpLinkNode(PROGRAMMATIC_QC_TOPIC,"Programmatic Quality Control & Transformations")} guide.
                                 </p>
                                 <p>
                                     The extension of the script file identifies the script engine that will be used to run the validation script. For example,
                                     a script named test.pl will be run with the Perl scripting engine. The scripting engine must be
                                     configured on the Views and Scripting page in the Admin Console. For additional information refer to
-                                    the <a href={LABKEY.helpLinkPrefix + "configureScripting"} target="_blank">help documentation</a>.
+                                    the {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, "help documentation")}.
                                 </p>
                             </>
                         )
@@ -476,7 +493,7 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
                         <AddEntityButton entity={'Script'} containerClass={''} onClick={this.addScript}/>
                     </Col>
                     {protocolTransformScripts.size > 0 && !model.isNew() &&
-                        <Col xs={3} lg={4}>
+                        <Col xs={5} lg={4}>
                             <span className={'pull-right'}>
                                 <a href={ActionURL.buildURL('assay', 'downloadSampleQCData', LABKEY.container.path, {rowId: model.protocolId})}
                                    target={'_blank'}

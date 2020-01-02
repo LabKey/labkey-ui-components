@@ -107,12 +107,12 @@ export class SVGIcon extends React.Component<Props, any> {
     }
 
     render() {
-        const { iconSrc, iconDir } = this.props;
+        const { iconSrc, iconDir, alt } = this.props;
 
         return (
             <img
                 {...imgProps(this.props)}
-                alt={iconSrc + '-icon'}
+                alt={alt ? alt : (iconSrc + '-icon')}
                 src={iconURL(iconDir, iconSrc, this.getTheme())}/>
         )
     }

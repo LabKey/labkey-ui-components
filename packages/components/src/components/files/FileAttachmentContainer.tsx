@@ -18,6 +18,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { fileMatchesAcceptedFormat } from './actions';
+import { FileAttachmentEntry } from './FileAttachmentEntry';
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -27,11 +28,13 @@ interface FileAttachmentContainerProps {
     handleRemoval?: any
     labelLong?: string
     initialFileNames?: Array<string>
+    initialFiles?: {[key:string]: File}
 }
 
 interface FileAttachmentContainerState {
     errorMsg?: string
     files?: {[key:string]: File}
+    isDirty?: boolean
     fileNames?: Array<string> // separate list of names for the case when an initial set of file names is provided for which we have no file object
     isHover?: boolean
 }
@@ -52,8 +55,9 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         this.fileInput = React.createRef();
 
         this.state = {
-            files: {},
+            files: props.initialFiles ? props.initialFiles : {},
             fileNames: props.initialFileNames || [],
+            isDirty: false,
             isHover: false
         }
     }
@@ -63,7 +67,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
     }
 
     componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
-        if (this.props.initialFileNames != nextProps.initialFileNames && Object.keys(this.state.files).length === 0) {
+        if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty)  {
             this.initFileNames(nextProps);
         }
     }
@@ -72,7 +76,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         // since we do not have the file objects themselves, we do not check if the
         // file "type" is valid.  There is presumably nothing a user could do if it were
         // invalid.
-        this.setState(() => ({fileNames: props.initialFileNames || []}))
+        this.setState(() => ({fileNames: props.initialFileNames || (props.initialFiles && Object.keys(props.initialFiles)) || []}))
     }
 
 
@@ -162,7 +166,8 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                 files,
                 fileNames: Object.keys(files),
                 errorMsg: undefined,
-                isHover: false
+                isHover: false,
+                isDirty: true,
             });
 
             if (Utils.isFunction(handleChange)) {
@@ -181,17 +186,16 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }
     }
 
-    handleRemove(name: string) {
+    handleRemove = (name: string) => {
         const { handleRemoval } = this.props;
 
         const fileNames = this.state.fileNames.filter((fileName) =>  (name !== fileName));
-        const files = Object.keys(this.state.files)
-            .filter(fileName => fileName !== name)
-            .reduce((prev, next) => {
-                const file = this.state.files[next];
-                prev[file.name] = file;
-                return prev;
-            }, {});
+
+        let files = {};
+        for (let filename of Object.keys(this.state.files)) {
+            if (fileNames.indexOf(filename) >=0)
+                files[filename] = this.state.files[filename];
+        }
 
         // NOTE: This will clear the field entirely so multiple file support
         // will need to account for this and rewrite this clearing mechanism
@@ -199,12 +203,12 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             this.fileInput.current.value = '';
         }
 
-        this.setState({files, fileNames});
+        this.setState({isDirty: true, files, fileNames});
 
         if (Utils.isFunction(handleRemoval)) {
             handleRemoval(name);
         }
-    }
+    };
 
     renderErrorDetails() {
         const { errorMsg } = this.state;
@@ -258,18 +262,11 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
                 {fileNames.map((fileName: string) => {
                     return (
-                        <div key={fileName} className="attached-file--container">
-                            <span
-                                className="fa fa-times-circle file-upload__remove--icon"
-                                onClick={() => this.handleRemove(fileName)}
-                                title={"Remove file"}/>
-                            <span className="fa fa-file-text" style={{
-                                color: 'darkgray',
-                                fontSize: '20px',
-                                marginRight: '7px',
-                                marginBottom: '10px'}}/>
-                            {fileName}
-                        </div>
+                        <FileAttachmentEntry
+                            key={fileName}
+                            name={fileName}
+                            onDelete={this.handleRemove}
+                        />
                     )
                 })}
             </div>

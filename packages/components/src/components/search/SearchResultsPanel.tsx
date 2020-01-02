@@ -20,6 +20,7 @@ import { SearchResultsModel } from './models';
 import { SearchResultCard } from './SearchResultCard';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
+import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 interface Props {
     model: SearchResultsModel
@@ -48,7 +49,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
             console.error(error);
             return <Alert>
                 There was an error with your search term(s).
-                See the <a href={LABKEY.helpLinkPrefix + "luceneSearch"} target="_blank">LabKey Search Documentation</a> page
+                See the {helpLinkNode(SEARCH_SYNTAX_TOPIC, "LabKey Search Documentation")} page
                 for more information on search terms and operators.
             </Alert>
         }

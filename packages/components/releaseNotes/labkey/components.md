@@ -8,6 +8,28 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `showSampleComparisonReports`, `onChartClicked`, and `onPreviewSCRClicked` props to QueryGridPanel.
 * Add isSampleLookup to QueryColumn
 
+### version 0.8.0
+*Released*: 30 December 2019
+* Add helper methods and constants for documentation links
+
+### version 0.7.0
+*Released*: 27 December 2019
+
+* Factor out FileAttachmentEntry from FileAttachmentContainer
+* Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
+* Allow FileListingForm to optionally include a read-only set of files (available for download only)
+* Change check for reinitializing FileAttachmentContainer to look only for a change in the initial file set
+* Update HeatMap to allow for choosing a displayName field and provide the full row for getCellUrl
+* export replaceParameter and replaceParameters methods from URL
+* add optional parameter to QueryGridPanel so some tabs can be pull right
+* Add description property to QuerySelect to pass it through to SelectInput
+* Increase label field size on SelectInput
+
+### version 0.6.4
+*Released*: 26 December 2019
+* Item 6392: ConfirmModal fix to not show close icon in upper right if onCancel prop is undefined
+* Item 6392: Misc fixes for error messaging on user logged out / session timeout
+
 ### version 0.6.3
 *Released*: 23 December 2019
 * Misc domain designer fixes for Sample Manager

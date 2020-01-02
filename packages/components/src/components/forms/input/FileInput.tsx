@@ -69,7 +69,9 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     getInputName(): string {
-        return this.props.name ? this.props.name : this.props.queryColumn.name;
+        // FIXME if there's more than one of these on the page with the same inputName
+        // files will go to the wrong place when uploaded unless the names are unique
+        return (this.props.name ? this.props.name : this.props.queryColumn.name);
     }
 
     processFiles(fileList: FileList, transferItems?: DataTransferItemList) {

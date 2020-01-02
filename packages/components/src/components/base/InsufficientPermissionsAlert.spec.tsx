@@ -2,7 +2,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { InsufficientPermissionsAlert } from './InsufficientPermissionsAlert';
 
-
 describe("<InsufficientPermissionsAlert/>", () => {
 
     test("default properties", () => {

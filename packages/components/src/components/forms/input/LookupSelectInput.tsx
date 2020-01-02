@@ -118,11 +118,14 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         const { schemaName, queryName } = queryColumn.lookup;
         selectRows({schemaName, queryName, filterArray, sort})
             .then(response => {
-                    this.setState(() => ({
-                        options: this.getOptionsFromSelectedRows(this.props, response)
-                    }))
-                }
-            );
+                this.setState(() => ({
+                    options: this.getOptionsFromSelectedRows(this.props, response)
+                }))
+            })
+            .catch(reason => {
+                console.error(reason);
+                this.setState(() => ({options: []}));
+            });
     }
 
     render() {

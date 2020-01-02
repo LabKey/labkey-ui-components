@@ -233,6 +233,9 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                 selectedQuantity: selectedIds.size,
                 selectedIds: selectedIds
             });
+        }).catch(reason => {
+            const error = reason ? reason : {message: 'There was a problem updating the selection for this grid.'};
+            gridShowError(model, error);
         });
     }
     else {
@@ -1442,6 +1445,12 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
                     descriptors
                 });
             }
+        }).catch(reason => {
+            console.error(reason);
+            updateLookupStore(store, {
+                isLoaded: true,
+                isLoading: false
+            });
         });
     }
 }

@@ -133,9 +133,6 @@ export const HIGHLIGHT_BLUE = '#2980B9';  // See $blue-border in variables.scss
 export const NOT_HIGHLIGHT_GRAY = '#999999';
 // export const HIGHLIGHT_BLUE = '#3495D2';
 
-// export const LK_BASE_HELP_URL = "https://www.labkey.org/Documentation/wiki-page.view?name=";
-// export const SM_BASE_HELP_URL = "https://www.labkey.org/SampleManagerDocs/wiki-page.view?name=";
-
 export const PHILEVEL_NOT_PHI = "NotPHI";
 export const PHILEVEL_LIMITED_PHI = "Limited";
 export const PHILEVEL_FULL_PHI = "PHI";

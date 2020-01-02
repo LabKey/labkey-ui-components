@@ -475,7 +475,7 @@ function handle132Response(json): Promise<any> {
 }
 
 export function searchRows(selectRowsConfig, token: any, exactColumn?: string): Promise<ISelectRowsResult> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         let exactFilters, qFilters;
         const baseFilters = selectRowsConfig.filterArray ? selectRowsConfig.filterArray : [];
         const maxRows = selectRowsConfig.maxRows !== undefined ? selectRowsConfig.maxRows : 100000;
@@ -537,6 +537,8 @@ export function searchRows(selectRowsConfig, token: any, exactColumn?: string): 
             }
 
             resolve(finalResults);
+        }).catch(reason => {
+            reject(reason);
         });
     });
 }

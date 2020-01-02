@@ -15,6 +15,7 @@
  */
 import React from 'reactn';
 import { List } from 'immutable';
+import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
 
@@ -41,6 +42,7 @@ interface Props {
     onChartClicked?: Function,
     onPreviewSCRClicked?: Function,
     activeTab?: number,
+    rightTabs?: List<string>
     onChangeTab?: (tabInd : number) => any,
 }
 
@@ -147,18 +149,27 @@ export class QueryGridPanel extends React.Component<Props, State> {
     }
 
     renderTabs() {
-        const { showAllTabs } = this.props;
+        const { showAllTabs, rightTabs } = this.props;
         const activeModel = this.getActiveModel();
 
         return this.hasTabs() ? (
             <ul className="nav nav-tabs">
                 {
-                    this.getModelsFromGlobalState().map((model, index) => (
-                        model && (showAllTabs || model.totalRows > 0 || (model.filterArray && model.filterArray.size > 0)) &&
-                        <li key={index} className={activeModel.getId() === model.getId() ? "active" : ""}>
-                            <a onClick={() => this.setActiveTab(index)}>{model.title ? model.title : (model.queryInfo ? model.queryInfo.queryLabel : model.query)} ({model.totalRows})</a>
-                        </li>
-                    ))
+                    this.getModelsFromGlobalState().map((model, index) => {
+                        if (model && (showAllTabs || model.totalRows > 0 || (model.filterArray && model.filterArray.size > 0))) {
+                            const tabName = model.title ? model.title : (model.queryInfo ? model.queryInfo.queryLabel : model.query);
+                            const classes = classNames({
+                                'active': activeModel.getId() === model.getId(),
+                                'pull-right': rightTabs && rightTabs.contains(tabName)
+                            });
+                            return (
+                                <li key={index} className={classes}>
+                                    <a onClick={() => this.setActiveTab(index)}>{tabName} ({model.totalRows})</a>
+                                </li>
+                            )
+                        }
+                        return null;
+                    })
                 }
             </ul>
         ) : null;

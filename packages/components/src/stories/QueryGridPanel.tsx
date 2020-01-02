@@ -24,6 +24,7 @@ import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 import { SelectionMenuItem } from '../components/menus/SelectionMenuItem';
 import { DataViewInfoTypes } from '../constants';
 import './stories.scss'
+import { List } from 'immutable';
 
 class QueryGridPanelWrapper extends React.Component {
     renderButtons = (model: QueryGridModel) => {
@@ -151,6 +152,44 @@ class QueryGridPanelWithRenamedColumnsWrapper extends React.Component {
     }
 }
 
+class QueryGridPanelMultiTab extends React.Component<any, any> {
+    renderButtons = (model: QueryGridModel) => {
+        if (model) {
+            return (
+                <ManageDropdownButton id={'storymanagebtn'}>
+                    <SelectionMenuItem
+                        id={'storymenuitem'}
+                        text={'Delete Samples'}
+                        onClick={() => console.log('onMenuItemClick')}
+                        model={model}
+                    />
+                </ManageDropdownButton>
+            )
+        }
+    };
+
+    getQueryGridModels() {
+        return List<QueryGridModel>( [
+            getStateQueryGridModel("gridPanelWithData", new SchemaQuery({
+                schemaName: "exp.data",
+                queryName: "mixtures"
+            }), {}),
+            getStateQueryGridModel("gridPanelWithImages", new SchemaQuery({
+                schemaName: "assay.General.ImageFieldAssay",
+                queryName: "Runs"
+            }), {}),
+            getStateQueryGridModel("gridPanelWithRenamedColumns",  new SchemaQuery({
+                schemaName: "labbook",
+                queryName: "LabBookExperiment"
+            }), {})
+        ]);
+    }
+
+    render() {
+        return <QueryGridPanel showTabs={true} model={this.getQueryGridModels()} buttons={this.renderButtons} rightTabs={List<string>(["Runs"])}/>;
+    }
+}
+
 class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
     onChartClicked = (chart: DataViewInfo) => {
         console.log('Chart Clicked!', chart);
@@ -196,6 +235,9 @@ storiesOf('QueryGridPanel', module)
     })
     .add("with renamed columns", () => {
         return <QueryGridPanelWithRenamedColumnsWrapper/>;
+    })
+    .add("with multiple tabs", () => {
+        return <QueryGridPanelMultiTab/>
     })
     .add('with showSampleComparisonReports', () => {
         return <QueryGridPanelWithSampleComparisonWrapper/>;

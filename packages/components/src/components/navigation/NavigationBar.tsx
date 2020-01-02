@@ -51,7 +51,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
             <nav className="navbar navbar-container test-loc-nav-header">
                 <div className="container">
                     <div className="row">
-                        <div className="navbar-left col-sm-6 col-xs-7">
+                        <div className="navbar-left col-sm-5 col-xs-7">
                             <span className="navbar-item pull-left">
                                 {brand}
                             </span>
@@ -64,7 +64,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
                                 </span>
                             )}
                         </div>
-                        <div className="navbar-right col-sm-6 col-xs-5">
+                        <div className="navbar-right col-sm-7 col-xs-5">
                             <div className="navbar-item pull-right">
                                 {userMenu}
                             </div>

@@ -4,10 +4,9 @@
  */
 import * as React from 'react'
 import { List, Map } from "immutable";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col, MenuItem } from "react-bootstrap";
 import { Filter } from "@labkey/api";
 import { CreateUsersModal } from "./CreateUsersModal";
-import { ACTIVE_USER_GRID_ID, INACTIVE_USER_GRID_ID } from "./constants";
 import { QueryGridModel } from "../base/models/model";
 import { SCHEMAS } from "../base/models/schemas";
 import { getStateQueryGridModel } from "../../models";
@@ -16,15 +15,19 @@ import { ManageDropdownButton } from "../buttons/ManageDropdownButton";
 import { SelectionMenuItem } from "../menus/SelectionMenuItem";
 import { QueryGridPanel } from "../QueryGridPanel";
 import { UserDetailsPanel } from "./UserDetailsPanel";
-import { Principal, SecurityPolicy, SecurityRole } from "../..";
+import { Principal, SecurityPolicy, SecurityRole } from "../permissions/models";
+import { updateUserActiveState } from "./actions";
+import { UserActivateChangeConfirmModal } from "./UserActivateChangeConfirmModal";
+import { createNotification } from "../..";
 
 const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'active', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
 
 interface Props {
     onCreateComplete: (response: any, role: string) => any
+    onActivateChangeComplete: (response: any) => any
+
     policy: SecurityPolicy
     rolesByUniqueName: Map<string, SecurityRole>
-    principalsById: Map<number, Principal>
 
     // optional array of role options, objects with id and label values
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
@@ -32,7 +35,10 @@ interface Props {
 }
 
 interface State {
+    viewActive: boolean
     showCreateUsers: boolean
+    showDeactivate: boolean
+    showReactivate: boolean
     selectedUserId: number
 }
 
@@ -42,18 +48,21 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            viewActive: true,
             showCreateUsers: false,
+            showDeactivate: false,
+            showReactivate: false,
             selectedUserId: undefined
         }
     }
 
-    getActiveUsersStateModel(): QueryGridModel {
-        const model = getStateQueryGridModel('user-management-active', SCHEMAS.CORE_TABLES.USERS, {
-            title: 'Active',
+    getUsersModel(): QueryGridModel {
+        const { viewActive } = this.state;
+        const gridId = 'user-management-users-' + (viewActive ? 'active' : 'inactive');
+        const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
             containerPath: '/',
             omittedColumns: OMITTED_COLUMNS,
-            baseFilters: List<Filter.IFilter>([Filter.create('active', true)]),
-            urlPrefix: ACTIVE_USER_GRID_ID,
+            baseFilters: List<Filter.IFilter>([Filter.create('active', viewActive)]),
             bindURL: true,
             isPaged: true
         });
@@ -61,22 +70,22 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         return getQueryGridModel(model.getId()) || model;
     }
 
-    getInactiveUsersStateModel(): QueryGridModel {
-        const model = getStateQueryGridModel('user-management-inactive', SCHEMAS.CORE_TABLES.USERS, {
-            title: 'Inactive',
-            containerPath: '/',
-            omittedColumns: OMITTED_COLUMNS,
-            baseFilters: List<Filter.IFilter>([Filter.create('active', false)]),
-            urlPrefix: INACTIVE_USER_GRID_ID,
-            bindURL: true,
-            isPaged: true
-        });
-
-        return getQueryGridModel(model.getId()) || model;
-    }
+    toggleViewActive = () => {
+        this.setState((state) => ({
+            viewActive: !state.viewActive,
+            selectedUserId: undefined // clear selected user anytime we change viewsSampleSetDeleteConfirmModal.tsx
+        }));
+    };
 
     toggleCreateUsers = () => {
         this.setState((state) => ({showCreateUsers: !state.showCreateUsers}));
+    };
+
+    toggleActivateChange = (deactivate: boolean, reactivate: boolean) => {
+        this.setState((state) => ({
+            showDeactivate: deactivate,
+            showReactivate: reactivate
+        }));
     };
 
     onCreateComplete = (response: any, role: string) => {
@@ -84,20 +93,36 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         this.props.onCreateComplete(response, role);
     };
 
-    onDeactivate = () => {
-        const model = this.getActiveUsersStateModel();
+    onActivateChange(activate: boolean) {
+        const model = this.getUsersModel();
         if (model.selectedIds.size > 0) {
-            console.log('deactivate', this.getActiveUsersStateModel().selectedIds.toJS());
-            // TODO toggle state to show deactivate dialog
+            this.toggleActivateChange(!activate, activate);
+        }
+    }
+
+    onActivateConfirm = (activate: boolean) => {
+        const model = this.getUsersModel();
+        if (model.selectedIds.size > 0) {
+            // selectedIds will be strings, need to cast to integers
+            const userIds = model.selectedIds.map(id => parseInt(id)).toList();
+
+            updateUserActiveState(userIds, activate)
+                .then(this.onActivateChangeComplete)
+                .catch(error => {
+                    console.error(error);
+                    createNotification({
+                        message: error.exception,
+                        alertClass: 'danger'
+                    });
+
+                    this.toggleActivateChange(false, false);
+                });
         }
     };
 
-    onReactivate = () => {
-        const model = this.getInactiveUsersStateModel();
-        if (model.selectedIds.size > 0) {
-            console.log('reactivate', this.getInactiveUsersStateModel().selectedIds.toJS());
-            // TODO toggle state to show reactivate dialog
-        }
+    onActivateChangeComplete = (response: any) => {
+        this.toggleActivateChange(false, false);
+        this.props.onActivateChangeComplete(response);
     };
 
     onRowSelectionChange = (model, row, checked) => {
@@ -109,66 +134,63 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         }
     };
 
-    renderButtons = (tabModel: QueryGridModel) => {
-        const activeUserModel = this.getActiveUsersStateModel();
-        const isActiveTab = tabModel && tabModel.getId() === activeUserModel.getId();
-        const inactiveUserModel = this.getInactiveUsersStateModel();
-        const isInactiveTab = tabModel && tabModel.getId() === inactiveUserModel.getId();
+    renderButtons = () => {
+        const { viewActive } = this.state;
 
         return (
             <>
-                {isActiveTab &&
-                    <Button bsStyle={'success'} onClick={this.toggleCreateUsers}>
-                        Create
-                    </Button>
-                }
+                <Button bsStyle={'success'} onClick={this.toggleCreateUsers}>
+                    Create
+                </Button>
                 <ManageDropdownButton id={'users-manage-btn'}>
-                    {isActiveTab &&
+                    {viewActive &&
                         <SelectionMenuItem
                             id={'deactivate-users-menu-item'}
                             text={'Deactivate Users'}
-                            onClick={this.onDeactivate}
-                            model={activeUserModel}
+                            onClick={() => this.onActivateChange(false)}
+                            model={this.getUsersModel()}
                             nounPlural={"users"}
                         />
                     }
-                    {isInactiveTab &&
+                    {!viewActive &&
                         <SelectionMenuItem
                             id={'reactivate-users-menu-item'}
                             text={'Reactivate Users'}
-                            onClick={this.onReactivate}
-                            model={inactiveUserModel}
+                            onClick={() => this.onActivateChange(true)}
+                            model={this.getUsersModel()}
                             nounPlural={"users"}
                         />
                     }
+                    <MenuItem
+                        id={'viewactive-users-menu-item'}
+                        onClick={this.toggleViewActive}
+                    >
+                        View {(viewActive ? 'Inactive' : 'Active') + ' Users'}
+                    </MenuItem>
                 </ManageDropdownButton>
             </>
         )
     };
 
     render() {
-        const { newUserRoleOptions, principalsById } = this.props;
-        const {  selectedUserId, showCreateUsers} = this.state;
+        const { newUserRoleOptions } = this.props;
+        const { selectedUserId, showCreateUsers, viewActive, showDeactivate, showReactivate } = this.state;
 
         return (
             <>
                 <Row>
                     <Col xs={12} md={8}>
                         <QueryGridPanel
-                            header={'Users'}
-                            showTabs={true}
-                            model={List<QueryGridModel>([
-                                this.getActiveUsersStateModel(),
-                                this.getInactiveUsersStateModel()
-                            ])}
+                            header={(viewActive ? 'Active' : 'Inactive') + ' Users'}
                             buttons={this.renderButtons}
                             onSelectionChange={this.onRowSelectionChange}
+                            model={this.getUsersModel()}
                         />
                     </Col>
                     <Col xs={12} md={4}>
                         <UserDetailsPanel
                             {...this.props}
-                            principal={principalsById.get(selectedUserId)}
+                            userId={selectedUserId}
                         />
                     </Col>
                 </Row>
@@ -178,6 +200,14 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                     onComplete={this.onCreateComplete}
                     roleOptions={newUserRoleOptions}
                 />
+                {(showDeactivate || showReactivate) &&
+                    <UserActivateChangeConfirmModal
+                        userCount={this.getUsersModel().selectedIds.size}
+                        activate={showReactivate}
+                        onConfirm={this.onActivateConfirm}
+                        onCancel={() => this.toggleActivateChange(false, false)}
+                    />
+                }
             </>
         )
     }

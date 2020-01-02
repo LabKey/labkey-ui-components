@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { ChangePasswordModel } from './models';
 import { caseInsensitive, hasAllPermissions } from '../../util/utils';
@@ -105,6 +105,25 @@ export function getPasswordRuleInfo(): Promise<any> {
             failure: Utils.getCallbackWrapper((response) => {
                 reject(response);
             }),
+        });
+    });
+}
+
+export function updateUserActiveState(userIds: List<number>, activate: boolean): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('user', 'updateUserActiveState.api'),
+            method: 'POST',
+            params: {
+                userId: userIds.toArray(),
+                activate
+            },
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            })
         });
     });
 }

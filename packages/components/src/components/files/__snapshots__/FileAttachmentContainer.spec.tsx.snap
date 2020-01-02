@@ -12,7 +12,7 @@ exports[`<FileAttachmentContainer/> error msg 1`] = `
     >
       <label
         className="file-upload--label"
-        htmlFor="fileUploadfalse"
+        htmlFor="fileUpload"
         onDragEnter={[Function]}
         onDragLeave={[Function]}
         onDragOver={[Function]}
@@ -26,9 +26,9 @@ exports[`<FileAttachmentContainer/> error msg 1`] = `
       <input
         accept=".tsv, .xls, .xlsx"
         className="file-upload--input"
-        id="fileUploadundefined"
+        id="fileUpload"
         multiple={false}
-        name="fileUploadundefined"
+        name="fileUpload"
         onChange={[Function]}
         type="file"
       />
@@ -53,7 +53,7 @@ exports[`<FileAttachmentContainer/> no props 1`] = `
   >
     <label
       className="file-upload--label"
-      htmlFor="fileUploadfalse"
+      htmlFor="fileUpload"
       onDragEnter={[Function]}
       onDragLeave={[Function]}
       onDragOver={[Function]}
@@ -66,9 +66,9 @@ exports[`<FileAttachmentContainer/> no props 1`] = `
     </label>
     <input
       className="file-upload--input"
-      id="fileUploadundefined"
+      id="fileUpload"
       multiple={false}
-      name="fileUploadundefined"
+      name="fileUpload"
       onChange={[Function]}
       type="file"
     />
@@ -83,7 +83,7 @@ exports[`<FileAttachmentContainer/> with attributes 1`] = `
   >
     <label
       className="file-upload--label"
-      htmlFor="fileUploadfalse"
+      htmlFor="fileUpload"
       onDragEnter={[Function]}
       onDragLeave={[Function]}
       onDragOver={[Function]}
@@ -97,9 +97,9 @@ exports[`<FileAttachmentContainer/> with attributes 1`] = `
     <input
       accept=".tsv, .xls, .xlsx"
       className="file-upload--input"
-      id="fileUploadundefined"
+      id="fileUpload"
       multiple={false}
-      name="fileUploadundefined"
+      name="fileUpload"
       onChange={[Function]}
       type="file"
     />

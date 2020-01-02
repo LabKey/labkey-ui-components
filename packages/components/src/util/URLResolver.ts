@@ -271,6 +271,11 @@ export class URLResolver {
                 }
             }),
 
+            new ActionMapper('user', 'details', (row, column, schema, query) => {
+                const params = ActionURL.getParameters(row.get('url'));
+                return AppURL.create('q', 'core', 'siteusers', params.userId);
+            }),
+
             new ActionMapper('labbook', 'experiment', (row) => {
                 const url = row.get('url');
                 if (url) {

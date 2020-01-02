@@ -32,6 +32,7 @@ import { buildURL } from '../../url/ActionURL';
 import { getQueryGridModel } from '../../global';
 import { naturalSort } from '../../util/utils';
 import { selectRows } from '../../query/api';
+import { getActionErrorMessage } from "../../util/messaging";
 
 function initParents(initialParents: Array<string>, selectionKey: string): Promise<List<SampleSetParentType>> {
     return new Promise((resolve) => {
@@ -149,8 +150,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, placehol
 
 
 export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Partial<SampleIdCreationModel>> {
-    return new Promise( (resolve) => {
-
+    return new Promise( (resolve, reject) => {
         return Promise.all([
             selectRows({
                 schemaName: SCHEMAS.EXP_TABLES.SAMPLE_SETS.schemaName,
@@ -195,7 +195,9 @@ export function initSampleSetInsert(model: SampleIdCreationModel)  : Promise<Par
                 targetSampleSet
             })
         })
-
+        .catch(() => {
+            reject(getActionErrorMessage('There was a problem initializing the sample set create page.', 'sample types'));
+        })
     });
 }
 
@@ -296,7 +298,7 @@ export function getSampleDeleteConfirmationData(selectionKey: string, rowIds?: A
                }
            }),
            failure: Utils.getCallbackWrapper((response) => {
-               reject(response.exception);
+               reject(response ? response.exception : 'Unknown error getting sample delete confirmation data.');
            })
        })
     });

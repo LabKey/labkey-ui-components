@@ -37,7 +37,7 @@ describe("<SampleDeleteConfirmModal/>", () => {
             error: errorMsg,
         });
         const confirmModal = wrapper.find(ConfirmModal);
-        expect(confirmModal.props().msg).toBe(errorMsg);
+        expect(confirmModal.find('Alert').first().text()).toBe(errorMsg);
         expect(confirmModal.props().cancelButtonText).toBe("Dismiss");
     });
     test("Have confirmation data", () => {

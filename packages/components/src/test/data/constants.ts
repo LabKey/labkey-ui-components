@@ -72,6 +72,26 @@ export const FILES_DATA = List<IFile>([
     }
 ]);
 
+export const FILES_DATA_2 = List<IFile>([
+    {
+        name: "second.xlsx",
+        description: "i'm a second excel file",
+        created: "2019-11-08 12:26:30.064",
+        createdById: 1005,
+        createdBy: "Someone",
+        iconFontCls: "fa fa-file-excel-o",
+        downloadUrl: "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=exam.xlsx&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+    },{
+        "name": "pretty.gif",
+        description: "i'm a pretty gif",
+        "created": "2019-11-14 15:47:51.931",
+        "createdById": 1100,
+        "createdBy": "Skywalker",
+        "iconFontCls": "fa fa-file-image-o",
+        "downloadUrl": "/labkey/sm/sampleManagement-downloadAttachments.view?jobId=282&names=xray.gif&returnUrl=%2Flabkey%2Fgpat3%2FsampleManagement-appDev.view%23%2Fworkflow%2F282%2Ffiles"
+    }
+]);
+
 export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';
 export const SECURITY_ROLE_FOLDERADMIN = 'org.labkey.api.security.roles.FolderAdminRole';
 export const SECURITY_ROLE_EDITOR = 'org.labkey.api.security.roles.EditorRole';

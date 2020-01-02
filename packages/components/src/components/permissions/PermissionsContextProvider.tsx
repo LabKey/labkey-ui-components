@@ -57,7 +57,7 @@ export const PermissionsPageContextProvider = (Component: React.ComponentType) =
                     const principalsById = getPrincipalsById(principals);
                     this.setState(() => ({principals, principalsById}));
                 }).catch((response) => {
-                    this.setState(() => ({error: response.message}));
+                    this.setState(() => ({error: response.message || response}));
                 });
         }
 

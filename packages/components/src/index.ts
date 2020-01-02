@@ -89,6 +89,8 @@ import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
 import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
+import { FilesListingForm } from './components/files/FilesListingForm'
+import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
 import { Notification } from './components/notifications/Notification';
 import { createNotification } from './components/notifications/actions';
 import { dismissNotifications, initNotificationsState } from './components/notifications/global';
@@ -142,16 +144,17 @@ import {
     updateRows,
 } from './query/api';
 import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
-import { getLocation, Location } from './util/URL';
+import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
+import { getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,
     SampleSetResolver,
-    SamplesResolver,
+    SamplesResolver
 } from './util/AppURLResolver';
 import { QueryGridPanel } from './components/QueryGridPanel';
 import { EditableGridPanel } from './components/editable/EditableGridPanel';
@@ -328,6 +331,8 @@ export {
     SamplesResolver,
     SampleSetResolver,
     getLocation,
+    replaceParameter,
+    replaceParameters,
 
     // renderers
     AliasRenderer,
@@ -513,6 +518,8 @@ export {
     DEFAULT_FILE,
     IFile,
     FilesListing,
+    FilesListingForm,
+    FileAttachmentEntry,
     AddEntityButton,
     RemoveEntityButton,
     Alert,
@@ -582,6 +589,8 @@ export {
     debounce,
     valueIsEmpty,
     getActionErrorMessage,
+    getHelpLink,
+    helpLinkNode,
 
     // url functions
     buildURL,

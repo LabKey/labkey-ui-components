@@ -94,6 +94,17 @@ export class URLResolver {
                 }
             }),
 
+            // http://localhost:8080/labkey/Sam%20Man/experiment-protocolDetails.view?rowId=1424
+            new ActionMapper("experiment", "protocolDetails", (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const rowId = params.rowId;
+                const url = ['workflow', 'template', rowId];
+                if (rowId !== undefined) {
+                    return AppURL.create(...url);
+                }
+            }),
+
             // Fixme.  This is really sketchy since there is no corresponding URL in LKS
             new ActionMapper('samplesworkflow', 'samples', (row) => {
                 const targetURL = row.get('url');
@@ -112,6 +123,16 @@ export class URLResolver {
                 const url = ['workflow', jobId, 'tasks'];
                 if (jobId !== undefined) {
                     return AppURL.create(...url);
+                }
+            }),
+
+            new ActionMapper('samplesworkflow', 'templateJobs', (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const templateId = params.templateId;
+                const url = ['workflow', "template", templateId, 'jobs'];
+                if (templateId !== undefined) {
+                    return AppURL.create(...url).addParam("tab", "all");
                 }
             }),
 

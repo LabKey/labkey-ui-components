@@ -18,8 +18,8 @@ import { Button, Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 
 interface Props {
-    show: boolean
-    title: string
+    show?: boolean
+    title?: string
     msg: any
     onConfirm?: (any) => void
     onCancel?: (any) => void
@@ -47,7 +47,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
 
         return (
             <Modal show={show} onHide={onCancel}>
-                <Modal.Header closeButton>
+                <Modal.Header closeButton={onCancel !== undefined}>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
 

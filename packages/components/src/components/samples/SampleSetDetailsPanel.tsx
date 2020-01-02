@@ -11,9 +11,11 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { generateId } from '../../util/utils';
 import { Alert } from '../base/Alert';
+import { getActionErrorMessage } from "../../util/messaging";
+import { DERIVE_SAMPLES_ALIAS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
-const UNKNOWN_ERROR_CREATE = `An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
-const UNKNOWN_ERROR_UPDATE = `An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`;
+const UNKNOWN_ERROR_CREATE = getActionErrorMessage(`An unknown error occurred creating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
+const UNKNOWN_ERROR_UPDATE = getActionErrorMessage(`An unknown error occurred updating the ${SAMPLE_SET_DISPLAY_TEXT.toLowerCase()}.`, SAMPLE_SET_DISPLAY_TEXT.toLowerCase());
 
 export const FORM_IDS = {
     NAME: 'sample-set-create-name',
@@ -83,14 +85,18 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                     });
                 }
 
-                this.setState(
-                    (state) => ({
+                this.setState((state) => ({
                     formValues: {
                         ...state.formValues
                     } as ISampleSetDetails,
                     parentOptions: options,
-                    parentAliases,
+                    parentAliases
                 }));
+            }).catch((reason) => {
+                console.error(reason);
+                this.setState(() => ({
+                    parentOptions: [NEW_SAMPLE_SET_OPTION]
+                }))
             });
         }
     }
@@ -119,7 +125,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             beforeFinish(formValues);
         }
 
-        const {importAliasKeys, importAliasValues } = this.getImportAliases();
+        const { importAliasKeys, importAliasValues } = this.getImportAliases();
 
         if (this.isExistingSampleSet()) {
             const config = {
@@ -150,17 +156,18 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
         }
     };
 
-    getImportAliases()
-    {
-        const {parentAliases} = this.state;
+    getImportAliases() {
+        const { parentAliases } = this.state;
 
         let importAliasKeys = [];
         let importAliasValues = [];
 
-        parentAliases.map((alias: IParentAlias) => {
-            importAliasKeys.push(alias.alias);
-            importAliasValues.push(alias.parentValue.value);
-        });
+        if (parentAliases) {
+            parentAliases.map((alias: IParentAlias) => {
+                importAliasKeys.push(alias.alias);
+                importAliasValues.push(alias.parentValue.value);
+            });
+        }
 
         return {importAliasKeys, importAliasValues};
     }
@@ -306,7 +313,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
             <>
                 <span>
                     {PARENT_ALIAS_HELPER_TEXT}
-                    <p><a href={LABKEY.helpLinkPrefix + 'deriveSamples#alias'} target='_blank' >More info</a></p>
+                    <p>{helpLinkNode(DERIVE_SAMPLES_ALIAS_TOPIC, "More info")}</p>
                 </span>
             </>
         );
@@ -314,7 +321,7 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
 
     render() {
         const { onCancel, nameExpressionInfoUrl } = this.props;
-        const { submitting, error } = this.state;
+        const { submitting, error, parentOptions } = this.state;
 
         const moreInfoLink = nameExpressionInfoUrl ?
             <p><a target={'_blank'} href={nameExpressionInfoUrl}>More info</a></p> :
@@ -389,15 +396,17 @@ export class SampleSetDetailsPanel extends React.Component<Props, State> {
                                 </Col>
                             </Row>
                             { this.renderParentAliases() }
-                            <Row>
-                                <Col xs={3}>
-                                </Col>
-                                <Col xs={9}>
-                                    <span>
-                                        <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
-                                    </span>
-                                </Col>
-                            </Row>
+                            { parentOptions &&
+                                <Row>
+                                    <Col xs={3}>
+                                    </Col>
+                                    <Col xs={9}>
+                                        <span>
+                                            <AddEntityButton entity="Parent Alias" onClick={this.addParentAlias} helperBody={this.renderAddEntityHelper} />
+                                        </span>
+                                    </Col>
+                                </Row>
+                            }
                         </Form>
                     </Panel.Body>
                 </Panel>

@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { QueryGridPanel } from '../components/QueryGridPanel';
 import { getStateQueryGridModel } from '../models';
@@ -23,6 +23,7 @@ import './stories.scss';
 import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 import { SelectionMenuItem } from '../components/menus/SelectionMenuItem';
+import { List } from 'immutable';
 
 class QueryGridPanelWrapper extends React.Component {
     renderButtons = (model: QueryGridModel) => {
@@ -150,6 +151,44 @@ class QueryGridPanelWithRenamedColumnsWrapper extends React.Component {
     }
 }
 
+class QueryGridPanelMultiTab extends React.Component<any, any> {
+    renderButtons = (model: QueryGridModel) => {
+        if (model) {
+            return (
+                <ManageDropdownButton id={'storymanagebtn'}>
+                    <SelectionMenuItem
+                        id={'storymenuitem'}
+                        text={'Delete Samples'}
+                        onClick={() => console.log('onMenuItemClick')}
+                        model={model}
+                    />
+                </ManageDropdownButton>
+            )
+        }
+    };
+
+    getQueryGridModels() {
+        return List<QueryGridModel>( [
+            getStateQueryGridModel("gridPanelWithData", new SchemaQuery({
+                schemaName: "exp.data",
+                queryName: "mixtures"
+            }), {}),
+            getStateQueryGridModel("gridPanelWithImages", new SchemaQuery({
+                schemaName: "assay.General.ImageFieldAssay",
+                queryName: "Runs"
+            }), {}),
+            getStateQueryGridModel("gridPanelWithRenamedColumns",  new SchemaQuery({
+                schemaName: "labbook",
+                queryName: "LabBookExperiment"
+            }), {})
+        ]);
+    }
+
+    render() {
+        return <QueryGridPanel showTabs={true} model={this.getQueryGridModels()} buttons={this.renderButtons} rightTabs={List<string>(["Runs"])}/>;
+    }
+}
+
 storiesOf('QueryGridPanel', module)
     .addDecorator(withKnobs)
     .add("with data", () => {
@@ -163,4 +202,8 @@ storiesOf('QueryGridPanel', module)
     })
     .add("with renamed columns", () => {
         return <QueryGridPanelWithRenamedColumnsWrapper/>;
-    });
+    })
+    .add("with multiple tabs", () => {
+        return <QueryGridPanelMultiTab/>
+    })
+;

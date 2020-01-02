@@ -103,7 +103,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
     asPanel={true}
     basePropertiesOnly={true}
     controlledCollapse={true}
-    helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+    helpTopic="defineAssaySchema"
     initCollapsed={false}
     model={
       Immutable.Record {
@@ -329,7 +329,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                       className="panel-body"
                     >
                       <HelpURL
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                       >
                         <Row
                           bsClass="row"
@@ -380,7 +380,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                 className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
-                                  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                                  helpTopic="defineAssaySchema"
                                   title="Basic Properties"
                                 >
                                   <Row
@@ -1302,7 +1302,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="0"
     modelDomains={
@@ -1401,7 +1401,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -1984,7 +1984,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="1"
     modelDomains={
@@ -2083,7 +2083,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -2666,7 +2666,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="2"
     modelDomains={
@@ -2765,7 +2765,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -3749,7 +3749,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
     asPanel={true}
     basePropertiesOnly={true}
     controlledCollapse={true}
-    helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+    helpTopic="defineAssaySchema"
     initCollapsed={false}
     model={
       Immutable.Record {
@@ -4236,7 +4236,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                       className="panel-body"
                     >
                       <HelpURL
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                       >
                         <Row
                           bsClass="row"
@@ -4287,7 +4287,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
                                 className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
-                                  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                                  helpTopic="defineAssaySchema"
                                   title="Basic Properties"
                                 >
                                   <Row
@@ -6312,7 +6312,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="0"
     modelDomains={
@@ -6621,7 +6621,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -7564,7 +7564,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="1"
     modelDomains={
@@ -8102,7 +8102,7 @@ exports[`AssayDesignerPanels basePropertiesOnly with initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -15906,7 +15906,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
     asPanel={true}
     basePropertiesOnly={false}
     controlledCollapse={true}
-    helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+    helpTopic="defineAssaySchema"
     initCollapsed={false}
     model={
       Immutable.Record {
@@ -16132,7 +16132,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                       className="panel-body"
                     >
                       <HelpURL
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                       >
                         <Row
                           bsClass="row"
@@ -16183,7 +16183,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                 className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
-                                  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                                  helpTopic="defineAssaySchema"
                                   title="Basic Properties"
                                 >
                                   <Row
@@ -17411,7 +17411,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="0"
     modelDomains={
@@ -17510,7 +17510,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -18093,7 +18093,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="1"
     modelDomains={
@@ -18192,7 +18192,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -18775,7 +18775,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="2"
     modelDomains={
@@ -18874,7 +18874,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -19649,7 +19649,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     asPanel={true}
     basePropertiesOnly={false}
     controlledCollapse={true}
-    helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+    helpTopic="defineAssaySchema"
     initCollapsed={false}
     model={
       Immutable.Record {
@@ -19875,7 +19875,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                       className="panel-body"
                     >
                       <HelpURL
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                       >
                         <Row
                           bsClass="row"
@@ -19926,7 +19926,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                 className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
-                                  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                                  helpTopic="defineAssaySchema"
                                   title="Basic Properties"
                                 >
                                   <Row
@@ -21154,7 +21154,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="1"
     modelDomains={
@@ -21253,7 +21253,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -21836,7 +21836,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         "instructions": undefined,
       }
     }
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="2"
     modelDomains={
@@ -21935,7 +21935,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
           }
         }
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -22919,7 +22919,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
     asPanel={true}
     basePropertiesOnly={false}
     controlledCollapse={true}
-    helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+    helpTopic="defineAssaySchema"
     initCollapsed={false}
     model={
       Immutable.Record {
@@ -23406,7 +23406,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       className="panel-body"
                     >
                       <HelpURL
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                       >
                         <Row
                           bsClass="row"
@@ -23457,7 +23457,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                 className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
-                                  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                                  helpTopic="defineAssaySchema"
                                   title="Basic Properties"
                                 >
                                   <Row
@@ -26699,7 +26699,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="1"
     modelDomains={
@@ -27237,7 +27237,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -35250,7 +35250,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
     asPanel={true}
     basePropertiesOnly={false}
     controlledCollapse={true}
-    helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+    helpTopic="defineAssaySchema"
     initCollapsed={false}
     model={
       Immutable.Record {
@@ -35737,7 +35737,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       className="panel-body"
                     >
                       <HelpURL
-                        helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                        helpTopic="defineAssaySchema"
                       >
                         <Row
                           bsClass="row"
@@ -35788,7 +35788,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                 className="domain-field-padding-bottom"
                               >
                                 <SectionHeading
-                                  helpURL="https://www.labkey.org/Documentation/wiki-page.view?name=defineAssaySchema"
+                                  helpTopic="defineAssaySchema"
                                   title="Basic Properties"
                                 >
                                   <Row
@@ -38801,7 +38801,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="0"
     modelDomains={
@@ -39110,7 +39110,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={
@@ -40053,7 +40053,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
       }
     }
     headerPrefix="Test Assay Protocol"
-    helpURL={null}
+    helpTopic={null}
     initCollapsed={true}
     key="1"
     modelDomains={
@@ -40591,7 +40591,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         }
         headerPrefix="Test Assay Protocol"
         helpNoun="field designer"
-        helpURL={null}
+        helpTopic={null}
         initCollapsed={true}
         isNew={false}
         modelDomains={

@@ -34,7 +34,7 @@ interface FileAttachmentFormProps {
     cancelText?: string
     initialFileNames?: Array<string>
     initialFiles?: {[key:string]: File}
-    index?: any
+    index?: number
     label?: string
     labelLong?: string
     onCancel?: () => any

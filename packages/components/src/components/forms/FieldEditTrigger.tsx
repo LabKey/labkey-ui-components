@@ -74,7 +74,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
 
     init(props: Props) {
         const { fieldKeys, queryModel } = props;
-        if (queryModel.isLoaded) {
+        if (queryModel.isLoaded && queryModel.queryInfo) {
             const row = queryModel.getRow();
             let fields = List<FieldEditProps>();
             fieldKeys.forEach((key) => {
@@ -156,6 +156,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                     onUpdate();
                 }
             }).catch((error) => {
+                console.error(error);
                 this.setState({
                     error: error.exception
                 });

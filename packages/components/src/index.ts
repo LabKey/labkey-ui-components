@@ -127,6 +127,7 @@ import {
     initQueryGridState,
     invalidateLineageResults,
     removeQueryGridModel,
+    invalidateUsers
 } from './global';
 import {
     deleteRows,
@@ -367,6 +368,7 @@ export {
 
     // user-related
     getUsersWithPermissions,
+    invalidateUsers,
     IUser,
     UserDetailHeader,
     UserProfile,

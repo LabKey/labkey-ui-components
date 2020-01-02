@@ -367,7 +367,7 @@ export function setUsers(users: List<IUser>, permissions?: string | Array<string
 /**
  * Invalidate the global state users list
  */
-export function invalidateProjectUsers() {
+export function invalidateUsers() {
     setGlobal( {
         QueryGrid_users: Map<string, List<IUser>>()
     });

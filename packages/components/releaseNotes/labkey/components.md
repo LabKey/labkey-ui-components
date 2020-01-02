@@ -10,6 +10,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - SecurityPolicy.addUserIdAssignment helper function
     - SiteUsersGridPanel with row selection to show UserDetailsPanel and manage buttons to allow selected user deactivate/reactive via UserActivateChangeConfirmModal
     - CreateUsersModal for creating new site users from SiteUsersGridPanel button
+    - Add invalidateUsers to index.ts for use in Sample Manager app
     - Update to @labkey/api release version TBD
 
 ### version 0.8.0

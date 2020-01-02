@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { List, Map } from "immutable";
 import { Button, Row, Col, MenuItem } from "react-bootstrap";
-import { Filter } from "@labkey/api";
+import { Filter, ActionURL } from "@labkey/api";
 import { CreateUsersModal } from "./CreateUsersModal";
 import { QueryGridModel } from "../base/models/model";
 import { SCHEMAS } from "../base/models/schemas";
@@ -15,10 +15,13 @@ import { ManageDropdownButton } from "../buttons/ManageDropdownButton";
 import { SelectionMenuItem } from "../menus/SelectionMenuItem";
 import { QueryGridPanel } from "../QueryGridPanel";
 import { UserDetailsPanel } from "./UserDetailsPanel";
-import { Principal, SecurityPolicy, SecurityRole } from "../permissions/models";
+import { SecurityPolicy, SecurityRole } from "../permissions/models";
 import { updateUserActiveState } from "./actions";
 import { UserActivateChangeConfirmModal } from "./UserActivateChangeConfirmModal";
-import { createNotification } from "../..";
+import { createNotification } from "../notifications/actions";
+import { capitalizeFirstChar } from "../../util/utils"
+import { getLocation, getRouteFromLocationHash, replaceParameter } from "../../util/URL";
+import { getBrowserHistory } from "../../util/global";
 
 const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'active', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
 
@@ -35,11 +38,12 @@ interface Props {
 }
 
 interface State {
-    viewActive: boolean
+    usersView: string
     showCreateUsers: boolean
     showDeactivate: boolean
     showReactivate: boolean
     selectedUserId: number
+    unlisten: any
 }
 
 export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
@@ -47,22 +51,47 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        const unlisten = getBrowserHistory().listen((location, action) => {
+            if (getRouteFromLocationHash(location.hash) === '#/admin/users') {
+                // if the usersView param has changed, set state to trigger re-render with proper QueryGridModel
+                const usersView = this.getUsersView(ActionURL.getParameters(location.hash).usersView);
+                if (this.state.usersView !== usersView) {
+                    this.setState((state) => ({
+                        usersView,
+                        selectedUserId: undefined // clear selected user anytime we change views
+                    }));
+                }
+            }
+        });
+
         this.state = {
-            viewActive: true,
+            usersView: this.getUsersView(getLocation().query.get('usersView')),
             showCreateUsers: false,
             showDeactivate: false,
             showReactivate: false,
-            selectedUserId: undefined
+            selectedUserId: undefined,
+            unlisten
         }
     }
 
+    componentWillUnmount() {
+        const { unlisten } = this.state;
+        if (unlisten) {
+            unlisten();
+        }
+    }
+
+    getUsersView(paramVal: string): string {
+        return paramVal === 'inactive' ? paramVal : 'active'; // default to view active users
+    }
+
     getUsersModel(): QueryGridModel {
-        const { viewActive } = this.state;
-        const gridId = 'user-management-users-' + (viewActive ? 'active' : 'inactive');
+        const { usersView } = this.state;
+        const gridId = 'user-management-users-' + usersView;
         const model = getStateQueryGridModel(gridId, SCHEMAS.CORE_TABLES.USERS, {
             containerPath: '/',
             omittedColumns: OMITTED_COLUMNS,
-            baseFilters: List<Filter.IFilter>([Filter.create('active', viewActive)]),
+            baseFilters: List<Filter.IFilter>([Filter.create('active', usersView === 'active')]),
             bindURL: true,
             isPaged: true
         });
@@ -71,10 +100,9 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     }
 
     toggleViewActive = () => {
-        this.setState((state) => ({
-            viewActive: !state.viewActive,
-            selectedUserId: undefined // clear selected user anytime we change viewsSampleSetDeleteConfirmModal.tsx
-        }));
+        const currentView = this.state.usersView;
+        const newView = currentView === 'active' ? 'inactive' : 'active';
+        replaceParameter(getLocation(), 'usersView', newView);
     };
 
     toggleCreateUsers = () => {
@@ -135,7 +163,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     };
 
     renderButtons = () => {
-        const { viewActive } = this.state;
+        const viewActive = this.state.usersView === 'active';
 
         return (
             <>
@@ -174,14 +202,14 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
     render() {
         const { newUserRoleOptions } = this.props;
-        const { selectedUserId, showCreateUsers, viewActive, showDeactivate, showReactivate } = this.state;
+        const { selectedUserId, showCreateUsers, showDeactivate, showReactivate, usersView } = this.state;
 
         return (
             <>
                 <Row>
                     <Col xs={12} md={8}>
                         <QueryGridPanel
-                            header={(viewActive ? 'Active' : 'Inactive') + ' Users'}
+                            header={capitalizeFirstChar(usersView) + ' Users'}
                             buttons={this.renderButtons}
                             onSelectionChange={this.onRowSelectionChange}
                             model={this.getUsersModel()}

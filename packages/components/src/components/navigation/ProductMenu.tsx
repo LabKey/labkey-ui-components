@@ -111,6 +111,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
             <DropdownButton
                 id="product-menu"
                 title="Menu"
+                className='product-menu-button'
                 open={this.state.menuOpen}
                 onToggle={this.toggleMenu}
             >

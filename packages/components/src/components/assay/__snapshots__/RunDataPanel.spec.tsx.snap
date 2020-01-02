@@ -77,7 +77,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                     >
                       <label
                         className="file-upload--label"
-                        htmlFor="fileUpload"
+                        htmlFor="fileUploadfalse"
                         onDragEnter={[Function]}
                         onDragLeave={[Function]}
                         onDragOver={[Function]}
@@ -92,9 +92,9 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                       <input
                         accept=""
                         className="file-upload--input"
-                        id="fileUpload"
+                        id="fileUploadundefined"
                         multiple={false}
-                        name="fileUpload"
+                        name="fileUploadundefined"
                         onChange={[Function]}
                         type="file"
                       />
@@ -469,7 +469,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                     >
                       <label
                         className="file-upload--label"
-                        htmlFor="fileUpload"
+                        htmlFor="fileUploadfalse"
                         onDragEnter={[Function]}
                         onDragLeave={[Function]}
                         onDragOver={[Function]}
@@ -484,9 +484,9 @@ exports[`<RunDataPanel/> default props 1`] = `
                       <input
                         accept=""
                         className="file-upload--input"
-                        id="fileUpload"
+                        id="fileUploadundefined"
                         multiple={false}
-                        name="fileUpload"
+                        name="fileUploadundefined"
                         onChange={[Function]}
                         type="file"
                       />

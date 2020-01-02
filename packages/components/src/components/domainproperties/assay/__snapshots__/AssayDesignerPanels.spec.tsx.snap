@@ -3316,7 +3316,7 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                           >
                                             <label
                                               className="file-upload--label"
-                                              htmlFor="fileUpload"
+                                              htmlFor="fileUploadfalse"
                                               onDragEnter={[Function]}
                                               onDragLeave={[Function]}
                                               onDragOver={[Function]}
@@ -3331,9 +3331,9 @@ exports[`AssayDesignerPanels basePropertiesOnly for new assay 1`] = `
                                             <input
                                               accept=".csv, .tsv, .txt, .xls, .xlsx"
                                               className="file-upload--input"
-                                              id="fileUpload"
+                                              id="fileUploadundefined"
                                               multiple={false}
-                                              name="fileUpload"
+                                              name="fileUploadundefined"
                                               onChange={[Function]}
                                               type="file"
                                             />
@@ -19425,7 +19425,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                           >
                                             <label
                                               className="file-upload--label"
-                                              htmlFor="fileUpload"
+                                              htmlFor="fileUploadfalse"
                                               onDragEnter={[Function]}
                                               onDragLeave={[Function]}
                                               onDragOver={[Function]}
@@ -19440,9 +19440,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                             <input
                                               accept=".csv, .tsv, .txt, .xls, .xlsx"
                                               className="file-upload--input"
-                                              id="fileUpload"
+                                              id="fileUploadundefined"
                                               multiple={false}
-                                              name="fileUpload"
+                                              name="fileUploadundefined"
                                               onChange={[Function]}
                                               type="file"
                                             />
@@ -22486,7 +22486,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                           >
                                             <label
                                               className="file-upload--label"
-                                              htmlFor="fileUpload"
+                                              htmlFor="fileUploadfalse"
                                               onDragEnter={[Function]}
                                               onDragLeave={[Function]}
                                               onDragOver={[Function]}
@@ -22501,9 +22501,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                             <input
                                               accept=".csv, .tsv, .txt, .xls, .xlsx"
                                               className="file-upload--input"
-                                              id="fileUpload"
+                                              id="fileUploadundefined"
                                               multiple={false}
-                                              name="fileUpload"
+                                              name="fileUploadundefined"
                                               onChange={[Function]}
                                               type="file"
                                             />

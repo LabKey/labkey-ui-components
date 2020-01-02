@@ -234,13 +234,14 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         const { acceptedFormats, allowMultiple, labelLong, index } = this.props;
         const { fileNames, isHover } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
+        const fileUploadText = "fileUpload" + (index !== undefined ? index : '');
 
         return (
             <div>
                 <div className={classNames("file-upload--container", (hideFileUpload ? "hidden" : "block"))}>
                     <label
                         className={classNames("file-upload--label", {'file-upload__is-hover': isHover})}
-                        htmlFor={"fileUpload" + ((index !== undefined) && index)}
+                        htmlFor={fileUploadText}
                         onDragEnter={this.handleDrag}
                         onDragLeave={this.handleLeave}
                         onDragOver={this.handleDrag}
@@ -251,9 +252,9 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                     <input
                         accept={acceptedFormats}
                         className="file-upload--input"
-                        id={"fileUpload" + this.props.index}
+                        id={fileUploadText}
                         multiple={allowMultiple}
-                        name={"fileUpload" + this.props.index}
+                        name={fileUploadText}
                         onChange={this.handleChange}
                         ref={this.fileInput}
                         type="file"/>

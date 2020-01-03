@@ -1,9 +1,13 @@
 # @labkey/components
 
 Components, models, actions, and utility functions for LabKey applications and pages.
-### version TBD
-*Released*: TBD
+### version 0.8.3
+*Released*: 3 January 2020
 * Fixed bug that occurred with multiple FileAttachmentForms on one page
+
+### version 0.8.2
+*Released*: 2 January 2020
+* added samplemanager-downloadAttachments.api to URLResolver
 
 ### version 0.8.1
 *Released*: 2 January 2020

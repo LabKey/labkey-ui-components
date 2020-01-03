@@ -279,6 +279,7 @@ import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
+import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 
 
 export {
@@ -610,6 +611,7 @@ export {
     toggleDevTools,
 
     // Permissions
+    fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,
     PermissionsProviderProps,

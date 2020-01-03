@@ -16,18 +16,17 @@ import { SelectionMenuItem } from "../menus/SelectionMenuItem";
 import { QueryGridPanel } from "../QueryGridPanel";
 import { UserDetailsPanel } from "./UserDetailsPanel";
 import { SecurityPolicy, SecurityRole } from "../permissions/models";
-import { updateUserActiveState } from "./actions";
 import { UserActivateChangeConfirmModal } from "./UserActivateChangeConfirmModal";
-import { createNotification } from "../notifications/actions";
 import { capitalizeFirstChar } from "../../util/utils"
 import { getLocation, getRouteFromLocationHash, replaceParameter } from "../../util/URL";
 import { getBrowserHistory } from "../../util/global";
+import { UserDeleteConfirmModal } from "./UserDeleteConfirmModal";
 
 const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'active', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
 
 interface Props {
     onCreateComplete: (response: any, role: string) => any
-    onActivateChangeComplete: (response: any) => any
+    onUsersStateChangeComplete: (response: any) => any
 
     policy: SecurityPolicy
     rolesByUniqueName: Map<string, SecurityRole>
@@ -39,9 +38,7 @@ interface Props {
 
 interface State {
     usersView: string
-    showCreateUsers: boolean
-    showDeactivate: boolean
-    showReactivate: boolean
+    showDialog: string // valid options are 'create', 'deactivate', 'reactivate', 'delete', undefined
     selectedUserId: number
     unlisten: any
 }
@@ -66,9 +63,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
         this.state = {
             usersView: this.getUsersView(getLocation().query.get('usersView')),
-            showCreateUsers: false,
-            showDeactivate: false,
-            showReactivate: false,
+            showDialog: undefined,
             selectedUserId: undefined,
             unlisten
         }
@@ -105,52 +100,23 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         replaceParameter(getLocation(), 'usersView', newView);
     };
 
-    toggleCreateUsers = () => {
-        this.setState((state) => ({showCreateUsers: !state.showCreateUsers}));
-    };
-
-    toggleActivateChange = (deactivate: boolean, reactivate: boolean) => {
-        this.setState((state) => ({
-            showDeactivate: deactivate,
-            showReactivate: reactivate
-        }));
+    toggleDialog = (name: string, requiresSelection = false) => {
+        if (requiresSelection && this.getUsersModel().selectedIds.size === 0) {
+            this.setState(() => ({showDialog: undefined}));
+        }
+        else {
+            this.setState(() => ({showDialog: name}));
+        }
     };
 
     onCreateComplete = (response: any, role: string) => {
-        this.toggleCreateUsers();
+        this.toggleDialog(undefined); // close dialog
         this.props.onCreateComplete(response, role);
     };
 
-    onActivateChange(activate: boolean) {
-        const model = this.getUsersModel();
-        if (model.selectedIds.size > 0) {
-            this.toggleActivateChange(!activate, activate);
-        }
-    }
-
-    onActivateConfirm = (activate: boolean) => {
-        const model = this.getUsersModel();
-        if (model.selectedIds.size > 0) {
-            // selectedIds will be strings, need to cast to integers
-            const userIds = model.selectedIds.map(id => parseInt(id)).toList();
-
-            updateUserActiveState(userIds, activate)
-                .then(this.onActivateChangeComplete)
-                .catch(error => {
-                    console.error(error);
-                    createNotification({
-                        message: error.exception,
-                        alertClass: 'danger'
-                    });
-
-                    this.toggleActivateChange(false, false);
-                });
-        }
-    };
-
-    onActivateChangeComplete = (response: any) => {
-        this.toggleActivateChange(false, false);
-        this.props.onActivateChangeComplete(response);
+    onUsersStateChangeComplete = (response: any) => {
+        this.toggleDialog(undefined); // close dialog
+        this.props.onUsersStateChangeComplete(response);
     };
 
     onRowSelectionChange = (model, row, checked) => {
@@ -167,7 +133,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
         return (
             <>
-                <Button bsStyle={'success'} onClick={this.toggleCreateUsers}>
+                <Button bsStyle={'success'} onClick={() => this.toggleDialog('create')}>
                     Create
                 </Button>
                 <ManageDropdownButton id={'users-manage-btn'}>
@@ -175,16 +141,23 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                         <SelectionMenuItem
                             id={'deactivate-users-menu-item'}
                             text={'Deactivate Users'}
-                            onClick={() => this.onActivateChange(false)}
+                            onClick={() => this.toggleDialog('deactivate', true)}
                             model={this.getUsersModel()}
                             nounPlural={"users"}
                         />
                     }
+                    <SelectionMenuItem
+                        id={'delete-users-menu-item'}
+                        text={'Delete Users'}
+                        onClick={() => this.toggleDialog('delete', true)}
+                        model={this.getUsersModel()}
+                        nounPlural={"users"}
+                    />
                     {!viewActive &&
                         <SelectionMenuItem
                             id={'reactivate-users-menu-item'}
                             text={'Reactivate Users'}
-                            onClick={() => this.onActivateChange(true)}
+                            onClick={() => this.toggleDialog('reactivate', true)}
                             model={this.getUsersModel()}
                             nounPlural={"users"}
                         />
@@ -202,7 +175,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
     render() {
         const { newUserRoleOptions } = this.props;
-        const { selectedUserId, showCreateUsers, showDeactivate, showReactivate, usersView } = this.state;
+        const { selectedUserId, showDialog, usersView } = this.state;
 
         return (
             <>
@@ -223,17 +196,24 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                     </Col>
                 </Row>
                 <CreateUsersModal
-                    show={showCreateUsers}
-                    onCancel={this.toggleCreateUsers}
-                    onComplete={this.onCreateComplete}
+                    show={showDialog === 'create'}
                     roleOptions={newUserRoleOptions}
+                    onComplete={this.onCreateComplete}
+                    onCancel={() => this.toggleDialog(undefined)}
                 />
-                {(showDeactivate || showReactivate) &&
+                {(showDialog === 'reactivate' || showDialog === 'deactivate') &&
                     <UserActivateChangeConfirmModal
-                        userCount={this.getUsersModel().selectedIds.size}
-                        activate={showReactivate}
-                        onConfirm={this.onActivateConfirm}
-                        onCancel={() => this.toggleActivateChange(false, false)}
+                        model={this.getUsersModel()}
+                        reactivate={showDialog === 'reactivate'}
+                        onComplete={this.onUsersStateChangeComplete}
+                        onCancel={() => this.toggleDialog(undefined)}
+                    />
+                }
+                {showDialog === 'delete' &&
+                    <UserDeleteConfirmModal
+                        model={this.getUsersModel()}
+                        onComplete={this.onUsersStateChangeComplete}
+                        onCancel={() => this.toggleDialog(undefined)}
                     />
                 }
             </>

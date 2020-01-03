@@ -1,13 +1,12 @@
 import React from 'react';
 import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { getSelectedUserIds, updateUsersActiveState } from "./actions";
+import { getSelectedUserIds, deleteUsers } from "./actions";
 import { QueryGridModel } from "../base/models/model";
 import { Alert } from "../base/Alert";
 
 interface Props {
     model: QueryGridModel
-    reactivate: boolean
     onComplete: (response: any) => any
     onCancel: () => any
 }
@@ -17,7 +16,7 @@ interface State {
     error: string
 }
 
-export class UserActivateChangeConfirmModal extends React.Component<Props, State> {
+export class UserDeleteConfirmModal extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
@@ -29,11 +28,11 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
     }
 
     onConfirm = () => {
-        const { model, reactivate, onComplete } = this.props;
+        const { model, onComplete } = this.props;
         const userIds = getSelectedUserIds(model);
 
         this.setState(() => ({submitting: true}));
-        updateUsersActiveState(userIds, reactivate)
+        deleteUsers(userIds)
             .then(onComplete)
             .catch(error => {
                 console.error(error);
@@ -42,35 +41,36 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
     };
 
     render() {
-        const { onCancel, model, reactivate } = this.props;
+        const { onCancel, model } = this.props;
         const { error, submitting } = this.state;
         const userCount = model.selectedIds.size;
-        const action = reactivate ? 'Reactivate' : 'Deactivate';
 
         return (
             <ConfirmModal
-                title={action + ' ' + Utils.pluralBasic(userCount, 'User') +  '?'}
+                title={'Delete ' + Utils.pluralBasic(userCount, 'User') +  '?'}
                 msg={
                     <>
-                        {!reactivate && <p>
-                            Deactivated users will <b>no longer be able to login</b>. However, their information will be
-                            preserved for display purposes, and their group memberships and role assignments will be
-                            preserved in case they are reactivated at a later time.
-                        </p>}
-                        {reactivate && <p>
-                            Reactivated users will be able to <b>login normally</b>, and all their previous group memberships
-                            and role assignments will apply.
-                        </p>}
                         <p>
-                            {Utils.pluralBasic(userCount, 'user')} will be updated. Do you want to proceed?
+                            Deletion of a user is <b>permanent and cannot be undone</b>. The user's display name will no
+                            longer be displayed with actions taken or data uploaded by that user. Also, group membership
+                            and permission settings for the deleted users will be lost. You cannot reactivate a deleted
+                            user to restore this information.
+                        </p>
+                        <p>
+                            Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login,
+                            but their information will be preserved for display purposes, and their group memberships
+                            will be preserved in case they are reactivated at a later time.
+                        </p>
+                        <p>
+                            {Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?
                         </p>
                         {error && <Alert>{error}</Alert>}
                     </>
                 }
                 onConfirm={this.onConfirm}
                 onCancel={onCancel}
-                confirmVariant={reactivate ? 'success' : 'danger'}
-                confirmButtonText={'Yes, ' + action}
+                confirmVariant={'danger'}
+                confirmButtonText={'Yes, Permanently Delete'}
                 cancelButtonText={'Cancel'}
                 submitting={submitting}
             />

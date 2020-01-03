@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Set } from 'immutable';
-import { addDateRangeFilter, last12Months, monthSort } from './utils';
+import { addDateRangeFilter, ALL_MONTHS, last12Months, monthSort } from './utils';
 import { AppURL } from '../../url/AppURL';
 
 describe("HeatMap utils", () => {
@@ -26,9 +26,13 @@ describe("HeatMap utils", () => {
     });
 
     test("monthSort", () => {
-        expect(monthSort('Jan', 'Feb')).toBe(-1);
-        expect(monthSort('Feb', 'Jan')).toBe(1);
-        expect(monthSort('Feb', 'Feb')).toBe(0);
+        const thisMonth = new Date().getMonth();
+        // this month should get sorted to the end, so it should be the largest.
+        expect(monthSort(ALL_MONTHS[thisMonth], ALL_MONTHS[thisMonth + 1 %12])).toBe(1);
+        // Check for months not at the end
+        expect(monthSort(ALL_MONTHS[(thisMonth+1) % 12], ALL_MONTHS[(thisMonth+2) % 12])).toBe(-1);
+        expect(monthSort(ALL_MONTHS[(thisMonth+2) % 12], ALL_MONTHS[(thisMonth+1) % 12])).toBe(1);
+        expect(monthSort(ALL_MONTHS[(thisMonth+1) % 12], ALL_MONTHS[(thisMonth+1) % 12])).toBe(0);
 
         expect(monthSort('test', 'Feb')).toBe(-1);
         expect(monthSort('Feb', 'test')).toBe(1);

@@ -13,6 +13,15 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Add invalidateUsers to index.ts for use in Sample Manager app
     - Update to @labkey/api release version TBD
 
+
+### version 0.8.2
+*Released*: 2 January 2020
+* added samplemanager-downloadAttachments.api to URLResolver
+
+### version 0.8.1
+*Released*: 2 January 2020
+* Update styling for some navbar components
+
 ### version 0.8.0
 *Released*: 30 December 2019
 * Add helper methods and constants for documentation links

@@ -34,6 +34,9 @@ interface Props {
     // optional array of role options, objects with id and label values
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: Array<any>
+
+    // option to disable the delete UI pieces for this component
+    allowDelete?: boolean
 }
 
 interface State {
@@ -44,6 +47,10 @@ interface State {
 }
 
 export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
+
+    static defaultProps = {
+        allowDelete: true
+    };
 
     constructor(props: Props) {
         super(props);
@@ -146,13 +153,15 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                             nounPlural={"users"}
                         />
                     }
-                    <SelectionMenuItem
-                        id={'delete-users-menu-item'}
-                        text={'Delete Users'}
-                        onClick={() => this.toggleDialog('delete', true)}
-                        model={this.getUsersModel()}
-                        nounPlural={"users"}
-                    />
+                    {this.props.allowDelete &&
+                        <SelectionMenuItem
+                            id={'delete-users-menu-item'}
+                            text={'Delete Users'}
+                            onClick={() => this.toggleDialog('delete', true)}
+                            model={this.getUsersModel()}
+                            nounPlural={"users"}
+                        />
+                    }
                     {!viewActive &&
                         <SelectionMenuItem
                             id={'reactivate-users-menu-item'}
@@ -174,7 +183,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { newUserRoleOptions } = this.props;
+        const { newUserRoleOptions, allowDelete } = this.props;
         const { selectedUserId, showDialog, usersView } = this.state;
 
         return (
@@ -209,7 +218,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                         onCancel={() => this.toggleDialog(undefined)}
                     />
                 }
-                {showDialog === 'delete' &&
+                {allowDelete && showDialog === 'delete' &&
                     <UserDeleteConfirmModal
                         model={this.getUsersModel()}
                         onComplete={this.onUsersStateChangeComplete}

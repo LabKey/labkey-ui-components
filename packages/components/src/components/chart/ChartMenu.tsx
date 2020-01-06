@@ -13,53 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { DropdownButton, MenuItem, Modal } from 'react-bootstrap';
+import React, { PureComponent, ReactNode } from 'react';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
+import { ChartModal } from './ChartModal';
 import { generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
 import { DataViewInfo } from '../../models';
-import { Chart } from './Chart';
 import { setReportId } from '../../actions';
-
-interface ChartModalProps {
-    selectedChart: DataViewInfo,
-    model: QueryGridModel,
-    onHide: Function,
-}
-
-class ChartModal extends React.PureComponent<ChartModalProps> {
-    render() {
-        const { selectedChart, model, onHide } = this.props;
-        let description;
-
-        if (selectedChart.description) {
-            description = <div><br/>{selectedChart.description}</div>;
-        }
-
-        return (
-            <Modal bsSize="large" show={selectedChart !== undefined} keyboard={true} onHide={onHide}>
-                <Modal.Header closeButton={true} closeLabel={"Close"}>
-                    <Modal.Title>{selectedChart.getLabel()}</Modal.Title>
-
-                    {description}
-                </Modal.Header>
-
-                <Modal.Body>
-                    <Chart chart={selectedChart} model={model}/>
-                </Modal.Body>
-            </Modal>
-        );
-    }
-}
 
 interface ChartMenuItemProps {
     chart: DataViewInfo,
     showChart: Function,
 }
 
-class ChartMenuItem extends React.PureComponent<ChartMenuItemProps> {
+class ChartMenuItem extends PureComponent<ChartMenuItemProps> {
     render() {
         const { chart, showChart } = this.props;
 
@@ -82,7 +51,7 @@ interface Props {
     showSampleComparisonReports?: boolean,
 }
 
-export class ChartMenu extends React.PureComponent<Props> {
+export class ChartMenu extends PureComponent<Props> {
     dropId: string;
 
     constructor(props: Props) {
@@ -90,7 +59,7 @@ export class ChartMenu extends React.PureComponent<Props> {
         this.dropId = generateId('chartselector-');
     }
 
-    createMenuItems(): Array<React.ReactNode> {
+    createMenuItems(): Array<ReactNode> {
         const { charts, privateCharts, error, showSampleComparisonReports, onPreviewSCRClicked } = this.props;
 
         if (error) {

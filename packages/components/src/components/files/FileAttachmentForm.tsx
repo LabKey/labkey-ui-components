@@ -25,9 +25,16 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
 import { InferDomainResponse } from '../base/models/model';
 import { inferDomainFromFile } from '../base/actions';
+import { SizeLimitProps } from './models';
+
+
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
+    // "all" limits will be overridden by limits for a specific extension.
+    sizeLimits?: Map<string, SizeLimitProps>
+    sizeLimitsHelpText?: React.ReactNode
     showAcceptedFormats?: boolean
     allowDirectories?: boolean
     allowMultiple?: boolean
@@ -331,6 +338,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             showButtons,
             showLabel,
             showProgressBar,
+            sizeLimits,
+            sizeLimitsHelpText,
             isSubmitting
         } = this.props;
 
@@ -350,6 +359,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             initialFileNames={initialFileNames}
                             initialFiles={initialFiles}
                             allowMultiple={allowMultiple}
+                            sizeLimits={sizeLimits}
+                            sizeLimitsHelpText={sizeLimitsHelpText}
                             labelLong={labelLong}/>
                     </FormSection>
                 </span>

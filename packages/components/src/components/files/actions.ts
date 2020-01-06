@@ -4,6 +4,7 @@
  */
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { QueryColumn } from '../base/models/model';
+import { ALL_FILES_LIMIT_KEY, SizeLimitProps } from './models';
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
 export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: number, fields?: List<QueryColumn>): List<Map<string, any>> {
@@ -42,14 +43,40 @@ export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: 
     return rows;
 }
 
+// Finds the last extension on the given file name, including the '.'.  If there is no extension returns the empty string.
+// if fileName is undefined, returns undefined.
+export function getFileExtension(fileName: string) {
+    if (fileName) {
+        const dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex >= 0) ? fileName.slice(dotIndex) : '';
+    }
+    return undefined;
+}
+
 export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: string): Map<string, any> {
     const acceptedFormatArray: Array<string> = formatExtensionStr.replace(/\s/g, '').split(',');
-    const dotIndex = fileName.lastIndexOf('.');
-    const extension = fileName.slice(dotIndex);
-    const isMatch = acceptedFormatArray.indexOf(extension) >= 0;
+    const extension = getFileExtension(fileName);
+    const isMatch = extension && extension.length > 0 && acceptedFormatArray.indexOf(extension) >= 0;
 
     return fromJS({
         extension,
         isMatch
     });
+}
+
+export function fileSizeLimitCompare(file, sizeLimits: Map<string, SizeLimitProps>) : any {
+    if (!sizeLimits || sizeLimits.isEmpty())
+        return true;
+
+    const extension = getFileExtension(file.name);
+    let limits : SizeLimitProps = sizeLimits.get(ALL_FILES_LIMIT_KEY) || {} as SizeLimitProps;
+    if (extension && sizeLimits.has(extension)) {
+        limits = { ...limits, ...sizeLimits.get(extension)}
+    }
+    if (limits.maxSize) {
+        return {
+            isOversized: file.size > limits.maxSize.value,
+            limits
+        }
+    }
 }

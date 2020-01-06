@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
+import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, getFileExtension } from './actions';
 
 const DATA = fromJS([
     ['str', 'int', 'int-excelupload', 'double', 'date'],
@@ -85,14 +85,14 @@ const FIELDS = fromJS([{
     "removeFromViews": false
 }]);
 
-describe("files actions", () => {
+describe("convertRowDataIntoPreviewData ", () => {
 
-    test("convertRowDataIntoPreviewData - empty data object", () => {
+    test("empty data object", () => {
         const rows = convertRowDataIntoPreviewData(fromJS([]), 1);
         expect(rows.size).toBe(0);
     });
 
-    test("convertRowDataIntoPreviewData - requesting less rows then data", () => {
+    test("requesting less rows then data", () => {
         const rows = convertRowDataIntoPreviewData(DATA, 1);
         expect(rows.size).toBe(1);
         expect(rows.get(0).get('str')).toBe('abc');
@@ -102,7 +102,7 @@ describe("files actions", () => {
         expect(rows.get(0).get('date')).toBe('2019-01-01');
     });
 
-    test("convertRowDataIntoPreviewData - requesting more rows then data", () => {
+    test("requesting more rows then data", () => {
         const rows = convertRowDataIntoPreviewData(DATA, 4);
         expect(rows.size).toBe(3);
         expect(rows.get(0).get('str')).toBe('abc');
@@ -110,7 +110,7 @@ describe("files actions", () => {
         expect(rows.get(2).get('date')).toBe('2019-01-03');
     });
 
-    test("convertRowDataIntoPreviewData - with fields passed in to format int column", () => {
+    test("with fields passed in to format int column", () => {
         const rows = convertRowDataIntoPreviewData(DATA, 1, FIELDS);
         expect(rows.get(0).get('str')).toBe('abc');
         expect(rows.get(0).get('int')).toBe(1);
@@ -118,29 +118,55 @@ describe("files actions", () => {
         expect(rows.get(0).get('double')).toBe(1.23);
         expect(rows.get(0).get('date')).toBe('2019-01-01');
     });
+});
 
-    test("fileMatchesAcceptedFormat - not a match", () => {
+describe("getFileExtension", () => {
+    test("with extension", () => {
+       expect(getFileExtension("Test.me")).toBe(".me");
+    });
+
+    test ("undefined filename", () => {
+        expect(getFileExtension(undefined)).toBe(undefined);
+    });
+
+    test("no extension", () => {
+        expect(getFileExtension("unending")).toBe('');
+    });
+
+    test("multiple extensions", () => {
+        expect(getFileExtension("find.the.last.one")).toBe(".one");
+    })
+});
+
+describe("fileMatchesAcceptedFormat", () => {
+    test("not a match", () => {
         const response = fileMatchesAcceptedFormat("testing.txt", '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.txt');
         expect(response.get('isMatch')).toBeFalsy();
     });
 
-    test("fileMatchesAcceptedFormat - matches first", () => {
+    test("matches first", () => {
         const response = fileMatchesAcceptedFormat('testing.csv', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.csv');
         expect(response.get('isMatch')).toBeTruthy();
     });
 
-    test("fileMatchesAcceptedFormat - matches middle", () => {
+    test("matches middle", () => {
         const response = fileMatchesAcceptedFormat('testing.tsv', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.tsv');
         expect(response.get('isMatch')).toBeTruthy();
     });
 
-    test("fileMatchesAcceptedFormat - matches last", () => {
+    test("matches last", () => {
         const response = fileMatchesAcceptedFormat('testing.xlsx', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('.xlsx');
         expect(response.get('isMatch')).toBeTruthy();
+    });
+
+    test("no file extension", () => {
+        const response = fileMatchesAcceptedFormat('testing', '.csv, .tsv, .xlsx');
+        expect(response.get('extension')).toBe('');
+        expect(response.get('isMatch')).toBeFalsy();
     });
 
 });

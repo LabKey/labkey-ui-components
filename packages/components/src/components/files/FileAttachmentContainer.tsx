@@ -14,14 +14,22 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Alert } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
-import { fileMatchesAcceptedFormat } from './actions';
+import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
+import { Map, Set } from 'immutable';
+import { SizeLimitProps } from './models';
+
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
+    // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
+    // "all" limits will be overridden by limits for a specific extension.
+    sizeLimits?: Map<string, SizeLimitProps>
+    sizeLimitsHelpText?: React.ReactNode
     allowMultiple: boolean
     allowDirectories: boolean
     handleChange?: any
@@ -33,7 +41,7 @@ interface FileAttachmentContainerProps {
 }
 
 interface FileAttachmentContainerState {
-    errorMsg?: string
+    errorMsg?: React.ReactNode
     files?: {[key:string]: File}
     isDirty?: boolean
     fileNames?: Array<string> // separate list of names for the case when an initial set of file names is provided for which we have no file object
@@ -46,12 +54,6 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
     constructor(props?: FileAttachmentContainerProps) {
         super(props);
-
-        this.areValidFileTypes = this.areValidFileTypes.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleDrag = this.handleDrag.bind(this);
-        this.handleDrop = this.handleDrop.bind(this);
-        this.handleLeave = this.handleLeave.bind(this);
 
         this.fileInput = React.createRef();
 
@@ -80,64 +82,115 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         this.setState(() => ({fileNames: props.initialFileNames || (props.initialFiles && Object.keys(props.initialFiles)) || []}))
     }
 
+    validateFiles = (fileList: FileList, transferItems?: DataTransferItemList) : Set<string> => {
+        const { acceptedFormats, allowDirectories, sizeLimits } = this.props;
 
-    areValidFileTypes(fileList: FileList, transferItems?: DataTransferItemList) {
-        const { acceptedFormats, allowDirectories } = this.props;
+        this.setState({
+            errorMsg: undefined,
+            isHover: false
+        });
 
-        if (!acceptedFormats && allowDirectories) {
-            return true;
+        if (!acceptedFormats && allowDirectories && !sizeLimits) {
+            return Set<string>();
         }
 
-        let isValid: boolean = true;
+        let invalidFileTypes = Map<string, string>(); // map from file name to extension
+        let oversizedFiles = Map<string, string>(); // map from file name to display size limit
+        let invalidDirectories = []; // list of directory names if not allowed;
+        let invalidNames = Set<string>();
 
         Array.from(fileList).forEach((file, index) => {
             if (transferItems && transferItems[index].webkitGetAsEntry().isDirectory) {
                 if (!allowDirectories) {
-                    isValid = false;
-                    this.setState({
-                        errorMsg: 'Folders not yet supported.',
-                        isHover: false
-                    });
-                    return false;
+                    invalidDirectories.push(file.name);
+                    invalidNames = invalidNames.add(file.name);
                 }
             }
             else if (acceptedFormats) {
                 const formatCheck = fileMatchesAcceptedFormat(file.name, acceptedFormats);
                 if (!formatCheck.get('isMatch')) {
-                    isValid = false;
-                    this.setState({
-                        errorMsg: 'Invalid file type: ' + formatCheck.get('extension') + '. Valid types are ' + acceptedFormats,
-                        isHover: false
-                    });
-                    return false;
+                    invalidFileTypes = invalidFileTypes.set(file.name, formatCheck.get('extension'));
+                    invalidNames = invalidNames.add(file.name);
+                }
+            }
+            if (sizeLimits) {
+                if (!invalidFileTypes.has(file.name) && invalidDirectories.indexOf(file.name) < 0) {
+                    const sizeCheck = fileSizeLimitCompare(file, sizeLimits);
+                    if (sizeCheck.isOversized) {
+                        oversizedFiles = oversizedFiles.set(file.name, sizeCheck.limits.maxSize.displayValue);
+                        invalidNames = invalidNames.add(file.name);
+                    }
                 }
             }
         });
-        return isValid;
-    }
+        if (!invalidNames.isEmpty()) {
+            let errors = [];
+            if (invalidDirectories.length > 0) {
+                errors.push(<li>Folders are not supported.</li>);
+            }
+            if (!invalidFileTypes.isEmpty()) {
+                let errorMsg = '';
+                if (invalidFileTypes.size === 1) {
+                    const fileName = invalidFileTypes.keySeq().first();
+                    errorMsg += "Invalid file type " + invalidFileTypes.get(fileName) + ".";
+                }
+                else {
+                    errorMsg += "Invalid file types: " + invalidFileTypes.map((extension, fileName) => (extension)).join(", ") + ".";
+                }
+                errorMsg += '  Valid types are ' + acceptedFormats + ".  ";
+                errors.push(<li>{errorMsg}</li>);
+            }
+            if (!oversizedFiles.isEmpty()) {
+                if (oversizedFiles.size === 1) {
+                    const fileName = oversizedFiles.keySeq().first();
+                    errors.push(<li>The file '{fileName}'  is larger than the maximum allowed size of {oversizedFiles.get(fileName)}.  {this.props.sizeLimitsHelpText}</li>);
+                }
+                else {
+                    errors.push(
+                        <li>
+                            These files are larger than their maximum allowed sizes:
+                            <ul>
+                            {oversizedFiles.map((limit, fileName) => {
+                                return <li>{fileName} (max size: {limit})</li>
+                            }).toArray()}
+                            </ul>
+                            {this.props.sizeLimitsHelpText}
+                        </li>
+                    );
+                }
+            }
+            this.setState({
+                errorMsg: invalidNames.size > 1 ? <ul>{errors}</ul> : errors,
+                isHover: false
+            });
+            return invalidNames;
+        }
 
-    handleChange(evt: React.ChangeEvent<HTMLInputElement>) {
+        return Set<string>();
+    };
+
+    handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
         this.cancelEvent(evt);
         if (evt.currentTarget && evt.currentTarget.files) {
             this.handleFiles(evt.currentTarget.files);
         }
-    }
+    };
 
-    handleDrag(evt: React.DragEvent<HTMLLabelElement>) {
+    handleDrag = (evt: React.DragEvent<HTMLLabelElement>) => {
         const { isHover } = this.state;
 
         this.cancelEvent(evt);
         if (!isHover) {
             this.setState({isHover: true});
         }
-    }
+    };
 
-    handleDrop(evt: React.DragEvent<HTMLLabelElement>) {
+    handleDrop = (evt: React.DragEvent<HTMLLabelElement>) => {
         this.cancelEvent(evt);
         if (evt.dataTransfer && evt.dataTransfer.files) {
             this.handleFiles(evt.dataTransfer.files, evt.dataTransfer.items);
         }
-    }
+    };
 
     handleFiles(fileList: FileList, transferItems?: DataTransferItemList) {
         const { allowMultiple, handleChange } = this.props;
@@ -150,34 +203,32 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             return;
         }
 
-        let isValid = this.areValidFileTypes(fileList, transferItems);
+        let invalidFiles = this.validateFiles(fileList, transferItems);
 
-        let files = this.state.files;
-
-        if (isValid) {
-            // iterate through the file list and set the names as the object key
-            let newFiles = Object.keys(fileList).reduce((prev, next) => {
-                const file = fileList[next];
+        // iterate through the file list and set the names as the object key
+        let newFiles = Object.keys(fileList).reduce((prev, next) => {
+            const file = fileList[next];
+            if (!invalidFiles.contains(file.name)) {
                 prev[file.name] = file;
-                return prev;
-            }, {});
-
-            files = Object.assign({}, newFiles, this.state.files);
-            this.setState({
-                files,
-                fileNames: Object.keys(files),
-                errorMsg: undefined,
-                isHover: false,
-                isDirty: true,
-            });
-
-            if (Utils.isFunction(handleChange)) {
-                handleChange(files);
             }
+            return prev;
+        }, {});
+
+        let files = Object.assign({}, newFiles, this.state.files);
+        this.setState({
+            files,
+            fileNames: Object.keys(files),
+            isHover: false,
+            isDirty: true,
+        });
+
+        if (Utils.isFunction(handleChange)) {
+            handleChange(files);
         }
+
     }
 
-    handleLeave(evt: React.DragEvent<HTMLLabelElement>) {
+    handleLeave = (evt: React.DragEvent<HTMLLabelElement>) => {
         const { isHover } = this.state;
 
         this.cancelEvent(evt);
@@ -185,7 +236,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         if (isHover) {
             this.setState({isHover: false});
         }
-    }
+    };
 
     handleRemove = (name: string) => {
         const { handleRemoval } = this.props;
@@ -204,7 +255,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             this.fileInput.current.value = '';
         }
 
-        this.setState({isDirty: true, files, fileNames});
+        this.setState({isDirty: true, errorMsg: undefined, files, fileNames});
 
         if (Utils.isFunction(handleRemoval)) {
             handleRemoval(name);
@@ -216,9 +267,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
         if (errorMsg !== '' && errorMsg !== undefined) {
             return (
-                <div className="has-error">
-                    <span className="error-message help-block">{errorMsg}</span>
-                </div>
+                <Alert bsStyle={'danger'}>{errorMsg}</Alert>
             )
         }
     }

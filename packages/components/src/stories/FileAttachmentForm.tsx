@@ -14,6 +14,7 @@ import inferDomainJson from '../test/data/property-inferDomainWithSpecimenId.jso
 import filePreviewJson from '../test/data/property-getFilePreview.json';
 
 import './stories.scss';
+import { ALL_FILES_LIMIT_KEY, SizeLimitProps } from '../components/files/models';
 
 mock.setup();
 mock.post(/.*\/property\/inferDomain.*/, {
@@ -108,6 +109,35 @@ storiesOf('FileAttachmentForm', module)
                 />
 
             </div>
+        )
+    })
+    .add("with size limits", () => {
+        let sizeLimits = Map<string, SizeLimitProps>();
+        sizeLimits = sizeLimits.set(ALL_FILES_LIMIT_KEY, {
+            maxSize: {
+                value: 1024,
+                displayValue: "1KB"
+            },
+        });
+        sizeLimits = sizeLimits.set(".csv", {
+            maxSize: {
+                value: 512,
+                displayValue: "0.5kb"
+            }
+        });
+        return (
+            <FileAttachmentForm
+                showLabel={true}
+                allowDirectories={boolean("Allow folders", true)}
+                label={'Attachments'}
+                labelLong={'Select file or drag and drop here'}
+                acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                showAcceptedFormats={true}
+                allowMultiple={boolean("Allow multiple files", true)}
+                showButtons={boolean("Show buttons", true)}
+                sizeLimits={sizeLimits}
+                sizeLimitsHelpText={text("Size limits help", undefined)}
+                />
         )
     })
 ;

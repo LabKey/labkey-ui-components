@@ -205,25 +205,29 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
 
         let invalidFiles = this.validateFiles(fileList, transferItems);
 
+        let haveValidFiles = false;
         // iterate through the file list and set the names as the object key
-        let newFiles = Object.keys(fileList).reduce((prev, next) => {
+        let newFiles : any = Object.keys(fileList).reduce((prev, next) => {
             const file = fileList[next];
             if (!invalidFiles.contains(file.name)) {
                 prev[file.name] = file;
+                haveValidFiles = true;
             }
             return prev;
         }, {});
 
-        let files = Object.assign({}, newFiles, this.state.files);
-        this.setState({
-            files,
-            fileNames: Object.keys(files),
-            isHover: false,
-            isDirty: true,
-        });
+        if (haveValidFiles) {
+            let files = Object.assign({}, newFiles, this.state.files);
+            this.setState({
+                files,
+                fileNames: Object.keys(files),
+                isHover: false,
+                isDirty: true,
+            });
 
-        if (Utils.isFunction(handleChange)) {
-            handleChange(files);
+            if (Utils.isFunction(handleChange)) {
+                handleChange(files);
+            }
         }
 
     }

@@ -31,7 +31,7 @@ interface Props {
     policy: SecurityPolicy
     rolesByUniqueName: Map<string, SecurityRole>
 
-    // optional array of role options, objects with id and label values
+    // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onCreateComplete
     newUserRoleOptions?: Array<any>
 

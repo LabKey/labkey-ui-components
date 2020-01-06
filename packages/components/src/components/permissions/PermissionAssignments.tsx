@@ -15,7 +15,7 @@ import { UserDetailsPanel } from "../user/UserDetailsPanel";
 
 interface Props extends PermissionsProviderProps {
     title?: string
-    containerPath: string
+    containerId: string
     policy: SecurityPolicy
     onChange: (policy: SecurityPolicy) => any
     onSuccess: () => any
@@ -67,12 +67,12 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     };
 
     onSavePolicy = () => {
-        const { containerPath, policy} = this.props;
+        const { containerId, policy} = this.props;
 
         this.setState(() => ({submitting: true}));
 
         Security.savePolicy({
-            containerPath: containerPath,
+            containerPath: containerId,
             policy: {policy},
             success: (response) => {
                 if (response.success) {

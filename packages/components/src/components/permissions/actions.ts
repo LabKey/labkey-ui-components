@@ -55,11 +55,11 @@ export function getPrincipalsById(principals: List<Principal>): Map<number, Prin
     return principalsById;
 }
 
-export function fetchContainerSecurityPolicy(containerPath: string, principalsById: Map<number, Principal>): Promise<SecurityPolicy> {
+export function fetchContainerSecurityPolicy(containerId: string, principalsById: Map<number, Principal>): Promise<SecurityPolicy> {
     return new Promise((resolve, reject) => {
         Security.getPolicy({
-            containerPath,
-            resourceId: containerPath,
+            containerPath: containerId,
+            resourceId: containerId,
             success: (data, relevantRoles) => {
                 const policy = SecurityPolicy.create({policy: data, relevantRoles});
                 resolve(SecurityPolicy.updateAssignmentsData(policy, principalsById));

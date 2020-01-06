@@ -66,6 +66,7 @@ import assayImageFieldRunsQuery from '../test/data/assayImageFieldRuns-getQuery.
 import labbookQueryInfo from '../test/data/labbook-getQueryDetails.json';
 import labbookQuery from '../test/data/labbook-getQuery.json';
 import usersQueryInfo from '../test/data/users-getQueryDetails.json';
+import usersQuery from '../test/data/users-getQuery.json';
 import userPropsInfo from '../test/data/user-getUserProps.json';
 import getMaxPhiLevelJson from '../test/data/security-GetMaxPhiLevel.json';
 import getRolesJson from "../test/data/security-getRoles.json";
@@ -130,6 +131,9 @@ const QUERY_RESPONSES = fromJS({
     'assay.general.imagefieldassay': {
         'runs': assayImageFieldRunsQuery,
     },
+    'core': {
+        'users': usersQuery,
+    },
     'exp': {
         'samplesetheatmap': sampleSetHeatMapQuery,
         'assaysheatmap': assaysHeatMapQuery,
@@ -164,7 +168,7 @@ export function initMocks() {
     initLineageMocks();
     initUserPropsMocks();
 
-    mock.post(/.*\/query\/.*\/executeSql.*/,  (req, res) => {
+    mock.post(/.*\/query\/?.*\/executeSql.*/,  (req, res) => {
         const body = decodeURIComponent(req.body());
 
         let responseBody;
@@ -182,7 +186,7 @@ export function initMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.get(/.*\/query\/.*\/getSchemas.*/, (req, res) => {
+    mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
 
@@ -198,7 +202,7 @@ export function initMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.get(/.*\/query\/.*\/getQueries.*/, (req, res) => {
+    mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
 
@@ -212,7 +216,7 @@ export function initMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.post(/.*\/query\/.*\/updateRows.*/,  (req, res) => {
+    mock.post(/.*\/query\/?.*\/updateRows.*/,  (req, res) => {
         const bodyParams = req.body().toLowerCase();
         let responseBody;
 
@@ -227,13 +231,20 @@ export function initMocks() {
     });
 
     //TODO conditionalize based on queryName
-    mock.post(/.*\/query\/.*\/insertRows.*/, {
+    mock.post(/.*\/query\/?.*\/insertRows.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(samplesInsert)
     });
 
-    mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
+    //TODO response JSON?
+    mock.post(/.*\/query\/?.*\/setSelected.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    });
+
+    mock.get(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
         const queryParams = req.url().query;
         const key = queryParams.key;
         let responseBody;
@@ -251,7 +262,7 @@ export function initMocks() {
     });
 
     //TODO conditionalize based on queryName
-    mock.get(/.*\/study-reports\/.*\/getReportInfos.*/, {
+    mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(mixturesReportInfos)
@@ -307,7 +318,7 @@ export function initMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.post(/.*\/visualization\/.*\/getVisualization.*/, {
+    mock.post(/.*\/visualization\/?.*\/getVisualization.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(visualizationConfig),
@@ -325,7 +336,7 @@ export function initMocks() {
         body: JSON.stringify(getMaxPhiLevelJson)
     });
 
-    mock.get(/.*\/security\/.*\/getRoles.*/, {
+    mock.get(/.*\/security\/?.*\/getRoles.*/, {
         status: 200,
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(getRolesJson)
@@ -341,7 +352,7 @@ export function initMocks() {
 }
 
 export function initQueryGridMocks() {
-    mock.get(/.*\/query\/.*\/getQueryDetails.*/, (req, res) => {
+    mock.get(/.*\/query\/?.*\/getQueryDetails.*/, (req, res) => {
         const queryParams = req.url().query;
         const schemaName = queryParams.schemaName.toLowerCase();
         const queryName = queryParams.queryName.toLowerCase();
@@ -353,7 +364,7 @@ export function initQueryGridMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.post(/.*\/query\/.*\/getQuery.*/,  (req, res) => {
+    mock.post(/.*\/query\/?.*\/getQuery.*/,  (req, res) => {
         const params = decodeURIComponent(req.body()).split('&').reduce((result, param) => {
             const [name, value] = param.split('=');
             result[name] = value;

@@ -36,7 +36,7 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
             .then(onComplete)
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({error: error.exception, submitting: false}));
+                this.setState(() => ({error: (error ? error.exception : 'Unknown error'), submitting: false}));
             });
     };
 

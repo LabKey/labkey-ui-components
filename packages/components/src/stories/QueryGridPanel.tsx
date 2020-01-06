@@ -191,13 +191,13 @@ class QueryGridPanelMultiTab extends React.Component<any, any> {
 }
 
 class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
-    onChartClicked = (chart: DataViewInfo) => {
+    onReportClicked = (chart: DataViewInfo) => {
         console.log('Chart Clicked!', chart);
         return chart.type !== DataViewInfoTypes.SampleComparison;
     };
 
-    onPreviewSCRClicked = () => {
-        console.log('Preview SCR');
+    onCreateReportClicked = (type) => {
+        console.log('Create Report', type);
     };
 
     getQueryGridModel() {
@@ -215,8 +215,8 @@ class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
             <QueryGridPanel
                 model={this.getQueryGridModel()}
                 showSampleComparisonReports={true}
-                onChartClicked={this.onChartClicked}
-                onPreviewSCRClicked={this.onPreviewSCRClicked}
+                onReportClicked={this.onReportClicked}
+                onCreateReportClicked={this.onCreateReportClicked}
             />
         );
     }

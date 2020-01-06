@@ -39,8 +39,8 @@ interface Props {
     showAllTabs?: boolean,
     showGridBar?: boolean,
     showSampleComparisonReports?: boolean,
-    onChartClicked?: Function,
-    onPreviewSCRClicked?: Function,
+    onReportClicked?: Function,
+    onCreateReportClicked?: Function,
     activeTab?: number,
     rightTabs?: List<string>
     onChangeTab?: (tabInd : number) => any,
@@ -184,8 +184,8 @@ export class QueryGridPanel extends React.Component<Props, State> {
             message,
             model,
             showSampleComparisonReports,
-            onChartClicked,
-            onPreviewSCRClicked,
+            onReportClicked,
+            onCreateReportClicked,
         } = this.props;
         const activeModel = this.getModel();
         let gridBar;
@@ -196,8 +196,8 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     buttons={buttons}
                     model={activeModel}
                     showSampleComparisonReports={showSampleComparisonReports}
-                    onChartClicked={onChartClicked}
-                    onPreviewSCRClicked={onPreviewSCRClicked}
+                    onReportClicked={onReportClicked}
+                    onCreateReportClicked={onCreateReportClicked}
                 />
             );
         }

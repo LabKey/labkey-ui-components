@@ -22,6 +22,7 @@ import { generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
 import { DataViewInfo } from '../../models';
 import { setReportId } from '../../actions';
+import { DataViewInfoTypes } from '../../constants';
 
 interface ChartMenuItemProps {
     chart: DataViewInfo,
@@ -46,8 +47,8 @@ interface Props {
     charts: List<DataViewInfo>,
     privateCharts: List<DataViewInfo>,
     error: string,
-    onPreviewSCRClicked?: Function,
-    onChartClicked?: Function,
+    onCreateReportClicked?: Function,
+    onReportClicked?: Function,
     showSampleComparisonReports?: boolean,
 }
 
@@ -60,7 +61,7 @@ export class ChartMenu extends PureComponent<Props> {
     }
 
     createMenuItems(): Array<ReactNode> {
-        const { charts, privateCharts, error, showSampleComparisonReports, onPreviewSCRClicked } = this.props;
+        const { charts, privateCharts, error, showSampleComparisonReports, onCreateReportClicked } = this.props;
 
         if (error) {
             return [
@@ -74,10 +75,8 @@ export class ChartMenu extends PureComponent<Props> {
 
         if (showSampleComparisonReports) {
             items.push(<MenuItem header key="new-charts">New Charts & Reports</MenuItem>);
-            // TODO: Should we pass the QueryGridModel to onPreviewSCRClicked? We might need to so consumers of QGP
-            //  have the most up to date model when it's clicked (for sample selections).
             items.push((
-                <MenuItem key="preview-scr" onSelect={() => onPreviewSCRClicked()}>
+                <MenuItem key="preview-scr" onSelect={() => onCreateReportClicked(DataViewInfoTypes.SampleComparison)}>
                     <i className={"chart-menu-icon fa fa-table"}/>
                     <span className="chart-menu-label">Preview Sample Comparison Report</span>
                 </MenuItem>
@@ -102,12 +101,12 @@ export class ChartMenu extends PureComponent<Props> {
     }
 
     showChart = (chart: DataViewInfo) => {
-        const { onChartClicked } = this.props;
+        const { onReportClicked } = this.props;
 
         // If there is no user defined click handler then render the chart modal.
         // If the user supplies a click handler then we use the response from that to determine if we should render
         // the chart modal. This is needed so Biologics and redirect to Sample Comparison Reports.
-        if (!onChartClicked || (onChartClicked && onChartClicked(chart))) {
+        if (!onReportClicked || (onReportClicked && onReportClicked(chart))) {
             setReportId(this.props.model, chart.reportId);
         }
     };

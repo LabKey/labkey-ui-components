@@ -170,14 +170,6 @@ export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
 }
 
 /**
- * Get the list of DataViewInfos from the global state for a given schemaQuery key
- * @param schemaQueryKey Key for the charts map based on a schemaQuery
- */
-export function getCharts(schemaQueryKey: string) : List<DataViewInfo> {
-    return getGlobalState('charts').get(schemaQueryKey);
-}
-
-/**
  * Get the lineage results from the global state for a given seed / lsid
  * @param seed Key for the lineage results map
  */

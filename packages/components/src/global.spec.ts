@@ -15,7 +15,6 @@
  */
 
 import {
-    getCharts,
     getEditorModel,
     getLookupStore,
     getQueryGridModel,

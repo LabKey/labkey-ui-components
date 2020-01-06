@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { Checkbox, FormControl, Modal } from "react-bootstrap";
 import { Security } from "@labkey/api";
 import { WizardNavButtons } from "../buttons/WizardNavButtons";
@@ -10,7 +10,7 @@ interface Props {
     onComplete: (response: any, role: string) => void
     show: boolean
 
-    // optional array of role options, objects with id and label values
+    // optional array of role options, objects with id and label values (i.e. [{id: "org.labkey.api.security.roles.ReaderRole", label: "Reader (default)"}])
     // note that the createNewUser action will not use this value but it will be passed back to the onComplete
     roleOptions?: Array<any>
 }
@@ -59,7 +59,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
         this.setState(() => ({isSubmitting: true, error: undefined}));
 
         // convert the email addresses from newline separated to semicolon separated
-        const email = emailText.split('\n').join(';');
+        const email = emailText.replace(/\n/g, ';');
 
         Security.createNewUser({
             email,

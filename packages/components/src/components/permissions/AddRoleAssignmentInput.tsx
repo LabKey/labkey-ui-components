@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react'
+import React from 'react'
 import { List } from 'immutable'
 import { Principal, SecurityRole } from "./models";
 import { SelectInput } from "../../components/forms/input/SelectInput";

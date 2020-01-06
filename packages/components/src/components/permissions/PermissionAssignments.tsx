@@ -2,7 +2,7 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
+import React from 'react';
 import { Button, Col, Panel, Row } from "react-bootstrap";
 import { List } from 'immutable'
 import { Security } from '@labkey/api'

@@ -235,7 +235,7 @@ export function toggleGridRowSelection(model: QueryGridModel, row: Map<string, a
                 selectedIds: selectedIds
             });
 
-            if (Utils.isFunction(onSelectionChange)) {
+            if (onSelectionChange) {
                 onSelectionChange(updatedModel, row, checked);
             }
         }).catch(reason => {
@@ -893,7 +893,7 @@ function setGridSelected(model: QueryGridModel, checked: boolean, onSelectionCha
             selectedState: checked ? GRID_CHECKBOX_OPTIONS.ALL : GRID_CHECKBOX_OPTIONS.NONE
         });
 
-        if (Utils.isFunction(onSelectionChange)) {
+        if (onSelectionChange) {
             onSelectionChange(updatedModel, undefined, checked);
         }
     });

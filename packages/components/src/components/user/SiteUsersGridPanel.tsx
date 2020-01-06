@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react'
+import React from 'react'
 import { List, Map } from "immutable";
 import { Button, Row, Col, MenuItem } from "react-bootstrap";
 import { Filter, ActionURL } from "@labkey/api";
@@ -55,6 +55,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        // add a URL listener specifically for the usersView param so that we can change the QueryGridPanel data accordingly without a route change
         const unlisten = getBrowserHistory().listen((location, action) => {
             if (getRouteFromLocationHash(location.hash) === '#/admin/users') {
                 // if the usersView param has changed, set state to trigger re-render with proper QueryGridModel

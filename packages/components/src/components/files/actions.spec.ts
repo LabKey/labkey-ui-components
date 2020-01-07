@@ -1,5 +1,11 @@
-import { fromJS } from 'immutable';
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, getFileExtension } from './actions';
+import { Map, fromJS } from 'immutable';
+import {
+    convertRowDataIntoPreviewData,
+    fileMatchesAcceptedFormat,
+    fileSizeLimitCompare,
+    getFileExtension
+} from './actions';
+import { SizeLimitProps } from './models';
 
 const DATA = fromJS([
     ['str', 'int', 'int-excelupload', 'double', 'date'],
@@ -167,6 +173,137 @@ describe("fileMatchesAcceptedFormat", () => {
         const response = fileMatchesAcceptedFormat('testing', '.csv, .tsv, .xlsx');
         expect(response.get('extension')).toBe('');
         expect(response.get('isMatch')).toBeFalsy();
+    });
+
+});
+
+describe("fileSizeLimitCompare", () => {
+    const file : File = {
+        size: 1024,
+        type: 'test',
+        lastModified: 1,
+        name: "test.text",
+        slice: (start, end, compareType) : Blob => { return undefined }
+    };
+
+    test("no limits", () => {
+        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>());
+        expect(result.isOversized).toBeFalsy();
+        expect(result.isOversizedForPreview).toBeFalsy();
+    });
+
+    test("undefined limits", () => {
+        const result = fileSizeLimitCompare(file, undefined);
+        expect(result.isOversized).toBeFalsy();
+        expect(result.isOversizedForPreview).toBeFalsy();
+    });
+
+    test("default size limits exceeded but not preview", () => {
+        const defaultLimits = {
+            maxSize: {
+                value: 234,
+                displayValue: "234B"
+            },
+            maxPreviewSize: {
+                value: 2345,
+                displayValue: "2345"
+            }
+        };
+        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+            'all': defaultLimits
+        }));
+        expect(result.isOversized).toBeTruthy();
+        expect(result.isOversizedForPreview).toBeFalsy();
+        expect(result.limits).toBe(defaultLimits);
+    });
+
+    test("default size limits not exceeded but preview exceeded", () => {
+
+        const defaultLimits = {
+            maxSize: {
+                value: 2345,
+                displayValue: "2345B"
+            },
+            maxPreviewSize: {
+                value: 1,
+                displayValue: "just one"
+            }
+        };
+        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+            'all': defaultLimits
+        }));
+        expect(result.isOversized).toBeFalsy();
+        expect(result.isOversizedForPreview).toBeTruthy();
+        expect(result.limits).toBe(defaultLimits);
+    });
+
+    test("limit on all and extension", () => {
+        const defaultLimits = {
+            maxSize: {
+                value: 2345,
+                displayValue: "2345B"
+            },
+            maxPreviewSize: {
+                value: 1,
+                displayValue: "just one"
+            }
+        };
+        const textLimits = {
+            maxSize: {
+                value: 1023,
+                displayValue: '1023"'
+            },
+            maxPreviewSize: {
+                value: 3000,
+                displayValue: '3000'
+            }
+        };
+        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+            'all': defaultLimits,
+            '.text': textLimits
+        }));
+        expect(result.isOversized).toBeTruthy();
+        expect(result.isOversizedForPreview).toBeFalsy();
+        expect(result.limits).toStrictEqual(textLimits);
+    });
+
+
+    test("merge limits on all and extension", () => {
+        const defaultLimits = {
+            maxSize: {
+                value: 2345,
+                displayValue: "oversized"
+            },
+            maxPreviewSize: {
+                value: 1,
+                displayValue: "size for preview"
+            }
+        };
+        const textLimits = {
+            maxPreviewSize: {
+                value: 3000,
+            }
+        };
+        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+            'all': defaultLimits,
+            '.text': textLimits,
+            ".tsv": {
+                maxSize: {
+                    value: 100,
+                }
+            }
+        }));
+        expect(result.isOversized).toBeFalsy();
+        expect(result.isOversizedForPreview).toBeFalsy();
+        expect(result.limits).toStrictEqual({
+            maxSize: {
+                value: 2345,
+                displayValue: "oversized"
+            },
+            maxPreviewSize: {
+                value: 3000,
+            }
+        });
     });
 
 });

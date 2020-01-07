@@ -12,6 +12,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - CreateUsersModal for creating new site users from SiteUsersGridPanel button
     - Add invalidateUsers to index.ts for use in Sample Manager app
     - Update to @labkey/api release version 0.0.29
+    - Issue 39359: fix to prevent API call to study-reports-getReportInfos if we know study module isn't available
 
 ### version 0.8.3
 *Released*: 3 January 2020

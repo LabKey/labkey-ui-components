@@ -175,7 +175,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         return (
             <div className="row top-spacing bottom-spacing">
-                <div className="col-md-7">
+                <div className="col-xs-6">
                     <Button
                         onClick={onCancel}
                         bsStyle="default"
@@ -183,7 +183,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         {cancelText}
                     </Button>
                 </div>
-                <div className="col-md-5">
+                <div className="col-xs-6">
                     <div className="pull-right">
                         <Button
                             className={"file-form-submit-btn"}

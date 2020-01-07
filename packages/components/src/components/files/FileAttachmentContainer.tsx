@@ -126,7 +126,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         if (!invalidNames.isEmpty()) {
             let errors = [];
             if (invalidDirectories.length > 0) {
-                errors.push(<li>Folders are not supported.</li>);
+                errors.push("Folders are not supported.");
             }
             if (!invalidFileTypes.isEmpty()) {
                 let errorMsg = '';
@@ -138,29 +138,29 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                     errorMsg += "Invalid file types: " + invalidFileTypes.map((extension, fileName) => (extension)).join(", ") + ".";
                 }
                 errorMsg += '  Valid types are ' + acceptedFormats + ".  ";
-                errors.push(<li>{errorMsg}</li>);
+                errors.push(errorMsg);
             }
             if (!oversizedFiles.isEmpty()) {
                 if (oversizedFiles.size === 1) {
                     const fileName = oversizedFiles.keySeq().first();
-                    errors.push(<li>The file '{fileName}'  is larger than the maximum allowed size of {oversizedFiles.get(fileName)}.  {this.props.sizeLimitsHelpText}</li>);
+                    errors.push(<>The file '{fileName}'  is larger than the maximum allowed size of {oversizedFiles.get(fileName)}.  {this.props.sizeLimitsHelpText}</>);
                 }
                 else {
                     errors.push(
-                        <li>
+                        <>
                             These files are larger than their maximum allowed sizes:
                             <ul>
                             {oversizedFiles.map((limit, fileName) => {
-                                return <li>{fileName} (max size: {limit})</li>
+                                return <li key={fileName}>{fileName} (max size: {limit})</li>
                             }).toArray()}
                             </ul>
                             {this.props.sizeLimitsHelpText}
-                        </li>
+                        </>
                     );
                 }
             }
             this.setState({
-                errorMsg: invalidNames.size > 1 ? <ul>{errors}</ul> : errors,
+                errorMsg: invalidNames.size > 1 ? <ul>{errors.map((error, index) => (<li key={index}>{error}</li>))}</ul> : errors,
                 isHover: false
             });
             return invalidNames;

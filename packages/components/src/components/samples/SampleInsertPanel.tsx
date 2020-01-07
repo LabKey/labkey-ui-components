@@ -78,10 +78,11 @@ class SampleGridLoader implements IGridLoader {
     }
 }
 
-interface SampleInsertPageProps {
+interface OwnProps {
     afterSampleCreation?: (sampleSetName, filter, sampleCount) => void
     location?: Location
     onCancel?: () => void
+    maxSamples?: number
 }
 
 interface StateProps {
@@ -91,7 +92,7 @@ interface StateProps {
     error: string
 }
 
-export class SampleInsertPanel extends React.Component<SampleInsertPageProps, StateProps> {
+export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
 
     constructor(props: any) {
         super(props);
@@ -115,7 +116,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         this.init(this.props)
     }
 
-    componentWillReceiveProps(nextProps: SampleInsertPageProps) {
+    componentWillReceiveProps(nextProps: OwnProps) {
         this.init(nextProps)
     }
 
@@ -145,7 +146,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
         }
     }
 
-    init(props: SampleInsertPageProps) {
+    init(props: OwnProps) {
 
         const queryParams = props.location ? SampleInsertPanel.getQueryParameters(props.location.query) : {
             parents: undefined,
@@ -769,6 +770,7 @@ export class SampleInsertPanel extends React.Component<SampleInsertPageProps, St
                                     model={queryGridModel}
                                     initialEmptyRowCount={0}
                                     emptyGridMsg={'Start by adding the quantity of samples you want to create.'}
+                                    maxTotalRows={this.props.maxSamples}
                                 />
                                 :
                                  !insertModel.isError && insertModel.targetSampleSet && insertModel.targetSampleSet.value ? <LoadingSpinner wrapperClassName="loading-data-message"/> : null

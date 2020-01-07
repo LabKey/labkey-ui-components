@@ -21,14 +21,14 @@ import { Utils } from '@labkey/api';
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { Map, Set } from 'immutable';
-import { SizeLimitProps } from './models';
+import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from './models';
 
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
     // "all" limits will be overridden by limits for a specific extension.
-    sizeLimits?: Map<string, SizeLimitProps>
+    sizeLimits?: Map<string, FileSizeLimitProps>
     sizeLimitsHelpText?: React.ReactNode
     allowMultiple: boolean
     allowDirectories: boolean
@@ -283,8 +283,18 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
         }
     }
 
+    getLabelLong() {
+        const { labelLong, sizeLimits } = this.props;
+
+        if (!sizeLimits || !sizeLimits.has(ALL_FILES_LIMIT_KEY) || sizeLimits.size > 1) {
+            return labelLong;
+        }
+        const allMaxSize = sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize;
+        return allMaxSize ? labelLong + "  The maximum file size allowed is " + sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize.displayValue + "." : labelLong;
+    }
+
     render() {
-        const { acceptedFormats, allowMultiple, labelLong, index } = this.props;
+        const { acceptedFormats, allowMultiple, index } = this.props;
         const { fileNames, isHover } = this.state;
         const hideFileUpload = !allowMultiple && fileNames.length > 0;
         const fileUploadText = "fileUpload" + (index !== undefined ? index : '');
@@ -300,7 +310,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
                         onDragOver={this.handleDrag}
                         onDrop={this.handleDrop}>
                         <i className="fa fa-cloud-upload fa-2x cloud-logo" aria-hidden="true"/>
-                        {labelLong}
+                        {this.getLabelLong()}
                     </label>
                     <input
                         accept={acceptedFormats}

@@ -58,7 +58,7 @@ export const DEFAULT_FILE: IFile = {
     propertiesRowId: undefined
 };
 
-export interface SizeLimitProps {
+export interface FileSizeLimitProps {
     maxSize?: {
         value: number
         displayValue: string
@@ -67,6 +67,5 @@ export interface SizeLimitProps {
         value: number
         displayValue: string
     }
-    maxRows?: number
 }
 export const ALL_FILES_LIMIT_KEY = "all";

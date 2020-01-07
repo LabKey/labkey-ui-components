@@ -87,7 +87,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                           aria-hidden="true"
                           className="fa fa-cloud-upload fa-2x cloud-logo"
                         />
-                        Select file or drag and drop here
+                        Select file or drag and drop here.
                       </label>
                       <input
                         accept=""
@@ -503,7 +503,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                           aria-hidden="true"
                           className="fa fa-cloud-upload fa-2x cloud-logo"
                         />
-                        Select file or drag and drop here
+                        Select file or drag and drop here.
                       </label>
                       <input
                         accept=""

@@ -25,7 +25,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { InferDomainResponse } from '../base/models/model';
 import { inferDomainFromFile } from '../base/actions';
-import { SizeLimitProps } from './models';
+import { FileSizeLimitProps } from './models';
 
 
 
@@ -33,7 +33,7 @@ interface FileAttachmentFormProps {
     acceptedFormats?: string // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     // map between extension and SizeLimitProps.  Use "all" as the key for limits that apply to all formats.
     // "all" limits will be overridden by limits for a specific extension.
-    sizeLimits?: Map<string, SizeLimitProps>
+    sizeLimits?: Map<string, FileSizeLimitProps>
     sizeLimitsHelpText?: React.ReactNode
     showAcceptedFormats?: boolean
     allowDirectories?: boolean
@@ -73,7 +73,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         allowMultiple: true,
         cancelText: 'Cancel',
         label: 'Attachments',
-        labelLong: 'Select file or drag and drop here',
+        labelLong: 'Select file or drag and drop here.',
         onCancel: undefined,
         onSubmit: undefined,
         showButtons: false,

@@ -116,7 +116,7 @@ export interface EditableGridProps {
     isSubmitting?: boolean
     onRowCountChange?: (rowCount?: number) => any
     emptyGridMsg?: string
-    maxRowsCount?: number
+    maxTotalRows?: number
 }
 
 export interface EditableGridState {
@@ -447,8 +447,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         const model = this.getModel(this.props);
         const editorModel = this.getEditorModel();
         let toAdd = count;
-        if (this.props.maxRowsCount && (count + editorModel.rowCount > this.props.maxRowsCount)) {
-            toAdd = this.props.maxRowsCount - editorModel.rowCount;
+        if (this.props.maxTotalRows && (count + editorModel.rowCount > this.props.maxTotalRows)) {
+            toAdd = this.props.maxTotalRows - editorModel.rowCount;
         }
         addRows(model, toAdd);
         this.onRowCountChange();
@@ -502,13 +502,13 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     getAddControlProps() {
-        const { addControlProps, maxRowsCount } = this.props;
+        const { addControlProps, maxTotalRows } = this.props;
         const editorModel = this.getEditorModel();
-        if (maxRowsCount && editorModel.rowCount + addControlProps.maxCount > maxRowsCount) {
-            return {...addControlProps, maxTotalCount: maxRowsCount, maxCount: maxRowsCount - editorModel.rowCount};
+        if (maxTotalRows && editorModel.rowCount + addControlProps.maxCount > maxTotalRows) {
+            return {...addControlProps, maxTotalCount: maxTotalRows, maxCount: maxTotalRows - editorModel.rowCount};
         }
         else {
-            return {...addControlProps, maxTotalCount: maxRowsCount};
+            return {...addControlProps, maxTotalCount: maxTotalRows};
         }
     }
 
@@ -518,7 +518,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
             <AddRowsControl
                 {...this.getAddControlProps()}
                 placement={placement}
-                disable={isSubmitting || (this.props.maxRowsCount && this.getEditorModel().rowCount >= this.props.maxRowsCount)}
+                disable={isSubmitting || (this.props.maxTotalRows && this.getEditorModel().rowCount >= this.props.maxTotalRows)}
                 onAdd={this.onAddRows}
             />
         )

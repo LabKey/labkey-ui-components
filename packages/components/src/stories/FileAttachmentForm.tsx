@@ -14,7 +14,7 @@ import inferDomainJson from '../test/data/property-inferDomainWithSpecimenId.jso
 import filePreviewJson from '../test/data/property-getFilePreview.json';
 
 import './stories.scss';
-import { ALL_FILES_LIMIT_KEY, SizeLimitProps } from '../components/files/models';
+import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from '../components/files/models';
 
 mock.setup();
 mock.post(/.*\/property\/inferDomain.*/, {
@@ -31,7 +31,7 @@ storiesOf('FileAttachmentForm', module)
             <FileAttachmentForm
                 showLabel={boolean('Show label?', true)}
                 label={text('Label', 'Attachments')}
-                labelLong={text('Long label (inside of file attachment drop zone)', 'Select file or drag and drop here')}
+                labelLong={text('Long label (inside of file attachment drop zone)', 'Select file or drag and drop here.')}
                 acceptedFormats={text('Accepted formats', '.tsv,.txt,.csv,.xls,.xlsx')}
                 showAcceptedFormats={boolean('Show accepted formats?', true)}
                 allowDirectories={boolean('Allow directories?', true)}
@@ -52,7 +52,6 @@ storiesOf('FileAttachmentForm', module)
             <FileAttachmentForm
                 showLabel={true}
                 label={'Attachments'}
-                labelLong={'Select file or drag and drop here'}
                 acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                 showAcceptedFormats={true}
                 allowMultiple={true}
@@ -74,7 +73,6 @@ storiesOf('FileAttachmentForm', module)
             <FileAttachmentForm
                 showLabel={true}
                 label={'Attachments'}
-                labelLong={'Select file or drag and drop here'}
                 acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                 showAcceptedFormats={true}
                 allowMultiple={true}
@@ -90,7 +88,6 @@ storiesOf('FileAttachmentForm', module)
                     index={1}
                     showLabel={true}
                     label={'Attachments'}
-                    labelLong={'Select file or drag and drop here'}
                     acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                     showAcceptedFormats={true}
                     allowMultiple={true}
@@ -101,7 +98,6 @@ storiesOf('FileAttachmentForm', module)
                     index={2}
                     showLabel={true}
                     label={'Attachments'}
-                    labelLong={'Select file or drag and drop here'}
                     acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                     showAcceptedFormats={true}
                     allowMultiple={true}
@@ -111,8 +107,30 @@ storiesOf('FileAttachmentForm', module)
             </div>
         )
     })
-    .add("with size limits", () => {
-        let sizeLimits = Map<string, SizeLimitProps>();
+    .add("with all size limits", () => {
+        let sizeLimits = Map<string, FileSizeLimitProps>();
+        sizeLimits = sizeLimits.set(ALL_FILES_LIMIT_KEY, {
+            maxSize: {
+                value: 1024,
+                displayValue: "1KB"
+            },
+        });
+        return (
+            <FileAttachmentForm
+                showLabel={true}
+                allowDirectories={boolean("Allow folders", true)}
+                label={'Attachments'}
+                acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                showAcceptedFormats={true}
+                allowMultiple={boolean("Allow multiple files", true)}
+                showButtons={boolean("Show buttons", true)}
+                sizeLimits={sizeLimits}
+                sizeLimitsHelpText={text("Size limits help", undefined)}
+            />
+        )
+    })
+    .add("with csv and all size limits", () => {
+        let sizeLimits = Map<string, FileSizeLimitProps>();
         sizeLimits = sizeLimits.set(ALL_FILES_LIMIT_KEY, {
             maxSize: {
                 value: 1024,
@@ -130,7 +148,6 @@ storiesOf('FileAttachmentForm', module)
                 showLabel={true}
                 allowDirectories={boolean("Allow folders", true)}
                 label={'Attachments'}
-                labelLong={'Select file or drag and drop here.  The maximum file size is 1KB.'}
                 acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                 showAcceptedFormats={true}
                 allowMultiple={boolean("Allow multiple files", true)}
@@ -141,7 +158,7 @@ storiesOf('FileAttachmentForm', module)
         )
     })
     .add("with preview size limits", () => {
-        let sizeLimits = Map<string, SizeLimitProps>();
+        let sizeLimits = Map<string, FileSizeLimitProps>();
         sizeLimits = sizeLimits.set(ALL_FILES_LIMIT_KEY, {
             maxPreviewSize: {
                 value: 1024,
@@ -158,7 +175,6 @@ storiesOf('FileAttachmentForm', module)
             <FileAttachmentForm
                 showLabel={true}
                 label={'Attachments'}
-                labelLong={'Select file or drag and drop here'}
                 acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                 showAcceptedFormats={true}
                 allowMultiple={false}

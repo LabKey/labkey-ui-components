@@ -29,6 +29,7 @@ import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
+import { FileSizeLimitProps } from '../files/models';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
@@ -45,6 +46,8 @@ interface Props {
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
     title: string
+    fileSizeLimits?: Map<string, FileSizeLimitProps>
+    maxInsertRows?: number
 }
 
 interface PreviousRunData {
@@ -207,6 +210,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                     acceptedFormats: acceptedPreviewFileFormats,
                                                     initialData: previousRunData ? previousRunData.data : undefined
                                                 }}
+                                                sizeLimits={this.props.fileSizeLimits}
                                             />
                                         }
                                     </FormStep>
@@ -221,7 +225,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 name="rundata"
                                                 onChange={(field, value) => onTextChange('text', value)}
                                                 onKeyDown={handleTabKeyOnTextArea}
-                                                placeholder="Paste in a tab-separated set of values"
+                                                placeholder="Paste in a tab-separated set of values (including column headers)"
                                                 rows={10}
                                                 value={wizardModel.dataText}
                                             />
@@ -248,6 +252,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             }}
                                             initialEmptyRowCount={0}
                                             emptyGridMsg={'Start by adding the quantity of assay data rows you want to create.'}
+                                            maxTotalRows={this.props.maxInsertRows}
                                         />
                                     </FormStep>
                                 </div>

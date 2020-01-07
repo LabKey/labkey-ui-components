@@ -5,7 +5,7 @@ import {
     fileSizeLimitCompare,
     getFileExtension
 } from './actions';
-import { SizeLimitProps } from './models';
+import { FileSizeLimitProps } from './models';
 
 const DATA = fromJS([
     ['str', 'int', 'int-excelupload', 'double', 'date'],
@@ -187,7 +187,7 @@ describe("fileSizeLimitCompare", () => {
     };
 
     test("no limits", () => {
-        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>());
+        const result = fileSizeLimitCompare(file, Map<string, FileSizeLimitProps>());
         expect(result.isOversized).toBeFalsy();
         expect(result.isOversizedForPreview).toBeFalsy();
     });
@@ -209,7 +209,7 @@ describe("fileSizeLimitCompare", () => {
                 displayValue: "2345"
             }
         };
-        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+        const result = fileSizeLimitCompare(file, Map<string, FileSizeLimitProps>({
             'all': defaultLimits
         }));
         expect(result.isOversized).toBeTruthy();
@@ -229,7 +229,7 @@ describe("fileSizeLimitCompare", () => {
                 displayValue: "just one"
             }
         };
-        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+        const result = fileSizeLimitCompare(file, Map<string, FileSizeLimitProps>({
             'all': defaultLimits
         }));
         expect(result.isOversized).toBeFalsy();
@@ -258,7 +258,7 @@ describe("fileSizeLimitCompare", () => {
                 displayValue: '3000'
             }
         };
-        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+        const result = fileSizeLimitCompare(file, Map<string, FileSizeLimitProps>({
             'all': defaultLimits,
             '.text': textLimits
         }));
@@ -284,7 +284,7 @@ describe("fileSizeLimitCompare", () => {
                 value: 3000,
             }
         };
-        const result = fileSizeLimitCompare(file, Map<string, SizeLimitProps>({
+        const result = fileSizeLimitCompare(file, Map<string, FileSizeLimitProps>({
             'all': defaultLimits,
             '.text': textLimits,
             ".tsv": {

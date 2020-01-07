@@ -106,7 +106,7 @@ storiesOf('EditableGridPanel', module)
                 bordered={boolean("Bordered?", false, PANEL_GROUP)}
                 condensed={boolean("Condensed?", true, PANEL_GROUP)}
                 emptyGridMsg={text("Empty grid message", "Add rows to start", PANEL_GROUP)}
-                maxRowsCount={number("Max rows", undefined, {}, PANEL_GROUP)}
+                maxTotalRows={number("Max rows", undefined, {}, PANEL_GROUP)}
             />
         );
 
@@ -152,7 +152,7 @@ storiesOf('EditableGridPanel', module)
                 disabled={boolean("Disabled?", false, PANEL_GROUP)}
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
                 title={text("Title", "Editable grid with data", PANEL_GROUP)}
-                maxRowsCount={number("Max Rows Total", undefined, {}, CONTROLS_GROUP)}
+                maxTotalRows={number("Max Rows Total", undefined, {}, CONTROLS_GROUP)}
                 model={model}
             />
         );

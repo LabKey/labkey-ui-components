@@ -55,6 +55,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Progress } from '../base/Progress';
+import { FileSizeLimitProps } from '../files/models';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
@@ -69,6 +70,8 @@ interface OwnProps {
     location?: Location
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
+    fileSizeLimits?: Map<string, FileSizeLimitProps>
+    maxInsertRows?: number
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -577,6 +580,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     fullWidth={false}
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
+                    fileSizeLimits={this.props.fileSizeLimits}
+                    maxInsertRows={this.props.maxInsertRows}
                 />
                 {model.errorMsg && <Alert bsStyle="danger">{model.errorMsg}</Alert>}
                 <WizardNavButtons

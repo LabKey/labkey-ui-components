@@ -4,7 +4,7 @@
  */
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { QueryColumn } from '../base/models/model';
-import { ALL_FILES_LIMIT_KEY, SizeLimitProps } from './models';
+import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from './models';
 
 // Converts the 2D array returned by inferDomain action into a list of row maps that the grid understands
 export function convertRowDataIntoPreviewData(data: List<any>, previewRowCount: number, fields?: List<QueryColumn>): List<Map<string, any>> {
@@ -67,10 +67,10 @@ export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: 
 interface SizeLimitCheckResult {
     isOversized: boolean
     isOversizedForPreview: boolean
-    limits: SizeLimitProps
+    limits: FileSizeLimitProps
 }
 
-export function fileSizeLimitCompare(file: File, sizeLimits: Map<string, SizeLimitProps>) : SizeLimitCheckResult {
+export function fileSizeLimitCompare(file: File, sizeLimits: Map<string, FileSizeLimitProps>) : SizeLimitCheckResult {
     if (!sizeLimits || sizeLimits.isEmpty())
         return {
             isOversized: false,
@@ -79,7 +79,7 @@ export function fileSizeLimitCompare(file: File, sizeLimits: Map<string, SizeLim
         };
 
     const extension = getFileExtension(file.name);
-    let limits : SizeLimitProps = sizeLimits.get(ALL_FILES_LIMIT_KEY) || {} as SizeLimitProps;
+    let limits : FileSizeLimitProps = sizeLimits.get(ALL_FILES_LIMIT_KEY) || {} as FileSizeLimitProps;
     if (extension && sizeLimits.has(extension)) {
         limits = { ...limits, ...sizeLimits.get(extension)}
     }

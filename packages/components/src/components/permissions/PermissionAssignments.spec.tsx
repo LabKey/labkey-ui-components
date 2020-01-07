@@ -33,7 +33,7 @@ describe("<PermissionAssignments/>", () => {
     test("default props", () => {
         const component = (
             <PermissionAssignments
-                containerPath={'/'}
+                containerId={'BOGUS'}
                 policy={POLICY}
                 roles={ROLES}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -52,7 +52,7 @@ describe("<PermissionAssignments/>", () => {
     test("custom props", () => {
         const component = (
             <PermissionAssignments
-                containerPath={'/'}
+                containerId={'BOGUS'}
                 policy={POLICY}
                 roles={ROLES}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -76,7 +76,7 @@ describe("<PermissionAssignments/>", () => {
     test("with state", () => {
         const wrapper = mount(
             <PermissionAssignments
-                containerPath={'/'}
+                containerId={'BOGUS'}
                 policy={POLICY}
                 roles={ROLES}
                 rolesByUniqueName={ROLES_BY_NAME}

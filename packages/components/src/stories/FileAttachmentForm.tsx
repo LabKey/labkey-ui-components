@@ -130,7 +130,7 @@ storiesOf('FileAttachmentForm', module)
                 showLabel={true}
                 allowDirectories={boolean("Allow folders", true)}
                 label={'Attachments'}
-                labelLong={'Select file or drag and drop here'}
+                labelLong={'Select file or drag and drop here.  The maximum file size is 1KB.'}
                 acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
                 showAcceptedFormats={true}
                 allowMultiple={boolean("Allow multiple files", true)}
@@ -138,6 +138,37 @@ storiesOf('FileAttachmentForm', module)
                 sizeLimits={sizeLimits}
                 sizeLimitsHelpText={text("Size limits help", undefined)}
                 />
+        )
+    })
+    .add("with preview size limits", () => {
+        let sizeLimits = Map<string, SizeLimitProps>();
+        sizeLimits = sizeLimits.set(ALL_FILES_LIMIT_KEY, {
+            maxPreviewSize: {
+                value: 1024,
+                displayValue: "1KB"
+            },
+        });
+        sizeLimits = sizeLimits.set(".csv", {
+            maxPreviewSize: {
+                value: 512,
+                displayValue: "0.5kb"
+            }
+        });
+        return (
+            <FileAttachmentForm
+                showLabel={true}
+                label={'Attachments'}
+                labelLong={'Select file or drag and drop here'}
+                acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                showAcceptedFormats={true}
+                allowMultiple={false}
+                showButtons={false}
+                sizeLimits={sizeLimits}
+                previewGridProps={{
+                    previewCount: number('Preview Grid Row Count', 3),
+                    acceptedFormats: text('Preview Grid Accepted Formats', '.tsv,.txt,.csv,.xls,.xlsx'),
+                }}
+            />
         )
     })
 ;

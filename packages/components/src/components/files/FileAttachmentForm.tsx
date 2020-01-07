@@ -22,7 +22,7 @@ import { Progress } from '../base/Progress';
 import { FileAttachmentContainer } from './FileAttachmentContainer';
 import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat } from './actions';
+import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { InferDomainResponse } from '../base/models/model';
 import { inferDomainFromFile } from '../base/actions';
 import { SizeLimitProps } from './models';
@@ -121,13 +121,21 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     }
 
     handleFileChange = (fileList: {[key: string]: File}) => {
-        const { onFileChange } = this.props;
+        const { onFileChange, sizeLimits } = this.props;
         const attachedFiles = this.state.attachedFiles.merge(fileList);
 
         this.setState(() => ({attachedFiles}), () => {
 
             if (this.isShowPreviewGrid()) {
-                this.uploadDataFileForPreview();
+                // if showing preview, there can be only one attached file
+                const sizeCheck = fileSizeLimitCompare(attachedFiles.valueSeq().first(), sizeLimits);
+                if (!sizeCheck.isOversizedForPreview)
+                    this.uploadDataFileForPreview();
+                else {
+                    this.setState(() => ({
+                        errorMessage: "This file is too large to be previewed. The maximum size allowed for previewing files of this type is " + sizeCheck.limits.maxPreviewSize.displayValue
+                    }))
+                }
             }
 
             if (onFileChange) {
@@ -139,12 +147,12 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     handleFileRemoval = (attachmentName: string) => {
         const { onFileRemoval } = this.props;
 
-        this.setState({
+        this.setState(() => ({
             attachedFiles: this.state.attachedFiles.remove(attachmentName),
             previewData: undefined,
             previewStatus: undefined,
             errorMessage: undefined
-        }, () => {
+        }), () => {
             if (onFileRemoval) {
                 onFileRemoval(attachmentName);
             }
@@ -157,9 +165,9 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         if (onSubmit)
             onSubmit(this.state.attachedFiles);
         // clear out attached files once they have been submitted.
-        this.setState({
+        this.setState(() => ({
             attachedFiles: Map<string, File>()
-        });
+        }));
     };
 
     renderButtons() {

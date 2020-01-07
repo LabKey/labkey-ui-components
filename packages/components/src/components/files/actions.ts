@@ -64,19 +64,29 @@ export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: 
     });
 }
 
-export function fileSizeLimitCompare(file, sizeLimits: Map<string, SizeLimitProps>) : any {
+interface SizeLimitCheckResult {
+    isOversized: boolean
+    isOversizedForPreview: boolean
+    limits: SizeLimitProps
+}
+
+export function fileSizeLimitCompare(file: File, sizeLimits: Map<string, SizeLimitProps>) : SizeLimitCheckResult {
     if (!sizeLimits || sizeLimits.isEmpty())
-        return true;
+        return {
+            isOversized: false,
+            isOversizedForPreview: false,
+            limits: undefined
+        };
 
     const extension = getFileExtension(file.name);
     let limits : SizeLimitProps = sizeLimits.get(ALL_FILES_LIMIT_KEY) || {} as SizeLimitProps;
     if (extension && sizeLimits.has(extension)) {
         limits = { ...limits, ...sizeLimits.get(extension)}
     }
-    if (limits.maxSize) {
-        return {
-            isOversized: file.size > limits.maxSize.value,
-            limits
-        }
+
+    return {
+        isOversized: limits.maxSize && file.size > limits.maxSize.value,
+        isOversizedForPreview : limits.maxPreviewSize && file.size > limits.maxPreviewSize.value,
+        limits
     }
 }

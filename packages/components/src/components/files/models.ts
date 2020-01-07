@@ -63,6 +63,10 @@ export interface SizeLimitProps {
         value: number
         displayValue: string
     }
+    maxPreviewSize?: {
+        value: number
+        displayValue: string
+    }
     maxRows?: number
 }
 export const ALL_FILES_LIMIT_KEY = "all";

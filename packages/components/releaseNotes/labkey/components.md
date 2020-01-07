@@ -8,6 +8,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `showSampleComparisonReports`, `onChartClicked`, and `onPreviewSCRClicked` props to QueryGridPanel.
 * Add isSampleLookup to QueryColumn
 
+### version 0.8.3
+*Released*: 3 January 2020
+* Fixed bug that occurred with multiple FileAttachmentForms on one page
+
+### version 0.8.2
+*Released*: 2 January 2020
+* added samplemanager-downloadAttachments.api to URLResolver
+
+### version 0.8.1
+*Released*: 2 January 2020
+* Update styling for some navbar components
+
 ### version 0.8.0
 *Released*: 30 December 2019
 * Add helper methods and constants for documentation links

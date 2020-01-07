@@ -106,6 +106,7 @@ storiesOf('EditableGridPanel', module)
                 bordered={boolean("Bordered?", false, PANEL_GROUP)}
                 condensed={boolean("Condensed?", true, PANEL_GROUP)}
                 emptyGridMsg={text("Empty grid message", "Add rows to start", PANEL_GROUP)}
+                maxRowsCount={number("Max rows", undefined, {}, PANEL_GROUP)}
             />
         );
 
@@ -134,8 +135,8 @@ storiesOf('EditableGridPanel', module)
         gridInit(model, true);
 
         const addRowsControl = {
-            minCount: number("Minimum count", 1, {}, CONTROLS_GROUP),
-            maxCount: number("Maximum count", 100, {}, CONTROLS_GROUP),
+            minCount: number("Minimum to be added", 1, {}, CONTROLS_GROUP),
+            maxCount: number("Maximum to be added", 100, {}, CONTROLS_GROUP),
             nounPlural: text("Plural noun", "rows", CONTROLS_GROUP),
             nounSingular: text("Singular noun", "row", CONTROLS_GROUP),
             placement: select("Placement", ['top', 'bottom', 'both'], "bottom", CONTROLS_GROUP)
@@ -151,6 +152,7 @@ storiesOf('EditableGridPanel', module)
                 disabled={boolean("Disabled?", false, PANEL_GROUP)}
                 isSubmitting={boolean("Is submitting?", false, PANEL_GROUP)}
                 title={text("Title", "Editable grid with data", PANEL_GROUP)}
+                maxRowsCount={number("Max Rows Total", undefined, {}, CONTROLS_GROUP)}
                 model={model}
             />
         );

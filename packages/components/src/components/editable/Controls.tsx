@@ -17,6 +17,7 @@ import React from 'react';
 import { Button, MenuItem, SplitButton } from 'react-bootstrap';
 import classNames from 'classnames';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { LabelHelpTip } from '../..';
 
 export type PlacementType = 'top' | 'bottom' | 'both';
 
@@ -24,6 +25,7 @@ export interface AddRowsControlProps {
     disable?: boolean
     initialCount?: number
     maxCount?: number
+    maxTotalCount?: number
     minCount?: number
     nounPlural?: string
     nounSingular?: string
@@ -76,7 +78,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     isValid(count: number): boolean {
-        return count > this.props.minCount - 1 && count <= this.props.maxCount;
+        return (!this.props.minCount || count > this.props.minCount - 1) && (!this.props.maxCount || count <= this.props.maxCount);
     }
 
     onAdd() {
@@ -119,7 +121,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     renderButton() {
-        const { disable, quickAddText, onQuickAdd, addText } = this.props;
+        const { disable, quickAddText, onQuickAdd, addText, nounPlural } = this.props;
 
         return (
             <span className="input-group-btn">
@@ -127,19 +129,42 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                     <SplitButton
                         id="addRowsDropdown"
                         onClick={this.onAdd}
-                        title={addText}>
+                        title={addText}
+                    >
                         <MenuItem onClick={this.onQuickAdd}>{quickAddText}</MenuItem>
                     </SplitButton> :
-                    <Button disabled={disable || this.hasError()} onClick={this.onAdd}>{addText}</Button>
+                    <Button title={disable ? "Maximum number of " + nounPlural + " reached." : undefined} disabled={disable || this.hasError()} onClick={this.onAdd}>{addText}</Button>
                 }
             </span>
         )
     }
+
+    shouldRenderHelpText() {
+        return this.props.maxCount || this.props.maxTotalCount;
+    }
+
+    renderRowHelpText = () => {
+        const { maxCount, nounPlural, maxTotalCount } = this.props;
+
+        return (
+            <>
+                {maxCount && <>At most {maxCount} {nounPlural} can be added at one time</>}
+                {maxTotalCount &&
+                    <>
+                        {maxCount ? <> and no </> : <>No </>}
+                        more than {maxTotalCount} {nounPlural} are allowed in total
+                    </>
+                }
+                .
+            </>
+        );
+    };
+
     render() {
-        const { maxCount, minCount, nounPlural, nounSingular, placement } = this.props;
+        const { disable, maxCount, minCount, nounPlural, nounSingular, placement } = this.props;
         const { count } = this.state;
 
-        const hasError = this.hasError();
+        const hasError = !disable && this.hasError();
         const wrapperClasses = classNames('editable-grid__controls', 'form-group', {
             'margin-top': placement === 'bottom',
             'has-error': hasError
@@ -151,17 +176,20 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                     {this.renderButton()}
                     <input
                         className="form-control"
-                        max={maxCount}
-                        min={minCount}
+                        max={disable ? undefined : maxCount}
+                        min={disable ? undefined : minCount}
+                        disabled={disable}
                         name="addCount"
                         onBlur={this.onBlur}
                         onChange={this.onChange}
                         ref={this.addCount}
                         style={{width: '65px'}}
                         type="number"
-                        value={count ? count.toString() : undefined} />
+                        value={count ? count.toString() : undefined}
+                    />
                     <span style={{display: 'inline-block', padding: '6px 8px'}}>
                         {hasError ? <span className="text-danger">{`${minCount}-${maxCount} ${nounPlural}.`}</span> : (count === 1 ? nounSingular : nounPlural)}
+                        {this.shouldRenderHelpText() && <LabelHelpTip body={this.renderRowHelpText} title={"Data Limits"}/>}
                     </span>
                 </span>
             </div>

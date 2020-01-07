@@ -1017,6 +1017,12 @@ export function getVisualizationConfig(reportId: string): Promise<VisualizationC
 
 export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): Promise<List<DataViewInfo>> {
     return new Promise((resolve, reject) => {
+        // if we know we don't have the study module, no need to make the API call
+        if (LABKEY.getModuleContext('samplemanagement') && !LABKEY.getModuleContext('samplemanagement').hasStudyModule) {
+            resolve(List<DataViewInfo>());
+            return;
+        }
+
         Ajax.request({
             url: buildURL('study-reports', 'getReportInfos.api', {
                 schemaName: schemaQuery.getSchema(),

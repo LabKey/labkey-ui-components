@@ -417,31 +417,35 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     onFinish(importAgain: boolean) {
-        const { currentStep, onSave } = this.props;
+        const { currentStep, onSave, maxInsertRows } = this.props;
         const { model } = this.state;
-        this.setModelState(true, undefined);
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
-
-        uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
-            importAssayRun(processedData)
-                .then((response: AssayUploadResultModel) => {
-                    if (importAgain && onSave) {
-                        this.onSuccessContinue(response);
-                    }
-                    else {
-                        this.onSuccessComplete(response);
-                    }
-                })
-                .catch((reason) => {
-                    const error = reason.message || reason.exception;
-                    console.error("Problem importing assay run", error);
-                    this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
-                });
-        }).catch((reason) => {
-            const error = reason.message || reason.exception;
-            console.error("Problem uploading assay run files", error);
-            this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
-        });
+        if (maxInsertRows && (Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || data.dataRows.size > maxInsertRows) {
+            this.setModelState(false, 'You have exceeded the maximum number of rows allowed (' + maxInsertRows +').  Please divide your data into smaller groups and try again.')
+        }
+        else {
+            this.setModelState(true, undefined);
+            uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
+                importAssayRun(processedData)
+                    .then((response: AssayUploadResultModel) => {
+                        if (importAgain && onSave) {
+                            this.onSuccessContinue(response);
+                        }
+                        else {
+                            this.onSuccessComplete(response);
+                        }
+                    })
+                    .catch((reason) => {
+                        const error = reason.message || reason.exception;
+                        console.error("Problem importing assay run", error);
+                        this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
+                    });
+            }).catch((reason) => {
+                const error = reason.message || reason.exception;
+                console.error("Problem uploading assay run files", error);
+                this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
+            });
+        }
     };
 
     onSuccessContinue = (response: AssayUploadResultModel) => {

@@ -177,11 +177,15 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, title } = this.props;
+        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, title, maxInsertRows } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
+        let cutPastePlaceholder = "Paste in a tab-separated set of values (including column headers).";
+        if (maxInsertRows) {
+            cutPastePlaceholder += "  Maximum number of data rows allowed is " + maxInsertRows + ".";
+        }
         return (
             <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
                 <div className="panel-heading">
@@ -225,7 +229,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 name="rundata"
                                                 onChange={(field, value) => onTextChange('text', value)}
                                                 onKeyDown={handleTabKeyOnTextArea}
-                                                placeholder="Paste in a tab-separated set of values (including column headers)"
+                                                placeholder={cutPastePlaceholder}
                                                 rows={10}
                                                 value={wizardModel.dataText}
                                             />

@@ -10,6 +10,8 @@ Components, models, actions, and utility functions for LabKey applications and p
   - If multiple files are allowed, attach the files that pass validation even if some do not
 * Update Controls and EditableGrid to add optional property for total number of rows allowed
 and add a tooltip for the AddControls with info on the data size limits.
+* Update placeholder text for cut-and-paste area for assay data
+* Add optional parameters for AssayImportPanels and RunDataPanel and SampleInsertPanel
 
 ### version 0.8.3
 *Released*: 3 January 2020

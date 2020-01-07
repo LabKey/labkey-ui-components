@@ -76,6 +76,7 @@ class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
                 onFileRemoval={this.onFileRemoval}
                 onTextChange={this.onChange}
                 allowBulkRemove={true}
+                maxInsertRows={number("Maximum cut-and-paste rows", undefined)}
             />
         )
     }
@@ -121,6 +122,7 @@ storiesOf('AssayImportPanels', module)
                 onCancel={() => console.log('onCancel clicked')}
                 onComplete={(response) => console.log('onComplete', response)}
                 allowBulkRemove={true}
+                maxInsertRows={number("Max cut-and-paste insert rows", undefined)}
             />
         )
     }, {

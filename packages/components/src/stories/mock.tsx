@@ -242,30 +242,6 @@ export function initMocks() {
         body: JSON.stringify(samplesInsert)
     });
 
-    mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
-        const queryParams = req.url().query;
-        const key = queryParams.key;
-        let responseBody;
-
-        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
-            responseBody = nameExpressionSelected;
-        } else {
-            responseBody = mixturesSelected;
-        }
-
-        return res
-            .status(200)
-            .headers({'Content-Type': 'application/json'})
-            .body(JSON.stringify(responseBody));
-    });
-
-    //TODO conditionalize based on queryName
-    mock.get(/.*\/study-reports\/.*\/getReportInfos.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesReportInfos)
-    });
-
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
@@ -392,6 +368,30 @@ export function initQueryGridMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.get(/.*\/query\/.*\/getSelected.*/, (req, res) => {
+        const queryParams = req.url().query;
+        const key = queryParams.key;
+        let responseBody;
+
+        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
+            responseBody = nameExpressionSelected;
+        } else {
+            responseBody = mixturesSelected;
+        }
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+
+    //TODO conditionalize based on queryName
+    mock.get(/.*\/study-reports\/.*\/getReportInfos.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(mixturesReportInfos)
     });
 }
 

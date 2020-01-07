@@ -78,7 +78,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     isValid(count: number): boolean {
-        return (!this.props.minCount || count > this.props.minCount - 1) && (!this.props.maxCount || count <= this.props.maxCount);
+        return (!this.props.minCount || count > this.props.minCount - 1) && (!this.props.maxCount || count <= this.getMaxRowsToAdd());
     }
 
     onAdd() {
@@ -146,7 +146,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     renderRowHelpText = () => {
         const { maxCount, nounPlural, maxTotalCount } = this.props;
 
-        const max = maxCount && maxTotalCount && maxCount > maxTotalCount ? maxTotalCount : maxCount;
+        const max = this.getMaxRowsToAdd();
         return (
             <>
                 {max && <>At most {max} {nounPlural} can be added at one time</>}
@@ -161,8 +161,14 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
         );
     };
 
+    getMaxRowsToAdd() {
+        const {maxCount, maxTotalCount} = this.props;
+
+        return maxCount && maxTotalCount && maxCount > maxTotalCount ? maxTotalCount : maxCount;
+    }
+
     render() {
-        const { disable, maxCount, minCount, nounPlural, nounSingular, placement } = this.props;
+        const { disable, minCount, nounPlural, nounSingular, placement } = this.props;
         const { count } = this.state;
 
         const hasError = !disable && this.hasError();
@@ -170,6 +176,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
             'margin-top': placement === 'bottom',
             'has-error': hasError
         });
+        const maxToAdd = this.getMaxRowsToAdd();
 
         return (
             <div className={wrapperClasses}>
@@ -177,7 +184,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                     {this.renderButton()}
                     <input
                         className="form-control"
-                        max={disable ? undefined : maxCount}
+                        max={disable ? undefined : maxToAdd}
                         min={disable ? undefined : minCount}
                         disabled={disable}
                         name="addCount"
@@ -189,7 +196,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                         value={count ? count.toString() : undefined}
                     />
                     <span style={{display: 'inline-block', padding: '6px 8px'}}>
-                        {hasError ? <span className="text-danger">{`${minCount}-${maxCount} ${nounPlural}.`}</span> : (count === 1 ? nounSingular : nounPlural)}
+                        {hasError ? <span className="text-danger">{`${minCount}-${maxToAdd} ${nounPlural}.`}</span> : (count === 1 ? nounSingular : nounPlural)}
                         {this.shouldRenderHelpText() && <LabelHelpTip body={this.renderRowHelpText} title={"Data Limits"}/>}
                     </span>
                 </span>

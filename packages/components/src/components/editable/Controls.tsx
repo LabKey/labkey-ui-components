@@ -144,17 +144,18 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     renderRowHelpText = () => {
-        const { maxCount, nounPlural, maxTotalCount } = this.props;
+        const { nounPlural, maxTotalCount } = this.props;
 
-        const max = this.getMaxRowsToAdd();
+        const maxIncrement = this.getMaxRowsToAdd();
+        const haveMaxIncrement = maxIncrement !== 0 && maxIncrement !== undefined;
         return (
             <>
-                {max && <>At most {max} {nounPlural} can be added at one time</>}
+                {haveMaxIncrement && <>At most {maxIncrement} {nounPlural} can be added at one time</>}
                 {maxTotalCount &&
-                    <>
-                        {maxCount ? " and no " : "No "}
-                        more than {maxTotalCount} {nounPlural} are allowed in total
-                    </>
+                <>
+                    {haveMaxIncrement ? " and no " : "No "}
+                    more than {maxTotalCount} {nounPlural} are allowed in total
+                </>
                 }
                 .
             </>

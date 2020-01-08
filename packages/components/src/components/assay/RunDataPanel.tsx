@@ -30,6 +30,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FileSizeLimitProps } from '../files/models';
+import { helpLinkNode } from '../..';
+import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
@@ -215,6 +217,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                     initialData: previousRunData ? previousRunData.data : undefined
                                                 }}
                                                 sizeLimits={this.props.fileSizeLimits}
+                                                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help article")} for best practices on data import.</>}
                                             />
                                         }
                                     </FormStep>

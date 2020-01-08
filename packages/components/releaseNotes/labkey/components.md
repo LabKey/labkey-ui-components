@@ -2,8 +2,8 @@
 
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.??.0
-*Released*: ?? December 2019
+### version 0.9.0
+*Released*: 8 January 2020
 * Add selectionKey getter to QueryGridModel
 * Add `showSampleComparisonReports`, `onReportClicked`, and `onCreateReportClicked` props to QueryGridPanel.
 * Add isSampleLookup to QueryColumn

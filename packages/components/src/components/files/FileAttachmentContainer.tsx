@@ -143,7 +143,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             if (!oversizedFiles.isEmpty()) {
                 if (oversizedFiles.size === 1) {
                     const fileName = oversizedFiles.keySeq().first();
-                    errors.push(<>The file '{fileName}'  is larger than the maximum allowed size of {oversizedFiles.get(fileName)}.  {this.props.sizeLimitsHelpText}</>);
+                    errors.push(<>The file '{fileName}' is larger than the maximum allowed size of {oversizedFiles.get(fileName)}.  {this.props.sizeLimitsHelpText}</>);
                 }
                 else {
                     errors.push(
@@ -290,7 +290,7 @@ export class FileAttachmentContainer extends React.Component<FileAttachmentConta
             return labelLong;
         }
         const allMaxSize = sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize;
-        return allMaxSize ? labelLong + "  The maximum file size allowed is " + sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize.displayValue + "." : labelLong;
+        return allMaxSize ? labelLong + " The maximum file size allowed is " + sizeLimits.get(ALL_FILES_LIMIT_KEY).maxSize.displayValue + "." : labelLong;
     }
 
     render() {

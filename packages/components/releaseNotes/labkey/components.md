@@ -5,7 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.??.0
 *Released*: ?? December 2019
 * Add selectionKey getter to QueryGridModel
-* Add `showSampleComparisonReports`, `onChartClicked`, and `onPreviewSCRClicked` props to QueryGridPanel.
+* Add `showSampleComparisonReports`, `onReportClicked`, and `onCreateReportClicked` props to QueryGridPanel.
 * Add isSampleLookup to QueryColumn
 
 ### version 0.8.3

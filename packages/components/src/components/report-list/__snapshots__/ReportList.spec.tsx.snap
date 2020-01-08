@@ -42,22 +42,37 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                                   </ModalTitle>
                                 </div>
                               </ModalHeader>
-                              <UnsupportedReportBody report={{...}}>
-                                <ModalBody componentClass=\\"div\\" bsClass=\\"modal-body\\">
-                                  <div className=\\"modal-body\\">
-                                    <div className=\\"report-list__unsupported-preview\\">
-                                      <div className=\\"alert alert-warning unsupported-alert\\">
-                                        <div className=\\"unsupported-alert__icon\\">
-                                          <span className=\\"fa fa-exclamation-circle\\" />
-                                        </div>
-                                        <p className=\\"unsupported-alert__message\\">
-                                          This report is not currently supported. It is recommended that you view the report in LabKey Server.
-                                        </p>
-                                        <div className=\\"unsupported-alert__view-link\\">
-                                          <a href=\\"/labkey/Biologics/assayreport-view.view?id=37\\" className=\\"btn btn-warning\\">
-                                            View in LabKey
+                              <ModalBody componentClass=\\"div\\" bsClass=\\"modal-body\\">
+                                <div className=\\"modal-body\\">
+                                  <SampleComparisonReportBody report={{...}}>
+                                    <div className=\\"report-list__scr-preview\\">
+                                      <div className=\\"report-item__links\\">
+                                        <p>
+                                          <a href=\\"/labkey/Biologics/assayreport-view.view?id=37\\">
+                                            View in LabKey Server
                                           </a>
-                                        </div>
+                                        </p>
+                                        <p>
+                                          <a href=\\"/labkey/assayreport/edit.view?id=37\\">
+                                            Edit in LabKey Server
+                                          </a>
+                                        </p>
+                                        <p>
+                                          <Link to=\\"/reports/37\\" onlyActiveOnIndex={false} style={{...}}>
+                                            <a style={{...}} onClick={[Function: bound handleClick]}>
+                                              View in Biologics
+                                            </a>
+                                          </Link>
+                                        </p>
+                                      </div>
+                                      <div>
+                                        <LoadingSpinner msg=\\"Loading report definition...\\" wrapperClassName=\\"\\">
+                                          <span className=\\"\\">
+                                            <i aria-hidden=\\"true\\" className=\\"fa fa-spinner fa-pulse\\" />
+                                             
+                                            Loading report definition...
+                                          </span>
+                                        </LoadingSpinner>
                                       </div>
                                       <ReportMetadata report={{...}}>
                                         <div className=\\"report-item__metadata\\">
@@ -88,9 +103,9 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                                         </div>
                                       </ReportMetadata>
                                     </div>
-                                  </div>
-                                </ModalBody>
-                              </UnsupportedReportBody>
+                                  </SampleComparisonReportBody>
+                                </div>
+                              </ModalBody>
                             </div>
                           </div>
                         </div>
@@ -165,8 +180,8 @@ exports[`<ReportList /> Render with data 1`] = `
             className="report-list-item__name media-heading"
           >
             <a
-              href="/labkey/Biologics/assayreport-view.view?id=37"
               onClick={[Function]}
+              style={Object {}}
             >
               Example SCR
             </a>

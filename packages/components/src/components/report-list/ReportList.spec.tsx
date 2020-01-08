@@ -31,6 +31,10 @@ const createdBySelector = '.report-list-item__person';
 const urlMapper = (report) => {
     const { schemaName, queryName, viewName } = report;
 
+    if (report.type === 'Sample Comparison') {
+        return AppURL.create('reports', report.reportId.replace('db:', ''));
+    }
+
     if (!queryName) {
         return null;
     }

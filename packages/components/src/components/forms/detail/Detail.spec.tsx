@@ -30,91 +30,85 @@ import { SchemaQuery } from '../../base/models/model';
 let MODEL_ID;
 
 beforeAll(() => {
-   initUnitTestMocks();
-   const model = getStateQueryGridModel('jest-querygridmodel', SchemaQuery.create('samples', 'Samples'), {
-      allowSelection: false,
-      loader: {
-         fetch: () => {
-            const data = fromJS(sampleDetailsQuery.rows[0]);
+    initUnitTestMocks();
+    const schemaQuery = SchemaQuery.create('samples', 'samples');
+    const model = getStateQueryGridModel('jest-querygridmodel', schemaQuery, {
+        allowSelection: false,
+        loader: {
+            fetch: () => {
+                const data = fromJS(sampleDetailsQuery.rows[0]);
 
-            return new Promise((resolve) => {
-               resolve({
-                  data: data,
-                  dataIds: data.keySeq().toList(),
-               });
-            });
-         }
-      }
-   });
-   gridInit(model);
-
-   MODEL_ID = model.getId();
+                return new Promise((resolve) => {
+                    resolve({
+                        data: data,
+                        dataIds: data.keySeq().toList(),
+                    });
+                });
+            }
+        }
+    });
+    gridInit(model);
+    MODEL_ID = model.getId();
 });
 
 describe("<Detail/>", () => {
+    test("loading", () => {
+        const component = <Detail/>;
+        const tree = renderer.create(component).toJSON();
 
-   test("loading", () => {
-      const component = (
-          <Detail/>
-      );
+        expect(tree).toMatchSnapshot();
+    });
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+    test("with QueryGridModel", (done) => {
+        setTimeout(() => {
+            const model = getQueryGridModel(MODEL_ID);
+            const component = <Detail queryModel={model}/>;
+            const tree = renderer.create(component);
+            expect(tree).toMatchSnapshot();
 
-   test("with QueryGridModel", () => {
-      const model = getQueryGridModel(MODEL_ID);
-      const component = (
-          <Detail queryModel={model}/>
-      );
+            const wrapper = mount(component);
+            // expect one table row for each display column
+            expect(wrapper.find('tr')).toHaveLength(model.getDetailsDisplayColumns().size);
+            // expect one field value to render as links (Lookupfield)
+            expect(wrapper.find('a')).toHaveLength(1);
+            // expect the row labels to be the column captions by default
+            expect(wrapper.find('table').text().indexOf('Lookup Field Caption')).toBeGreaterThan(-1);
+            wrapper.unmount();
+            done();
+        }, 0);
+    });
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
+    test("asPanel", (done) => {
+        setTimeout(() => {
+            const model = getQueryGridModel(MODEL_ID);
+            const component = <Detail asPanel={true} queryModel={model}/>;
+            const tree = renderer.create(component);
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        }, 0);
+    });
 
-      const wrapper = mount(component);
-      // expect one table row for each display column
-      expect(wrapper.find('tr')).toHaveLength(model.getDetailsDisplayColumns().size);
-      // expect one field value to render as links (Lookupfield)
-      expect(wrapper.find('a')).toHaveLength(1);
-      // expect the row labels to be the column captions by default
-      expect(wrapper.find('table').text().indexOf('Lookup Field Caption')).toBeGreaterThan(-1);
-      wrapper.unmount();
-   });
+    test("titleRenderer", () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const component = <Detail queryModel={model} titleRenderer={(val) => val.fieldKey}/>;
+        const wrapper = mount(component);
 
-   test("asPanel", () => {
-      const model = getQueryGridModel(MODEL_ID);
-      const component = (
-          <Detail asPanel={true} queryModel={model}/>
-      );
+        // expect custom titleRenderer to use the column's fieldKey instead of caption
+        expect(wrapper.find('table').text().indexOf('lookupfield')).toBeGreaterThan(-1);
+        wrapper.unmount();
+    });
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
+    test("detailRenderer", () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const component = (
+            <Detail queryModel={model} detailRenderer={() => {
+                return () => {return <h1>TESTING</h1>};
+            }}/>
+        );
 
-   test("titleRenderer", () => {
-      const model = getQueryGridModel(MODEL_ID);
-      const component = (
-          <Detail queryModel={model} titleRenderer={(val) => val.fieldKey}/>
-      );
-
-      const wrapper = mount(component);
-      // expect custom titleRenderer to use the column's fieldKey instead of caption
-      expect(wrapper.find('table').text().indexOf('lookupfield')).toBeGreaterThan(-1);
-      wrapper.unmount();
-   });
-
-   test("detailRenderer", () => {
-      const model = getQueryGridModel(MODEL_ID);
-      const component = (
-          <Detail queryModel={model} detailRenderer={() => {
-             return () => {return <h1>TESTING</h1>};
-          }}/>
-      );
-
-      const wrapper = mount(component);
-      expect(wrapper.find('a')).toHaveLength(0);
-      expect(wrapper.find('h1')).toHaveLength(model.getDetailsDisplayColumns().size);
-      wrapper.unmount();
-   });
-
+        const wrapper = mount(component);
+        expect(wrapper.find('a')).toHaveLength(0);
+        expect(wrapper.find('h1')).toHaveLength(model.getDetailsDisplayColumns().size);
+        wrapper.unmount();
+    });
 });

@@ -168,12 +168,10 @@ export function deleteAssayRuns(selectionKey?: string, rowId?: string, cascadeDe
 export function getImportItemsForAssayDefinitions(assayDefModels: List<AssayDefinitionModel>, sampleModel: QueryGridModel): OrderedMap<AssayDefinitionModel, string> {
     let items = OrderedMap<AssayDefinitionModel, string>();
     let targetSQ = undefined;
+    const selectionKey = sampleModel.selectionKey;
 
-    let selectionKey = undefined;
     if (sampleModel && sampleModel.queryInfo) {
-        const singleSelect = sampleModel.keyValue !== undefined;
         targetSQ = sampleModel.queryInfo.schemaQuery;
-        selectionKey = singleSelect ? SchemaQuery.createAppSelectionKey(targetSQ, [sampleModel.keyValue]) : sampleModel.getId()
     }
 
     assayDefModels

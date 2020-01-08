@@ -228,9 +228,28 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
 
                     if (col.inputType === 'textarea') {
-                        return <TextAreaInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
+                        return (
+                            <TextAreaInput
+                                key={i}
+                                queryColumn={col}
+                                value={value}
+                                allowDisable={allowFieldDisable}
+                                initiallyDisabled={shouldDisableField}
+                                addLabelAsterisk={showAsteriskSymbol}
+                            />
+                        );
                     } else if (col.inputType === 'file' && renderFileInputs) {
-                        return <FileInput key={i} queryColumn={col} value={value} onChange={onChange} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;
+                        return (
+                            <FileInput
+                                key={i}
+                                queryColumn={col}
+                                value={value}
+                                onChange={onChange}
+                                allowDisable={allowFieldDisable}
+                                initiallyDisabled={shouldDisableField}
+                                addLabelAsterisk={showAsteriskSymbol}
+                            />
+                        );
                     }
 
                     switch (col.jsonType) {

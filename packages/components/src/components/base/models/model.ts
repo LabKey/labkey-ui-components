@@ -174,14 +174,17 @@ export class SchemaQuery extends Record({
         super(values);
     }
 
+    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getSchema() {
         return this.schemaName;
     }
 
+    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getQuery() {
         return this.queryName;
     }
 
+    // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getView() {
         return this.viewName;
     }
@@ -381,10 +384,29 @@ export class QueryColumn extends Record({
         return this.lookup !== undefined;
     }
 
+    isSampleLookup(): boolean {
+        /**
+         * 35881: Ensure that a column is a valid lookup to one of the following
+         * - exp.Materials
+         * - samples.* (any sample set)
+         */
+
+        if (!this.isLookup()) {
+            return false;
+        }
+
+        const lookupSQ = SchemaQuery.create(this.lookup.schemaName, this.lookup.queryName);
+
+        return MATERIALS_SQ.isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
+    }
+
     isMaterialInput(): boolean {
         return this.name && this.name.toLowerCase().indexOf(QueryColumn.MATERIAL_INPUTS.toLowerCase()) !== -1;
     }
 }
+
+// MATERIALS_SQ defined here to prevent compiler error "Class 'SchemaQuery' used before its declaration"
+const MATERIALS_SQ = SchemaQuery.create('exp', 'Materials');
 
 export class QueryLookup extends Record({
     // server defaults
@@ -588,6 +610,7 @@ export class QueryGridModel extends Record({
     }
 
     canImport() {
+        // TODO: Remove this. It Looks to be unused in this repo and consuming applications.
         return this.showImportDataButton().get('canImport');
     }
 
@@ -889,6 +912,8 @@ export class QueryGridModel extends Record({
     }
 
     showImportDataButton(): Map<any, any> {
+        // TODO: Make this just return the canInsert boolean. The only usages of this in Biologics/SampleManager only
+        //  use the boolean and not the url.
         const query = this.queryInfo;
 
         if (query) {
@@ -905,6 +930,8 @@ export class QueryGridModel extends Record({
     }
 
     showInsertNewButton(): Map<any, any> {
+        // TODO: Make this just return the canInsert boolean. The only usages of this in Biologics/SampleManager only
+        //  use the boolean and not the url.
         const query = this.queryInfo;
 
         if (query) {
@@ -934,6 +961,8 @@ export class QueryGridModel extends Record({
     }
 
     getRowIdsList(useSelectedIds: boolean): List<Map<string, any>> {
+        // TODO: remove this method. It looks to only be used by SampleManager in a method called deleteSamples, but
+        //  that method looks to be unused.
         let rows = List<Map<string, any>>();
         if (!useSelectedIds) {
             this.getData().forEach( (data) => {
@@ -947,6 +976,18 @@ export class QueryGridModel extends Record({
         }
 
         return rows;
+    }
+
+    get selectionKey() {
+        if (!this.queryInfo) {
+            return undefined;
+        }
+
+        if (this.keyValue !== undefined) {
+            return SchemaQuery.createAppSelectionKey(this.queryInfo.schemaQuery, [this.keyValue]);
+        }
+
+        return this.getId();
     }
 }
 
@@ -1623,7 +1664,7 @@ export class AssayDefinitionModel extends Record({
         const columns = this.getDomainByType(domainType);
 
         if (columns) {
-            return columns.find(c => isSampleLookup(c));
+            return columns.find(c => c.isSampleLookup());
         }
 
         return null;
@@ -1706,22 +1747,6 @@ export class AssayDefinitionModel extends Record({
 
         return columns;
     }
-}
-
-export function isSampleLookup(column: QueryColumn) {
-    /**
-     * 35881: Ensure that a column is a valid lookup to one of the following
-     * - exp.Materials
-     * - samples.* (any sample set)
-     */
-
-    if (!column.isLookup()) {
-        return false;
-    }
-
-    const lookupSQ = SchemaQuery.create(column.lookup.schemaName, column.lookup.queryName);
-
-    return SchemaQuery.create('exp', 'Materials').isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
 }
 
 export class InferDomainResponse extends Record({

@@ -474,7 +474,7 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
         }, connectedComponent);
 
         if (newModel.allowSelection) {
-            fetchSelectedIfNeeded(newModel);
+            fetchSelectedIfNeeded(newModel, connectedComponent);
         }
     }, payload => {
         if (payload.model) {
@@ -708,7 +708,7 @@ function getSelectedState(dataIds: List<string>, selected: List<string>, maxRows
     return GRID_CHECKBOX_OPTIONS.NONE;
 }
 
-function fetchSelectedIfNeeded(model: QueryGridModel) {
+function fetchSelectedIfNeeded(model: QueryGridModel, connectedComponent: React.Component) {
     const { allowSelection, isLoaded, loader, selectedLoaded } = model;
 
     if (allowSelection && isLoaded && !selectedLoaded && loader.fetchSelection) {
@@ -723,18 +723,18 @@ function fetchSelectedIfNeeded(model: QueryGridModel) {
                     selectedLoaded: true,
                     selectedQuantity: selectedIds.size,
                     selectedIds,
-                    selectedState
-                });
+                    selectedState,
+                }, connectedComponent);
             }
             else {
                 updateQueryGridModel(model, {
                     selectedLoaded: true,
                     selectedQuantity: 0,
                     selectedIds
-                });
+                }, connectedComponent);
             }
         }, payload => {
-            gridShowError(payload.model, payload.error);
+            gridShowError(payload.model, payload.error, connectedComponent);
         });
     }
 }

@@ -50,7 +50,6 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
  */
 export function resetQueryGridState() {
     setGlobal({
-        QueryGrid_charts: Map<string, List<DataViewInfo>>(),
         QueryGrid_editors: Map<string, EditorModel>(),
         QueryGrid_lineageResults: Map<string, Lineage>(),
         QueryGrid_lookups: Map<string, LookupStore>(),
@@ -167,25 +166,6 @@ export function getQueryColumnRenderers() {
 export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
     setGlobal({
         QueryGrid_columnrenderers: columnrenderers
-    });
-}
-
-/**
- * Get the list of DataViewInfos from the global state for a given schemaQuery key
- * @param schemaQueryKey Key for the charts map based on a schemaQuery
- */
-export function getCharts(schemaQueryKey: string) : List<DataViewInfo> {
-    return getGlobalState('charts').get(schemaQueryKey);
-}
-
-/**
- * Sets the global state list of chart DataViewInfos for a given schemaQuery key
- * @param schemaQueryKey Key for the charts map based on a schemaQuery
- * @param dataViewInfos List of DataViewInfo objects defining the charts for the given key
- */
-export function updateCharts(schemaQueryKey: string, dataViewInfos: List<DataViewInfo>) {
-    setGlobal({
-        QueryGrid_charts: getGlobalState('charts').set(schemaQueryKey, dataViewInfos)
     });
 }
 

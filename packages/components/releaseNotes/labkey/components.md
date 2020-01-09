@@ -14,6 +14,12 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Update to @labkey/api release version 0.0.29
     - Issue 39359: fix to prevent API call to study-reports-getReportInfos if we know study module isn't available
 
+### version 0.9.0
+*Released*: 8 January 2020
+* Add selectionKey getter to QueryGridModel
+* Add `showSampleComparisonReports`, `onReportClicked`, and `onCreateReportClicked` props to QueryGridPanel.
+* Add isSampleLookup to QueryColumn
+
 ### version 0.8.3
 *Released*: 3 January 2020
 * Fixed bug that occurred with multiple FileAttachmentForms on one page

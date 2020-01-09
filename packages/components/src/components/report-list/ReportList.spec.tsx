@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer';
 import { createMemoryHistory, Route, Router } from 'react-router';
 import { mount } from 'enzyme';
 import { ReportItemModal, ReportList, ReportListItem } from './ReportList';
-import { flattenBrowseDataTreeResponse } from './model';
+import { flattenBrowseDataTreeResponse } from '../../';
 import exampleData from '../../test/data/example_browse_data_tree_api.json';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
@@ -30,6 +30,10 @@ const messageSelector = '.report-list__message';
 const createdBySelector = '.report-list-item__person';
 const urlMapper = (report) => {
     const { schemaName, queryName, viewName } = report;
+
+    if (report.type === 'Sample Comparison') {
+        return AppURL.create('reports', report.reportId.replace('db:', ''));
+    }
 
     if (!queryName) {
         return null;
@@ -88,7 +92,7 @@ describe('<ReportList />', () => {
 
 describe('<ReportListItem />', () => {
     test('ReportListItem renders', () => {
-        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
+        const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[1];
         const onClick = jest.fn();
         const component = (
             <Router history={history}>
@@ -108,7 +112,8 @@ describe('<ReportListItem />', () => {
 
     test('ReportListItem does not render non-existent createdBy', () => {
         const reports = flattenBrowseDataTreeResponse(exampleData, urlMapper);
-        const report = reports.filter(r => !r.hasOwnProperty('createdBy'))[0];
+        const report = reports[1];
+        report.createdBy = undefined;
         const component = <ReportListItem report={report} onClick={noop}/>;
         const wrapper = mount(component);
         expect(wrapper.find(createdBySelector)).toHaveLength(0);

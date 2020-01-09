@@ -20,7 +20,7 @@ import data from '../test/data/example_browse_data_tree_api.json';
 import './stories.scss';
 import { ReportItemModal, ReportList } from '../components/report-list/ReportList';
 import { AppURL } from '../url/AppURL';
-import { flattenBrowseDataTreeResponse } from '../components/report-list/model';
+import { flattenBrowseDataTreeResponse } from '../query/reports';
 
 
 const history = createMemoryHistory();
@@ -40,8 +40,6 @@ const exampleReports = flattenBrowseDataTreeResponse(data, (report) => {
 
     return AppURL.create(...parts);
 });
-
-// initQueryGridState(fromJS({}));
 
 class ReportListContainer extends React.PureComponent<any, any> {
     constructor(props) {

@@ -51,6 +51,9 @@ export function resolveKeyFromJson(json: {schemaName: Array<string>, queryName: 
     return resolveKey(json.schemaName.join('.'), json.queryName);
 }
 
+// TODO: resolveSchemaQuery should have a better name, and it should be added as a property on the SchemaQuery record
+//  class. I'm really not sure what resolve is supposed to mean in this context, but I think we can add this as a
+//  property called "key", or something similar since it mostly seems to be used as a state key.
 export function resolveSchemaQuery(schemaQuery: SchemaQuery): string {
     return schemaQuery ? resolveKey(schemaQuery.getSchema(), schemaQuery.getQuery()) : null;
 }

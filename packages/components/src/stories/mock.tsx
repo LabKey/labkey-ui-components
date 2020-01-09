@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import mock, { proxy } from 'xhr-mock';
+import mock, { proxy, delay } from 'xhr-mock';
 import { fromJS } from 'immutable';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.json';
@@ -74,16 +74,21 @@ import getPrincipalsJson from "../test/data/security-getPrincipals.json";
 import getQueryDetailsPrincipalsJson from "../test/data/security-getQueryDetailsPrincipals.json";
 import inferDomainJson from '../test/data/property-inferDomain.json';
 import getValidPublishTargetsJson from '../test/data/assay-getValidPublishTargets.json';
+import browseData from '../test/data/example_browse_data_tree_api.json';
+import assayAminoAcidsDataQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
+import assayAminoAcidsDataQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     'assay.general.amino acids': {
         'runs': assayRunsWithQCFlagsQueryInfo,
+        'data': assayAminoAcidsDataQueryInfo,
     },
     'assay.general.gpat 1': {
         'data': assayGpatDataQueryInfo,
         'runs': assayGpatRunsQueryInfo,
+        'emptyruns': assayGpatRunsQueryInfo,
     },
     'assay.general.imagefieldassay': {
         'runs': assayImageFieldRunsQueryInfo,
@@ -124,9 +129,15 @@ const QUERY_DETAILS_RESPONSES = fromJS({
 const QUERY_RESPONSES = fromJS({
     'assay.general.amino acids': {
         'runs': assayRunsWithQCFlagsQuery,
+        'data': assayAminoAcidsDataQuery,
     },
     'assay.general.gpat 1': {
         'runs': assayGpatRunData,
+        'emptyruns': {
+            ...assayGpatRunData,
+            rows: [],
+            rowCount: 0,
+        },
     },
     'assay.general.imagefieldassay': {
         'runs': assayImageFieldRunsQuery,
@@ -237,37 +248,6 @@ export function initMocks() {
         body: JSON.stringify(samplesInsert)
     });
 
-    //TODO response JSON?
-    mock.post(/.*\/query\/?.*\/setSelected.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({})
-    });
-
-    mock.get(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
-        const queryParams = req.url().query;
-        const key = queryParams.key;
-        let responseBody;
-
-        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
-            responseBody = nameExpressionSelected;
-        } else {
-            responseBody = mixturesSelected;
-        }
-
-        return res
-            .status(200)
-            .headers({'Content-Type': 'application/json'})
-            .body(JSON.stringify(responseBody));
-    });
-
-    //TODO conditionalize based on queryName
-    mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
-        status: 200,
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(mixturesReportInfos)
-    });
-
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
@@ -348,6 +328,13 @@ export function initMocks() {
         body: JSON.stringify(getValidPublishTargetsJson)
     });
 
+
+    mock.get(/.*browseData.*/, delay({
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(browseData),
+    }, 1000));
+
     mock.use(proxy);
 }
 
@@ -387,6 +374,37 @@ export function initQueryGridMocks() {
             .status(200)
             .headers({'Content-Type': 'application/json'})
             .body(JSON.stringify(responseBody));
+    });
+
+    mock.get(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
+        const queryParams = req.url().query;
+        const key = queryParams.key;
+        let responseBody;
+
+        if (key && key.toLowerCase() === "sample-set-name%20expression%20set|samples/name%20expression%20set") {
+            responseBody = nameExpressionSelected;
+        } else {
+            responseBody = mixturesSelected;
+        }
+
+        return res
+            .status(200)
+            .headers({'Content-Type': 'application/json'})
+            .body(JSON.stringify(responseBody));
+    });
+
+    //TODO response JSON?
+    mock.post(/.*\/query\/?.*\/setSelected.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({})
+    });
+
+    //TODO conditionalize based on queryName
+    mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, {
+        status: 200,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(mixturesReportInfos)
     });
 }
 

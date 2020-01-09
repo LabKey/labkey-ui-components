@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.10.0
+*Released*: 9 January 2020
 * Item 6506: User management components and related model / action updates
     - QueryGridModel support for containerPath (in getQueryDetails, selection state, getQuery, getReportInfos)
     - QueryGridModel support for containerFilter in getQuery call

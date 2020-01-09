@@ -116,7 +116,7 @@ export class ChartSelector extends React.Component<Props, State> {
 
         // reset charts to null so we trigger loading status.
         this.setState({publicCharts: null, privateCharts: null});
-        fetchCharts(sq).then(data => {
+        fetchCharts(sq, model.containerPath).then(data => {
             let publicCharts = List<DataViewInfo>();
             let privateCharts = List<DataViewInfo>();
 

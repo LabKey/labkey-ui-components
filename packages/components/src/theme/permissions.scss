@@ -49,16 +49,6 @@
     animation: shadow-pulse 1s 1;
 }
 
-.permissions-title {
-    font-size: 130%;
-    overflow-wrap: break-word;
-}
-.permissions-title-primary {
-    font-size: 130%;
-    overflow-wrap: break-word;
-    color: $brand-primary;
-}
-
 .permissions-ul {
     padding-left: 15px;
 }
@@ -84,4 +74,29 @@
     .btn {
         padding: 0 12px;
     }
+}
+
+.principal-title {
+    font-size: 130%;
+    overflow-wrap: break-word;
+}
+.principal-title-primary {
+    font-size: 130%;
+    overflow-wrap: break-word;
+    color: $brand-primary;
+}
+
+.principal-detail-label {
+    color: $gray;
+    padding-bottom: 15px;
+}
+
+.principal-detail-value {
+    overflow-wrap: break-word;
+    padding-bottom: 15px;
+}
+
+.principal-hr {
+    margin-top: 5px;
+    margin-bottom: 20px;
 }

@@ -52,6 +52,8 @@ interface IStateModelProps {
     omittedColumns?: List<string>
     showChartSelector?: boolean
     showViewSelector?: boolean
+    containerPath?: string
+    containerFilter?: string
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -97,6 +99,8 @@ export function getStateQueryGridModel(
         allowSelection: true,
         baseFilters: List<Filter.IFilter>(),
         bindURL: true,
+        containerPath: undefined,
+        containerFilter: undefined,
         editable: false,
         id: modelId,
         isPaged: false, // Figure out how to set this to the same default value as the model
@@ -133,6 +137,14 @@ export function getStateQueryGridModel(
         if (props) {
             if (props.bindURL !== undefined) {
                 modelProps.bindURL = props.bindURL === true;
+            }
+
+            if (props.containerPath !== undefined) {
+                modelProps.containerPath = props.containerPath;
+            }
+
+            if (props.containerFilter !== undefined) {
+                modelProps.containerFilter = props.containerFilter;
             }
 
             if (props.isPaged !== undefined) {

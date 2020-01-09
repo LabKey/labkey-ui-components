@@ -127,6 +127,7 @@ import {
     initQueryGridState,
     invalidateLineageResults,
     removeQueryGridModel,
+    invalidateUsers
 } from './global';
 import {
     deleteRows,
@@ -244,6 +245,7 @@ import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
+import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 
 import {
     createFormInputId,
@@ -277,6 +279,7 @@ import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
+import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 
 
 export {
@@ -366,10 +369,12 @@ export {
 
     // user-related
     getUsersWithPermissions,
+    invalidateUsers,
     IUser,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
+    SiteUsersGridPanel,
 
     // samples-related
     SampleInsertPanel,
@@ -607,6 +612,7 @@ export {
     toggleDevTools,
 
     // Permissions
+    fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,
     PermissionsProviderProps,

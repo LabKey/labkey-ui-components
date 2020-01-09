@@ -185,6 +185,12 @@ export class SecurityPolicy extends Record({
         }) as SecurityPolicy;
     }
 
+    static addUserIdAssignment(policy: SecurityPolicy, userId: number, roleUniqueName: string): SecurityPolicy {
+        const principal = new Principal({userId, type: 'u'});
+        const role = new SecurityRole({uniqueName: roleUniqueName});
+        return this.addAssignment(policy, principal, role);
+    }
+
     static addAssignment(policy: SecurityPolicy, principal: Principal, role: SecurityRole): SecurityPolicy {
         const assignments = policy.assignments.push(new SecurityAssignment(
             Object.assign({role: role.uniqueName, isNew: true}, principal.toJS())

@@ -2,19 +2,20 @@
  * Copyright (c) 2018-2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
+import React from 'react';
 import { Button, Col, Panel, Row } from "react-bootstrap";
 import { List } from 'immutable'
 import { Security } from '@labkey/api'
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from "./models";
 import { PermissionsRole } from "./PermissionsRole";
-import { PrincipalDetailsPanel } from "./PrincipalDetailsPanel";
+import { GroupDetailsPanel } from "./GroupDetailsPanel";
 import { LoadingSpinner } from "../../components/base/LoadingSpinner";
 import { Alert } from "../../components/base/Alert";
+import { UserDetailsPanel } from "../user/UserDetailsPanel";
 
 interface Props extends PermissionsProviderProps {
     title?: string
-    containerPath: string
+    containerId: string
     policy: SecurityPolicy
     onChange: (policy: SecurityPolicy) => any
     onSuccess: () => any
@@ -25,7 +26,7 @@ interface Props extends PermissionsProviderProps {
 }
 
 interface State {
-    selectedPrincipal: Principal
+    selectedUserId: number
     dirty: boolean
     submitting: boolean
     saveErrorMsg: string
@@ -42,7 +43,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            selectedPrincipal: undefined,
+            selectedUserId: undefined,
             dirty: false,
             submitting: false,
             saveErrorMsg: undefined
@@ -52,31 +53,31 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     addAssignment = (principal: Principal, role: SecurityRole) => {
         const { policy, onChange } = this.props;
         onChange(SecurityPolicy.addAssignment(policy, principal, role));
-        this.setState(() => ({selectedPrincipal: principal, dirty: true}));
+        this.setState(() => ({selectedUserId: principal.userId, dirty: true}));
     };
 
     removeAssignment = (userId: number, role: SecurityRole) => {
         const { policy, onChange } = this.props;
         onChange(SecurityPolicy.removeAssignment(policy, userId, role));
-        this.setState(() => ({selectedPrincipal: undefined, dirty: true}))
+        this.setState(() => ({selectedUserId: undefined, dirty: true}))
     };
 
     showDetails = (selectedUserId: number) => {
-        this.setState(() => ({selectedPrincipal: this.props.principalsById.get(selectedUserId)}));
+        this.setState(() => ({selectedUserId: selectedUserId}));
     };
 
     onSavePolicy = () => {
-        const { containerPath, policy} = this.props;
+        const { containerId, policy} = this.props;
 
         this.setState(() => ({submitting: true}));
 
         Security.savePolicy({
-            containerPath: containerPath,
+            containerPath: containerId,
             policy: {policy},
             success: (response) => {
                 if (response.success) {
                     this.props.onSuccess();
-                    this.setState(() => ({selectedPrincipal: undefined, submitting: false, dirty: false}));
+                    this.setState(() => ({selectedUserId: undefined, submitting: false, dirty: false}));
                 }
                 else {
                     // TODO when this is used in LKS, need to support response.needsConfirmation
@@ -106,8 +107,9 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel, disabledId } = this.props;
-        const { selectedPrincipal, saveErrorMsg, submitting, dirty } = this.state;
+        const { title, policy, rolesToShow, typeToShow, roles, rolesByUniqueName, principals, error, showDetailsPanel, disabledId, principalsById } = this.props;
+        const { selectedUserId, saveErrorMsg, dirty } = this.state;
+        const selectedPrincipal = principalsById ? principalsById.get(selectedUserId) : undefined;
         const isLoading = (!policy || !roles || !principals) && !error;
 
         if (isLoading) {
@@ -146,7 +148,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                                         onClickAssignment={this.showDetails}
                                         onRemoveAssignment={this.removeAssignment}
                                         onAddAssignment={this.addAssignment}
-                                        selected={selectedPrincipal}
+                                        selectedUserId={selectedUserId}
                                         disabledId={disabledId}
                                     />
                                 )
@@ -158,11 +160,18 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                     </Panel>
                 </Col>
                 {showDetailsPanel && <Col xs={12} md={4}>
-                    <PrincipalDetailsPanel
-                        principal={selectedPrincipal}
-                        policy={policy}
-                        rolesByUniqueName={rolesByUniqueName}
-                    />
+                    {selectedPrincipal && selectedPrincipal.type === 'g'
+                        ? <GroupDetailsPanel
+                            principal={selectedPrincipal}
+                            policy={policy}
+                            rolesByUniqueName={rolesByUniqueName}
+                        />
+                        : <UserDetailsPanel
+                            userId={selectedUserId}
+                            policy={policy}
+                            rolesByUniqueName={rolesByUniqueName}
+                        />
+                    }
                 </Col>}
             </Row>
         )

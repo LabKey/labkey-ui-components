@@ -1,6 +1,18 @@
 # @labkey/components
-
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 0.10.0
+*Released*: 9 January 2020
+* Item 6506: User management components and related model / action updates
+    - QueryGridModel support for containerPath (in getQueryDetails, selection state, getQuery, getReportInfos)
+    - QueryGridModel support for containerFilter in getQuery call
+    - QueryGridPanel support for onSelectionChange callback function prop
+    - SecurityPolicy.addUserIdAssignment helper function
+    - SiteUsersGridPanel with row selection to show UserDetailsPanel and manage buttons to allow selected user deactivate/reactive/delete
+    - CreateUsersModal for creating new site users from SiteUsersGridPanel button
+    - Add invalidateUsers to index.ts for use in Sample Manager app
+    - Update to @labkey/api release version 0.0.29
+    - Issue 39359: fix to prevent API call to study-reports-getReportInfos if we know study module isn't available
 
 ### version 0.9.0
 *Released*: 8 January 2020
@@ -26,7 +38,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 0.7.0
 *Released*: 27 December 2019
-
 * Factor out FileAttachmentEntry from FileAttachmentContainer
 * Rename FileListing to FileListingForm and factor out the file listing component from that into a separate FileListing component
 * Allow FileListingForm to optionally include a read-only set of files (available for download only)

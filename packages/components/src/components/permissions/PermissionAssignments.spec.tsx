@@ -33,7 +33,7 @@ describe("<PermissionAssignments/>", () => {
     test("default props", () => {
         const component = (
             <PermissionAssignments
-                containerPath={'/'}
+                containerId={'BOGUS'}
                 policy={POLICY}
                 roles={ROLES}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -52,7 +52,7 @@ describe("<PermissionAssignments/>", () => {
     test("custom props", () => {
         const component = (
             <PermissionAssignments
-                containerPath={'/'}
+                containerId={'BOGUS'}
                 policy={POLICY}
                 roles={ROLES}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -76,7 +76,7 @@ describe("<PermissionAssignments/>", () => {
     test("with state", () => {
         const wrapper = mount(
             <PermissionAssignments
-                containerPath={'/'}
+                containerId={'BOGUS'}
                 policy={POLICY}
                 roles={ROLES}
                 rolesByUniqueName={ROLES_BY_NAME}
@@ -94,7 +94,7 @@ describe("<PermissionAssignments/>", () => {
         expect(wrapper.find('.panel-body').filterWhere((panel) => panel.text() === 'No user selected.')).toHaveLength(1);
 
         wrapper.setState({
-            selectedPrincipal: USER,
+            selectedUserId: USER.userId,
             dirty: true,
             submitting: true,
             saveErrorMsg: 'Save error message'

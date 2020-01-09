@@ -188,4 +188,21 @@ describe('SecurityPolicy model', () => {
         expect(byRole.get(SECURITY_ROLE_AUTHOR).size).toBe(2);
     });
 
+    test("addUserIdAssignment", () => {
+        const originalAssignmentSize = POLICY.assignments.size;
+
+        // test for a valid addition of a user to role that has existing assignments
+        let updatedPolicy = SecurityPolicy.addUserIdAssignment(POLICY, USER1.userId, SECURITY_ROLE_EDITOR);
+        expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize + 1);
+        let byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);
+        expect(byRole.get(SECURITY_ROLE_EDITOR).size).toBe(4);
+
+        // test for a valid addition of a user to role that has no existing assignments
+        expect(byRole.get(SECURITY_ROLE_AUTHOR)).toBe(undefined);
+        updatedPolicy = SecurityPolicy.addUserIdAssignment(updatedPolicy, USER1.userId, SECURITY_ROLE_AUTHOR);
+        expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize + 2);
+        byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);
+        expect(byRole.get(SECURITY_ROLE_AUTHOR).size).toBe(1);
+    });
+
 });

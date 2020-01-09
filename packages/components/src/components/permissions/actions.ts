@@ -3,8 +3,9 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { List, Map, fromJS } from 'immutable'
-import { Principal, SecurityRole } from "./models";
-import { ISelectRowsResult, selectRows } from "../..";
+import { Principal, SecurityPolicy, SecurityRole } from "./models";
+import { ISelectRowsResult, selectRows } from "../../query/api";
+import { Security } from "@labkey/api";
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -52,4 +53,18 @@ export function getPrincipalsById(principals: List<Principal>): Map<number, Prin
         principalsById = principalsById.set(principal.userId, principal);
     });
     return principalsById;
+}
+
+export function fetchContainerSecurityPolicy(containerId: string, principalsById: Map<number, Principal>): Promise<SecurityPolicy> {
+    return new Promise((resolve, reject) => {
+        Security.getPolicy({
+            containerPath: containerId,
+            resourceId: containerId,
+            success: (data, relevantRoles) => {
+                const policy = SecurityPolicy.create({policy: data, relevantRoles});
+                resolve(SecurityPolicy.updateAssignmentsData(policy, principalsById));
+            },
+            failure: (response) => reject(response)
+        });
+    });
 }

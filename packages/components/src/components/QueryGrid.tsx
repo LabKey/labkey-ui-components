@@ -32,6 +32,7 @@ import { getRouteFromLocationHash } from "../util/URL";
 interface QueryGridProps {
     model?: QueryGridModel
     schemaQuery?: SchemaQuery
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
 }
 
 interface QueryGridState {
@@ -176,7 +177,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
 
         if (model) {
             const selected = evt.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
-            toggleGridSelected(model, selected);
+            toggleGridSelected(model, selected, this.props.onSelectionChange);
         }
     }
 
@@ -184,7 +185,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         const model = this.getModel(this.props);
 
         if (model) {
-            toggleGridRowSelection(model, row, evt.currentTarget.checked === true);
+            toggleGridRowSelection(model, row, evt.currentTarget.checked === true, this.props.onSelectionChange);
         }
     }
 

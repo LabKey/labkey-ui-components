@@ -33,7 +33,7 @@ interface IDomainRowExpandedOptionsProps {
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     onMultiChange: (changes: List<IFieldChange>) => void
     showingModal: (boolean) => any
-    appPropertiesOnly: boolean
+    appPropertiesOnly?: boolean
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {

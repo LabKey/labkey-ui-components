@@ -93,9 +93,9 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     <Col xs={12} lg={10}>
                         <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
                     </Col>
-                    {!appPropertiesOnly && !isFieldFullyLocked(field.lockType) &&
+                    { !isFieldFullyLocked(field.lockType) &&
                         <Col xs={12}>
-                            <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal}/>
+                            <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal} hideConditionalFormatting={appPropertiesOnly} />
                         </Col>
                     }
                 </div>

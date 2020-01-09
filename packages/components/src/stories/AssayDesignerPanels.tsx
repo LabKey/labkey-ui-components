@@ -52,11 +52,12 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
 
     render() {
         const isValidMsg = text('AppDesignValidMsg', undefined);
+        const appPropertiesOnly = boolean("appPropertiesOnly", this.props.appPropertiesOnly);
 
         return (
             <AssayDesignerPanels
                 initModel={this.state.model}
-                appPropertiesOnly={boolean('appPropertiesOnly', false)}
+                appPropertiesOnly={appPropertiesOnly}
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
                 useTheme={false}
                 onChange={(model: AssayProtocolModel) => {

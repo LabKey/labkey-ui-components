@@ -24,7 +24,7 @@ describe("<UserActivateChangeConfirmModal/>", () => {
     test("reactivate single user selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1'])})}
+                userIds={List<number>([1])}
                 reactivate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -46,7 +46,7 @@ describe("<UserActivateChangeConfirmModal/>", () => {
     test("reactivate multiple users selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1', 'test2', 'test3'])})}
+                userIds={List<number>([1, 2, 3])}
                 reactivate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -68,7 +68,7 @@ describe("<UserActivateChangeConfirmModal/>", () => {
     test("reactivate with state", () => {
         const component = (
             <UserActivateChangeConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1', 'test2', 'test3'])})}
+                userIds={List<number>([1, 2, 3])}
                 reactivate={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -92,7 +92,7 @@ describe("<UserActivateChangeConfirmModal/>", () => {
     test("deactivate single user selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1'])})}
+                userIds={List<number>([1])}
                 reactivate={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -114,7 +114,7 @@ describe("<UserActivateChangeConfirmModal/>", () => {
     test("deactivate multiple users selected", () => {
         const component = (
             <UserActivateChangeConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1', 'test2', 'test3'])})}
+                userIds={List<number>([1, 2, 3])}
                 reactivate={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
@@ -136,7 +136,7 @@ describe("<UserActivateChangeConfirmModal/>", () => {
     test("deactivate with state", () => {
         const component = (
             <UserActivateChangeConfirmModal
-                model={new QueryGridModel({selectedIds: List<string>(['test1', 'test2', 'test3'])})}
+                userIds={List<number>([1, 2, 3])}
                 reactivate={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}

@@ -141,3 +141,22 @@ function updateUsersState(userIds: List<number>, isDelete: boolean, isActivate: 
         });
     });
 }
+
+export function resetPassword(email: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('security', 'adminResetPassword.api'),
+            method: 'POST',
+            params: {email},
+            success: Utils.getCallbackWrapper((response) => {
+                resolve({
+                    resetPassword: true,
+                    email
+                });
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            })
+        });
+    });
+}

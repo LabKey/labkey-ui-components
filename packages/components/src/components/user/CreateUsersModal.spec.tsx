@@ -37,8 +37,8 @@ describe("<CreateUsersModal/>", () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
-        expect(wrapper.find('textarea')).toHaveLength(1);
-        expect(wrapper.find('textarea').props().value).toBe('');
+        expect(wrapper.find('textarea')).toHaveLength(2);
+        expect(wrapper.find('textarea').first().props().value).toBe('');
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(0);
@@ -60,8 +60,8 @@ describe("<CreateUsersModal/>", () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
-        expect(wrapper.find('textarea')).toHaveLength(1);
-        expect(wrapper.find('textarea').props().value).toBe('');
+        expect(wrapper.find('textarea')).toHaveLength(2);
+        expect(wrapper.find('textarea').first().props().value).toBe('');
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(1);
@@ -92,8 +92,8 @@ describe("<CreateUsersModal/>", () => {
         });
 
         expect(wrapper.find('Alert')).toHaveLength(2);
-        expect(wrapper.find('textarea')).toHaveLength(1);
-        expect(wrapper.find('textarea').props().value).toBe('TestEmailText');
+        expect(wrapper.find('textarea')).toHaveLength(2);
+        expect(wrapper.find('textarea').first().props().value).toBe('TestEmailText');
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(false);
         expect(wrapper.find('SelectInput')).toHaveLength(1);

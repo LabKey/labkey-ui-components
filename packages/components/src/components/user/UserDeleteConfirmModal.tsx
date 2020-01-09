@@ -1,12 +1,12 @@
 import React from 'react';
 import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { getSelectedUserIds, deleteUsers } from "./actions";
-import { QueryGridModel } from "../base/models/model";
+import { deleteUsers } from "./actions";
 import { Alert } from "../base/Alert";
+import { List } from "immutable";
 
 interface Props {
-    model: QueryGridModel
+    userIds: List<number>
     onComplete: (response: any) => any
     onCancel: () => any
 }
@@ -28,8 +28,7 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
     }
 
     onConfirm = () => {
-        const { model, onComplete } = this.props;
-        const userIds = getSelectedUserIds(model);
+        const { userIds, onComplete } = this.props;
 
         this.setState(() => ({submitting: true}));
         deleteUsers(userIds)
@@ -41,9 +40,9 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
     };
 
     render() {
-        const { onCancel, model } = this.props;
+        const { onCancel, userIds } = this.props;
         const { error, submitting } = this.state;
-        const userCount = model.selectedIds.size;
+        const userCount = userIds.size;
 
         return (
             <ConfirmModal

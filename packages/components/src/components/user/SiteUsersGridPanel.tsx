@@ -21,6 +21,7 @@ import { capitalizeFirstChar } from "../../util/utils"
 import { getLocation, getRouteFromLocationHash, replaceParameter } from "../../util/URL";
 import { getBrowserHistory } from "../../util/global";
 import { UserDeleteConfirmModal } from "./UserDeleteConfirmModal";
+import { getSelectedUserIds } from "./actions";
 
 const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'active', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
 
@@ -119,11 +120,16 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
 
     onCreateComplete = (response: any, role: string) => {
         this.toggleDialog(undefined); // close dialog
+        this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
         this.props.onCreateComplete(response, role);
     };
 
-    onUsersStateChangeComplete = (response: any) => {
+    onUsersStateChangeComplete = (response: any, resetSelection = true) => {
         this.toggleDialog(undefined); // close dialog
+        if (resetSelection) {
+            this.onRowSelectionChange(this.getUsersModel(), undefined, false); // clear selected user details
+        }
+
         this.props.onUsersStateChangeComplete(response);
     };
 
@@ -202,6 +208,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                         <UserDetailsPanel
                             {...this.props}
                             userId={selectedUserId}
+                            onUsersStateChangeComplete={this.onUsersStateChangeComplete}
                         />
                     </Col>
                 </Row>
@@ -213,7 +220,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                 />
                 {(showDialog === 'reactivate' || showDialog === 'deactivate') &&
                     <UserActivateChangeConfirmModal
-                        model={this.getUsersModel()}
+                        userIds={getSelectedUserIds(this.getUsersModel())}
                         reactivate={showDialog === 'reactivate'}
                         onComplete={this.onUsersStateChangeComplete}
                         onCancel={() => this.toggleDialog(undefined)}
@@ -221,7 +228,7 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
                 }
                 {allowDelete && showDialog === 'delete' &&
                     <UserDeleteConfirmModal
-                        model={this.getUsersModel()}
+                        userIds={getSelectedUserIds(this.getUsersModel())}
                         onComplete={this.onUsersStateChangeComplete}
                         onCancel={() => this.toggleDialog(undefined)}
                     />

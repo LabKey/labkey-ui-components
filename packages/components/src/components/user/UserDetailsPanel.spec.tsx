@@ -35,12 +35,50 @@ describe("<UserDetailsPanel/>", () => {
         });
     });
 
-    test("with principal", (done) => {
+    test("with principal no buttons because of self", (done) => {
         const component = (
             <UserDetailsPanel
                 userId={1004}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
+                allowDelete={true}
+                onUsersStateChangeComplete={jest.fn()}
+            />
+        );
+
+        const tree = renderer.create(component);
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
+    });
+
+    test("with principal and buttons", (done) => {
+        const component = (
+            <UserDetailsPanel
+                userId={1005} // self is 1004 which will prevent buttons from rendering
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                allowDelete={true}
+                onUsersStateChangeComplete={jest.fn()}
+            />
+        );
+
+        const tree = renderer.create(component);
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
+    });
+
+    test("with principal and buttons not allowDelete", (done) => {
+        const component = (
+            <UserDetailsPanel
+                userId={1005} // self is 1004 which will prevent buttons from rendering
+                policy={POLICY}
+                rolesByUniqueName={ROLES_BY_NAME}
+                allowDelete={false}
+                onUsersStateChangeComplete={jest.fn()}
             />
         );
 

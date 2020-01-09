@@ -38,7 +38,9 @@ describe("<CreateUsersModal/>", () => {
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
         expect(wrapper.find('textarea')).toHaveLength(2);
-        expect(wrapper.find('textarea').first().props().value).toBe('');
+        expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('');
+        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().value).toBe('');
+        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().disabled).toBe(false);
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(0);
@@ -61,7 +63,9 @@ describe("<CreateUsersModal/>", () => {
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
         expect(wrapper.find('textarea')).toHaveLength(2);
-        expect(wrapper.find('textarea').first().props().value).toBe('');
+        expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('');
+        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().value).toBe('');
+        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().disabled).toBe(false);
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(true);
         expect(wrapper.find('SelectInput')).toHaveLength(1);
@@ -86,6 +90,7 @@ describe("<CreateUsersModal/>", () => {
         wrapper.setState({
             emailText: 'TestEmailText',
             sendEmail: false,
+            optionalMessage: 'TestOptionalMessage',
             role: ROLE_OPTIONS[1].id,
             isSubmitting: true,
             error: 'TestError'
@@ -93,7 +98,9 @@ describe("<CreateUsersModal/>", () => {
 
         expect(wrapper.find('Alert')).toHaveLength(2);
         expect(wrapper.find('textarea')).toHaveLength(2);
-        expect(wrapper.find('textarea').first().props().value).toBe('TestEmailText');
+        expect(wrapper.find('textarea#create-users-email-input').props().value).toBe('TestEmailText');
+        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().value).toBe('TestOptionalMessage');
+        expect(wrapper.find('textarea#create-users-optionalMessage-input').props().disabled).toBe(true);
         expect(wrapper.find('Checkbox')).toHaveLength(1);
         expect(wrapper.find('Checkbox').props().checked).toBe(false);
         expect(wrapper.find('SelectInput')).toHaveLength(1);

@@ -26,6 +26,7 @@ interface Props {
     exception?: {}
     helpNoun?: any
     helpTopic?: any
+    appPropertiesOnly?: boolean
 }
 
 class DomainFormContainer extends React.PureComponent<Props, any> {
@@ -45,6 +46,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
 
     render() {
         const { domain } = this.state;
+        const { appPropertiesOnly } = this.props;
 
         return (
             <MockLookupProvider>
@@ -53,6 +55,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     domain={domain}
                     onChange={this.onChange}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    appPropertiesOnly={appPropertiesOnly}
                 />
             </MockLookupProvider>
         )
@@ -82,6 +85,7 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={domainData}
+                appPropertiesOnly={boolean("appPropertiesOnly", true)}
             />
         )
     })

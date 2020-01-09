@@ -33,6 +33,7 @@ interface IDomainRowExpandedOptionsProps {
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any
     onMultiChange: (changes: List<IFieldChange>) => void
     showingModal: (boolean) => any
+    appPropertiesOnly: boolean
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
@@ -80,7 +81,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
     };
 
     render() {
-        const { field, index, onChange, showingModal } = this.props;
+        const { field, index, onChange, showingModal, appPropertiesOnly } = this.props;
 
         return(
             <div className='domain-row-container'>
@@ -92,7 +93,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     <Col xs={12} lg={10}>
                         <NameAndLinkingOptions index={index} field={field} onChange={onChange}/>
                     </Col>
-                    {!isFieldFullyLocked(field.lockType) &&
+                    {!appPropertiesOnly && !isFieldFullyLocked(field.lockType) &&
                         <Col xs={12}>
                             <ConditionalFormattingAndValidation index={index} field={field} onChange={onChange} showingModal={showingModal}/>
                         </Col>

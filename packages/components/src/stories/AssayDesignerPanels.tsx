@@ -23,6 +23,7 @@ import './stories.scss';
 interface Props {
     data: {},
     exception?: {}
+    appPropertiesOnly?: boolean
 }
 
 interface State {
@@ -55,7 +56,7 @@ class WrappedAssayDesignerPanels extends React.Component<Props, State> {
         return (
             <AssayDesignerPanels
                 initModel={this.state.model}
-                basePropertiesOnly={boolean('basePropertiesOnly', false)}
+                appPropertiesOnly={boolean('appPropertiesOnly', false)}
                 hideEmptyBatchDomain={boolean('hideEmptyBatchDomain', false)}
                 useTheme={false}
                 onChange={(model: AssayProtocolModel) => {
@@ -79,7 +80,7 @@ storiesOf("AssayDesignerPanels", module)
     .addDecorator(withKnobs)
     .add("GPAT Template", () => {
         return (
-            <WrappedAssayDesignerPanels data={generalAssayTemplate.data}/>
+            <WrappedAssayDesignerPanels data={generalAssayTemplate.data} />
         )
     })
     .add("GPAT Saved Assay", () => {
@@ -100,5 +101,10 @@ storiesOf("AssayDesignerPanels", module)
     .add("ELISpot Saved Assay", () => {
         return (
             <WrappedAssayDesignerPanels data={elispotAssaySaved.data}/>
+        )
+    })
+    .add("AppPropertiesOnly", () => {
+        return (
+            <WrappedAssayDesignerPanels data={generalAssayDupes.data} appPropertiesOnly={true}/>
         )
     });

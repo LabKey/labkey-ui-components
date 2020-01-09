@@ -37,6 +37,7 @@ import {
     USER_RANGE_URI,
 } from './constants';
 import { SCHEMAS } from '../base/models/schemas';
+import {boolean} from "@storybook/addon-knobs";
 
 export interface IFieldChange {
     id: string,
@@ -906,10 +907,10 @@ function isFieldNew(field: Partial<IDomainField>): boolean {
     return field.propertyId === undefined;
 }
 
-export function resolveAvailableTypes(field: DomainField, availableTypes: List<PropDescType>): List<PropDescType> {
-    // field has not been saved -- display all propTypes
+export function resolveAvailableTypes(field: DomainField, availableTypes: List<PropDescType>, appPropertiesOnly?: boolean, showFilePropertyType?: boolean): List<PropDescType> {
+    // field has not been saved -- display all property types allowed by app
     if (field.isNew()) {
-        return availableTypes;
+        return appPropertiesOnly ? availableTypes.filter((type) => isPropertyTypeAllowed(type, showFilePropertyType)) as List<PropDescType> : availableTypes;
     }
 
     // field has been saved -- display eligible propTypes
@@ -918,26 +919,51 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
 
     // field has been saved -- display eligible propTypes
     return availableTypes.filter((type) => {
-        if (type.isLookup()) {
-            return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
-        }
 
-        if (type.isSample()) {
-            return rangeURI === INT_RANGE_URI;
-        }
-
-        // Catches Users
-        if (type.isInteger() && PropDescType.isInteger(rangeURI)) {
+        //Can always return to the original type for field
+        if (type.name === field.dataType.name)
             return true;
+
+        if (!acceptablePropertyType(type, rangeURI))
+            return false;
+
+        if (appPropertiesOnly) {
+            return isPropertyTypeAllowed(type, showFilePropertyType);
         }
 
-        // Catches Multiline text
-        if (type.isString() && PropDescType.isString(rangeURI)) {
-            return true;
-        }
-
-        return rangeURI === type.rangeURI;
+        return true;
     }).toList();
+}
+
+function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
+    //We allow file type for some domains based on the parameter
+    if ( type === FILE_TYPE )
+        return includeFileType;
+
+    //We are excluding the field types below for the App
+    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE ].includes(type);
+}
+
+function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
+    if (type.isLookup()) {
+        return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
+    }
+
+    if (type.isSample()) {
+        return rangeURI === INT_RANGE_URI;
+    }
+
+    // Catches Users
+    if (type.isInteger() && PropDescType.isInteger(rangeURI)) {
+        return true;
+    }
+
+    // Catches Multiline text
+    if (type.isString() && PropDescType.isString(rangeURI)) {
+        return true;
+    }
+
+    return rangeURI === type.rangeURI;
 }
 
 function resolveDataType(rawField: Partial<IDomainField>): PropDescType {

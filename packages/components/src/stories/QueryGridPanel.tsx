@@ -15,14 +15,15 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 
 import { QueryGridPanel } from '../components/QueryGridPanel';
-import { getStateQueryGridModel } from '../models';
-import './stories.scss';
+import { DataViewInfo, getStateQueryGridModel } from '../models';
 import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
 import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
 import { SelectionMenuItem } from '../components/menus/SelectionMenuItem';
+import { DataViewInfoTypes } from '../constants';
+import './stories.scss'
 import { List } from 'immutable';
 
 class QueryGridPanelWrapper extends React.Component {
@@ -189,6 +190,38 @@ class QueryGridPanelMultiTab extends React.Component<any, any> {
     }
 }
 
+class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
+    onReportClicked = (chart: DataViewInfo) => {
+        console.log('Chart Clicked!', chart);
+        return chart.type !== DataViewInfoTypes.SampleComparison;
+    };
+
+    onCreateReportClicked = (type) => {
+        console.log('Create Report', type);
+    };
+
+    getQueryGridModel() {
+        const modelId = "gridPanelWithSCR";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "assay.General.Amino Acids",
+            queryName: "Data"
+        });
+
+        return getStateQueryGridModel(modelId, schemaQuery, {});
+    }
+
+    render() {
+        return (
+            <QueryGridPanel
+                model={this.getQueryGridModel()}
+                showSampleComparisonReports={true}
+                onReportClicked={this.onReportClicked}
+                onCreateReportClicked={this.onCreateReportClicked}
+            />
+        );
+    }
+}
+
 storiesOf('QueryGridPanel', module)
     .addDecorator(withKnobs)
     .add("with data", () => {
@@ -206,4 +239,6 @@ storiesOf('QueryGridPanel', module)
     .add("with multiple tabs", () => {
         return <QueryGridPanelMultiTab/>
     })
-;
+    .add('with showSampleComparisonReports', () => {
+        return <QueryGridPanelWithSampleComparisonWrapper/>;
+    });

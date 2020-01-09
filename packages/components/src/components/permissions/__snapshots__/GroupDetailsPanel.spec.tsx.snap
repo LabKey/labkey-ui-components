@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GroupDetailsPanel/> no principal 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    Group Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <div>
+      No group selected.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GroupDetailsPanel/> with principal 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-heading"
+  >
+    Group Details
+  </div>
+  <div
+    className="panel-body"
+  >
+    <p
+      className="principal-title-primary"
+    >
+      Editor User Group
+    </p>
+    <hr
+      className="principal-hr"
+    />
+    <div
+      className="principal-detail-label"
+    >
+      Effective Roles:
+    </div>
+    <ul
+      className="permissions-ul"
+    >
+      <li>
+        Editor
+      </li>
+    </ul>
+  </div>
+</div>
+`;

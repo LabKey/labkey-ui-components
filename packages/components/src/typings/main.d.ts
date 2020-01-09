@@ -28,6 +28,7 @@ type LabKey = {
     user: any // use core/model/User instead
     vis: any
     helpLinkPrefix: string
+    getModuleContext: Function
 };
 
 /* App globals */

@@ -8,23 +8,23 @@ describe("<ConfirmModal/>", () => {
 
     test("default props", () => {
         const msg = 'Testing confirm modal message';
-        const loadingModal = mount(
+        const modal = mount(
             <ConfirmModal msg={msg}/>
         );
 
-        expect(loadingModal.find(Modal)).toHaveLength(1);
-        expect(loadingModal.find(".modal-title").text()).toBe('Confirm');
-        expect(loadingModal.find(".modal-body").text()).toBe(msg);
-        expect(loadingModal.find(".close")).toHaveLength(0);
-        expect(loadingModal.find(".btn")).toHaveLength(0);
-        expect(loadingModal.find(".btn-danger")).toHaveLength(0);
-        loadingModal.unmount()
+        expect(modal.find(Modal)).toHaveLength(1);
+        expect(modal.find(".modal-title").text()).toBe('Confirm');
+        expect(modal.find(".modal-body").text()).toBe(msg);
+        expect(modal.find(".close")).toHaveLength(0);
+        expect(modal.find(".btn")).toHaveLength(0);
+        expect(modal.find(".btn-danger")).toHaveLength(0);
+        modal.unmount()
     });
 
     test("with callback functions", () => {
         const title = 'Callback Title';
         const msg = 'Callback confirm modal message';
-        const loadingModal = mount(
+        const modal = mount(
             <ConfirmModal
                 title={title}
                 msg={msg}
@@ -33,13 +33,33 @@ describe("<ConfirmModal/>", () => {
             />
         );
 
-        expect(loadingModal.find(Modal)).toHaveLength(1);
-        expect(loadingModal.find(".modal-title").text()).toBe(title);
-        expect(loadingModal.find(".modal-body").text()).toBe(msg);
-        expect(loadingModal.find(".close")).toHaveLength(1);
-        expect(loadingModal.find(".btn")).toHaveLength(2);
-        expect(loadingModal.find(".btn-danger")).toHaveLength(1);
-        loadingModal.unmount()
+        expect(modal.find(Modal)).toHaveLength(1);
+        expect(modal.find(".modal-title").text()).toBe(title);
+        expect(modal.find(".modal-body").text()).toBe(msg);
+        expect(modal.find(".close")).toHaveLength(1);
+        expect(modal.find(".btn")).toHaveLength(2);
+        expect(modal.find(".btn-danger")).toHaveLength(1);
+        expect(modal.find(".btn-danger").prop('disabled')).toBe(false);
+        modal.unmount()
+    });
+
+    test("submitting", () => {
+        const msg = 'Submitting confirm modal message';
+        const modal = mount(
+            <ConfirmModal
+                msg={msg}
+                onConfirm={jest.fn()}
+                onCancel={jest.fn()}
+                submitting={true}
+            />
+        );
+
+        expect(modal.find(Modal)).toHaveLength(1);
+        expect(modal.find(".close")).toHaveLength(1);
+        expect(modal.find(".btn")).toHaveLength(2);
+        expect(modal.find(".btn-danger")).toHaveLength(1);
+        expect(modal.find(".btn-danger").prop('disabled')).toBe(true);
+        modal.unmount()
     });
 
 });

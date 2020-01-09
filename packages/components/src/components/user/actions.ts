@@ -1,9 +1,9 @@
 import moment from 'moment';
-import { Map, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { ChangePasswordModel } from './models';
 import { caseInsensitive, hasAllPermissions } from '../../util/utils';
-import { SchemaQuery, User } from '../base/models/model';
+import { QueryGridModel, SchemaQuery, User } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 import { PermissionTypes } from '../base/models/constants';
 
@@ -105,6 +105,39 @@ export function getPasswordRuleInfo(): Promise<any> {
             failure: Utils.getCallbackWrapper((response) => {
                 reject(response);
             }),
+        });
+    });
+}
+
+export function getSelectedUserIds(model: QueryGridModel): List<number> {
+    // selectedIds will be strings, need to cast to integers
+    return model.selectedIds.map(id => parseInt(id)).toList();
+}
+
+export function updateUsersActiveState(userIds: List<number>, reactivate: boolean): Promise<any> {
+    return updateUsersState(userIds, false, reactivate);
+}
+
+export function deleteUsers(userIds: List<number>): Promise<any> {
+    return updateUsersState(userIds, true, false);
+}
+
+function updateUsersState(userIds: List<number>, isDelete: boolean, isActivate: boolean): Promise<any> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('user', 'updateUsersStateApi.api'),
+            method: 'POST',
+            params: {
+                userId: userIds.toArray(),
+                delete: isDelete,
+                activate: isActivate
+            },
+            success: Utils.getCallbackWrapper((response) => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper((response) => {
+                reject(response);
+            })
         });
     });
 }

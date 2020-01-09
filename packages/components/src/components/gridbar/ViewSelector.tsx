@@ -24,8 +24,7 @@ import { generateId, naturalSort } from '../../util/utils';
 const emptyList = List<React.ReactNode>();
 
 interface Props {
-    model: QueryGridModel
-    style?: Object
+    model: QueryGridModel,
 }
 
 /**
@@ -109,15 +108,16 @@ export class ViewSelector extends React.Component<Props, any> {
     }
 
     render() {
-        const { model, style } = this.props;
+        const { model } = this.props;
         const viewItems = this.createMenuItems();
 
         if (model.hideEmptyViewSelector && viewItems.size <= 1) {
             return null;
         }
 
+        // FIXME: remove inline styles.
         return (
-            <span style={style}>
+            <span style={{paddingLeft: '10px'}}>
                 <DropdownButton
                     disabled={viewItems.size <= 1}
                     id={this.dropId}

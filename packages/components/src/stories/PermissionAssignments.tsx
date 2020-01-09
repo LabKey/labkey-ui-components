@@ -3,20 +3,16 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import * as React from 'react'
+import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { boolean, text, withKnobs } from '@storybook/addon-knobs'
 import { List, Map } from 'immutable'
 import { Security } from '@labkey/api'
-import { PermissionAssignments, SecurityPolicy, SecurityRole } from "..";
+import { PermissionAssignments } from "../components/permissions/PermissionAssignments";
+import { SecurityPolicy, SecurityRole } from "../components/permissions/models";
 import { Principal } from "../components/permissions/models";
+import { getPrincipals, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "../components/permissions/actions";
 import policyJSON from "../test/data/security-getPolicy.json";
-import {
-    getPrincipals,
-    getPrincipalsById,
-    getRolesByUniqueName,
-    processGetRolesResponse
-} from "../components/permissions/actions";
 import './stories.scss'
 
 interface Props {
@@ -90,7 +86,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
                 title={title && title.length > 0 ? title : undefined}
                 typeToShow={showUsersOnly ? 'u' : undefined}
                 rolesToShow={rolesToShow}
-                containerPath={'test'}
+                containerId={'BOGUS'}
                 disabledId={1004}
                 onChange={this.onChange}
                 onSuccess={() => console.log('Success')}

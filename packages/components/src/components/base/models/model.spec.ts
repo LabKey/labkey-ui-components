@@ -17,7 +17,6 @@ import { fromJS, List, OrderedMap } from 'immutable';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
-    isSampleLookup,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
@@ -447,19 +446,18 @@ describe('Sample Lookup', () => {
     });
 
     test('lookup to samples/Samples', () => {
-        expect(isSampleLookup(validColumn)).toBe(true);
+        expect(validColumn.isSampleLookup()).toBe(true);
     });
 
     test('verify invalid column (into bogus schema/table)', () => {
-        expect(isSampleLookup(bogusColumn)).toBe(false);
+        expect(bogusColumn.isSampleLookup()).toBe(false);
     });
 
     test('test lookup to exp.Materials/Samples', () => {
-        expect(isSampleLookup(materialSamplesColumn)).toBe(true);
+        expect(materialSamplesColumn.isSampleLookup()).toBe(true);
     });
 
     test('test lookup with different casing for query, schema and table names', () => {
-        expect(isSampleLookup(materialSamplesWithAllCapsColumn)).toBe(true);
+        expect(materialSamplesWithAllCapsColumn.isSampleLookup()).toBe(true);
     });
-
 });

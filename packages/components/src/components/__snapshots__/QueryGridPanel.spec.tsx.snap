@@ -16,9 +16,174 @@ exports[`QueryGridPanel render loading 1`] = `
         <div
           className="col-md-6 col-sm-6 col-xs-12"
         >
+          <span>
+            <div
+              className="dropdown disabled btn-group"
+            >
+              <button
+                aria-expanded={false}
+                aria-haspopup={true}
+                className="dropdown-toggle btn btn-default"
+                disabled={true}
+                id="chartselector-0"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                type="button"
+              >
+                <span
+                  className="fa fa-spinner fa-pulse"
+                />
+                 
+                <span
+                  className="caret"
+                />
+              </button>
+              <ul
+                aria-labelledby="chartselector-0"
+                className="dropdown-menu"
+                role="menu"
+              />
+            </div>
+          </span>
+        </div>
+        <div
+          className="col-md-6 col-sm-6 col-xs-12"
+        >
           <div
             className="paging pull-right text-nowrap"
-          />
+          >
+            <span
+              style={
+                Object {
+                  "paddingLeft": "10px",
+                }
+              }
+            >
+              <div
+                className="dropdown btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={false}
+                  id="export-drop-gridpanelloading|assay$pgeneral$pamino acids/data"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-download"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="export-drop-gridpanelloading|assay$pgeneral$pamino acids/data"
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                >
+                  <li
+                    className="dropdown-header"
+                    onKeyDown={[Function]}
+                    role="heading"
+                  >
+                    Export 
+                    
+                  </li>
+                  <li
+                    className=""
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      <span
+                        className="fa fa-file-o"
+                      />
+                        CSV
+                    </a>
+                  </li>
+                  <li
+                    className=""
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      <span
+                        className="fa fa-file-excel-o"
+                      />
+                        Excel
+                    </a>
+                  </li>
+                  <li
+                    className=""
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      <span
+                        className="fa fa-file-text-o"
+                      />
+                        TSV
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </span>
+            <span
+              style={
+                Object {
+                  "paddingLeft": "10px",
+                }
+              }
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="viewselector-1"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  Grid Views
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="viewselector-1"
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                />
+              </div>
+            </span>
+          </div>
         </div>
       </div>
       <div
@@ -26,7 +191,63 @@ exports[`QueryGridPanel render loading 1`] = `
       >
         <div
           className="col-md-12 col-xs-12"
-        />
+        >
+          <div
+            className="OmniBox OmniBox--multi"
+          >
+            <div
+              className="OmniBox-control"
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+            >
+              <span
+                className="OmniBox-multi-value-wrapper"
+              >
+                <div
+                  className="OmniBox-placeholder"
+                >
+                  Select...
+                </div>
+                <div
+                  className="OmniBox-input"
+                  style={
+                    Object {
+                      "display": "inline-block",
+                    }
+                  }
+                >
+                  <input
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    style={
+                      Object {
+                        "boxSizing": "content-box",
+                        "width": "5pxpx",
+                      }
+                    }
+                    value=""
+                  />
+                  <div
+                    style={
+                      Object {
+                        "height": 0,
+                        "left": 0,
+                        "overflow": "scroll",
+                        "position": "absolute",
+                        "top": 0,
+                        "visibility": "hidden",
+                        "whiteSpace": "pre",
+                      }
+                    }
+                  >
+                    
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
       <div
         className="row"
@@ -42,16 +263,58 @@ exports[`QueryGridPanel render loading 1`] = `
       <div
         className="col-md-12"
       >
-        <span
-          className=""
+        <div
+          className="table-responsive"
+          data-gridid="gridpanelloading|assay$pgeneral$pamino acids/data"
         >
-          <i
-            aria-hidden="true"
-            className="fa fa-spinner fa-pulse"
+          <div
+            className="grid-messages"
           />
-           
-          Loading...
-        </span>
+          <table
+            className="table table-striped table-bordered table-condensed"
+          >
+            <thead>
+              <tr>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": undefined,
+                    }
+                  }
+                >
+                  <input
+                    checked={false}
+                    disabled={true}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                className="grid-loading"
+              >
+                <td
+                  colSpan={1}
+                >
+                  <span
+                    className=""
+                  >
+                    <i
+                      aria-hidden="true"
+                      className="fa fa-spinner fa-pulse"
+                    />
+                     
+                    Loading...
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -91,20 +354,15 @@ exports[`QueryGridPanel render query grid error 1`] = `
         <div
           className="col-md-6 col-sm-6 col-xs-12"
         >
-          <div
-            className="btn-group"
-          />
-          <span
-            style={Object {}}
-          >
+          <span>
             <div
-              className="dropdown disabled btn-group"
+              className="dropdown btn-group"
             >
               <button
                 aria-expanded={false}
                 aria-haspopup={true}
                 className="dropdown-toggle btn btn-default"
-                disabled={true}
+                disabled={false}
                 id="chartselector-0"
                 onClick={[Function]}
                 onKeyDown={[Function]}
@@ -121,7 +379,169 @@ exports[`QueryGridPanel render query grid error 1`] = `
                 aria-labelledby="chartselector-0"
                 className="dropdown-menu"
                 role="menu"
-              />
+              >
+                <li
+                  className="dropdown-header"
+                  onKeyDown={[Function]}
+                  role="heading"
+                >
+                  My Saved Charts
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-sliders fa-rotate-90 icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Private Chart
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className="dropdown-header"
+                  onKeyDown={[Function]}
+                  role="heading"
+                >
+                  All Saved Charts
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-sliders fa-rotate-90 icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Arg Box Plot
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-bar-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Bar plot of Mean Cys for Runs
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-line-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Line plot: Pro by Sample Date
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-pie-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Pie chart example
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-area-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Scatter: Arg vs Ala
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-area-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Scatter: Arg vs Ala (filtered)
+                    </span>
+                  </a>
+                </li>
+              </ul>
             </div>
           </span>
         </div>
@@ -146,7 +566,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={true}
-                  id="export-drop-queryGridError"
+                  id="export-drop-gridpanelerror|i$pdont$pexist/shouldfourohfour"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -161,7 +581,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                   />
                 </button>
                 <ul
-                  aria-labelledby="export-drop-queryGridError"
+                  aria-labelledby="export-drop-gridpanelerror|i$pdont$pexist/shouldfourohfour"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 >
@@ -345,7 +765,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
           className="alert alert-danger"
           role="alert"
         >
-          My QueryGridModel error message.
+          Communication failure.
         </div>
       </div>
     </div>
@@ -376,12 +796,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
         <div
           className="col-md-6 col-sm-6 col-xs-12"
         >
-          <div
-            className="btn-group"
-          />
-          <span
-            style={Object {}}
-          >
+          <span>
             <div
               className="dropdown disabled btn-group"
             >
@@ -433,7 +848,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={false}
-                  id="export-drop-queryGridLoaded"
+                  id="export-drop-gridpanelheaderandmessageprops|assay$pgeneral$pamino acids/data"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -448,7 +863,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                   />
                 </button>
                 <ul
-                  aria-labelledby="export-drop-queryGridLoaded"
+                  aria-labelledby="export-drop-gridpanelheaderandmessageprops|assay$pgeneral$pamino acids/data"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 >
@@ -633,7 +1048,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
       >
         <div
           className="table-responsive"
-          data-gridid="queryGridLoaded"
+          data-gridid="gridpanelheaderandmessageprops|assay$pgeneral$pamino acids/data"
         >
           <div
             className="grid-messages"
@@ -663,12 +1078,21 @@ exports[`QueryGridPanel render with header and message props 1`] = `
             </thead>
             <tbody>
               <tr
-                className="grid-empty"
+                className="grid-loading"
               >
                 <td
                   colSpan={1}
                 >
-                  No data available.
+                  <span
+                    className=""
+                  >
+                    <i
+                      aria-hidden="true"
+                      className="fa fa-spinner fa-pulse"
+                    />
+                     
+                    Loading...
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -696,12 +1120,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
         <div
           className="col-md-6 col-sm-6 col-xs-12"
         >
-          <div
-            className="btn-group"
-          />
-          <span
-            style={Object {}}
-          >
+          <span>
             <div
               className="dropdown disabled btn-group"
             >
@@ -753,7 +1172,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={false}
-                  id="export-drop-queryGridLoaded"
+                  id="export-drop-gridpanelwithsinglemodelshowalltabs|assay$pgeneral$pimagefieldassay/runs"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -768,7 +1187,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                   />
                 </button>
                 <ul
-                  aria-labelledby="export-drop-queryGridLoaded"
+                  aria-labelledby="export-drop-gridpanelwithsinglemodelshowalltabs|assay$pgeneral$pimagefieldassay/runs"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 >
@@ -950,7 +1369,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
       >
         <div
           className="table-responsive"
-          data-gridid="queryGridLoaded"
+          data-gridid="gridpanelwithsinglemodelshowalltabs|assay$pgeneral$pimagefieldassay/runs"
         >
           <div
             className="grid-messages"
@@ -980,12 +1399,21 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
             </thead>
             <tbody>
               <tr
-                className="grid-empty"
+                className="grid-loading"
               >
                 <td
                   colSpan={1}
                 >
-                  No data available.
+                  <span
+                    className=""
+                  >
+                    <i
+                      aria-hidden="true"
+                      className="fa fa-spinner fa-pulse"
+                    />
+                     
+                    Loading...
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -1013,12 +1441,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
         <div
           className="col-md-6 col-sm-6 col-xs-12"
         >
-          <div
-            className="btn-group"
-          />
-          <span
-            style={Object {}}
-          >
+          <span>
             <div
               className="dropdown disabled btn-group"
             >
@@ -1070,7 +1493,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={false}
-                  id="export-drop-queryGridLoaded"
+                  id="export-drop-gridpanelwithtabs1|assay$pgeneral$pamino acids/runs"
                   onBlur={[Function]}
                   onClick={[Function]}
                   onFocus={[Function]}
@@ -1085,7 +1508,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                   />
                 </button>
                 <ul
-                  aria-labelledby="export-drop-queryGridLoaded"
+                  aria-labelledby="export-drop-gridpanelwithtabs1|assay$pgeneral$pamino acids/runs"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 >
@@ -1295,7 +1718,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
         </ul>
         <div
           className="table-responsive"
-          data-gridid="queryGridLoaded"
+          data-gridid="gridpanelwithtabs1|assay$pgeneral$pamino acids/runs"
         >
           <div
             className="grid-messages"
@@ -1325,12 +1748,1564 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
             </thead>
             <tbody>
               <tr
-                className="grid-empty"
+                className="grid-loading"
               >
                 <td
                   colSpan={1}
                 >
-                  No data available.
+                  <span
+                    className=""
+                  >
+                    <i
+                      aria-hidden="true"
+                      className="fa fa-spinner fa-pulse"
+                    />
+                     
+                    Loading...
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (should show only non-empty) 1`] = `
+<div
+  className="panel panel-default"
+>
+  <div
+    className="panel-body"
+  >
+    <div
+      className="query-grid-bar"
+    >
+      <div
+        className="row QueryGrid-bottom-spacing"
+      >
+        <div
+          className="col-md-6 col-sm-6 col-xs-12"
+        >
+          <span>
+            <div
+              className="dropdown btn-group"
+            >
+              <button
+                aria-expanded={false}
+                aria-haspopup={true}
+                className="dropdown-toggle btn btn-default"
+                disabled={false}
+                id="chartselector-0"
+                onClick={[Function]}
+                onKeyDown={[Function]}
+                role="button"
+                type="button"
+              >
+                Charts
+                 
+                <span
+                  className="caret"
+                />
+              </button>
+              <ul
+                aria-labelledby="chartselector-0"
+                className="dropdown-menu"
+                role="menu"
+              >
+                <li
+                  className="dropdown-header"
+                  onKeyDown={[Function]}
+                  role="heading"
+                >
+                  My Saved Charts
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-sliders fa-rotate-90 icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Private Chart
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className="dropdown-header"
+                  onKeyDown={[Function]}
+                  role="heading"
+                >
+                  All Saved Charts
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-sliders fa-rotate-90 icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Arg Box Plot
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-bar-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Bar plot of Mean Cys for Runs
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-line-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Line plot: Pro by Sample Date
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-pie-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Pie chart example
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-area-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Scatter: Arg vs Ala
+                    </span>
+                  </a>
+                </li>
+                <li
+                  className=""
+                  role="presentation"
+                >
+                  <a
+                    href="#"
+                    onClick={[Function]}
+                    onKeyDown={[Function]}
+                    role="menuitem"
+                    tabIndex="-1"
+                  >
+                    <i
+                      className="chart-menu-icon fa fa-area-chart icon-content"
+                    />
+                    <span
+                      className="chart-menu-label"
+                    >
+                      Scatter: Arg vs Ala (filtered)
+                    </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </span>
+        </div>
+        <div
+          className="col-md-6 col-sm-6 col-xs-12"
+        >
+          <div
+            className="paging pull-right text-nowrap"
+          >
+            <span
+              style={
+                Object {
+                  "paddingLeft": "10px",
+                }
+              }
+            >
+              <div
+                className="dropdown btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={false}
+                  id="export-drop-gridpanelwithtabsanddata|assay$pgeneral$pgpat 1/runs"
+                  onBlur={[Function]}
+                  onClick={[Function]}
+                  onFocus={[Function]}
+                  onKeyDown={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  <span
+                    className="fa fa-download"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="export-drop-gridpanelwithtabsanddata|assay$pgeneral$pgpat 1/runs"
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                >
+                  <li
+                    className="dropdown-header"
+                    onKeyDown={[Function]}
+                    role="heading"
+                  >
+                    Export 
+                    
+                  </li>
+                  <li
+                    className=""
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      <span
+                        className="fa fa-file-o"
+                      />
+                        CSV
+                    </a>
+                  </li>
+                  <li
+                    className=""
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      <span
+                        className="fa fa-file-excel-o"
+                      />
+                        Excel
+                    </a>
+                  </li>
+                  <li
+                    className=""
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      <span
+                        className="fa fa-file-text-o"
+                      />
+                        TSV
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </span>
+            <span
+              style={
+                Object {
+                  "paddingLeft": "10px",
+                }
+              }
+            >
+              <div
+                className="dropdown disabled btn-group"
+              >
+                <button
+                  aria-expanded={false}
+                  aria-haspopup={true}
+                  className="dropdown-toggle btn btn-default"
+                  disabled={true}
+                  id="viewselector-1"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="button"
+                  type="button"
+                >
+                  Grid Views
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+                <ul
+                  aria-labelledby="viewselector-1"
+                  className="dropdown-menu dropdown-menu-right"
+                  role="menu"
+                >
+                  <li
+                    className="active"
+                    role="presentation"
+                  >
+                    <a
+                      href="#"
+                      onClick={[Function]}
+                      onKeyDown={[Function]}
+                      role="menuitem"
+                      tabIndex="-1"
+                    >
+                      Default
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        className="row QueryGrid-bottom-spacing"
+      >
+        <div
+          className="col-md-12 col-xs-12"
+        >
+          <div
+            className="OmniBox OmniBox--multi"
+          >
+            <div
+              className="OmniBox-control"
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+            >
+              <span
+                className="OmniBox-multi-value-wrapper"
+              >
+                <div
+                  className="OmniBox-placeholder"
+                >
+                  Select...
+                </div>
+                <div
+                  className="OmniBox-input"
+                  style={
+                    Object {
+                      "display": "inline-block",
+                    }
+                  }
+                >
+                  <input
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    style={
+                      Object {
+                        "boxSizing": "content-box",
+                        "width": "5pxpx",
+                      }
+                    }
+                    value=""
+                  />
+                  <div
+                    style={
+                      Object {
+                        "height": 0,
+                        "left": 0,
+                        "overflow": "scroll",
+                        "position": "absolute",
+                        "top": 0,
+                        "visibility": "hidden",
+                        "whiteSpace": "pre",
+                      }
+                    }
+                  >
+                    
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="row"
+      >
+        <div
+          className="col-md-12 col-xs-12"
+        >
+          <div
+            className="QueryGrid-bottom-spacing"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="row"
+    >
+      <div
+        className="col-md-12"
+      >
+        <ul
+          className="nav nav-tabs"
+        >
+          <li
+            className="active"
+          >
+            <a
+              onClick={[Function]}
+            >
+              First Query Grid
+               (
+              1
+              )
+            </a>
+          </li>
+        </ul>
+        <div
+          className="table-responsive"
+          data-gridid="gridpanelwithtabsanddata|assay$pgeneral$pgpat 1/runs"
+        >
+          <div
+            className="grid-messages"
+          />
+          <table
+            className="table table-striped table-bordered table-condensed"
+          >
+            <thead>
+              <tr>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": undefined,
+                    }
+                  }
+                >
+                  <input
+                    checked={false}
+                    disabled={false}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "62px",
+                    }
+                  }
+                >
+                  <span>
+                    Flag
+                    <span
+                      className="pull-right"
+                    >
+                      <div
+                        className="hidden-xs hidden-sm dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-1"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": undefined,
+                    }
+                  }
+                >
+                  <span>
+                    
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "94px",
+                    }
+                  }
+                >
+                  <span>
+                    Assay Id
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-3"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "86px",
+                    }
+                  }
+                >
+                  <span>
+                    Created
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-4"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "110px",
+                    }
+                  }
+                >
+                  <span>
+                    Created By
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-5"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "110px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Groups
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-6"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "142px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Text field
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-7"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "230px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Multi-Line Text Field
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-8"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "166px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Boolean Field
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-9"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "166px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Integer Field
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-10"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "166px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Decimal Field
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-11"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "214px",
+                    }
+                  }
+                >
+                  <span>
+                    Run Date and Time Field
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-12"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+                <th
+                  className="grid-header-cell"
+                  onClick={[Function]}
+                  style={
+                    Object {
+                      "minWidth": "70px",
+                    }
+                  }
+                >
+                  <span>
+                    Batch
+                    <span
+                      className=""
+                    >
+                      <div
+                        className="hidden-xs hidden-sm pull-right dropdown btn-group"
+                      >
+                        <span
+                          onClick={[Function]}
+                        >
+                          <span
+                            className="fa fa-chevron-circle-down"
+                            style={
+                              Object {
+                                "color": "lightgray",
+                                "fontSize": "12px",
+                              }
+                            }
+                          />
+                        </span>
+                        <ul
+                          aria-labelledby="grid-menu-13"
+                          className="dropdown-menu"
+                          role="menu"
+                        >
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-asc"
+                              />
+                                Sort ascending
+                            </a>
+                          </li>
+                          <li
+                            className=""
+                            role="presentation"
+                          >
+                            <a
+                              href="#"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="menuitem"
+                              tabIndex="-1"
+                            >
+                              <span
+                                className="fa fa-sort-amount-desc"
+                              />
+                                Sort descending
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <input
+                    checked={false}
+                    onChange={[Function]}
+                    type="checkbox"
+                  />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "right",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/rd/assayrun/650"
+                  >
+                    GPAT 1_2019-08-07_13-18-06
+                  </a>
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span>
+                    2019-08-07 13:18
+                  </span>
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <a
+                    href="#/q/core/siteusers/1005"
+                  >
+                    susanh
+                  </a>
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span>
+                    reimport run 2
+                  </span>
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "right",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "right",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span />
+                </td>
+                <td
+                  style={
+                    Object {
+                      "textAlign": "left",
+                    }
+                  }
+                >
+                  <span />
                 </td>
               </tr>
             </tbody>

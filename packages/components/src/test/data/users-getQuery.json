@@ -1,0 +1,616 @@
+{
+  "schemaName" : [ "core" ],
+  "queryName" : "Users",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/query-exportExcelTemplate.view?schemaName=core&query.queryName=SiteUsers&headerType=DisplayFieldKey"
+    } ],
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "description" : "Contains all users who have accounts on the server regardless of whether they are members of the current project or not. The data in this table are available only to site administrators. All other users see only the row for their own account.",
+    "id" : "UserId",
+    "fields" : [ {
+      "fieldKey" : [ "UserId" ],
+      "description" : "The unique id of this user.",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "USERID",
+      "defaultValue" : null,
+      "scale" : 10,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : true,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 10,
+      "shortCaption" : "User Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "User Id"
+    }, {
+      "fieldKey" : [ "DisplayName" ],
+      "description" : "The user's display name.",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "nvarchar",
+      "defaultValue" : null,
+      "scale" : 64,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Display Name",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Display Name"
+    }, {
+      "fieldKey" : [ "Email" ],
+      "description" : "The user's email address.",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "nvarchar",
+      "defaultValue" : null,
+      "scale" : 255,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : true,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Email",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Email"
+    }, {
+      "fieldKey" : [ "LastLogin" ],
+      "description" : "The date and time this user last logged in to the system.",
+      "friendlyType" : "Date and Time",
+      "type" : "date",
+      "jsonType" : "date",
+      "sqlType" : "datetime",
+      "defaultValue" : null,
+      "scale" : 23,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : true,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "format" : "yyyy-MM-dd HH:mm",
+      "extFormatFn" : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
+      "extFormat" : "Y-m-d H:i",
+      "inputType" : "text",
+      "cols" : 23,
+      "shortCaption" : "Last Login",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Last Login"
+    }, {
+      "fieldKey" : [ "Created" ],
+      "description" : "The date and time this user account was created.",
+      "friendlyType" : "Date and Time",
+      "type" : "date",
+      "jsonType" : "date",
+      "sqlType" : "datetime",
+      "defaultValue" : null,
+      "scale" : 23,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : true,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "format" : "yyyy-MM-dd HH:mm",
+      "extFormatFn" : "(Ext4.util.Format.dateRenderer('Y-m-d H:i'))",
+      "extFormat" : "Y-m-d H:i",
+      "inputType" : "text",
+      "cols" : 23,
+      "shortCaption" : "Created",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Created"
+    } ],
+    "title" : "SiteUsers",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "Email" : {
+        "value" : "cnathe@labkey.com"
+      },
+      "UserId" : {
+        "value" : 1004
+      },
+      "LastLogin" : {
+        "formattedValue" : "2020-01-06 15:30",
+        "value" : "2020-01-06 15:30:12.027"
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=1004",
+        "value" : "cnathe"
+      },
+      "Created" : {
+        "formattedValue" : "2017-05-08 08:43",
+        "value" : "2017-05-08 08:43:49.710"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "troubleshooter@test.com"
+      },
+      "UserId" : {
+        "value" : 2300
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=2300",
+        "value" : "troubleshooter"
+      },
+      "Created" : {
+        "formattedValue" : "2017-06-26 09:01",
+        "value" : "2017-06-26 09:01:11.757"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "author_user@report.test"
+      },
+      "UserId" : {
+        "value" : 2556
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=2556",
+        "value" : "author user"
+      },
+      "Created" : {
+        "formattedValue" : "2017-07-10 10:16",
+        "value" : "2017-07-10 10:16:42.707"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "termsofuse_user2@termsofuse.test"
+      },
+      "UserId" : {
+        "value" : 3039
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=3039",
+        "value" : "termsofuse user2"
+      },
+      "Created" : {
+        "formattedValue" : "2017-07-20 07:47",
+        "value" : "2017-07-20 07:47:57.360"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "user3_issuetest@issues.test"
+      },
+      "UserId" : {
+        "value" : 3325
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=3325",
+        "value" : "user3 issuetest"
+      },
+      "Created" : {
+        "formattedValue" : "2017-07-27 15:26",
+        "value" : "2017-07-27 15:26:24.117"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "user1_searchtest@search.test"
+      },
+      "UserId" : {
+        "value" : 3420
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=3420",
+        "value" : "user1 searchtest"
+      },
+      "Created" : {
+        "formattedValue" : "2017-08-01 13:25",
+        "value" : "2017-08-01 13:25:21.713"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "brother@pipelinebvt.test"
+      },
+      "UserId" : {
+        "value" : 3635
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=3635",
+        "value" : "brother"
+      },
+      "Created" : {
+        "formattedValue" : "2017-08-22 12:36",
+        "value" : "2017-08-22 12:36:27.807"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "momma@pipelinebvt.test"
+      },
+      "UserId" : {
+        "value" : 3636
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=3636",
+        "value" : "momma"
+      },
+      "Created" : {
+        "formattedValue" : "2017-08-22 12:36",
+        "value" : "2017-08-22 12:36:28.200"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "nabreader1@security.test"
+      },
+      "UserId" : {
+        "value" : 3887
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=3887",
+        "value" : "nabreader1"
+      },
+      "Created" : {
+        "formattedValue" : "2017-08-30 21:14",
+        "value" : "2017-08-30 21:14:03.403"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "admin@localhost.test"
+      },
+      "UserId" : {
+        "value" : 4970
+      },
+      "LastLogin" : {
+        "formattedValue" : "2017-11-09 13:00",
+        "value" : "2017-11-09 13:00:57.160"
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=4970",
+        "value" : "admin4970"
+      },
+      "Created" : {
+        "formattedValue" : "2017-10-27 11:34",
+        "value" : "2017-10-27 11:34:01.293"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "editor@localhost.test"
+      },
+      "UserId" : {
+        "value" : 4971
+      },
+      "LastLogin" : {
+        "formattedValue" : "2019-12-13 12:58",
+        "value" : "2019-12-13 12:58:31.670"
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=4971",
+        "value" : "editor"
+      },
+      "Created" : {
+        "formattedValue" : "2017-10-27 11:34",
+        "value" : "2017-10-27 11:34:01.357"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "author@localhost.test"
+      },
+      "UserId" : {
+        "value" : 4972
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=4972",
+        "value" : "author"
+      },
+      "Created" : {
+        "formattedValue" : "2017-10-27 11:34",
+        "value" : "2017-10-27 11:34:01.373"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "reader@localhost.test"
+      },
+      "UserId" : {
+        "value" : 4973
+      },
+      "LastLogin" : {
+        "formattedValue" : "2019-11-18 09:15",
+        "value" : "2019-11-18 09:15:40.687"
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=4973",
+        "value" : "ReaderDisplayName"
+      },
+      "Created" : {
+        "formattedValue" : "2017-10-27 11:34",
+        "value" : "2017-10-27 11:34:01.387"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "abstractor1nlpautoassignmentresultstestproject@nlpui.test"
+      },
+      "UserId" : {
+        "value" : 5335
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=5335",
+        "value" : "abstractor1nlpautoassignmentresultstestproject"
+      },
+      "Created" : {
+        "formattedValue" : "2017-12-11 11:06",
+        "value" : "2017-12-11 11:06:32.233"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "team_lead@local.test"
+      },
+      "UserId" : {
+        "value" : 5601
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=5601",
+        "value" : "team lead"
+      },
+      "Created" : {
+        "formattedValue" : "2017-12-22 15:43",
+        "value" : "2017-12-22 15:43:15.197"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "lab_technician@local.test"
+      },
+      "UserId" : {
+        "value" : 5602
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=5602",
+        "value" : "lab technician"
+      },
+      "Created" : {
+        "formattedValue" : "2017-12-22 15:43",
+        "value" : "2017-12-22 15:43:15.213"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "study_researcher@local.test"
+      },
+      "UserId" : {
+        "value" : 5603
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=5603",
+        "value" : "study researcher"
+      },
+      "Created" : {
+        "formattedValue" : "2017-12-22 15:43",
+        "value" : "2017-12-22 15:43:15.227"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "reviewer@local.test"
+      },
+      "UserId" : {
+        "value" : 5604
+      },
+      "LastLogin" : {
+        "value" : null
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=5604",
+        "value" : "reviewer"
+      },
+      "Created" : {
+        "formattedValue" : "2017-12-22 15:43",
+        "value" : "2017-12-22 15:43:15.240"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "appadmin@local.test"
+      },
+      "UserId" : {
+        "value" : 6398
+      },
+      "LastLogin" : {
+        "formattedValue" : "2019-10-16 13:11",
+        "value" : "2019-10-16 13:11:05.947"
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=6398",
+        "value" : "AppAdmin Test User"
+      },
+      "Created" : {
+        "formattedValue" : "2018-03-01 08:26",
+        "value" : "2018-03-01 08:26:21.963"
+      }
+    }
+  }, {
+    "data" : {
+      "Email" : {
+        "value" : "projectadmin@local.test"
+      },
+      "UserId" : {
+        "value" : 6402
+      },
+      "LastLogin" : {
+        "formattedValue" : "2019-10-16 13:08",
+        "value" : "2019-10-16 13:08:33.463"
+      },
+      "DisplayName" : {
+        "url" : "/labkey/user-details.view?schemaName=core&query.queryName=Users&userId=6402",
+        "value" : "projectadmin"
+      },
+      "Created" : {
+        "formattedValue" : "2018-03-01 08:42",
+        "value" : "2018-03-01 08:42:22.443"
+      }
+    }
+  } ],
+  "rowCount" : 85
+}

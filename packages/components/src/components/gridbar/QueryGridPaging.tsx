@@ -32,13 +32,6 @@ export class QueryGridPaging extends React.Component<Props, any> {
         showCounts: true
     };
 
-    constructor(props: Props) {
-        super(props);
-
-        this.nextPage = this.nextPage.bind(this);
-        this.prevPage = this.prevPage.bind(this);
-    }
-
     shouldComponentUpdate(nextProps: Props) {
         const { model } = this.props;
         const nextModel = nextProps.model;
@@ -52,14 +45,36 @@ export class QueryGridPaging extends React.Component<Props, any> {
         );
     }
 
-    nextPage() {
+    nextPage = () => {
         const { model } = this.props;
         loadPage(model, model.pageNumber + 1);
-    }
+    };
 
-    prevPage() {
+    prevPage = () => {
         const { model } = this.props;
         loadPage(model, model.pageNumber - 1);
+    };
+
+    renderNextPrevButton(faCls: string, disabled: boolean, tooltip: string, onClick: () => any) {
+        let btn = (
+            <Button onClick={onClick} disabled={disabled}>
+                <i className={'fa ' + faCls}/>
+            </Button>
+        );
+
+        if (disabled) {
+            btn = (
+                <div className={'disabled-button-with-tooltip'}>
+                    {btn}
+                </div>
+            )
+        }
+
+        return (
+            <Tip caption={tooltip}>
+                {btn}
+            </Tip>
+        )
     }
 
     render() {
@@ -84,16 +99,8 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </span> : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        <Tip caption="Previous Page">
-                            <Button onClick={this.prevPage} disabled={model.pageNumber <= 1}>
-                                <i className="fa fa-chevron-left"/>
-                            </Button>
-                        </Tip>
-                        <Tip caption="Next Page">
-                            <Button onClick={this.nextPage} disabled={max === total}>
-                                <i className="fa fa-chevron-right"/>
-                            </Button>
-                        </Tip>
+                        {this.renderNextPrevButton('fa-chevron-left', model.pageNumber <= 1, 'Previous Page', this.prevPage)}
+                        {this.renderNextPrevButton('fa-chevron-right', max === total, 'Next Page', this.nextPage)}
                     </div>
                 ) : null}
             </>

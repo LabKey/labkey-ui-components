@@ -15,10 +15,9 @@
  */
 import React from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { List, Set } from 'immutable';
+import { List } from 'immutable';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
-import { EXPORT_TYPES } from "../../constants";
 import { setMaxRows } from "../../actions";
 
 
@@ -46,9 +45,9 @@ export class PageSizeSelector extends React.PureComponent<Props, any> {
 
     render() {
         const { model, options } = this.props;
+        const showSelector = model && model.totalRows > options.get(0);
 
-        return (
-            model &&
+        return (showSelector &&
             <span className={'gridbar-button-spacer'}>
                 <Tip caption="Page Size" trigger={['hover']}>
                     <DropdownButton

@@ -49,7 +49,7 @@ class QueryGridPanelWrapper extends React.Component {
             queryName: "mixtures"
         });
 
-        return getStateQueryGridModel(modelId, schemaQuery, {});
+        return getStateQueryGridModel(modelId, schemaQuery, {isPaged: true});
     }
 
     render() {
@@ -213,7 +213,7 @@ class QueryGridPanelMultiTab extends React.Component<any, any> {
             getStateQueryGridModel("gridPanelWithRenamedColumns",  new SchemaQuery({
                 schemaName: "labbook",
                 queryName: "LabBookExperiment"
-            }), {isPaged: true})
+            }), {})
         ]);
     }
 

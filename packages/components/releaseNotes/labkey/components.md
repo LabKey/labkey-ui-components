@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 6571: User Details panel updates to allow single user delete / deactivate / reactivate / reset password
     - add resetPassword() action and UserResetPasswordConfirmModal
     - also include optional message input for CreateUsersModal
+    - Issue 39374: Better handling of selection state for SiteUsersGridPanel on page reload and navigation
 
 ### version 0.10.0
 *Released*: 9 January 2020

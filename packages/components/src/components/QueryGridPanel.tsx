@@ -200,6 +200,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     showSampleComparisonReports={showSampleComparisonReports}
                     onReportClicked={onReportClicked}
                     onCreateReportClicked={onCreateReportClicked}
+                    onSelectionChange={onSelectionChange}
                 />
             );
         }

@@ -22,6 +22,7 @@ import { getLocation, getRouteFromLocationHash, replaceParameter } from "../../u
 import { getBrowserHistory } from "../../util/global";
 import { UserDeleteConfirmModal } from "./UserDeleteConfirmModal";
 import { getSelectedUserIds } from "./actions";
+import { getSelected } from "../../actions";
 
 const OMITTED_COLUMNS = List(['phone', 'im', 'mobile', 'pager', 'groups', 'active', 'hasPassword', 'firstName', 'lastName', 'description', 'expirationDate']);
 
@@ -76,6 +77,14 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
             selectedUserId: undefined,
             unlisten
         }
+    }
+
+    componentDidMount() {
+        this.setLastSelectedId();
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        this.setLastSelectedId();
     }
 
     componentWillUnmount() {
@@ -134,13 +143,49 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
     };
 
     onRowSelectionChange = (model, row, checked) => {
-        if (checked && row) {
-            this.setState(() => ({selectedUserId: row.getIn(['UserId', 'value'])}));
+        let selectedUserId;
+
+        if (checked) {
+            // if a specific row has been selected, use that rows UserId value
+            // else use the last userId in the selected array
+            if (row) {
+                selectedUserId = row.getIn(['UserId', 'value']);
+            }
+            else if (model.selectedIds.size > 0) {
+                selectedUserId = this.getLastSelectedId();
+            }
+        }
+
+        this.updateSelectedUserId(selectedUserId);
+    };
+
+    updateSelectedUserId(selectedUserId: number) {
+        if (this.state.selectedUserId !== selectedUserId) {
+            this.setState(() => ({selectedUserId}));
+        }
+    }
+
+    getLastSelectedId(): number {
+        const selectedIds = this.getUsersModel().selectedIds;
+        return selectedIds.size > 0 ? parseInt(selectedIds.last()) : undefined;
+    }
+
+    setLastSelectedId() {
+        const model = this.getUsersModel();
+
+        // if the model has already loaded selections, we can use that to reselect the last user
+        // otherwise, query the server for the selection key for this model and use that response (issue 39374)
+        if (model.selectedLoaded) {
+            this.updateSelectedUserId(this.getLastSelectedId());
         }
         else {
-            this.setState(() => ({selectedUserId: undefined}));
+            getSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath)
+                .then((response) => {
+                    const selectedUserId = response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
+                    this.updateSelectedUserId(selectedUserId);
+                });
         }
-    };
+    }
 
     renderButtons = () => {
         const viewActive = this.state.usersView === 'active';

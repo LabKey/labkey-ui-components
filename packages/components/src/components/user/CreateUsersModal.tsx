@@ -160,6 +160,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
     renderButtons() {
         return (
             <WizardNavButtons
+                containerClassName=""
                 cancel={this.props.onCancel}
                 finish={true}
                 finishText={'Create Users'}

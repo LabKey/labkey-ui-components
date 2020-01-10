@@ -50,15 +50,16 @@ export class UserDeleteConfirmModal extends React.Component<Props, State> {
                 msg={
                     <>
                         <p>
-                            Deletion of a user is <b>permanent and cannot be undone</b>. The user's display name will no
-                            longer be displayed with actions taken or data uploaded by that user. Also, group membership
-                            and permission settings for the deleted users will be lost. You cannot reactivate a deleted
-                            user to restore this information.
+                            Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login,
+                            but their information will be preserved in case they are reactivated at a later time.
                         </p>
                         <p>
-                            Generally, <b>deactivation of a user is recommended</b>. Deactivated users may not login,
-                            but their information will be preserved for display purposes, and their group memberships
-                            will be preserved in case they are reactivated at a later time.
+                            Deletion of a user is <b>permanent and cannot be undone</b>. Deleted users:
+                            <ul>
+                                <li>will no longer be displayed with actions taken or data uploaded by them</li>
+                                <li>will be removed from groups and permissions settings</li>
+                                <li>cannot be reactivated</li>
+                            </ul>
                         </p>
                         <p>
                             {Utils.pluralBasic(userCount, 'user')} will be deleted. Do you want to proceed?

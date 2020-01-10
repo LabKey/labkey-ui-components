@@ -217,7 +217,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                     initialData: previousRunData ? previousRunData.data : undefined
                                                 }}
                                                 sizeLimits={this.props.fileSizeLimits}
-                                                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help article")} for best practices on data import.</>}
+                                                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help document")} for best practices on data import.</>}
                                             />
                                         }
                                     </FormStep>

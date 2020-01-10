@@ -53,7 +53,30 @@ class QueryGridPanelWrapper extends React.Component {
     }
 
     render() {
-        return <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />;
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
+            <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />
+        </div>
+    }
+}
+
+class QueryGridPanelPagingWrapper extends React.Component {
+
+    getQueryGridModel() {
+        const modelId = "gridPanelWithPagingData";
+        const schemaQuery = new SchemaQuery({
+            schemaName: "exp.data",
+            queryName: "mixturespaging"
+        });
+
+        return getStateQueryGridModel(modelId, schemaQuery, {isPaged: true});
+    }
+
+    render() {
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
+            <QueryGridPanel model={this.getQueryGridModel()} />
+        </div>
     }
 }
 
@@ -84,7 +107,10 @@ class QueryGridPanelWithMessagesWrapper extends React.Component {
     }
 
     render() {
-        return <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />;
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
+            <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />
+        </div>
     }
 }
 
@@ -115,7 +141,10 @@ class QueryGridPanelWithImagesWrapper extends React.Component {
     }
 
     render() {
-        return <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />;
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
+            <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />
+        </div>
     }
 }
 
@@ -148,7 +177,10 @@ class QueryGridPanelWithRenamedColumnsWrapper extends React.Component {
     }
 
     render() {
-        return <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />;
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
+            <QueryGridPanel model={this.getQueryGridModel()} buttons={this.renderButtons} />
+        </div>
     }
 }
 
@@ -181,12 +213,15 @@ class QueryGridPanelMultiTab extends React.Component<any, any> {
             getStateQueryGridModel("gridPanelWithRenamedColumns",  new SchemaQuery({
                 schemaName: "labbook",
                 queryName: "LabBookExperiment"
-            }), {})
+            }), {isPaged: true})
         ]);
     }
 
     render() {
-        return <QueryGridPanel showTabs={true} model={this.getQueryGridModels()} buttons={this.renderButtons} rightTabs={List<string>(["Runs"])}/>;
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
+            <QueryGridPanel showTabs={true} model={this.getQueryGridModels()} buttons={this.renderButtons} rightTabs={List<string>(["Runs"])}/>
+        </div>
     }
 }
 
@@ -211,14 +246,15 @@ class QueryGridPanelWithSampleComparisonWrapper extends React.Component {
     }
 
     render() {
-        return (
+        // add marginTop so that we can see tooltips on the buttons
+        return <div style={{marginTop: '20px'}}>
             <QueryGridPanel
                 model={this.getQueryGridModel()}
                 showSampleComparisonReports={true}
                 onReportClicked={this.onReportClicked}
                 onCreateReportClicked={this.onCreateReportClicked}
             />
-        );
+        </div>
     }
 }
 
@@ -226,6 +262,9 @@ storiesOf('QueryGridPanel', module)
     .addDecorator(withKnobs)
     .add("with data", () => {
         return <QueryGridPanelWrapper/>;
+    })
+    .add("with paging", () => {
+        return <QueryGridPanelPagingWrapper/>;
     })
     .add("with messages", () => {
         return <QueryGridPanelWithMessagesWrapper/>;

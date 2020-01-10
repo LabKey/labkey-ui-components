@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 38823: Allow users to select the number of rows they want to display in a grid
+
 ### version 0.10.0
 *Released*: 9 January 2020
 * Item 6506: User management components and related model / action updates

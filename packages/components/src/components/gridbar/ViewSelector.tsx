@@ -115,9 +115,8 @@ export class ViewSelector extends React.Component<Props, any> {
             return null;
         }
 
-        // FIXME: remove inline styles.
         return (
-            <span style={{paddingLeft: '10px'}}>
+            <span className={'gridbar-button-spacer'}>
                 <DropdownButton
                     disabled={viewItems.size <= 1}
                     id={this.dropId}

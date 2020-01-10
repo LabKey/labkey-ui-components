@@ -323,9 +323,16 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
             }));
         }
         else {
-            let newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
+            const newModel = updateQueryGridModel(model, {pageNumber: pageNumber > 1 ? pageNumber : 1});
             gridLoad(newModel);
         }
+    }
+}
+
+export function setMaxRows(model: QueryGridModel, maxRows: number) {
+    if (maxRows !== model.maxRows) {
+        const newModel = updateQueryGridModel(model, {pageNumber: 1, maxRows});
+        gridLoad(newModel);
     }
 }
 

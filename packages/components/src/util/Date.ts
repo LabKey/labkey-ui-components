@@ -45,7 +45,7 @@ export function getDateFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateFormat);
 }
 
-function getDateTimeFormat(): string {
+export function getDateTimeFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateTimeFormat);
 }
 

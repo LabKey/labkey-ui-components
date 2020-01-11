@@ -82,4 +82,32 @@ storiesOf('FileAttachmentForm', module)
             />
         )
     })
+    .add("with multiple file upload components", () => {
+        return (
+            <div>
+                <FileAttachmentForm
+                    index={1}
+                    showLabel={true}
+                    label={'Attachments'}
+                    labelLong={'Select file or drag and drop here'}
+                    acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                    showAcceptedFormats={true}
+                    allowMultiple={true}
+                    showButtons={false}
+                />
+
+                <FileAttachmentForm
+                    index={2}
+                    showLabel={true}
+                    label={'Attachments'}
+                    labelLong={'Select file or drag and drop here'}
+                    acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                    showAcceptedFormats={true}
+                    allowMultiple={true}
+                    showButtons={false}
+                />
+
+            </div>
+        )
+    })
 ;

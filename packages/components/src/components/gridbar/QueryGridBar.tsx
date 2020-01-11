@@ -27,8 +27,11 @@ type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
 
 interface QueryGridBarProps {
-    buttons?: QueryGridBarButtons
-    model: QueryGridModel
+    buttons?: QueryGridBarButtons,
+    model: QueryGridModel,
+    showSampleComparisonReports?: boolean,
+    onReportClicked?: Function,
+    onCreateReportClicked?: Function,
 }
 
 /**
@@ -43,29 +46,40 @@ interface QueryGridBarProps {
  */
 export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
-        const { buttons, model } = this.props;
-        const buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
+        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked } = this.props;
+        let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
+
+        if (buttons) {
+            buttonsNode = (
+                <div className="btn-group gridbar-buttons">
+                    {buttonsNode}
+                </div>
+            );
+        }
 
         const box = model && model.showSearchBox ? (
-            <URLBox
-                key={model.getId()}
-                queryModel={model}/>
+            <URLBox key={model.getId()} queryModel={model}/>
         ) : null;
 
         const paging = model && model.isPaged ? (
             <QueryGridPaging model={model}/>
         ) : null;
 
-        const exportBtn = model && model.showExport ? (
-            <Export model={model} style={{paddingLeft: '10px'}}/>
+        const exportBtn = model ? (
+            <Export model={model} />
         ) : null;
 
         const chart = model && model.showChartSelector ? (
-            <ChartSelector model={model} style={buttonsNode ? {paddingLeft: '10px'} : {}}/>
+            <ChartSelector
+                model={model}
+                showSampleComparisonReports={showSampleComparisonReports}
+                onReportClicked={onReportClicked}
+                onCreateReportClicked={onCreateReportClicked}
+            />
         ) : null;
 
         const view = model && model.showViewSelector ? (
-            <ViewSelector model={model} style={{paddingLeft: '10px'}}/>
+            <ViewSelector model={model} />
         ) : null;
 
         let leftContent;
@@ -73,9 +87,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
         if (buttons || chart) {
             leftContent = (
                 <div className="col-md-6 col-sm-6 col-xs-12">
-                    <div className="btn-group">
-                        {buttonsNode}
-                    </div>
+                    {buttonsNode}
 
                     {chart}
                 </div>

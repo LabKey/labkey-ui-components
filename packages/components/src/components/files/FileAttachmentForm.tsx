@@ -34,6 +34,7 @@ interface FileAttachmentFormProps {
     cancelText?: string
     initialFileNames?: Array<string>
     initialFiles?: {[key:string]: File}
+    index?: number
     label?: string
     labelLong?: string
     onCancel?: () => any
@@ -341,6 +342,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         label={label}
                         showLabel={showLabel}>
                         <FileAttachmentContainer
+                            index={this.props.index}
                             acceptedFormats={acceptedFormats}
                             allowDirectories={allowDirectories}
                             handleChange={this.handleFileChange}

@@ -26,6 +26,7 @@ interface Props {
     confirmButtonText?: string
     cancelButtonText?: string
     confirmVariant?: string
+    submitting?: boolean
 }
 
 export class ConfirmModal extends React.PureComponent<Props, any> {
@@ -38,7 +39,7 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
     };
 
     render() {
-        const { show, title, msg, onConfirm, onCancel, confirmButtonText, cancelButtonText, confirmVariant } = this.props;
+        const { show, title, msg, onConfirm, onCancel, confirmButtonText, cancelButtonText, confirmVariant, submitting } = this.props;
         let cancelBtnClass = classNames(
             'btn btn-default', {
                 'pull-left': onConfirm !== undefined
@@ -56,8 +57,16 @@ export class ConfirmModal extends React.PureComponent<Props, any> {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    {onCancel && <Button bsClass={cancelBtnClass} onClick={onCancel}>{cancelButtonText}</Button>}
-                    {onConfirm && <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm}>{confirmButtonText}</Button>}
+                    {onCancel &&
+                        <Button bsClass={cancelBtnClass} onClick={onCancel}>
+                            {cancelButtonText}
+                        </Button>
+                    }
+                    {onConfirm &&
+                        <Button bsClass={'btn btn-' + confirmVariant} onClick={onConfirm} disabled={submitting}>
+                            {confirmButtonText}
+                        </Button>
+                    }
                 </Modal.Footer>
             </Modal>
         )

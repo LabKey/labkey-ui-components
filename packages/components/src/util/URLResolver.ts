@@ -136,6 +136,16 @@ export class URLResolver {
                 }
             }),
 
+            new ActionMapper('samplemanager', 'downloadAttachments', (row) => {
+                const targetURL = row.get('url');
+                const params = ActionURL.getParameters(targetURL);
+                const jobId = params.jobId;
+                const url = ['workflow', jobId, 'files'];
+                if (jobId !== undefined) {
+                    return AppURL.create(...url);
+                }
+            }),
+
             new ActionMapper('assay', 'assayDetailRedirect', (row) => {
                 if (row.has('url')) {
                     const rowURL = row.get('url');
@@ -269,6 +279,11 @@ export class URLResolver {
                         return AppURL.create(...parts);
                     }
                 }
+            }),
+
+            new ActionMapper('user', 'details', (row, column, schema, query) => {
+                const params = ActionURL.getParameters(row.get('url'));
+                return AppURL.create('q', 'core', 'siteusers', params.userId);
             }),
 
             new ActionMapper('labbook', 'experiment', (row) => {
@@ -419,6 +434,9 @@ export class URLResolver {
                             return row.set('url', this.mapURL({url, row, column, query}))
                         }
                         else if (id.indexOf('samplemanagerJob') >= 0) {
+                            return row.set('url', this.mapURL({url, row, column}));
+                        }
+                        else if (url.indexOf('samplemanager-downloadAttachments') >= 0) {
                             return row.set('url', this.mapURL({url, row, column}));
                         }
                     }

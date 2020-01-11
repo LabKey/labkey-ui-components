@@ -110,7 +110,7 @@ import { ToggleButtons } from './components/buttons/ToggleButtons';
 import { Cards } from './components/base/Cards';
 import { Footer } from './components/base/Footer';
 
-import { DataViewInfoTypes, EditorModel, getStateQueryGridModel, IDataViewInfo } from './models';
+import { EditorModel, getStateQueryGridModel, IDataViewInfo } from './models';
 import {
     createQueryGridModelFilteredBySample,
     getSelected,
@@ -130,6 +130,7 @@ import {
     initQueryGridState,
     invalidateLineageResults,
     removeQueryGridModel,
+    invalidateUsers
 } from './global';
 import {
     deleteRows,
@@ -146,7 +147,8 @@ import {
     selectRows,
     updateRows,
 } from './query/api';
-import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE } from './constants';
+import { loadReports, flattenBrowseDataTreeResponse } from './query/reports';
+import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
@@ -229,7 +231,6 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
 } from './components/assay/actions';
-import { flattenBrowseDataTreeResponse } from './components/report-list/model';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { LINEAGE_GROUPING_GENERATIONS } from './components/lineage/constants';
 import { LineageFilter } from './components/lineage/models';
@@ -249,6 +250,7 @@ import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
+import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 
 import {
     createFormInputId,
@@ -282,6 +284,7 @@ import { ExpandableContainer } from './components/ExpandableContainer';
 import { PermissionAssignments } from './components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
 import { PermissionsProviderProps, SecurityPolicy, SecurityRole, Principal } from './components/permissions/models';
+import { fetchContainerSecurityPolicy } from './components/permissions/actions';
 
 
 export {
@@ -374,10 +377,12 @@ export {
 
     // user-related
     getUsersWithPermissions,
+    invalidateUsers,
     IUser,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
+    SiteUsersGridPanel,
 
     // samples-related
     SampleInsertPanel,
@@ -438,6 +443,7 @@ export {
     IDataViewInfo,
 
     // report-list
+    loadReports,
     flattenBrowseDataTreeResponse,
     ReportListItem,
     ReportItemModal,
@@ -618,6 +624,7 @@ export {
     toggleDevTools,
 
     // Permissions
+    fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,
     PermissionsProviderProps,

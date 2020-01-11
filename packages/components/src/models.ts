@@ -31,6 +31,7 @@ import {
 import { resolveSchemaQuery } from './util/utils';
 import { AppURL } from './url/AppURL';
 import { GRID_EDIT_INDEX } from './components/base/models/constants';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';
 
 const emptyList = List<string>();
 
@@ -52,6 +53,8 @@ interface IStateModelProps {
     showChartSelector?: boolean
     showViewSelector?: boolean
     showExport?: boolean
+    containerPath?: string
+    containerFilter?: string
 }
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
@@ -67,20 +70,20 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
     return parts.join('|').toLowerCase();
 }
 
+export type PropsInitializer = () => IStateModelProps;
+
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
  * @param gridId
  * @param schemaQuery
- * @param [initProps] can be either a props object or a function that returns a props object. The advantage of using
- * a function is that it is only called once for the lifetime of the model thus saving cycles constructing the prop
- * object.
+ * @param [initProps] can be either a props object or a function that returns a props object.
  * @param [keyValue]
  * @returns {QueryGridModel}
  */
 export function getStateQueryGridModel(
     gridId: string,
     schemaQuery: SchemaQuery,
-    initProps?: IStateModelProps | Function, // () => IStateModelProps
+    initProps?: IStateModelProps | PropsInitializer,
     keyValue?: any
 ): QueryGridModel {
     const modelId = getStateModelId(gridId, schemaQuery, keyValue);
@@ -97,6 +100,8 @@ export function getStateQueryGridModel(
         allowSelection: true,
         baseFilters: List<Filter.IFilter>(),
         bindURL: true,
+        containerPath: undefined,
+        containerFilter: undefined,
         editable: false,
         id: modelId,
         isPaged: false, // Figure out how to set this to the same default value as the model
@@ -133,6 +138,14 @@ export function getStateQueryGridModel(
         if (props) {
             if (props.bindURL !== undefined) {
                 modelProps.bindURL = props.bindURL === true;
+            }
+
+            if (props.containerPath !== undefined) {
+                modelProps.containerPath = props.containerPath;
+            }
+
+            if (props.containerFilter !== undefined) {
+                modelProps.containerFilter = props.containerFilter;
             }
 
             if (props.isPaged !== undefined) {
@@ -203,22 +216,6 @@ export function getStateQueryGridModel(
     return new QueryGridModel(modelProps);
 }
 
-export enum DataViewInfoTypes {
-    AutomaticPlot = 'Automatic Plot',
-    BarChart = 'Bar Chart',
-    BoxAndWhiskerPlot = 'Box and Whisker Plot',
-    CrosstabReport = 'Crosstab Report',
-    Dataset = 'Dataset',
-    ParticipantReport = 'Participant Report',
-    PieChart = 'Pie Chart',
-    Query = 'Query',
-    RReport = 'R Report',
-    SampleComparison = 'Sample Comparison',
-    TimeChart = 'Time Chart',
-    XYScatterPlot = 'XY Scatter Plot',
-    XYSeriesLinePlot = 'XY Series Line Plot',
-}
-
 type DataViewInfoType = DataViewInfoTypes.AutomaticPlot |
     DataViewInfoTypes.BarChart |
     DataViewInfoTypes.BoxAndWhiskerPlot |
@@ -262,9 +259,9 @@ export interface IDataViewInfo {
 
 interface DataViewClientMetadata extends IDataViewInfo {
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
-    isLoading?: false,
-    isLoaded?: false,
-    error?: undefined
+    isLoading?: boolean,
+    isLoaded?: boolean,
+    error?: any
 }
 
 const DataViewInfoDefaultValues = {
@@ -339,12 +336,7 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     }
 
     isVisChartType() {
-        return this.type === DataViewInfoTypes.AutomaticPlot
-            || this.type === DataViewInfoTypes.BarChart
-            || this.type === DataViewInfoTypes.BoxAndWhiskerPlot
-            || this.type === DataViewInfoTypes.PieChart
-            || this.type === DataViewInfoTypes.XYScatterPlot
-            || this.type === DataViewInfoTypes.XYSeriesLinePlot;
+        return VISUALIZATION_REPORTS.contains(this.type);
     }
 }
 

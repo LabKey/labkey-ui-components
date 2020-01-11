@@ -25,6 +25,8 @@ class GridLoader implements IGridLoader {
     fetch(model: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
             return selectRows({
+                containerPath: model.containerPath,
+                containerFilter: model.containerFilter,
                 schemaName: model.schema,
                 queryName: model.query,
                 viewName: model.view,
@@ -53,16 +55,17 @@ class GridLoader implements IGridLoader {
 
     fetchSelection(model: QueryGridModel): Promise<IGridSelectionResponse> {
         return new Promise((resolve, reject) => {
-            return getSelected(model.getId(), model.schema, model.query, model.filterArray).then(response => {
-                resolve({
-                    selectedIds: List(response.selected)
-                })
-            }).catch(error => {
-                reject({
-                    model,
-                    error
+            return getSelected(model.getId(), model.schema, model.query, model.filterArray, model.containerPath)
+                .then(response => {
+                    resolve({
+                        selectedIds: List(response.selected)
+                    })
+                }).catch(error => {
+                    reject({
+                        model,
+                        error
+                    });
                 });
-            });
         });
     }
 }

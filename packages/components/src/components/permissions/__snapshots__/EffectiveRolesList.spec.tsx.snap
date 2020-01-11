@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EffectiveRolesList/> multiple roles 1`] = `
+Array [
+  <hr
+    className="principal-hr"
+  />,
+  <div
+    className="principal-detail-label"
+  >
+    Effective Roles:
+  </div>,
+  <ul
+    className="permissions-ul"
+  >
+    <li>
+      Editor
+    </li>
+    <li>
+      Folder Administrator
+    </li>
+    <li>
+      Project Administrator
+    </li>
+    <li>
+      Reader
+    </li>
+    <li>
+      Restricted Reader
+    </li>
+    <li>
+      Submitter
+    </li>
+  </ul>,
+]
+`;
+
+exports[`<EffectiveRolesList/> no roles 1`] = `null`;
+
+exports[`<EffectiveRolesList/> single role 1`] = `
+Array [
+  <hr
+    className="principal-hr"
+  />,
+  <div
+    className="principal-detail-label"
+  >
+    Effective Roles:
+  </div>,
+  <ul
+    className="permissions-ul"
+  >
+    <li>
+      Editor
+    </li>
+  </ul>,
+]
+`;
+
+exports[`<EffectiveRolesList/> without policy 1`] = `null`;

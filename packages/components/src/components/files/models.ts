@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable';
+import {List, Map, Record} from 'immutable';
+import {WebDavFile} from "./WebDav";
+import {DomainField} from "../..";
+import {DomainException, DomainIndex} from "../domainproperties/models";
 
 export interface FileAttachmentFormModel {
     addAttachedFile?: (any) => any
@@ -57,3 +60,33 @@ export const DEFAULT_FILE: IFile = {
     name: undefined,
     propertiesRowId: undefined
 };
+
+export interface DisplayFile {
+    id: string,
+    file: WebDavFile,
+    toggled: boolean,
+    loading: boolean,
+    checked: boolean,
+    children?: List<DisplayFile>
+}
+
+export class TreeDisplayFile extends Record({
+    id: undefined,
+    file: undefined,
+    toggled: false,
+    loading: false,
+    checked: false,
+    children: undefined
+}) implements DisplayFile
+{
+    id: string;
+    file: WebDavFile;
+    toggled: boolean;
+    loading: boolean;
+    checked: boolean;
+    children: List<DisplayFile>;
+
+    constructor(values?: { [key: string]: any }) {
+        super(values);
+    };
+}

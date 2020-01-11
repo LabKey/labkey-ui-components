@@ -113,10 +113,16 @@ export class WebDav extends Record({
         });
     }
 
-    getWebDavFiles(includeDirectories?: boolean): Promise<Map<string, WebDavFile>> {
+    getWebDavFiles(directory?: string, includeDirectories?: boolean): Promise<Map<string, WebDavFile>> {
         return new Promise((resolve, reject) => {
+            let url = this.getWebDavBaseUrl();
+
+            if (directory) {
+                url  += ("/" + encodeURIComponent(directory));
+            }
+
             return Ajax.request({
-                url: this.getWebDavBaseUrl() + "?method=JSON",
+                url: url + "?method=JSON",
                 method: "GET",
                 success: Utils.getCallbackWrapper((response) => {
                     let filteredFiles = Map<string, WebDavFile>().asMutable();
@@ -138,7 +144,7 @@ export class WebDav extends Record({
 
     getFiles(includeDirectories?: boolean): Promise<Map<string, WebDavFile>> {
         return new Promise((resolve, reject) => {
-            return this.getWebDavFiles(includeDirectories)
+            return this.getWebDavFiles(undefined, includeDirectories)
                 .then(response =>
                     this.getCustomProperties(response)
                         .then( updates => resolve(updates)));
@@ -170,12 +176,22 @@ export class WebDav extends Record({
             window.location.href = downloadUrl;
     }
 
-    uploadFile(file: File) : Promise<string> {
+    uploadFile(file: File, directory?: string, createIntermediates?: boolean) : Promise<string> {
         return new Promise((resolve, reject) => {
             let form = new FormData();
             form.append('file', file);
+
+            let url = this.getWebDavBaseUrl();
+
+            if (directory) {
+                url  += ("/" + encodeURIComponent(directory));
+            }
+
+            if (createIntermediates)
+                url += '?createIntermediates=' + createIntermediates;
+
             Ajax.request({
-                url: this.getWebDavBaseUrl(),
+                url: url,
                 method: 'POST',
                 form,
                 success: Utils.getCallbackWrapper((response) => {

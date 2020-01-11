@@ -1,0 +1,23 @@
+
+.filetree-folder-icon {
+    margin-right: 10px;
+}
+
+.filetree-leaf-node {
+    margin-left: 19px;
+}
+
+.filetree-checkbox-container {
+    display: inline-flex;
+
+    & > .checkbox {
+        margin: 3px;
+    }
+}
+
+.filetree-container {
+    padding: 10px;
+    border: 1px solid lightgrey;
+    height: 300px;
+    overflow: auto;
+}

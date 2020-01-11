@@ -92,6 +92,7 @@ import { FilesListing } from './components/files/FilesListing';
 import { FilesListingForm } from './components/files/FilesListingForm'
 import { FileAttachmentEntry } from './components/files/FileAttachmentEntry'
 import { WebDavFile, WebDavContainer, WebDav } from './components/files/WebDav';
+import { FileTree } from './components/files/FileTree';
 import { Notification } from './components/notifications/Notification';
 import { createNotification } from './components/notifications/actions';
 import { dismissNotifications, initNotificationsState } from './components/notifications/global';
@@ -527,6 +528,7 @@ export {
     FilesListing,
     FilesListingForm,
     FileAttachmentEntry,
+    FileTree,
     WebDavFile,
     WebDavContainer,
     WebDav,

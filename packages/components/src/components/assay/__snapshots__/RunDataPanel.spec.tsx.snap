@@ -172,6 +172,14 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 />
               </div>
             </div>
+            <button
+              className="btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Clear
+            </button>
           </form>
         </div>
         <div
@@ -588,6 +596,14 @@ exports[`<RunDataPanel/> default props 1`] = `
                 />
               </div>
             </div>
+            <button
+              className="btn btn-default"
+              disabled={false}
+              onClick={[Function]}
+              type="button"
+            >
+              Clear
+            </button>
           </form>
         </div>
         <div

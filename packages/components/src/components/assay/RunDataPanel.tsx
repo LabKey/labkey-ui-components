@@ -32,6 +32,7 @@ import { Alert } from '../base/Alert';
 import { FileSizeLimitProps } from '../files/models';
 import { helpLinkNode } from '../..';
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+import { Button } from 'react-bootstrap';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
@@ -236,6 +237,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 rows={10}
                                                 value={wizardModel.dataText}
                                             />
+                                            <Button onClick={() => onTextChange('text', '')}>Clear</Button>
                                         </Formsy>
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>

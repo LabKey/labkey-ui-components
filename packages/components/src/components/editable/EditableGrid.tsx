@@ -145,7 +145,8 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
         disabled: false,
         isSubmitting: false,
         initialEmptyRowCount: 1,
-        striped: false
+        striped: false,
+        maxTotalRows: MAX_EDITABLE_GRID_ROWS
     };
 
     private maskDelay: number;
@@ -525,11 +526,14 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     }
 
     renderTopControls() {
-        const { allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, initialEmptyRowCount, isSubmitting } = this.props;
+        const { allowAdd, allowBulkUpdate, allowBulkRemove, bulkUpdateText, initialEmptyRowCount, isSubmitting, addControlProps } = this.props;
+        const nounPlural = addControlProps ? addControlProps.nounPlural : "rows";
         const editorModel = this.getEditorModel();
+        const model = this.getModel(this.props);
 
         const showAddOnTop = allowAdd && this.getControlsPlacement() !== 'bottom';
         const haveLeftControls = allowBulkRemove || showAddOnTop;
+        const canAddRows = !isSubmitting && model.data && (model.data.size < this.props.maxTotalRows);
         return (
             <div className="row QueryGrid-bottom-spacing">
                 {haveLeftControls && <div className={"col-sm-4"}>
@@ -548,7 +552,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 {allowBulkUpdate && (
                     <div className={haveLeftControls? "col-sm-8" : "col-xs-12"}>
                         <div className="pull-right control-right">
-                            <Button onClick={this.toggleBulkUpdate}>
+                            <Button title={canAddRows? "Add multiple " + nounPlural + " with the same values" : "The grid contains the maximum number of " + nounPlural + "."} disabled={!canAddRows} onClick={this.toggleBulkUpdate}>
                                 {bulkUpdateText}
                             </Button>
                         </div>
@@ -608,7 +612,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
     renderBulkUpdate() {
         const { showBulkUpdate } = this.state;
         const model = this.getModel(this.props);
-
+        const maxToAdd = this.props.maxTotalRows && this.props.maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS ? this.props.maxTotalRows - model.data.size : MAX_EDITABLE_GRID_ROWS
         return (
             showBulkUpdate &&
             <QueryInfoForm
@@ -618,7 +622,7 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
                 checkRequiredFields={false}
                 showLabelAsterisk={true}
                 submitForEditText={`Add ${capitalizeFirstChar(this.props.addControlProps.nounPlural)} to Grid`}
-                maxCount={MAX_EDITABLE_GRID_ROWS - model.data.size}
+                maxCount={maxToAdd}
                 onHide={this.toggleBulkUpdate}
                 onCancel={this.toggleBulkUpdate}
                 onSuccess={this.toggleBulkUpdate}

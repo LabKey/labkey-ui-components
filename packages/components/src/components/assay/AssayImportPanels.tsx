@@ -402,7 +402,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             }
         }).catch((reason) => {
             this.setState((state) => ({
-                model: state.model.set('errorMsg', getActionErrorMessage("There was in a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
+                model: state.model.set('errorMsg', getActionErrorMessage("There was a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
             }));
         });
     }
@@ -420,7 +420,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const { currentStep, onSave, maxInsertRows } = this.props;
         const { model } = this.state;
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
-        if (maxInsertRows && (Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || data.dataRows.size > maxInsertRows) {
+        if (model.isCopyTab(currentStep) && maxInsertRows && ((Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || data.dataRows.size > maxInsertRows)) {
             this.setModelState(false, 'You have exceeded the maximum number of rows allowed (' + maxInsertRows +').  Please divide your data into smaller groups and try again.')
         }
         else {

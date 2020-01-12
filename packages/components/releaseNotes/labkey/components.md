@@ -12,6 +12,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 and add a tooltip for the AddControls with info on the data size limits.
 * Update placeholder text for cut-and-paste area for assay data
 * Add optional parameters for AssayImportPanels and RunDataPanel and SampleInsertPanel
+* Add clear button on cut-and-paste tab for assay import
 
 
 ### version 0.10.0

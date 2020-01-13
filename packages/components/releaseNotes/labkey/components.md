@@ -1,5 +1,4 @@
 # @labkey/components
-
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
@@ -16,6 +15,13 @@ and add a tooltip for the AddControls with info on the data size limits.
 * Issue 38567: use POST instead of GET to help deal with long filters (particularly IN filters) when dealing with selections
 * Issue 39381: fix column layout for select inputs in QueryInfoForm
 
+
+### version 0.11.0
+*Released*: 13 January 2020
+* Item 6633: Omit some property types from the field designer for SM
+  * Changed basePropertiesOnly option to appPropertiesOnly
+  * Expanded application of appPropertiesOnly to additional controls
+  * DomainForm hide field types and DomainRow options based on appPropertiesOnly
 
 ### version 0.10.0
 *Released*: 9 January 2020

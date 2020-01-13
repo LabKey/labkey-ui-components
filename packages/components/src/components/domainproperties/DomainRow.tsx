@@ -68,6 +68,8 @@ interface IDomainRowProps {
     showDefaultValueSettings: boolean
     defaultDefaultValueType: string
     defaultValueOptions: List<string>
+    appPropertiesOnly?: boolean
+    showFilePropertyType?: boolean
 }
 
 interface IDomainRowState {
@@ -335,7 +337,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderBaseFields() {
-        const { index, field, availableTypes } = this.props;
+        const { index, field, availableTypes, appPropertiesOnly, showFilePropertyType } = this.props;
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, index)}>
@@ -360,7 +362,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         value={field.dataType.name}
                     >
                         {
-                            resolveAvailableTypes(field, availableTypes).map(
+                            resolveAvailableTypes(field, availableTypes, appPropertiesOnly, showFilePropertyType).map(
                                 (type, i) => (<option key={i} value={type.name}>{type.display}</option>
                             ))
                         }
@@ -383,7 +385,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderButtons() {
-        const { expanded, index, field, dragging } = this.props;
+        const { expanded, index, field, dragging, appPropertiesOnly } = this.props;
         const { hover, closing } = this.state;
 
         // TODO update to use FieldExpansionToggle
@@ -399,7 +401,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         onClick={this.onDelete}>
                         Remove Field
                     </Button>
-                    <Button
+                    {!appPropertiesOnly && <Button
                         disabled={isFieldFullyLocked(field.lockType)}
                         name={createFormInputName(DOMAIN_FIELD_ADV)}
                         id={createFormInputId(DOMAIN_FIELD_ADV, index)}
@@ -407,7 +409,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         className="domain-row-button"
                     >
                         Advanced Settings
-                    </Button>
+                    </Button>}
                 </>
                 )}
                 <div className="field-icon" id={createFormInputId(DOMAIN_FIELD_EXPAND, index)} onClick={this.onExpand}>
@@ -421,7 +423,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     render() {
         const { closing, isDragDisabled, showAdv, showingModal } = this.state;
         const { index, field, expanded, expandTransition, fieldError, maxPhiLevel, dragging, domainId,
-            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions } = this.props;
+            helpNoun, showDefaultValueSettings, defaultDefaultValueType, defaultValueOptions, appPropertiesOnly } = this.props;
 
         return (
             <Draggable draggableId={createFormInputId("domaindrag", index)} index={index} isDragDisabled={showingModal || isDragDisabled}>
@@ -464,7 +466,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             <Collapse in={expanded} timeout={expandTransition} onExited={this.onCollapsed} onExiting={this.onCollapsing}>
                                 <div>
                                     <DomainRowExpandedOptions field={field} index={index} onMultiChange={this.onMultiFieldChange} onChange={this.onSingleFieldChange}
-                                                              showingModal={this.showingModal}
+                                                              showingModal={this.showingModal} appPropertiesOnly={appPropertiesOnly}
                                     />
                                 </div>
                             </Collapse>

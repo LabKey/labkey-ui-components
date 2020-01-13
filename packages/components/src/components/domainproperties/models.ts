@@ -37,7 +37,6 @@ import {
     USER_RANGE_URI,
 } from './constants';
 import { SCHEMAS } from '../base/models/schemas';
-import {boolean} from "@storybook/addon-knobs";
 
 export interface IFieldChange {
     id: string,
@@ -913,7 +912,6 @@ export function resolveAvailableTypes(field: DomainField, availableTypes: List<P
         return appPropertiesOnly ? availableTypes.filter((type) => isPropertyTypeAllowed(type, showFilePropertyType)) as List<PropDescType> : availableTypes;
     }
 
-    // field has been saved -- display eligible propTypes
     // compare against original types as the field's values are volatile
     const { rangeURI } = field.original;
 

@@ -46,7 +46,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
 
     render() {
         const { domain } = this.state;
-        const { appPropertiesOnly } = this.props;
+        const appPropertiesOnly = boolean("appPropertiesOnly", this.props.appPropertiesOnly);
 
         return (
             <MockLookupProvider>
@@ -85,7 +85,7 @@ storiesOf("DomainForm", module)
         return (
             <DomainFormContainer
                 data={domainData}
-                appPropertiesOnly={boolean("appPropertiesOnly", true)}
+                appPropertiesOnly={false}
             />
         )
     })

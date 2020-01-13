@@ -14,6 +14,7 @@ and add a tooltip for the AddControls with info on the data size limits.
 * Add optional parameters for AssayImportPanels and RunDataPanel and SampleInsertPanel
 * Add clear button on cut-and-paste tab for assay import
 * Issue 38567: use POST instead of GET to help deal with long filters (particularly IN filters) when dealing with selections
+* Issue 39381: fix column layout for select inputs in QueryInfoForm
 
 
 ### version 0.10.0

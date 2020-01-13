@@ -19,6 +19,7 @@ import policyJSON from "../../test/data/security-getPolicy.json";
 import rolesJSON from "../../test/data/security-getRoles.json";
 import { getRolesByUniqueName, processGetRolesResponse } from "./actions";
 import {
+    JEST_SITE_ADMIN_USER_ID,
     SECURITY_ROLE_APPADMIN,
     SECURITY_ROLE_AUTHOR,
     SECURITY_ROLE_EDITOR,
@@ -158,7 +159,7 @@ describe('SecurityPolicy model', () => {
         expect(byRole.get(SECURITY_ROLE_EDITOR).size).toBe(2);
 
         // test removing all assignments for a role
-        updatedPolicy = SecurityPolicy.removeAssignment(updatedPolicy, 1004, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
+        updatedPolicy = SecurityPolicy.removeAssignment(updatedPolicy, JEST_SITE_ADMIN_USER_ID, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
         updatedPolicy = SecurityPolicy.removeAssignment(updatedPolicy, 11842, ROLES_BY_NAME.get(SECURITY_ROLE_EDITOR));
         expect(updatedPolicy.assignments.size).toBe(originalAssignmentSize - 3);
         byRole = SecurityPolicy.getAssignmentsByRole(updatedPolicy.assignments);

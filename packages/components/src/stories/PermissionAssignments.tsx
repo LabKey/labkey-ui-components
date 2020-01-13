@@ -12,6 +12,7 @@ import { PermissionAssignments } from "../components/permissions/PermissionAssig
 import { SecurityPolicy, SecurityRole } from "../components/permissions/models";
 import { Principal } from "../components/permissions/models";
 import { getPrincipals, getPrincipalsById, getRolesByUniqueName, processGetRolesResponse } from "../components/permissions/actions";
+import { JEST_SITE_ADMIN_USER_ID } from "../test/data/constants";
 import policyJSON from "../test/data/security-getPolicy.json";
 import './stories.scss'
 
@@ -87,7 +88,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
                 typeToShow={showUsersOnly ? 'u' : undefined}
                 rolesToShow={rolesToShow}
                 containerId={'BOGUS'}
-                disabledId={1004}
+                disabledId={JEST_SITE_ADMIN_USER_ID}
                 onChange={this.onChange}
                 onSuccess={() => console.log('Success')}
             />

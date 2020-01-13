@@ -3268,7 +3268,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                             allowMultiple={false}
                             cancelText="Cancel"
                             label="Infer fields from file"
-                            labelLong="Select file or drag and drop here"
+                            labelLong="Select file or drag and drop here."
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -3320,7 +3320,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                         allowMultiple={false}
                                         handleChange={[Function]}
                                         handleRemoval={[Function]}
-                                        labelLong="Select file or drag and drop here"
+                                        labelLong="Select file or drag and drop here."
                                       >
                                         <div>
                                           <div
@@ -3338,7 +3338,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                 aria-hidden="true"
                                                 className="fa fa-cloud-upload fa-2x cloud-logo"
                                               />
-                                              Select file or drag and drop here
+                                              Select file or drag and drop here.
                                             </label>
                                             <input
                                               accept=".csv, .tsv, .txt, .xls, .xlsx"
@@ -18848,7 +18848,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                             allowMultiple={false}
                             cancelText="Cancel"
                             label="Infer fields from file"
-                            labelLong="Select file or drag and drop here"
+                            labelLong="Select file or drag and drop here."
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -18900,7 +18900,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                         allowMultiple={false}
                                         handleChange={[Function]}
                                         handleRemoval={[Function]}
-                                        labelLong="Select file or drag and drop here"
+                                        labelLong="Select file or drag and drop here."
                                       >
                                         <div>
                                           <div
@@ -18918,7 +18918,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                 aria-hidden="true"
                                                 className="fa fa-cloud-upload fa-2x cloud-logo"
                                               />
-                                              Select file or drag and drop here
+                                              Select file or drag and drop here.
                                             </label>
                                             <input
                                               accept=".csv, .tsv, .txt, .xls, .xlsx"
@@ -21915,7 +21915,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                             allowMultiple={false}
                             cancelText="Cancel"
                             label="Infer fields from file"
-                            labelLong="Select file or drag and drop here"
+                            labelLong="Select file or drag and drop here."
                             previewGridProps={
                               Object {
                                 "onPreviewLoad": [Function],
@@ -21967,7 +21967,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                         allowMultiple={false}
                                         handleChange={[Function]}
                                         handleRemoval={[Function]}
-                                        labelLong="Select file or drag and drop here"
+                                        labelLong="Select file or drag and drop here."
                                       >
                                         <div>
                                           <div
@@ -21985,7 +21985,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                 aria-hidden="true"
                                                 className="fa fa-cloud-upload fa-2x cloud-logo"
                                               />
-                                              Select file or drag and drop here
+                                              Select file or drag and drop here.
                                             </label>
                                             <input
                                               accept=".csv, .tsv, .txt, .xls, .xlsx"

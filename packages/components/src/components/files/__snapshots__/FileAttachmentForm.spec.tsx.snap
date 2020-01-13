@@ -16,7 +16,7 @@ exports[`<FileAttachmentForm/> no props 1`] = `
         allowMultiple={true}
         handleChange={[Function]}
         handleRemoval={[Function]}
-        labelLong="Select file or drag and drop here"
+        labelLong="Select file or drag and drop here."
       />
     </FormSection>
   </span>
@@ -39,7 +39,7 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
         allowMultiple={false}
         handleChange={[Function]}
         handleRemoval={[Function]}
-        labelLong="Select file or drag and drop here"
+        labelLong="Select file or drag and drop here."
       />
     </FormSection>
   </span>

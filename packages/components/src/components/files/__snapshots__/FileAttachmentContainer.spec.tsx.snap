@@ -33,15 +33,18 @@ exports[`<FileAttachmentContainer/> error msg 1`] = `
         type="file"
       />
     </div>
-    <div
-      className="has-error"
+    <Alert
+      bsClass="alert"
+      bsStyle="danger"
+      closeLabel="Close alert"
     >
-      <span
-        className="error-message help-block"
+      <div
+        className="alert alert-danger"
+        role="alert"
       >
         invalid file
-      </span>
-    </div>
+      </div>
+    </Alert>
   </div>
 </FileAttachmentContainer>
 `;

@@ -34,23 +34,6 @@ describe("<FileAttachmentContainer/>", () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test("change handler", () => {
-        const onChange = jest.fn(event => undefined);
-        const page = mount(<FileAttachmentContainer
-            acceptedFormats={'.tsv, .xls, .xlsx'}
-            allowMultiple={false}
-            handleChange={onChange}
-            allowDirectories={false}/>);
-
-        // create some files
-        const testFile = new Blob(['text'], {type : 'text/html'});
-        testFile['name'] = 'foo.txt';
-        page.find('input').simulate('change', {target: [testFile]});
-        expect(onChange).toHaveBeenCalledTimes(1);
-
-        page.unmount();
-    });
-
     test("error msg", () => {
         const page = mount(<FileAttachmentContainer
             acceptedFormats={'.tsv, .xls, .xlsx'}

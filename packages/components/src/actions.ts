@@ -787,9 +787,11 @@ function getQueryParams(key: string, schemaName: string, queryName: string, filt
 export function getSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>, containerPath?: string): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'getSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList), {
+            url: buildURL('query', 'getSelected.api', undefined, {
                 container: containerPath
             }),
+            method: "POST",
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),
@@ -807,10 +809,11 @@ interface ISelectResponse {
 function clearSelected(key: string, schemaName?: string, queryName?: string, filterList?: List<Filter.IFilter>, containerPath?: string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'clearSelected.api', getFilteredQueryParams(key, schemaName, queryName, filterList), {
+            url: buildURL('query', 'clearSelected.api', undefined, {
                 container: containerPath
             }),
             method: 'POST',
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
             success: Utils.getCallbackWrapper((response) => {
                 resolve(response);
             }),

@@ -149,7 +149,7 @@ import { MAX_EDITABLE_GRID_ROWS, NO_UPDATES_MESSAGE, DataViewInfoTypes } from '.
 import { getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import { URLResolver } from './util/URLResolver';
 import { URLService } from './util/URLService';
-import { getHelpLink, helpLinkNode } from './util/helpLinks';
+import { getHelpLink, helpLinkNode, DATA_IMPORT_TOPIC } from './util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -597,6 +597,7 @@ export {
     getActionErrorMessage,
     getHelpLink,
     helpLinkNode,
+    DATA_IMPORT_TOPIC,
 
     // url functions
     buildURL,

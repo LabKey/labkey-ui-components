@@ -55,6 +55,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Progress } from '../base/Progress';
+import { FileSizeLimitProps } from '../files/models';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({isInit: false});
@@ -69,6 +70,8 @@ interface OwnProps {
     location?: Location
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
+    fileSizeLimits?: Map<string, FileSizeLimitProps>
+    maxInsertRows?: number
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -399,7 +402,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             }
         }).catch((reason) => {
             this.setState((state) => ({
-                model: state.model.set('errorMsg', getActionErrorMessage("There was in a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
+                model: state.model.set('errorMsg', getActionErrorMessage("There was a problem checking for duplicate file names.", "assay run")) as AssayWizardModel
             }));
         });
     }
@@ -414,31 +417,35 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     };
 
     onFinish(importAgain: boolean) {
-        const { currentStep, onSave } = this.props;
+        const { currentStep, onSave, maxInsertRows } = this.props;
         const { model } = this.state;
-        this.setModelState(true, undefined);
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
-
-        uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
-            importAssayRun(processedData)
-                .then((response: AssayUploadResultModel) => {
-                    if (importAgain && onSave) {
-                        this.onSuccessContinue(response);
-                    }
-                    else {
-                        this.onSuccessComplete(response);
-                    }
-                })
-                .catch((reason) => {
-                    const error = reason.message || reason.exception;
-                    console.error("Problem importing assay run", error);
-                    this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
-                });
-        }).catch((reason) => {
-            const error = reason.message || reason.exception;
-            console.error("Problem uploading assay run files", error);
-            this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
-        });
+        if (model.isCopyTab(currentStep) && maxInsertRows && ((Array.isArray(data.dataRows) && data.dataRows.length > maxInsertRows) || data.dataRows.size > maxInsertRows)) {
+            this.setModelState(false, 'You have exceeded the maximum number of rows allowed (' + maxInsertRows +').  Please divide your data into smaller groups and try again.')
+        }
+        else {
+            this.setModelState(true, undefined);
+            uploadAssayRunFiles(data).then((processedData: IAssayUploadOptions) => {
+                importAssayRun(processedData)
+                    .then((response: AssayUploadResultModel) => {
+                        if (importAgain && onSave) {
+                            this.onSuccessContinue(response);
+                        }
+                        else {
+                            this.onSuccessComplete(response);
+                        }
+                    })
+                    .catch((reason) => {
+                        const error = reason.message || reason.exception;
+                        console.error("Problem importing assay run", error);
+                        this.onFailure(error || getActionErrorMessage("There was a problem importing the assay results.", "assay design"))
+                    });
+            }).catch((reason) => {
+                const error = reason.message || reason.exception;
+                console.error("Problem uploading assay run files", error);
+                this.onFailure(error || getActionErrorMessage("There was a problem uploading the data files.", "assay design"));
+            });
+        }
     };
 
     onSuccessContinue = (response: AssayUploadResultModel) => {
@@ -577,6 +584,8 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     fullWidth={false}
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
+                    fileSizeLimits={this.props.fileSizeLimits}
+                    maxInsertRows={this.props.maxInsertRows}
                 />
                 {model.errorMsg && <Alert bsStyle="danger">{model.errorMsg}</Alert>}
                 <WizardNavButtons

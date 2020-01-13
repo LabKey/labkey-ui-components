@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 6633: Omit some property types from the field designer for SM
+  * Changed basePropertiesOnly option to appPropertiesOnly
+  * Expanded application of appPropertiesOnly to additional controls
+  * DomainForm hide field types and DomainRow options based on appPropertiesOnly 
+
 ### version 0.10.0
 *Released*: 9 January 2020
 * Item 6506: User management components and related model / action updates

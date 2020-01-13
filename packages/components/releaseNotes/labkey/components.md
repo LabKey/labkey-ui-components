@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.12.0
+*Released*: 13 January 2020
 * Update FileAttachmentForm and relatives
   - Add sizeLimits property for checking against maximum size
   - Change styling of error block to Alert instead of simple div

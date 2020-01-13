@@ -5,7 +5,7 @@
 import { List, Map, fromJS } from 'immutable'
 import { Principal, SecurityPolicy, SecurityRole } from "./models";
 import { ISelectRowsResult, selectRows } from "../../query/api";
-import { Security } from "@labkey/api";
+import { Filter, Security } from "@labkey/api";
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -47,6 +47,39 @@ export function getPrincipals(): Promise<List<Principal>> {
     });
 }
 
+export function getInactiveUsers(): Promise<List<Principal>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: 'core',
+            queryName: 'Users',
+            columns: 'UserId,Email,DisplayName',
+            filterArray: [Filter.create('Active', false)]
+        }).then((data: ISelectRowsResult) => {
+            const models = fromJS(data.models[data.key]);
+            let principals = List<Principal>();
+
+            data.orderedModels[data.key].forEach((modelKey) => {
+                const row = models.get(modelKey);
+                const userId = row.getIn(['UserId', 'value']);
+                const name = row.getIn(['Email', 'value']);
+                const displayName = row.getIn(['DisplayName', 'value']);
+                const principal = new Principal({
+                    userId,
+                    name,
+                    type: 'u',
+                    displayName: displayName ? name + ' (' + displayName + ')' : name,
+                    active: false
+                });
+                principals = principals.push(principal);
+            });
+
+            resolve(principals)
+        }).catch((response) => {
+            reject(response.message);
+        });
+    });
+}
+
 export function getPrincipalsById(principals: List<Principal>): Map<number, Principal> {
     let principalsById = Map<number, Principal>();
     principals.forEach((principal) => {
@@ -55,14 +88,18 @@ export function getPrincipalsById(principals: List<Principal>): Map<number, Prin
     return principalsById;
 }
 
-export function fetchContainerSecurityPolicy(containerId: string, principalsById: Map<number, Principal>): Promise<SecurityPolicy> {
+export function fetchContainerSecurityPolicy(containerId: string, principalsById: Map<number, Principal>, inactiveUsersById?: Map<number, Principal>): Promise<SecurityPolicy> {
     return new Promise((resolve, reject) => {
         Security.getPolicy({
             containerPath: containerId,
             resourceId: containerId,
             success: (data, relevantRoles) => {
-                const policy = SecurityPolicy.create({policy: data, relevantRoles});
-                resolve(SecurityPolicy.updateAssignmentsData(policy, principalsById));
+                let policy = SecurityPolicy.create({policy: data, relevantRoles});
+                policy = SecurityPolicy.updateAssignmentsData(policy, principalsById);
+                if (inactiveUsersById) {
+                    policy = SecurityPolicy.updateAssignmentsData(policy, inactiveUsersById);
+                }
+                resolve(policy);
             },
             failure: (response) => reject(response)
         });

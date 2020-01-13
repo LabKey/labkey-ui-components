@@ -133,7 +133,7 @@ describe('SecurityAssignment model', () => {
         expect(SecurityAssignment.getDisplayName(userActiveNoDisplay)).toBe('1');
 
         const userInactive = new SecurityAssignment({userId: 1, type: undefined, displayName: 'DisplayName'});
-        expect(SecurityAssignment.getDisplayName(userInactive)).toBe('Inactive User (1)');
+        expect(SecurityAssignment.getDisplayName(userInactive)).toBe('Inactive User: 1');
     });
 
 });

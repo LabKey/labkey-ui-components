@@ -66,12 +66,12 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             <QueryGridPaging model={model}/>
         ) : null;
 
-        const exportBtn = model ? (
-            <Export model={model} />
-        ) : null;
-
         const pageSizeBtn = model && model.isPaged ? (
             <PageSizeSelector model={model} />
+        ) : null;
+
+        const exportBtn = model ? (
+            <Export model={model} />
         ) : null;
 
         const chart = model && model.showChartSelector ? (

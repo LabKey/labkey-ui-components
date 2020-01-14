@@ -46,35 +46,42 @@ export class QueryGridPaging extends React.Component<Props, any> {
     }
 
     nextPage = () => {
-        const { model } = this.props;
-        loadPage(model, model.pageNumber + 1);
+        this.goToPage(this.props.model.pageNumber + 1);
     };
 
     prevPage = () => {
-        const { model } = this.props;
-        loadPage(model, model.pageNumber - 1);
+        this.goToPage(this.props.model.pageNumber - 1);
     };
 
-    renderNextPrevButton(faCls: string, disabled: boolean, tooltip: string, onClick: () => any) {
+    goToPage = (pageNumber: number) => {
+        const { model } = this.props;
+        loadPage(model, pageNumber);
+    };
+
+    renderButton(content: React.ReactNode, disabled: boolean, btnCls: string, tooltip?: string, onClick?: () => any) {
         let btn = (
-            <Button onClick={onClick} disabled={disabled}>
-                <i className={'fa ' + faCls}/>
+            <Button onClick={onClick} disabled={disabled} className={btnCls}>
+                {content}
             </Button>
         );
 
-        if (disabled) {
+        if (disabled && tooltip) {
             btn = (
                 <div className={'disabled-button-with-tooltip'}>
                     {btn}
                 </div>
+            );
+        }
+
+        if (tooltip) {
+            return (
+                <Tip caption={tooltip}>
+                    {btn}
+                </Tip>
             )
         }
 
-        return (
-            <Tip caption={tooltip}>
-                {btn}
-            </Tip>
-        )
+        return btn;
     }
 
     render() {
@@ -82,6 +89,8 @@ export class QueryGridPaging extends React.Component<Props, any> {
         const min = model.getMinRowIndex();
         const max = model.getMaxRowIndex();
         const total = model.totalRows;
+        const firstPageNumber = 1;
+        const lastPageNumber = Math.ceil(total / model.maxRows);
 
         if (!model.isPaged) {
             return null;
@@ -99,8 +108,21 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </span> : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        {this.renderNextPrevButton('fa-chevron-left', model.pageNumber <= 1, 'Previous Page', this.prevPage)}
-                        {this.renderNextPrevButton('fa-chevron-right', max === total, 'Next Page', this.nextPage)}
+                        {this.renderButton(<i className={'fa fa-chevron-left'}/>, model.pageNumber <= 1, '', 'Previous Page', this.prevPage)}
+                        {model.pageNumber > firstPageNumber &&
+                            this.renderButton(<span>{firstPageNumber}</span>, false, '', 'First Page', () => this.goToPage(firstPageNumber))
+                        }
+                        {(model.pageNumber - 1) > firstPageNumber &&
+                            this.renderButton(<span>...</span>, true, 'disabled-button-group-spacer')
+                        }
+                        {this.renderButton(<span>{model.pageNumber}</span>, true, 'disabled-button-in-group', 'Current Page')}
+                        {lastPageNumber > (model.pageNumber + 1) &&
+                            this.renderButton(<span>...</span>, true, 'disabled-button-group-spacer')
+                        }
+                        {lastPageNumber > model.pageNumber &&
+                            this.renderButton(<span>{lastPageNumber}</span>, false, '', 'Last Page', () => this.goToPage(lastPageNumber))
+                        }
+                        {this.renderButton(<i className={'fa fa-chevron-right'}/>, max === total, '', 'Next Page', this.nextPage)}
                     </div>
                 ) : null}
             </>

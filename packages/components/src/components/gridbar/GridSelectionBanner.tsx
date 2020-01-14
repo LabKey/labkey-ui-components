@@ -15,13 +15,14 @@
  */
 import React from 'reactn';
 import { Button } from 'react-bootstrap';
-
+import { Map } from "immutable";
 import { gridClearAll, gridSelectAll } from '../../actions';
 import { QueryGridModel } from '../base/models/model';
 
 interface Props {
     containerCls?: string
     model: QueryGridModel
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
 }
 
 export class GridSelectionBanner extends React.Component<Props, any> {
@@ -32,11 +33,11 @@ export class GridSelectionBanner extends React.Component<Props, any> {
     }
 
     selectAll = () => {
-        gridSelectAll(this.props.model);
+        gridSelectAll(this.props.model, this.props.onSelectionChange);
     };
 
     clearAll = () => {
-        gridClearAll(this.props.model);
+        gridClearAll(this.props.model, this.props.onSelectionChange);
     };
 
     render() {

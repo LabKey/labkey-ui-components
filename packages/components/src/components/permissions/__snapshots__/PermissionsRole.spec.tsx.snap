@@ -127,7 +127,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
                 onClick={[Function]}
                 type="button"
               >
-                Inactive User (4971)
+                Inactive User: 4971
               </button>
             </div>
           </li>
@@ -380,7 +380,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
                 onClick={[Function]}
                 type="button"
               >
-                Inactive User (4971)
+                Inactive User: 4971
               </button>
             </div>
           </li>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-
+import { Map } from "immutable";
 import { ChartSelector } from '../chart/ChartSelector';
 import { Export } from './Export';
 import { QueryGridPaging } from './QueryGridPaging';
@@ -33,6 +33,7 @@ interface QueryGridBarProps {
     showSampleComparisonReports?: boolean,
     onReportClicked?: Function,
     onCreateReportClicked?: Function,
+    onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any
 }
 
 /**
@@ -47,7 +48,7 @@ interface QueryGridBarProps {
  */
 export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
     render() {
-        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked } = this.props;
+        const { buttons, model, showSampleComparisonReports, onReportClicked, onCreateReportClicked, onSelectionChange } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
         if (buttons) {
@@ -126,7 +127,11 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
                 <div className="row">
                     <div className="col-md-12 col-xs-12">
-                        <GridSelectionBanner containerCls="QueryGrid-bottom-spacing" model={model}/>
+                        <GridSelectionBanner
+                            containerCls="QueryGrid-bottom-spacing"
+                            model={model}
+                            onSelectionChange={onSelectionChange}
+                        />
                     </div>
                 </div>
             </div>

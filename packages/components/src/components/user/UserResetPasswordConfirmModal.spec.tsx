@@ -15,15 +15,15 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
-import { List } from "immutable";
-import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
+import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 
-describe("<UserDeleteConfirmModal/>", () => {
+describe("<UserResetPasswordConfirmModal/>", () => {
 
-    test("single user selected", () => {
+    test("with login", () => {
         const component = (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1])}
+            <UserResetPasswordConfirmModal
+                email={'jest@localhost.test'}
+                hasLogin={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />
@@ -31,19 +31,19 @@ describe("<UserDeleteConfirmModal/>", () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
-        expect(wrapper.find('.modal-title').text()).toBe('Delete 1 User?');
-        expect(wrapper.find('.modal-body').text()).toContain('Deletion of a user is');
-        expect(wrapper.find('.modal-body').text()).toContain('1 user will be deleted.');
+        expect(wrapper.find('.modal-title').text()).toBe('Reset Password?');
+        expect(wrapper.find('.modal-body').text()).toContain('You are about to clear the current password for');
         expect(wrapper.find('.btn')).toHaveLength(2);
-        expect(wrapper.find('.btn-danger')).toHaveLength(1);
-        expect(wrapper.find('.btn-danger').props().disabled).toBe(false);
+        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
         wrapper.unmount();
     });
 
-    test("multiple users selected", () => {
+    test("without login", () => {
         const component = (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1, 2, 3])}
+            <UserResetPasswordConfirmModal
+                email={'jest@localhost.test'}
+                hasLogin={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />
@@ -51,19 +51,19 @@ describe("<UserDeleteConfirmModal/>", () => {
 
         const wrapper = mount(component);
         expect(wrapper.find('Alert')).toHaveLength(0);
-        expect(wrapper.find('.modal-title').text()).toBe('Delete 3 Users?');
-        expect(wrapper.find('.modal-body').text()).toContain('Deletion of a user is');
-        expect(wrapper.find('.modal-body').text()).toContain('3 users will be deleted.');
+        expect(wrapper.find('.modal-title').text()).toBe('Reset Password?');
+        expect(wrapper.find('.modal-body').text()).toContain('You are about to send');
         expect(wrapper.find('.btn')).toHaveLength(2);
-        expect(wrapper.find('.btn-danger')).toHaveLength(1);
-        expect(wrapper.find('.btn-danger').props().disabled).toBe(false);
+        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(false);
         wrapper.unmount();
     });
 
     test("with state", () => {
         const component = (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1, 2, 3])}
+            <UserResetPasswordConfirmModal
+                email={'jest@localhost.test'}
+                hasLogin={false}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
             />
@@ -73,12 +73,11 @@ describe("<UserDeleteConfirmModal/>", () => {
         wrapper.setState({submitting: true, error: 'Test Error'});
 
         expect(wrapper.find('Alert')).toHaveLength(2);
-        expect(wrapper.find('.modal-title').text()).toBe('Delete 3 Users?');
-        expect(wrapper.find('.modal-body').text()).toContain('Deletion of a user is');
-        expect(wrapper.find('.modal-body').text()).toContain('3 users will be deleted.');
+        expect(wrapper.find('.modal-title').text()).toBe('Reset Password?');
+        expect(wrapper.find('.modal-body').text()).toContain('You are about to send');
         expect(wrapper.find('.btn')).toHaveLength(2);
-        expect(wrapper.find('.btn-danger')).toHaveLength(1);
-        expect(wrapper.find('.btn-danger').props().disabled).toBe(true);
+        expect(wrapper.find('.btn-success')).toHaveLength(1);
+        expect(wrapper.find('.btn-success').props().disabled).toBe(true);
         wrapper.unmount();
     });
 

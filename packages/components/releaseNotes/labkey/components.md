@@ -7,6 +7,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 38824: Allow users to go to the first and last page in a grid
 * Issue 39367: "Previous Page" tool tip on grid doesn't hide for disabled button
 
+### version 0.13.0
+*Released*: 14 January 2020
+* Item 6571: User Details panel updates to allow single user delete / deactivate / reactivate / reset password
+    - add resetPassword() action and UserResetPasswordConfirmModal
+    - also include optional message input for CreateUsersModal
+    - Issue 39374: Better handling of selection state for SiteUsersGridPanel on page reload and navigation
+
 ### version 0.12.0
 *Released*: 13 January 2020
 * Update FileAttachmentForm and relatives

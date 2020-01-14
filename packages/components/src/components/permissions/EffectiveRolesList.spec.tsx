@@ -1,10 +1,10 @@
 import React from 'react';
-import { List, Map, fromJS } from 'immutable';
 import renderer from 'react-test-renderer'
 import { mount } from 'enzyme';
 import { EffectiveRolesList } from "./EffectiveRolesList";
 import { SecurityPolicy } from "./models";
 import { getRolesByUniqueName, processGetRolesResponse } from "./actions";
+import { JEST_SITE_ADMIN_USER_ID } from "../../test/data/constants";
 import policyJSON from "../../test/data/security-getPolicy.json";
 import rolesJSON from "../../test/data/security-getRoles.json";
 
@@ -41,7 +41,7 @@ describe("<EffectiveRolesList/>", () => {
     test("multiple roles", () => {
         const component = (
             <EffectiveRolesList
-                userId={1004} // admin and more
+                userId={JEST_SITE_ADMIN_USER_ID}
                 policy={POLICY}
                 rolesByUniqueName={ROLES_BY_NAME}
             />

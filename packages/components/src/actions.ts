@@ -127,10 +127,14 @@ export function gridInit(model: QueryGridModel, shouldLoadData: boolean = true, 
     }
 }
 
-export function gridClearAll(model: QueryGridModel) {
+export function gridClearAll(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     clearSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath)
         .then(() => {
-           updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
+           const updatedModel = updateQueryGridModel(model, QueryGridModel.EMPTY_SELECTION);
+
+            if (onSelectionChange) {
+                onSelectionChange(updatedModel, undefined, false);
+            }
         }).catch(err => {
             const error = err ? err : {message: 'Something went wrong when clearing the selection from the grid.'};
             gridShowError(model, error);
@@ -156,17 +160,18 @@ export function selectAll(key: string, schemaName: string, queryName: string, fi
 }
 
 
-export function gridSelectAll(model: QueryGridModel) {
+export function gridSelectAll(model: QueryGridModel, onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any) {
     const id = model.getId();
 
     selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath)
         .then(data => {
             if (data && data.count > 0) {
                 return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath).then(response => {
-                    updateSelections(model, {
-                        selectedIds: List(response.selected)
-                    })
+                    const updatedModel = updateSelections(model, {selectedIds: List(response.selected)});
 
+                    if (onSelectionChange) {
+                        onSelectionChange(updatedModel, undefined, true);
+                    }
                 }).catch(err => {
                     const error = err ? err : {message: 'Something went wrong in selecting all items for this grid (name: ' + model.getModelName() + ', id:' + id + ')'};
                     gridShowError(model, error);

@@ -8,12 +8,14 @@ export class Principal extends Record({
     userId: undefined,
     name: undefined,
     displayName: undefined,
-    type: undefined
+    type: undefined,
+    active: true
 }) {
     userId: number;
     name: string;
     displayName: string;
     type: string;
+    active: boolean;
 
     constructor(values?: {[key:string]: any}) {
         super(values);
@@ -118,7 +120,7 @@ export class SecurityAssignment extends Record({
     static getDisplayName(assignment: SecurityAssignment): string {
         // inactive users will return type of undefined
         if (assignment.type === undefined) {
-            return 'Inactive User (' + assignment.userId + ')';
+            return 'Inactive User: ' + assignment.userId;
         }
 
         return assignment.displayName || assignment.userId.toString();
@@ -206,10 +208,14 @@ export class SecurityPolicy extends Record({
         const assignments = policy.assignments.map((assignment) => {
             const principal = principalsById ? principalsById.get(assignment.userId) : undefined;
 
-            return assignment.merge({
-                displayName: principal ? principal.displayName : undefined,
-                type: principal ? principal.type : undefined
-            }) as SecurityAssignment;
+            const updatedAssignment  = principal
+                ? assignment.merge({
+                        displayName: (!principal.active ? 'Inactive User: ' : '') + principal.displayName,
+                        type: principal.type
+                    }) as SecurityAssignment
+                : assignment;
+
+            return updatedAssignment;
         }).toList();
 
         return policy.merge({
@@ -224,5 +230,6 @@ export interface PermissionsProviderProps {
     rolesByUniqueName: Map<string, SecurityRole>
     principals: List<Principal>
     principalsById: Map<number, Principal>
+    inactiveUsersById: Map<number, Principal>
     error: string
 }

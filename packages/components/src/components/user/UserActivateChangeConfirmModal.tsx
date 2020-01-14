@@ -1,12 +1,12 @@
 import React from 'react';
+import { List } from "immutable";
 import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
-import { getSelectedUserIds, updateUsersActiveState } from "./actions";
-import { QueryGridModel } from "../base/models/model";
+import { updateUsersActiveState } from "./actions";
 import { Alert } from "../base/Alert";
 
 interface Props {
-    model: QueryGridModel
+    userIds: List<number>
     reactivate: boolean
     onComplete: (response: any) => any
     onCancel: () => any
@@ -29,8 +29,7 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
     }
 
     onConfirm = () => {
-        const { model, reactivate, onComplete } = this.props;
-        const userIds = getSelectedUserIds(model);
+        const { userIds, reactivate, onComplete } = this.props;
 
         this.setState(() => ({submitting: true}));
         updateUsersActiveState(userIds, reactivate)
@@ -42,9 +41,9 @@ export class UserActivateChangeConfirmModal extends React.Component<Props, State
     };
 
     render() {
-        const { onCancel, model, reactivate } = this.props;
+        const { onCancel, userIds, reactivate } = this.props;
         const { error, submitting } = this.state;
-        const userCount = model.selectedIds.size;
+        const userCount = userIds.size;
         const action = reactivate ? 'Reactivate' : 'Deactivate';
 
         return (

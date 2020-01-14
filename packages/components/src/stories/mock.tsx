@@ -386,7 +386,7 @@ export function initQueryGridMocks() {
             .body(JSON.stringify(responseBody));
     });
 
-    mock.get(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
+    mock.post(/.*\/query\/?.*\/getSelected.*/, (req, res) => {
         const queryParams = req.url().query;
         const key = queryParams.key;
         let responseBody;

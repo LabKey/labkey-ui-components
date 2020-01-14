@@ -45,7 +45,6 @@ describe('FieldLabel', () => {
 
     test("with overlay, with column", () => {
         const wrapper = mount(<FieldLabel column={queryColumn}/>);
-        console.log(wrapper.debug());
         expect(wrapper.text()).toContain(queryColumn.caption);
         expect(wrapper.find(LabelOverlay)).toHaveLength(1);
     });

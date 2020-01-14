@@ -42,6 +42,7 @@ export interface QueryInfoFormProps {
     asModal?: boolean
     isLoading?: boolean
     allowFieldDisable?: boolean
+    useDatePicker?: boolean
     initiallyDisableFields?: boolean
     disabledFields?: List<string>
     cancelText?: string
@@ -107,7 +108,8 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         isSubmittedText: "Submitted",
         isSubmittingText: "Submitting...",
         maxCount: MAX_EDITABLE_GRID_ROWS,
-        allowFieldDisable: false
+        allowFieldDisable: false,
+        useDatePicker: false
     };
 
 
@@ -355,7 +357,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         const {
             includeCountField, asModal, countText, footer, header, isLoading, checkRequiredFields, showLabelAsterisk,
             maxCount, renderFileInputs, queryInfo, fieldValues, title, allowFieldDisable, initiallyDisableFields,
-            disabledFields, columnFilter, showErrorsAtBottom
+            disabledFields, columnFilter, showErrorsAtBottom, useDatePicker
         } = this.props;
         const { count } = this.state;
 
@@ -400,6 +402,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}
+                            userDatePicker={useDatePicker}
                             initiallyDisableFields={initiallyDisableFields}
                             disabledFields={disabledFields}
                             checkRequiredFields={checkRequiredFields}

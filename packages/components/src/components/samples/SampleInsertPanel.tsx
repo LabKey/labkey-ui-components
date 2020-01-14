@@ -58,6 +58,7 @@ import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { Alert } from '../base/Alert';
+import { PlacementType } from "../editable/Controls";
 
 
 class SampleGridLoader implements IGridLoader {
@@ -686,7 +687,7 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
         }
     }
 
-    getBulkFormValues() {
+    getBulkAddFormValues() {
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
 
@@ -727,17 +728,24 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
             return <LoadingSpinner wrapperClassName="loading-data-message"/>;
         }
 
-        const bulkUpdateProps = {
+        const columnFilter = (colInfo) => {
+                return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== SAMPLE_UNIQUE_FIELD_KEY
+        };
+
+        const bulkAddProps = {
             title: "Bulk Creation of Samples",
             header: "Add a batch of samples that will share the properties set below.",
-            columnFilter: (colInfo) => {
-                return insertColumnFilter(colInfo) && colInfo["fieldKey"] !== SAMPLE_UNIQUE_FIELD_KEY
-            },
-            fieldValues: this.getBulkFormValues()
+            columnFilter: columnFilter,
+            fieldValues: this.getBulkAddFormValues()
+        };
+        const bulkUpdateProps = {
+            columnFilter: columnFilter
         };
         let addControlProps = {
-            nounSingular: "row",
-            nounPlural: "rows"
+            nounSingular: "Sample",
+            nounPlural: "Samples",
+            placement: 'top' as PlacementType,
+            wrapperClass: 'pull-left'
         };
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
@@ -759,12 +767,15 @@ export class SampleInsertPanel extends React.Component<OwnProps, StateProps> {
                                 <EditableGridPanel
                                     addControlProps={addControlProps}
                                     allowBulkRemove={true}
+                                    allowBulkAdd={true}
                                     allowBulkUpdate={true}
                                     bordered={true}
                                     condensed={false}
                                     striped={true}
-                                    bulkUpdateText={"Bulk Insert"}
+                                    bulkAddText={"Bulk Insert"}
+                                    bulkAddProps={bulkAddProps}
                                     bulkUpdateProps={bulkUpdateProps}
+                                    bulkRemoveText={"Remove Samples"}
                                     columnMetadata={columnMetadata}
                                     onRowCountChange={this.onRowCountChange}
                                     model={queryGridModel}

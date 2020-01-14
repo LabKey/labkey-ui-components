@@ -1523,13 +1523,39 @@ function getLookupDisplayValue(column: QueryColumn, lookup: LookupStore, value: 
  * @param colMin the starting column
  */
 export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, rowCount: number, rowMin: number = 0, colMin: number = 0) : EditorModel {
-    const columns = gridModel.getInsertColumns();
     const editorModel = getEditorModel(gridModel.getId());
 
-    const getLookup = (col: QueryColumn) => getLookupStore(col);
     let cellMessages = editorModel.cellMessages;
     let cellValues = editorModel.cellValues;
     let selectionCells = Set<string>();
+
+    const preparedData = prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
+    const { values, messages } = preparedData;
+
+    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
+        rowData.forEach((value, cn) => {
+
+            const colIdx = colMin + cn;
+            const cellKey = genCellKey(colIdx, rowIdx);
+
+            cellMessages = cellMessages.set(cellKey, messages.get(cn));
+            selectionCells = selectionCells.add(cellKey);
+            cellValues = cellValues.set(cellKey, values.get(cn));
+        });
+    }
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages,
+        selectionCells,
+        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
+    });
+}
+
+function prepareInsertRowDataFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, colMin: number = 0) {
+    const columns = gridModel.getInsertColumns();
+
+    const getLookup = (col: QueryColumn) => getLookupStore(col);
 
     let values = List<List<ValueDescriptor>>();
     let messages = List<CellMessage>();
@@ -1564,25 +1590,12 @@ export function updateEditorData(gridModel: QueryGridModel, rowData: List<any>, 
         values = values.push(cv);
     });
 
-    for (let rowIdx = rowMin; rowIdx < rowMin + rowCount; rowIdx++) {
-        rowData.forEach((value, cn) => {
-
-            const colIdx = colMin + cn;
-            const cellKey = genCellKey(colIdx, rowIdx);
-
-            cellMessages = cellMessages.set(cellKey, messages.get(cn));
-            selectionCells = selectionCells.add(cellKey);
-            cellValues = cellValues.set(cellKey, values.get(cn));
-        });
+    return {
+        values,
+        messages
     }
-
-    return updateEditorModel(editorModel, {
-        cellValues,
-        cellMessages,
-        selectionCells,
-        rowCount: Math.max(rowMin + Number(rowCount), editorModel.rowCount)
-    });
 }
+
 
 export function pasteEvent(modelId: string, event: any, onBefore?: any, onComplete?: any, columnMetadata?: Map<string, EditableColumnMetadata>) {
     const model = getEditorModel(modelId);
@@ -2312,6 +2325,30 @@ export function removeAllRows(model: QueryGridModel) : QueryGridModel {
     });
 }
 
+export function updateGridFromBulkForm(gridModel: QueryGridModel, rowData: List<any>, dataRowIndexes: List<number>, colMin: number = 0) : EditorModel {
+    const editorModel = getEditorModel(gridModel.getId());
+
+    let cellMessages = editorModel.cellMessages;
+    let cellValues = editorModel.cellValues;
+
+    const preparedData = prepareInsertRowDataFromBulkForm(gridModel, rowData, colMin);
+    const { values, messages } = preparedData;
+
+    dataRowIndexes.forEach((rowIdx) => {
+        values.forEach((value, cn) => {
+
+            const colIdx = colMin + cn;
+            const cellKey = genCellKey(colIdx, rowIdx);
+            cellMessages = cellMessages.set(cellKey, messages.get(cn));
+            cellValues = cellValues.set(cellKey, values.get(cn));
+        });
+    });
+
+    return updateEditorModel(editorModel, {
+        cellValues,
+        cellMessages
+    });
+}
 
 export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>) {
     const editorModel = getEditorModel(model.getId());

@@ -70,6 +70,7 @@ interface OwnProps {
     location?: Location
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
+    allowBulkUpdate?: boolean
     fileSizeLimits?: Map<string, FileSizeLimitProps>
     maxInsertRows?: number
 }
@@ -548,7 +549,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     }
 
     render() {
-        const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, allowBulkInsert, onSave } = this.props;
+        const { currentStep, onCancel, acceptedPreviewFileFormats, allowBulkRemove, allowBulkInsert, allowBulkUpdate, onSave } = this.props;
         const { model, showRenameModal } = this.state;
 
         if (!model.isInit) {
@@ -584,6 +585,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     fullWidth={false}
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
+                    allowBulkUpdate={allowBulkUpdate}
                     fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                 />

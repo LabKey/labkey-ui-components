@@ -124,6 +124,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
         return (
             <QueryInfoForm
+                useDatePicker={true}
                 allowFieldDisable={true}
                 canSubmitForEdit={canSubmitForEdit}
                 disableSubmitForEditMsg={"At most " + MAX_EDITABLE_GRID_ROWS + " can be edited with the grid."}

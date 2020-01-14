@@ -877,12 +877,12 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         handleFileImport(originalQueryInfo, file, isMerge).then((response) => {
             this.setSubmitting(false);
             if (this.props.afterSampleCreation) {
-                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), response.getFilter(), response.rows.length);
+                this.props.afterSampleCreation(insertModel.getTargetSampleSetName(), null, response.rowCount);
             }
 
         }).catch((error) => {
             this.setState(() => ({
-                error: error,
+                error: error.msg,
                 isSubmitting: false
             }));
         });
@@ -955,18 +955,23 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             />
     }
 
-    render() {
-        const { insertModel, error } = this.state;
-
+    renderErrors() {
+        const { error } = this.state;
         if (error) {
             return <Alert>{error}</Alert>;
         }
-        else if (!insertModel) {
+    }
+
+    render() {
+        const { insertModel } = this.state;
+
+        if (!insertModel) {
             return <LoadingSpinner wrapperClassName="loading-data-message"/>;
         }
 
         return (
             <>
+                {this.renderErrors()}
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
                         <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>

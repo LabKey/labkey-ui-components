@@ -115,7 +115,12 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             <div className="form-group row">
                 <FieldLabel
                     label={label}
-                    labelOverlayProps={{isFormsy: false, inputId: queryColumn.name, addLabelAsterisk: addLabelAsterisk}}
+                    labelOverlayProps={{
+                        isFormsy: false,
+                        inputId: queryColumn.name,
+                        addLabelAsterisk: addLabelAsterisk,
+                        labelClass: 'control-label text-left col-sm-3 col-xs-12'
+                    }}
                     showLabel={showLabel}
                     showToggle={allowDisable}
                     column={queryColumn}

@@ -371,3 +371,8 @@ export interface IParentAlias {
     ignoreAliasError: boolean
     ignoreSelectError: boolean
 }
+
+export const enum SampleInsertPanelTabs {
+    Grid = 1,
+    File = 2
+}

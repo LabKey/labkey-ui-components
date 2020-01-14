@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 38823: Allow users to select the number of rows they want to display in a grid
+* Issue 38824: Allow users to go to the first and last page in a grid
 * Issue 39367: "Previous Page" tool tip on grid doesn't hide for disabled button
 
 ### version 0.10.0

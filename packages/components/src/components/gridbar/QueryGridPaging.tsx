@@ -108,24 +108,81 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </span> : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        {this.renderButton(<i className={'fa fa-chevron-left'}/>, model.pageNumber <= 1, '', 'Previous Page', this.prevPage)}
+                        <PagingButton disabled={model.pageNumber <= 1} tooltip={'Previous Page'} onClick={this.prevPage}>
+                            <i className={'fa fa-chevron-left'}/>
+                        </PagingButton>
                         {model.pageNumber > firstPageNumber &&
-                            this.renderButton(<span>{firstPageNumber}</span>, false, '', 'First Page', () => this.goToPage(firstPageNumber))
+                            <PagingButton tooltip={'First Page'} onClick={() => this.goToPage(firstPageNumber)}>
+                                <span>{firstPageNumber}</span>
+                            </PagingButton>
                         }
                         {(model.pageNumber - 1) > firstPageNumber &&
-                            this.renderButton(<span>...</span>, true, 'disabled-button-group-spacer')
+                            <PagingButton disabled={true} btnCls={'disabled-button-group-spacer'}>
+                                ...
+                            </PagingButton>
                         }
-                        {this.renderButton(<span>{model.pageNumber}</span>, true, 'disabled-button-in-group', 'Current Page')}
+                        <PagingButton disabled={true} btnCls={'disabled-button-in-group'} tooltip={'Current Page'}>
+                            <span>{model.pageNumber}</span>
+                        </PagingButton>
                         {lastPageNumber > (model.pageNumber + 1) &&
-                            this.renderButton(<span>...</span>, true, 'disabled-button-group-spacer')
+                            <PagingButton disabled={true} btnCls={'disabled-button-group-spacer'}>
+                                ...
+                            </PagingButton>
                         }
                         {lastPageNumber > model.pageNumber &&
-                            this.renderButton(<span>{lastPageNumber}</span>, false, '', 'Last Page', () => this.goToPage(lastPageNumber))
+                            <PagingButton tooltip={'Last Page'} onClick={() => this.goToPage(lastPageNumber)}>
+                                <span>{lastPageNumber}</span>
+                            </PagingButton>
                         }
-                        {this.renderButton(<i className={'fa fa-chevron-right'}/>, max === total, '', 'Next Page', this.nextPage)}
+                        <PagingButton disabled={max === total} tooltip={'Next Page'} onClick={this.nextPage}>
+                            <i className={'fa fa-chevron-right'}/>
+                        </PagingButton>
                     </div>
                 ) : null}
             </>
         );
+    }
+}
+
+interface PagingButtonProps {
+    disabled?: boolean
+    btnCls?: string
+    tooltip?: string
+    onClick?: () => any
+}
+
+export class PagingButton extends React.PureComponent<PagingButtonProps, any> {
+
+    static defaultProps = {
+        disabled: false,
+        btnCls: ''
+    };
+
+    render() {
+        const { children, disabled, btnCls, tooltip, onClick } = this.props;
+
+        let btn = (
+            <Button onClick={onClick} disabled={disabled} className={btnCls}>
+                {children}
+            </Button>
+        );
+
+        if (disabled && tooltip) {
+            btn = (
+                <div className={'disabled-button-with-tooltip'}>
+                    {btn}
+                </div>
+            );
+        }
+
+        if (tooltip) {
+            return (
+                <Tip caption={tooltip}>
+                    {btn}
+                </Tip>
+            )
+        }
+
+        return btn;
     }
 }

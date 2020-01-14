@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button } from 'react-bootstrap';
-
+import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
@@ -111,29 +110,30 @@ export class QueryGridPaging extends React.Component<Props, any> {
                         <PagingButton disabled={model.pageNumber <= 1} tooltip={'Previous Page'} onClick={this.prevPage}>
                             <i className={'fa fa-chevron-left'}/>
                         </PagingButton>
-                        {model.pageNumber > firstPageNumber &&
-                            <PagingButton tooltip={'First Page'} onClick={() => this.goToPage(firstPageNumber)}>
-                                <span>{firstPageNumber}</span>
-                            </PagingButton>
-                        }
-                        {(model.pageNumber - 1) > firstPageNumber &&
-                            <PagingButton disabled={true} btnCls={'disabled-button-group-spacer'}>
-                                ...
-                            </PagingButton>
-                        }
-                        <PagingButton disabled={true} btnCls={'disabled-button-in-group'} tooltip={'Current Page'}>
-                            <span>{model.pageNumber}</span>
-                        </PagingButton>
-                        {lastPageNumber > (model.pageNumber + 1) &&
-                            <PagingButton disabled={true} btnCls={'disabled-button-group-spacer'}>
-                                ...
-                            </PagingButton>
-                        }
-                        {lastPageNumber > model.pageNumber &&
-                            <PagingButton tooltip={'Last Page'} onClick={() => this.goToPage(lastPageNumber)}>
-                                <span>{lastPageNumber}</span>
-                            </PagingButton>
-                        }
+                        <Tip caption="Current Page" trigger={['hover']}>
+                            <DropdownButton
+                                id={`current-page-drop-${model.getId()}`}
+                                pullRight
+                                title={model.pageNumber}
+                            >
+                                <MenuItem header>Jump To</MenuItem>
+                                <MenuItem
+                                    key={'first'}
+                                    disabled={model.pageNumber === firstPageNumber}
+                                    onClick={() => this.goToPage(firstPageNumber)}
+                                >
+                                    First Page
+                                </MenuItem>
+                                <MenuItem
+                                    key={'last'}
+                                    disabled={model.pageNumber === lastPageNumber}
+                                    onClick={() => this.goToPage(lastPageNumber)}
+                                >
+                                    Last Page
+                                </MenuItem>
+                                <MenuItem header>{lastPageNumber} Total Pages</MenuItem>
+                            </DropdownButton>
+                        </Tip>
                         <PagingButton disabled={max === total} tooltip={'Next Page'} onClick={this.nextPage}>
                             <i className={'fa fa-chevron-right'}/>
                         </PagingButton>

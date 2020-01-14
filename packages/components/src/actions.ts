@@ -331,8 +331,17 @@ export function loadPage(model: QueryGridModel, pageNumber: number) {
 
 export function setMaxRows(model: QueryGridModel, maxRows: number) {
     if (maxRows !== model.maxRows) {
-        const newModel = updateQueryGridModel(model, {pageNumber: 1, maxRows});
-        gridLoad(newModel);
+        // also make sure to reset page number to force grid back to first page
+        if (model.bindURL) {
+            replaceParameters(getLocation(), Map<string, any>({
+                [model.createParam('p')]: undefined,
+                [model.createParam('pageCount')]: maxRows
+            }));
+        }
+        else {
+            const newModel = updateQueryGridModel(model, {pageNumber: 1, maxRows});
+            gridLoad(newModel);
+        }
     }
 }
 
@@ -503,14 +512,16 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     let props = {
         filterArray: List<Filter.IFilter>(),
         pageNumber: 1,
+        maxRows: model.maxRows,
         sorts: model.sorts || undefined,
-        urlParamValues: Map<string, any>().asMutable(),
+        urlParamValues: Map<string, any>(),
         view: undefined
     };
 
     const location = getLocation();
     const queryString = buildQueryString(location.query);
     const p = location.query.get(model.createParam('p'));
+    const pageCount = location.query.get(model.createParam('pageCount'));
     const q = location.query.get(model.createParam('q'));
     const view = location.query.get(model.createParam('view'));
 
@@ -525,6 +536,11 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         if (!isNaN(pageNumber)) {
             props.pageNumber = pageNumber;
         }
+
+        let maxRows = parseInt(pageCount);
+        if (!isNaN(maxRows)) {
+            props.maxRows = maxRows;
+        }
     }
 
     // pick up other parameters as indicated by the model
@@ -532,12 +548,10 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
         model.urlParams.forEach((paramName) => {
             const value = location.query.get(model.createParam(paramName));
             if (value !== undefined) {
-                props.urlParamValues.set(paramName, value);
+                props.urlParamValues = props.urlParamValues.set(paramName, value);
             }
         });
     }
-
-    props.urlParamValues = props.urlParamValues.asImmutable();
 
     return props;
 }

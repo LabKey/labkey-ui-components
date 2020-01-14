@@ -177,7 +177,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         const tab = props.location && props.location.query ? props.location.query.tab : SampleInsertPanelTabs.Grid;
         if (tab != SampleInsertPanelTabs.Grid)
-            this.props.selectStep(tab);
+            this.props.selectStep(parseInt(tab));
 
         let { insertModel } = this.state;
 
@@ -971,9 +971,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (
             <>
-                {this.renderErrors()}
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
+                        {this.renderErrors()}
                         <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
                         <div className="row">
                             <div className="col-sm-12">

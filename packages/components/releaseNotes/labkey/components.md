@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.13.0
+*Released*: 14 January 2020
+* Item 6571: User Details panel updates to allow single user delete / deactivate / reactivate / reset password
+    - add resetPassword() action and UserResetPasswordConfirmModal
+    - also include optional message input for CreateUsersModal
+    - Issue 39374: Better handling of selection state for SiteUsersGridPanel on page reload and navigation
+
 ### version 0.12.0
 *Released*: 13 January 2020
 * Update FileAttachmentForm and relatives
@@ -14,7 +21,6 @@ and add a tooltip for the AddControls with info on the data size limits.
 * Add clear button on cut-and-paste tab for assay import
 * Issue 38567: use POST instead of GET to help deal with long filters (particularly IN filters) when dealing with selections
 * Issue 39381: fix column layout for select inputs in QueryInfoForm
-
 
 ### version 0.11.0
 *Released*: 13 January 2020

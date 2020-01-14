@@ -7,7 +7,7 @@ import { Principal, SecurityPolicy } from "./models";
 import { getRolesByUniqueName, processGetRolesResponse } from "./actions";
 import policyJSON from "../../test/data/security-getPolicy.json";
 import rolesJSON from "../../test/data/security-getRoles.json";
-import { SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from "../../test/data/constants";
+import { JEST_SITE_ADMIN_USER_ID, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from "../../test/data/constants";
 
 const GROUP = Principal.createFromSelectRow(fromJS({
     UserId: {value: 11842},
@@ -16,7 +16,7 @@ const GROUP = Principal.createFromSelectRow(fromJS({
 }));
 
 const USER = Principal.createFromSelectRow(fromJS({
-    UserId: {value: 1004},
+    UserId: {value: JEST_SITE_ADMIN_USER_ID},
     Type: {value: 'u'},
     Name: {value: 'cnathe@labkey.com'},
     DisplayName: {value: 'Cory Nathe'},
@@ -39,6 +39,7 @@ describe("<PermissionAssignments/>", () => {
                 rolesByUniqueName={ROLES_BY_NAME}
                 principals={List<Principal>()}
                 principalsById={Map<number, Principal>()}
+                inactiveUsersById={Map<number, Principal>()}
                 error={undefined}
                 onChange={jest.fn()}
                 onSuccess={jest.fn()}
@@ -58,6 +59,7 @@ describe("<PermissionAssignments/>", () => {
                 rolesByUniqueName={ROLES_BY_NAME}
                 principals={List<Principal>()}
                 principalsById={Map<number, Principal>()}
+                inactiveUsersById={Map<number, Principal>()}
                 error={undefined}
                 onChange={jest.fn()}
                 onSuccess={jest.fn()}
@@ -82,6 +84,7 @@ describe("<PermissionAssignments/>", () => {
                 rolesByUniqueName={ROLES_BY_NAME}
                 principals={List<Principal>()}
                 principalsById={Map<number, Principal>()}
+                inactiveUsersById={Map<number, Principal>()}
                 error={undefined}
                 onChange={jest.fn()}
                 onSuccess={jest.fn()}

@@ -95,7 +95,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                                             .sortBy((assignment) => assignment.displayName, naturalSort)
                                             .map((assignment) => {
                                                 const key = role.uniqueName + ':' + assignment.userId;
-                                                const disabledMsg = assignment.userId === disabledId ? 'You are not allowed to remove yourself from this role.' : undefined;
+                                                const disabledMsg = !assignment.isNew && assignment.userId === disabledId ? 'You are not allowed to remove yourself from this role.' : undefined;
 
                                                 return (
                                                     <li key={key} className={'permissions-member-li'}>

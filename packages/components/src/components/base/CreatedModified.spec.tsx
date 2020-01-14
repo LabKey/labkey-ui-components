@@ -16,8 +16,8 @@
 import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { mount } from 'enzyme';
-
 import { CreatedModified } from './CreatedModified';
+import { JEST_SITE_ADMIN_USER_ID } from "../../test/data/constants";
 
 const createdRow = Map<string, any>(fromJS({
    Created: {
@@ -26,7 +26,7 @@ const createdRow = Map<string, any>(fromJS({
    },
    CreatedBy: {
       displayValue: "username",
-      url: "#/q/core/siteusers/1004",
+      url: "#/q/core/siteusers/" + JEST_SITE_ADMIN_USER_ID,
       value: 1001
    }
 }));

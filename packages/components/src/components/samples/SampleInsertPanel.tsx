@@ -134,7 +134,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     componentWillMount() {
-        this.init(this.props)
+        this.init(this.props, true)
     }
 
     componentWillReceiveProps(nextProps: OwnProps) {
@@ -167,7 +167,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         }
     }
 
-    init(props: OwnProps) {
+    init(props: OwnProps, selectTab: boolean = false) {
 
         const queryParams = props.location ? SampleInsertPanelImpl.getQueryParameters(props.location.query) : {
             parents: undefined,
@@ -176,7 +176,7 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
         };
 
         const tab = props.location && props.location.query ? props.location.query.tab : SampleInsertPanelTabs.Grid;
-        if (tab != SampleInsertPanelTabs.Grid)
+        if (selectTab && tab != SampleInsertPanelTabs.Grid)
             this.props.selectStep(parseInt(tab));
 
         let { insertModel } = this.state;
@@ -955,15 +955,8 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             />
     }
 
-    renderErrors() {
-        const { error } = this.state;
-        if (error) {
-            return <Alert>{error}</Alert>;
-        }
-    }
-
     render() {
-        const { insertModel } = this.state;
+        const { insertModel, error } = this.state;
 
         if (!insertModel) {
             return <LoadingSpinner wrapperClassName="loading-data-message"/>;
@@ -971,9 +964,9 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         return (
             <>
+                {error != null && <Alert>{error}</Alert>}
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
-                        {this.renderErrors()}
                         <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
                         <div className="row">
                             <div className="col-sm-12">

@@ -110,11 +110,11 @@ describe('AssayDesignerPanels', () => {
         form.unmount();
     });
 
-    test('basePropertiesOnly for new assay', () => {
+    test('appPropertiesOnly for new assay', () => {
         const form = mount(
             <AssayDesignerPanels
                 initModel={EMPTY_MODEL}
-                basePropertiesOnly={true}
+                appPropertiesOnly={true}
                 onCancel={jest.fn}
                 onComplete={jest.fn}
             />
@@ -124,11 +124,11 @@ describe('AssayDesignerPanels', () => {
         form.unmount();
     });
 
-    test('basePropertiesOnly with initModel', () => {
+    test('appPropertiesOnly with initModel', () => {
         const form = mount(
             <AssayDesignerPanels
                 initModel={EXISTING_MODEL}
-                basePropertiesOnly={true}
+                appPropertiesOnly={true}
                 onCancel={jest.fn}
                 onComplete={jest.fn}
             />

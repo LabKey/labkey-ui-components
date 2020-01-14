@@ -167,7 +167,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
                     >
                         <i className="fa fa-cloud-upload" aria-hidden="true"/>
                         &nbsp;
-                        <span>Select file or drag and drop here</span>
+                        <span>Select file or drag and drop here.</span>
                         <span className="file-upload--error-message">{this.state.error}</span>
                     </label>
 

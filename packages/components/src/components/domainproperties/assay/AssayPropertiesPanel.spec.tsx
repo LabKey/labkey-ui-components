@@ -43,12 +43,12 @@ describe('AssayPropertiesPanel', () => {
         form.unmount();
     });
 
-    test('asPanel, helpTopic, and basePropertiesOnly', () => {
+    test('asPanel, helpTopic, and appPropertiesOnly', () => {
         const form = mount(
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 asPanel={false}
-                basePropertiesOnly={true}
+                appPropertiesOnly={true}
                 helpTopic={'defineAssaySchema'}
                 onChange={jest.fn}
             />
@@ -63,7 +63,7 @@ describe('AssayPropertiesPanel', () => {
             <AssayPropertiesPanel
                 model={EMPTY_MODEL}
                 helpTopic={null}
-                basePropertiesOnly={true}
+                appPropertiesOnly={true}
                 onChange={jest.fn}
             />
         );
@@ -180,7 +180,7 @@ describe('AssayPropertiesPanel', () => {
         simpleModelWrapper.unmount();
     });
 
-    test('visible properties for basePropertiesOnly based on populated AssayProtocolModel', () => {
+    test('visible properties for appPropertiesOnly based on populated AssayProtocolModel', () => {
         const model = AssayProtocolModel.create({
             allowBackgroundUpload: true,
             allowEditableResults: true,
@@ -191,7 +191,7 @@ describe('AssayPropertiesPanel', () => {
             moduleTransformScripts: ['validation.pl']
         });
 
-        const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn} basePropertiesOnly={true}/>);
+        const simpleModelWrapper = mount(<AssayPropertiesPanel model={model} onChange={jest.fn} appPropertiesOnly={true}/>);
         expect(simpleModelWrapper.find(NameInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(DescriptionInput)).toHaveLength(1);
         expect(simpleModelWrapper.find(QCStatesInput)).toHaveLength(0);

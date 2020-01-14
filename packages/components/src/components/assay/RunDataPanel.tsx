@@ -29,6 +29,10 @@ import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
+import { FileSizeLimitProps } from '../files/models';
+import { helpLinkNode } from '../..';
+import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+import { Button } from 'react-bootstrap';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;
@@ -45,6 +49,8 @@ interface Props {
     allowBulkRemove?: boolean
     allowBulkInsert?: boolean
     title: string
+    fileSizeLimits?: Map<string, FileSizeLimitProps>
+    maxInsertRows?: number
 }
 
 interface PreviousRunData {
@@ -174,11 +180,15 @@ export class RunDataPanel extends React.Component<Props, State> {
     };
 
     render() {
-        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, title } = this.props;
+        const { currentStep, gridModel, wizardModel, onTextChange, acceptedPreviewFileFormats, fullWidth, allowBulkRemove, allowBulkInsert, title, maxInsertRows } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
         const isLoadingPreview = previousRunData && !previousRunData.isLoaded;
 
+        let cutPastePlaceholder = "Paste in a tab-separated set of values (including column headers).";
+        if (maxInsertRows) {
+            cutPastePlaceholder += "  Maximum number of data rows allowed is " + maxInsertRows + ".";
+        }
         return (
             <div className={"panel panel-default " + (fullWidth ? "full-width" : "")}>
                 <div className="panel-heading">
@@ -207,6 +217,8 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                     acceptedFormats: acceptedPreviewFileFormats,
                                                     initialData: previousRunData ? previousRunData.data : undefined
                                                 }}
+                                                sizeLimits={this.props.fileSizeLimits}
+                                                sizeLimitsHelpText={<>We recommend dividing your data into smaller files that meet this limit. See our {helpLinkNode(DATA_IMPORT_TOPIC, "help document")} for best practices on data import.</>}
                                             />
                                         }
                                     </FormStep>
@@ -221,10 +233,11 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 name="rundata"
                                                 onChange={(field, value) => onTextChange('text', value)}
                                                 onKeyDown={handleTabKeyOnTextArea}
-                                                placeholder="Paste in a tab-separated set of values"
+                                                placeholder={cutPastePlaceholder}
                                                 rows={10}
                                                 value={wizardModel.dataText}
                                             />
+                                            <Button onClick={() => onTextChange('text', '')}>Clear</Button>
                                         </Formsy>
                                     </FormStep>
                                     <FormStep stepIndex={AssayUploadTabs.Grid} trackActive={false}>
@@ -248,6 +261,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                             }}
                                             initialEmptyRowCount={0}
                                             emptyGridMsg={'Start by adding the quantity of assay data rows you want to create.'}
+                                            maxTotalRows={this.props.maxInsertRows}
                                         />
                                     </FormStep>
                                 </div>

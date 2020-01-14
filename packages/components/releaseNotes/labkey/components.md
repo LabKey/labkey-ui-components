@@ -8,6 +8,27 @@ Components, models, actions, and utility functions for LabKey applications and p
     - also include optional message input for CreateUsersModal
     - Issue 39374: Better handling of selection state for SiteUsersGridPanel on page reload and navigation
 
+### version 0.12.0
+*Released*: 13 January 2020
+* Update FileAttachmentForm and relatives
+  - Add sizeLimits property for checking against maximum size
+  - Change styling of error block to Alert instead of simple div
+  - If multiple files are allowed, attach the files that pass validation even if some do not
+* Update Controls and EditableGrid to add optional property for total number of rows allowed
+and add a tooltip for the AddControls with info on the data size limits.
+* Update placeholder text for cut-and-paste area for assay data
+* Add optional parameters for AssayImportPanels and RunDataPanel and SampleInsertPanel
+* Add clear button on cut-and-paste tab for assay import
+* Issue 38567: use POST instead of GET to help deal with long filters (particularly IN filters) when dealing with selections
+* Issue 39381: fix column layout for select inputs in QueryInfoForm
+
+### version 0.11.0
+*Released*: 13 January 2020
+* Item 6633: Omit some property types from the field designer for SM
+  * Changed basePropertiesOnly option to appPropertiesOnly
+  * Expanded application of appPropertiesOnly to additional controls
+  * DomainForm hide field types and DomainRow options based on appPropertiesOnly
+
 ### version 0.10.0
 *Released*: 9 January 2020
 * Item 6506: User management components and related model / action updates

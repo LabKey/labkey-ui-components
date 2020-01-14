@@ -17,7 +17,7 @@ interface Props {
     initModel: AssayProtocolModel
     hideEmptyBatchDomain?: boolean
     containerTop?: number // This sets the top of the sticky header, default is 0
-    basePropertiesOnly?: boolean
+    appPropertiesOnly?: boolean
     appDomainHeaders?: Map<string, HeaderRenderer>
     appIsValidMsg?: (model: AssayProtocolModel) => string
     useTheme?: boolean
@@ -245,7 +245,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { onCancel, basePropertiesOnly, containerTop, useTheme } = this.props;
+        const { onCancel, appPropertiesOnly, containerTop, useTheme } = this.props;
         const { protocolModel, currentPanelIndex, validatePanel } = this.state;
 
         let errorDomains = List<string>();
@@ -259,7 +259,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                     initCollapsed={currentPanelIndex !== 0 }
                     panelStatus={protocolModel.isNew() ? this.getPanelStatus(0) : "COMPLETE"}
                     validate={validatePanel === 0}
-                    basePropertiesOnly={basePropertiesOnly}
+                    appPropertiesOnly={appPropertiesOnly}
                     onToggle={(collapsed, callback) => {
                         this.onTogglePanel(0, collapsed, callback);
                     }}
@@ -273,6 +273,7 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const showInferFromFile = protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
+                    const showFilePropertyType = domain.isNameSuffixMatch('Batch') || domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
                     if (domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR) {
@@ -300,6 +301,8 @@ export class AssayDesignerPanels extends React.PureComponent<Props, State> {
                             appDomainHeaderRenderer={appDomainHeaderRenderer}
                             modelDomains={protocolModel.domains}
                             useTheme={useTheme}
+                            appPropertiesOnly={appPropertiesOnly}
+                            showFilePropertyType={showFilePropertyType}
                         >
                             <div>{domain.description}</div>
                         </DomainForm>

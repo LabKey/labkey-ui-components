@@ -48,7 +48,7 @@ const BOOLEAN_FIELDS = [
 interface Props {
     model: AssayProtocolModel
     onChange: (model: any) => any
-    basePropertiesOnly: boolean
+    appPropertiesOnly: boolean
     asPanel: boolean
     initCollapsed: boolean
     collapsible?: boolean
@@ -68,7 +68,7 @@ interface State {
 export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
 
     static defaultProps = {
-        basePropertiesOnly: false,
+        appPropertiesOnly: false,
         asPanel: true,
         initCollapsed: false,
         validate: false,
@@ -189,18 +189,18 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderBasicProperties() {
-        const { model, basePropertiesOnly, helpTopic } = this.props;
+        const { model, appPropertiesOnly, helpTopic } = this.props;
 
         return (
             <>
                 <div className='domain-field-padding-bottom'>
                     <SectionHeading title={'Basic Properties'} helpTopic={helpTopic}/>
-                    <NameInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>
-                    <DescriptionInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>
-                    {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
-                    {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
-                    {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
-                    {!basePropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
+                    <NameInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>
+                    <DescriptionInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>
+                    {model.allowPlateTemplateSelection() && <PlateTemplatesInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
+                    {model.allowDetectionMethodSelection() && <DetectionMethodsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
+                    {model.allowMetadataInputFormatSelection() && <MetadataInputFormatsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
+                    {!appPropertiesOnly && model.allowQCStates && <QCStatesInput model={model} onChange={this.onInputChange}/>}
                 </div>
             </>
         )
@@ -224,21 +224,21 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
     }
 
     renderEditSettings() {
-        const { model, basePropertiesOnly } = this.props;
+        const { model, appPropertiesOnly } = this.props;
 
         return (
             <>
                 <div className="domain-field-padding-bottom">
                     <SectionHeading title={'Editing Settings'}/>
-                    {<EditableRunsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
-                    {model.allowEditableResults && <EditableResultsInput model={model} onChange={this.onInputChange} basePropertiesOnly={basePropertiesOnly}/>}
+                    {<EditableRunsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
+                    {model.allowEditableResults && <EditableResultsInput model={model} onChange={this.onInputChange} appPropertiesOnly={appPropertiesOnly}/>}
                 </div>
             </>
         )
     }
 
     renderForm() {
-        const { basePropertiesOnly, children } = this.props;
+        const { appPropertiesOnly, children } = this.props;
 
         return (
             <Form>
@@ -247,12 +247,12 @@ export class AssayPropertiesPanel extends React.PureComponent<Props, State> {
                         <Col xs={12}>{children}</Col>
                     </Row>
                 }
-                <Col xs={12} lg={basePropertiesOnly ? 12 : 6}>
+                <Col xs={12} lg={appPropertiesOnly ? 12 : 6}>
                     {this.renderBasicProperties()}
                     {this.renderEditSettings()}
                 </Col>
                 <Col xs={12} lg={6}>
-                    {!basePropertiesOnly && this.renderImportSettings()}
+                    {!appPropertiesOnly && this.renderImportSettings()}
                 </Col>
             </Form>
         )

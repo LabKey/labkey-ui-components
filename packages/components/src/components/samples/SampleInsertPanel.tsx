@@ -67,6 +67,7 @@ import {
 } from "../..";
 import { FormStep, FormTabs } from '../forms/FormStep';
 import {FileSizeLimitProps} from "../files/models";
+import { Link } from "react-router";
 
 const TABS = ['Create From Grid', 'Import Samples From File'];
 const IMPORT_SAMPLE_SETS_TOPIC = 'importSampleSets#more';
@@ -537,8 +538,6 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
 
         // TODO the name here is not necessarily the same as shown in the navigation menu.  It is not split at CamelCase boundary.
         const name = insertModel.getTargetSampleSetName();
-        const sampleSet = insertModel.getTargetSampleSetName();
-        const importFromFileLink = insertModel.hasTargetSampleSet() ? AppURL.create('samples', sampleSet, 'import') : undefined;
 
         return (
             <>
@@ -962,12 +961,20 @@ export class SampleInsertPanelImpl extends React.Component<Props, StateProps> {
             return <LoadingSpinner wrapperClassName="loading-data-message"/>;
         }
 
+        const sampleSet = insertModel.getTargetSampleSetName();
+        const editSampleTypeDetailsLink = sampleSet ? AppURL.create('samples', sampleSet, 'update') : undefined;
+
         return (
             <>
                 {error != null && <Alert>{error}</Alert>}
                 <div className={"panel panel-default"}>
                     <div className="panel-body">
-                        <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
+                        <div className="row">
+                            <div className={'col-sm-7'}>
+                                <FormTabs tabs={TABS} onTabChange={this.onTabChange}/>
+                            </div>
+                            {editSampleTypeDetailsLink ? <Link className={'pull-right sample-insert--link'} to={editSampleTypeDetailsLink.toString()}>Edit Sample Type Details</Link> : undefined}
+                        </div>
                         <div className="row">
                             <div className="col-sm-12">
                                 <FormStep stepIndex={SampleInsertPanelTabs.Grid}>

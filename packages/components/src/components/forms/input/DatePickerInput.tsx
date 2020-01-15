@@ -22,7 +22,7 @@ import { Utils } from '@labkey/api';
 import {DisableableInput, DisableableInputProps, DisableableInputState} from "./DisableableInput";
 import { FieldLabel } from "../FieldLabel";
 import { QueryColumn } from '../../base/models/model';
-import { formatDate, parseDate } from '../../../util/Date';
+import {datePlaceholder, formatDate, isDateTimeCol, parseDate} from '../../../util/Date';
 
 export interface DatePickerInputProps extends DisableableInputProps {
     formsy?: boolean
@@ -34,6 +34,8 @@ export interface DatePickerInputProps extends DisableableInputProps {
     name?: string
     label?: any
     onChange?: any
+    dateFormat?: string
+    showTime?: boolean
 
     queryColumn: QueryColumn
     showLabel?: boolean
@@ -73,13 +75,13 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         this.state = {
             isDisabled: props.initiallyDisabled,
-            selectedDate: props.value ? parseDate(props.value) : undefined,
+            selectedDate: props.value ? parseDate(props.value, this.getDateFormat()) : undefined,
             selectedDateStr: props.value
         }
     }
 
     onChange(date) {
-        const selectedDateStr = date ? formatDate(date): undefined;
+        const selectedDateStr = date ? formatDate(date, null, this.getDateFormat()): undefined;
         this.setState(() => {
             return {
                 selectedDate: date,
@@ -92,6 +94,23 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         if (this.props.formsy && Utils.isFunction(this.props.setValue))
             this.props.setValue(selectedDateStr);
+    }
+
+    getDateFormat() {
+        const { dateFormat, queryColumn } = this.props;
+        if (dateFormat)
+            return this.ensureDateFormat(dateFormat);
+
+        return this.ensureDateFormat(datePlaceholder(queryColumn));
+    }
+
+    ensureDateFormat(rawFormat: string) {
+        return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
+    }
+
+    shouldShowTime() {
+        const { showTime, queryColumn } = this.props;
+        return showTime || isDateTimeCol(queryColumn)
     }
 
     render() {
@@ -130,16 +149,17 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                     }}/>
                 <div className={"col-sm-9 col-md-9 col-xs-12"}>
                     <DatePicker
+                        autoComplete={'off'}
                         wrapperClassName={inputWrapperClassName}
                         className={inputClassName}
                         isClearable={true}
                         name={name ? name : queryColumn.name}
                         disabled={isDisabled}
                         selected={selectedDate}
-                        value={formsy ? this.props.getValue() : selectedDateStr}
                         onChange={this.onChange}
+                        showTimeSelect={this.shouldShowTime()}
                         placeholderText={placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`}
-                        dateFormat={LABKEY.container.formats.dateFormat}/>
+                        dateFormat={this.getDateFormat()}/>
                 </div>
             </div>
         );

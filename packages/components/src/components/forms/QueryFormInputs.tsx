@@ -29,7 +29,6 @@ import { initLookup } from '../../actions';
 import { insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../base/models/model';
 import { caseInsensitive } from '../../util/utils';
 import { DatePickerInput } from "./input/DatePickerInput";
-import { isDateTimeCol } from "../../util/Date";
 
 const LABEL_FIELD_SUFFIX = '::label';
 
@@ -258,7 +257,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     }
                     switch (col.jsonType) {
                         case 'date':
-                            return userDatePicker && !isDateTimeCol(col) ?
+                            return userDatePicker ?
                                 <DatePickerInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>
                                 : <DateInput key={i} queryColumn={col} value={value} allowDisable={allowFieldDisable} initiallyDisabled={shouldDisableField} addLabelAsterisk={showAsteriskSymbol}/>;;
                         case 'boolean':

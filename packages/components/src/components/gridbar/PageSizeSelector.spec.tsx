@@ -51,6 +51,17 @@ describe("<PageSizeSelector/>", () => {
         expect(tree.toJSON()).toMatchSnapshot();
     });
 
+    test("empty options", () => {
+        const model = new QueryGridModel({
+            maxRows: 1,
+            totalRows: 100
+        });
+        const component = <PageSizeSelector model={model} options={List<number>()}/>;
+
+        const tree = renderer.create(component);
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
     test("hidden based on totalRows", () => {
         const model = new QueryGridModel({
             maxRows: 20,

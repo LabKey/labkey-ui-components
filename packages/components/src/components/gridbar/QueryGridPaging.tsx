@@ -44,12 +44,16 @@ export class QueryGridPaging extends React.Component<Props, any> {
         );
     }
 
+    getCurrentPage(): number {
+        return this.props.model.pageNumber || 1;
+    }
+
     nextPage = () => {
-        this.goToPage(this.props.model.pageNumber + 1);
+        this.goToPage(this.getCurrentPage() + 1);
     };
 
     prevPage = () => {
-        this.goToPage(this.props.model.pageNumber - 1);
+        this.goToPage(this.getCurrentPage() - 1);
     };
 
     goToPage = (pageNumber: number) => {
@@ -63,14 +67,15 @@ export class QueryGridPaging extends React.Component<Props, any> {
         const max = model.getMaxRowIndex();
         const total = model.totalRows;
         const firstPageNumber = 1;
-        const lastPageNumber = Math.ceil(total / model.maxRows);
+        const lastPageNumber = model.maxRows && model.maxRows > 0 ? Math.ceil(total / model.maxRows) : 1;
+        const currentPage = this.getCurrentPage();
 
         if (!model.isPaged) {
             return null;
         }
 
         // hidden when "0 of 0" or "1 - N of N" and pageNumber is 1
-        const showButtons = !(max === 0 || (min === 1 && max === total)) || model.pageNumber > 1;
+        const showButtons = !(max === 0 || (min === 1 && max === total)) || currentPage > 1;
 
         return (
             <>
@@ -81,26 +86,26 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </span> : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        <PagingButton disabled={model.pageNumber <= 1} tooltip={'Previous Page'} onClick={this.prevPage}>
+                        <PagingButton disabled={currentPage <= 1} tooltip={'Previous Page'} onClick={this.prevPage}>
                             <i className={'fa fa-chevron-left'}/>
                         </PagingButton>
                         <Tip caption="Current Page" trigger={['hover']}>
                             <DropdownButton
                                 id={`current-page-drop-${model.getId()}`}
                                 pullRight
-                                title={model.pageNumber}
+                                title={currentPage}
                             >
                                 <MenuItem header>Jump To</MenuItem>
                                 <MenuItem
                                     key={'first'}
-                                    disabled={model.pageNumber === firstPageNumber}
+                                    disabled={currentPage === firstPageNumber}
                                     onClick={() => this.goToPage(firstPageNumber)}
                                 >
                                     First Page
                                 </MenuItem>
                                 <MenuItem
                                     key={'last'}
-                                    disabled={model.pageNumber === lastPageNumber}
+                                    disabled={currentPage === lastPageNumber}
                                     onClick={() => this.goToPage(lastPageNumber)}
                                 >
                                     Last Page

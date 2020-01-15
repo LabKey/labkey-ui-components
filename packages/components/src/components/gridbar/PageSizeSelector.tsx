@@ -20,6 +20,7 @@ import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
 import { setMaxRows } from "../../actions";
 
+const DEFAULT_SIZE_OPTIONS = List.of(20, 40, 100, 250, 400);
 
 /**
  * @model the query grid model from which to export
@@ -36,7 +37,7 @@ interface Props {
 export class PageSizeSelector extends React.PureComponent<Props, any> {
 
     static defaultProps = {
-        options: List.of(20, 40, 100, 250, 400)
+        options: DEFAULT_SIZE_OPTIONS
     };
 
     onClick(selectedVal: number) {
@@ -45,7 +46,9 @@ export class PageSizeSelector extends React.PureComponent<Props, any> {
 
     render() {
         const { model, options } = this.props;
-        const showSelector = model && model.totalRows > options.get(0);
+        const sizeOptions = options && options.size > 0 ? options : DEFAULT_SIZE_OPTIONS;
+        const minOptions = sizeOptions.sort().get(0);
+        const showSelector = model && model.totalRows > minOptions;
 
         return (showSelector &&
             <span className={'gridbar-button-spacer'}>
@@ -57,7 +60,7 @@ export class PageSizeSelector extends React.PureComponent<Props, any> {
                         disabled={model.isError || !model.isPaged}
                     >
                         <MenuItem header>Page Size</MenuItem>
-                        {options.map((option, index) =>
+                        {sizeOptions.map((option, index) =>
                             <MenuItem
                                 key={index}
                                 active={option === model.maxRows}

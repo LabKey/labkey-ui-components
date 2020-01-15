@@ -187,4 +187,17 @@ storiesOf('FileAttachmentForm', module)
             />
         )
     })
+    .add("with compact size", () => {
+        return (
+            <FileAttachmentForm
+                showLabel={true}
+                label={'Attachments'}
+                acceptedFormats={'.tsv,.txt,.csv,.xls,.xlsx'}
+                showAcceptedFormats={true}
+                allowMultiple={true}
+                showButtons={false}
+                compact={true}
+            />
+        )
+    })
 ;

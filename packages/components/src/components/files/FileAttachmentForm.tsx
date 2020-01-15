@@ -55,6 +55,7 @@ interface FileAttachmentFormProps {
     submitText?: string
     previewGridProps?: FileGridPreviewProps
     templateUrl?: string
+    compact?: boolean
 }
 
 interface State {
@@ -79,7 +80,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         showButtons: false,
         showLabel: true,
         showProgressBar: false,
-        submitText: 'Upload'
+        submitText: 'Upload',
+        compact: false
     };
 
     constructor(props?: FileAttachmentFormProps) {
@@ -348,7 +350,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             showProgressBar,
             sizeLimits,
             sizeLimitsHelpText,
-            isSubmitting
+            isSubmitting,
+            compact
         } = this.props;
 
         return (
@@ -357,7 +360,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     <FormSection
                         iconSpacer={false}
                         label={label}
-                        showLabel={showLabel}>
+                        showLabel={showLabel}
+                    >
                         <FileAttachmentContainer
                             index={this.props.index}
                             acceptedFormats={acceptedFormats}
@@ -369,7 +373,9 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                             allowMultiple={allowMultiple}
                             sizeLimits={sizeLimits}
                             sizeLimitsHelpText={sizeLimitsHelpText}
-                            labelLong={labelLong}/>
+                            labelLong={labelLong}
+                            compact={compact}
+                        />
                     </FormSection>
                 </span>
                 {this.renderPreviewGrid()}

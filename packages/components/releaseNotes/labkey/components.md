@@ -3,9 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Issue 38823: Allow users to select the number of rows they want to display in a grid on a single page
-* Issue 38824: Allow users to go to the first and last page in a grid and see current page number and total page count
-* Issue 39367: Disabled button tool tip on grid doesn't hide for disabled button
+* QueryGrid paging improvements / fixes
+    * Issue 38823: Allow users to select the number of rows they want to display in a grid on a single page
+    * Issue 38824: Allow users to go to the first and last page in a grid and see current page number and total page count
+    * Issue 39367: Disabled button tool tip on grid doesn't hide for disabled button
+    * Issue 39405: Paging too far can result in no data
 
 ### version 0.13.0
 *Released*: 14 January 2020

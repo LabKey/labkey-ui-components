@@ -69,8 +69,8 @@ export class QueryGridPaging extends React.Component<Props, any> {
             return null;
         }
 
-        // hidden when "0 of 0" or "1 - N of N"
-        const showButtons = !(max === 0 || (min === 1 && max === total));
+        // hidden when "0 of 0" or "1 - N of N" and pageNumber is 1
+        const showButtons = !(max === 0 || (min === 1 && max === total)) || model.pageNumber > 1;
 
         return (
             <>

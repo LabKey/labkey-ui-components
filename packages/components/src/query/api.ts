@@ -411,7 +411,7 @@ function handle132Response(json): Promise<any> {
                     models = {}, // TODO: Switch to Map
                     orderedModels = {},
                     qsKey = 'queries',
-                    rowCount = 0;
+                    rowCount = json.rowCount || 0;
 
                 const metadataKey = resolved.metaData.id,
                     modelKey = resolveKeyFromJson(resolved);

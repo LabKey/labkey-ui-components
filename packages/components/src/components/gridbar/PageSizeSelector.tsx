@@ -23,7 +23,7 @@ import { setMaxRows } from "../../actions";
 
 /**
  * @model the query grid model from which to export
- * @supportedTypes the types of export formats supported.  Default is CSV, EXCEL and TSV.
+ * @options the page size options to use for this QueryGridPanel button dropdown
  */
 interface Props {
     model: QueryGridModel

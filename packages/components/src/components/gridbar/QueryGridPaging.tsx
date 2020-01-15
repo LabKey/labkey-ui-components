@@ -57,32 +57,6 @@ export class QueryGridPaging extends React.Component<Props, any> {
         loadPage(model, pageNumber);
     };
 
-    renderButton(content: React.ReactNode, disabled: boolean, btnCls: string, tooltip?: string, onClick?: () => any) {
-        let btn = (
-            <Button onClick={onClick} disabled={disabled} className={btnCls}>
-                {content}
-            </Button>
-        );
-
-        if (disabled && tooltip) {
-            btn = (
-                <div className={'disabled-button-with-tooltip'}>
-                    {btn}
-                </div>
-            );
-        }
-
-        if (tooltip) {
-            return (
-                <Tip caption={tooltip}>
-                    {btn}
-                </Tip>
-            )
-        }
-
-        return btn;
-    }
-
     render() {
         const { model, showCounts } = this.props;
         const min = model.getMinRowIndex();
